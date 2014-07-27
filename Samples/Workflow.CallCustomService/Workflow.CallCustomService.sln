@@ -1,0 +1,36 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.CallCustomService", "Workflow.CallCustomService\Workflow.CallCustomService.csproj", "{1BAD8F41-4800-4794-9293-7AD075C68013}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.CallCustomServiceWeb", "Workflow.CallCustomServiceWeb\Workflow.CallCustomServiceWeb.csproj", "{BA52F21B-48B2-4D0E-9036-09D1989B14FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{BB57DDF9-E4A1-45A7-B062-2D6E1D5259DA}"
+	ProjectSection(SolutionItems) = preProject
+		Call Custom Service.docx = Call Custom Service.docx
+		readme.txt = readme.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BAD8F41-4800-4794-9293-7AD075C68013}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BA52F21B-48B2-4D0E-9036-09D1989B14FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA52F21B-48B2-4D0E-9036-09D1989B14FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA52F21B-48B2-4D0E-9036-09D1989B14FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA52F21B-48B2-4D0E-9036-09D1989B14FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

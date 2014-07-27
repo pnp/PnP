@@ -1,0 +1,83 @@
+﻿body {
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+h1, h2, h3, h4 {
+    font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+}
+
+
+#chrome_ctrl_placeholder *{
+    box-sizing: content-box;
+}
+
+
+#actions form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
+#message, #errorMessage {
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.btn {
+    border: 1px solid #ccc;
+}
+
+.ref {
+    font-weight: bold;
+    font-style:italic;
+}
+
+@media (min-width: 768px) {
+
+    .dl-horizontal dt {
+        width: 120px;
+    }
+
+    .dl-horizontal dd {
+        margin-left: 140px;
+    }
+}

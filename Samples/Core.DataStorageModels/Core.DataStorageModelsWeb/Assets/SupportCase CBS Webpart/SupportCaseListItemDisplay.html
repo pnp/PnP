@@ -1,0 +1,74 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>SupportCaseListDisplayItem</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+    <mso:ManagedPropertyMapping msdt:dt="string">
+        'Title'{Title}:'Title',
+        'ID'{ID}:'ListItemId',
+        'Status'{Status}:'FTCAMStatusOWSTEXT',
+        'CSR'{CSR}:'FTCAMCSROWSTEXT',
+        'Customer ID'{Customer ID}:'FTCAMCustomerIDOWSTEXT'
+    </mso:ManagedPropertyMapping>
+<mso:MasterPageDescription msdt:dt="string">Support Cases List Display Item.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+
+<body>
+
+    <!--
+            Warning: Do not try to add HTML to this section. Only the contents of the first <div>
+            inside the <body> tag will be used while executing Display Template code. Any HTML that
+            you add to this section will NOT become part of your Display Template.
+    -->
+    <script>
+        
+    </script>
+
+    <!--
+        Use the div below to author your Display Template. Here are some things to keep in mind:
+        * Surround any JavaScript logic as shown below using a "pound underscore" (#_ ... _#) token
+        inside a comment.
+
+        * Use the values assigned to your variables using an "underscore pound equals"
+        (_#= ... =#_) token.
+    -->
+
+    <div>
+<!--#_
+
+var mID = $getItemValue(ctx, "ID");
+mID.overrideValueRenderer($contentLineText);
+
+var mTitle = $getItemValue(ctx, "Title");
+mTitle.overrideValueRenderer($contentLineText);
+
+var mStatus = $getItemValue(ctx, "Status");
+mStatus.overrideValueRenderer($contentLineText);
+
+var mCSR = $getItemValue(ctx, "CSR");
+mCSR.overrideValueRenderer($contentLineText);
+
+var statusClass = "status Resolve_status";
+if(mStatus == "Open"){
+    statusClass = "status Open_status";
+}
+ms_outHtml.push(''
+);
+_#-->
+        <li>
+            <div class="id">_#= mID =#_</div>
+            <div class="_#= statusClass =#_" >_#= mStatus =#_</div>
+            <div class="title">_#= mTitle =#_</div>
+            <div class="csr">_#= mCSR =#_</div>
+        </li>
+    </div>
+</body>
+</html>

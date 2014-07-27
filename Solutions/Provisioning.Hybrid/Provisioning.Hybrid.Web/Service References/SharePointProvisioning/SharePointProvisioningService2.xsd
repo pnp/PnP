@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:51457/SharePointProvisioningService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Contoso.Provisioning.Hybrid.Contract" />
+  <xs:element name="ProvisionSiteCollection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Contoso.Provisioning.Hybrid.Contract" minOccurs="0" name="sharePointProvisioningData" nillable="true" type="q1:SharePointProvisioningData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProvisionSiteCollectionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ProvisionSiteCollectionResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

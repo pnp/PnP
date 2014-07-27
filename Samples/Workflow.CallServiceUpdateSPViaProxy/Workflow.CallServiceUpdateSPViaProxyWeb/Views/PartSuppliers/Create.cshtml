@@ -1,0 +1,9 @@
+﻿@using (Html.BeginForm("Create", "PartSuppliers", new { SPHostUrl = Request["SPHostUrl"] },
+    FormMethod.Post, new { id = "createPartSuppliers", target = "_blank", role = "form" }))
+{
+    <div class="form-group">
+        <label for="country">Choose a country for the Part Supplier.</label>
+        @Html.DropDownList("country", null, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn">Create</button>
+}

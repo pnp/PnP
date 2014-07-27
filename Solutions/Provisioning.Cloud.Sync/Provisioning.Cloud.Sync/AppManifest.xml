@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
+     Name="ProvisioningCloudSync"
+     ProductID="{aa2f833a-c950-4671-9dca-d477a2e7ff75}"
+     Version="1.0.0.0"
+     SharePointMinVersion="15.0.0.0"
+>
+  <Properties>
+    <Title>Provisioning.Cloud.Sync</Title>
+    <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}&amp;SPHostTitle={HostTitle}&amp;SPHostLogoUrl={HostLogoUrl}&amp;IsDlg=0</StartPage>
+  </Properties>
+
+  <AppPrincipal>
+    <RemoteWebApplication ClientId="*" />
+  </AppPrincipal>
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+  </AppPermissionRequests>
+</App>

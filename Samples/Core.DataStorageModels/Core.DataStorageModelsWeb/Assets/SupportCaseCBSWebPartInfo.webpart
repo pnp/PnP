@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Content" type="string">
+          <![CDATA[
+          <br /><div>The Support Cases Content By Search Web Part is placed on the page below this Script Editor Web Part.  If you put the page into Edit Mode you will see the Content By Search Web Part.  The Content By Search Web Part will not appear unless it returns results.  If you just installed the sample, you will need to wait until the Search Service crawls and indexes the data in the Support Cases list in the host web before it will display results.  Please see the scenario documentation associated with this sample for more details.  Keep in mind, this sample only contains data for the customer with the ID ALFKI.
+        ​​​]]>
+        </property>
+        <property name="ChromeType" type="chrometype">None</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

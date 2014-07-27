@@ -1,0 +1,34 @@
+﻿@model Contoso.Core.DynamicPermissionsWeb.Models.ListsViewModel
+@{
+    ViewBag.Title = "Lists";
+}
+
+<div class="jumbotron">
+    @if (Model.IsConnectedToO365)
+    {
+        <h2>Lists in @Model.SiteTitle </h2>
+
+        foreach (var item in Model.Lists)
+        {
+            <div>@item</div>
+        }
+
+        Html.ActionLink("Back to home", "Index", "Home");
+    }
+    else
+    {
+        <p>You are not connected.</p>
+        Html.ActionLink("Click here to connect", "Index", "Home");
+    }
+    
+</div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Overview</h2>
+            <p>This example shows how to obtain an OAuth code to dynamically request permissions.</p>
+            <p>The app must already be registered as an AppPrincipal either by using AppRegNew.aspx
+            or by obtaining a client ID and client secret in the Seller Dashboard.
+            </p>
+            <p>This sample only works with Office 365.</p>
+        </div>
+    </div>

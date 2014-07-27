@@ -1,0 +1,16 @@
+﻿
+/* Let's center the page with 1000px center layout */
+#s4-bodyContainer {
+    width: 1000px !important; 
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* This is for relocating the page controls just for a sample */
+#RibbonContainer-TabRowRight {
+    left: 150px; 
+    top: 80px; 
+    display: block; 
+    position: absolute; 
+    z-index: 1000;
+}

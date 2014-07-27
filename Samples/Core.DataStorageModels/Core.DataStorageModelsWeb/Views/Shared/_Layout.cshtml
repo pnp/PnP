@@ -1,0 +1,94 @@
+﻿@{
+    var spHostUrl = Request[SharePointContext.SPHostUrlKey];
+    if (!spHostUrl.EndsWith("/"))
+    {
+        spHostUrl += "/";
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="display:none">
+    <div id="chrome_ctrl_placeholder"></div>
+    <div class="container-fluid body-content">
+        <div class="cdsm_left">
+            <div>@Html.ActionLink("Sample Home Page", "Home", "Default")</div>
+            <br />
+            <div style="font-weight:bold">CSR Dashboard</div>
+            <div class="cdsm_mainmenu">
+                <ul>
+                    <li>@Html.ActionLink("My CSR Info", "Home", "CSRInfo")</li>
+                    <li>@Html.ActionLink("Call Queue", "Home", "CallQueue")</li>
+                    <li>
+                        <span class="collapse_arrow"></span>
+                        <span>@Html.ActionLink("Customer Dashboard", "Home", "CustomerDashboard")</span>
+                        <ul>
+                            <li>@Html.ActionLink("Recent Orders", "Orders", "CustomerDashboard")</li>
+                            <li><a href="@(spHostUrl)Pages/SupportCasesPage.aspx">Support Cases</a></li>
+                            <li>@Html.ActionLink("Notes", "Notes", "CustomerDashboard")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="cdsm_right">
+            @ShowMessages()
+            @RenderBody()
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/MicrosoftAjax")
+    @Scripts.Render("~/bundles/spcontext")
+    @Scripts.Render("~/bundles/app")
+    <script type="text/javascript">
+        function chromeLoaded() {
+            $('body').show();
+        }
+
+        //function callback to render chrome after SP.UI.Controls.js loads
+        function renderSPChrome() {
+            //Set the chrome options
+            var options = {
+                'appTitle': "Data Storage Models",
+                'onCssLoaded': 'chromeLoaded()'
+            };
+
+            //Load the Chrome Control in the chrome_ctrl_placeholder element of the page
+            var chromeNavigation = new SP.UI.Controls.Navigation('chrome_ctrl_placeholder', options);
+            chromeNavigation.setVisible(true);
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+@helper ShowMessages()
+{
+    var message = TempData["Message"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+
+    if (!string.IsNullOrEmpty(message))
+    {
+        <div id="message" class="row">
+            <div class="col-md-12">
+                @foreach (var line in message.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <p class="bg-success">@line</p>
+                }
+            </div>
+        </div>
+    }
+    if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div id="errorMessage" class="row bg-danger ">
+            <div class="col-md-12">@errorMessage</div>
+        </div>
+    }
+}

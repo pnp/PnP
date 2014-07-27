@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="cbb7978e-8ccc-4e8e-8525-207327dfece8" solutionId="cbb7978e-8ccc-4e8e-8525-207327dfece8" resetWebServer="false" sharePointProductVersion="15.0" name="Contoso.Services.SiteManager" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="09652a5c-5eeb-43c0-a521-f4662bf2cbd9" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="37352a44-1641-4de9-a27c-c94814f1a045" />
+  </projectItems>
+</package>

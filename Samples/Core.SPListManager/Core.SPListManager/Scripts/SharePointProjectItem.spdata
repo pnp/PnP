@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Scripts\" Type="ElementManifest" />
+    <ProjectItemFile Source="App.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-1.7.1.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-1.7.1.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-1.7.1.intellisense.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="SPListdetails.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="SPNewList.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jsviews.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Resources.en-US.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Resources.nl-NL.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="SPListmanager.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="jquery-ui-1.10.3.js" Target="Scripts\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

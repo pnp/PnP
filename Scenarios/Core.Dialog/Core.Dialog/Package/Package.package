@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8da11f95-3c2e-4538-914d-e488ae3e926d" solutionId="8da11f95-3c2e-4538-914d-e488ae3e926d" resetWebServer="false" sharePointProductVersion="16.0" name="Core.Dialog" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="c50450a5-7a16-4f29-aefc-49a93fdd7bcd" />
+  </features>
+</package>

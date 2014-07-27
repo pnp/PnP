@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Contoso.Core.UserProfilePropertyUpdater.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Contoso_Core_UserProfilePropertyUpdater_Console_UserProfileASMX_UserProfileService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://bertonline-admin.sharepoint.com/_vti_bin/UserProfileService.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

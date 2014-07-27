@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="628686bd-72ed-4539-802c-545697d9ad3c" 
+        solutionId="628686bd-72ed-4539-802c-545697d9ad3c" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Performance.LocalStorage"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="dc9cd284-8abe-4444-86c5-cd9bc2e829e6" />
+  </features>
+</package>

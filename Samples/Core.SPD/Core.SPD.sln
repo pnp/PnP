@@ -1,0 +1,58 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FA611E30-9A16-4CF5-B260-B7F33685390E}"
+	ProjectSection(SolutionItems) = preProject
+		Disable Designer.docx = Disable Designer.docx
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SPD", "Core.SPD.Console\Core.SPD.csproj", "{6ED184F6-9970-47F8-9657-87B042AD6C38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{4C56EC7E-CC5C-4486-83BB-C163FF524788}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{B17C840C-3227-4415-9F4D-67EC40B65D87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SPD", "Core.SPD\Core.SPD.csproj", "{85432D9C-033F-49C2-82F0-23A096F31123}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SPDWeb", "Core.SPDWeb\Core.SPDWeb.csproj", "{296D7149-54FD-4F20-90C5-59116F8E7D7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{206AD657-4C67-4343-96EC-40FB356C385F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{FA29791A-5416-4B53-B420-243F0AD2EADE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6ED184F6-9970-47F8-9657-87B042AD6C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED184F6-9970-47F8-9657-87B042AD6C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ED184F6-9970-47F8-9657-87B042AD6C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ED184F6-9970-47F8-9657-87B042AD6C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85432D9C-033F-49C2-82F0-23A096F31123}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{296D7149-54FD-4F20-90C5-59116F8E7D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{296D7149-54FD-4F20-90C5-59116F8E7D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{296D7149-54FD-4F20-90C5-59116F8E7D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{296D7149-54FD-4F20-90C5-59116F8E7D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6ED184F6-9970-47F8-9657-87B042AD6C38} = {B17C840C-3227-4415-9F4D-67EC40B65D87}
+		{B17C840C-3227-4415-9F4D-67EC40B65D87} = {4C56EC7E-CC5C-4486-83BB-C163FF524788}
+		{85432D9C-033F-49C2-82F0-23A096F31123} = {206AD657-4C67-4343-96EC-40FB356C385F}
+		{296D7149-54FD-4F20-90C5-59116F8E7D7F} = {FA29791A-5416-4B53-B420-243F0AD2EADE}
+		{206AD657-4C67-4343-96EC-40FB356C385F} = {4C56EC7E-CC5C-4486-83BB-C163FF524788}
+		{FA29791A-5416-4B53-B420-243F0AD2EADE} = {4C56EC7E-CC5C-4486-83BB-C163FF524788}
+	EndGlobalSection
+EndGlobal

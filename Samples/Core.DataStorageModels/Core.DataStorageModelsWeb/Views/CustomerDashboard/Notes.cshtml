@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Notes";
+    var sharePointContext = ViewBag.SharePointContext as SharePointContext;
+}
+
+<div class="cdsm_notes">
+    @Html.Partial("Top")
+    <div class="cdsm_common_display">
+        <div class="cdsm_title">Notes</div>
+        <div class="cdsm_content">
+            <ul id="notes"></ul>
+            <div id="getNotesErrorMessage" class="errorMessage"></div>
+            <div>
+                <textarea id="note" placeholder="Enter a note" rows="6"></textarea>
+                <button id="addNote" type="button">Add</button>
+                <div id="addNoteErrorMessage" class="errorMessage"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div id="notes-list-link">
+        <a href="@sharePointContext.SPAppWebUrl/lists/notes">View Notes List In App Web</a>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var appWebUrl = '@sharePointContext.SPAppWebUrl';
+        var hostUrl = '@sharePointContext.SPHostUrl';
+    </script>
+
+    @Scripts.Render("~/bundles/CustomerDashboard")
+}

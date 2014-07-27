@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="96b3b38b-7a9c-4c80-b2e3-882953e4736a" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://sp2013.set1.bertonline.info/sites/dev/_vti_bin/contoso.services.sitemanager/sitemanager.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="mex.xsd" MetadataType="Schema" ID="79447c00-940c-43c5-9d46-8e4e6b66be3d" SourceId="1" SourceUrl="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?xsd=xsd0" />
+    <MetadataFile FileName="mex.disco" MetadataType="Disco" ID="c4fd702a-ecdc-4096-b3fb-59516cf78a9c" SourceId="1" SourceUrl="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?disco" />
+    <MetadataFile FileName="mex1.xsd" MetadataType="Schema" ID="66216a34-036c-46ea-91b4-bd607271138b" SourceId="1" SourceUrl="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?xsd=xsd2" />
+    <MetadataFile FileName="mex2.xsd" MetadataType="Schema" ID="34f17073-ebf7-4d77-9492-ea47f8439ceb" SourceId="1" SourceUrl="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?xsd=xsd1" />
+    <MetadataFile FileName="SiteManager.wsdl" MetadataType="Wsdl" ID="9e61f5ea-e889-4e90-801b-5c25ab0d5369" SourceId="1" SourceUrl="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

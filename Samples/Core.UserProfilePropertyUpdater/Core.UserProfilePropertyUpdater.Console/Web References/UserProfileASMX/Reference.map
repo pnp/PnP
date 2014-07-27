@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="https://bertonline-admin.sharepoint.com/_vti_bin/UserProfileService.asmx?wsdl" filename="UserProfileService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="https://bertonline-admin.sharepoint.com/_vti_bin/UserProfileService.asmx?disco" filename="UserProfileService.disco" />
+  </Results>
+</DiscoveryClientResultsFile>

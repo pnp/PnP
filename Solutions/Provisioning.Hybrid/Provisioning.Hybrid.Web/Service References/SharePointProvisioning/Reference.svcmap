@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e30159ab-7709-45f8-81b6-ff776ff30e23" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51457/SharePointProvisioningService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SharePointProvisioningService.xsd" MetadataType="Schema" ID="287d9fc1-55cd-4c12-b5b5-34e315031ef6" SourceId="1" SourceUrl="http://localhost:51457/SharePointProvisioningService.svc?xsd=xsd1" />
+    <MetadataFile FileName="SharePointProvisioningService.wsdl" MetadataType="Wsdl" ID="b03815b3-598a-4982-8243-033ade8934c3" SourceId="1" SourceUrl="http://localhost:51457/SharePointProvisioningService.svc?wsdl" />
+    <MetadataFile FileName="SharePointProvisioningService1.xsd" MetadataType="Schema" ID="4bf06868-499d-4c44-b3f0-168d341eb36b" SourceId="1" SourceUrl="http://localhost:51457/SharePointProvisioningService.svc?xsd=xsd2" />
+    <MetadataFile FileName="SharePointProvisioningService2.xsd" MetadataType="Schema" ID="e28f2d52-6e24-4075-93a7-250dd8d3fcb3" SourceId="1" SourceUrl="http://localhost:51457/SharePointProvisioningService.svc?xsd=xsd0" />
+    <MetadataFile FileName="SharePointProvisioningService.disco" MetadataType="Disco" ID="be8d1690-74e4-480e-9e77-70abdfe4d83f" SourceId="1" SourceUrl="http://localhost:51457/SharePointProvisioningService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

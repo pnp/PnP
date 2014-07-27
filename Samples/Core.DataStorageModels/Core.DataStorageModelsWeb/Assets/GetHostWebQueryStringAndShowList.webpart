@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Content" type="string">
+          <![CDATA[
+          <div>The Support Cases App Part is placed on the page above this Script Editor Web Part. This Script Editor Web Part contains JavaScript which sends the CustomerID querystring parameter from the page in the host web to the Support Case App Part which in turn uses the SharePoint REST API to query the Support Cases list in the Host Web and display them.  It also displays a link to the Support Cases list in the host web.</div>
+       <script>
+          var arrFrames = document.getElementsByTagName("iframe");
+          for(i = 0; i< arrFrames.length; i++)
+          {
+            var iFrame=arrFrames[i];
+            var clientID="CustomerIDValue";
+            if(iFrame.src.indexOf(clientID) != -1)
+            {
+                var queryStringValue=getQuerystring("CustomerID");
+                  if(queryStringValue != null)
+                  {
+                  iFrame.src=iFrame.src.replace(clientID,queryStringValue);
+                  }
+            }
+          }
+        </script>
+        <br />
+        <div class="cdsm-list-link">
+            <a href="../Lists/SupportCases">View Support Cases List In Host Web</a>
+        </div>
+        ​​​]]>
+        </property>
+        <property name="ChromeType" type="chrometype">None</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
+
+

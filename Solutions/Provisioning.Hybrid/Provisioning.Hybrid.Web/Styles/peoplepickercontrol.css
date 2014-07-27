@@ -1,0 +1,59 @@
+﻿
+.cam-peoplepicker-userlookup {
+    height: 50px; 
+    overflow: hidden; 
+    border: 1px solid #99b0c1; 
+    padding: 2px 5px 2px 5px;
+}
+
+.cam-peoplepicker-usersearch {
+    position: absolute;
+    z-index: 2;
+    display: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.cam-peoplepicker-userSpan {
+	border-collapse: collapse;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 1px;
+    margin-left: 2px;
+    margin-right: 5px;
+    margin-top: 0px;
+    white-space: nowrap;
+}
+
+.cam-entity-resolved {
+	border-collapse: collapse;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 400px;
+    overflow:hidden;
+    text-decoration: underline;
+    vertical-align:bottom;
+    white-space:nowrap;
+}
+
+.cam-peoplepicker-delImage {
+	border-collapse: collapse;
+    cursor: pointer;
+	margin-left: 3px;
+    text-decoration:none;
+    white-space:nowrap;
+}
+
+.cam-peoplepicker-delImage:hover {
+	text-decoration: none;
+}
+
+.cam-peoplepicker-edit {
+    border-style: none !important; 
+    border-color: currentColor !important;
+    border-width: 0px !important;
+    max-width: 435px; 
+    outline-color: invert !important; 
+    outline-style: none !important; 
+    outline-width: 0px !important;
+}

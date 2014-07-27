@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="AppAssets">
+    <File Path="AppAssets\O365.png" Url="AppImages/O365.png" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

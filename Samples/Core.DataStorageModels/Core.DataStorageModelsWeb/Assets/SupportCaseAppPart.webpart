@@ -1,0 +1,36 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.ClientWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="HelpMode" type="helpmode">Navigate</property>
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="HelpUrl" type="string" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="Description" type="string">SupportCaseAppPart</property>
+        <property name="FeatureId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">2058cfcc-17b9-4d42-bf3d-68e3058e0a93</property>
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="Title" type="string">Support Case App Part</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="ProductWebId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">53e1d14b-fd81-425e-bb15-06278a294cb7</property>
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="Width" type="unit" />
+        <property name="Height" type="unit" />
+        <property name="WebPartName" type="string">SupportCaseAppPart</property>
+        <property name="TitleUrl" type="string" />
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="ProductId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">2058cfcc-17b9-4d42-bf3d-68e3058e0a92</property>
+        <property name="AllowClose" type="bool">True</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

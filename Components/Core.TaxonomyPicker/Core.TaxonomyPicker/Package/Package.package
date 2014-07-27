@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b744dbfc-41e1-443d-9ddc-1afc7ec47449" solutionId="b744dbfc-41e1-443d-9ddc-1afc7ec47449" resetWebServer="false" sharePointProductVersion="15.0" name="Contoso.Components.TaxonomyPicker" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="0d1aa2d5-a300-4e6c-b966-d464f5182791" />
+  </features>
+</package>
