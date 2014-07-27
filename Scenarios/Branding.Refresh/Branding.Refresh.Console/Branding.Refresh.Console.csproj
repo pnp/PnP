@@ -65,12 +65,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OfficeAMS.Core\OfficeAMS.Core\OfficeAMS.Core.csproj">
-      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
-      <Name>OfficeAMS.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Themes\Contoso\contosobg.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -83,6 +77,12 @@
     <Content Include="Themes\SPCTheme\SPCThemeLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
