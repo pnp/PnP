@@ -1,6 +1,6 @@
 ﻿using Core.SiteClassification.Common.impl;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -7,7 +7,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using Microsoft.SharePoint.Client.Utilities;
 using Core.SiteClassification.Common;
 
