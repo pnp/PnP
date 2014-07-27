@@ -13,7 +13,7 @@
 *	Using Azure Cloud Services in combination with SharePoint Apps
 *
 *	Author - Bert Jansen, Microsoft
-*	Date - 24/03/2014
+*	Date - 25/03/2014
 *	Version - 2.0
 *
 ***************************************************************
