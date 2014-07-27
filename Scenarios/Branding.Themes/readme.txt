@@ -13,7 +13,7 @@
 *	Deploy and apply a theme to a site
 *
 *	Author - Vesa Juvonen, Microsoft
-*	Date - 10/05/2014
+*	Date - 11/05/2014
 *	Version - 1.0
 *
 ***************************************************************
