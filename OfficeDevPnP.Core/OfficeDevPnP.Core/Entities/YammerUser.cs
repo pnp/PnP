@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeAMS.Core.Entities
+namespace OfficeDevPnP.Core.Entities
 {
 
     /// <summary>

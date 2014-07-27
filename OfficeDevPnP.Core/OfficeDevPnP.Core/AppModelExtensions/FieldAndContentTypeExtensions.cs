@@ -1,5 +1,5 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

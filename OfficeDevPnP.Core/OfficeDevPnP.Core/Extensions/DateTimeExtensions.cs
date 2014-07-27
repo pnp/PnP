@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 
 namespace System {
     public static class DateTimeExtensions {

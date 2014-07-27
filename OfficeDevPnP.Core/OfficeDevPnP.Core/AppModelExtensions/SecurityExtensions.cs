@@ -1,7 +1,7 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace Microsoft.SharePoint.Client
         /// Get a list of site collection administrators
         /// </summary>
         /// <param name="web">Site to operate on</param>
-        /// <returns>List of <see cref="OfficeAMS.Core.Entities.UserEntity"/> objects</returns>
+        /// <returns>List of <see cref="OfficeDevPnP.Core.Entities.UserEntity"/> objects</returns>
         public static List<UserEntity> GetAdministrators(this Web web)
         {
             var users = web.SiteUsers;
@@ -84,7 +84,7 @@ namespace Microsoft.SharePoint.Client
         /// Removes an administrators from the site collection
         /// </summary>
         /// <param name="web">Site to operate on</param>
-        /// <param name="admin"><see cref="OfficeAMS.Core.Entities.UserEntity"/> that describes the admin to be removed</param>
+        /// <param name="admin"><see cref="OfficeDevPnP.Core.Entities.UserEntity"/> that describes the admin to be removed</param>
         public static void RemoveAdministrator(this Web web, UserEntity admin)
         {
             var users = web.SiteUsers;
@@ -182,7 +182,7 @@ namespace Microsoft.SharePoint.Client
         /// Returns a list all external users in your tenant
         /// </summary>
         /// <param name="web">Tenant administration web</param>
-        /// <returns>A list of <see cref="OfficeAMS.Core.Entities.ExternalUserEntity"/> objects</returns>
+        /// <returns>A list of <see cref="OfficeDevPnP.Core.Entities.ExternalUserEntity"/> objects</returns>
         public static List<ExternalUserEntity> GetExternalUsersTenant(this Web web)
         {
             Tenant tenantAdmin = new Tenant(web.Context);
@@ -229,7 +229,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Tenant administration web</param>
         /// <param name="siteUrl">Url of the site fetch the external users for</param>
-        /// <returns>A list of <see cref="OfficeAMS.Core.Entities.ExternalUserEntity"/> objects</returns>
+        /// <returns>A list of <see cref="OfficeDevPnP.Core.Entities.ExternalUserEntity"/> objects</returns>
         public static List<ExternalUserEntity> GetExternalUsersForSiteTenant(this Web web, Uri siteUrl)
         {
             Tenant tenantAdmin = new Tenant(web.Context);

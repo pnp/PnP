@@ -1,7 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WebParts;
-using OfficeAMS.Core.Entities;
-using OfficeAMS.Core;
+using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;

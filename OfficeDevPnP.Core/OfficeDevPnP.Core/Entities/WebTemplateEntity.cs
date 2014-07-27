@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeAMS.Core.Entities
+namespace OfficeDevPnP.Core.Entities
 {
     public class WebTemplateEntity
     {

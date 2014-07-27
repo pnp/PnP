@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeAMS.Core.Entities
+namespace OfficeDevPnP.Core.Entities
 {
     /// <summary>
     /// Class that describes information about a web part 

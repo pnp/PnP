@@ -1,4 +1,4 @@
-﻿using OfficeAMS.Core.Entities;
+﻿using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeAMS.Core.Utilities
+namespace OfficeDevPnP.Core.Utilities
 {
     public static class YammerUtility
     {
