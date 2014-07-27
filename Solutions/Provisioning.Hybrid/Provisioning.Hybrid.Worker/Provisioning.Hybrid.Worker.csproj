@@ -88,9 +88,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OfficeAMS.Core\OfficeAMS.Core\OfficeAMS.Core.csproj">
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
-      <Name>OfficeAMS.Core</Name>
+      <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Provisioning.Hybrid.Contract\Provisioning.Hybrid.Contract.csproj">
       <Project>{50ac11d5-d4f1-4370-87a7-de37d90ae320}</Project>

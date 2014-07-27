@@ -1,5 +1,5 @@
 ﻿using Microsoft.ServiceBus;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Configuration;
 using System.ServiceModel;

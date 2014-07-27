@@ -1,6 +1,6 @@
 ﻿using Contoso.Provisioning.Hybrid.Contract;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

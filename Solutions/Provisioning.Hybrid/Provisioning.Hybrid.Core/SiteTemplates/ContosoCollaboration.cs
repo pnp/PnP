@@ -8,10 +8,10 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.SharePoint.Client.Utilities;
 using Contoso.Provisioning.Hybrid.Contract;
 using System.IO;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 
 namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
 {

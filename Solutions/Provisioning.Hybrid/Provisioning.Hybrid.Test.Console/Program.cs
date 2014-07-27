@@ -1,4 +1,4 @@
-﻿using OfficeAMS.Core.Utilities;
+﻿using OfficeDevPnP.Core.Utilities;
 using Contoso.Provisioning.Hybrid.Contract;
 using Microsoft.ServiceBus;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using OfficeAMS.Core;
+using OfficeDevPnP.Core;
 using Microsoft.SharePoint.Client;
 
 namespace Contoso.Provisioning.Hybrid.Test

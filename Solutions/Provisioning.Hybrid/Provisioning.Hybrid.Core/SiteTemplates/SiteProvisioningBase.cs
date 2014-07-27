@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using OfficeAMS.Core;
+using OfficeDevPnP.Core;
 using Contoso.Provisioning.Hybrid.Contract;
 using System.IO;
 using System.Diagnostics;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System.Configuration;
 

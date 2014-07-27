@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 using Microsoft.ServiceBus;
 using System.ServiceModel;
 using Contoso.Provisioning.Hybrid.Core.SiteTemplates;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using Contoso.Provisioning.Hybrid.Contract;
 using Contoso.Provisioning.Hybrid;
 

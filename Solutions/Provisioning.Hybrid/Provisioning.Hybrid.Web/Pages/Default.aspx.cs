@@ -1,6 +1,6 @@
 ﻿using Contoso.Provisioning.Hybrid.Contract;
-using OfficeAMS.Core;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 using Microsoft.SharePoint.Client;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System;

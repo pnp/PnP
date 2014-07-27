@@ -1,6 +1,6 @@
 ﻿using Contoso.Provisioning.Hybrid.Core.SiteTemplates;
 using Microsoft.SharePoint.Client;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
