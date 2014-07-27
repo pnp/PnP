@@ -8,8 +8,8 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
-using OfficeAMS.Core;
-using OfficeAMS.Core.Utilities;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 using Microsoft.SharePoint.Client;
 
 namespace Contoso.Core.CloudServices.Worker
