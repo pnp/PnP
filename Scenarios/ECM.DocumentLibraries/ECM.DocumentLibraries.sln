@@ -1,0 +1,60 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECM.DocumentLibraries", "ECM.DocumentLibraries\ECM.DocumentLibraries.csproj", "{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECM.DocumentLibrariesWeb", "ECM.DocumentLibrariesWeb\ECM.DocumentLibrariesWeb.csproj", "{7756CC39-F457-4DA8-8F4D-AE6DF60F4538}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{14669D02-2D0F-46D6-892C-59492932E6FD}"
+	ProjectSection(SolutionItems) = preProject
+		DocumentLibraries.docx = DocumentLibraries.docx
+		readme.txt = readme.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{C97ABA03-3B07-42B6-8026-3005CADC8BC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeAMS.Core", "..\..\OfficeAMS.Core\OfficeAMS.Core\OfficeAMS.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{C0A248CF-1953-4C70-9016-309657129FA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{6136BEDC-12FE-48D6-8482-1B050EE5C50F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SP", "SP", "{503438B8-AB6E-411F-819F-D24D6A19DE0C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AMS Core", "AMS Core", "{6C378612-FFEB-4584-88FA-8D196D717D94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7756CC39-F457-4DA8-8F4D-AE6DF60F4538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7756CC39-F457-4DA8-8F4D-AE6DF60F4538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7756CC39-F457-4DA8-8F4D-AE6DF60F4538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7756CC39-F457-4DA8-8F4D-AE6DF60F4538}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B88A5357-CDCC-4AF0-B7F1-E73B3C7D6995} = {503438B8-AB6E-411F-819F-D24D6A19DE0C}
+		{7756CC39-F457-4DA8-8F4D-AE6DF60F4538} = {6136BEDC-12FE-48D6-8482-1B050EE5C50F}
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {6C378612-FFEB-4584-88FA-8D196D717D94}
+		{6136BEDC-12FE-48D6-8482-1B050EE5C50F} = {C0A248CF-1953-4C70-9016-309657129FA2}
+		{503438B8-AB6E-411F-819F-D24D6A19DE0C} = {C0A248CF-1953-4C70-9016-309657129FA2}
+		{6C378612-FFEB-4584-88FA-8D196D717D94} = {C97ABA03-3B07-42B6-8026-3005CADC8BC1}
+	EndGlobalSection
+EndGlobal

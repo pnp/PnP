@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+
+  <!-- Contoso Workspace Document -->
+  <!-- Parent ContentType: Document (0x0101) -->
+  <ContentType ID="0x010100F4461501E3D24C62BE9D27040EBE53C5"
+         Name="ContosoWorkspaceDocument"
+         Description="Content type for documents."
+         Group="Contoso"
+         Inherits="TRUE"
+         Version="0">
+    <FieldRefs>
+      <FieldRef ID="{600DC75A-6C67-458D-A9C2-C2C16D5D6411}" Name="ContosoExplanation" Required="FALSE" />
+      <FieldRef ID="{6DE6923A-00F7-4086-A6ED-D2AC84CBD982}" Name="ContosoExpirationDate" Required="TRUE" />
+    </FieldRefs>
+  </ContentType>
+
+  <!-- Contoso Workspace Wiki Page -->
+  <!-- Parent ContentType: Wiki Page (0x010108) -->
+  <ContentType ID="0x010108009A754FBA667A487BA2362619D3A6B586"
+         Name="ContosoWorkspaceWikiPage"
+         Description="Content type for wiki welcome page."
+         Group="Contoso"
+         Inherits="TRUE"
+         Version="0">
+    <FieldRefs>
+      <FieldRef ID="{CC50B379-6C56-4AA5-BC14-8FA613DBE526}" Name="ContosoWorkspaceName" Required="TRUE" />
+      <FieldRef ID="{0E586D86-08C5-44BB-AD80-3102CF5B8612}" Name="ContosoWorkspaceDescription" />
+      <FieldRef ID="{8FB0182E-6959-4C42-AA5E-404DBCCFA93B}" Name="ContosoWorkspaceResponsibleUsers" Required="TRUE" />
+      <FieldRef ID="{6DE6923A-00F7-4086-A6ED-D2AC84CBD982}" Name="ContosoExpirationDate" Required="TRUE" />
+      <FieldRef ID="{05D336CA-BA82-43DA-B7A9-49098C3B1E86}" Name="ContosoAdministrators" Required="TRUE" />
+    </FieldRefs>
+  </ContentType>
+
+
+</Elements>

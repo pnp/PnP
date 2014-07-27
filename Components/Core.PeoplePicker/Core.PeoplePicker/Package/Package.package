@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f515fe91-0c94-42f7-8373-3fae32f02430" solutionId="f515fe91-0c94-42f7-8373-3fae32f02430" resetWebServer="false" sharePointProductVersion="15.0" name="Contoso.Components.PeoplePicker" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="d8ad73fb-6466-474f-8436-b6b293c35140" />
+  </features>
+</package>

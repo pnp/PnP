@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertyMapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Loggers>
+    <!-- Example of event viewer logging instance-->
+    <Log xsi:type="EventViewerLogger">
+      <TraceTypes>
+        <Trace>Error</Trace>
+      </TraceTypes>
+      <EventSource>Contoso.BulkUserProfileUpdater</EventSource>
+      <EventLogName>Application</EventLogName>
+      <EventId>100</EventId>
+    </Log>
+    <!-- Example of text file logging instance with email sender generation-->
+    <Log xsi:type="TextFileLogger">
+      <TraceTypes>
+        <Trace>Error</Trace>
+        <Trace>Verbose</Trace>
+      </TraceTypes>
+      <EmailSender>
+        <FromAddress>administrator@contoso.com</FromAddress>
+        <ToAddress>administrator@contoso.com</ToAddress>
+        <Host>SERVER.contoso.com</Host>
+        <Port>25</Port>
+      </EmailSender>
+      <LogFileLocation>C:\Contoso.BulkUserProfileUpdater.log</LogFileLocation>
+    </Log>
+    <!-- Example of CSV file logging instance with email sender generation-->
+    <Log xsi:type="CsvLogger">
+      <TraceTypes>
+        <Trace>Verbose</Trace>
+      </TraceTypes>
+      <EmailSender>
+        <FromAddress>administrator@contoso.com</FromAddress>
+        <ToAddress>administrator@contoso.com</ToAddress>
+        <Host>SERVER.contoso.com</Host>
+        <Port>25</Port>
+      </EmailSender>
+      <LogFileLocation>C:\Contoso.BulkUserProfileUpdater.csv</LogFileLocation>
+    </Log>
+  </Loggers>
+  <Actions>
+    <Action xsi:type="LDAPConnector">
+      <CSVDirectoryLocation>Input</CSVDirectoryLocation>
+      <SPOAccountUPN>contoso.com</SPOAccountUPN>
+      <ServerName>SERVERNAME.contoso.com</ServerName>
+      <ServerIP>XXX.XXX.XXX.XXX</ServerIP>
+      <PortNumber>636</PortNumber>
+      <SearchRoot>ou=users,dc=contoso,dc=com</SearchRoot>
+      <BatchAction>delta</BatchAction>
+      <SPOClaimsString>i:0#.f|membership|</SPOClaimsString>
+      <PageSize>2</PageSize>
+      <CertificatePath>Input\certificate.crt</CertificatePath>
+      <QueryTimeout>60</QueryTimeout>
+      <UserName>cn=SERVICEACCOUNTNAME,ou=users,dc=contoso,dc=com</UserName>
+      <Password>XXXXXXXXX</Password>
+      <LDAPAuthType>Basic</LDAPAuthType>
+      <DirectoryType>DirectoryServer</DirectoryType>
+      <ProtocolVers>3</ProtocolVers>
+      <UserNameIndex>0</UserNameIndex>
+      <DeltaPeriod>2</DeltaPeriod>
+      <Properties>
+        <Property xsi:type="ProfilePropertyMapper" name="UserName" index="0" mapping="msDS-PrincipalName" />
+        <Property xsi:type="ProfilePropertyMapper" name="SPO-Mobile" index="1" mapping="mobile" />
+        <Property xsi:type="ProfilePropertyMapper" name="AboutMe" index="2" mapping="aboutme" />
+      </Properties>
+    </Action>
+  </Actions>
+</PropertyMapper>

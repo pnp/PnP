@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="8889a028-c4cd-492c-80e8-4bac2072a1a6" 
+        solutionId="8889a028-c4cd-492c-80e8-4bac2072a1a6" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Provisioning.Jsom.App"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="4da0b726-0566-4761-b99c-f5d0690b37c0" />
+  </features>
+</package>

@@ -1,0 +1,36 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.DisplayTemplates", "Branding.DisplayTemplates\Branding.DisplayTemplates.csproj", "{64211832-027A-45B9-B860-34740EBADEE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.DisplayTemplatesWeb", "Branding.DisplayTemplatesWeb\Branding.DisplayTemplatesWeb.csproj", "{2453C9D1-336F-425D-A656-52BF824DAFB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{8F560B03-A708-4E94-AD6F-F4416D029F26}"
+	ProjectSection(SolutionItems) = preProject
+		Display Templates.docx = Display Templates.docx
+		readme.txt = readme.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64211832-027A-45B9-B860-34740EBADEE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64211832-027A-45B9-B860-34740EBADEE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64211832-027A-45B9-B860-34740EBADEE5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{64211832-027A-45B9-B860-34740EBADEE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64211832-027A-45B9-B860-34740EBADEE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64211832-027A-45B9-B860-34740EBADEE5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2453C9D1-336F-425D-A656-52BF824DAFB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2453C9D1-336F-425D-A656-52BF824DAFB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2453C9D1-336F-425D-A656-52BF824DAFB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2453C9D1-336F-425D-A656-52BF824DAFB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

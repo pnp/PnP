@@ -1,0 +1,113 @@
+﻿@using Microsoft.SharePoint.Client
+@using Microsoft.SharePoint.Client.WorkflowServices
+@model ListItem
+@{
+    ViewBag.Title = "Part Supplier";
+    var appWebUrl = ViewBag.AppWebUrl as string;
+    var workflowSubscription = ViewBag.WorkflowSubscription as WorkflowSubscription;
+    var workflowInstance = ViewBag.WorkflowInstance as WorkflowInstance;
+    var approvalTask = ViewBag.ApprovalTask as ListItem;
+
+    var spHostUrl = Request["SPHostUrl"];
+
+    var startWorkflowBtnEnabled = workflowInstance == null;
+    var submitForApproveBtnEnabled = workflowInstance != null && workflowInstance.UserStatus == "Wait for Submit";
+    var approveBtnEnabled = approvalTask != null && ((string)approvalTask["Status"]) == "Not Started";
+}
+
+<h2>Part Suppliers</h2>
+
+<dl class="dl-horizontal">
+    <dt>Id</dt>
+    <dd>@Model["ID"]</dd>
+    <dt>Country</dt>
+    <dd>@Model["Country"]</dd>
+    <dt>Suppliers</dt>
+    <dd>@Model["Suppliers"]&nbsp;</dd>
+    <dt>IsApproved</dt>
+    <dd>@Model["IsApproved"]&nbsp;</dd>
+    <dt>User Status</dt>
+    <dd>@(workflowInstance != null ? workflowInstance.UserStatus : "")&nbsp;</dd>
+</dl>
+
+<div id="actions">
+    @using (Html.BeginForm("Details", "PartSuppliers", new { id = Model.Id }, FormMethod.Get, null))
+    {
+        <input type="hidden" name="SPHostUrl" value="@spHostUrl" />
+        <button type="submit" class="btn">Refresh</button>
+    }
+
+    @using (Html.BeginForm("StartWorkflow", "PartSuppliers", new { SPHostUrl = spHostUrl }, FormMethod.Post, null))
+    {
+        if (startWorkflowBtnEnabled)
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="workflowSubscriptionId" value="@workflowSubscription.Id" />
+            <button type="submit" class="btn">Start Workflow</button>
+        }
+        else
+        {
+            <button type="submit" class="btn" disabled="disabled">Start Workflow</button>
+        }
+    }
+
+    @using (Html.BeginForm("PublishSubmitEvent", "PartSuppliers", new { SPHostUrl = spHostUrl }, FormMethod.Post, null))
+    {
+        if (submitForApproveBtnEnabled)
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="workflowInstanceId" value="@workflowInstance.Id" />
+            <button type="submit" class="btn">Submit for Approval</button>
+        }
+        else
+        {
+            <button type="submit" class="btn" disabled="disabled">Submit for Approval</button>
+        }
+    }
+
+    <form action="@(appWebUrl)Lists/WorkflowTaskList/EditForm.aspx" method="get">
+        @if (approveBtnEnabled)
+        {
+            <input type="hidden" name="ID" value="@approvalTask.Id" />
+            <input type="hidden" name="Source" value="@Request.Url.OriginalString" />
+            <button type="submit" class="btn">Approve</button>
+        }
+        else
+        {
+            <button type="submit" class="btn" disabled="disabled">Approve</button>
+        }
+    </form>
+</div>
+
+<h2>Instructions</h2>
+<div>
+    <ol>
+        <li>Click <span class="ref">Start Workflow</span> to start the workflow. The workflow will get suppliers from the <a href="http://services.odata.org/V3/Northwind/Northwind.svc/Suppliers" target="_blank">Northwind OData service</a> and then update the current Part Supplier list item.</li>
+        <li>It takes a while for the workflow to finish the two jobs. Click <span class="ref">Refresh</span> until <span class="ref">Submit for Approval</span> is enabled.</li>
+        <li>Now, the workflow is suspended. Click <span class="ref">Submit for Approval</span> to resume the workfow. The workflow will start an approval task.</li>
+        <li>Click <span class="ref">Refresh</span> until <span class="ref">Approve</span> is enabled.</li>
+        <li>Click <span class="ref">Approve</span>, the browser will navigate you to the approval page.</li>
+    </ol>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function chromeLoaded() {
+            $('#chromeControl_bottomheader').remove();
+            $('body').show();
+        }
+
+        //function callback to render chrome after SP.UI.Controls.js loads
+        function renderSPChrome() {
+            //Set the chrome options
+            var options = {
+                'appTitle': "@ViewBag.Title",
+                'onCssLoaded': 'chromeLoaded()'
+            };
+
+            //Load the Chrome Control in the chrome_ctrl_placeholder element of the page
+            var chromeNavigation = new SP.UI.Controls.Navigation('chrome_ctrl_placeholder', options);
+            chromeNavigation.setVisible(true);
+        }
+    </script>
+}

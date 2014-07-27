@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Workflow - CallServiceUpdateSPViaProxy";
+    string appWebUrl = ViewBag.AppWebUrl as string;
+}
+
+<div>
+    <h2>App Web List</h2>
+    <p>Click the link below to view the Part Suppliers List</p>
+    <h5><a href="@(appWebUrl)Lists/Part Suppliers" target="_blank">Part Suppliers</a></h5>
+</div>
+<div>
+    <h2>Create a Part Supplier</h2>
+    @Html.Action("CreateGet", "PartSuppliers")
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function chromeLoaded() {
+            $('#chromeControl_bottomheader').remove();
+            $('body').show();
+        }
+
+        //function callback to render chrome after SP.UI.Controls.js loads
+        function renderSPChrome() {
+            //Set the chrome options
+            var options = {
+                'appTitle': "@ViewBag.Title",
+                'onCssLoaded': 'chromeLoaded()'
+            };
+
+            //Load the Chrome Control in the chrome_ctrl_placeholder element of the page
+            var chromeNavigation = new SP.UI.Controls.Navigation('chrome_ctrl_placeholder', options);
+            chromeNavigation.setVisible(true);
+        }
+    </script>
+}

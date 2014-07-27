@@ -1,0 +1,24 @@
+﻿body {
+	
+	background: #F0F0F0;
+}
+
+#titlerow {
+	background-color: #FFF;
+}
+
+#suiteBarTop .o365cs-nav-header .o365cs-nav-leftAlign {
+	background-color: #848484;
+}
+#suiteBarTop .o365cs-nav-header .o365cs-nav-leftAlign, 
+#suiteBarTop .o365cs-nav-header .o365cs-nav-headerRegion, 
+#suiteBarTop .o365cs-nav-header .o365cs-p-bg,
+#suiteBarTop .o365cs-nav-header .o365cs-p-bgh:hover {
+	background-color: #848484;
+}
+#suiteBarTop .o365cs-nav-header .o365cs-nav-leftAlign, 
+#suiteBarTop .o365cs-nav-header .o365cs-nav-headerRegion, 
+#suiteBarTop .o365cs-nav-header .o365cs-p-bg, 
+#suiteBarTop .o365cs-nav-header .o365cs-p-bgh:hover {
+	background-color: #848484;
+}

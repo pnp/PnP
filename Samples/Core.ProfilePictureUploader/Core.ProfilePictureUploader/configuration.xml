@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <tenantName>contoso.onmicrosoft.com</tenantName>
+  <pictureSourceCsv>c:\temp\userlist.csv</pictureSourceCsv>
+  <thumbs upload3Thumbs="true" createSMLThumbs="true"/> 
+  <additionalProfileProperties>
+    <property name="SPS-PictureExchangeSyncState" value="0"/>
+  </additionalProfileProperties>
+  <logFile path="c:\temp\log.txt" enableLogging="true" loggingLevel="verbose" />
+  <uploadDelay>500</uploadDelay>
+ </configuration>

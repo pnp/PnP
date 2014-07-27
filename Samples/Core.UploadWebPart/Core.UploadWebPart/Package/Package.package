@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3da9bb08-b43a-4f8d-a48a-7e9bd0e34cef" solutionId="3da9bb08-b43a-4f8d-a48a-7e9bd0e34cef" resetWebServer="false" sharePointProductVersion="16.0" name="Core.UploadWebPart" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="c21416a3-b10e-4eec-837d-c6adb6cca9c7" />
+  </features>
+</package>

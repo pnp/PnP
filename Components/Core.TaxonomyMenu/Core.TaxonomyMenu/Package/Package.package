@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="60c3aa40-64fd-493f-8742-b1d197c9f893" solutionId="60c3aa40-64fd-493f-8742-b1d197c9f893" resetWebServer="false" sharePointProductVersion="15.0" name="Contoso.TaxonomyMenu" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" />

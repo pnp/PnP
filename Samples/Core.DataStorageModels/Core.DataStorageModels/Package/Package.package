@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="976d2b64-5743-48a1-a12f-bc93f50b5091" solutionId="976d2b64-5743-48a1-a12f-bc93f50b5091" resetWebServer="false" sharePointProductVersion="15.0" name="Core.DataStorageModels" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="39d78c30-b344-402c-8de0-01b326e068a0" />
+  </features>
+</package>

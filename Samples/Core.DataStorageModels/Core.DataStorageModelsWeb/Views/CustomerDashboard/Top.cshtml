@@ -1,0 +1,10 @@
+﻿<div class="cdsm_top">
+    @using (Html.BeginForm(null, null, FormMethod.Get, null))
+    {
+        @Html.Hidden("SPHostUrl", Request["SPHostUrl"])
+        @Html.Label("CustomerID", "Northwind Customer Dashboard for: ")
+        @Html.DropDownList("CustomerID", Enumerable.Empty<SelectListItem>(), "Select a Customer")
+        <button type="submit">Submit</button>
+        <div id="topErrorMessage" class="errorMessage"></div>
+    }
+</div>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="2027cb2a-3a27-4e7e-aadf-9c6505d72025" solutionId="2027cb2a-3a27-4e7e-aadf-9c6505d72025" resetWebServer="false" sharePointProductVersion="16.0" name="Core.CrossDomainImages" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="0c450a43-777e-47d5-9580-fff5431293d2" />
+  </features>
+</package>

@@ -1,0 +1,409 @@
+﻿body {
+    /*padding-top: 20px;*/
+    padding-bottom: 20px;
+    overflow: auto;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+#message p, #errorMessage {
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.empty {
+    color: gray;
+    font-style: italic;
+}
+
+table#calls {
+    margin-bottom: 0;
+}
+
+#takeCall {
+    padding: 0;
+}
+
+#simulateCalls {
+    margin-bottom: 20px;
+}
+
+.cdsm_home .btn {
+    margin-bottom: 15px;
+    width: 400px;
+}
+
+.cdsm_left {
+    padding: 15px 15px 300px 30px;
+    width: 242px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    border-radius: 5px;
+    float: left;
+}
+
+.cdsm_right {
+    float: left;
+    max-width: 600px;
+    margin-left: 20px;
+}
+
+.cdsm-button {
+    padding: 5px 5px;
+    border: 1px solid #000;
+}
+
+menu, ol, ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a, a:active, a:visited {
+    color: #000;
+    text-decoration: none;
+}
+
+.cdsm_mainmenu ul li > ul {
+    margin-left: 16px;
+}
+
+
+.collapse_arrow {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+
+    border: 6px solid #808080;
+    vertical-align: middle;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-bottom-width:4px;
+    
+    margin-left: -16px;
+    margin-top: 2px;
+}
+
+.collapsed {
+    border-left-color:#808080;
+    border-top-color:transparent;
+    
+    border-bottom-width:6px;
+    border-right-width:1px;
+    
+    margin-left: -11px;
+    margin-top: -2px;
+}
+
+.cdsm_left ul li a {
+    background-color: transparent;
+    padding: 2px 2px;
+}
+
+.cdsm_left a.current {
+    background-color: #ff8284;
+    padding: 2px 2px;
+}
+
+
+.cdsm_top {
+    padding: 9px 12px 9px 24px;
+    overflow: hidden;
+    border: 1px solid #999;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+    .cdsm_top .cdsm_title {
+        font-size: 15px;
+        font-weight: bold;
+        float: left;
+    }
+
+    .cdsm_top .cdsm_dplist {
+        float: left;
+        margin-left: 12px;
+    }
+
+        .cdsm_top .cdsm_dplist select {
+            width: 570px !important;
+            font-size: 12px;
+            font-weight: bold;
+            padding-left: 7px;
+            border: 1px solid black;
+        }
+
+.cdsm_common_display {
+    border: 1px solid #999;
+    border-radius: 6px;
+}
+
+    .cdsm_common_display .cdsm_title {
+        background-color: #EBEBEB;
+        padding: 10px 10px;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .cdsm_common_display .cdsm_content {
+        padding: 10px 10px;
+        overflow: hidden;
+    }
+
+.cdsm_CSR .cdsm_Name {
+    padding-left: 10px;
+    padding-right: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    float: left;
+}
+
+.cdsm_CSR .cdsm_Other_Infor {
+    float: left;
+    width: 220px;
+    text-align: center;
+    border-left: 1px solid black;
+}
+
+    .cdsm_CSR .cdsm_Other_Infor .cdsm_top {
+        background-image: url('../Content/images/5StarFull.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        width: 109px;
+        height: 22px;
+        margin-left: 48px;
+    }
+
+    .cdsm_CSR .cdsm_Other_Infor .cdsm_middle {
+        font-size: 58px;
+        font-weight: bold;
+    }
+
+    .cdsm_CSR .cdsm_Other_Infor .cdsm_bottom {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+.cdsm_notes,
+.cdsm_orders,
+.cdsm_customerLanding {
+    width: 870px;
+    margin: auto auto;
+}
+
+
+    .cdsm_customerLanding .cdsm_common_display .cdsm_Name {
+        font-size: 25px;
+        font-weight: bold;
+        float: left;
+    }
+
+    .cdsm_customerLanding .cdsm_common_display .cdsm_Other_Infor {
+        font-size: 15px;
+        font-weight: bold;
+        float: left;
+        margin-left: 40px;
+        margin-bottom: 85px;
+    }
+/*support case app part and recent orders list*/
+#supportcaseAppPart {
+    height: 174px;
+}
+
+.cdsm_table_list .cdsm_common_display ul {
+    margin: 10px 10px;
+    border: 1px solid #000;
+    height: 120px;
+    overflow: auto;
+}
+
+    .cdsm_table_list .cdsm_common_display ul > li {
+        float: none;
+        clear: both;
+        border-top: 1px solid #000;
+        height: 30px;
+    }
+
+        .cdsm_table_list .cdsm_common_display ul > li:first-child {
+            border-top: none;
+        }
+
+        .cdsm_table_list .cdsm_common_display ul > li > div {
+            float: left;
+            padding-left: 5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            box-sizing: border-box;
+            display: table-cell;
+        }
+
+            .cdsm_table_list .cdsm_common_display ul > li > div:nth-child(1) {
+                width: 10%;
+            }
+
+            .cdsm_table_list .cdsm_common_display ul > li > div:nth-child(2),
+            .cdsm_table_list .cdsm_common_display ul > li > div:last-child {
+                width: 15%;
+            }
+
+            .cdsm_table_list .cdsm_common_display ul > li > div:nth-child(3),
+            .cdsm_table_list .cdsm_common_display ul > li > div:nth-child(4),
+            .cdsm_table_list .cdsm_common_display ul > li > div:nth-child(5) {
+                width: 20%;
+            }
+
+#supportcaseAppPart .cdsm_common_display ul > li .id {
+    width: 10%;
+}
+
+#supportcaseAppPart .cdsm_common_display ul > li .status {
+    width: 15%;
+}
+
+#supportcaseAppPart .cdsm_common_display ul > li .title {
+    width: 50%;
+}
+
+#supportcaseAppPart .cdsm_common_display ul > li .csr {
+    width: 25%;
+}
+
+.cdsm_table_list .cdsm_common_display ul > li:nth-child(even) {
+    background: #fff;
+}
+
+.cdsm_table_list .cdsm_common_display ul > li:nth-child(odd) {
+    background: #f0f0f0;
+}
+.Open_status
+{
+    color:red;
+}
+.Resolve_status
+{
+    color:green;
+}
+/*  NOTES  */
+select#CustomerID {
+    margin-left: 1em;
+}
+
+ul#notes {
+    max-height: 300px;
+    margin-bottom: 20px;
+    overflow-y: scroll;
+}
+
+    ul#notes:empty {
+        margin: 0;
+    }
+
+.note {
+    color: #666;
+    border-bottom: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.author {
+    margin: 0 5px 0 0;
+}
+
+    .author:after {
+        content: '-';
+        margin-left: 5px;
+    }
+
+.date {
+    margin: 0 5px;
+}
+
+.onmsg {
+    padding: 10px 25px;
+    font-size: 14px;
+    color: #000;
+}
+
+.success {
+    background: #4cff00;
+    border: 1px solid #00ff21;
+}
+
+.fail {
+    background: #ff6a00;
+    border: 1px solid #ff0000;
+}
+
+
+.clear {
+    clear: both;
+}
+
+
+.cdsm_notes #note {
+    width: 87%;
+    margin-right: 2%;
+    max-width: 85%;
+    vertical-align: top;
+}
+
+.cdsm_notes #addNote {
+    width: 10%;
+}
+
+#notes-list-link {
+    margin-top: 10px;
+    padding: 3px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.errorMessage {
+    padding: 10px;
+    color: red;
+}
+
+    .errorMessage:empty {
+        padding: 0;
+    }

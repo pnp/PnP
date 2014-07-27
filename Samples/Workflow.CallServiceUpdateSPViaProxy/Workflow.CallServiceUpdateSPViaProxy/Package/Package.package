@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3cae037c-2492-4439-854b-f1aa2dcb3f63" solutionId="3cae037c-2492-4439-854b-f1aa2dcb3f63" resetWebServer="false" sharePointProductVersion="16.0" name="Workflow.CallServiceUpdateSPViaProxy" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="6049ac18-54eb-4608-b459-8248915df6e9" />
+  </features>
+</package>

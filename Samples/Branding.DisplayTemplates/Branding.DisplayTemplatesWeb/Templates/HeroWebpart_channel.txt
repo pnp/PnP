@@ -1,0 +1,83 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="StatesJson" type="string">{}</property>
+        <property name="UseSharedDataProvider" type="bool">False</property>
+        <property name="UseSimplifiedQueryBuilder" type="bool">False</property>
+        <property name="QueryGroupName" type="string">Default</property>
+        <property name="LogAnalyticsViewEvent" type="bool">False</property>
+        <property name="SelectedPropertiesJson" type="string">["Title","brandingTagLineOWSTEXT","brandingLeftCaptionBGColorOWSTEXT","brandingLeftCaptionBGOpacityOWSTEXT","brandingHeroImageOWSIMGE","brandingLinkURLOWSTEXT","brandingRightCaptionTitleOWSTEXT","brandingRightCaptionDescriptionOWSMTXT","brandingSortOrderOWSNMBR"]</property>
+        <property name="PropertyMappings" type="string" />
+        <property name="ShowAdvancedLink" type="bool">True</property>
+        <property name="NumberOfItems" type="int">8</property>
+        <property name="EmitStyleReference" type="bool">True</property>
+        <property name="ShowPreferencesLink" type="bool">True</property>
+        <property name="ServerIncludeScriptsJson" type="string">null</property>
+        <property name="IncludeResultTypeConstraint" type="bool">False</property>
+        <property name="Height" type="string" />
+        <property name="MaxPagesBeforeCurrent" type="int">4</property>
+        <property name="ResultType" type="string" />
+        <property name="ShowDidYouMean" type="bool">False</property>
+        <property name="StartingItemIndex" type="int">1</property>
+        <property name="AlwaysRenderOnServer" type="bool">False</property>
+        <property name="GroupTemplateId" type="string">~sitecollection/_catalogs/masterpage/Display Templates/Content Web Parts/Group_Content.js</property>
+        <property name="ResultTypeId" type="string" />
+        <property name="ItemTemplateId" type="string">~sitecollection/_catalogs/masterpage/Display Templates/Content Web Parts/HomePageHeroItemTemplate.js</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="HelpUrl" type="string" />
+        <property name="ResultsPerPage" type="int">8</property>
+        <property name="RenderTemplateId" type="string">~sitecollection/_catalogs/masterpage/Display Templates/Content Web Parts/HomePageHeroControlSlideshow_channel.js</property>
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="AddSEOPropertiesFromSearch" type="bool">False</property>
+        <property name="AdvancedSearchPageAddress" type="string">advanced.aspx</property>
+        <property name="HitHighlightedPropertiesJson" type="string">["Title","Path","Author","SectionNames","SiteDescription"]</property>
+        <property name="TitleUrl" type="string" />
+        <property name="EmptyMessage" type="string" />
+        <property name="ShowBestBets" type="bool">False</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="BypassResultTypes" type="bool">True</property>
+        <property name="Description" type="string">Displays hero content stored in the Home Page Hero list.</property>
+        <property name="ShowSortOptions" type="bool">False</property>
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="ShowPersonalFavorites" type="bool">False</property>
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="ShowPaging" type="bool">True</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="HelpMode" type="helpmode">Modeless</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="ItemBodyTemplateId" type="string" />
+        <property name="AlternateErrorMessage" type="string" null="true" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="TargetResultTable" type="string">RelevantResults</property>
+        <property name="AllowClose" type="bool">True</property>
+        <property name="MissingAssembly" type="string">Cannot import this Web Part.</property>
+        <property name="ShowResultCount" type="bool">True</property>
+        <property name="ShowLanguageOptions" type="bool">True</property>
+        <property name="ShowUpScopeMessage" type="bool">False</property>
+        <property name="Width" type="string" />
+        <property name="RepositionLanguageDropDown" type="bool">False</property>
+        <property name="Title" type="string">Home Page Hero</property>
+        <property name="ScrollToTopOnRedraw" type="bool">False</property>
+        <property name="ShowResults" type="bool">True</property>
+        <property name="ShowAlertMe" type="bool">True</property>
+        <property name="OverwriteResultPath" type="bool">True</property>
+        <property name="PreloadedItemTemplateIdsJson" type="string">null</property>
+        <property name="MaxPagesAfterCurrent" type="int">1</property>
+        <property name="ShowDefinitions" type="bool">False</property>
+        <property name="ShouldHideControlWhenEmpty" type="bool">True</property>
+        <property name="ShowViewDuplicates" type="bool">False</property>
+        <property name="AvailableSortsJson" type="string">null</property>
+        <property name="DataProviderJSON" type="string">{"QueryGroupName":"Default","QueryPropertiesTemplateUrl":"sitesearch://webroot","IgnoreQueryPropertiesTemplateUrl":false,"SourceID":"5dc9f503-801e-4ced-8a2c-5d1237132419","SourceName":"Items matching a content type","SourceLevel":"Ssa","CollapseSpecification":"","QueryTemplate":"{searchboxquery}","FallbackSort":null,"FallbackSortJson":"null","RankRules":null,"RankRulesJson":"null","AsynchronousResultRetrieval":false,"SendContentBeforeQuery":true,"BatchClientQuery":true,"FallbackLanguage":-1,"FallbackRankingModelID":"","EnableStemming":true,"EnablePhonetic":false,"EnableNicknames":false,"EnableInterleaving":false,"EnableQueryRules":true,"EnableOrderingHitHighlightedProperty":false,"HitHighlightedMultivaluePropertyLimit":-1,"IgnoreContextualScope":true,"ScopeResultsToCurrentSite":false,"TrimDuplicates":false,"Properties":{"TryCache":true,"Scope":"{Site.URL}","UpdateLinksForCatalogItems":true,"EnableStacking":true,"ListId":"587043c9-730f-4c29-8f17-d567f0ae1f35","ListItemId":6,"FillIn":"false","ContentTypeId":"0x010048017A06020440BE8498BB193B944C84*"},"PropertiesJson":"{\"TryCache\":true,\"Scope\":\"{Site.URL}\",\"UpdateLinksForCatalogItems\":true,\"EnableStacking\":true,\"ListId\":\"587043c9-730f-4c29-8f17-d567f0ae1f35\",\"ListItemId\":6,\"FillIn\":\"false\",\"ContentTypeId\":\"0x010048017A06020440BE8498BB193B944C84*\"}","ClientType":"ContentSearchRegular","UpdateAjaxNavigate":true,"SummaryLength":180,"DesiredSnippetLength":90,"PersonalizedQuery":false,"FallbackRefinementFilters":null,"IgnoreStaleServerQuery":false,"RenderTemplateId":"DefaultDataProvider","AlternateErrorMessage":null,"Title":""}</property>
+        <property name="Direction" type="direction">NotSet</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
