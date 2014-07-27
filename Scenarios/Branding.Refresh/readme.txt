@@ -13,7 +13,7 @@
 *	Refresh the branding of existing sites collections and sites
 *
 *	Author - Bert Jansen, Microsoft
-*	Date - 04/07/2014
+*	Date - 05/07/2014
 *	Version - 1.0
 *
 ***************************************************************
