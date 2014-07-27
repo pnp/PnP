@@ -1,8 +1,8 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Query;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Utilities;
+using OfficeAMS.Core.Entities;
+using OfficeAMS.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

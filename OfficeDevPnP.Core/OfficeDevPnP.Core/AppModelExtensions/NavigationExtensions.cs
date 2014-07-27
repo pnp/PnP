@@ -1,5 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
+using OfficeAMS.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Entities
+namespace OfficeAMS.Core.Entities
 {
     /// <summary>
     /// SiteEntity class describes the information for a SharePoint site (collection)

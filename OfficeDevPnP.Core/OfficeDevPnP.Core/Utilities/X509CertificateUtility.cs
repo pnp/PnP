@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 
-namespace OfficeDevPnP.Core.Utilities
+namespace OfficeAMS.Core.Utilities
 {
     /// <summary>
     /// Supporting class for certificate based operations

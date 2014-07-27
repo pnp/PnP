@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Utilities
+namespace OfficeAMS.Core.Utilities
 {
     public class MailUtility
     {

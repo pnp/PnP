@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Enums
+namespace OfficeAMS.Core.Enums
 {
     public enum SharePointPlatform
     {

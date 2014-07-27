@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core
+namespace OfficeAMS.Core
 {
     /// <summary>
     /// Out of the box wiki page layouts enumeration

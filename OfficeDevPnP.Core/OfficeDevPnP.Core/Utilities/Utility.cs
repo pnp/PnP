@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Utilities
+namespace OfficeAMS.Core.Utilities
 {
     public static class Utility
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Entities
+namespace OfficeAMS.Core.Entities
 {
     /// <summary>
     /// Properties of a site policy object

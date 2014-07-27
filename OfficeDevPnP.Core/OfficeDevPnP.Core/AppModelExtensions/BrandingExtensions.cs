@@ -1,6 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Utilities;
+using OfficeAMS.Core.Entities;
+using OfficeAMS.Core.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;

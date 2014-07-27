@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Utilities {
+namespace OfficeAMS.Core.Utilities {
     
     /// <summary>
     /// Logging event categories enumeration
@@ -31,7 +31,7 @@ namespace OfficeDevPnP.Core.Utilities {
     }
 
     /// <summary>
-    /// This class is used to log events which occur in OfficeDevPnP. Note that it is a partial class,
+    /// This class is used to log events which occur in OfficeAMS. Note that it is a partial class,
     /// so adding another partial class to your source code to extend this class is a valuable option
     /// </summary>
     public static partial class LoggingUtility {

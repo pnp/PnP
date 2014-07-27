@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Entities
+namespace OfficeAMS.Core.Entities
 {
     /// <summary>
     /// CustomActionEntity class describes the information for a Custom Action
