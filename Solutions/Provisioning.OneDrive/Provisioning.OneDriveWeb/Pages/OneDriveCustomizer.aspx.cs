@@ -1,7 +1,7 @@
 ﻿using Contoso.Provisioning.OneDriveWeb;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.UserProfiles;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
