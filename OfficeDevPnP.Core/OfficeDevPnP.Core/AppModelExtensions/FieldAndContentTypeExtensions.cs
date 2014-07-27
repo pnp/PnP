@@ -58,6 +58,35 @@ namespace Microsoft.SharePoint.Client
 
             return field;
         }
+        /// <summary>
+        /// Create field to web remotely
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of hte field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            web.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+
+            if (field != null)
+                throw new ArgumentException("id", "Field already exists");
+
+            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
+            web.Context.Load(field);
+            web.Context.ExecuteQuery();
+            return field;
+        }
 
         /// <summary>
         /// Create field to web remotely
@@ -93,13 +122,31 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName)
         {
-            // create a new MMS field
-            var mmsField = web.CreateField(id, internalName, "TaxonomyFieldType", displayName, group, "ShowField=\"Term1033\"");
-            web.WireUpTaxonomyField(mmsField.Id, mmsGroupName, mmsTermSetName);
-            mmsField.Update();
-            web.Context.ExecuteQuery();
+            try
+            {
+                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+                web.WireUpTaxonomyField(id, mmsGroupName, mmsTermSetName);
+                _field.Update();
+                web.Context.ExecuteQuery();
 
-            return mmsField;
+                return _field;
+            }
+            catch(Exception)
+            {
+                ///If there is an exception the hidden field might be present
+                FieldCollection _fields = web.Fields;
+                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+                web.Context.ExecuteQuery();
+                var _hiddenField = id.ToString().Replace("-", "");
+          
+                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
+                if(_field != null)
+                {
+                    _field.DeleteObject();
+                    web.Context.ExecuteQuery();
+                }
+                throw;
+            }
         }
 
         /// <summary>
@@ -147,7 +194,6 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(field);
             web.WireUpTaxonomyField(field, mmsGroupName, mmsTermSetName);
         }
-
 
         /// <summary>
         /// Creates fields from feature elment xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
@@ -365,7 +411,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Associates field to contennt type
+        /// Associates field to content type
         /// </summary>
         /// <param name="web"></param>
         /// <param name="contentTypeID"></param>
