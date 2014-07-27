@@ -111,9 +111,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OfficeAMS.Core\OfficeAMS.Core\OfficeAMS.Core.csproj">
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
-      <Name>OfficeAMS.Core</Name>
+      <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
