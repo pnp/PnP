@@ -1,5 +1,5 @@
 ﻿using Core.SiteClassification.Common;
-using OfficeAMS.Core.Entities;
+using OfficeDevPnP.Core.Entities;
 using Microsoft.SharePoint.Client;
 
 using System;
