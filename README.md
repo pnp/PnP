@@ -11,7 +11,7 @@ Currently this project is very focused on the SharePoint scenarios but we are ke
 The [Patterns and Practices Yammer Group](https://www.yammer.com/itpronetwork/#/threads/inGroup?type=in_group&feedId=4597220) is the place for discussing the Patterns and Practices code samples.
 
 ###I found bug from the package, how to proceed?
-Please file a GitHub issue. Don't be shy, sharing your findings is critical for the success of the CAM/App patterns. We would welcome not just a bug submission but if you have a proposed workaround, please share that as well.
+Please file a GitHub issue. Don't be shy, sharing your findings is critical for the success of the App Model patterns. We would welcome not just a bug submission but if you have a proposed workaround, please share that as well.
 
 ###I have suggestions or improvements to the provided package, how to proceed?
 We would be extremely pleased with any feedback and suggestions on the package. Please report any suggestions to the package using the discussion boards. We will be closely following any messages to this group. 
@@ -20,7 +20,7 @@ We would be extremely pleased with any feedback and suggestions on the package. 
 Feel free to utilize this anyway you want. You can use these in your demos, own projects, customer project or even write additional blog posts about them. We hope that our learning leads to more predictable and repeatable implementations. 
 
 ###What is the reference of these examples in MSDN guidance?
-We try to keep the Patterns and Practice project as agile as possible to minimize any delays on sharing examples. MSDN will be updated based what we also do in AMS project, but that takes always some additional time to ensure that samples follow up on the official publishing guidance. So, If you aren't afraid to tear apart code with minimal assistance, feel free to do so. If you prefer to wait until more complete guidance comes along to accompany it, by all means wait for the more formal guidance in the MSDN Solution Packs.
+We try to keep the Patterns and Practice project as agile as possible to minimize any delays on sharing examples. MSDN will be updated based what we also do in the Patterns & Practices project, but that takes always some additional time to ensure that samples follow up on the official publishing guidance. So, If you aren't afraid to tear apart code with minimal assistance, feel free to do so. If you prefer to wait until more complete guidance comes along to accompany it, by all means wait for the more formal guidance in the MSDN Solution Packs.
 
 ###What if I want to contact the Patterns and Practices team directly?
 
