@@ -23,7 +23,7 @@
         <br />
         <br />       
         <asp:Button runat="server" ID="btnScenario" Text="Run scenario" OnClick="btnScenario_Click" />
-        <asp:Button runat="server" ID="btnScenario1Remove" Text="Remove custom action from site" OnClick="btnScenarioRemove_Click" />   <asp:Label ID="lblStatus" runat="server" />
+        <asp:Button runat="server" ID="btnScenario1Remove" Text="Clear logo and custom CSS" OnClick="btnScenarioRemove_Click" />   <asp:Label ID="lblStatus" runat="server" />
         <br />
         <br />
     </div>
