@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="d153cde8-7068-4115-b342-773aabb820da" solutionId="d153cde8-7068-4115-b342-773aabb820da" resetWebServer="false" sharePointProductVersion="16.0" name="SharePointProxyForSpaApps" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="5ec13ded-4a1a-4296-a2ac-8126708ea6f6" />
+  </features>
+</package>
