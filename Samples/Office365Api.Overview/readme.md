@@ -8,5 +8,5 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 ###A console application that shows the base features of the new Office 365 API
 
 - Author - Bert Jansen (Microsoft)
-- Date - 30/07/2014
+- Date - 29/07/2014
 - Version - 1.0
