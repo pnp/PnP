@@ -10,11 +10,15 @@ namespace Office365Api.Overview
         {
             try
             {
+
+                //IMPORTANT: using these API's from a console app is not the intended model and as of version 0.1.1.243 this is
+                //           not possible anymore (adding connected service to a console app)
+                //
+
+                //UPDATE: after update to version 0.1.1.243 of the O365 API this sample always prompts for creds.
                 //Use this code to signout. Is needed when the app permissions have changed. 
                 //Sometimes the API's throw a random error...preview soft :-) Anyway, calling signout generally
                 //fixes the problem
-
-                //update: after update to version 0.1.1.243 of the O365 API this sample always prompts for creds 
                 //var signout = MailApiSample.SignOut();
 
                 PrintHeader("Discovery API demo");
