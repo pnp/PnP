@@ -205,7 +205,7 @@ namespace Contoso.Branding.Refresh
         /// <summary>
         /// Checks if we're processing a sub site or not
         /// </summary>
-        /// <param name="ctx">The site context</param>
+        /// <param name="ctx">Context of the site to check</param>
         /// <returns>true if sub site, false otherwise</returns>
         private static bool IsThisASubSite(ClientContext ctx)
         {
@@ -257,7 +257,7 @@ namespace Contoso.Branding.Refresh
         /// <summary>
         /// Get's the root site collection url from a given site url
         /// </summary>
-        /// <param name="ctx">ClientContext to Cchek/param>
+        /// <param name="ctx">ClientContext to Check/param>
         /// <returns>root site collection url of the passed site url</returns>
         private static string GetRootSite(ClientContext ctx)
         {
