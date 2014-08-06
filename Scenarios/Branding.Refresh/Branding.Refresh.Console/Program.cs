@@ -30,7 +30,7 @@ namespace Contoso.Branding.Refresh
         static void Main(string[] args)
         {
             // Create a context to work with
-            // Office 365 Multi-tenant sample
+            // Office 365 Multi-tenant sample - TODO Change your URL and username
             ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
 
             // Office 365 Dedicated sample - On-Premises sample
@@ -50,7 +50,8 @@ namespace Contoso.Branding.Refresh
             // Turn forceBranding to true to apply branding in case the site was not branded before
             bool forceBranding = false;
 
-            // Optionally further refine the list of returned site collections
+            // Optionally further refine the list of returned site collections by inspecting the url here we are looking for a specific value that is contained in the url
+        
             var filteredSites = from p in sites
                                 where p.Url.Contains("13003")
                                 select p;
@@ -183,11 +184,11 @@ namespace Contoso.Branding.Refresh
             string spFontFile = Path.Combine(themeRoot, string.Format("{0}.spfont", themeName));
             string backgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", themeName));
             string logoFile = Path.Combine(themeRoot, string.Format("{0}logo.png", themeName));
-
-            if (IsThisASubSite(cc.Url))
+           
+            if (IsThisASubSite(cc))
             {
                 // Retrieve the context of the root site of the site collection
-                using (ClientContext ccParent = new ClientContext(GetRootSite(cc.Url)))
+                using (ClientContext ccParent = new ClientContext(GetRootSite(cc)))
                 {
                     ccParent.Credentials = cc.Credentials;
                     cc.Web.DeployThemeToSubWeb(ccParent.Web, themeName, spColorFile, spFontFile, backgroundFile, "");
@@ -204,18 +205,17 @@ namespace Contoso.Branding.Refresh
         /// <summary>
         /// Checks if we're processing a sub site or not
         /// </summary>
-        /// <param name="siteUrl">site url to look at</param>
+        /// <param name="ctx">The site context</param>
         /// <returns>true if sub site, false otherwise</returns>
-        private static bool IsThisASubSite(string siteUrl)
+        private static bool IsThisASubSite(ClientContext ctx)
         {
-            var url = new Uri(siteUrl);
-            var urlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var urlPath = url.PathAndQuery.Substring(0, idx);
-            var name = url.PathAndQuery.Substring(idx);
-            var index = name.IndexOf('/');
+            //refractored to look at the root web url and compare
+            Site _site = ctx.Site;
+            ctx.Load(_site,
+                site => site.RootWeb);
+            ctx.ExecuteQuery();
 
-            if (index == -1)
+            if(string.Compare(ctx.Url.TrimEnd('/') ,_site.RootWeb.Url) == 0)
             {
                 return false;
             }
@@ -223,6 +223,22 @@ namespace Contoso.Branding.Refresh
             {
                 return true;
             }
+            
+            //var url = new Uri(siteUrl);
+            //var urlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
+            //int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
+            //var urlPath = url.PathAndQuery.Substring(0, idx);
+            //var name = url.PathAndQuery.Substring(idx);
+            //var index = name.IndexOf('/');
+
+            //if (index == -1)
+            //{
+            //    return false;
+            //}
+            //else
+            //{
+            //    return true;
+            //}
         }
 
         /// <summary>
@@ -241,18 +257,26 @@ namespace Contoso.Branding.Refresh
         /// <summary>
         /// Get's the root site collection url from a given site url
         /// </summary>
-        /// <param name="siteUrl">site url to check</param>
+        /// <param name="ctx">ClientContext to Cchek/param>
         /// <returns>root site collection url of the passed site url</returns>
-        private static string GetRootSite(string siteUrl)
+        private static string GetRootSite(ClientContext ctx)
         {
-            var url = new Uri(siteUrl);
-            var urlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var urlPath = url.PathAndQuery.Substring(0, idx);
-            var name = url.PathAndQuery.Substring(idx);
-            var index = name.IndexOf('/');
+            //refractored to the get Root web. 
+            Site _site = ctx.Site;
+            ctx.Load(_site,
+                site => site.RootWeb);
+            ctx.ExecuteQuery();
 
-            return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", urlDomain, urlPath, name.Split("/".ToCharArray())[0]);
+            return _site.RootWeb.Url;
+      
+        //    var url = new Uri(siteUrl);
+        //    var urlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
+        //    int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
+        //    var urlPath = url.PathAndQuery.Substring(0, idx);
+        //    var name = url.PathAndQuery.Substring(idx);
+        //    var index = name.IndexOf('/');
+
+        //    return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", urlDomain, urlPath, name.Split("/".ToCharArray())[0]);
         }
 
 
