@@ -9,8 +9,9 @@ This sample shows how to add wiki pages to a SharePoint site, how to add/remove 
 -  SharePoint 2013 on-premises
 
 ### Solution ###
-Provisioning.Pages, version 2.0
-Author(s): Bert Jansen (**Microsoft**) 
+Solution | Author(s)
+---------|----------
+Provisioning.Pages | Bert Jansen (**Microsoft**) 
 
 ### Version history ###
 Version  | Date | Comments
@@ -213,4 +214,6 @@ cc.Web.DeleteWebPart("", "About this blog", "Default.aspx");
 This sample removes the “About this blog” web part from the blog site home page.
 # Scenario cleanup #
 If you play around with this sample you’ll have created a collection of pages in the sitepages library. Clicking on the “Cleanup created pages” button removes all these pages. Note that the created Promoted Links list will not be automatically deleted.
+
 ![](http://i.imgur.com/TihwUb0.png)
+
