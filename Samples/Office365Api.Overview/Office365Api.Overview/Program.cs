@@ -13,25 +13,37 @@ namespace Office365Api.Overview
                 //Use this code to signout. Is needed when the app permissions have changed. 
                 //Sometimes the API's throw a random error...preview soft :-) Anyway, calling signout generally
                 //fixes the problem
-                var signout = MailApiSample.SignOut();
+
+                //update: after update to version 0.1.1.243 of the O365 API this sample always prompts for creds 
+                //var signout = MailApiSample.SignOut();
 
                 PrintHeader("Discovery API demo");
                 var t = DiscoveryAPISample.DiscoverMyFiles();
                 Task.WaitAll(t);
                 PrintSubHeader("Current user information");
-                PrintAttribute("Name", String.Format("{0} {1}", t.Result.IdToken.GivenName, t.Result.IdToken.FamilyName));
-                PrintAttribute("Email", t.Result.IdToken.Email);
-                PrintAttribute("UPN", t.Result.IdToken.UPN);
-                PrintAttribute("TenantID", t.Result.IdToken.TenantId);
-                PrintAttribute("OneDrive URL", t.Result.ServiceUri);
+                
+                //Not returned anymore
+                //PrintAttribute("Name", String.Format("{0} {1}", t.Result.UserId IdToken.GivenName, t.Result.IdToken.FamilyName));
+                //PrintAttribute("Email", t.Result.IdToken.Email);
+                //PrintAttribute("UPN", t.Result.IdToken.UPN);
+                //PrintAttribute("TenantID", t.Result.IdToken.TenantId);
+                
+                PrintAttribute("OneDrive URL", t.Result.ServiceEndpointUri);
                 var t3 = DiscoveryAPISample.DiscoverMail();
                 Task.WaitAll(t3);
-                PrintAttribute("Mail URL", t3.Result.ServiceUri);
+                PrintAttribute("Mail URL", t3.Result.ServiceEndpointUri);
 
                 PrintHeader("Files API demo");
 
                 // Read all files on your onedrive
                 PrintSubHeader("List all files and folders in the OneDrive");
+
+                // Pass along the discovery context object
+                MyFilesApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
+                MailApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
+                SitesApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
+                ActiveDirectoryApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
+
                 var allMyFiles = MyFilesApiSample.GetMyFiles();
                 Task.WaitAll(allMyFiles);
                 foreach (var item in allMyFiles.Result)
@@ -55,7 +67,7 @@ namespace Office365Api.Overview
 
                 PrintHeader("Sites API demo");
                 //set the SharePointResourceId
-                SitesApiSample.SharePointResourceId = "https://bertonline.sharepoint.com";
+                SitesApiSample.ServiceResourceId = "https://bertonline.sharepoint.com";
 
                 //https://bertonline.sharepoint.com/sites/20140050 should work due to the user having read access
                 //https://bertonline.sharepoint.com/sites/20140052 should not work due to the user not having access

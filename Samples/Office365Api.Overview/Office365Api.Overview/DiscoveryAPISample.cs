@@ -9,19 +9,36 @@ namespace Office365Api.Overview
 {
     static class DiscoveryAPISample
     {
-        // Discovery service supports MyFiles, Mail, Contacts and Calendar
-        public static async Task<AuthenticationInfo> DiscoverMyFiles()
+        // Do not make static in Web apps; store it in session or in a cookie instead
+        static string _lastLoggedInUser;
+        //static DiscoveryContext _discoveryContext;
+        public static DiscoveryContext _discoveryContext
         {
-            Authenticator authenticator = new Authenticator();
-            AuthenticationInfo authInfo = await authenticator.AuthenticateAsync("MyFiles", ServiceIdentifierKind.Capability);
-            return authInfo;
+            get;
+            set;
+        }
+        
+        // Discovery service supports MyFiles, Mail, Contacts and Calendar
+        public static async Task<CapabilityDiscoveryResult> DiscoverMyFiles()
+        {
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            var dcr = await _discoveryContext.DiscoverCapabilityAsync("MyFiles");
+            return dcr;
         }
 
-        public static async Task<AuthenticationInfo> DiscoverMail()
+        public static async Task<CapabilityDiscoveryResult> DiscoverMail()
         {
-            Authenticator authenticator = new Authenticator();
-            AuthenticationInfo authInfo = await authenticator.AuthenticateAsync("Mail", ServiceIdentifierKind.Capability);
-            return authInfo;
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            var dcr = await _discoveryContext.DiscoverCapabilityAsync("Mail");
+            return dcr;
         }
     }
 }

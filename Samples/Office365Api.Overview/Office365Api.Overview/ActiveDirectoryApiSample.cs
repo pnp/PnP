@@ -10,7 +10,17 @@ namespace Office365Api.Overview
 {
     public static class ActiveDirectoryApiSample
     {
-        const string AadGraphResource = "https://graph.windows.net/";
+        const string ServiceResourceId = "https://graph.windows.net/";
+        static readonly Uri ServiceEndpointUri = new Uri("https://graph.windows.net/");
+
+        // Do not make static in Web apps; store it in session or in a cookie instead
+        static string _lastLoggedInUser;
+        //static DiscoveryContext _discoveryContext;
+        public static DiscoveryContext _discoveryContext
+        {
+            get;
+            set;
+        }
 
         public static async Task<IEnumerable<IUser>> GetUsers()
         {
@@ -29,16 +39,36 @@ namespace Office365Api.Overview
             return allUsers;
         }
 
-        private static async Task<AadGraphClient> EnsureClientCreated()
+        public static async Task<AadGraphClient> EnsureClientCreated()
         {
-            Authenticator authenticator = new Authenticator();
-            var authInfo = await authenticator.AuthenticateAsync(AadGraphResource);
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
 
-            return new AadGraphClient(new Uri(AadGraphResource + authInfo.IdToken.TenantId), authInfo.GetAccessToken);
+            var dcr = await _discoveryContext.DiscoverResourceAsync(ServiceResourceId);
+
+            _lastLoggedInUser = dcr.UserId;
+
+            return new AadGraphClient(new Uri(ServiceEndpointUri, dcr.TenantId), async () =>
+            {
+                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
+            });
         }
+
         public static async Task SignOut()
         {
-            await new Authenticator().LogoutAsync();
+            if (string.IsNullOrEmpty(_lastLoggedInUser))
+            {
+                return;
+            }
+
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
         }
     }
 }

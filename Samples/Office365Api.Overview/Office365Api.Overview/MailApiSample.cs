@@ -10,9 +10,18 @@ namespace Office365Api.Overview
 {
     public static class MailApiSample
     {
-        const string ExchangeResourceId = "https://outlook.office365.com";
-        const string ExchangeServiceRoot = "https://outlook.office365.com/ews/odata";
+        const string ServiceResourceId = "https://outlook.office365.com";
+        static readonly Uri ServiceEndpointUri = new Uri("https://outlook.office365.com/ews/odata");
 
+        // Do not make static in Web apps; store it in session or in a cookie instead
+        static string _lastLoggedInUser;
+        //static DiscoveryContext _discoveryContext;
+        public static DiscoveryContext _discoveryContext
+        {
+            get;
+            set;
+        }
+ 
         public static async Task<IEnumerable<IMessage>> GetMessages()
         {
             var client = await EnsureClientCreated();
@@ -86,16 +95,36 @@ namespace Office365Api.Overview
             await client.Me.Drafts.Messages.AddMessageAsync(mail);
         }
 
-        private static async Task<ExchangeClient> EnsureClientCreated()
+        public static async Task<ExchangeClient> EnsureClientCreated()
         {
-            Authenticator authenticator = new Authenticator();
-            var authInfo = await authenticator.AuthenticateAsync(ExchangeResourceId);
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
 
-            return new ExchangeClient(new Uri(ExchangeServiceRoot), authInfo.GetAccessToken);
+            var dcr = await _discoveryContext.DiscoverResourceAsync(ServiceResourceId);
+
+            _lastLoggedInUser = dcr.UserId;
+
+            return new ExchangeClient(ServiceEndpointUri, async () =>
+            {
+                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
+            });
         }
+
         public static async Task SignOut()
         {
-            await new Authenticator().LogoutAsync();
+            if (string.IsNullOrEmpty(_lastLoggedInUser))
+            {
+                return;
+            }
+
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
         }
 
 

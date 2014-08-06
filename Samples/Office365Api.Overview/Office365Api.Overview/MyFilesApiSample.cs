@@ -13,6 +13,17 @@ namespace Office365Api.Overview
     {
         const string MyFilesCapability = "MyFiles";
 
+        // Do not make static in Web apps; store it in session or in a cookie instead
+        static string _lastLoggedInUser;
+//        static DiscoveryContext _discoveryContext;
+
+        public static DiscoveryContext _discoveryContext
+        {
+            get;
+            set;
+        }
+
+
         public static async Task<IEnumerable<IFileSystemItem>> GetMyFiles()
         {
             var client = await EnsureClientCreated();
@@ -52,18 +63,41 @@ namespace Office365Api.Overview
                 var uploadedFile = await client.Files.AddAsync(filename, true, fileStream);                
             }
         }
-    
-        private static async Task<SharePointClient> EnsureClientCreated()
+
+        public static async Task<SharePointClient> EnsureClientCreated()
         {
-            Authenticator authenticator = new Authenticator();
-            var authInfo = await authenticator.AuthenticateAsync(MyFilesCapability, ServiceIdentifierKind.Capability);
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            var dcr = await _discoveryContext.DiscoverCapabilityAsync(MyFilesCapability);
+
+            var ServiceResourceId = dcr.ServiceResourceId;
+            var ServiceEndpointUri = dcr.ServiceEndpointUri;
+
+            _lastLoggedInUser = dcr.UserId;
 
             // Create the MyFiles client proxy:
-            return new SharePointClient(authInfo.ServiceUri, authInfo.GetAccessToken);
+            return new SharePointClient(ServiceEndpointUri, async () =>
+            {
+                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
+            });
         }
+
         public static async Task SignOut()
         {
-            await new Authenticator().LogoutAsync();
+            if (string.IsNullOrEmpty(_lastLoggedInUser))
+            {
+                return;
+            }
+
+            if (_discoveryContext == null)
+            {
+                _discoveryContext = await DiscoveryContext.CreateAsync();
+            }
+
+            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
         }
     }
 }
