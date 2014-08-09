@@ -1,18 +1,17 @@
-﻿using Microsoft.Office365.Exchange;
-using Microsoft.Office365.OAuth;
+﻿using Microsoft.Office365.OAuth;
+using Microsoft.Office365.SharePoint;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365Api.Overview
+namespace Office365Api.Demo
 {
-    public static class CalendarAPISample
-    {
-        const string ServiceResourceId = "https://outlook.office365.com";
-        static readonly Uri ServiceEndpointUri = new Uri("https://outlook.office365.com/ews/odata");
-
+    static class  SitesApiSample
+    {        
+        //const string SharePointResourceId = "https://bertonline.sharepoint.com";
+        
         // Do not make static in Web apps; store it in session or in a cookie instead
         static string _lastLoggedInUser;
         //static DiscoveryContext _discoveryContext;
@@ -22,21 +21,34 @@ namespace Office365Api.Overview
             set;
         }
 
-        public static async Task<IOrderedEnumerable<IEvent>> GetCalendarEvents()
+        public static string ServiceResourceId
         {
-            var client = await EnsureClientCreated();
-
-            // Obtain calendar event data
-            var eventsResults = await (from i in client.Me.Events
-                                      where i.End >= DateTimeOffset.UtcNow
-                                      select i).Take(10).ExecuteAsync();
-
-            var events = eventsResults.CurrentPage.OrderBy(e => e.Start);
-
-            return events;
+            get;
+            set;
         }
 
-        public static async Task<ExchangeClient> EnsureClientCreated()
+
+        public static async Task<IEnumerable<IFileSystemItem>> GetDefaultDocumentFiles(string siteUrl)
+        {
+            var client = await EnsureClientCreated(siteUrl);
+            client.Context.IgnoreMissingProperties = true;
+
+            // Obtain files in default SharePoint folder
+            var filesResults = await client.Files.ExecuteAsync();
+            var files = filesResults.CurrentPage.OrderBy(e => e.Name);
+            return files;
+        }
+
+        //private static async Task<SharePointClient> EnsureClientCreated(string siteUrl)
+        //{
+        //    Authenticator authenticator = new Authenticator();
+        //    var authInfo = await authenticator.AuthenticateAsync(SharePointResourceId, ServiceIdentifierKind.Resource);
+
+        //    // Create the SharePoint client proxy:
+        //    return new SharePointClient(new Uri(string.Format("{0}/_api", siteUrl)), authInfo.GetAccessToken);
+        //}
+
+        public static async Task<SharePointClient> EnsureClientCreated(string siteUrl)
         {
             if (_discoveryContext == null)
             {
@@ -47,7 +59,7 @@ namespace Office365Api.Overview
 
             _lastLoggedInUser = dcr.UserId;
 
-            return new ExchangeClient(ServiceEndpointUri, async () =>
+            return new SharePointClient(new Uri(string.Format("{0}/_api", siteUrl)), async () =>
             {
                 return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
             });

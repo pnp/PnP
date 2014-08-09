@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Office365Api.Overview
+namespace Office365Api.Demo
 {
     static class DiscoveryAPISample
     {
