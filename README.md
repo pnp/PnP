@@ -20,7 +20,7 @@ We would be extremely pleased with any feedback and suggestions on the package. 
 Feel free to utilize this anyway you want. You can use these in your demos, own projects, customer project or even write additional blog posts about them. We hope that our learning leads to more predictable and repeatable implementations. 
 
 ###What is the reference of these examples in MSDN guidance?
-We try to keep the Patterns and Practice project as agile as possible to minimize any delays on sharing examples. MSDN will be updated based what we also do in the Patterns & Practices project, but that takes always some additional time to ensure that samples follow up on the official publishing guidance. So, If you aren't afraid to tear apart code with minimal assistance, feel free to do so. If you prefer to wait until more complete guidance comes along to accompany it, by all means wait for the more formal guidance in the MSDN Solution Packs.
+We try to keep the PnP project as agile as possible to minimize any delays on sharing examples. MSDN will be updated based what we also do in the Patterns & Practices project, but that takes always some additional time to ensure that samples follow up on the official publishing guidance. So, If you aren't afraid to tear apart code with minimal assistance, feel free to do so. If you prefer to wait until more complete guidance comes along to accompany it, by all means wait for the more formal guidance in the MSDN Solution Packs.
 
 ###What if I want to contact the Patterns and Practices team directly?
 
