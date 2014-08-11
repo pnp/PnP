@@ -66,7 +66,7 @@ namespace Provisioning.OnPrem.AsyncWeb
             listTemplates.Items.Add(new System.Web.UI.WebControls.ListItem("Wiki", "WIKI#0"));
             listTemplates.SelectedIndex = 0;
 
-            lblBasePath.Text = Request["SPHostUrl"].Substring(0, 8 + Request["SPHostUrl"].Substring(8).IndexOf("/")) + "/";
+            lblBasePath.Text = Request["SPHostUrl"].Substring(0, 8 + Request["SPHostUrl"].Substring(8).IndexOf("/")) + "/sites/";
         }
 
 

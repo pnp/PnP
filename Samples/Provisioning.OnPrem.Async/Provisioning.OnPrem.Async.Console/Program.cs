@@ -3,10 +3,12 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 
 namespace Provisioning.OnPrem.Async.Console
 {
@@ -33,6 +35,8 @@ namespace Provisioning.OnPrem.Async.Console
                 TokenHelper.GetClientContextWithAccessToken(
                     siteUri.ToString(), accessToken))
             {
+                // Set the time out as high as possible
+                ctx.RequestTimeout = int.MaxValue;
                 // Get items which are in requested status
                 List list = ctx.Web.Lists.GetByTitle(ConfigurationManager.AppSettings["SiteCollectionRequests_List"]);
                 CamlQuery camlQuery = new CamlQuery();
@@ -92,6 +96,9 @@ namespace Provisioning.OnPrem.Async.Console
             var token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, tenantAdminUri.Authority, realm).AccessToken;
             using (var adminContext = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), token))
             {
+                // Set the time out as high as possible
+                adminContext.RequestTimeout = int.MaxValue;
+
                 var tenant = new Tenant(adminContext);
                 var properties = new SiteCreationProperties()
                 {
@@ -125,9 +132,51 @@ namespace Provisioning.OnPrem.Async.Console
             var token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUrl.Authority, realm).AccessToken;
             using (var ctx = TokenHelper.GetClientContextWithAccessToken(siteUrl.ToString(), token))
             {
+                // Set the time out as high as possible
+                ctx.RequestTimeout = int.MaxValue;
+
+                // Let's first upload the custom theme to host web
+                DeployContosoThemeToWeb(ctx.Web, "Garage",
+                                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagewhite.spcolor"),
+                                string.Empty,
+                                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagebg.jpg"),
+                                "seattle.master");
+
                 // Apply theme. We could upload a custom one as well or apply any other changes to newly created site
-                SetThemeBasedOnName(ctx.Web, "Orange");
+                SetThemeBasedOnName(ctx.Web, "Garage");
+
+                // Upload the assets to host web
+                UploadLogoToHostWeb(ctx.Web);
+
+                // Set the properties accordingly
+                // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
+                ctx.Web.SiteLogoUrl = ctx.Web.ServerRelativeUrl + "/SiteAssets/garagelogo.png";
+                ctx.Web.Update();
+                ctx.Web.Context.ExecuteQuery();
             }
+        }
+
+        /// <summary>
+        /// Uploads site logo to host web
+        /// </summary>
+        /// <param name="web"></param>
+        private static void UploadLogoToHostWeb(Web web)
+        {
+            // Instance to site assets
+            List assetLibrary = web.Lists.GetByTitle("Site Assets");
+            web.Context.Load(assetLibrary, l => l.RootFolder);
+
+            // Get the path to the file which we are about to deploy
+            string logoFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagelogo.png");
+
+            // Use CSOM to uplaod the file in
+            FileCreationInformation newFile = new FileCreationInformation();
+            newFile.Content = System.IO.File.ReadAllBytes(logoFile);
+            newFile.Url = "garagelogo.png";
+            newFile.Overwrite = true;
+            Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
+            web.Context.Load(uploadFile);
+            web.Context.ExecuteQuery();
         }
 
         private static void SendEmailToRequestorAndNotifiedEmail(ClientContext ctx, ListItem listItem, string siteUrl)
@@ -228,10 +277,151 @@ namespace Provisioning.OnPrem.Async.Console
             }
         }
 
+        public static void DeployContosoThemeToWeb(Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
+        {
+            // Deploy files one by one to proper location
+            if (!string.IsNullOrEmpty(colorFilePath))
+            {
+                DeployFileToThemeFolderSite(web, colorFilePath);
+            }
+            if (!string.IsNullOrEmpty(fontFilePath))
+            {
+                DeployFileToThemeFolderSite(web, fontFilePath);
+            }
+            if (!string.IsNullOrEmpty(backgroundImagePath))
+            {
+                DeployFileToThemeFolderSite(web, backgroundImagePath);
+            }
+            // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
+            AddNewThemeOptionToSite(web, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
+        }
+
+
+        private static void DeployFileToThemeFolderSite(Web web, string sourceAddress)
+        {
+            // Get the path to the file which we are about to deploy
+            string file = sourceAddress;
+
+            List themesList = web.GetCatalog(123);
+            // get the theme list
+            web.Context.Load(themesList);
+            web.Context.ExecuteQuery();
+            Folder rootfolder = themesList.RootFolder;
+            web.Context.Load(rootfolder);
+            web.Context.Load(rootfolder.Folders);
+            web.Context.ExecuteQuery();
+            Folder folder15 = rootfolder;
+            foreach (Folder folder in rootfolder.Folders)
+            {
+                if (folder.Name == "15")
+                {
+                    folder15 = folder;
+                    break;
+                }
+            }
+
+            // Use CSOM to upload the file to the web
+            FileCreationInformation newFile = new FileCreationInformation();
+            newFile.Content = System.IO.File.ReadAllBytes(file);
+            newFile.Url = folder15.ServerRelativeUrl + "/" + System.IO.Path.GetFileName(sourceAddress);
+            newFile.Overwrite = true;
+            Microsoft.SharePoint.Client.File uploadFile = folder15.Files.Add(newFile);
+            web.Context.Load(uploadFile);
+            web.Context.ExecuteQuery();
+        }
+
+
+        private static bool ThemeEntryExists(Web web, List themeList, string themeName)
+        {
+
+            CamlQuery query = new CamlQuery();
+            string camlString = @"
+                <View>
+                    <Query>                
+                        <Where>
+                            <Eq>
+                                <FieldRef Name='Name' />
+                                <Value Type='Text'>{0}</Value>
+                            </Eq>
+                        </Where>
+                     </Query>
+                </View>";
+            // Let's update the theme name accordingly
+            camlString = string.Format(camlString, themeName);
+            query.ViewXml = camlString;
+            var found = themeList.GetItems(query);
+            web.Context.Load(found);
+            web.Context.ExecuteQuery();
+            if (found.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private static void AddNewThemeOptionToSite(Web web, string themeName, string colorFilePath, string fontFilePath, string backGroundPath, string masterPageName)
+        {
+            // Let's get instance to the composite look gallery
+            List themesOverviewList = web.GetCatalog(124);
+            web.Context.Load(themesOverviewList);
+            web.Context.ExecuteQuery();
+            // Do not add duplicate, if the theme is already there
+            if (!ThemeEntryExists(web, themesOverviewList, themeName))
+            {
+                // if web information is not available, load it
+                if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+                {
+                    web.Context.Load(web);
+                    web.Context.ExecuteQuery();
+                }
+                // Let's create new theme entry. Notice that theme selection is not available from UI in personal sites, so this is just for consistency sake
+                ListItemCreationInformation itemInfo = new ListItemCreationInformation();
+                Microsoft.SharePoint.Client.ListItem item = themesOverviewList.AddItem(itemInfo);
+                item["Name"] = themeName;
+                item["Title"] = themeName;
+                if (!string.IsNullOrEmpty(colorFilePath))
+                {
+                    item["ThemeUrl"] = URLCombine(web.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", System.IO.Path.GetFileName(colorFilePath)));
+                }
+                if (!string.IsNullOrEmpty(fontFilePath))
+                {
+                    item["FontSchemeUrl"] = URLCombine(web.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", System.IO.Path.GetFileName(fontFilePath)));
+                }
+                if (!string.IsNullOrEmpty(backGroundPath))
+                {
+                    item["ImageUrl"] = URLCombine(web.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", System.IO.Path.GetFileName(backGroundPath)));
+                }
+                // we use seattle master if anythign else is not set
+                if (string.IsNullOrEmpty(masterPageName))
+                {
+                    item["MasterPageUrl"] = URLCombine(web.ServerRelativeUrl, "/_catalogs/masterpage/seattle.master");
+                }
+                else
+                {
+                    item["MasterPageUrl"] = URLCombine(web.ServerRelativeUrl, string.Format("/_catalogs/masterpage/{0}", Path.GetFileName(masterPageName)));
+                }
+
+                item["DisplayOrder"] = 11;
+                item.Update();
+                web.Context.ExecuteQuery();
+            }
+
+        }
+
+
         private static string MakeAsRelativeUrl(string urlToProcess)
         {
             Uri uri = new Uri(urlToProcess);
             return uri.AbsolutePath;
+        }
+
+        private static string URLCombine(string baseUrl, string relativeUrl)
+        {
+            if (baseUrl.Length == 0)
+                return relativeUrl;
+            if (relativeUrl.Length == 0)
+                return baseUrl;
+            return string.Format("{0}/{1}", baseUrl.TrimEnd(new char[] { '/', '\\' }), relativeUrl.TrimStart(new char[] { '/', '\\' }));
         }
 
     }
