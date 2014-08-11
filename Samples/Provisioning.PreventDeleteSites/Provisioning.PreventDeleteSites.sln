@@ -11,7 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.PreventDeleteS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox Solution", "Sandbox Solution", "{9B23FDA6-CC56-452B-9D26-5AA9E14372F7}"
 	ProjectSection(SolutionItems) = preProject
-		PreventDeleteSites.docx = PreventDeleteSites.docx
 		PreventDeleteSites.wsp = PreventDeleteSites.wsp
 		readme.md = readme.md
 	EndProjectSection
