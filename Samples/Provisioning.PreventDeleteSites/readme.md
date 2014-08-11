@@ -6,7 +6,7 @@ Provisioning.PreventDeleteSites
 # Version
 Version 1.0
 
-## AUTHORS ##
+## Authors ##
 Suman Chakrabarti (Microsoft)  
 Frank Marasco (Microsoft) 
 
@@ -40,12 +40,12 @@ The process outlined in the sample describes Deployment, Activation, Testing del
 The sandbox solution is pretty simple. It consists of an event receiver wired up for SiteDeleting and WebDeleting. When the user (or system process) attempts to delete a site collection or web application, the event receiver cancels that action.
 
     public override void SiteDeleting(SPWebEventProperties properties) {
-    properties.Cancel = true;
-    properties.ErrorMessage = "Site collection cannot be deleted";
+        properties.Cancel = true;
+        properties.ErrorMessage = "Site collection cannot be deleted";
     }
     public override void WebDeleting(SPWebEventProperties properties) {
-    properties.Cancel = true;
-    properties.ErrorMessage = "Site cannot be deleted";
+        properties.Cancel = true;
+        properties.ErrorMessage = "Site cannot be deleted";
     }
 
 ## Solution Deployment/Removal ##
@@ -72,9 +72,9 @@ Solution activation is done using the DesignPackage objects to determine the wsp
 
     // get the DesignPackageInfo (which is the same name for a sandbox solution)
     var wsp = new DesignPackageInfo(){
-    // during deployment, the solution ID is not necessary
-    PackageGuid = Guid.Empty, // 4c16c0b9-0162-43ad-a8e9-a4b810e58a56
-    PackageName = "PreventDeleteSites"
+        // during deployment, the solution ID is not necessary
+        PackageGuid = Guid.Empty, // 4c16c0b9-0162-43ad-a8e9-a4b810e58a56
+        PackageName = "PreventDeleteSites"
     };
     // install the solution from the file url
     var filerelativeurl = solutionGallery.RootFolder.ServerRelativeUrl + "/PreventDeleteSites.wsp";
