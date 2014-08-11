@@ -68,5 +68,28 @@ namespace Contoso.Core.TaxonomyPickerWeb
             }
             */
         }
+
+        protected void SaveButton_Click(object sender, EventArgs e) {
+            var fieldValue = taxPickerKeywords.Value;
+
+            // The item's JSON value will be added to a bulletted list
+            // comment this out if the next section is used
+            SelectedValues.Items.Add(fieldValue);
+            
+            //var myFieldInternalName = "MyFieldInternalName";
+            //var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+            //using (var clientContext = spContext.CreateUserClientContextForSPHost()) {
+            //    clientContext.Load(clientContext.Web);
+            //    clientContext.Load(clientContext.Web.Fields, fs => fs.Where(f=>f.InternalName == myFieldInternalName));
+            //    var field = clientContext.Web.Fields.FirstOrDefault();
+
+            //    if (field == null)
+            //        throw new IndexOutOfRangeException(string.Format("{0} does not exist in the current site's fields.", myFieldInternalName));
+
+            //    var taxValues = new TaxonomyFieldValueCollection(clientContext, fieldValue, field);
+            //    SelectedValues.DataSource = taxValues.Cast<TaxonomyFieldValue>().ToList();
+            //    SelectedValues.DataBind();
+            //}
+        }
     }
 }

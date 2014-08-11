@@ -529,6 +529,7 @@
             }
             //reset this._selectedTerms
             this._selectedTerms = newTerms;
+            this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
 
             return textValidation;
         },
