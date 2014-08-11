@@ -26,7 +26,7 @@
                 </tr>
             </table>
 
-            <asp:Button runat="server" ID="SaveButton" OnClick="SaveButton_Click" Text="Test save" />
+            <asp:Button runat="server" OnClick="SubmitButton_Click" Text="Submit" />
 
             <asp:BulletedList runat="server" ID="SelectedValues" DataTextField="Label" />
         </div>
