@@ -20,11 +20,15 @@
                     <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Keywords Termset:</h3></td>
                     <td class="ms-formbody" valign="top">
                         <div class="ms-core-form-line" style="margin-bottom: 0px;">
-                            <input type="hidden" id="taxPickerKeywords" />
+                            <asp:HiddenField runat="server" id="taxPickerKeywords" />
                         </div>
                     </td>
                 </tr>
             </table>
+
+            <asp:Button runat="server" OnClick="SubmitButton_Click" Text="Submit" />
+
+            <asp:BulletedList runat="server" ID="SelectedValues" DataTextField="Label" />
         </div>
     </form>
 </body>
