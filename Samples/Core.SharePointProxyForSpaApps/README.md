@@ -1,0 +1,12 @@
+#Readme
+
+THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
+IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
+PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+
+###How to write WebAPI controller that acts as proxy for SPA apps to protect access tokens
+
+- Author - Matt Mazzola (Microsoft)
+- Date - 04/08/2014
+- Version - 1.0

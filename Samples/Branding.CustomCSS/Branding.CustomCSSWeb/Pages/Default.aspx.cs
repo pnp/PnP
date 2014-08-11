@@ -89,8 +89,9 @@ namespace Contoso.Branding.CustomCSSWeb
                     // Execute our uploads and initialzie the existingActions collection
                     clientContext.ExecuteQuery();
 
+                    var actions = existingActions.ToArray();
                     // Clean up existing custom action with same name, if it exists
-                    foreach (var existingAction in existingActions)
+                    foreach (var existingAction in actions)
                     {
                         if (existingAction.Name.Equals(actionName, StringComparison.InvariantCultureIgnoreCase))
                             existingAction.DeleteObject();
@@ -127,8 +128,10 @@ namespace Contoso.Branding.CustomCSSWeb
                 clientContext.Load(existingActions);
                 clientContext.ExecuteQuery();
 
+                var actions = existingActions.ToArray();
+
                 // Clean up
-                foreach (var existingAction in existingActions)
+                foreach (var existingAction in actions)
                 {
                     if (existingAction.Name.Equals(actionName, StringComparison.InvariantCultureIgnoreCase))
                         existingAction.DeleteObject();

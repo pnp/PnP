@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharePoint PnP Sample - Web API Proxy for SPA apps</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body ng-app="App">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">O356 PnP Sample</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" ng-controller="IndexController">
+        <div class="jumbotron">
+            <h2>Office Patterns and Practices: AngularJS SPA Sample</h2>
+            <p class="lead">Construct requests from SPA and proxy through app server to add necessary access tokens.</p>
+            <p>In order for provider hosted apps to request resources from sharepoint it must send an access token for authentication.  Currently SharePoint doesn't support the OAuth 2.0 Implicit grant flow so the acces tokens we get have a longer expiration period and must be protected with more caution.</p>
+            <p>In other words, we can't expose the access tokens to the client and must make request through the server; however we still want to use the same programming model of having all the logic on the client. To have the best of both worlds we use a custom web api controller which acts as proxy add access token to requests and passing them through to sharepoint.</p>
+            <p>There was another article by Scot Hillier explaining a little more about this technique but it doesn't provide a full sample or utilize the proxy technique which allows for most flexibility.</p>
+            <p><a href="http://www.itunity.com/article/managing-tokens-sharepoint-2013-singlepage-providerhosted-apps-445" target="_blank" class="btn btn-primary btn-large"><span class="glyphicon glyphicon-link"></span> Managing Tokens in SharePoint 2013 Single-Page Provider-Hosted Apps</a></p>
+        </div>
+        <h4>QueryParameters</h4>
+        <pre><pretty-json json="queryParameters"></pretty-json></pre>
+
+        <div>
+            <div class="page-header">
+                <h2>Example App Web Request:</h2>
+            </div>
+
+            <p>
+                <pre><pretty-json json="appWebRequestOptions"></pretty-json></pre>
+            </p>
+            <p>
+                <button class="btn btn-success" ng-click="requestAppWebData()">Execute</button>
+            </p>
+            <h3>Transformed Request Options:</h3>
+            <pre><pretty-json json="transformedAppWebRequestOptions"></pretty-json></pre>
+            <h3>Response:</h3>
+            <pre><pretty-json json="appWebResponse"></pretty-json></pre>
+        </div>
+        <div>
+            <div class="page-header">
+                <h2>Example Host Web Request:</h2>
+            </div>
+            <p>
+                <pre><pretty-json json="hostWebRequestOptions"></pretty-json></pre>
+            </p>
+            <p>
+                <button class="btn btn-success" ng-click="requestHostWebData()">Execute</button>
+            </p>
+            <h3>Transformed Request Options:</h3>
+            <pre><pretty-json json="transformedHostWebRequestOptions"></pretty-json></pre>
+            <h3>Response:</h3>
+            <pre><pretty-json json="hostWebResponse"></pretty-json></pre>
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Office PnP - AngularJS SPA App Sample</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/app")
+</body>
+</html>
+
+
+
+

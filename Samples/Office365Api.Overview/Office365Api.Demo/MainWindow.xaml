@@ -1,0 +1,15 @@
+﻿<Window x:Class="Office365Api.Demo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Office 365 API Demo" Height="800" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34"/>
+            <RowDefinition Height="285*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btnGo" Content="Run demo" Margin="10,4" Click="Button_Click"/>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="txtOutput" Grid.Row="1" TextWrapping="NoWrap" FontSize="18" FontFamily="Consolas" Margin="0" Padding="10,10,0,0"/>
+        </ScrollViewer>
+    </Grid>
+</Window>

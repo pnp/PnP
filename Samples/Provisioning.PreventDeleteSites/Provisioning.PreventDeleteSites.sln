@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.PreventDeleteSites", "Provisioning.PreventDeleteSites\Provisioning.PreventDeleteSites.csproj", "{09CD1C28-2237-440C-B8EC-17E040C6B8E5}"
 EndProject
@@ -13,24 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox Solution", "Sandbox
 	ProjectSection(SolutionItems) = preProject
 		PreventDeleteSites.docx = PreventDeleteSites.docx
 		PreventDeleteSites.wsp = PreventDeleteSites.wsp
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://sharepointing.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Provisioning.PreventDeleteSites.Host\\Provisioning.PreventDeleteSites.Host.csproj
-		SccProjectName1 = Provisioning.PreventDeleteSites.Host
-		SccLocalPath1 = Provisioning.PreventDeleteSites.Host
-		SccProjectUniqueName2 = Provisioning.PreventDeleteSites.HostWeb\\Provisioning.PreventDeleteSites.HostWeb.csproj
-		SccProjectName2 = Provisioning.PreventDeleteSites.HostWeb
-		SccLocalPath2 = Provisioning.PreventDeleteSites.HostWeb
-		SccProjectUniqueName3 = Provisioning.PreventDeleteSites\\Provisioning.PreventDeleteSites.csproj
-		SccProjectName3 = Provisioning.PreventDeleteSites
-		SccLocalPath3 = Provisioning.PreventDeleteSites
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
