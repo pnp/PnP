@@ -20,12 +20,23 @@ namespace Office365Api.Demo
     /// </summary>
     public partial class MainWindow : Window
     {
+        private double scrollViewerHeight = 0.0d;
+
+        //TODO: update these values to make them relevant for your environment
+        private string uploadFile = @"C:\temp\bulkadusers.xlsx";
+        private string serviceResourceId = "https://bertonline.sharepoint.com";
+        //https://bertonline.sharepoint.com/sites/20140050 should work due to the user having read access
+        //https://bertonline.sharepoint.com/sites/20140052 should not work due to the user not having access
+        //https://bertonline.sharepoint.com/sites/20140053 should not work due to the user being site collection admin
+        private string siteUrl = "https://bertonline.sharepoint.com/sites/20140053";
+        private string sendMailTo = "bjansen@microsoft.com";
+
         public MainWindow()
         {
             InitializeComponent();
             txtOutput.Background = Brushes.Black;
         }
-
+        
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -56,7 +67,7 @@ namespace Office365Api.Demo
 
                 // upload a file to the "Shared with everyone" folder
                 PrintSubHeader("Upload a file to OneDrive");
-                await MyFilesApiSample.UploadFile(@"C:\temp\bulkadusers.xlsx", "Shared with everyone");
+                await MyFilesApiSample.UploadFile(uploadFile, "Shared with everyone");
 
                 // iterate over the "Shared with everyone" folder
                 PrintSubHeader("List all files and folders in the Shared with everyone folder");
@@ -68,12 +79,8 @@ namespace Office365Api.Demo
 
                 PrintHeader("Sites API demo");
                 //set the SharePointResourceId
-                SitesApiSample.ServiceResourceId = "https://bertonline.sharepoint.com";
-
-                //https://bertonline.sharepoint.com/sites/20140050 should work due to the user having read access
-                //https://bertonline.sharepoint.com/sites/20140052 should not work due to the user not having access
-                //https://bertonline.sharepoint.com/sites/20140053 should not work due to the user being site collection admin
-                var mySharePointFiles = await SitesApiSample.GetDefaultDocumentFiles("https://bertonline.sharepoint.com/sites/20140053");
+                SitesApiSample.ServiceResourceId = serviceResourceId;
+                var mySharePointFiles = await SitesApiSample.GetDefaultDocumentFiles(siteUrl);
                 foreach (var item in mySharePointFiles)
                 {
                     PrintAttribute("URL", item.Url);
@@ -98,11 +105,11 @@ namespace Office365Api.Demo
 
                 //Send mail
                 PrintSubHeader("Send a mail");
-                await MailApiSample.SendMail("bjansen@microsoft.com", "Let's Hack-A-Thon", "This will be <B>fun...</B>");
+                await MailApiSample.SendMail(sendMailTo, "Let's Hack-A-Thon", "This will be <B>fun...</B>");
 
                 //Create message in drafts folder
                 PrintSubHeader("Store a mail in the drafts folder");
-                await MailApiSample.DraftMail("bjansen@microsoft.com", "Let's Hack-A-Thon", "This will be fun (in draft folder)...");
+                await MailApiSample.DraftMail(sendMailTo, "Let's Hack-A-Thon", "This will be fun (in draft folder)...");
 
                 PrintHeader("Active Directory API demo");
                 PrintSubHeader("Get all users, print first 10");
@@ -169,6 +176,15 @@ namespace Office365Api.Demo
         private void PrintAttribute(string attribute)
         {
             PrintAttribute(attribute, null);
+        }
+
+        private void ScrollViewer_LayoutUpdated(object sender, EventArgs e)
+        {
+            if (this.scrollViewerOutput.ExtentHeight != scrollViewerHeight)
+            {
+                this.scrollViewerOutput.ScrollToVerticalOffset(this.scrollViewerOutput.ExtentHeight);
+                this.scrollViewerHeight = this.scrollViewerOutput.ExtentHeight;
+            }
         }
     }
 }
