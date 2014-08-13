@@ -43,7 +43,7 @@ namespace Contoso.Provisioning.OneDriveProvisioning
         /// <summary>
         /// Sample Member that provisions personal sites leveraging CSOM
         /// You dont want to do provision more than 200 users during a single request. If you have a large amount of users consider
-        //  waiting for the last users site to be provisioned. The reason behind this is not to bombard the service with requests.
+        /// waiting for the last users site to be provisioned. The reason behind this is not to bombard the service with requests.
         /// </summary>
         /// <param name="tenantAdminUrl">The Tenanat Admin URL for your SharePoint Online Subscription</param>
         /// <param name="spoCredentials">The Credentials of the user who has tenant admin permission.</param>
