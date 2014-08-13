@@ -39,15 +39,6 @@ namespace Office365Api.Demo
             return files;
         }
 
-        //private static async Task<SharePointClient> EnsureClientCreated(string siteUrl)
-        //{
-        //    Authenticator authenticator = new Authenticator();
-        //    var authInfo = await authenticator.AuthenticateAsync(SharePointResourceId, ServiceIdentifierKind.Resource);
-
-        //    // Create the SharePoint client proxy:
-        //    return new SharePointClient(new Uri(string.Format("{0}/_api", siteUrl)), authInfo.GetAccessToken);
-        //}
-
         public static async Task<SharePointClient> EnsureClientCreated(string siteUrl)
         {
             if (_discoveryContext == null)

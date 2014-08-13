@@ -8,7 +8,7 @@
             <RowDefinition Height="285*"/>
         </Grid.RowDefinitions>
         <Button x:Name="btnGo" Content="Run demo" Margin="10,4" Click="Button_Click"/>
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer x:Name="scrollViewerOutput" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" LayoutUpdated="ScrollViewer_LayoutUpdated">
             <TextBlock x:Name="txtOutput" Grid.Row="1" TextWrapping="NoWrap" FontSize="18" FontFamily="Consolas" Margin="0" Padding="10,10,0,0"/>
         </ScrollViewer>
     </Grid>

@@ -23,7 +23,6 @@ namespace Office365Api.Demo
             set;
         }
 
-
         public static async Task<IEnumerable<IFileSystemItem>> GetMyFiles()
         {
             var client = await EnsureClientCreated();
