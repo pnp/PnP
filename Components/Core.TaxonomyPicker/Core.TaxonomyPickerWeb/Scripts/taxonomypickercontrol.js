@@ -846,7 +846,7 @@
                     //build the dialog editor area
                     //TODO: convert the dlgEditor with contenteditable="true" just like the main editor (Enhancement)
                     this._dlgEditor = $('<div class="cam-taxpicker-dialog-selection-editor" RestrictPasteToText="true" AllowMultiLines="false"></div>');
-                    this._dlgSelectButton = $('<button>Select >></button>');
+                    this._dlgSelectButton = $('<button>' + TaxonomyPickerConsts.BUTTON_TEXT + ' >></button>');
                     dlgBody.append(dlgBodyContainer).append($('<div class="cam-taxpicker-dialog-selection-container"></div>').append(this._dlgSelectButton).append(this._dlgEditor));
                     dlg.append(dlgBody);
                     this._dialog.empty().append($('<div class="cam-taxpicker-dialog-overlay"></div>')).append(dlg);
