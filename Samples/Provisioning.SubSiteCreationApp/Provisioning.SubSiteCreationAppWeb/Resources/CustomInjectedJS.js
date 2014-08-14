@@ -6,10 +6,6 @@ if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
     Sys.Application.notifyScriptLoaded();
 }
 
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("CustomInjectedJS.js");
-}
-
 // Actual execution
 function SubSiteOverride_Inject() {
 
@@ -31,4 +27,8 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
         link.href = url;
     }
 
+}
+
+if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
+    NotifyScriptLoadedAndExecuteWaitingJobs("CustomInjectedJS.js");
 }
