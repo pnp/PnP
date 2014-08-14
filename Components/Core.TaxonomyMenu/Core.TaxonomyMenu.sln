@@ -1,14 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TaxonomyMenu", "Core.TaxonomyMenu\Core.TaxonomyMenu.csproj", "{27D4DC30-1CAA-438D-B51E-ECC2A37A8181}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FF9BD52A-3D0A-4510-8618-068C7254ABC7}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		SharePoint Taxonomy Menu.docx = SharePoint Taxonomy Menu.docx
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TaxonomyMenuWeb", "Core.TaxonomyMenuWeb\Core.TaxonomyMenuWeb.csproj", "{CAC8BF2A-04B2-4F8B-B1C5-E4C261C0983F}"
