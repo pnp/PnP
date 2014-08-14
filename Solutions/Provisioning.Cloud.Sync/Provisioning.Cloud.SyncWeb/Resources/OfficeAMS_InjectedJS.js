@@ -6,10 +6,6 @@ if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
     Sys.Application.notifyScriptLoaded();
 }
 
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("OfficeAMSSubSite_InjectedJS.js");
-}
-
 // Actual execution
 function OfficeAMSSubSite_Inject() {
 
@@ -71,3 +67,7 @@ function OfficeAMSSubSite_OverrideLinkToAppUrl() {
 }
 
 function OfficeAMSSubSite_QueryFailed(sender, args) { }
+
+if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
+    NotifyScriptLoadedAndExecuteWaitingJobs("OfficeAMSSubSite_InjectedJS.js");
+}
