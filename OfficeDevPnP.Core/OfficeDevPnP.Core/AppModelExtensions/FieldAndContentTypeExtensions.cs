@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="id">Guid for the new field.</param>
         /// <param name="internalName">Internal name of the field</param>
         /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of hte field</param>
+        /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this Web web, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
@@ -34,7 +34,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="id">Guid for the new field.</param>
         /// <param name="internalName">Internal name of the field</param>
         /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of hte field</param>
+        /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
@@ -66,7 +66,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="internalName">Internal name of the field</param>
         /// <param name="fieldType">Field type to be created.</param>
         /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of hte field</param>
+        /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "")
@@ -196,7 +196,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Creates fields from feature elment xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
+        /// Creates fields from feature element xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="xmlFilePath">Absolute path to the xml location</param>
@@ -211,7 +211,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Creates fields from feature elment xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
+        /// Creates fields from feature element xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="xmlFilePath">XML structure in string format</param>
@@ -226,7 +226,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Creates field from xml structure which follows the classic feture framework structure
+        /// Creates field from xml structure which follows the classic feature framework structure
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="xd">Actual XML document</param>
@@ -580,7 +580,7 @@ namespace Microsoft.SharePoint.Client
 
             contentTypes.AddExistingContentType(contentType);
             list.Context.ExecuteQuery();
-            //set the default contenttype
+            //set the default content type
             if (defaultContent)
             {
                 SetDefaultContentTypeToList(list, contentType);
@@ -913,7 +913,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Does content type exist in ewb
+        /// Does content type exist in web
         /// </summary>
         /// <param name="web"></param>
         /// <param name="listTitle"></param>
@@ -926,7 +926,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Does cotnent type exist in list
+        /// Does content type exist in list
         /// </summary>
         /// <param name="list"></param>
         /// <param name="contentTypeName"></param>
@@ -954,7 +954,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web"></param>
         /// <param name="fieldId">Guid for the field ID</param>
-        /// <returns>True or false dependign on the field existance</returns>
+        /// <returns>True or false depending on the field existence</returns>
         public static bool FieldExistsById(this Web web, Guid fieldId)
         {
             FieldCollection fields = web.Fields;
@@ -1080,7 +1080,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web"></param>
         /// <param name="contentTypeName"></param>
-        /// <returns>Conten type object or null if was not found</returns>
+        /// <returns>Content type object or null if was not found</returns>
         public static ContentType GetContentTypeByName(this Web web, string contentTypeName)
         {
             ContentTypeCollection ctCol = web.ContentTypes;
@@ -1090,7 +1090,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Return conten type by Id
+        /// Return content type by Id
         /// </summary>
         /// <param name="web"></param>
         /// <param name="contentTypeId"></param>
@@ -1115,7 +1115,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="contentTypeName"></param>
-        /// <returns>Conten type object or null if was not found</returns>
+        /// <returns>Content type object or null if was not found</returns>
         public static ContentType GetContentTypeByName(this List list, string contentTypeName)
         {
             ContentTypeCollection ctCol = list.ContentTypes;
