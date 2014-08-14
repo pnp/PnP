@@ -51,7 +51,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Uplaod file to library 
+        /// Upload file to library 
         /// </summary>
         /// <param name="list">List to be processed - can be root web or sub site</param>
         /// <param name="filePath">Path to source location like c:\fuu.txt</param>

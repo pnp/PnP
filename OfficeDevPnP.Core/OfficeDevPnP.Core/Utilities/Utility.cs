@@ -20,7 +20,7 @@ namespace OfficeDevPnP.Core.Utilities
         {
             if (!site.IsObjectPropertyInstantiated(propertyToCheck))
             {
-                // get instances to root web, since we are processign currently sub site 
+                // get instances to root web, since we are processing currently sub site 
                 cc.Load(site);
                 cc.ExecuteQuery();
             }
@@ -38,7 +38,7 @@ namespace OfficeDevPnP.Core.Utilities
         {
             if (!web.IsObjectPropertyInstantiated(propertyToCheck))
             {
-                // get instances to root web, since we are processign currently sub site 
+                // get instances to root web, since we are processing currently sub site 
                 cc.Load(web);
                 cc.ExecuteQuery();
             }

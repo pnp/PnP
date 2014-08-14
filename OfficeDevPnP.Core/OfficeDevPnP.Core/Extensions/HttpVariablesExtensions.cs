@@ -5,7 +5,7 @@ using System.Web;
 namespace System.Web
 {
 	/// <summary>
-	/// Used to retreive HttpVariables
+	/// Used to retrieve HttpVariables
 	/// </summary>
 	public static class HttpVariablesExtensions {
         #region [ Definition ]

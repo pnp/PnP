@@ -274,7 +274,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list to return</param>
-        /// <returns>Loaded list instance mathing to title or null</returns>
+        /// <returns>Loaded list instance matching to title or null</returns>
         public static List GetListByTitle(this Web web, string listTitle)
         {
             ListCollection lists = web.Lists;
@@ -310,7 +310,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Create list views based on xml struction loaded to memory
+        /// Create list views based on xml structure loaded to memory
         /// </summary>
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
@@ -322,7 +322,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(list);
             web.Context.ExecuteQuery();
 
-            // Execute teh actual xml based creation
+            // Execute the actual xml based creation
             list.CreateListVewsFromXML(xmlDoc);
         }
 
@@ -351,7 +351,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Actual implemenation of the view creation logic based on given xml
+        /// Actual implementation of the view creation logic based on given xml
         /// </summary>
         /// <param name="list"></param>
         /// <param name="xmlDoc"></param>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace OfficeDevPnP.Core.Utilities
 {
     /// <summary>
-    /// Utilitiy class that support certificate based encryption/decryption
+    /// Utility class that support certificate based encryption/decryption
     /// </summary>
     public static class EncryptionUtility
     {
