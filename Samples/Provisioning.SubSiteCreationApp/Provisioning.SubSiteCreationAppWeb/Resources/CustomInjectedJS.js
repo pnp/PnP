@@ -19,7 +19,7 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
     var link = document.getElementById('createnewsite');
     var url = "https://localhost:44339/pages/default.aspx?SPHostUrl=" + encodeURIComponent(_spPageContextInfo.webAbsoluteUrl);
     if (link != undefined) {
-        // Could be get from SPSite root web property bag - now hardcdoded for demo purposes
+        // Could be get from SPSite root web property bag - now hard coded for demo purposes
         link.href = url;
     }
 

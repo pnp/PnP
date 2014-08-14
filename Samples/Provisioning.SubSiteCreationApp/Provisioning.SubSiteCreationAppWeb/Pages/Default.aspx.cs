@@ -80,7 +80,7 @@ namespace Contoso.Provisioning.SubSiteCreationAppWeb
             information.Description = description;
             information.Title = title;
             information.Url = txtUrl;
-            // Currently all english, could be extended to be configurable based on language pack usage
+            // Currently all English, could be extended to be configurable based on language pack usage
             information.Language = 1033;
 
             Microsoft.SharePoint.Client.Web newWeb = null;
