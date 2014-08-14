@@ -58,6 +58,64 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Checks if a feature is active
+        /// </summary>
+        /// <param name="site">Site to operate against</param>
+        /// <param name="featureID">ID of the feature to check</param>
+        /// <returns>True if active, false otherwise</returns>
+        public static bool IsFeatureActive(this Site site, Guid featureID)
+        {
+            bool featureIsActive = false;
+
+            FeatureCollection clientSiteFeatures = site.Features;
+            site.Context.Load(clientSiteFeatures);
+            site.Context.ExecuteQuery();
+            Feature iprFeature = clientSiteFeatures.GetById(featureID);
+            site.Context.Load(iprFeature);
+            site.Context.ExecuteQuery();
+
+            if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && iprFeature.DefinitionId.Equals(featureID))
+            {
+                featureIsActive = true;
+            }
+            else
+            {
+                featureIsActive = false;
+            }
+
+            return featureIsActive;
+        }
+
+        /// <summary>
+        /// Checks if a feature is active
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="featureID">ID of the feature to check</param>
+        /// <returns>True if active, false otherwise</returns>
+        public static bool IsFeatureActive(this Web web, Guid featureID)
+        {
+            bool featureIsActive = false;
+
+            FeatureCollection clientSiteFeatures = web.Features;
+            web.Context.Load(clientSiteFeatures);
+            web.Context.ExecuteQuery();
+            Feature iprFeature = clientSiteFeatures.GetById(featureID);
+            web.Context.Load(iprFeature);
+            web.Context.ExecuteQuery();
+
+            if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && iprFeature.DefinitionId.Equals(featureID))
+            {
+                featureIsActive = true;
+            }
+            else
+            {
+                featureIsActive = false;
+            }
+
+            return featureIsActive;
+        }
+
+        /// <summary>
         /// Activates or deactivates a site collection or site scoped feature
         /// </summary>
         /// <param name="site">Site to be processed</param>
