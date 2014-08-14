@@ -83,7 +83,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb
                 }
             }
 
-            //load modules everytime since they are dynamic
+            //load modules every time since they are dynamic
             LoadModules();
 
             // Verify that configuration list exists in the root site of the tenant / web application
@@ -148,7 +148,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb
                     ((BaseProvisioningModule)ctrl).Provision(clientContext, newWeb);
             }
 
-            //displose the clientContext
+            //dispose the clientContext
             clientContext.Dispose();
 
             if (Page.Request["IsDlg"].Contains("1"))
