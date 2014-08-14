@@ -2,14 +2,6 @@
 RegisterModuleInit("FileConfidentialityMessage.js", RemoteManager_Inject); //MDS registration
 RemoteManager_Inject(); //non MDS run
 
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("FileConfidentialityMessage.js");
-}
-
 function RemoteManager_Inject() {
 
     var jQuery = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.2.min.js";
@@ -72,4 +64,12 @@ function loadScript(url, callback) {
     };
 
     head.appendChild(script);
+}
+
+if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
+  Sys.Application.notifyScriptLoaded();
+}
+
+if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
+  NotifyScriptLoadedAndExecuteWaitingJobs("FileConfidentialityMessage.js");
 }
