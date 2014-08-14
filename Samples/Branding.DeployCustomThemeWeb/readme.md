@@ -12,7 +12,8 @@ This sample shows how to assign, upload and change the used theme on the host we
 None
 
 ### Solution ###
-Solution | Author(s)---------|----------
+Solution | Author(s)
+---------| ----------
 Branding.DeployCustomThemeWeb | Vesa Juvonen, Microsoft
 
 ### Version history ###
