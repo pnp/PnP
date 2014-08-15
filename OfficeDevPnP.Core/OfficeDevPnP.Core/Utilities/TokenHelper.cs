@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="targetPrincipalName">Name of the target principal to retrieve an access token for</param>
         /// <param name="targetHost">Url authority of the target principal</param>
         /// <param name="targetRealm">Realm to use for the access token's nameid and audience</param>
-        /// <param name="redirectUri">Redirect URI registerd for this app</param>
+        /// <param name="redirectUri">Redirect URI registered for this app</param>
         /// <returns>An access token with an audience of the target principal</returns>
         public static OAuth2AccessTokenResponse GetAccessToken(
             string authorizationCode,
@@ -379,7 +379,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="targetUrl">Url of the target SharePoint site</param>
         /// <param name="authorizationCode">Authorization code to use when retrieving the access token from ACS</param>
-        /// <param name="redirectUri">Redirect URI registerd for this app</param>
+        /// <param name="redirectUri">Redirect URI registered for this app</param>
         /// <returns>A ClientContext ready to call targetUrl with a valid access token</returns>
         public static ClientContext GetClientContextWithAuthorizationCode(
             string targetUrl,
@@ -397,7 +397,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="targetPrincipalName">Name of the target SharePoint principal</param>
         /// <param name="authorizationCode">Authorization code to use when retrieving the access token from ACS</param>
         /// <param name="targetRealm">Realm to use for the access token's nameid and audience</param>
-        /// <param name="redirectUri">Redirect URI registerd for this app</param>
+        /// <param name="redirectUri">Redirect URI registered for this app</param>
         /// <returns>A ClientContext ready to call targetUrl with a valid access token</returns>
         public static ClientContext GetClientContextWithAuthorizationCode(
             string targetUrl,

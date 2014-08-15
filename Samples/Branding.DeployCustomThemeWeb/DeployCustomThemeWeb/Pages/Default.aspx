@@ -26,7 +26,7 @@
         </asp:DropDownList>
         <br />
         <br />
-        <asp:Button runat="server" ID="btnSetThemeForHost" Text="Deploy a custom theme" OnClick="btnSetThemeForHost_Click" />  <asp:Label ID="lblStatus1" runat="server" />
+        <asp:Button runat="server" ID="btnSetThemeForHost" Text="Set out of the box theme" OnClick="btnSetThemeForHost_Click" />  <asp:Label ID="lblStatus1" runat="server" />
         <br />
         <br />
         <h1>Deploy a new theme and set it to be available in host site</h1>

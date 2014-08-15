@@ -2,14 +2,6 @@
 RegisterModuleInit("CustomInjectedJS.js", SubSiteOverride_Inject); //MDS registration
 SubSiteOverride_Inject(); //non MDS run
 
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("CustomInjectedJS.js");
-}
-
 // Actual execution
 function SubSiteOverride_Inject() {
 
@@ -27,8 +19,16 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
     var link = document.getElementById('createnewsite');
     var url = "https://localhost:44339/pages/default.aspx?SPHostUrl=" + encodeURIComponent(_spPageContextInfo.webAbsoluteUrl);
     if (link != undefined) {
-        // Could be get from SPSite root web property bag - now hardcdoded for demo purposes
+        // Could be get from SPSite root web property bag - now hard coded for demo purposes
         link.href = url;
     }
 
+}
+
+
+if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
+  Sys.Application.notifyScriptLoaded();
+}
+if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
+    NotifyScriptLoadedAndExecuteWaitingJobs("CustomInjectedJS.js");
 }

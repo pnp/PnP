@@ -92,7 +92,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeGalleryList">SharePoint theme galery list</param>
+        /// <param name="themeGalleryList">SharePoint theme gallery list</param>
         /// <returns>True if theme exists, false otherwise</returns>
         public static bool ThemeEntryExists(this Web web, string themeName, List themeGalleryList)
         {
@@ -208,7 +208,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(backgroundPath)));
                 }
-                // we use seattle master if anythign else is not set
+                // we use seattle master if anything else is not set
                 if (string.IsNullOrEmpty(masterPageName))
                 {
                     item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, "/_catalogs/masterpage/seattle.master");
@@ -279,7 +279,7 @@ namespace Microsoft.SharePoint.Client
                 if (found.Count > 0)
                 {
                     ListItem themeEntry = found[0];
-                    //Set the properties for applying custom theme which was jus uplaoded
+                    //Set the properties for applying custom theme which was just uploaded
                     string spColorURL = null;
                     if (themeEntry["ThemeUrl"] != null && themeEntry["ThemeUrl"].ToString().Length > 0)
                     {
@@ -313,7 +313,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        //TODO: to be replaced by new sitelogo CSOM once we've the april 2014 CU
+        //TODO: to be replaced by new site logo CSOM once we've the April 2014 CU
         //Note: does seem to broken on the current SPO implementation (20/03/2014) as there's no _themes folder anymore in the root web
         public static void SetSiteLogo(this Web web, string fullPathToLogo)
         {
@@ -328,7 +328,7 @@ namespace Microsoft.SharePoint.Client
             Folder themeFolder = rootFolder.ResolveSubFolder("_themes");
             Folder themeAssetsFolder = themeFolder.ResolveSubFolder("0");
 
-            // Use CSOM to uplaod the file in
+            // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(fullPathToLogo);
             newFile.Url = themeAssetsFolder.ServerRelativeUrl + "/siteIcon-2129F729.themedpng";
@@ -377,14 +377,14 @@ namespace Microsoft.SharePoint.Client
 
 
         /// <summary>
-        /// Can be used ot deploy page layouts to master page gallyery. 
+        /// Can be used to deploy page layouts to master page gallery. 
         /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
         /// </summary>
-        /// <param name="web">Web as the root site of the publishign site collection</param>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
         /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
         /// <param name="title">Title for the page layout</param>
         /// <param name="description">Description for the page layout</param>
-        /// <param name="associatedContentTypeID">Assocated content type ID</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
         public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
         {
             // Get the path to the file which we are about to deploy
@@ -416,7 +416,7 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            // Get content type for ID to assign assocated content type information
+            // Get content type for ID to assign associated content type information
             ContentType associatedCt = web.GetContentTypeById(associatedContentTypeID);
 
             var listItem = uploadFile.ListItemAllFields;
@@ -424,7 +424,7 @@ namespace Microsoft.SharePoint.Client
             listItem["MasterPageDescription"] = description;
             // set the item as page layout
             listItem["ContentTypeId"] = "0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811";
-            // Set teh associated content type ID property
+            // Set the associated content type ID property
             listItem["PublishingAssociatedContentType"] = ";#" + associatedCt.Name + ";#" + associatedCt.Id + ";#";
             listItem["UIVersion"] = Convert.ToString(15);
             listItem.Update();
@@ -581,7 +581,7 @@ namespace Microsoft.SharePoint.Client
 
 
         /// <summary>
-        /// Set master page by using given URL as parameter. Suitable for exampel in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
+        /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
         /// <param name="masterPageName">URL to the master page.</param>
@@ -593,7 +593,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Set Custom master page by using given URL as parameter. Suitable for exampel in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
+        /// Set Custom master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
         /// <param name="masterPageName">URL to the master page.</param>
@@ -605,7 +605,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Sets specific page layout the detault page layout for the particular site
+        /// Sets specific page layout the default page layout for the particular site
         /// </summary>
         /// <param name="web"></param>
         /// <param name="rootWeb"></param>
@@ -645,7 +645,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Can be used to set the site to inherit the detault page layout option from parent. Cannot be used for root site of the site collection
+        /// Can be used to set the site to inherit the default page layout option from parent. Cannot be used for root site of the site collection
         /// </summary>
         /// <param name="web"></param>
         public static void SetSiteToInheritPageLayouts(this Web web)

@@ -43,7 +43,7 @@ namespace Provisioning.OneDriveWeb.Pages
                 }
                 else
                 {
-                    // Site already exists, let's modify the branding by applyign a theme... just as well you could upload
+                    // Site already exists, let's modify the branding by applying a theme... just as well you could upload
                     // master page and set that to be shown. Notice that you can also modify this code to change the branding
                     // later and updates would be reflected whenever user visits OneDrive host... or any other location where this
                     // app part is located. You could place this also to front page of the intranet for ensuring that it's applied.
@@ -52,7 +52,7 @@ namespace Provisioning.OneDriveWeb.Pages
                     clientContext.Load(rootWeb);
                     clientContext.ExecuteQuery();
 
-                    //Let's set the theme only if needed, note that you can easily check for example specific version here as wellvsa
+                    //Let's set the theme only if needed, note that you can easily check for example specific version here as well
                     if (rootWeb.GetPropertyBagValueInt(OneDriveCustomizer.OneDriveMarkerBagID, 0) < 2)
                     {
                         // Let's first upload the contoso theme to host web, if it does not exist there
@@ -84,7 +84,7 @@ namespace Provisioning.OneDriveWeb.Pages
         }
 
         /// <summary>
-        /// Just to buidl the JS path which can be then pointed to the OneDrive site.
+        /// Just to build the JS path which can be then pointed to the OneDrive site.
         /// </summary>
         /// <returns></returns>
         public string BuildJavaScriptUrl()

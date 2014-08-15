@@ -54,7 +54,7 @@ namespace OfficeDevPnP.Core.Utilities
         }
 
         /// <summary>
-        /// Reutrns Yammer groups based on the access toekn. All groups are returned for registered apps.
+        /// Returns Yammer groups based on the access token. All groups are returned for registered apps.
         /// </summary>
         /// <param name="accessToken">Access token to the Yammer network</param>
         /// <returns>All groups in the network</returns>
@@ -67,7 +67,7 @@ namespace OfficeDevPnP.Core.Utilities
             var response = GetYammerJson(String.Format("https://www.yammer.com/api/v1/groups/for_user/{0}.json", user.id), accessToken);
             List<YammerGroup> groups = JsonUtility.Deserialize<List<YammerGroup>>(response);
 
-            // Updated entwork information to the group data
+            // Updated network information to the group data
             foreach (var item in groups)
             {
                 item.network_id = user.network_id;

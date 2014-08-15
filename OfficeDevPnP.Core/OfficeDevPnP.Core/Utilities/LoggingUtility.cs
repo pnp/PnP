@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Utilities {
     }
 
     /// <summary>
-    /// Logging event severy level enumeration
+    /// Logging event severity level enumeration
     /// </summary>
     public enum EventLevel {
         Information,

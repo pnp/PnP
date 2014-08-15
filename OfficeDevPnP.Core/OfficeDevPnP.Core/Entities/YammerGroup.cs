@@ -15,8 +15,8 @@ namespace OfficeDevPnP.Core.Entities
     }
 
     /// <summary>
-    /// Reprisents Yammer Group information
-    /// Generated based on Yammer response on 30th fo June 2014 and using http://json2csharp.com/ service 
+    /// Represents Yammer Group information
+    /// Generated based on Yammer response on 30th of June 2014 and using http://json2csharp.com/ service 
     /// </summary>
     public class YammerGroup
     {

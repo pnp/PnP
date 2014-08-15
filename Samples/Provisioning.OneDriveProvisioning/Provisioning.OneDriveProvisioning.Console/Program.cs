@@ -42,12 +42,12 @@ namespace Contoso.Provisioning.OneDriveProvisioning
 
         /// <summary>
         /// Sample Member that provisions personal sites leveraging CSOM
-        /// You dont want to do provision more than 200 users during a single request. If you have a large amount of users consider
-        //  waiting for the last users site to be provisioned. The reason behind this is not to bombard the service with requests.
+        /// You don't want to do provision more than 200 users during a single request. If you have a large amount of users consider
+        /// waiting for the last users site to be provisioned. The reason behind this is not to bombard the service with requests.
         /// </summary>
-        /// <param name="tenantAdminUrl">The Tenanat Admin URL for your SharePoint Online Subscription</param>
+        /// <param name="tenantAdminUrl">The Tenant Admin URL for your SharePoint Online Subscription</param>
         /// <param name="spoCredentials">The Credentials of the user who has tenant admin permission.</param>
-        /// <param name="emailIDs">The email ids for users whos personal site you want to create.</param>
+        /// <param name="emailIDs">The email ids for users who's personal site you want to create.</param>
         public static void CreatePersonalSiteUsingCSOM(SharePointOnlineCredentials spoCredentials, string tenantAdminUrl, string[] emailIDs)
         {
 
@@ -162,7 +162,7 @@ namespace Contoso.Provisioning.OneDriveProvisioning
             try
             {
                 ///"User3@MicrosoftACS.onmicrosoft.com" , "User4@MicrosoftACS.onmicrosoft.com"
-                Console.Write("Supply the users that you want to provision a OneDrive for. You can supply multple users  using a comma. Exampple: test1@contoso.onmicrosoft.com,test1@contoso.onmicrosoft.com: ");
+                Console.Write("Supply the users that you want to provision a OneDrive for. You can supply multiple users  using a comma. Exampple: test1@contoso.onmicrosoft.com,test1@contoso.onmicrosoft.com: ");
                 string emailInput = Console.ReadLine();
                 if (!string.IsNullOrEmpty(emailInput))
                 {

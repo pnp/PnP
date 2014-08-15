@@ -100,7 +100,7 @@ namespace System
         public static string NormalizePageName(this string pageName)
         {
             string strFilteredName = string.Empty;
-            //Character array for all the apecial characters
+            //Character array for all the special characters
             char[] chars = "!@#€¥$£%^&* ()+=-[]\\;/{}|\":<>?".ToCharArray();
             //Looping the page name entered by the user in the modal popup to match that is there any special character in it.
             foreach (var c in chars) {

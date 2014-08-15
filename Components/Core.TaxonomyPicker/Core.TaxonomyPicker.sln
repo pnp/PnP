@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TaxonomyPicker", "Core.TaxonomyPicker\Core.TaxonomyPicker.csproj", "{25E6E1BA-8E4D-462B-B309-F6C29C9191B1}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TaxonomyPickerWeb", "C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{5AEE718D-AC9B-4A45-AE39-50EEDE4F0AF1}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		TaxonomyPicker for provider hosted SP apps.docx = TaxonomyPicker for provider hosted SP apps.docx
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

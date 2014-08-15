@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Yammer", "Provisioning.Yammer\Provisioning.Yammer.csproj", "{FB51DE43-E558-4C1C-9B4B-FE1609C9A139}"
 EndProject
@@ -11,6 +11,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E51A63F7-D82E-4D7C-823B-4B9423DB6D43}"
 	ProjectSection(SolutionItems) = preProject
 		Provisioning.Yammer.docx = Provisioning.Yammer.docx
+		readme.md = readme.md
 		readme.txt = readme.txt
 	EndProjectSection
 EndProject
