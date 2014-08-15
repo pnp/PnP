@@ -5,11 +5,11 @@ This scenario shows how to upload CSS and site image to the host web and how to 
 Notice that you can use 2014 April CU CSOM also with Office365 to set the properties accordingly to the host web.
 
 
-### Walkthrugh Video ###
+### Walkthrough Video ###
+
+Visit the video on Channel 9 [http://channel9.msdn.com/Blogs/Office-365-Dev/Alternate-CSS-and-set-site-logo-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Alternate-CSS-and-set-site-logo-Office-365-Developer-Patterns-and-Practices)
 
 ![http://channel9.msdn.com/Blogs/Office-365-Dev/Alternate-CSS-and-set-site-logo-Office-365-Developer-Patterns-and-Practices](/Samples/Branding.AlternateCSSAndSiteLogo/images/ch9scrnsht.png)
-
-[http://channel9.msdn.com/Blogs/Office-365-Dev/Alternate-CSS-and-set-site-logo-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Alternate-CSS-and-set-site-logo-Office-365-Developer-Patterns-and-Practices)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -37,7 +37,7 @@ Version  | Date | Comments
 
 
 
-### SCENARIO: INJECT CUSTOM CSS FROM APP TO HOST WEB ### 
+### SCENARIO: INJECT CUSTOM CSS FROM APP TO HOST WEB 
 This scenario shows how to upload CSS and site image to the host web and how to set those to be used using CSOM. These are new properties released as part of the 2014 April CU for on-premises and they are also located in the cloud. MS online CSOM will be updated to expose these additional CSOM properties for the Web object during July 2014.
 Notice that you can use 2014 April CU CSOM also with Office365 to set the properties accordingly to the host web.
 ![](/Samples/Branding.AlternateCSSAndSiteLogo/images/001.png)
