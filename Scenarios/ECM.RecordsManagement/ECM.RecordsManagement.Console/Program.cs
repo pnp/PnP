@@ -16,8 +16,14 @@ namespace ECM.RecordsManagement
         static void Main(string[] args)
         {
             // Office 365 Multi-tenant sample
-            ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com/sites/dev2", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
+            ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com/sites/130020", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
+            //130020
 
+            if (!cc.Site.IsInPlaceRecordsManagementActive())
+            {
+                cc.Site.EnableSiteForInPlaceRecordsManagement();
+            }
+            
             FileStream ostrm;
             StreamWriter writer = null;
             TextWriter oldOut = Console.Out;
@@ -44,8 +50,9 @@ namespace ECM.RecordsManagement
                 Console.SetOut(writer);
             }
 
-            //List ecm = cc.Web.GetListByTitle("Documents");
-            List ecm = cc.Web.GetListByTitle("EcmTest2");
+            List ecm = cc.Web.GetListByTitle("Documents");
+
+            //List ecm = cc.Web.GetListByTitle("ECMTest");
             cc.Load(ecm.RootFolder, p => p.Properties);
             cc.Load(ecm.EventReceivers);
             cc.Load(cc.Web, t => t.AllProperties);
@@ -73,6 +80,7 @@ namespace ECM.RecordsManagement
                 Console.WriteLine(String.Format("Class: {0}", eventReceiver.ReceiverClass));
                 Console.WriteLine(String.Format("Url: {0}", eventReceiver.ReceiverUrl));
                 Console.WriteLine(String.Format("Sequence: {0}", eventReceiver.SequenceNumber));
+                Console.WriteLine(String.Format("Synchronisation: {0}", eventReceiver.Synchronization));
             }
 
             Console.WriteLine("=======================================================");
@@ -80,7 +88,6 @@ namespace ECM.RecordsManagement
             CamlQuery query = CamlQuery.CreateAllItemsQuery(100);
             ListItemCollection items = ecm.GetItems(query);
 
-            // Retrieve all items in the ListItemCollection from List.GetItems(Query). 
             cc.Load(items);
             cc.ExecuteQuery();
             foreach (ListItem listItem in items)
