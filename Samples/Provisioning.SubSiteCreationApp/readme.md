@@ -7,11 +7,11 @@ Additional information related on the different site provisioning options can be
 •	[Site provisioning techniques and remote provisioning in SharePoint 2013](http://blogs.msdn.com/b/vesku/archive/2013/08/23/site-provisioning-techniques-and-remote-provisioning-in-sharepoint-2013.aspx)
 •	[SharePoint 2013 site provisioning techniques presentation video recording](http://blogs.msdn.com/b/vesku/archive/2013/09/09/sharepoint-2013-site-provisioning-techniques-presentation-video-recording.aspx)
 
-### Walkthrugh Video ###
+### Walkthrough Video ###
+
+Visit the video on Channel 9 [http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
 ![http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](/Samples/Provisioning.SubSiteCreationApp/images/ch9scrnsht.png)
-
-[http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
 ### Applies to ###
 - Office 365 Multi-Tenant (MT)
