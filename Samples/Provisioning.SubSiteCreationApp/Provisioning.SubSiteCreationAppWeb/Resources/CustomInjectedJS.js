@@ -2,10 +2,6 @@
 RegisterModuleInit("CustomInjectedJS.js", SubSiteOverride_Inject); //MDS registration
 SubSiteOverride_Inject(); //non MDS run
 
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
 // Actual execution
 function SubSiteOverride_Inject() {
 
@@ -29,6 +25,10 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
 
 }
 
+
+if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
+  Sys.Application.notifyScriptLoaded();
+}
 if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
     NotifyScriptLoadedAndExecuteWaitingJobs("CustomInjectedJS.js");
 }

@@ -14,7 +14,7 @@
     <div id="divSPChrome"></div>
     <div style="left: 40px; position: absolute;">
         <h1>Scenario 1: Set theme to host site</h1>
-        In this scenario you'll learn how to manipuate the host web theme using CSOM
+        In this scenario you'll learn how to manipulate the host web theme using CSOM
         <ul style="list-style-type: square;">
             <li>How to apply an existing theme to your host web</li>
         </ul>
@@ -38,7 +38,7 @@
         In this scenario you'll learn how to deploy needed theme assets to host site and how to set custom theme to be applied to the site.
         <ul style="list-style-type: square;">
             <li>How to deploy theme elements to host site</li>
-            <li>How to assing custom theme to the site</li>
+            <li>How to assign custom theme to the site</li>
         </ul>
         <br />
         <br />       

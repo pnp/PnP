@@ -56,7 +56,7 @@ namespace OfficeDevPnP.Core.Utilities
                         if (args.Error != null)
                             LoggingUtility.LogError("Mail message could not be sent.", args.Error, EventCategory.Mail);
                         else if (args.Cancelled)
-                            LoggingUtility.LogInformation("Mail message was cancelled.", EventCategory.Mail);
+                            LoggingUtility.LogInformation("Mail message was canceled.", EventCategory.Mail);
                     };
                     server.SendAsync(mail, asyncUserToken);
                 }

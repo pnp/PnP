@@ -306,7 +306,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch(Exception ex)
             {
-                // Eat the siteSubscription exception to make the same code work for MT as on-prem april 2014 CU+
+                // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
                 if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1) 
                 {
                     throw ex;
@@ -374,12 +374,12 @@ namespace Microsoft.SharePoint.Client
         /// Adds a sub site to an existing site
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="title">Titel for the site</param>
+        /// <param name="title">Title for the site</param>
         /// <param name="description">Description for the new site</param>
         /// <param name="template">Template for the site, like STS#0</param>
         /// <param name="language">Language code for the site, like 1033</param>
         /// <param name="inheritPermissions">Should the new site inherit permissions</param>
-        /// <param name="inheritNavigation">Should the new site inherti navigation</param>
+        /// <param name="inheritNavigation">Should the new site inherent navigation</param>
         public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
         {
             // Call centralized route to call internal creation logic
@@ -456,7 +456,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Deletes a site collection from the site collection recyle bin
+        /// Deletes a site collection from the site collection recycle bin
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="siteUrl">URL of the site collection to delete</param>
@@ -766,7 +766,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Type independent implementation of the property gettter.
+        /// Type independent implementation of the property getter.
         /// </summary>
         /// <param name="web">Web to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>

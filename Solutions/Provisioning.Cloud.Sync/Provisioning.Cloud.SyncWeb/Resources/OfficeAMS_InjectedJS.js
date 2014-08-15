@@ -2,10 +2,6 @@
 RegisterModuleInit("OfficeAMSSubSite_InjectedJS.js", OfficeAMSSubSite_Inject); //MDS registration
 OfficeAMSSubSite_Inject(); //non MDS run
 
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
 // Actual execution
 function OfficeAMSSubSite_Inject() {
 
@@ -67,6 +63,11 @@ function OfficeAMSSubSite_OverrideLinkToAppUrl() {
 }
 
 function OfficeAMSSubSite_QueryFailed(sender, args) { }
+
+
+if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
+  Sys.Application.notifyScriptLoaded();
+}
 
 if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
     NotifyScriptLoadedAndExecuteWaitingJobs("OfficeAMSSubSite_InjectedJS.js");

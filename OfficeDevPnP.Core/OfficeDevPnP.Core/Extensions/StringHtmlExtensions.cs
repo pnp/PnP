@@ -48,7 +48,7 @@ namespace System
 
 
         /// <summary>
-        /// Truncates text and discars any partial words left at the end.
+        /// Truncates text and discards any partial words left at the end.
         /// </summary>
         /// <param name="text">Input text.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
@@ -59,7 +59,7 @@ namespace System
         }
 
         /// <summary>
-        /// Truncates text and discars any partial words left at the end.
+        /// Truncates text and discards any partial words left at the end.
         /// </summary>
         /// <param name="text">Input text.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
@@ -70,7 +70,7 @@ namespace System
             if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
                 return text;
 
-            // trunctate the text, then remove the partial word at the end
+            // truncate the text, then remove the partial word at the end
             return Regex.Replace(text.Truncate(maxCharacters),
                 @"\s+[^\s]+$", string.Empty, RegexOptions.IgnoreCase | RegexOptions.Compiled) + trailingText;
         }
