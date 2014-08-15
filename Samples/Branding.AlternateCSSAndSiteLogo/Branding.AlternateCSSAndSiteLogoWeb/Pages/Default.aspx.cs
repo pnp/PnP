@@ -91,7 +91,7 @@ namespace Branding.AlternateCSSAndSiteLogoWeb
             string cssFile = System.Web.Hosting.HostingEnvironment.MapPath(
                                 string.Format("~/{0}", "resources/contoso.css"));
 
-            // Use CSOM to uplaod the file in
+            // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(cssFile);
             newFile.Url = "contoso.css";
@@ -104,7 +104,7 @@ namespace Branding.AlternateCSSAndSiteLogoWeb
             string logoFile = System.Web.Hosting.HostingEnvironment.MapPath(
                                 string.Format("~/{0}", "resources/99x.png"));
 
-            // Use CSOM to uplaod the file in
+            // Use CSOM to upload the file in
             newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(logoFile);
             newFile.Url = "99x.png";

@@ -13,7 +13,7 @@
     <form id="form1" runat="server">
         <div id="divSPChrome"></div>
         <div id="ContentArea">
-            <p>App should be added to public OneDrive host or other web site associated to user profiles. After this a App part should be added to host web, which actually modifyes the site when it exists.</p>
+            <p>App should be added to public OneDrive host or other web site associated to user profiles. After this a App part should be added to host web, which actually modifies the site when it exists.</p>
             <p>App works from any site located in the same tenant as the OneDrive for Business sites. </p>
             <p>This example has been tested with Microsoft Azure and with Office365. </p>
             <p>
