@@ -3,11 +3,12 @@
 ### Summary ###
 This scenario uses the Office AMS core library to set an existing theme to a site and for uploading and setting a custom theme. To learn more about the Office AMS core library please refer to its documentation.
 
-### Walkthrugh Video ###
+### Walkthrough Video ###
+
+Visit the video on Channel 9  [http://channel9.msdn.com/Blogs/Office-365-Dev/Setting-a-SharePoint-Theme-in-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Setting-a-SharePoint-Theme-in-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
 ![http://channel9.msdn.com/Blogs/Office-365-Dev/Setting-a-SharePoint-Theme-in-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](/Scenarios/Branding.Themes/images/ch9scrnsht.png)
 
-[http://channel9.msdn.com/Blogs/Office-365-Dev/Setting-a-SharePoint-Theme-in-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Setting-a-SharePoint-Theme-in-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
 ### Applies to ###
 - Office 365 Multi-Tenant (MT)
