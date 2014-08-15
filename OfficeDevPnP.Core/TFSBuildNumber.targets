@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0"
          xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!-- TFSBuildNumber.targets, Version 1.2 - October, 2012 -->
+  <!-- TFSBuildNumber.targets, Version 1.3 - August, 2014 -->
 
   <!-- Updates build numbers in projects based on the TFS build number.
   
@@ -15,6 +15,9 @@
          - Reset the AssemblyInfo.cs file after the build (so it isn't
            constantly being updated in version control, including TFS 2012
            local workspaces).
+         - If assembly info file needs to be Read Only (so that older TFS source
+           control doesn't pick it up as a change) then can unset/set the
+           read only flag on the file.
            
        To use:
        
@@ -45,6 +48,9 @@
           You can update the base year whenever you change the major or
           minor version number.
           
+       6. If your AssemblyInfo.cs file is usually read only, then you need to set
+          the additional property <TFSSetReadOnly>true</TFSSetReadOnly> to handle this.
+          
        NOTE: If you don't want to use GetMajorMinorFromCSharpAssemblyInfoFile,
        an alternative is to set the TFSMajorBuildNumber and TFSMinorBuildNumber
        properties in your .csproj file.
@@ -68,6 +74,7 @@
          <VersionInfoFile>$(MSBuildProjectDirectory)\VersionInfo.cs</VersionInfoFile>
          <TFSMajorBuildNumber>1</TFSMajorBuildNumber>
          <TFSMinorBuildNumber>0</TFSMinorBuildNumber>
+         <TFSSetReadOnly>true</TFSSetReadOnly>
        </PropertyGroup>
 
        -->
@@ -275,7 +282,7 @@
     <CreateProperty Value='"$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).0.0"'>
       <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
     </CreateProperty>
-    <Exec Condition="Exists('$(DestinationAssemblyInfoFile)')" Command='attrib -R "$(DestinationAssemblyInfoFile)"' IgnoreExitCode='true' />
+    <Exec Condition="Exists('$(DestinationAssemblyInfoFile)') and '$(TFSSetReadOnly)'=='true'" Command='attrib -R "$(DestinationAssemblyInfoFile)"' IgnoreExitCode='true' />
     <Message Text="Updating file '$(DestinationAssemblyInfoFile)' with file version $(AssemblyFileVersion)." />
     <CreateProperty	Value='$([System.IO.File]::ReadAllText("$(SourceAssemblyInfoFile)"))'>
       <Output
@@ -296,7 +303,7 @@
       File="$(DestinationAssemblyInfoFile)"
       Lines='$(FullUpdatedInfo)'
       Overwrite="true" />
-    <Exec Command='attrib +R "$(DestinationAssemblyInfoFile)"' />
+    <Exec Condition="'$(TFSSetReadOnly)'=='true'" Command='attrib +R "$(DestinationAssemblyInfoFile)"' />
   </Target>
 
   <!-- This resets the build and release numbers in AssemblyInfo.cs.
@@ -327,7 +334,7 @@
     <CreateProperty Value='"$(TFSMajorBuildNumber).$(TFSMinorBuildNumber).0.0"'>
       <Output TaskParameter="Value" PropertyName="AssemblyVersion" />
     </CreateProperty>
-    <Exec Condition="Exists('$(DestinationAssemblyInfoFile)')" Command='attrib -R "$(DestinationAssemblyInfoFile)"' IgnoreExitCode='true' />
+    <Exec Condition="Exists('$(DestinationAssemblyInfoFile)') and '$(TFSSetReadOnly)'=='true'" Command='attrib -R "$(DestinationAssemblyInfoFile)"' IgnoreExitCode='true' />
     <Message Text="Reseting file '$(DestinationAssemblyInfoFile)' to file version $(AssemblyFileVersion)." />
     <CreateProperty	Value='$([System.IO.File]::ReadAllText("$(SourceAssemblyInfoFile)"))'>
       <Output
@@ -348,7 +355,7 @@
       File="$(DestinationAssemblyInfoFile)"
       Lines='$(FullUpdatedInfo)'
       Overwrite="true" />
-    <Exec Command='attrib +R "$(DestinationAssemblyInfoFile)"' />
+    <Exec Condition="'$(TFSSetReadOnly)'=='true'" Command='attrib +R "$(DestinationAssemblyInfoFile)"' />
   </Target>
 
   <!-- Writes to (or updates) a text file in the current project.
@@ -361,7 +368,7 @@
     <CreateProperty Value='$(MSBuildProjectDirectory)\Version.txt'>
       <Output TaskParameter="Value" PropertyName="ProjectTextVersionFile" />
     </CreateProperty>
-    <Exec Condition="Exists('$(ProjectTextVersionFile)')" Command='attrib -R "$(ProjectTextVersionFile)"' IgnoreExitCode='true' />
+    <Exec Condition="Exists('$(ProjectTextVersionFile)') and '$(TFSSetReadOnly)'=='true'" Command='attrib -R "$(ProjectTextVersionFile)"' IgnoreExitCode='true' />
     <Message Text="Updating file '$(ProjectTextVersionFile)' with file version $(TFSFullBuildVersionString)." />
     <ItemGroup>
       <TXTLines Include="$(TFSFullBuildVersionString)"/>
@@ -369,7 +376,7 @@
     <WriteLinesToFile Overwrite="true"
                       File="$(ProjectTextVersionFile)"
                       Lines="@(TXTLines)"/>
-    <Exec Command='attrib +R "$(ProjectTextVersionFile)"' />
+    <Exec Condition="'$(TFSSetReadOnly)'=='true'" Command='attrib +R "$(ProjectTextVersionFile)"' />
   </Target>
 
 </Project>
