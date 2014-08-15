@@ -12,11 +12,13 @@ Actual branding is applied from app part, which can be placed anywhere in the te
 Code also stores the version of the used branding, so that changes are only applied as needed, which will avoid performance issues with constantly deploying files without clear advantages.
 
 
-### Walkthrugh Video ###
+### Walkthrough Video ###
+
+Visit the video on Channel 9 [http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
 
 ![http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice](/Solutions/Provisioning.OneDrive/images/ch9scrnsht.png)
 
-[http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
+
 
 ### Applies to ###
 - Office 365 Dedicated (D)
