@@ -113,6 +113,7 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
+    <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />

@@ -402,5 +402,131 @@ namespace Microsoft.SharePoint.Client
             list.Views.Add(viewCreationInformation);
             list.Context.ExecuteQuery();
         }
+
+
+        #region List Properties
+        /// <summary>
+        /// Sets a key/value pair in the web property bag
+        /// </summary>
+        /// <param name="web">Web that will hold the property bag entry</param>
+        /// <param name="key">Key for the property bag entry</param>
+        /// <param name="value">Integer value for the property bag entry</param>
+        public static void SetPropertyBagValue(this List list, string key, int value)
+        {
+            SetPropertyBagValueInternal(list, key, value);
+        }
+
+
+        /// <summary>
+        /// Sets a key/value pair in the list property bag
+        /// </summary>
+        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="key">Key for the property bag entry</param>
+        /// <param name="value">String value for the property bag entry</param>
+        public static void SetPropertyBagValue(this List list, string key, string value)
+        {
+            SetPropertyBagValueInternal(list, key, value);
+        }
+
+
+        /// <summary>
+        /// Sets a key/value pair in the list property bag
+        /// </summary>
+        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="key">Key for the property bag entry</param>
+        /// <param name="value">Value for the property bag entry</param>
+        private static void SetPropertyBagValueInternal(List list, string key, object value)
+        {
+            var props = list.RootFolder.Properties;
+            list.Context.Load(props);
+            list.Context.ExecuteQuery();
+
+            props[key] = value;
+            list.Update();
+            list.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Get int typed property bag value. If does not contain, returns default value.
+        /// </summary>
+        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="key">Key of the property bag entry to return</param>
+        /// <returns>Value of the property bag entry as integer</returns>
+        public static int? GetPropertyBagValueInt(this List list, string key, int defaultValue)
+        {
+            object value = GetPropertyBagValueInternal(list, key);
+            if (value != null)
+            {
+                return (int)value;
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Get string typed property bag value. If does not contain, returns given default value.
+        /// </summary>
+        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="key">Key of the property bag entry to return</param>
+        /// <returns>Value of the property bag entry as string</returns>
+        public static string GetPropertyBagValueString(this List list, string key, string defaultValue)
+        {
+            object value = GetPropertyBagValueInternal(list, key);
+            if (value != null)
+            {
+                return (string)value;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Type independent implementation of the property gettter.
+        /// </summary>
+        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="key">Key of the property bag entry to return</param>
+        /// <returns>Value of the property bag entry</returns>
+        private static object GetPropertyBagValueInternal(List list, string key)
+        {
+            var props = list.RootFolder.Properties;
+            list.Context.Load(props);
+            list.Context.ExecuteQuery();
+            if (props.FieldValues.ContainsKey(key))
+            {
+                return props.FieldValues[key];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the given property bag entry exists
+        /// </summary>
+        /// <param name="web">List to be processed</param>
+        /// <param name="key">Key of the property bag entry to check</param>
+        /// <returns>True if the entry exists, false otherwise</returns>
+        public static bool PropertyBagContainsKey(this List list, string key)
+        {
+            var props = list.RootFolder.Properties;
+            list.Context.Load(props);
+            list.Context.ExecuteQuery();
+            if (props.FieldValues.ContainsKey(key))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
     }
 }
