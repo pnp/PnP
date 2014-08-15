@@ -46,7 +46,7 @@ IMPLEMENTING CUSTOM UI FOR SITE CREATION
 Scenario is using pretty simple user interface design, which is mimicking the out of the box experience in high level. This is done so that end users don’t get confused and don’t even notice that we’ve taken them to separate provider hosted app, which is actually performing the sub site creation.
 
 
-### CREATING SUB SITE BASED ON SELECTED TEMPLATE### 
+### CREATING SUB SITE BASED ON SELECTED TEMPLATE
 Actual sub site creation is using SharePoint 2013 client side object model. If there’s any modules or files which the site is using, those are uploaded to the site using also client side object model, so that we don’t need to use any feature framework or sandbox elements.
 Actual sub site creation is pretty simple with few lines of code using the WebCreationInformation object.
     
@@ -168,14 +168,14 @@ Actual sub site creation is pretty simple with few lines of code using the WebCr
     }
     ctx.ExecuteQuery();
 
-### SCENARIO: OVERRIDE SUB SITE CREATION OPTION ### 
+### SCENARIO: OVERRIDE SUB SITE CREATION OPTION  
 Since there’s currently no supported way to override the sub site creation experience, we’ll need to do this also using our code. This can be pretty easily achieved by injecting additional JavaScript file on the site, which is only executed when view contents page with the sub site creation link is shown.
 INJECTING JAVASCRIPT FILE TO THE SITE
 This could be done for example automatically when app is installed or it could be automatically done for the sites when they are created. To avoid issues with the MDS (Minimal Download Strategy), we’ll need to do some additional tricks while we inject the JavaScript to the site.
 Key point is nevertheless to upload the needed JavaScript to the site and reference that in custom action code, which is added the site. This will ensure that our uploaded JavaScript file is executed one each page request. 
 As mentioned, these scripts will be then executed on each page request, so we’ll need to ensure that the code is written properly. Natively SharePoint also executes hundreds of lines of JavaScript code on each page request, so as long as this code is optimized, adding few more lines doesn’t really impact the page performance.
 
-### OVERRIDING SUB SITE CREATION LINK ### 
+### OVERRIDING SUB SITE CREATION LINK
 Following step is to ensure that the sub site link is overridden each time end user arrives to the Site Contents page where this link is located. First we’ll make sure that we only execute the code in the right page.
 
     // Actual execution
@@ -204,7 +204,7 @@ And second phase is to actually change the link accordingly. In this demo code w
 
 Notice that since this link update is based on JavaScript execution on client side, you might encounter challenges if the client browser has delays or slowness on the script execution. You can mitigate this by using having for example CSS in the site, which has this link hidden by default, but then it’s shown only after the JavaScript function has been executed.
 
-### DEPENDENCIES ### 
+### DEPENDENCIES 
 - Microsoft.SharePoint.Client.dll
 - Microsoft.SharePoint.Client.Runtime.dll
 

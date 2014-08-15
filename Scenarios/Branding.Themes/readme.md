@@ -37,13 +37,13 @@ Version  | Date | Comments
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
-### APPLYING AN EXISTING THEME ###
+### APPLYING AN EXISTING THEME 
 
 Applying an already existing theme is very simple using the Office AMS core extension methods. Below line of code show how you can call the SetThemeToWeb method and pass along the name of the theme to set:
 
     web.SetThemeToWeb("Green");
 
-### UPLOADING A CUSTOM THEME ###
+### UPLOADING A CUSTOM THEME 
 Before you can apply a custom theme you first need to upload that theme to the theme gallery in the root web of the site collection. Using the DeployThemeToWeb Office AMS Core method this is straightforward to do:
 
     web.DeployThemeToWeb("SPC",

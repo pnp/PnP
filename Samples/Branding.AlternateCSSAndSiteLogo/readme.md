@@ -32,7 +32,7 @@ Version  | Date | Comments
 
 1.0  | June 30th 2014 | Initial release
 
-### Disclaimer ###
+### Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
@@ -47,7 +47,7 @@ Custom master pages should be avoided to ensure that any updates or enhancements
 
 ![](/Samples/Branding.AlternateCSSAndSiteLogo/images/002.png)
 
-### UPLOADING ASSETS TO THE HOST WEB ### 
+### UPLOADING ASSETS TO THE HOST WEB  
 Actual CSS and image files are uploaded using FileCreationInformation objet. In this case we are adding them to the Site Assets library, but they could be uploaded to any location in the host web or we could be referencing them also using absolute URLs.
     
     // Instance to site assets
@@ -80,7 +80,7 @@ Actual CSS and image files are uploaded using FileCreationInformation objet. In 
     web.Context.Load(uploadFile);
     web.Context.ExecuteQuery();
 
-### CONTROLLING THE PROPERTIES OF THE HOST WEB ### 
+### CONTROLLING THE PROPERTIES OF THE HOST WEB
 Adding the properties is pretty easy and straight forward. Both properties also support absolute addresses.
 
     // Set the properties accordingly
@@ -90,8 +90,9 @@ Adding the properties is pretty easy and straight forward. Both properties also 
     web.Update();
     web.Context.ExecuteQuery();
     
-### REMOVING THE CUSTOMIZATIONS FROM HOST WEB ### 
+### REMOVING THE CUSTOMIZATIONS FROM HOST WEB
 Clearing the customizations is as easy as setting the properties to empty strings.
+    
     Web web = clientContext.Web;
     // Clear the properties accordingly
     // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM

@@ -45,10 +45,10 @@ Version  | Date | Comments
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
-### SCENARIO: MODIFY PERSONAL ONEDRIVE SITE ### 
+### SCENARIO: MODIFY PERSONAL ONEDRIVE SITE 
 This scenario shows how to access user profile, create personal OneDrive for Business site and accessing created site for modification purposes
 
-### ACCESSING USER PROFILE ### 
+### ACCESSING USER PROFILE
 Using social CSOM API you can easily access the user profile of particular user.
     
     // Get user profile
@@ -57,7 +57,7 @@ Using social CSOM API you can easily access the user profile of particular user.
 
 User profile then gives access to additional options, like accessing stored information in the user profile properties or to get access to the personal OneDrive for Business site, like in this case.
 
-### STARTING ONEDRIVE FOR BUSINESSVISIONING IF IT DOESN’T EXIST ### 
+### STARTING ONEDRIVE FOR BUSINESSVISIONING IF IT DOESN’T EXIST
 In this scenario we also schedule the OneDrive for Business creation if it has not yet been created for the particular user. This is done by using following lines of code.
 
     Microsoft.SharePoint.Client.Site personalSite = profile.PersonalSite;
@@ -77,7 +77,7 @@ In this scenario we also schedule the OneDrive for Business creation if it has n
 
 This will schedule creation of the personal OneDrive for Business site using timer job based approach, like with the oob behavior.
 
-### ACCESSING ONEDRIVE FOR BUSINESS SITE CROSS SITE COLLECTIONS ### 
+### ACCESSING ONEDRIVE FOR BUSINESS SITE CROSS SITE COLLECTIONS
 If personal OneDrive for Business site has been already created, we can access that simply using standard CSOM after getting instance to the site collection object from the user profile.
 
     Microsoft.SharePoint.Client.Site personalSite = profile.PersonalSite;
@@ -89,10 +89,10 @@ If personal OneDrive for Business site has been already created, we can access t
     clientContext.Load(rootWeb);
     clientContext.ExecuteQuery();
 
-### SCENARIO: DEPLOY THEME AND APPLY THAT TO SITE ### 
+### SCENARIO: DEPLOY THEME AND APPLY THAT TO SITE
 This scenario shows how to deploy and apply custom theme to site.
 
-### DEPLOYING THEME ### 
+### DEPLOYING THEME 
 Deploying of the theme can be achieve just by deploying theme files to right locations in the site using FileCreationInformation object. In this example case, we deploy three different files, which are then applied as “theme” to the site. You could actually deploy these files anywhere in the site, but for consistency sake, they are added to the same location as the oob files using following pattern.
 Individual files are handled one-by-one by calling same method.
 
@@ -163,7 +163,7 @@ Code adds also new theme option to the theme item list, which would not actually
     
     }
 
-###  APPLYING THEME ### 
+###  APPLYING THEME
 Actual applying of the theme is done with single line of code as long as the URLs to the file are properly created.
     
     //Set the properties for applying custom theme which was just uploaded
