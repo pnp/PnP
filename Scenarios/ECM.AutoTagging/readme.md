@@ -272,7 +272,7 @@ The AutoTagginghelper.SetTaxonomyField implementation uses the following code. T
     }
 
 ## Recommendations ##
-While your testing the two scenarios, you will noticed that the ItemAdding implementation is more responsive, this is due to how we are getting the term, the guid and its wssId. We have one call vs three in the other implementation.  If your use case matches this scenario, then I would recommend that you use ItemAdding instead of ItemAdded (Synchronously).  You should also make sure you code is as efficient as possible. Another possible solution which is more efficient is to use ItemAdded asynchronously and queue the actions so that we are not blocking the user in the UI.
+While your testing the two scenarios, you will noticed that the ItemAdding implementation is more responsive, this is due to how we are getting the term, the guid and its wssId, as well query int the list item. We have one call vs four in the ItemAdded implementation.  If your use case matches this scenario, then I would recommend that you use ItemAdding instead of ItemAdded (Synchronously).  You should also make sure you code is as efficient as possible. Another possible solution which is more efficient is to use ItemAdded asynchronously and queue the actions so that we are not blocking the user in the UI.
 
 
 ## Dependencies ##
