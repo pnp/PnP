@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
+     Name="ECMAutoTagging"
+     ProductID="{9b02d4bb-f036-412e-85bb-15b543a0b270}"
+     Version="1.0.0.0"
+     SharePointMinVersion="16.0.0.0"
+>
+  <Properties>
+    <Title>ECM.AutoTagging</Title>
+    <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+  </Properties>
+
+  <AppPrincipal>
+    <RemoteWebApplication ClientId="*" />
+  </AppPrincipal>
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
+    <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="Read" />
+  </AppPermissionRequests>
+</App>

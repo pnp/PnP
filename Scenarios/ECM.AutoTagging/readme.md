@@ -162,7 +162,7 @@ The following code is use to remove the event receiver from the list.
 
 
 ## ItemAdding Remote Event Receiver ##
-Implementation class for ItemAdding. The ItemAdding member uses the result ChangeItemProperties to update the taxonomy field.
+Implementation class for ItemAdding. The ItemAdding member uses the result ChangeItemProperties to update the taxonomy field. We need to check if the the document already contains the properties for the Taxonomy Field, in this scenario we don't want to update the field. When debugging the code you will notice that if the property is already supplied the format is **2;#MYTERNNAME|74972ac9-3183-4775-b232-cd6de3569c65** This is the WssID, the value of the term and the GUID.
    			
 	using (ClientContext ctx = TokenHelper.CreateRemoteEventReceiverClientContext(properties))
     {
@@ -183,7 +183,7 @@ Implementation class for ItemAdding. The ItemAdding member uses the result Chang
         }
     }
 
-We need to check if the the document already contains the properties for the Taxonomy Field, in this scenario we don't want to update the field. When debugging the code you will notice that if the property is already supplied the format is **2;#MYTERNNAME|74972ac9-3183-4775-b232-cd6de3569c65** This is the WssID, the value of the term and the GUID. To get the term value in this format, we are going to use the below code that queries the TaxonomyHiddenList. Warning, DO NOT modify this list, you can read. Remember, you can look but don't touch.
+ To get the term value in this format, we are going to use the below code that queries the TaxonomyHiddenList. Warning, DO NOT modify this list, you can read. Remember, you can look but don't touch.
 
  		
 		public static string GetTaxonomyFormat(ClientContext ctx, string term)
