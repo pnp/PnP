@@ -132,7 +132,7 @@ namespace ECM.DocumentLibrariesWeb
                 _list.Update();
                 ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
                 //we are going to remove the default Document Content Type
-                _list.RemoveContentType(ContentTypeManager.DEFAULT_DOCUMENT_CT_NAME);
+                _list.RemoveContentTypeByName(ContentTypeManager.DEFAULT_DOCUMENT_CT_NAME);
                 ctx.Web.Context.ExecuteQuery();
             }
             else
