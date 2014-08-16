@@ -41,7 +41,7 @@ AppOnly Permissions are used in this solution
  
  
 ## Adding Fields and Content Types ##
-To create the fields and content types the below code leverages OfficeDevPnP.Core. See OfficeDevPnP.Core for implementation details. We chose to create the fields and content types programmatically, this gives you greating control of adding new fields as you desire, as well as gives you more control to implmenent localized verisions of your fields.
+To create the fields and content types the below code leverages OfficeDevPnP.Core.  We chose to create the fields and content types programmatically, this gives you greater control of adding new fields, maintenance, and as well as gives you more control to implement localized versions of your fields. 
  		
 	//Check the fields
 	if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
