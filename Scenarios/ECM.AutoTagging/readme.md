@@ -43,64 +43,64 @@ AppOnly Permissions are used in this solution
 ## Adding Fields and Content Types ##
 To create the fields and content types the below code leverages OfficeDevPnP.Core. See OfficeDevPnP.Core for implementation details. We chose to create the fields and content types programmatically, this gives you greating control of adding new fields as you desire, as well as gives you more control to implmenent localized verisions of your fields.
  		
-		//Check the fields
-        if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
-        {
-            ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID,
-                                        FLD_CLASSIFICATION_INTERNAL_NAME,
-                                        FLD_CLASSIFICATION_DISPLAY_NAME,
-                                        FIELDS_GROUP_NAME,
-                                        TAXONOMY_GROUP,
-                                        TAXONOMY_TERMSET_CLASSIFICATION_NAME);
-        }
+	//Check the fields
+	if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
+	{
+    	ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID,
+                                FLD_CLASSIFICATION_INTERNAL_NAME,
+                                FLD_CLASSIFICATION_DISPLAY_NAME,
+                                FIELDS_GROUP_NAME,
+                                TAXONOMY_GROUP,
+                                TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+	}
 
-        //check the content type
-        if (!ctx.Web.ContentTypeExistsById(CONTOSODOCUMENT_CT_ID))
-        {
-            ctx.Web.CreateContentType(CONTOSODOCUMENT_CT_NAME,
-                                      CT_DESC, CONTOSODOCUMENT_CT_ID,
-                                      CT_GROUP);
-        }
-
-        //associate fields to content types
-        if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME))
-        {
-            ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID,
-                                              FLD_CLASSIFICATION_ID.ToString(),
-                                              false);
-        }
+	//check the content type
+	if (!ctx.Web.ContentTypeExistsById(CONTOSODOCUMENT_CT_ID))
+	{
+	    ctx.Web.CreateContentType(CONTOSODOCUMENT_CT_NAME,
+	                              CT_DESC, CONTOSODOCUMENT_CT_ID,
+	                              CT_GROUP);
+	}
+	
+	//associate fields to content types
+	if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME))
+	{
+	    ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID,
+	                                      FLD_CLASSIFICATION_ID.ToString(),
+	                                      false);
+	}
 
 
 ## Create Document Library ##
 To create a document library we use the following code. We are again, leveraging core to provide this functionality. The following code will create the library, enable versioning and remove the default Document content type. 
 
-     	if (!ctx.Web.ListExists(library.Title))
-    	{
-        ctx.Web.AddList(ListTemplateType.DocumentLibrary, library.Title, false);
-        List _list = ctx.Web.GetListByTitle(library.Title);
-        if (!string.IsNullOrEmpty(library.Description))
-        {
-            _list.Description = library.Description;
-        }
-
-        if (library.VerisioningEnabled)
-        {
-            _list.EnableVersioning = true;
-        }
-
-        _list.ContentTypesEnabled = true;
-        _list.RemoveContentTypeByName("Document");
-        _list.Update();
-        
-
-        ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
-        ctx.Web.Context.ExecuteQuery();
-       
-    }
-    else
-    {
-        throw new Exception("A list, survey, discussion board, or document library with the specified title already exists in this Web site.  Please choose another title.");
-    }
+	if (!ctx.Web.ListExists(library.Title))
+	{
+		ctx.Web.AddList(ListTemplateType.DocumentLibrary, library.Title, false);
+		List _list = ctx.Web.GetListByTitle(library.Title);
+		if (!string.IsNullOrEmpty(library.Description))
+		{
+		    _list.Description = library.Description;
+		}
+	
+	if (library.VerisioningEnabled)
+	{
+	_list.EnableVersioning = true;
+	}
+	
+	_list.ContentTypesEnabled = true;
+	_list.RemoveContentTypeByName("Document");
+	_list.Update();
+	
+	
+	ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
+	ctx.Web.Context.ExecuteQuery();
+	
+	}
+	else
+	{
+	throw new Exception("A list, survey, discussion board, or document library with the specified title already exists in this Web site.  Please choose another title.");
+	}
 
 ## Registering the Remote Event Receiver in the host web ##
 We will register two remote event receivers, which are ItemAdding and ItemAdded to two separate libraries.
@@ -118,18 +118,18 @@ We will register two remote event receivers, which are ItemAdding and ItemAdded 
 We want to make sure that when we add the event receiver that one doesn't already exist. The following code demonstrates how to check if the receiver exists by name.
 
     public static bool DoesEventReceiverExistByName(ClientContext ctx, List list, string eventReceiverName )
-        {
-            bool _doesExist = false;
-            ctx.Load(list, lib => lib.EventReceivers);
-            ctx.ExecuteQuery();
+    {
+        bool _doesExist = false;
+        ctx.Load(list, lib => lib.EventReceivers);
+        ctx.ExecuteQuery();
 
-            var _rer = list.EventReceivers.Where(e => e.ReceiverName == eventReceiverName).FirstOrDefault();
-            if (_rer != null) {
-                _doesExist = true;
-            }
-
-            return _doesExist;
+        var _rer = list.EventReceivers.Where(e => e.ReceiverName == eventReceiverName).FirstOrDefault();
+        if (_rer != null) {
+            _doesExist = true;
         }
+
+        return _doesExist;
+    }
 
 The following code is used to help us create a new EventReceiverDefinitionCreationInformation object. Make sure you change your ReceiverUrl to match your environment.
 
