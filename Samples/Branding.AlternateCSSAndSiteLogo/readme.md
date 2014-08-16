@@ -19,25 +19,22 @@ N/A
 
 ### Solution ###
 Solution | Author(s)
-
 ---------|----------
-
 Branding.AlternateCSSAndSiteLogo | Vesa Juvonen (**Microsoft**)
 
 ### Version history ###
 
 Version  | Date | Comments
-
 ---------| -----| --------
-
 1.0  | June 30th 2014 | Initial release
 
 ### Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
+----------
 
 
-### SCENARIO: INJECT CUSTOM CSS FROM APP TO HOST WEB 
+# SCENARIO: INJECT CUSTOM CSS FROM APP TO HOST WEB #
 This scenario shows how to upload CSS and site image to the host web and how to set those to be used using CSOM. These are new properties released as part of the 2014 April CU for on-premises and they are also located in the cloud. MS online CSOM will be updated to expose these additional CSOM properties for the Web object during July 2014.
 Notice that you can use 2014 April CU CSOM also with Office365 to set the properties accordingly to the host web.
 ![](/Samples/Branding.AlternateCSSAndSiteLogo/images/001.png)
@@ -47,57 +44,61 @@ Custom master pages should be avoided to ensure that any updates or enhancements
 
 ![](/Samples/Branding.AlternateCSSAndSiteLogo/images/002.png)
 
-### UPLOADING ASSETS TO THE HOST WEB  
+## UPLOADING ASSETS TO THE HOST WEB ##
 Actual CSS and image files are uploaded using FileCreationInformation objet. In this case we are adding them to the Site Assets library, but they could be uploaded to any location in the host web or we could be referencing them also using absolute URLs.
-    
-    // Instance to site assets
-    List assetLibrary = web.Lists.GetByTitle("Site Assets");
-    web.Context.Load(assetLibrary, l => l.RootFolder);
-    
-    // Get the path to the file which we are about to deploy
-    string cssFile = System.Web.Hosting.HostingEnvironment.MapPath(
-    string.Format("~/{0}", "resources/contoso.css"));
-    
-    // Use CSOM to uplaod the file in
-    FileCreationInformation newFile = new FileCreationInformation();
-    newFile.Content = System.IO.File.ReadAllBytes(cssFile);
-    newFile.Url = "contoso.css";
-    newFile.Overwrite = true;
-    Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
-    web.Context.Load(uploadFile);
-    web.Context.ExecuteQuery();
-    
-    // Get the path to the file which we are about to deploy
-    string logoFile = System.Web.Hosting.HostingEnvironment.MapPath(
-    string.Format("~/{0}", "resources/99x.png"));
-    
-    // Use CSOM to uplaod the file in
-    newFile = new FileCreationInformation();
-    newFile.Content = System.IO.File.ReadAllBytes(logoFile);
-    newFile.Url = "99x.png";
-    newFile.Overwrite = true;
-    uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
-    web.Context.Load(uploadFile);
-    web.Context.ExecuteQuery();
 
-### CONTROLLING THE PROPERTIES OF THE HOST WEB
+```C#
+// Instance to site assets
+List assetLibrary = web.Lists.GetByTitle("Site Assets");
+web.Context.Load(assetLibrary, l => l.RootFolder);
+
+// Get the path to the file which we are about to deploy
+string cssFile = System.Web.Hosting.HostingEnvironment.MapPath(
+string.Format("~/{0}", "resources/contoso.css"));
+
+// Use CSOM to uplaod the file in
+FileCreationInformation newFile = new FileCreationInformation();
+newFile.Content = System.IO.File.ReadAllBytes(cssFile);
+newFile.Url = "contoso.css";
+newFile.Overwrite = true;
+Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
+web.Context.Load(uploadFile);
+web.Context.ExecuteQuery();
+
+// Get the path to the file which we are about to deploy
+string logoFile = System.Web.Hosting.HostingEnvironment.MapPath(
+string.Format("~/{0}", "resources/99x.png"));
+
+// Use CSOM to uplaod the file in
+newFile = new FileCreationInformation();
+newFile.Content = System.IO.File.ReadAllBytes(logoFile);
+newFile.Url = "99x.png";
+newFile.Overwrite = true;
+uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
+web.Context.Load(uploadFile);
+web.Context.ExecuteQuery();
+```
+## CONTROLLING THE PROPERTIES OF THE HOST WEB ##
 Adding the properties is pretty easy and straight forward. Both properties also support absolute addresses.
 
-    // Set the properties accordingly
-    // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
-    web.AlternateCssUrl = web.ServerRelativeUrl + "/SiteAssets/contoso.css";
-    web.SiteLogoUrl = web.ServerRelativeUrl + "/SiteAssets/99x.png";
-    web.Update();
-    web.Context.ExecuteQuery();
+```C#
+// Set the properties accordingly
+// Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
+web.AlternateCssUrl = web.ServerRelativeUrl + "/SiteAssets/contoso.css";
+web.SiteLogoUrl = web.ServerRelativeUrl + "/SiteAssets/99x.png";
+web.Update();
+web.Context.ExecuteQuery();
+```
     
-### REMOVING THE CUSTOMIZATIONS FROM HOST WEB
+## REMOVING THE CUSTOMIZATIONS FROM HOST WEB ##
 Clearing the customizations is as easy as setting the properties to empty strings.
     
-    Web web = clientContext.Web;
-    // Clear the properties accordingly
-    // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
-    web.AlternateCssUrl = "";
-    web.SiteLogoUrl = "";
-    web.Update();
-    web.Context.ExecuteQuery();
-    
+```C#
+Web web = clientContext.Web;
+// Clear the properties accordingly
+// Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
+web.AlternateCssUrl = "";
+web.SiteLogoUrl = "";
+web.Update();
+web.Context.ExecuteQuery();
+```

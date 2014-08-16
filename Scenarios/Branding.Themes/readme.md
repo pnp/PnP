@@ -21,36 +21,34 @@ N/A
 
 ### Solution ###
 Solution | Author(s)
-
 ---------|----------
-
 Branding.Themes | Vesa Juvonen (**Microsoft**)
 
 ### Version history ###
 
 Version  | Date | Comments
-
 ---------| -----| --------
-
 1.0  | May 11th 2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
+----------
 
-### APPLYING AN EXISTING THEME 
+# APPLYING AN EXISTING THEME #
 
 Applying an already existing theme is very simple using the Office AMS core extension methods. Below line of code show how you can call the SetThemeToWeb method and pass along the name of the theme to set:
-
-    web.SetThemeToWeb("Green");
-
-### UPLOADING A CUSTOM THEME 
+```C#
+web.SetThemeToWeb("Green");
+```
+# UPLOADING A CUSTOM THEME #
 Before you can apply a custom theme you first need to upload that theme to the theme gallery in the root web of the site collection. Using the DeployThemeToWeb Office AMS Core method this is straightforward to do:
-
-    web.DeployThemeToWeb("SPC",
-    HostingEnvironment.MapPath(string.Format("~/{0}","Resources/Themes/SPC/SPCTheme.spcolor")),
-    null,
-    HostingEnvironment.MapPath(string.Format("~/{0}","Resources/Themes/SPC/SPCbg.png")),
-    string.Empty);
+```C#
+web.DeployThemeToWeb("SPC", 
+                     HostingEnvironment.MapPath(string.Format("~/{0}","Resources/Themes/SPC/SPCTheme.spcolor")), 
+                     null,
+                     HostingEnvironment.MapPath(string.Format("~/{0}","Resources/Themes/SPC/SPCbg.png")),
+                     string.Empty);
+```
 
 This method also supports a custom font file and master page linked to the theme, but in the above sample these are set.
