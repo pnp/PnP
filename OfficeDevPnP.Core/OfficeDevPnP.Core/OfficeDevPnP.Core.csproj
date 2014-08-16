@@ -7,8 +7,8 @@
     <ProjectGuid>{F2077977-8EBF-409D-BBF4-8EFB328928A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OfficeAMS.Core</RootNamespace>
-    <AssemblyName>OfficeAMS.Core</AssemblyName>
+    <RootNamespace>OfficeDevPnP.Core</RootNamespace>
+    <AssemblyName>OfficeDevPnP.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -103,6 +103,7 @@
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
