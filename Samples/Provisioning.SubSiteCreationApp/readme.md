@@ -4,8 +4,8 @@
 This solution uses so called remote provisioning pattern to provide as flexible sub site template system as possible. Old models using either site definitions, web templates or feature stapling will cause challenges with the evergreen model, meaning more frequent releases of new capability to the cloud and on-premises. 
 Using remove provisioning pattern will initially require additional code, but since sites created using it are always based on out of the box site definitions, we don’t need to perform any updates when new capabilities are stapled to out of the box templates. This will have significantly reduce the long term maintenance costs for the solution.
 Additional information related on the different site provisioning options can be found from following blog posts. 
-•	[Site provisioning techniques and remote provisioning in SharePoint 2013](http://blogs.msdn.com/b/vesku/archive/2013/08/23/site-provisioning-techniques-and-remote-provisioning-in-sharepoint-2013.aspx)
-•	[SharePoint 2013 site provisioning techniques presentation video recording](http://blogs.msdn.com/b/vesku/archive/2013/09/09/sharepoint-2013-site-provisioning-techniques-presentation-video-recording.aspx)
+-  [Site provisioning techniques and remote provisioning in SharePoint 2013](http://blogs.msdn.com/b/vesku/archive/2013/08/23/site-provisioning-techniques-and-remote-provisioning-in-sharepoint-2013.aspx)
+-  [SharePoint 2013 site provisioning techniques presentation video recording](http://blogs.msdn.com/b/vesku/archive/2013/09/09/sharepoint-2013-site-provisioning-techniques-presentation-video-recording.aspx)
 
 ### Walkthrough Video ###
 
@@ -40,7 +40,8 @@ Version  | Date | Comments
 
 # SCENARIO: SUB SITE CREATION #
 This scenario shows how we can build the actual sub site creation experience and demonstration of possible options or configuration model for the templates.
-IMPLEMENTING CUSTOM UI FOR SITE CREATION
+
+## IMPLEMENTING CUSTOM UI FOR SITE CREATION ##
 Scenario is using pretty simple user interface design, which is mimicking the out of the box experience in high level. This is done so that end users don’t get confused and don’t even notice that we’ve taken them to separate provider hosted app, which is actually performing the sub site creation.
 
 
