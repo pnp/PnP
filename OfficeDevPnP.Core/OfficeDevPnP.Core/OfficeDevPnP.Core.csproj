@@ -153,6 +153,16 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <TFSBaseBuildYear>2014</TFSBaseBuildYear>
+  </PropertyGroup>
+  <Import Project="..\TFSBuildNumber.targets"/>
+  <Target Name="BeforeBuild"
+     DependsOnTargets="GetMajorMinorFromCSharpAssemblyInfoFile;WriteProjectTextAssemblyVersionFile;UpdateCSharpAssemblyInfoFile">
+  </Target>
+  <Target Name="AfterBuild"
+     DependsOnTargets="ResetCSharpAssemblyInfoFile">
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
