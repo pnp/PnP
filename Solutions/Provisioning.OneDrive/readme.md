@@ -28,7 +28,7 @@ N/A
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.SubSiteCreationApp | Vesa Juvonen (**Microsoft**)
+Provisioning.OneDrive | Vesa Juvonen (**Microsoft**)
 
 ### Version history ###
 
