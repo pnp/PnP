@@ -1,15 +1,25 @@
-﻿using ECM.DocumentLibrariesWeb.Models;
-using Microsoft.SharePoint.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.SharePoint.Client;
 
-namespace ECM.DocumentLibrariesWeb
+namespace ECM.AutoTaggingWeb
 {
-    public class ContentTypeManager
+    /// <summary>
+    /// Helper Class to create the necessary fields, Content Types, and libraries for the scenario
+    /// </summary>
+    public class ScenarioHandler
     {
-        private const string DEFAULT_DOCUMENT_CT_NAME = "Document";
+        #region Profile Properties
+        public const string UPA_CLASSIFICATION_PROPERTY = "Classification";
+        #endregion
+
+        #region Remote Event Receiver Names
+        public const string AUTOTAGGING_ITEM_ADDED_RERNAME = "PnPAutoTaggingItemAdded";
+        public const string AUTOTAGGING_ITEM_ADDING_RERNAME = "PnPAutoTaggingItemAddIng";
+        #endregion
+
         /// COMMON 
         private const string CT_GROUP = "Contoso Content Types";
         private const string CT_DESC = "Create a new Document";
@@ -22,15 +32,15 @@ namespace ECM.DocumentLibrariesWeb
         /// CONTENT TYPE CONTOSO DOCUMENT
         private const string CONTOSODOCUMENT_CT_ID = "0x0100A112247905884D0DA49735433433A93C";
         private const string CONTOSODOCUMENT_CT_NAME = "Contoso Document";
-        
+
         //FIELD BUSINESS UNIT
         private readonly Guid FLD_BUSINESS_UNIT_ID = new Guid("91AE1803-2F95-427F-97DB-5CE1652C07B0");
-        private const string FLD_BUSINESS_UNIT_INTERNAL_NAME = "_BusinessUnit";
+        public const string FLD_BUSINESS_UNIT_INTERNAL_NAME = "_BusinessUnit";
         private const string FLD_BUSINESS_UNIT_DISPLAY_NAME = "Business Unit";
 
         //FIELD CLASSIFICATION
         private readonly Guid FLD_CLASSIFICATION_ID = new Guid("D7A785FC-7974-4CBD-864C-AE0012E97A22");
-        private const string FLD_CLASSIFICATION_INTERNAL_NAME = "_classification";
+        public const string FLD_CLASSIFICATION_INTERNAL_NAME = "_classification";
         private const string FLD_CLASSIFICATION_DISPLAY_NAME = "Classification";
         private const string TAXONOMY_GROUP = "Enterprise";
         private const string TAXONOMY_TERMSET_CLASSIFICATION_NAME = "Classification";
@@ -38,61 +48,69 @@ namespace ECM.DocumentLibrariesWeb
         /// <summary>
         /// Used to create a custom document library and Contoso Content type
         /// </summary>
-        /// <param name="ctx">The client context that has be authenticated</param>
+        /// <param name="ctx">The authenticated ClientContext</param>
         /// <param name="library">The Library to create</param>
         public void CreateContosoDocumentLibrary(ClientContext ctx, Library library)
         {
             //Check the fields
-            if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID)){
-                ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID, 
-                                            FLD_CLASSIFICATION_INTERNAL_NAME, 
-                                            FLD_CLASSIFICATION_DISPLAY_NAME, 
-                                            FIELDS_GROUP_NAME, 
-                                            TAXONOMY_GROUP, 
+            if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
+            {
+                ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID,
+                                            FLD_CLASSIFICATION_INTERNAL_NAME,
+                                            FLD_CLASSIFICATION_DISPLAY_NAME,
+                                            FIELDS_GROUP_NAME,
+                                            TAXONOMY_GROUP,
                                             TAXONOMY_TERMSET_CLASSIFICATION_NAME);
             }
-            
+
             //check the content type
-            if (!ctx.Web.ContentTypeExistsById(CONTOSODOCUMENT_CT_ID)){
-                ctx.Web.CreateContentType(CONTOSODOCUMENT_CT_NAME, 
-                                          CT_DESC, CONTOSODOCUMENT_CT_ID, 
+            if (!ctx.Web.ContentTypeExistsById(CONTOSODOCUMENT_CT_ID))
+            {
+                ctx.Web.CreateContentType(CONTOSODOCUMENT_CT_NAME,
+                                          CT_DESC, CONTOSODOCUMENT_CT_ID,
                                           CT_GROUP);
             }
 
             //associate fields to content types
-            if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME)){
-                ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID, 
-                                                  FLD_CLASSIFICATION_ID.ToString(), 
+            if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME))
+            {
+                ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID,
+                                                  FLD_CLASSIFICATION_ID.ToString(),
                                                   false);
             }
+
+            
             CreateLibrary(ctx, library, CONTOSODOCUMENT_CT_ID);
-          
         }
-       
+
         /// <summary>
         /// Creates a custom document library and IT Document Content Type
         /// </summary>
-        /// <param name="ctx">The client context that has be authenticated</param>
+        /// <param name="ctx">The authenticated ClientContext</param>
         /// <param name="library">The Library  to create</param>
         public void CreateITDocumentLibrary(ClientContext ctx, Library library)
         {
             //Check the fields
-            if (!ctx.Web.FieldExistsById(FLD_BUSINESS_UNIT_ID)){
-                ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID, 
-                                    FLD_BUSINESS_UNIT_INTERNAL_NAME, 
-                                    FieldType.Text, 
-                                    FLD_BUSINESS_UNIT_DISPLAY_NAME, 
+            if (!ctx.Web.FieldExistsById(FLD_BUSINESS_UNIT_ID))
+            {
+                ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID,
+                                    FLD_BUSINESS_UNIT_INTERNAL_NAME,
+                                    FieldType.Text,
+                                    FLD_BUSINESS_UNIT_DISPLAY_NAME,
                                     FIELDS_GROUP_NAME);
             }
             //check the content type
-            if (!ctx.Web.ContentTypeExistsById(ITDOCUMENT_CT_ID)) {
+            if (!ctx.Web.ContentTypeExistsById(ITDOCUMENT_CT_ID))
+            {
                 ctx.Web.CreateContentType(ITDOCUMENT_CT_NAME, CT_DESC, ITDOCUMENT_CT_ID, CT_GROUP);
             }
 
             //associate fields to content types
-            if (!ctx.Web.FieldExistsByNameInContentType(ITDOCUMENT_CT_NAME, FLD_BUSINESS_UNIT_INTERNAL_NAME)){
+            if (!ctx.Web.FieldExistsByNameInContentType(ITDOCUMENT_CT_NAME, FLD_BUSINESS_UNIT_INTERNAL_NAME))
+            {
                 ctx.Web.AddFieldToContentTypeById(ITDOCUMENT_CT_ID, FLD_BUSINESS_UNIT_ID.ToString(), false);
             }
+
             CreateLibrary(ctx, library, ITDOCUMENT_CT_ID);
         }
 
@@ -120,25 +138,40 @@ namespace ECM.DocumentLibrariesWeb
             {
                 ctx.Web.AddList(ListTemplateType.DocumentLibrary, library.Title, false);
                 List _list = ctx.Web.GetListByTitle(library.Title);
-                if(!string.IsNullOrEmpty(library.Description)) {
+                if (!string.IsNullOrEmpty(library.Description))
+                {
                     _list.Description = library.Description;
                 }
 
-                if(library.VerisioningEnabled) {
+                if (library.VerisioningEnabled)
+                {
                     _list.EnableVersioning = true;
                 }
 
                 _list.ContentTypesEnabled = true;
+                _list.RemoveContentTypeByName("Document");
                 _list.Update();
+                
+     
                 ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
-                //we are going to remove the default Document Content Type
-                _list.RemoveContentTypeByName(ContentTypeManager.DEFAULT_DOCUMENT_CT_NAME);
                 ctx.Web.Context.ExecuteQuery();
+               
             }
             else
             {
                 throw new Exception("A list, survey, discussion board, or document library with the specified title already exists in this Web site.  Please choose another title.");
             }
         }
+    }
+
+    /// <summary>
+    /// Domain Object for Creating a library
+    /// </summary>
+    public class Library
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public bool VerisioningEnabled { get; set; }
+
     }
 }

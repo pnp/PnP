@@ -20,6 +20,10 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class BrandingExtensions
     {
+        const string AvailablePageLayouts = "__PageLayouts";
+        const string DefaultPageLayout = "__DefaultPageLayout";
+        const string AvailableWebTemplates = "__WebTemplates";
+
         /// <summary>
         /// Deploy new theme to site collection. To be used with root web in site collection
         /// </summary>
@@ -614,7 +618,7 @@ namespace Microsoft.SharePoint.Client
         {
             // Save to property bag as the default page layout for the site
             XmlDocument xd = new XmlDocument();
-            web.SetPropertyBagValue("__DefaultPageLayout", CreateXmlNodeFromPageLayout(xd, web, rootWeb, pageLayoutName).OuterXml);
+            web.SetPropertyBagValue(DefaultPageLayout, CreateXmlNodeFromPageLayout(xd, web, rootWeb, pageLayoutName).OuterXml);
         }
 
         private static XmlNode CreateXmlNodeFromPageLayout(XmlDocument xd, Web web, Web rootWeb, string pageLayoutName)
@@ -650,7 +654,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void SetSiteToInheritPageLayouts(this Web web)
         {
-            web.SetPropertyBagValue("__DefaultPageLayout", "__inherit");
+            web.SetPropertyBagValue(DefaultPageLayout, "__inherit");
         }
 
         /// <summary>
@@ -659,7 +663,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void ClearAvailablePageLayouts(this Web web)
         {
-            web.SetPropertyBagValue("__DefaultPageLayout", "");
+            web.SetPropertyBagValue(AvailablePageLayouts, "");
         }
 
 
@@ -672,7 +676,7 @@ namespace Microsoft.SharePoint.Client
             {
                 xmlNode.AppendChild(CreateXmlNodeFromPageLayout(xd, web, rootWeb, item));
             }
-            web.SetPropertyBagValue("__PageLayouts", xmlNode.OuterXml);
+            web.SetPropertyBagValue(AvailablePageLayouts, xmlNode.OuterXml);
         }
 
         public static void SetAvailableWebTemplates(this Web web, List<WebTemplateEntity> availableTemplates)
@@ -708,7 +712,7 @@ namespace Microsoft.SharePoint.Client
                 propertyValue = xmlNode.OuterXml;
             }
             //Save the xml entry to property bag
-            web.SetPropertyBagValue("__WebTemplates", propertyValue);
+            web.SetPropertyBagValue(AvailableWebTemplates, propertyValue);
             //Set that templates are not inherited
             web.SetPropertyBagValue("__InheritWebTemplates", "False");
         }
@@ -719,7 +723,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void ClearAvailableWebTemplates(this Web web)
         {
-            web.SetPropertyBagValue("__WebTemplates", "");
+            web.SetPropertyBagValue(AvailableWebTemplates, "");
         }
 
         private static void AddTemplateToCollection(LanguageTemplateHash languages, WebTemplateEntity item)

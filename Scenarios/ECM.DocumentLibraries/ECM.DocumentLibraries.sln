@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECM.DocumentLibrariesWeb", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{14669D02-2D0F-46D6-892C-59492932E6FD}"
 	ProjectSection(SolutionItems) = preProject
-		DocumentLibraries.docx = DocumentLibraries.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{C0A248CF-1953-4C70-9016-309657129FA2}"

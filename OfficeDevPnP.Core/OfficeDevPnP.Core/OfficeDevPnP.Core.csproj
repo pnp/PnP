@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OfficeDevPnP.Core</RootNamespace>
-    <AssemblyName>OfficeAMS.Core</AssemblyName>
+    <AssemblyName>OfficeDevPnP.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -101,9 +101,9 @@
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
-    <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
@@ -113,15 +113,11 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
-    <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
-    <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
-    <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\HttpVariablesExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -157,6 +153,16 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <TFSBaseBuildYear>2014</TFSBaseBuildYear>
+  </PropertyGroup>
+  <Import Project="..\TFSBuildNumber.targets"/>
+  <Target Name="BeforeBuild"
+     DependsOnTargets="GetMajorMinorFromCSharpAssemblyInfoFile;WriteProjectTextAssemblyVersionFile;UpdateCSharpAssemblyInfoFile">
+  </Target>
+  <Target Name="AfterBuild"
+     DependsOnTargets="ResetCSharpAssemblyInfoFile">
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

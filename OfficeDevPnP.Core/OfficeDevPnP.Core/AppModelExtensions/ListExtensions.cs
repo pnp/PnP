@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,37 @@ namespace Microsoft.SharePoint.Client
     public static class ListExtensions
     {
         /// <summary>
+        /// Removes a content type from a list/library by name
+        /// </summary>
+        /// <param name="list">The list</param>
+        /// <param name="contentTypeName">The content type name to remove from the list</param>
+        /// <exception cref="System.ArgumentException">Thrown when a arguement is null or <see cref="String.Empty"/></exception>
+        public static void RemoveContentTypeByName(this List list, string contentTypeName)
+        {
+            if(string.IsNullOrEmpty(contentTypeName)) {
+                throw new ArgumentException(string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName"));
+            }
+
+            ContentTypeCollection _cts = list.ContentTypes;
+            list.Context.Load(_cts);
+
+            IEnumerable<ContentType> _results = list.Context.LoadQuery<ContentType>(_cts.Where(item => item.Name == contentTypeName));
+            list.Context.ExecuteQuery();
+
+            ContentType _ct = _results.FirstOrDefault();
+            if (_ct != null)
+            {
+                _ct.DeleteObject();
+                list.Update();
+                list.Context.ExecuteQuery();
+            }
+        }
+        /// <summary>
         /// Removes a content type from a list/library 
         /// </summary>
         /// <param name="list">The list</param>
         /// <param name="contentTypeName">The content type name to remove from the list</param>
+        [Obsolete("Use RemoveContentTypeByName")]
         public static void RemoveContentType(this List list , string contentTypeName)
         {
             ContentTypeCollection _cts = list.ContentTypes;

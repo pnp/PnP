@@ -15,7 +15,6 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class SecurityExtensions
     {
-
         #region Site collection administrator management
         /// <summary>
         /// Get a list of site collection administrators
@@ -540,12 +539,6 @@ namespace Microsoft.SharePoint.Client
                 RoleAssignmentCollection rac = web.RoleAssignments;
                 web.Context.Load(rac);
                 web.Context.ExecuteQuery();
-
-                //if no permission level is passed we remove all permission levels
-                if (permissionLevel==null)
-                {
-                    removeAllPermissionLevels = true;
-                }
 
                 //Find the roles assigned to the principal
                 foreach (RoleAssignment ra in rac)
