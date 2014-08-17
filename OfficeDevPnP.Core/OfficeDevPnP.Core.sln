@@ -6,8 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "Office
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{5637953E-2AEB-482F-8551-05FD7F05374E}"
 	ProjectSection(SolutionItems) = preProject
-		Office Dev PnP Core documentation.docx = Office Dev PnP Core documentation.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AD4D5451-C34A-4601-91EB-00D72A376A2E}"

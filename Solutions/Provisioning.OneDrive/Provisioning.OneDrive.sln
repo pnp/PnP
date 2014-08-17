@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.OneDrive", "Provisioning.OneDrive\Provisioning.OneDrive.csproj", "{AA043986-8997-4E12-96CB-B530A6FE5B69}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.OneDriveWeb", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{ACF0EF24-C749-40F9-A665-F26F553F0129}"
 	ProjectSection(SolutionItems) = preProject
-		OneDrive for Business Branding.docx = OneDrive for Business Branding.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{953A4F3A-BAFA-42FD-A293-F9FB670E7075}"
