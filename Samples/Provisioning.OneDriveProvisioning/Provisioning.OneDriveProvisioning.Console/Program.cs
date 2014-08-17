@@ -162,7 +162,7 @@ namespace Contoso.Provisioning.OneDriveProvisioning
             try
             {
                 ///"User3@MicrosoftACS.onmicrosoft.com" , "User4@MicrosoftACS.onmicrosoft.com"
-                Console.Write("Supply the users that you want to provision a OneDrive for. You can supply multiple users  using a comma. Exampple: test1@contoso.onmicrosoft.com,test1@contoso.onmicrosoft.com: ");
+                Console.Write("Supply the users that you want to provision a OneDrive for. You can supply multiple users using a comma. Example: test1@contoso.onmicrosoft.com,test1@contoso.onmicrosoft.com: ");
                 string emailInput = Console.ReadLine();
                 if (!string.IsNullOrEmpty(emailInput))
                 {

@@ -45,7 +45,6 @@ namespace Core.SideLoading
                 _ctx.ExecuteQuery();
 
                 //Make sure we have side loading enabled. You must be a tenant admin to activate or you will get an exception! The ProcessFeature is an extension method,
-                //see OfficeAMS (https://officeams.codeplex.com/) OfficeAMS.Core sample
                 _site.ProcessFeature(_sideloadingFeature, true);
                 try
                 {
