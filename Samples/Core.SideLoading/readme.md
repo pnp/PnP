@@ -88,22 +88,24 @@ Since this solution is sideloading a provider hosted application, the following 
 		{
 		 	_ctx.Load(_web);
 		    _ctx.ExecuteQuery();
-			//Make sure we have side loading enabled. You must be a tenant admin to activate or you will get an exception! The ProcessFeature is an extension method.
+			//Make sure we have side loading enabled. You must be a tenant admin to activate or you 
+			//will get an exception! The ProcessFeature is an extension method.
 		   	_site.ProcessFeature(_sideloadingFeature, true);
-		     try
-		     {
-		     	var _appstream = System.IO.File.OpenRead(_path);
+		    try
+		    {
+		    	var _appstream = System.IO.File.OpenRead(_path);
 		        AppInstance _app = _web.LoadAndInstallApp(_appstream);
 		        _ctx.Load(_app);
 		        _ctx.ExecuteQuery();
-		     }
-		     catch
-		     {
-		     	throw;
-		     }
+		    }
+		    catch
+		    {
+		    	throw;
+		    }
 		
-		//we should ensure that the side loading feature is disable when we are done or if an //exception occurs 
-		      _site.ProcessFeature(_sideloadingFeature, false);
+			//we should ensure that the side loading feature is disable when we are done or if an
+			//exception occurs 
+		    _site.ProcessFeature(_sideloadingFeature, false);
 		}
 		catch (Exception _ex)
 		{
