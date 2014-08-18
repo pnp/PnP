@@ -95,7 +95,7 @@ namespace OfficeDevPnP.Core.Utilities
                 source.Listeners.Clear();
                 source.Listeners.Add(new ConsoleTraceListener() { Name = "Console" });
                 source.Listeners.Add(new DefaultTraceListener() { Name = "Default" });
-                source.Switch.Level = SourceLevels.All;
+                source.Switch.Level = SourceLevels.Information;
                 source.TraceEvent(TraceEventType.Information, InitializeBehaviourEventId, "Trace initialized to write all events to Console and Default.");
             }
         }
