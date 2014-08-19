@@ -584,31 +584,42 @@ namespace Microsoft.SharePoint.Client
         /// <returns>All found site collections</returns>
         public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue)
         {
-            List<SiteEntity> sites = new List<SiteEntity>();
-
-            KeywordQuery keywordQuery = new KeywordQuery(web.Context);
-            keywordQuery.TrimDuplicates = false;
-
-            if (keywordQueryValue.Length == 0)
+            try
             {
-                keywordQueryValue = "contentclass:\"STS_Site\"";
-            }
+                LoggingUtility.Internal.TraceVerbose("Site search '{0}'", keywordQueryValue);
 
-            int startRow = 0;
-            int totalRows = 0;
+                List<SiteEntity> sites = new List<SiteEntity>();
 
-            totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                KeywordQuery keywordQuery = new KeywordQuery(web.Context);
+                keywordQuery.TrimDuplicates = false;
 
-            if (totalRows > 0)
-            {
-                while (totalRows >= sites.Count)
+                if (keywordQueryValue.Length == 0)
                 {
-                    startRow += 500;
-                    totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                    keywordQueryValue = "contentclass:\"STS_Site\"";
                 }
-            }
 
-            return sites;
+                int startRow = 0;
+                int totalRows = 0;
+
+                totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+
+                if (totalRows > 0)
+                {
+                    while (totalRows >= sites.Count)
+                    {
+                        startRow += 500;
+                        totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                    }
+                }
+
+                return sites;
+            }
+            catch (Exception ex)
+            {
+                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, "Site search error.");
+                // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
+                throw;
+            }
         }
 
         /// <summary>
