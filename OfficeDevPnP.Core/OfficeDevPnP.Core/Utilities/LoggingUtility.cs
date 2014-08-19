@@ -19,9 +19,25 @@ namespace OfficeDevPnP.Core.Utilities
         // XX: sequential ids
 
         AuthenticationContext = 1301,
+
+        UploadFile = 1501,
+
         DeployTheme = 1601,
+        AddThemeOption = 1602,
+        DeployThemeFile = 1603,
+        DeployMasterPage = 1604,
+        DeployPageLayout = 1605,
 
         SetTheme = 2601,
+        SetMasterUrl = 2602,
+        SetCustomMasterUrl = 2603,
+
+        ThemeNotOverwritten = 4601,
+
+        LibraryMissing = 5501,
+        FolderMissing = 5502,
+
+        ThemeMissing = 5601,
 
         SiteSearchUnhandledException = 5401,
 
@@ -86,7 +102,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <remarks>
         /// Applications should use their own trace source names.
         /// </remarks>
-        public static LoggingUtility Internal = new LoggingUtility("OfficeDevPnP.Core");
+        public static LoggingUtility Internal = new LoggingUtility("OfficeDevPnP");
 
         /// <summary>
         /// Creates a new instance with the specified TraceSource name.

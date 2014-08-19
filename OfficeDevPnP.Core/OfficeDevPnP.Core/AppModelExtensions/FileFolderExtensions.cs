@@ -30,8 +30,8 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     // have to abort, list does not exist.
-                    string errorMessage = string.Format("Target list does not exist in the web. Web: {0}, List: {1}", web.Url, libraryName);
-                    LoggingUtility.LogError(errorMessage, null, EventCategory.Unknown);
+                    string errorMessage = string.Format("Target library does not exist in the web. Web: {0}, List: {1}", web.Url, libraryName);
+                    LoggingUtility.Internal.TraceError((int)EventId.LibraryMissing, errorMessage);
                     throw new WebException(errorMessage);
                 }
             }
@@ -82,6 +82,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="createLibrary">Should folder be created, if it does not exist</param>
         public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createLibrary = false)
         {
+            var filename = Path.GetFileName(filePath);
+            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, "Uploading file '{0}' to folder '{1}'.", filename, folderName);
+
             Folder folder;
             if (!DoesFolderExists(web, folderName))
             {
@@ -93,7 +96,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     // have to abort, list does not exist.
                     string errorMessage = string.Format("Target folder does not exist in the web. Web: {0}, Folder: {1}", web.Url, folderName);
-                    LoggingUtility.LogError(errorMessage, null, EventCategory.Unknown);
+                    LoggingUtility.Internal.TraceError((int)EventId.FolderMissing, errorMessage);
                     throw new WebException(errorMessage);
                 }
             }
