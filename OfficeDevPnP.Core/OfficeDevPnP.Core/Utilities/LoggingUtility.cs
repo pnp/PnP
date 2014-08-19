@@ -111,7 +111,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="category">Category to be used for the logged message</param>
-        //[Obsolete("Create an instance with a named trace source and use TraceVerbose()")]
+        [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceVerbose()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogVerbose(string message, EventCategory category) 
         {
@@ -124,7 +124,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="category">Category to be used for the logged message</param>
-        //[Obsolete("Create an instance with a named trace source and use TraceInformation()")]
+        [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceInformation()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogInformation(string message, EventCategory category)
         {
@@ -138,7 +138,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
-        //[Obsolete("Create an instance with a named trace source and use TraceWarning()")]
+        [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceWarning()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogWarning(string message, Exception ex, EventCategory category)
         {
@@ -152,7 +152,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
-        //[Obsolete("Create an instance with a named trace source and use TraceError()")]
+        [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceError()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogError(string message, Exception ex, EventCategory category)
         {
