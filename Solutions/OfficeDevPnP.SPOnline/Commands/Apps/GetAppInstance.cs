@@ -17,7 +17,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         Code = @"PS:> Get-SPOnlineAppInstance -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe",
         Remarks = @"This will return an app instance with the specified id.
     ", SortOrder = 2)]
-    public class GetAppInstance : SPOCmdlet
+    public class GetAppInstance : SPOWebCmdlet
     {
 
         [Parameter(Mandatory = false, ValueFromPipeline = true, HelpMessage = "The Id of the App Instance")]
@@ -25,14 +25,17 @@ namespace OfficeDevPnP.SPOnline.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var instances = SPOnline.Core.SPOApp.GetAppInstances(ClientContext);
+            
             if (Identity != null)
             {
-                var instance = instances.FirstOrDefault<AppInstance>(a => a.Id == Identity.Id);
+                var instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                ClientContext.Load(instance);
+                ClientContext.ExecuteQuery();
                 WriteObject(instance);
             }
             else
             {
+                var instances = this.SelectedWeb.GetAppInstances();
                 if (instances.Count > 1)
                 {
                     WriteObject(instances);

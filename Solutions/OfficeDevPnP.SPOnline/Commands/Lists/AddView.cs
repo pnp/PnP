@@ -43,18 +43,7 @@ namespace OfficeDevPnP.SPOnline.Commands
             List list = null;
             if (List != null)
             {
-                if (List.Id != Guid.Empty)
-                {
-                    list = SPO.SPOList.GetListById(List.Id, SelectedWeb, ClientContext);
-                }
-                else if (!string.IsNullOrEmpty(List.Title))
-                {
-                    list = SPOnline.Core.SPOList.GetListByTitle(List.Title, SelectedWeb, ClientContext);
-                }
-                else if (List.List != null)
-                {
-                    list = List.List;
-                }
+                list = this.SelectedWeb.GetList(List);
             }
             if (list != null)
             {

@@ -39,24 +39,9 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (ParameterSetName == "List")
             {
-                if (List.List != null)
-                {
-                    WriteObject(SPOEvents.RegisterEventReceiver(List.List, Name, Url, EventReceiverType, Synchronization, Force, ClientContext));
-                }
-                else if (List.Id != Guid.Empty)
-                {
-                    var list = SPO.SPOList.GetListById(List.Id, SelectedWeb, ClientContext);
-                    WriteObject(SPOEvents.RegisterEventReceiver(list, Name, Url, EventReceiverType, Synchronization, Force, ClientContext));
-                }
-                else if (!string.IsNullOrEmpty(List.Title))
-                {
-                    var list = SPO.SPOList.GetListByTitle(List.Title, SelectedWeb, ClientContext);
-                    WriteObject(SPOEvents.RegisterEventReceiver(list, Name, Url, EventReceiverType, Synchronization, Force, ClientContext));
-                }
-                else
-                {
-                    throw new Exception(Properties.Resources.ListNotFound);
-                }
+                var list = this.SelectedWeb.GetList(List);
+                WriteObject(SPOEvents.RegisterEventReceiver(list, Name, Url, EventReceiverType, Synchronization, Force, ClientContext));
+
             }
             else
             {

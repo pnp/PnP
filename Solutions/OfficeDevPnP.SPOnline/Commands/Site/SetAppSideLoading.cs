@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.SPOnline.Commands.Base;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.SPOnline.Commands
 {
@@ -15,11 +16,11 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (On)
             {
-                OfficeDevPnP.SPOnline.Core.SPOSite.EnableAppSideLoading(ClientContext);
+                ClientContext.Site.ActivateFeature(Constants.AppSideLoadingFeatureId);
             }
             else
             {
-                OfficeDevPnP.SPOnline.Core.SPOSite.DisableAppSideLoading(ClientContext);
+                ClientContext.Site.DeactivateFeature(Constants.AppSideLoadingFeatureId);
             }
         }
 

@@ -68,11 +68,11 @@ available quota.
 
         protected override void ProcessRecord()
         {
-            
-            using (OfficeDevPnP.SPOnline.Core.SPOSite.SPOTenant tenant = SPOnline.Core.SPOSite.GetTenant(ClientContext.Url, ClientContext.Credentials))
-            {
-                SPOnline.Core.SPOSite.NewTenantSite(Title, Url, Template, Owner, Lcid, TimeZone, ResourceQuota, ResourceQuotaWarningLevel, StorageQuota, StorageQuotaWarningLevel, Tenant, Wait, RemoveDeletedSite);
-            }
+            ClientContext.Web.CreateSiteCollectionTenant(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid,RemoveDeletedSite,Wait);
+            //using (OfficeDevPnP.SPOnline.Core.SPOSite.SPOTenant tenant = SPOnline.Core.SPOSite.GetTenant(ClientContext.Url, ClientContext.Credentials))
+            //{
+            //    SPOnline.Core.SPOSite.NewTenantSite(Title, Url, Template, Owner, Lcid, TimeZone, ResourceQuota, ResourceQuotaWarningLevel, StorageQuota, StorageQuotaWarningLevel, Tenant, Wait, RemoveDeletedSite);
+            //}
 
         }
 

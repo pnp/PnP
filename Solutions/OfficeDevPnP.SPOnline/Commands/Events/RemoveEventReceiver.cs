@@ -17,7 +17,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         [Parameter(Mandatory = true)]
         public GuidPipeBind Identity;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, ParameterSetName="List")]
         public SPOListPipeBind List;
 
         [Parameter(Mandatory = false)]
@@ -25,22 +25,10 @@ namespace OfficeDevPnP.SPOnline.Commands
 
         protected override void ExecuteCmdlet()
         {
-            Microsoft.SharePoint.Client.List list = null;
-            if (List.List != null)
+            if (ParameterSetName == "List")
             {
-                list = List.List;
-            }
-            else if (List.Id != Guid.Empty)
-            {
-                list = SPO.SPOList.GetListById(List.Id, SelectedWeb, ClientContext);
-            }
-            else if (!string.IsNullOrEmpty(List.Title))
-            {
-                list = SPO.SPOList.GetListByTitle(List.Title, SelectedWeb, ClientContext);
-            }
+                var list = this.SelectedWeb.GetList(List);
 
-            if (list != null)
-            {
                 if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
                 {
                     SPOEvents.RemoveEventReceiver(list, Identity.Id, ClientContext);
@@ -48,7 +36,10 @@ namespace OfficeDevPnP.SPOnline.Commands
             }
             else
             {
-                throw new Exception(Properties.Resources.ListNotFound);
+                if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
+                {
+                    SPOEvents.RemoveEventReceiver(this.SelectedWeb, Identity.Id, ClientContext);
+                }
             }
         }
 

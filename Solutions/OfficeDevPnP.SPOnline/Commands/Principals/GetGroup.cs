@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.SPOnline.CmdletHelpAttributes;
 using OfficeDevPnP.SPOnline.Commands.Base;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.SPOnline.Commands.Principals
 {
@@ -12,7 +13,7 @@ PS:> Get-SPOGroup
     [CmdletExample(Code = @"
 PS:> Get-SPOGroup -Name 'Site Members'
 ", SortOrder = 2)]
-    public class GetGroup : SPOCmdlet
+    public class GetGroup : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The name of the group")]
         public string Name = string.Empty;
@@ -21,11 +22,20 @@ PS:> Get-SPOGroup -Name 'Site Members'
         {
             if (string.IsNullOrEmpty(Name))
             {
-                WriteObject(SPOnline.Core.SPOGroup.GetGroups(ClientContext.Web));
+                var groups  = ClientContext.LoadQuery(this.SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
+                ClientContext.ExecuteQuery();
+                WriteObject(groups);
             }
             else
             {
-                WriteObject(SPOnline.Core.SPOGroup.GetGroup(Name, ClientContext.Web));
+                var group = this.SelectedWeb.SiteGroups.GetByName(Name);
+
+                ClientContext.Load(group);
+                ClientContext.Load(group.Users);
+
+                ClientContext.ExecuteQuery();
+
+                WriteObject(group);
             }
         }
     }

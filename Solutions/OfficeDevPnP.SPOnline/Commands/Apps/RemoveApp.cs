@@ -20,7 +20,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         Code = @"PS:> Remove-SPOnlineApp -Identity $appinstance")]
     [CmdletExample(
         Code = @"PS:> Remove-SPOnlineApp -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe")]
-    public class RemoveApp : SPOCmdlet
+    public class RemoveApp : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, HelpMessage = "Appinstance or Id of the app to remove.")]
         public AppPipeBind Identity;
@@ -29,11 +29,14 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (Identity.Instance != null)
             {
-                SPOApp.UninstallApp(Identity.Instance, ClientContext);
+                Identity.Instance.Uninstall();
+                ClientContext.ExecuteQuery();
             }
             else
             {
-                SPOApp.UninstallApp(Identity.Id, ClientContext);
+                var instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                instance.Uninstall();
+                ClientContext.ExecuteQuery();
             }
         }
 

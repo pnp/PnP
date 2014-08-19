@@ -1,15 +1,9 @@
-﻿using OfficeDevPnP.SPOnline.Commands.Base;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+﻿using System.IO;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
 using OfficeDevPnP.SPOnline.CmdletHelpAttributes;
-using SPO = OfficeDevPnP.SPOnline.Core;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.SPOnline.Commands.Base;
 
 namespace OfficeDevPnP.SPOnline.Commands
 {
@@ -24,7 +18,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         Code = @"PS:> Add-SPOnlineApp -Path c:\files\demo.app -Force",
         Remarks = @"This load first activate the app sideloading feature, upload and install the app, and deactivate the app sideloading feature.
     ")]
-    public class AddApp : SPOCmdlet
+    public class AddApp : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "Path pointing to the .app file")]
         public string Path = string.Empty;
@@ -44,20 +38,42 @@ namespace OfficeDevPnP.SPOnline.Commands
             {
                 if (Force)
                 {
-                    SPO.SPOSite.EnableAppSideLoading(ClientContext);
+                    ClientContext.Site.ActivateFeature(Constants.AppSideLoadingFeatureId);
                 }
+                AppInstance instance = null;
 
                 FileStream appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
                 if (Locale == -1)
                 {
-                    Locale = CultureInfo.CurrentCulture.LCID;
+                    if (LoadOnly)
+                    {
+                        instance = this.SelectedWeb.LoadApp(appPackageStream, CultureInfo.CurrentCulture.LCID);
+                    }
+                    else
+                    {
+                        instance = this.SelectedWeb.LoadAndInstallApp(appPackageStream);
+                    }
                 }
-                WriteObject(SPOnline.Core.SPOApp.LoadAndInstallApp(appPackageStream, ClientContext.Web, LoadOnly, Locale));
+                else
+                {
+                    if (LoadOnly)
+                    {
+                        instance = this.SelectedWeb.LoadApp(appPackageStream, Locale);
+                    }
+                    else
+                    {
+                        instance = this.SelectedWeb.LoadAndInstallAppInSpecifiedLocale(appPackageStream, Locale);
+                    }
+                }
+                ClientContext.Load(instance);
+                ClientContext.ExecuteQuery();
+                
 
                 if (Force)
                 {
-                    SPO.SPOSite.DisableAppSideLoading(ClientContext);
+                    ClientContext.Site.DeactivateFeature(Constants.AppSideLoadingFeatureId);
                 }
+                WriteObject(instance);
             }
             else
             {

@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.SPOnline.CmdletHelpAttributes;
 using OfficeDevPnP.SPOnline.Commands.Base;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.SPOnline.Commands.Principals
 {
@@ -9,19 +10,19 @@ namespace OfficeDevPnP.SPOnline.Commands.Principals
     [CmdletExample(Code = @"
 PS:> Remove-SPOUserFromGroup -LogonName user@company.com -GroupName 'Marketing Site Members'
 ")]
-    public class RemoveUserFromGroup : SPOCmdlet
+    public class RemoveUserFromGroup : SPOWebCmdlet
     {
 
         [Parameter(Mandatory = true, HelpMessage = "A valid logon name of a user")]
-        public string LogonName = string.Empty;
+        [Alias("LogonName")]
+        public string LoginName = string.Empty;
 
         [Parameter(Mandatory = true, HelpMessage = "A valid group name")]
         public string GroupName = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            SPOnline.Core.SPOGroup.RemoveUserFromGroup(LogonName, GroupName, ClientContext.Web);
-
+            this.SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
         }
     }
 }
