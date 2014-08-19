@@ -202,6 +202,28 @@ namespace Microsoft.SharePoint.Client
 
         #region List scoped In Place Records Management methods
 
+        public static bool IsListRecordSettingDefined(this List list)
+        {
+            string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC, "");
+
+            if (!String.IsNullOrEmpty(useListSpecific))
+            {
+                bool listSpecific = false;
+                if (Boolean.TryParse(useListSpecific, out listSpecific))
+                {
+                    return listSpecific;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static void SetListManualRecordDeclaration(this List list, EcmListManualRecordDeclaration settings)
         {
             if (settings == EcmListManualRecordDeclaration.UseSiteCollectionDefaults)
@@ -384,7 +406,6 @@ namespace Microsoft.SharePoint.Client
                     eventReceiver.ReceiverAssembly.Equals(receiverToAdd.ReceiverAssembly) &&
                     eventReceiver.ReceiverClass.Equals(receiverToAdd.ReceiverClass) &&
                     eventReceiver.ReceiverName.Equals(receiverToAdd.ReceiverName) &&
-                    eventReceiver.ReceiverUrl.Equals(receiverToAdd.ReceiverUrl) &&
                     eventReceiver.SequenceNumber.Equals(receiverToAdd.SequenceNumber) &&
                     eventReceiver.Synchronization.Equals(receiverToAdd.Synchronization))
                 {
