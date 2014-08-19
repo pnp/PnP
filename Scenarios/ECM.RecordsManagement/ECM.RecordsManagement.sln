@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECM.RecordsManagement.Console", "ECM.RecordsManagement.Console\ECM.RecordsManagement.Console.csproj", "{4F4802FB-33A9-4839-AC28-0D38B4821DC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{7B38B1A0-D60E-4B1F-8B33-1985C536712A}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8B58DAC4-E32E-4ED2-B1DA-D6329A163A46}"
 EndProject

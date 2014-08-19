@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ECM.RecordsManagement
 {
+    /// <summary>
+    /// This program has been used to dump web and list properties + list eventhandler settings. 
+    /// </summary>
     class Program
     {
         static bool toConsole = false;
@@ -17,12 +20,11 @@ namespace ECM.RecordsManagement
         {
             // Office 365 Multi-tenant sample
             ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com/sites/130020", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
-            //130020
-
-            if (!cc.Site.IsInPlaceRecordsManagementActive())
-            {
-                cc.Site.EnableSiteForInPlaceRecordsManagement();
-            }
+            
+            //if (!cc.Site.IsInPlaceRecordsManagementActive())
+            //{
+            //    cc.Site.EnableSiteForInPlaceRecordsManagement();
+            //}
             
             FileStream ostrm;
             StreamWriter writer = null;

@@ -101,6 +101,7 @@ namespace ECM.RecordsManagementWeb
             {
                 rdListAvailability.SelectedValue = Convert.ToString((int)ipr.GetListManualRecordDeclaration());
                 chbAutoDeclare.Checked = ipr.GetListAutoRecordDeclaration();
+                //Refresh the settings as AutoDeclare changes the manual settings
                 rdListAvailability.Enabled = !chbAutoDeclare.Checked;
             }
         }
@@ -137,7 +138,7 @@ namespace ECM.RecordsManagementWeb
             ipr.SetListManualRecordDeclaration(listManual);
             ipr.SetListAutoRecordDeclaration(chbAutoDeclare.Checked);
 
-            //Refrsh the settings as AutoDeclare changes the manual settings
+            //Refresh the settings as AutoDeclare changes the manual settings
             if (ipr.IsListRecordSettingDefined())
             {
                 rdListAvailability.SelectedValue = Convert.ToString((int)ipr.GetListManualRecordDeclaration());

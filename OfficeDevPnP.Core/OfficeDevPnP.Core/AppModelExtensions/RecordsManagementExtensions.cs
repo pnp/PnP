@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
+using System.Reflection;
 
 
 namespace Microsoft.SharePoint.Client
@@ -21,12 +22,15 @@ namespace Microsoft.SharePoint.Client
         public const string ECM_SITE_RECORD_UNDECLARATION_BY = "ecm_siterecordundeclarationby";
         public const string ECM_ALLOW_MANUAL_DECLARATION = "ecm_AllowManualDeclaration";
         public const string ECM_IPR_LIST_USE_LIST_SPECIFIC = "ecm_IPRListUseListSpecific";
-        public const string ECM_LIST_READY_FOR_IPR = "ecm_ListReadyForIPR";
         public const string ECM_AUTO_DECLARE_RECORDS = "ecm_AutoDeclareRecords";
-        public const string ECM_LIST_FIELDS_READY_FOR_IPR = "ecm_ListFieldsReadyForIPR";
 
 
         #region Site scoped In Place Records Management methods
+        /// <summary>
+        /// Checks if in place records management functionality is enabled for this site collection
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <returns>True if in place records management is enabled, false otherwise</returns>
         public static bool IsInPlaceRecordsManagementActive(this Site site)
         {
             // First requirement is that the feature is active
@@ -48,16 +52,30 @@ namespace Microsoft.SharePoint.Client
             return true;
         }
         
+        /// <summary>
+        /// Activate the in place records management feature
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
         public static void ActivateInPlaceRecordsManagementFeature(this Site site)
         {
             site.ActivateFeature(new Guid(INPLACE_RECORDS_MANAGEMENT_FEATURE_ID));            
         }
 
+        /// <summary>
+        /// Deactivate the in place records management feature
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
         public static void DisableInPlaceRecordsManagementFeature(this Site site)
         {
             site.DeactivateFeature(new Guid(INPLACE_RECORDS_MANAGEMENT_FEATURE_ID)); 
         }
 
+        /// <summary>
+        /// Enable in place records management. The in place records management feature will be enabled and 
+        /// the in place record management will be enabled in all locations with record declaration allowed 
+        /// by all contributors and undeclaration by site admins
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
         public static void EnableSiteForInPlaceRecordsManagement(this Site site)
         {
             // Activate the "In place records management" feature if not yet enabled
@@ -82,11 +100,21 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Defines if in place records management is allowed in all places
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <param name="inAllPlaces">True if allowed in all places, false otherwise</param>
         public static void SetManualRecordDeclarationInAllLocations(this Site site, bool inAllPlaces)
         {
             site.RootWeb.SetPropertyBagValue(ECM_SITE_RECORD_DECLARATION_DEFAULT, inAllPlaces.ToString());
         }
 
+        /// <summary>
+        /// Get the value of the records management is allowed in all places setting
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <returns>True if records management is allowed in all places, false otherwise</returns>
         public static bool GetManualRecordDeclarationInAllLocations(this Site site)
         {
             string manualDeclare = site.RootWeb.GetPropertyBagValueString(ECM_SITE_RECORD_DECLARATION_DEFAULT, "");
@@ -104,6 +132,11 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Defines the restrictions that are placed on a document once it's declared as a record
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <param name="restrictions"><see cref="EcmSiteRecordRestrictions"/> enum that holds the restrictions to be applied</param>
         public static void SetRecordRestrictions(this Site site, EcmSiteRecordRestrictions restrictions)
         {
             string restrictionsProperty = "";
@@ -126,6 +159,11 @@ namespace Microsoft.SharePoint.Client
             site.RootWeb.SetPropertyBagValue(ECM_SITE_RECORD_RESTRICTIONS, restrictionsProperty);
         }
 
+        /// <summary>
+        /// Gets the current restrictions on declared records
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <returns><see cref="EcmSiteRecordRestrictions"/> enum that defines the current restrictions</returns>
         public static EcmSiteRecordRestrictions GetRecordRestrictions(this Site site)
         {
             EcmSiteRecordRestrictions result = EcmSiteRecordRestrictions.None;
@@ -152,12 +190,21 @@ namespace Microsoft.SharePoint.Client
             throw new Exception("No ECM_SITE_RECORD_RESTRICTIONS setting defined"); 
         }
 
-
+        /// <summary>
+        /// Defines who can declare records
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <param name="by"><see cref="EcmRecordDeclarationBy"/> enum that defines who can declare a record</param>
         public static void SetRecordDeclarationBy(this Site site, EcmRecordDeclarationBy by)
         {
             site.RootWeb.SetPropertyBagValue(ECM_SITE_RECORD_DECLARATION_BY, by.ToString());
         }
 
+        /// <summary>
+        /// Gets who can declare records
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <returns><see cref="EcmRecordDeclarationBy"/> enum that defines who can declare a record</returns>
         public static EcmRecordDeclarationBy GetRecordDeclarationBy(this Site site)
         {
             string by = site.RootWeb.GetPropertyBagValueString(ECM_SITE_RECORD_DECLARATION_BY, "");
@@ -176,10 +223,21 @@ namespace Microsoft.SharePoint.Client
             throw new Exception("No ECM_SITE_RECORD_DECLARATION_BY setting defined");            
         }
 
+        /// <summary>
+        /// Defines who can undeclare records
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <param name="by"><see cref="EcmRecordDeclarationBy"/> enum that defines who can undeclare a record</param>
         public static void SetRecordUnDeclarationBy(this Site site, EcmRecordDeclarationBy by)
         {
             site.RootWeb.SetPropertyBagValue(ECM_SITE_RECORD_UNDECLARATION_BY, by.ToString());
         }
+
+        /// <summary>
+        /// Gets who can undeclare records
+        /// </summary>
+        /// <param name="site">Site collection to operate on</param>
+        /// <returns><see cref="EcmRecordDeclarationBy"/> enum that defines who can undeclare a record</returns>
 
         public static EcmRecordDeclarationBy GetRecordUnDeclarationBy(this Site site)
         {
@@ -201,7 +259,11 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region List scoped In Place Records Management methods
-
+        /// <summary>
+        /// Checks if this list has active in place records management settings defined
+        /// </summary>
+        /// <param name="list">List to operate against</param>
+        /// <returns>True if in place records management settings are active for this list</returns>
         public static bool IsListRecordSettingDefined(this List list)
         {
             string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC, "");
@@ -224,6 +286,11 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Defines the manual in place record declaration for this list
+        /// </summary>
+        /// <param name="list">List to operate against</param>
+        /// <param name="settings"><see cref="EcmListManualRecordDeclaration"/> enum that defines the manual in place record declaration settings for this list</param>
         public static void SetListManualRecordDeclaration(this List list, EcmListManualRecordDeclaration settings)
         {
             if (settings == EcmListManualRecordDeclaration.UseSiteCollectionDefaults)
@@ -252,6 +319,11 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Gets the manual in place record declaration for this list
+        /// </summary>
+        /// <param name="list">List to operate against</param>
+        /// <returns><see cref="EcmListManualRecordDeclaration"/> enum that defines the manual in place record declaration settings for this list</returns>
         public static EcmListManualRecordDeclaration GetListManualRecordDeclaration(this List list)
         {
             string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC, "");
@@ -288,8 +360,16 @@ namespace Microsoft.SharePoint.Client
             throw new Exception("No ECM_SITE_RECORD_UNDECLARATION_BY setting defined");
         }
 
-        public static void SetListAutoRecordDeclaration(this List list, bool autoDeclareRecords, int sharePointVersion = 16)
+        /// <summary>
+        /// Defines if auto record declaration is active for this list: all added items will be automatically declared as a record if active
+        /// </summary>
+        /// <param name="list">List to operate on</param>
+        /// <param name="autoDeclareRecords">True to automatically declare all added items as record, false otherwise</param>
+        public static void SetListAutoRecordDeclaration(this List list, bool autoDeclareRecords)
         {
+            //Determine the SharePoint version based on the loaded CSOM library
+            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site));
+            int sharePointVersion = asm.GetName().Version.Major;
 
             if (autoDeclareRecords)
             {
@@ -368,6 +448,11 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Returns if auto record declaration is active for this list
+        /// </summary>
+        /// <param name="list">List to operate against</param>
+        /// <returns>True if auto record declaration is active, false otherwise</returns>
         public static bool GetListAutoRecordDeclaration(this List list)
         {
             string autoDeclare = list.GetPropertyBagValueString(ECM_AUTO_DECLARE_RECORDS, "");
