@@ -225,7 +225,7 @@ namespace Core.SiteClassificationWeb.Pages
             var actions = existingActions.ToArray();
             foreach (var action in actions)
             {
-                if (action.Description == "scenario1" &&
+                if (action.Description == "PnPClassification" &&
                     action.Location == "ScriptLink")
                 {
                     action.DeleteObject();
@@ -234,7 +234,7 @@ namespace Core.SiteClassificationWeb.Pages
             }
 
             var newAction = existingActions.Add();
-            newAction.Description = "scenario1";
+            newAction.Description = "PnPClassification";
             newAction.Location = "ScriptLink";
 
             newAction.ScriptBlock = scriptBlock;

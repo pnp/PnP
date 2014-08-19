@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OfficeDevPnP.SPOnline.Commands</RootNamespace>
+    <AssemblyName>OfficeDevPnP.SPOnline.Commands</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\WindowsPowerShell\3.0\System.Management.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\GetWebTemplates.cs" />
+    <Compile Include="Admin\GetTimeZoneId.cs" />
+    <Compile Include="Apps\RemoveApp.cs" />
+    <Compile Include="Base\CmdLetContext.cs" />
+    <Compile Include="Base\Configuration.cs" />
+    <Compile Include="Base\Constants.cs" />
+    <Compile Include="Base\SetConfiguration.cs" />
+    <Compile Include="Base\GetConfiguration.cs" />
+    <Compile Include="Base\GetSPOContext.cs" />
+    <Compile Include="Base\GetStoredCredential.cs" />
+    <Compile Include="Base\GetHealthScore.cs" />
+    <Compile Include="Base\ExecuteSPOQuery.cs" />
+    <Compile Include="Base\DisconnectSPOnline.cs" />
+    <Compile Include="Base\PipeBinds\SPOFieldIdPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\SPOListPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\AppPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\GroupPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\CredentialPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\SPOContentTypePipeBind.cs" />
+    <Compile Include="Base\PipeBinds\SPOWebPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\GuidPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\SPOWebPartPipeBind.cs" />
+    <Compile Include="Base\SPOAdminCmdlet.cs" />
+    <Compile Include="Base\SPOnlineConnection.cs" />
+    <Compile Include="Base\SPOnlineConnectionHelper.cs" />
+    <Compile Include="Base\ConnectSPOnline.cs" />
+    <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="ContentTypes\AddFieldToContentType.cs" />
+    <Compile Include="ContentTypes\RemoveContentType.cs" />
+    <Compile Include="ContentTypes\GetContentType.cs" />
+    <Compile Include="ContentTypes\AddContentType.cs" />
+    <Compile Include="Events\RegisterEventReceiver.cs" />
+    <Compile Include="Events\GetEventReceiver.cs" />
+    <Compile Include="Events\RemoveEventReceiver.cs" />
+    <Compile Include="Features\GetFeature.cs" />
+    <Compile Include="Fields\AddTaxonomyField.cs" />
+    <Compile Include="Fields\RemoveField.cs" />
+    <Compile Include="Fields\GetField.cs" />
+    <Compile Include="Fields\AddField.cs" />
+    <Compile Include="Lists\AddView.cs" />
+    <Compile Include="Lists\GetView.cs" />
+    <Compile Include="Lists\RemoveView.cs" />
+    <Compile Include="Lists\RemoveList.cs" />
+    <Compile Include="Base\PipeBinds\SPOViewPipeBind.cs" />
+    <Compile Include="Site\NewSite.cs" />
+    <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
+    <Compile Include="Taxonomy\SetTaxonomyFieldValue.cs" />
+    <Compile Include="Lists\GetList.cs" />
+    <Compile Include="Lists\NewList.cs" />
+    <Compile Include="Principals\RemoveUserFromGroup.cs" />
+    <Compile Include="Principals\AddUserToGroup.cs" />
+    <Compile Include="Principals\GetGroup.cs" />
+    <Compile Include="Principals\NewUser.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Site\SetAppSideLoading.cs" />
+    <Compile Include="Site\GetSite.cs" />
+    <Compile Include="Admin\RemoveTenantSite.cs" />
+    <Compile Include="Admin\NewTenantSite.cs" />
+    <Compile Include="Taxonomy\ImportTaxonomy.cs" />
+    <Compile Include="Taxonomy\ExportTaxonomy.cs" />
+    <Compile Include="Taxonomy\GetTaxonomySession.cs" />
+    <Compile Include="Web\AddNavigationLink.cs" />
+    <Compile Include="WebParts\SetWebPartProperty.cs" />
+    <Compile Include="WebParts\RemoveWebPart.cs" />
+    <Compile Include="WebParts\GetWebPart.cs" />
+    <Compile Include="WebParts\AddWebPart.cs" />
+    <Compile Include="Base\SPOCmdlet.cs" />
+    <Compile Include="Apps\AddApp.cs" />
+    <Compile Include="Apps\GetAppInstance.cs" />
+    <Compile Include="Web\GetFile.cs" />
+    <Compile Include="Web\GetWeb.cs" />
+    <Compile Include="Web\GetSubwebs.cs" />
+    <Compile Include="Web\FindFile.cs" />
+    <Compile Include="Web\RemoveCustomAction.cs" />
+    <Compile Include="Web\GetCustomAction.cs" />
+    <Compile Include="Web\AddCustomAction.cs" />
+    <Compile Include="Web\GetPropertyBag.cs" />
+    <Compile Include="Web\RemovePropertyBagValue.cs" />
+    <Compile Include="Web\RequestReIndexWeb.cs" />
+    <Compile Include="Web\GetMasterPage.cs" />
+    <Compile Include="Web\GetHomepage.cs" />
+    <Compile Include="Web\SetMDS.cs" />
+    <Compile Include="Web\SetHomepage.cs" />
+    <Compile Include="Web\SetPropertyBagValue.cs" />
+    <Compile Include="Web\SetIndexedProperties.cs" />
+    <Compile Include="Web\SetFileCheckedIn.cs" />
+    <Compile Include="Web\SetFileCheckedOut.cs" />
+    <Compile Include="Web\AddFile.cs" />
+    <Compile Include="Features\DisableFeature.cs" />
+    <Compile Include="Features\EnableFeature.cs" />
+    <Compile Include="Web\NewWeb.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\SetMasterPage.cs" />
+    <Compile Include="Web\SetTheme.cs" />
+    <Compile Include="Base\SPOWebCmdlet.cs" />
+    <Compile Include="WikiPage\RemoveWikiPage.cs" />
+    <Compile Include="WikiPage\AddWikiPage.cs" />
+    <Compile Include="WikiPage\GetWikiPageContent.cs" />
+    <Compile Include="WikiPage\SetWikiPageContent.cs" />
+    <Compile Include="Wrappers\SPOContextObject.cs" />
+    <Compile Include="Wrappers\SPOCustomAction.cs" />
+    <Compile Include="Wrappers\SPOFile.cs" />
+    <Compile Include="Wrappers\SPOContentType.cs" />
+    <Compile Include="Wrappers\SPOList.cs" />
+    <Compile Include="Wrappers\SPOSite.cs" />
+    <Compile Include="Wrappers\SPOnlineView.cs" />
+    <Compile Include="Wrappers\SPOnlineWeb.cs" />
+    <Compile Include="Wrappers\SPOnlineWebPart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\OfficeDevPnP.SPOnline.Core.csproj">
+      <Project>{48d26f35-6053-4251-85ff-ee5d95ad42e2}</Project>
+      <Name>OfficeDevPnP.SPOnline.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelpAttributes\OfficeDevPnP.SPOnline.CmdletHelpAttributes.csproj">
+      <Project>{fdd50bbd-ae78-4b10-9549-0566686719ab}</Project>
+      <Name>OfficeDevPnP.SPOnline.CmdletHelpAttributes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ModuleFiles\OfficeDevPnP.SPOnline.Commands.psd1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\Debug\OfficeDevPnP.SPOnline.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+
+"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -file "$(SolutionDir)\PostBuild.ps1" "$(ConfigurationName)" "$(TargetDir)
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
