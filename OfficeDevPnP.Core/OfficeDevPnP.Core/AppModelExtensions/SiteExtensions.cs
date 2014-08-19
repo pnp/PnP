@@ -253,6 +253,42 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Gets the collection of the URLs of all Web sites that are contained within the site collection, 
+        /// including the top-level site and its subsites.
+        /// </summary>
+        /// <param name="site">Site collection to retrieve the URLs for.</param>
+        /// <returns>An enumeration containing the full URLs as strings.</returns>
+        /// <remarks>
+        /// <para>
+        /// This is analagous to the <code>SPSite.AllWebs</code> property and can be used to get a collection
+        /// of all web site URLs to loop through, e.g. for branding.
+        /// </para>
+        /// </remarks>
+        public static IEnumerable<string> GetAllWebUrls(this Site site)
+        {
+            var siteContext = site.Context;
+            siteContext.Load(site, s => s.Url);
+            siteContext.ExecuteQuery();
+            var queue = new Queue<string>();
+            queue.Enqueue(site.Url);
+            while (queue.Count > 0)
+            {
+                var currentUrl = queue.Dequeue();
+                using (var webContext = new ClientContext(currentUrl))
+                {
+                    webContext.Credentials = siteContext.Credentials;
+                    webContext.Load(webContext.Web, web => web.Webs);
+                    webContext.ExecuteQuery();
+                    foreach (var subWeb in webContext.Web.Webs)
+                    {
+                        queue.Enqueue(subWeb.Url);
+                    }
+                }
+                yield return currentUrl;
+            }
+        }
+
         #endregion
 
         #region site (collection) creation and deletion
