@@ -58,9 +58,9 @@ namespace Core.XMLBasedFieldsAndContentTypesWeb
 
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
-                // Start XML importign from the xmlf ile located in this provider hosted app
+                // Start XML importing from the xml file located in this provider hosted app
                 clientContext.Web.CreateFieldsFromXMLFile(System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SiteColumns.xml")));
-                lblStatus.Text = string.Format("Site columns created to the host web. Check for <a href='#'>site columms</a> with group name of 'Contoso Fields'.",
+                lblStatus.Text = string.Format("Site columns created to the host web. Check for <a href='#'>site columns</a> with group name of 'Contoso Fields'.",
                                                 spContext.SPHostUrl.ToString() + "/_layouts/15/mngfield.aspx");
             }
         }
@@ -71,7 +71,7 @@ namespace Core.XMLBasedFieldsAndContentTypesWeb
 
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
-                // Start XML importing from the xmlf ile located in this provider hosted app
+                // Start XML importing from the xml file located in this provider hosted app
                 clientContext.Web.CreateContentTypeFromXMLFile(System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/contenttypes.xml")));
                 lblStatus2.Text = string.Format("Content types created to the host web. Check for <a href='#'>content types</a> with group name of 'Contoso'.",
                                                 spContext.SPHostUrl.ToString() + "/_layouts/15/mngctype.aspx");
