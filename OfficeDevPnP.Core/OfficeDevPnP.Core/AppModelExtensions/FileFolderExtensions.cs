@@ -175,7 +175,7 @@ namespace Microsoft.SharePoint.Client
                 web.Context.ExecuteQuery();
                 exists = true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
