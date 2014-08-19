@@ -32,8 +32,14 @@ namespace OfficeDevPnP.SPOnline.Commands.Features
         protected override void ExecuteCmdlet()
         {
             Guid featureId = Identity.Id;
-
-            SPOnline.Core.SPOFeatures.ActivateFeature(featureId, Force, Scope, ClientContext);
+            if(Scope == Core.SPOFeatures.FeatureScope.Web)
+            {
+                ClientContext.Web.ActivateFeature(featureId);
+            }
+            else
+            {
+                ClientContext.Site.ActivateFeature(featureId);
+            }
         }
 
 
