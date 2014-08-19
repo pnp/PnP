@@ -15,7 +15,7 @@
     <div style="left: 40px; position: absolute;">
         <h1>Scenario 1: Enable In Place Records Management + site scoped settings</h1>
         <br />
-        In place records management is <asp:Label runat="server" ID="lblIPREnabled"></asp:Label> on this site collection. Click on the button to <asp:Button ID="btnToggleIPRStatus" runat="server" Text="Enable"/> in place records management.
+        In place records management is <asp:Label runat="server" ID="lblIPREnabled" Font-Bold="true" ForeColor="Red"></asp:Label> on this site collection. Click on the button to <asp:Button ID="btnToggleIPRStatus" runat="server" Text="Enable" OnClick="btnToggleIPRStatus_Click"/> in place records management.
         <br />
         <br />
         <table>
@@ -26,9 +26,9 @@
             <tr>
                 <td>Specify restrictions to place on a document or item once it has been declared as a record.  Changing this setting will not affect items which have already been declared records.  Note:  The information management policy settings can also specify different policies for records and non-records.</td>
                 <td><asp:RadioButtonList ID="rdRestrictions" runat="server">
-                        <asp:ListItem Text="No Additional Restrictions" Selected="False" Value="None"></asp:ListItem>
-                        <asp:ListItem Text="Block Delete" Selected="False" Value="BlockDelete"></asp:ListItem>
-                        <asp:ListItem Text="Block Edit and Delete" Selected="True" Value="BlockEdit, BlockDelete"></asp:ListItem>
+                        <asp:ListItem Text="No Additional Restrictions" Selected="False" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Block Delete" Selected="False" Value="16"></asp:ListItem>
+                        <asp:ListItem Text="Block Edit and Delete" Selected="True" Value="272"></asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
             </tr>
@@ -58,9 +58,9 @@
                 <td valign="top">Specify which user roles can declare and undeclare record status manually.</td>
                 <td>
                     <asp:RadioButtonList ID="rdDeclarationBy" runat="server">
-                        <asp:ListItem Text="All list contributors and administrators" Selected="True" Value="AllListContributors"></asp:ListItem>
-                        <asp:ListItem Text="Only list administrators" Selected="False" Value="OnlyAdmins"></asp:ListItem>
-                        <asp:ListItem Text="Only policy actions" Selected="False" Value="OnlyPolicy"></asp:ListItem>
+                        <asp:ListItem Text="All list contributors and administrators" Selected="True" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Only list administrators" Selected="False" Value="2"></asp:ListItem>
+                        <asp:ListItem Text="Only policy actions" Selected="False" Value="3"></asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
             </tr>
@@ -75,15 +75,22 @@
                 <td></td>
                 <td>
                     <asp:RadioButtonList ID="rdUndeclarationBy" runat="server">
-                        <asp:ListItem Text="All list contributors and administrators" Selected="False" Value="AllListContributors"></asp:ListItem>
-                        <asp:ListItem Text="Only list administrators" Selected="True" Value="OnlyAdmins"></asp:ListItem>
-                        <asp:ListItem Text="Only policy actions" Selected="False" Value="OnlyPolicy"></asp:ListItem>
+                        <asp:ListItem Text="All list contributors and administrators" Selected="False" Value="1"></asp:ListItem>
+                        <asp:ListItem Text="Only list administrators" Selected="True" Value="2"></asp:ListItem>
+                        <asp:ListItem Text="Only policy actions" Selected="False" Value="3"></asp:ListItem>
                     </asp:RadioButtonList>
                 </td>
             </tr>
-
+            <tr>
+                <td>
+                    <asp:Button ID="btnSaveSiteScopedIPRSettings" runat="server" Text="Save changes" OnClick="btnSaveSiteScopedIPRSettings_Click" />
+                </td>
+            </tr>
         </table>
-    
+        <br />
+        <br />
+        <h1>Scenario 2: List scoped settings</h1>
+        <br />
     </div>
     </form>
 </body>

@@ -53,6 +53,11 @@ namespace Microsoft.SharePoint.Client
             site.ActivateFeature(new Guid(INPLACE_RECORDS_MANAGEMENT_FEATURE_ID));            
         }
 
+        public static void DisableInPlaceRecordsManagementFeature(this Site site)
+        {
+            site.DeactivateFeature(new Guid(INPLACE_RECORDS_MANAGEMENT_FEATURE_ID)); 
+        }
+
         public static void EnableSiteForInPlaceRecordsManagement(this Site site)
         {
             // Activate the "In place records management" feature if not yet enabled
@@ -80,6 +85,23 @@ namespace Microsoft.SharePoint.Client
         public static void SetManualRecordDeclarationInAllLocations(this Site site, bool inAllPlaces)
         {
             site.RootWeb.SetPropertyBagValue(ECM_SITE_RECORD_DECLARATION_DEFAULT, inAllPlaces.ToString());
+        }
+
+        public static bool GetManualRecordDeclarationInAllLocations(this Site site)
+        {
+            string manualDeclare = site.RootWeb.GetPropertyBagValueString(ECM_SITE_RECORD_DECLARATION_DEFAULT, "");
+
+            if (!String.IsNullOrEmpty(manualDeclare))
+            {
+                bool manual = false;
+                if (Boolean.TryParse(manualDeclare, out manual))
+                {
+                    return manual;
+                }
+            }
+
+            return false;
+
         }
 
         public static void SetRecordRestrictions(this Site site, EcmSiteRecordRestrictions restrictions)
@@ -333,7 +355,7 @@ namespace Microsoft.SharePoint.Client
                 bool auto = false;
                 if (Boolean.TryParse(autoDeclare, out auto))
                 {
-                    return true;
+                    return auto;
                 }
             }
 
