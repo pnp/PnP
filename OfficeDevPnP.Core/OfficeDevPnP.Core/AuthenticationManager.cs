@@ -30,7 +30,8 @@ namespace OfficeDevPnP.Core
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
-            LoggingUtility.LogVerbose(string.Format("AuthenticationManager:GetSharePointOnlineAuthenticatedContextTenant(siteUrl:{0},tenantUser:{1},tenantUserPassword:PRIVATE)", siteUrl, tenantUser), EventCategory.Authorization);
+            LoggingUtility.Internal.TraceInformation((int)EventId.AuthenticationContext, "Getting authentication context for '{0}'", siteUrl);
+            LoggingUtility.Internal.TraceVerbose("Tenant user '{0}'", tenantUser);
 
             if (sharepointOnlineCredentials == null)
             {
