@@ -54,6 +54,28 @@ namespace OfficeDevPnP.Core.Utilities
     /// <summary>
     /// This class is used to log events which occur in OfficeDevPnP. 
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Without configuration, tracing will be switched off (SourceLevels.Off) 
+    /// and only configured with the Default (debug) trace listener.
+    /// </para>
+    /// <para>
+    /// Tracing to the console can be switched on with the following code:
+    /// </para>
+    /// <code>
+    ///   OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Switch.Level = SourceLevels.Information;
+    ///   OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Listeners.Add(new ConsoleTraceListener() { Name = "Console" });
+    /// </code>
+    /// <para>
+    /// Alternatively, the trace can be configured in App.config.
+    /// </para>
+    /// <para>
+    /// For extended logging, including a coloured console logger, add the following nuget package:
+    /// </para>
+    /// <code>
+    ///   Install-Package Essential.Diagnostics.Config
+    /// </code>
+    /// </remarks>
     public partial class LoggingUtility 
     {
         const int InitializeBehaviourEventId = 100;
