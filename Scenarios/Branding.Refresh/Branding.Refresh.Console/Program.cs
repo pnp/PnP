@@ -29,6 +29,9 @@ namespace Contoso.Branding.Refresh
 
         static void Main(string[] args)
         {
+            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Switch.Level = SourceLevels.Information;
+            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Listeners.Add(new ConsoleTraceListener() { Name = "Console" });
+
             // Create a context to work with
             // Office 365 Multi-tenant sample - TODO Change your URL and username
             ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
@@ -81,6 +84,7 @@ namespace Contoso.Branding.Refresh
             }
 
             Console.WriteLine("----------------------------------------------------------------------");
+            Console.ReadLine();
         }
 
         /// <summary>

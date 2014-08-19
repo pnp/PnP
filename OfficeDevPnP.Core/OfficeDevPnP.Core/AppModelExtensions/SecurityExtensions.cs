@@ -408,6 +408,25 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Adds a user to a group
         /// </summary>
+        /// <param name="web">web to operate against</param>
+        /// /// <param name="groupId">Id of the group</param>
+        /// <param name="userLoginName">Login name of the user</param>
+        public static void AddUserToGroup(this Web web, int groupId, string userLoginName)
+        {
+            Group group = web.SiteGroups.GetById(groupId);
+            web.Context.Load(group);
+            User user = web.EnsureUser(userLoginName);
+            web.Context.ExecuteQuery();
+
+            if (user != null && group != null)
+            {
+                AddUserToGroup(web, group, user);
+            }
+        }
+
+        /// <summary>
+        /// Adds a user to a group
+        /// </summary>
         /// <param name="web">Web to operate against</param>
         /// <param name="group">Group object representing the group</param>
         /// <param name="user">User object representing the user</param>
@@ -415,6 +434,23 @@ namespace Microsoft.SharePoint.Client
         {
             group.Users.AddUser(user);
             web.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Adds a user to a group
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="group">Group object representing the group</param>
+        /// <param name="userLoginName">Login name of the user</param>
+        public static void AddUserToGroup(this Web web, Group group, string userLoginName)
+        {
+            User user = web.EnsureUser(userLoginName);
+            web.Context.ExecuteQuery();
+            if(user!=null)
+            {
+                group.Users.AddUser(user);
+                web.Context.ExecuteQuery();
+            }
         }
 
         /// <summary>

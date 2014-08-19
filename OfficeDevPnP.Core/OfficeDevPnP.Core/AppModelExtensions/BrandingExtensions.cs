@@ -35,7 +35,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
         public static void DeployThemeToWeb(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
-
             // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
             DeployThemeToWebImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
@@ -57,6 +56,8 @@ namespace Microsoft.SharePoint.Client
 
         private static void DeployThemeToWebImplementation(Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployTheme, "Deploying theme '{0}' to '{1}'", themeName, web.Context.Url);
+
             // Deploy files one by one to proper location
             if (!string.IsNullOrEmpty(colorFilePath) && System.IO.File.Exists(colorFilePath))
             {
@@ -236,7 +237,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="themeName">Name of the new theme</param>
         public static void SetThemeToWeb(this Web web, string themeName)
         {
-
             SetThemeToWebImplementation(web, web, themeName);
         }
 
@@ -253,6 +253,8 @@ namespace Microsoft.SharePoint.Client
 
         private static void SetThemeToWebImplementation(this Web web, Web rootWeb, string themeName)
         {
+            LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, "Setting theme '{0}' for '{1}'", themeName, web.Context.Url);
+
             // Let's get instance to the composite look gallery
             List themeList = rootWeb.GetCatalog(124);
             rootWeb.Context.Load(themeList);
@@ -300,16 +302,20 @@ namespace Microsoft.SharePoint.Client
                         backGroundImage = UrlUtility.MakeRelativeUrl((themeEntry["ImageUrl"] as FieldUrlValue).Url);
                     }
 
+                    LoggingUtility.Internal.TraceVerbose("Apply theme '{0}', '{1}', '{2}'.", spColorURL, spFontURL, backGroundImage);
                     // Set theme for demonstration
+                    // TODO: Why is shareGenerated false? If deploying to root an inheriting, then maybe use shareGenerated = true.
                     web.ApplyTheme(spColorURL,
                                         spFontURL,
                                         backGroundImage,
-                                        false);
+                                        shareGenerated: false);
 
                     // Let's also update master page, if needed
                     if (themeEntry["MasterPageUrl"] != null && themeEntry["MasterPageUrl"].ToString().Length > 0)
                     {
-                        web.MasterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url); ;
+                        var masterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
+                        LoggingUtility.Internal.TraceVerbose("Set masterpage '{0}'.", masterUrl);
+                        web.MasterUrl = masterUrl;
                     }
 
                     web.Context.ExecuteQuery();
@@ -352,6 +358,8 @@ namespace Microsoft.SharePoint.Client
 
         public static void DeployFileToThemeFolderSite(this Web web, byte[] fileBytes, string fileName, string themeFolderVersion = "15")
         {
+            LoggingUtility.Internal.TraceVerbose("Deploying file '{0}' to '{1}' folder '{2}'.", fileName, web.Context.Url, themeFolderVersion);
+
             // Get the path to the file which we are about to deploy
             List themesList = web.GetCatalog(123);
 
