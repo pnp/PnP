@@ -17,7 +17,7 @@ Core.CloudServices | Bert Jansen (**Microsoft**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-2.0  | March 25th 2014 | comment
+2.0  | March 25th 2014 | Minor fixes, documentation updates
 1.0  | November 6th 2013 | Initial release
 
 ### Disclaimer ###
