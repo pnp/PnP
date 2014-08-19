@@ -14,7 +14,7 @@
     <div id="divSPChrome"></div>
     <div style="left: 40px; position: absolute;">
         <h1>Scenario 1: Create site columns to site collection</h1>
-        This scenarion will show how to create site collections scoped site column using feature framework xml definition with core component.<br />
+        This scenario will show how to create site collections scoped site column using feature framework xml definition with core component.<br />
         Deployment will be one type set to the host web of the provider hosted app. Fields will use 'Contoso Columns' group.
         <br />
         <br />       
@@ -22,7 +22,7 @@
         <br />
         <br />
         <h1>Scenario 2: Create content type to site collection</h1>
-        This scenarion will show how to create content types using feature framework xml definition with core component.<br />
+        This scenario will show how to create content types using feature framework xml definition with core component.<br />
         Deployment will be one type set to the host web of the provider hosted app. Content types will be in 'Contoso' group.
          <br />
         <br />       
@@ -31,11 +31,11 @@
         <br />
         <h1>Scenario 3: Create new library with custom views</h1>
         In this scenario you'll learn how to use core component to create library, associate content type in and to create custom views using xml based definition.<br />
-        <i>Notice that this scenarion assumes that steps 1 and 2 have been completed.</i>
+        <i>Notice that this scenario assumes that steps 1 and 2 have been completed.</i>
         <br /><br />
         Give document library name to create with custom views: <asp:TextBox runat="server" ID="txtDocLib" Text="Sample"></asp:TextBox>
         <br /><br />     
-        <asp:Button runat="server" ID="btnScenario3" Text="Run scenario 1" OnClick="btnScenario3_Click"/> <asp:Label ID="lblStatus3" runat="server" />
+        <asp:Button runat="server" ID="btnScenario3" Text="Run scenario 3" OnClick="btnScenario3_Click"/> <asp:Label ID="lblStatus3" runat="server" />
         <br />
         <br />
     </div>

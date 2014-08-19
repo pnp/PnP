@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.FileUpload", "Core.FileUpload\Core.FileUpload.csproj", "{CD37F794-DFE0-40E5-8AB5-7439215E5F19}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.FileUploadWeb", "Core.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2F7D2E6E-1116-4CEC-8CC2-E10194D085D5}"
 	ProjectSection(SolutionItems) = preProject
-		File Upload.docx = File Upload.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{30BAB15D-A8B9-443A-9F54-7ED46E0C0312}"
