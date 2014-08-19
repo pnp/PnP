@@ -31,7 +31,15 @@ namespace OfficeDevPnP.SPOnline.Commands.Features
         protected override void ExecuteCmdlet()
         {
             Guid featureId = Identity.Id;
-            SPOnline.Core.SPOFeatures.DeactivateFeature(featureId, Force, Scope, ClientContext);
+
+            if(Scope == Core.SPOFeatures.FeatureScope.Web)
+            {
+                ClientContext.Web.DeactivateFeature(featureId);
+            }
+            else
+            {
+                ClientContext.Site.DeactivateFeature(featureId);
+            }
         }
     }
 }

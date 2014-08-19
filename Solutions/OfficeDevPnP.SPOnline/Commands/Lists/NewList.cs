@@ -30,11 +30,14 @@ namespace OfficeDevPnP.SPOnline.Commands
         public string Description = null;
 
         [Parameter(Mandatory = false)]
+        public SwitchParameter EnableVersioning;
+
+        [Parameter(Mandatory = false, HelpMessage = "Deprecated")]
         public QuickLaunchOptions QuickLaunchOptions;
 
         protected override void ExecuteCmdlet()
         {
-            SPO.SPOList.CreateList(Title, Description, Url, Template, this.SelectedWeb, QuickLaunchOptions);
+            this.SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url);
         }
     }
 
