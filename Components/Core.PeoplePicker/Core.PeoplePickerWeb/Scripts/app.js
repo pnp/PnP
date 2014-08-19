@@ -56,7 +56,7 @@ $(document).ready(function () {
                         // start user resolving as of 2 entered characters (= default)
                         peoplePicker.MinimalCharactersBeforeSearching = 2;
                         // Hookup everything
-                        peoplePicker.Initialize();
+                        peoplePicker.Initialize();                        
                     });
 
                 });
