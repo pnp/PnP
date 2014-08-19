@@ -69,6 +69,7 @@
     <Compile Include="Apps\RemoveApp.cs" />
     <Compile Include="Base\CmdLetContext.cs" />
     <Compile Include="Base\Configuration.cs" />
+    <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\SetConfiguration.cs" />
     <Compile Include="Base\GetConfiguration.cs" />
     <Compile Include="Base\GetSPOContext.cs" />
@@ -177,6 +178,10 @@
     <Compile Include="Wrappers\SPOnlineWebPart.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\OfficeDevPnP.SPOnline.Core.csproj">
       <Project>{48d26f35-6053-4251-85ff-ee5d95ad42e2}</Project>
       <Name>OfficeDevPnP.SPOnline.Core</Name>

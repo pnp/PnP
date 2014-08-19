@@ -20,11 +20,17 @@ namespace OfficeDevPnP.SPOnline.Commands
         [Parameter(Mandatory = true)]
         public SPOContentTypePipeBind ContentType;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Required;
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Hidden;
+
         protected override void ExecuteCmdlet()
         {
             if (ContentType.ContentType != null)
             {
-                SPOnline.Core.SPOField.AddField(ContentType.ContentType, Field, ClientContext);
+                this.SelectedWeb.AddFieldToContentType(ContentType.ContentType, Field, Required, Hidden);
             }
             else if (!string.IsNullOrEmpty(ContentType.Id))
             {
