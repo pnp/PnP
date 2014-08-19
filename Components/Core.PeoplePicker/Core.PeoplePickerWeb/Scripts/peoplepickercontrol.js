@@ -333,7 +333,14 @@
                 this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
             }
 
+            //Capture reference to current control so that it can be used in event handlers
             var parent = this;
+
+            //Capture click on parent DIV and set focus to the input control
+            this.PeoplePickerControl.parent().click(function (e) {
+                parent.PeoplePickerEdit.focus();
+            });
+
             this.PeoplePickerEdit.keydown(function (event) {
                 var keynum = event.which;
 
