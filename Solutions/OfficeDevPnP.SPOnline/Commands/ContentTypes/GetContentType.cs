@@ -18,29 +18,27 @@ namespace OfficeDevPnP.SPOnline.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var cts = from ct in SPOnline.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext)
-                      select new SPOContentType(ct);
+
             if (Identity != null)
             {
+                ContentType ct = null;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
-                    var ct = from c in cts where c.Id.ToLower() == Identity.Id.ToLower() select c;
-                    if (ct.FirstOrDefault() != null)
-                    {
-                        WriteObject(ct.FirstOrDefault());
-                    }
+                    ct = this.SelectedWeb.GetContentTypeById(Identity.Id);
                 }
                 else
                 {
-                    var ct = from c in cts where c.Name.ToLower() == Identity.Name.ToLower() select c;
-                    if (ct.FirstOrDefault() != null)
-                    {
-                        WriteObject(ct.FirstOrDefault());
-                    }
+                    ct = this.SelectedWeb.GetContentTypeByName(Identity.Name);
+                }
+                if (ct != null)
+                {
+                    WriteObject(ct);
                 }
             }
             else
             {
+                var cts = from ct in SPOnline.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext)
+                          select new SPOContentType(ct);
                 WriteObject(cts, true);
             }
         }

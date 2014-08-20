@@ -32,7 +32,7 @@ namespace OfficeDevPnP.SPOnline.Commands
 
         protected override void ExecuteCmdlet()
         {
-            SPOContentType ct = new SPOContentType(SPOnline.Core.SPOContentType.CreateContentType(ContentTypeId, Name, Description, Group, ParentContentType, this.SelectedWeb, ClientContext));
+            SPOContentType ct = new SPOContentType(this.SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType));
             WriteObject(ct);
         }
 

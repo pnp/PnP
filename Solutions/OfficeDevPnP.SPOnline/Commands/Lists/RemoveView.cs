@@ -28,20 +28,8 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (List != null)
             {
-                List list = null;
-                if (List.List != null)
-                {
-                    list = List.List;
-                }
-                if (List.Id != Guid.Empty)
-                {
-                    list = SPO.SPOList.GetListById(List.Id, SelectedWeb, ClientContext);
+                var list = this.SelectedWeb.GetList(List);
 
-                }
-                else if (!string.IsNullOrEmpty(List.Title))
-                {
-                    list = SPO.SPOList.GetListByTitle(List.Title, SelectedWeb, ClientContext);
-                }
                 if (list != null)
                 {
                     View view = null;

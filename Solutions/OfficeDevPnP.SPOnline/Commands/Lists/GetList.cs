@@ -26,32 +26,14 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (Identity != null)
             {
-                if (Identity.Id != Guid.Empty)
-                {
-                    WriteObject(new SPOList(SPO.SPOList.GetListById(Identity.Id, SelectedWeb, ClientContext)));
-                }
-                else if (!string.IsNullOrEmpty(Identity.Title))
-                {
-                    List list = null;
-                    try
-                    {
-                        list = SPOnline.Core.SPOList.GetListByTitle(Identity.Title, SelectedWeb, ClientContext);
-                    }
-                    catch
-                    {
-                        list = SPOnline.Core.SPOList.GetListByUrl(Identity.Title, SelectedWeb, ClientContext);
-                    }
-                    if (list != null)
-                    {
-                        WriteObject(new SPOList(list));
-                    }
-                }
+                var list = this.SelectedWeb.GetList(Identity);
+                WriteObject(new SPOList(list));
+
             }
             else
             {
-                var query = from list in SPO.SPOList.GetLists(SelectedWeb, ClientContext)
-                            select new SPOList(list);
-                WriteObject(query.ToList(), true);
+                var lists = this.SelectedWeb.GetLists();
+                WriteObject(lists);
             }
         }
     }

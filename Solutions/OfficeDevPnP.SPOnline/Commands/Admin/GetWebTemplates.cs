@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.SPOnline.CmdletHelpAttributes;
 using OfficeDevPnP.SPOnline.Core;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.SPOnline.Commands.Base;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
         protected override void ProcessRecord()
         {
-            WriteObject(SPOAdmin.GetWebTemplates(LCID, CompatibilityLevel, ClientContext));
+            WriteObject(ClientContext.Web.GetWebTemplatesTenant(LCID, CompatibilityLevel));
         }
     }
 }

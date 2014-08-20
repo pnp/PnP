@@ -27,20 +27,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (ParameterSetName == "List")
             {
-                Microsoft.SharePoint.Client.List list = null;
-
-                if (List.List != null)
-                {
-                    list = List.List;
-                }
-                else if (List.Id != Guid.Empty)
-                {
-                    list = SPO.SPOList.GetListById(List.Id, SelectedWeb, ClientContext);
-                }
-                else if (!string.IsNullOrEmpty(List.Title))
-                {
-                    list = SPO.SPOList.GetListByTitle(List.Title, SelectedWeb, ClientContext);
-                }
+                var list = this.SelectedWeb.GetList(List);
 
                 if (list != null)
                 {

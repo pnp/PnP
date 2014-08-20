@@ -34,22 +34,22 @@ namespace OfficeDevPnP.SPOnline.Commands
             }
             else if (!string.IsNullOrEmpty(ContentType.Id))
             {
-                var cts = SPOnline.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext);
+                //var cts = SPOnline.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext);
 
                 if (!string.IsNullOrEmpty(ContentType.Id))
                 {
-                    var ct = from c in cts where c.StringId.ToLower() == ContentType.Id.ToLower() select c;
-                    if (ct.FirstOrDefault() != null)
+                    var ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                    if (ct != null)
                     {
-                        SPOnline.Core.SPOField.AddField(ct.FirstOrDefault(), Field, ClientContext);
+                        this.SelectedWeb.AddFieldToContentType(ct, Field, Required, false);
                     }
                 }
                 else
                 {
-                    var ct = from c in cts where c.Name.ToLower() == ContentType.Name.ToLower() select c;
-                    if (ct.FirstOrDefault() != null)
+                    var ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                    if (ct != null)
                     {
-                        SPOnline.Core.SPOField.AddField(ct.FirstOrDefault(), Field, ClientContext);
+                        this.SelectedWeb.AddFieldToContentType(ct, Field, Required, Hidden);
                     }
                 }
             }

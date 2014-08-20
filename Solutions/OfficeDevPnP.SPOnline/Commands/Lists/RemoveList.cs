@@ -25,20 +25,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (Identity != null)
             {
-                List list = null;
-                if (Identity.Id != Guid.Empty)
-                {
-                    list = SPO.SPOList.GetListById(Identity.Id, SelectedWeb, ClientContext);
-                }
-                else if (Identity.List != null)
-                {
-                    list = Identity.List;
-                }
-                else if (!string.IsNullOrEmpty(Identity.Title))
-                {
-                    list = SPO.SPOList.GetListByTitle(Identity.Title, SelectedWeb, ClientContext);
-
-                }
+                var list = this.SelectedWeb.GetList(Identity);
                 if (list != null)
                 {
                     if (Force || ShouldContinue(Properties.Resources.RemoveList, Properties.Resources.Confirm))

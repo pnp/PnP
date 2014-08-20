@@ -32,7 +32,7 @@ namespace OfficeDevPnP.SPOnline.Commands
         [Parameter(Mandatory = false)]
         public SwitchParameter EnableVersioning;
 
-        [Parameter(Mandatory = false, HelpMessage = "Deprecated")]
+        [Parameter(Mandatory = false, HelpMessage = "Obsolete", DontShow=true)]
         public QuickLaunchOptions QuickLaunchOptions;
 
         protected override void ExecuteCmdlet()

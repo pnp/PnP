@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -260,10 +261,20 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="properties">Describes the site collection to be created</param>
+        /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
+        /// <param name="wait">If true, processing will halt until the site collection has been created</param>
         /// <returns>Guid of the created site collection</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
-        public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties)
+        public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
+            if (removeFromRecycleBin)
+            {
+                if (CheckIfSiteExistsInTenant(web, properties.Url, SITE_STATUS_RECYCLED))
+                {
+                    web.DeleteSiteCollectionFromRecycleBinTenant(properties.Url);
+                }
+            }
+
             Tenant tenant = new Tenant(web.Context);
             SiteCreationProperties newsite = new SiteCreationProperties();
             newsite.Url = properties.Url;
@@ -284,30 +295,33 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
                 web.Context.ExecuteQuery();
 
-                //check if site creation operation is complete
-                while (!op.IsComplete)
+                if (wait)
                 {
-                    System.Threading.Thread.Sleep(op.PollingInterval);
-                    op.RefreshLoad();
-                    if (!op.IsComplete)
+                    //check if site creation operation is complete
+                    while (!op.IsComplete)
                     {
-                        try
+                        System.Threading.Thread.Sleep(op.PollingInterval);
+                        op.RefreshLoad();
+                        if (!op.IsComplete)
                         {
-                            web.Context.ExecuteQuery();
-                        }
-                        catch (WebException webEx)
-                        {
-                            // Context connection gets closed after action completed.
-                            // Calling ExecuteQuery again returns an error which can be ignored
-                            LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                            try
+                            {
+                                web.Context.ExecuteQuery();
+                            }
+                            catch (WebException webEx)
+                            {
+                                // Context connection gets closed after action completed.
+                                // Calling ExecuteQuery again returns an error which can be ignored
+                                LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                            }
                         }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
-                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1) 
+                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
                 {
                     throw ex;
                 }
@@ -337,7 +351,7 @@ namespace Microsoft.SharePoint.Client
         public static Guid CreateSiteCollectionTenant(this Web web, string url, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
                                                         int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
-                                                        uint lcid)
+                                                        uint lcid, bool removeFromRecycleBin = false, bool wait = true)
         {
             SiteEntity siteCol = new SiteEntity()
             {
@@ -353,7 +367,7 @@ namespace Microsoft.SharePoint.Client
                 Lcid = lcid
             };
 
-            return AddSiteCollectionTenant(web, siteCol);
+            return AddSiteCollectionTenant(web, siteCol, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -493,6 +507,26 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Returns available webtemplates/site definitions
+        /// </summary>
+        /// <param name="web">Site to be processed - needs to be tenant site admin site</param>
+        /// <param name="lcid"></param>
+        /// <param name="compatibilityLevel">14 for SharePoint 2010, 15 for SharePoint 2013/SharePoint Online</param>
+        /// <returns></returns>
+        public static SPOTenantWebTemplateCollection GetWebTemplatesTenant(this Web web, uint lcid, int compatibilityLevel)
+        {
+            Tenant tenant = new Tenant(web.Context);
+
+            var templates = tenant.GetSPOTenantWebTemplates(lcid, compatibilityLevel);
+
+            web.Context.Load(templates);
+
+            web.Context.ExecuteQuery();
+
+            return templates;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="web"></param>
@@ -549,6 +583,24 @@ namespace Microsoft.SharePoint.Client
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region Apps
+
+        /// <summary>
+        /// Returns all app instances
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <returns></returns>
+        public static ClientObjectList<AppInstance> GetAppInstances(this Web web)
+        {
+            ClientObjectList<AppInstance> instances = Microsoft.SharePoint.Client.AppCatalog.GetAppInstances(web.Context, web);
+            web.Context.Load(instances);
+            web.Context.ExecuteQuery();
+
+            return instances;
         }
 
         #endregion
