@@ -20,7 +20,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
         [Alias("SkipTrash")]
         public SwitchParameter SkipRecycleBin;
 
-        [Parameter(Mandatory = false, HelpMessage = "If specified, will wait for the site to be deleted, otherwise the deletion will happen asynchronously.")]
+        [Parameter(Mandatory = false, HelpMessage = "OBSOLETE: If true, will wait for the site to be deleted before processing continues", DontShow=true)]
         public SwitchParameter Wait;
 
         [Parameter(Mandatory = false, HelpMessage = "If specified, will search for the site in the Recycle Bin and remove it from there.")]
@@ -34,15 +34,14 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
         {
             if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveSiteCollection0, Url), Properties.Resources.Confirm))
             {
-                if (FromRecycleBin)
+                if (!FromRecycleBin)
                 {
-                    SPOnline.Core.SPOSite.DeleteTenantSiteFromRecycleBin(Url, Tenant, Wait);
+                    ClientContext.Web.DeleteSiteCollectionTenant(Url, !SkipRecycleBin);
                 }
                 else
                 {
-                    SPOnline.Core.SPOSite.DeleteTenantSite(Url, Tenant, Wait, SkipRecycleBin);
+                    ClientContext.Web.DeleteSiteCollectionFromRecycleBinTenant(Url);
                 }
-
             }
         }
 

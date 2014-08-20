@@ -639,13 +639,18 @@ namespace Microsoft.SharePoint.Client
             xmlAttribute.Value = pageLayout["UniqueId"].ToString();
             XmlAttribute xmlAttribute2 = xd.CreateAttribute("url");
             // Get relative URL to the particular site collection
-            xmlAttribute2.Value = SolveSiteRelateveUrl(rootWeb, pageLayout["FileRef"].ToString());
+            xmlAttribute2.Value = SolveSiteRelativeUrl(rootWeb, pageLayout["FileRef"].ToString());
             xmlNode.Attributes.SetNamedItem(xmlAttribute);
             xmlNode.Attributes.SetNamedItem(xmlAttribute2);
             return xmlNode;
         }
 
+        [Obsolete("Use SolveSiteRelativeUrl")]
         private static string SolveSiteRelateveUrl(Web web, string url)
+        {
+            return SolveSiteRelativeUrl(web, url);
+        }
+        private static string SolveSiteRelativeUrl(Web web, string url)
         {
             Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
             string newUrl = url.Substring(web.ServerRelativeUrl.Length);

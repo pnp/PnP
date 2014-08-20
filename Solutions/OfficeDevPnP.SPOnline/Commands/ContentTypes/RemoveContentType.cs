@@ -24,14 +24,28 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (Force || ShouldContinue(Properties.Resources.RemoveContentType, Properties.Resources.Confirm))
             {
-                if (!string.IsNullOrEmpty(Identity.Id))
+                ContentType ct = null;
+                if (Identity.ContentType != null)
                 {
-                    SPOnline.Core.SPOContentType.RemoveContentTypeById(Identity.Id, SelectedWeb, ClientContext);
+                    ct = Identity.ContentType;
                 }
                 else
                 {
-                    SPOnline.Core.SPOContentType.RemoveContentTypeByName(Identity.Id, SelectedWeb, ClientContext);
+                    if (!string.IsNullOrEmpty(Identity.Id))
+                    {
+                        ct = this.SelectedWeb.GetContentTypeById(Identity.Id);
+                    }
+                    else if (!string.IsNullOrEmpty(Identity.Name))
+                    {
+                        ct = this.SelectedWeb.GetContentTypeByName(Identity.Id);
+                    }
                 }
+                if(ct != null)
+                {
+                    ct.DeleteObject();
+                    ClientContext.ExecuteQuery();
+                }
+
             }
         }
     }

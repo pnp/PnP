@@ -389,8 +389,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="description">Description for the content type</param>
         /// <param name="id">Complete ID for the content type</param>
         /// <param name="group">Group for the content type</param>
+        /// <param name="parentContentType">Parent Content Type</param>
         /// <returns></returns>
-        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group)
+        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
         {
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;
@@ -403,6 +404,7 @@ namespace Microsoft.SharePoint.Client
             newCt.Id = id;
             newCt.Description = description;
             newCt.Group = group;
+            newCt.ParentContentType = parentContentType;
             ContentType myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQuery();
 

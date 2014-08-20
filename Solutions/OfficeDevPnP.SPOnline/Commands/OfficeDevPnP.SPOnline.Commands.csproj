@@ -91,6 +91,7 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
     <Compile Include="ContentTypes\RemoveContentType.cs" />
     <Compile Include="ContentTypes\GetContentType.cs" />
