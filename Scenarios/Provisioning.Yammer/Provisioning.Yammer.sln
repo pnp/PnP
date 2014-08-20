@@ -10,9 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{062363DC-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E51A63F7-D82E-4D7C-823B-4B9423DB6D43}"
 	ProjectSection(SolutionItems) = preProject
-		Provisioning.Yammer.docx = Provisioning.Yammer.docx
 		readme.md = readme.md
-		readme.txt = readme.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YammerJSONTest", "YammerJSONTest\YammerJSONTest.csproj", "{01C68612-CFED-465A-BD0C-2BDEE9CE7841}"
