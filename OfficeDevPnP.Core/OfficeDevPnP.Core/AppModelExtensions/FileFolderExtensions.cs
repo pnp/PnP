@@ -142,34 +142,139 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to be processed - can be root web or sub site</param>
         /// <param name="folderUrl">Folder URL to be created</param>
         /// <returns></returns>
-        public static Folder CreateFolder(this Web web, string folderUrl)
+        [Obsolete("Use EnsureFolder() instead, which works for both web sites and subfolders.")]
+        public static Folder CreateFolder(this Web web, string folderName)
         {
-            Folder folder;
+            return EnsureFolder(web, folderName);
+        }
 
-            if (!DoesFolderExists(web, folderUrl))
-            {
-                folder = web.Folders.Add(folderUrl);
-            }
-            else
-            {
-                folder = web.Folders.GetByUrl(folderUrl);
-            }
-
-            // Load Folder instance
-            web.Context.Load(folder);
-            web.Context.ExecuteQuery();
+        /// <summary>
+        /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
+        /// </summary>
+        /// <param name="web">Web to check for the named folder</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The existing or newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static Folder EnsureFolder(this Web web, string folderName)
+        {
+            var folderCollection = web.Folders;
+            var folder = EnsureFolderImplementation(folderCollection, folderName);
             return folder;
+        }
+
+        /// <summary>
+        /// Checks if the subfolder exists, and if it does not exist creates it.
+        /// </summary>
+        /// <param name="parentFolder">Parent folder to create under</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The existing or newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static Folder EnsureFolder(this Folder parentFolder, string folderName)
+        {
+            var folderCollection = parentFolder.Folders;
+            var folder = EnsureFolderImplementation(folderCollection, folderName);
+            return folder;
+        }
+
+        private static Folder EnsureFolderImplementation(FolderCollection folderCollection, string folderName)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            folderCollection.Context.Load(folderCollection);
+            folderCollection.Context.ExecuteQuery();
+            foreach (Folder folder in folderCollection)
+            {
+                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return folder;
+                }
+            }
+
+            var newFolder = folderCollection.Add(folderName);
+            folderCollection.Context.Load(newFolder);
+            folderCollection.Context.ExecuteQuery();
+
+            return newFolder;
+        }
+
+        /// <summary>
+        /// Checks if the folder exists at the top level of the web site.
+        /// </summary>
+        /// <param name="web">Web to check for the named folder</param>
+        /// <param name="folderName">Folder name to retrieve</param>
+        /// <returns>true if the folder exists; false otherwise</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static bool FolderExists(this Web web, string folderName)
+        {
+            var folderCollection = web.Folders;
+            var exists = FolderExistsImplementation(folderCollection, folderName);
+            return exists;
+        }
+
+        /// <summary>
+        /// Checks if the subfolder exists.
+        /// </summary>
+        /// <param name="parentFolder">Parent folder to check for the named subfolder</param>
+        /// <param name="folderName">Folder name to retrieve</param>
+        /// <returns>true if the folder exists; false otherwise</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static bool FolderExists(this Folder parentFolder, string folderName)
+        {
+            var folderCollection = parentFolder.Folders;
+            var exists = FolderExistsImplementation(folderCollection, folderName);
+            return exists;
+        }
+
+        private static bool FolderExistsImplementation(FolderCollection folderCollection, string folderName)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            folderCollection.Context.Load(folderCollection);
+            folderCollection.Context.ExecuteQuery();
+            foreach (Folder folder in folderCollection)
+            {
+                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
         /// Checks if a specific folder exists
         /// </summary>
         /// <param name="clientContext">Current User Context</param>
-        /// <param name="targetFolderUrl">Folder to check</param>
+        /// <param name="serverRelativeFolderUrl">Folder to check</param>
         /// <returns></returns>
-        public static bool DoesFolderExists(this Web web, string targetFolderUrl)
+        public static bool DoesFolderExists(this Web web, string serverRelativeFolderUrl)
         {
-            Folder folder = web.GetFolderByServerRelativeUrl(targetFolderUrl);
+            Folder folder = web.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
             web.Context.Load(folder);
             bool exists = false;
 
@@ -198,22 +303,13 @@ namespace Microsoft.SharePoint.Client
                     return subFolder;
                 }
             }
-            return folder;
+            return null;
         }
 
+        [Obsolete("Use FolderExists() instead, which works for both web sites and subfolders.")]
         public static bool SubFolderExists(this Folder folder, string folderName)
         {
-            folder.Context.Load(folder);
-            folder.Context.Load(folder.Folders);
-            folder.Context.ExecuteQuery();
-            foreach (Folder subFolder in folder.Folders)
-            {
-                if (subFolder.Name.ToLowerInvariant() == folderName.ToLowerInvariant())
-                {
-                    return true;
-                }
-            }
-            return false;
+            return folder.FolderExists(folderName);
         }
     }
 }
