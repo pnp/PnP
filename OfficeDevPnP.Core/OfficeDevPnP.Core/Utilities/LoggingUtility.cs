@@ -102,7 +102,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <remarks>
         /// Applications should use their own trace source names.
         /// </remarks>
-        public static LoggingUtility Internal = new LoggingUtility("OfficeDevPnP");
+        public static LoggingUtility Internal = new LoggingUtility("OfficeDevPnP.Core");
 
         /// <summary>
         /// Creates a new instance with the specified TraceSource name.
