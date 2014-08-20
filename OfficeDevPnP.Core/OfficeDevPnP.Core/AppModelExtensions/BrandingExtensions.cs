@@ -29,13 +29,12 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
+        /// <param name="colorFilePath">Color file location to deploy for the theme</param>
+        /// <param name="fontFilePath">Font file location to deploy for the theme</param>
+        /// <param name="backgroundImagePath">Background image location to deploy for the team</param>
+        /// <param name="masterPageName">Master page name for the theme. Note the master page is not uploaded, only referenced in the theme definition.</param>
         public static void DeployThemeToWeb(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
-            // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
             DeployThemeToWebImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
@@ -44,13 +43,12 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
+        /// <param name="colorFilePath">Color file location to deploy for the theme</param>
+        /// <param name="fontFilePath">Font file location to deploy for the theme</param>
+        /// <param name="backgroundImagePath">Background image location to deploy for the team</param>
+        /// <param name="masterPageName">Master page name for the theme. Note the master page is not uploaded, only referenced in the theme definition.</param>
         public static void DeployThemeToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
-            // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
             DeployThemeToWebImplementation(web, rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }        
 
@@ -73,7 +71,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
-            web.AddNewThemeOptionToSiteImplementation(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
+            web.AddNewThemeOptionToWebImplementation(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
         /// <summary>
@@ -132,14 +130,13 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Actual site where theme is applied.</param>
         /// <param name="rootWeb">Root site of the site collection. Needed for resolving the right relative path for the files</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
+        /// <param name="colorFileName">Color file for the theme</param>
+        /// <param name="fontFileName">Font file for the theme</param>
+        /// <param name="backgroundImageName">Background image for the team</param>
         /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
-        public static void AddNewThemeOptionToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundPath, string masterPageName)
+        public static void AddNewThemeOptionToSubWeb(this Web web, Web rootWeb, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            AddNewThemeOptionToSiteImplementation(web, rootWeb, themeName, colorFilePath, fontFilePath, backgroundPath, masterPageName);
+            AddNewThemeOptionToWebImplementation(web, rootWeb, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
         }
 
         /// <summary>
@@ -147,14 +144,13 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Actual site where theme is applied.</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
+        /// <param name="colorFileName">Color file for the theme</param>
+        /// <param name="fontFileName">Font file for the theme</param>
+        /// <param name="backgroundImageName">Background image for the team</param>
         /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
-        public static void AddNewThemeOptionToWeb(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundPath, string masterPageName)
+        public static void AddNewThemeOptionToWeb(this Web web, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            AddNewThemeOptionToSiteImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundPath, masterPageName);
+            AddNewThemeOptionToWebImplementation(web, web, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
         }
 
         /// <summary>
@@ -162,28 +158,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Actual site where theme is applied.</param>
         /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
+        /// <param name="colorFileName">Color file for the theme</param>
+        /// <param name="fontFileName">Font file for the theme</param>
+        /// <param name="backgroundImageName">Background image for the team</param>
+        /// <param name="masterPageName">Master page name for the theme</param>
         [Obsolete("Please use the AddNewThemeOptionToWeb method")]
-        public static void AddNewThemeOptionToSite(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundPath, string masterPageName)
+        public static void AddNewThemeOptionToSite(this Web web, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            AddNewThemeOptionToSiteImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundPath, masterPageName);
+            AddNewThemeOptionToWebImplementation(web, web, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
         }
-        /// <summary>
-        /// Add new theme option to the site.
-        /// </summary>
-        /// <param name="web">Actual site where theme is applied.</param>
-        /// <param name="rootWeb">Root site of the site collection. Needed for resolving the right relative path for the files</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file for the theme</param>
-        /// <param name="fontFilePath">Font file for the theme</param>
-        /// <param name="backgroundImagePath">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
-        private static void AddNewThemeOptionToSiteImplementation(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundPath, string masterPageName)
+
+        private static void AddNewThemeOptionToWebImplementation(this Web web, Web rootWeb, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
             LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, "Adding theme option '{0}' to '{1}'", themeName, web.Context.Url);
 
@@ -203,17 +188,17 @@ namespace Microsoft.SharePoint.Client
                 Microsoft.SharePoint.Client.ListItem item = themesOverviewList.AddItem(itemInfo);
                 item["Name"] = themeName;
                 item["Title"] = themeName;
-                if (!string.IsNullOrEmpty(colorFilePath) && System.IO.File.Exists(colorFilePath))
+                if (!string.IsNullOrEmpty(colorFileName))
                 {
-                    item["ThemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(colorFilePath)));
+                    item["ThemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(colorFileName)));
                 }
-                if (!string.IsNullOrEmpty(fontFilePath) && System.IO.File.Exists(fontFilePath))
+                if (!string.IsNullOrEmpty(fontFileName))
                 {
-                    item["FontSchemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(fontFilePath)));
+                    item["FontSchemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(fontFileName)));
                 }
-                if (!string.IsNullOrEmpty(backgroundPath) && System.IO.File.Exists(backgroundPath))
+                if (!string.IsNullOrEmpty(backgroundName))
                 {
-                    item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(backgroundPath)));
+                    item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/theme/15/{0}", Path.GetFileName(backgroundName)));
                 }
                 // we use seattle master if anything else is not set
                 if (string.IsNullOrEmpty(masterPageName))
