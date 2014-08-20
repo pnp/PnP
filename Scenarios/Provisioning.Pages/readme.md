@@ -8,6 +8,9 @@ This sample shows how to add wiki pages to a SharePoint site, how to add/remove 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
+### Prerequisites ###
+None
+
 ### Solution ###
 Solution | Author(s)
 ---------|----------
@@ -95,98 +98,98 @@ cc.Web.AddWebPartToWikiPage("SitePages", wp2, scenario2Page, 1, 1, false);
 
 In above sample the webpart XML for the promoted links list is adapted to work for the created list:
 ```C#
-        private string WpPromotedLinks(Guid listID, string listUrl, string pageUrl, string title)
-        {
-            StringBuilder wp = new StringBuilder(100);
-            wp.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
-            wp.Append("<webParts>");
-            wp.Append("	<webPart xmlns=\"http://schemas.microsoft.com/WebPart/v3\">");
-            wp.Append("		<metaData>");
-            wp.Append("			<type name=\"Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\" />");
-            wp.Append("			<importErrorMessage>Cannot import this Web Part.</importErrorMessage>");
-            wp.Append("		</metaData>");
-            wp.Append("		<data>");
-            wp.Append("			<properties>");
-            wp.Append("				<property name=\"ShowWithSampleData\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"Default\" type=\"string\" />");
-            wp.Append("				<property name=\"NoDefaultStyle\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"CacheXslStorage\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"ViewContentTypeId\" type=\"string\" />");
-            wp.Append("				<property name=\"XmlDefinitionLink\" type=\"string\" />");
-            wp.Append("				<property name=\"ManualRefresh\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"ListUrl\" type=\"string\" />");
-            wp.Append(String.Format("				<property name=\"ListId\" type=\"System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\">{0}</property>", listID.ToString()));
-            wp.Append(String.Format("				<property name=\"TitleUrl\" type=\"string\">{0}</property>", listUrl));
-            wp.Append("				<property name=\"EnableOriginalValue\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"Direction\" type=\"direction\">NotSet</property>");
-            wp.Append("				<property name=\"ServerRender\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"ViewFlags\" type=\"Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">None</property>");
-            wp.Append("				<property name=\"AllowConnect\" type=\"bool\">True</property>");
-            wp.Append(String.Format("				<property name=\"ListName\" type=\"string\">{0}</property>", ("{" + listID.ToString().ToUpper() + "}")));
-            wp.Append("				<property name=\"ListDisplayName\" type=\"string\" />");
-            wp.Append("				<property name=\"AllowZoneChange\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"ChromeState\" type=\"chromestate\">Normal</property>");
-            wp.Append("				<property name=\"DisableSaveAsNewViewButton\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"ViewFlag\" type=\"string\" />");
-            wp.Append("				<property name=\"DataSourceID\" type=\"string\" />");
-            wp.Append("				<property name=\"ExportMode\" type=\"exportmode\">All</property>");
-            wp.Append("				<property name=\"AutoRefresh\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"FireInitialRow\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"AllowEdit\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"Description\" type=\"string\" />");
-            wp.Append("				<property name=\"HelpMode\" type=\"helpmode\">Modeless</property>");
-            wp.Append("				<property name=\"BaseXsltHashKey\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"AllowMinimize\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"CacheXslTimeOut\" type=\"int\">86400</property>");
-            wp.Append("				<property name=\"ChromeType\" type=\"chrometype\">Default</property>");
-            wp.Append("				<property name=\"Xsl\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"JSLink\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"CatalogIconImageUrl\" type=\"string\">/_layouts/15/images/itgen.png?rev=26</property>");
-            wp.Append("				<property name=\"SampleData\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"UseSQLDataSourcePaging\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"TitleIconImageUrl\" type=\"string\" />");
-            wp.Append("				<property name=\"PageSize\" type=\"int\">-1</property>");
-            wp.Append("				<property name=\"ShowTimelineIfAvailable\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"Width\" type=\"string\" />");
-            wp.Append("				<property name=\"DataFields\" type=\"string\" />");
-            wp.Append("				<property name=\"Hidden\" type=\"bool\">False</property>");
-            wp.Append(String.Format("				<property name=\"Title\" type=\"string\">{0}</property>", title));
-            wp.Append("				<property name=\"PageType\" type=\"Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">PAGE_NORMALVIEW</property>");
-            wp.Append("				<property name=\"DataSourcesString\" type=\"string\" />");
-            wp.Append("				<property name=\"AllowClose\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"InplaceSearchEnabled\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"WebId\" type=\"System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\">00000000-0000-0000-0000-000000000000</property>");
-            wp.Append("				<property name=\"Height\" type=\"string\" />");
-            wp.Append("				<property name=\"GhostedXslLink\" type=\"string\">main.xsl</property>");
-            wp.Append("				<property name=\"DisableViewSelectorMenu\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"DisplayName\" type=\"string\" />");
-            wp.Append("				<property name=\"IsClientRender\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"XmlDefinition\" type=\"string\">");
-            wp.Append(string.Format("&lt;View Name=\"{1}\" Type=\"HTML\" Hidden=\"TRUE\" ReadOnly=\"TRUE\" OrderedView=\"TRUE\" DisplayName=\"\" Url=\"{0}\" Level=\"1\" BaseViewID=\"1\" ContentTypeID=\"0x\" &gt;&lt;Query&gt;&lt;OrderBy&gt;&lt;FieldRef Name=\"TileOrder\" Ascending=\"TRUE\"/&gt;&lt;FieldRef Name=\"Modified\" Ascending=\"FALSE\"/&gt;&lt;/OrderBy&gt;&lt;/Query&gt;&lt;ViewFields&gt;&lt;FieldRef Name=\"Title\"/&gt;&lt;FieldRef Name=\"BackgroundImageLocation\"/&gt;&lt;FieldRef Name=\"Description\"/&gt;&lt;FieldRef Name=\"LinkLocation\"/&gt;&lt;FieldRef Name=\"LaunchBehavior\"/&gt;&lt;FieldRef Name=\"BackgroundImageClusterX\"/&gt;&lt;FieldRef Name=\"BackgroundImageClusterY\"/&gt;&lt;/ViewFields&gt;&lt;RowLimit Paged=\"TRUE\"&gt;30&lt;/RowLimit&gt;&lt;JSLink&gt;sp.ui.tileview.js&lt;/JSLink&gt;&lt;XslLink Default=\"TRUE\"&gt;main.xsl&lt;/XslLink&gt;&lt;Toolbar Type=\"Standard\"/&gt;&lt;/View&gt;</property>", pageUrl, ("{" + Guid.NewGuid().ToString() + "}")));
-            wp.Append("				<property name=\"InitialAsyncDataFetch\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"AllowHide\" type=\"bool\">True</property>");
-            wp.Append("				<property name=\"ParameterBindings\" type=\"string\">");
-            wp.Append("  &lt;ParameterBinding Name=\"dvt_sortdir\" Location=\"Postback;Connection\"/&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"dvt_sortfield\" Location=\"Postback;Connection\"/&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"dvt_startposition\" Location=\"Postback\" DefaultValue=\"\"/&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"dvt_firstrow\" Location=\"Postback;Connection\"/&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"OpenMenuKeyAccessible\" Location=\"Resource(wss,OpenMenuKeyAccessible)\" /&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"open_menu\" Location=\"Resource(wss,open_menu)\" /&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"select_deselect_all\" Location=\"Resource(wss,select_deselect_all)\" /&gt;");
-            wp.Append("            &lt;ParameterBinding Name=\"idPresEnabled\" Location=\"Resource(wss,idPresEnabled)\" /&gt;&lt;ParameterBinding Name=\"NoAnnouncements\" Location=\"Resource(wss,noXinviewofY_LIST)\" /&gt;&lt;ParameterBinding Name=\"NoAnnouncementsHowTo\" Location=\"Resource(wss,noXinviewofY_DEFAULT)\" /&gt;</property>");
-            wp.Append("				<property name=\"DataSourceMode\" type=\"Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">List</property>");
-            wp.Append("				<property name=\"AutoRefreshInterval\" type=\"int\">60</property>");
-            wp.Append("				<property name=\"AsyncRefresh\" type=\"bool\">False</property>");
-            wp.Append("				<property name=\"HelpUrl\" type=\"string\" />");
-            wp.Append("				<property name=\"MissingAssembly\" type=\"string\">Cannot import this Web Part.</property>");
-            wp.Append("				<property name=\"XslLink\" type=\"string\" null=\"true\" />");
-            wp.Append("				<property name=\"SelectParameters\" type=\"string\" />");
-            wp.Append("			</properties>");
-            wp.Append("		</data>");
-            wp.Append("	</webPart>");
-            wp.Append("</webParts>");
-            return wp.ToString();
-        }
+private string WpPromotedLinks(Guid listID, string listUrl, string pageUrl, string title)
+{
+    StringBuilder wp = new StringBuilder(100);
+    wp.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+    wp.Append("<webParts>");
+    wp.Append("	<webPart xmlns=\"http://schemas.microsoft.com/WebPart/v3\">");
+    wp.Append("		<metaData>");
+    wp.Append("			<type name=\"Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\" />");
+    wp.Append("			<importErrorMessage>Cannot import this Web Part.</importErrorMessage>");
+    wp.Append("		</metaData>");
+    wp.Append("		<data>");
+    wp.Append("			<properties>");
+    wp.Append("				<property name=\"ShowWithSampleData\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"Default\" type=\"string\" />");
+    wp.Append("				<property name=\"NoDefaultStyle\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"CacheXslStorage\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"ViewContentTypeId\" type=\"string\" />");
+    wp.Append("				<property name=\"XmlDefinitionLink\" type=\"string\" />");
+    wp.Append("				<property name=\"ManualRefresh\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"ListUrl\" type=\"string\" />");
+    wp.Append(String.Format("				<property name=\"ListId\" type=\"System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\">{0}</property>", listID.ToString()));
+    wp.Append(String.Format("				<property name=\"TitleUrl\" type=\"string\">{0}</property>", listUrl));
+    wp.Append("				<property name=\"EnableOriginalValue\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"Direction\" type=\"direction\">NotSet</property>");
+    wp.Append("				<property name=\"ServerRender\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"ViewFlags\" type=\"Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">None</property>");
+    wp.Append("				<property name=\"AllowConnect\" type=\"bool\">True</property>");
+    wp.Append(String.Format("				<property name=\"ListName\" type=\"string\">{0}</property>", ("{" + listID.ToString().ToUpper() + "}")));
+    wp.Append("				<property name=\"ListDisplayName\" type=\"string\" />");
+    wp.Append("				<property name=\"AllowZoneChange\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"ChromeState\" type=\"chromestate\">Normal</property>");
+    wp.Append("				<property name=\"DisableSaveAsNewViewButton\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"ViewFlag\" type=\"string\" />");
+    wp.Append("				<property name=\"DataSourceID\" type=\"string\" />");
+    wp.Append("				<property name=\"ExportMode\" type=\"exportmode\">All</property>");
+    wp.Append("				<property name=\"AutoRefresh\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"FireInitialRow\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"AllowEdit\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"Description\" type=\"string\" />");
+    wp.Append("				<property name=\"HelpMode\" type=\"helpmode\">Modeless</property>");
+    wp.Append("				<property name=\"BaseXsltHashKey\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"AllowMinimize\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"CacheXslTimeOut\" type=\"int\">86400</property>");
+    wp.Append("				<property name=\"ChromeType\" type=\"chrometype\">Default</property>");
+    wp.Append("				<property name=\"Xsl\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"JSLink\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"CatalogIconImageUrl\" type=\"string\">/_layouts/15/images/itgen.png?rev=26</property>");
+    wp.Append("				<property name=\"SampleData\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"UseSQLDataSourcePaging\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"TitleIconImageUrl\" type=\"string\" />");
+    wp.Append("				<property name=\"PageSize\" type=\"int\">-1</property>");
+    wp.Append("				<property name=\"ShowTimelineIfAvailable\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"Width\" type=\"string\" />");
+    wp.Append("				<property name=\"DataFields\" type=\"string\" />");
+    wp.Append("				<property name=\"Hidden\" type=\"bool\">False</property>");
+    wp.Append(String.Format("				<property name=\"Title\" type=\"string\">{0}</property>", title));
+    wp.Append("				<property name=\"PageType\" type=\"Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">PAGE_NORMALVIEW</property>");
+    wp.Append("				<property name=\"DataSourcesString\" type=\"string\" />");
+    wp.Append("				<property name=\"AllowClose\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"InplaceSearchEnabled\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"WebId\" type=\"System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\">00000000-0000-0000-0000-000000000000</property>");
+    wp.Append("				<property name=\"Height\" type=\"string\" />");
+    wp.Append("				<property name=\"GhostedXslLink\" type=\"string\">main.xsl</property>");
+    wp.Append("				<property name=\"DisableViewSelectorMenu\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"DisplayName\" type=\"string\" />");
+    wp.Append("				<property name=\"IsClientRender\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"XmlDefinition\" type=\"string\">");
+    wp.Append(string.Format("&lt;View Name=\"{1}\" Type=\"HTML\" Hidden=\"TRUE\" ReadOnly=\"TRUE\" OrderedView=\"TRUE\" DisplayName=\"\" Url=\"{0}\" Level=\"1\" BaseViewID=\"1\" ContentTypeID=\"0x\" &gt;&lt;Query&gt;&lt;OrderBy&gt;&lt;FieldRef Name=\"TileOrder\" Ascending=\"TRUE\"/&gt;&lt;FieldRef Name=\"Modified\" Ascending=\"FALSE\"/&gt;&lt;/OrderBy&gt;&lt;/Query&gt;&lt;ViewFields&gt;&lt;FieldRef Name=\"Title\"/&gt;&lt;FieldRef Name=\"BackgroundImageLocation\"/&gt;&lt;FieldRef Name=\"Description\"/&gt;&lt;FieldRef Name=\"LinkLocation\"/&gt;&lt;FieldRef Name=\"LaunchBehavior\"/&gt;&lt;FieldRef Name=\"BackgroundImageClusterX\"/&gt;&lt;FieldRef Name=\"BackgroundImageClusterY\"/&gt;&lt;/ViewFields&gt;&lt;RowLimit Paged=\"TRUE\"&gt;30&lt;/RowLimit&gt;&lt;JSLink&gt;sp.ui.tileview.js&lt;/JSLink&gt;&lt;XslLink Default=\"TRUE\"&gt;main.xsl&lt;/XslLink&gt;&lt;Toolbar Type=\"Standard\"/&gt;&lt;/View&gt;</property>", pageUrl, ("{" + Guid.NewGuid().ToString() + "}")));
+    wp.Append("				<property name=\"InitialAsyncDataFetch\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"AllowHide\" type=\"bool\">True</property>");
+    wp.Append("				<property name=\"ParameterBindings\" type=\"string\">");
+    wp.Append("  &lt;ParameterBinding Name=\"dvt_sortdir\" Location=\"Postback;Connection\"/&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"dvt_sortfield\" Location=\"Postback;Connection\"/&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"dvt_startposition\" Location=\"Postback\" DefaultValue=\"\"/&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"dvt_firstrow\" Location=\"Postback;Connection\"/&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"OpenMenuKeyAccessible\" Location=\"Resource(wss,OpenMenuKeyAccessible)\" /&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"open_menu\" Location=\"Resource(wss,open_menu)\" /&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"select_deselect_all\" Location=\"Resource(wss,select_deselect_all)\" /&gt;");
+    wp.Append("            &lt;ParameterBinding Name=\"idPresEnabled\" Location=\"Resource(wss,idPresEnabled)\" /&gt;&lt;ParameterBinding Name=\"NoAnnouncements\" Location=\"Resource(wss,noXinviewofY_LIST)\" /&gt;&lt;ParameterBinding Name=\"NoAnnouncementsHowTo\" Location=\"Resource(wss,noXinviewofY_DEFAULT)\" /&gt;</property>");
+    wp.Append("				<property name=\"DataSourceMode\" type=\"Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c\">List</property>");
+    wp.Append("				<property name=\"AutoRefreshInterval\" type=\"int\">60</property>");
+    wp.Append("				<property name=\"AsyncRefresh\" type=\"bool\">False</property>");
+    wp.Append("				<property name=\"HelpUrl\" type=\"string\" />");
+    wp.Append("				<property name=\"MissingAssembly\" type=\"string\">Cannot import this Web Part.</property>");
+    wp.Append("				<property name=\"XslLink\" type=\"string\" null=\"true\" />");
+    wp.Append("				<property name=\"SelectParameters\" type=\"string\" />");
+    wp.Append("			</properties>");
+    wp.Append("		</data>");
+    wp.Append("	</webPart>");
+    wp.Append("</webParts>");
+    return wp.ToString();
+}
 ```
 ### Note: ###
 The demo does not show how to add a web part to a layouts page, but this is possible using the AddWebPartToWebPartPage method:
