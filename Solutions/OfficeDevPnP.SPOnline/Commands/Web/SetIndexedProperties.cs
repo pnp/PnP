@@ -19,7 +19,12 @@ namespace OfficeDevPnP.SPOnline.Commands
         {
             if (Keys != null && Keys.Count > 0)
             {
-                SPOnline.Core.SPOWeb.SetIndexedPropertyKeys(Keys, this.SelectedWeb, ClientContext);
+                this.SelectedWeb.RemovePropertyBagValue("vti_indexedpropertykeys");
+
+                foreach (var key in Keys)
+                {
+                    this.SelectedWeb.AddIndexedPropertyBagKey(key);
+                }
             }
         }
     }

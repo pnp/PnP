@@ -19,11 +19,11 @@ namespace OfficeDevPnP.SPOnline.Commands
         protected override void ExecuteCmdlet()
         {
 
-            if (SPOWeb.GetPropertyBag(this.SelectedWeb, ClientContext).ContainsKey(Key))
+            if (this.SelectedWeb.PropertyBagContainsKey(Key))
             {
                 if (Force || ShouldContinue(string.Format(Properties.Resources.Delete0, Key), Properties.Resources.Confirm))
                 {
-                    SPOnline.Core.SPOWeb.RemovePropertyBagEntry(Key, this.SelectedWeb, ClientContext);
+                    this.SelectedWeb.RemovePropertyBagValue(Key);
 
                     // Due to some weird bug in CSOM the context will have to be reinitialized.
                     SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(

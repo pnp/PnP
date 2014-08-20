@@ -15,10 +15,21 @@ namespace OfficeDevPnP.SPOnline.Commands
         [Parameter(Mandatory = true)]
         public string Value;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Indexed;
+
         protected override void ExecuteCmdlet()
         {
 
-            SPOnline.Core.SPOWeb.SetPropertyBagValue(Key, Value, this.SelectedWeb, ClientContext);
+            this.SelectedWeb.SetPropertyBagValue(Key, Value);
+            if(Indexed)
+            {
+                this.SelectedWeb.AddIndexedPropertyBagKey(Key);
+            }
+            else
+            {
+                this.SelectedWeb.RemoveIndexedPropertyBagKey(Key);
+            }
         }
     }
 }

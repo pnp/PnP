@@ -27,6 +27,22 @@ namespace Microsoft.SharePoint.Client
 
 
         /// <summary>
+        /// Returns the HTML contents of a wiki page
+        /// </summary>
+        /// <param name="serverRelativePageUrl">Server relative url of the page, e.g. /sites/demo/SitePages/Test.aspx</param>
+        /// <returns></returns>
+        public static string GetWikiPageContent(this Web web, string serverRelativePageUrl)
+        {
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            web.Context.Load(file, f => f.ListItemAllFields);
+
+            web.Context.ExecuteQuery();
+
+            return file.ListItemAllFields["WikiField"] as string;
+        }
+
+        /// <summary>
         /// List the web parts on a page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
