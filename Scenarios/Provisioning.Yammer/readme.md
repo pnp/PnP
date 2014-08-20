@@ -37,9 +37,10 @@ To be able to use the sample, follow guidance for this URL to register access to
 - Get the access token from here: [https://developer.yammer.com/authentication](https://developer.yammer.com/authentication)
 
 Update access token to the web.config of the provider hosted app for the key called YammerAccessToken.
-
-	<!-- Details on how to get your access token - check following https://developer.yammer.com/authentication -->
-	<add key="YammerAccessToken" value="PutYourOwnYammerKeyHere" />
+```XML
+<!-- Details on how to get your access token - check following https://developer.yammer.com/authentication -->
+<add key="YammerAccessToken" value="PutYourOwnYammerKeyHere" />
+```
 
 Sample provides simple provisioning UI for sub sites where you are able to define if you want to use OpenGraph or Group feed. If group feed option is selected, you can choose to associate the feed to any existing group or to create a new group for the site.
 
@@ -71,25 +72,27 @@ Notice also that since this configuration is dynamically applied during provisio
 
 Actual provisioning logic and site modifications are using [PnP Core component](https://github.com/OfficeDev/PnP/tree/master/OfficeDevPnP.Core) extension methods. As you can see we can perform the required actions with only few lines of code due the encapsulated reusable methods from the core component.
 
-	public void CreateSubSite(Web hostWeb, string url, string template, 
-	                            string title, string description, string yammerGroupName)
-	{
-	    // Create new sub site
-	    Web newWeb = hostWeb.CreateSite(title, url, description, template, 1033);
-	
-	    // Set theme for the site
-	    newWeb.SetThemeToSubWeb(hostWeb, "Orange");
-	
-	    //Remove the "NewsFeed" web part
-	    newWeb.DeleteWebPart("SitePages", "Site feed", "home.aspx");
-	
-	    // Get Yammer Group - Creates if does not exist
-	    YammerGroup group = 
-	        YammerUtility.CreateYammerGroup(yammerGroupName, true, ConfigurationManager.AppSettings["YammerAccessToken"]);
-	    // Get Yammer web part
-	    WebPartEntity wpYammer = YammerUtility.GetYammerGroupDiscussionPart(group.network_name, group.id, false, false);
-	    // Add Yammer web part to the page
-	    newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
-	}
+```C#
+public void CreateSubSite(Web hostWeb, string url, string template, 
+                          string title, string description, string yammerGroupName)
+{
+    // Create new sub site
+    Web newWeb = hostWeb.CreateSite(title, url, description, template, 1033);
 
+    // Set theme for the site
+    newWeb.SetThemeToSubWeb(hostWeb, "Orange");
+
+    //Remove the "NewsFeed" web part
+    newWeb.DeleteWebPart("SitePages", "Site feed", "home.aspx");
+
+    // Get Yammer Group - Creates if does not exist
+    YammerGroup group = 
+        YammerUtility.CreateYammerGroup(yammerGroupName, true, ConfigurationManager.AppSettings["YammerAccessToken"]);
+
+    // Get Yammer web part
+    WebPartEntity wpYammer = YammerUtility.GetYammerGroupDiscussionPart(group.network_name, group.id, false, false);
+    // Add Yammer web part to the page
+    newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
+}
+```
 
