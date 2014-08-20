@@ -1,13 +1,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SiteEnumeration.Console", "Core.SiteEnumeration.Console\Core.SiteEnumeration.Console.csproj", "{ADB8CD23-CCB9-4C65-B4B3-56F64C1865A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0B7024B1-B2AC-40B0-BCC4-09E48D2261F9}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		Site enumeration.docx = Site enumeration.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2B8755B1-5CA9-41EC-88CE-2CC776CAFD02}"
