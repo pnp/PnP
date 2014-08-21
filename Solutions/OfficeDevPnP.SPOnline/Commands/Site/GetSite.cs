@@ -11,7 +11,9 @@ namespace OfficeDevPnP.SPOnline.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            WriteObject(new SPOSite(OfficeDevPnP.SPOnline.Core.SPOSite.GetSite(ClientContext)));
+            var site = ClientContext.Site;
+            ClientContext.Load(site);
+            WriteObject(new SPOSite(site));
         }
     }
 

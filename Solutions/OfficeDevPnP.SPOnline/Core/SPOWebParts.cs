@@ -20,8 +20,6 @@ namespace OfficeDevPnP.SPOnline.Core
         /// <param name="zoneIndex">The index of the WebPart, starting at 1.</param>
         public static void ImportWebPart(string webPartXml, string relativePageUrl, string zoneId, int zoneIndex, Web web, ClientContext clientContext)
         {
-            //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);
-
             if (zoneIndex > 0)
             {
                 WebPartDefinition definition = null;
@@ -49,7 +47,6 @@ namespace OfficeDevPnP.SPOnline.Core
         /// <param name="zoneIndex">The index of the webpart in the zone</param>
         public static void AddWebPart(WebPart webPart, string relativePageUrl, string zoneId, int zoneIndex, Web web, ClientContext clientContext)
         {
-            //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);
             if (zoneIndex > 0)
             {
                 Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(relativePageUrl);

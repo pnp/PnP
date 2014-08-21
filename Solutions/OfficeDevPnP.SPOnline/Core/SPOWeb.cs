@@ -404,6 +404,7 @@ namespace OfficeDevPnP.SPOnline.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use AllProperties property on Web object")]
         public static Dictionary<string, object> GetPropertyBag(Web web, ClientContext clientContext)
         {
             PropertyValues values = web.AllProperties;
@@ -422,8 +423,9 @@ namespace OfficeDevPnP.SPOnline.Core
 
         public static void RemovePropertyBagEntry(string key, Web web, ClientContext clientContext)
         {
-            //web.AllProperties.FieldValues.Remove(key);
+            
             web.AllProperties[key] = null;
+            web.AllProperties.FieldValues.Remove(key);
 
             web.Update();
             clientContext.Load(web, w => w.AllProperties);
@@ -442,17 +444,10 @@ namespace OfficeDevPnP.SPOnline.Core
 
         }
 
+        [Obsolete("Use Web.ReindexSite extension in OfficeDevPnP.Core")]
         public static void ReIndex(Web web, ClientContext clientContext)
         {
-            Dictionary<string, object> values = GetPropertyBag(web, clientContext);
-            int searchversion = 0;
-            if (values.ContainsKey("vti_searchversion"))
-            {
-                searchversion = (int)values["vti_searchversion"];
-            }
-
-            SetPropertyBagValue("vti_searchversion", searchversion + 1, web, clientContext);
-
+            web.ReIndexSite();
         }
 
         /// <summary>

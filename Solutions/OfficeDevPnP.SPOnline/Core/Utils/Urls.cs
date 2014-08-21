@@ -9,6 +9,7 @@ namespace OfficeDevPnP.SPOnline.Core.Utils
 {
     public static class Urls
     {
+        [Obsolete("Use Combine in OfficeDevPnP.Core.Utilities")]
         public static string CombineUrl(Web web, string url)
         {
             Uri uri = new Uri(new Uri(web.Url), url);

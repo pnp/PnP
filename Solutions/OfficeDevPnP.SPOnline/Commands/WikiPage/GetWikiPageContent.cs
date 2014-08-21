@@ -9,11 +9,13 @@ namespace OfficeDevPnP.SPOnline.Commands
     public class GetWikiPageContent : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true)]
-        public string PageUrl = string.Empty;
+        [Alias("PageUrl")]
+        public string ServerRelativePageUrl = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(SPOnline.Core.SPOWikiPage.GetWikiPageContent(PageUrl, SelectedWeb, ClientContext));
+            WriteObject(this.SelectedWeb.GetWikiPageContent(ServerRelativePageUrl));
+            //WriteObject(SPOnline.Core.SPOWikiPage.GetWikiPageContent(PageUrl, SelectedWeb, ClientContext));
         }
     }
 }

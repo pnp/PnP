@@ -12,7 +12,6 @@ namespace OfficeDevPnP.SPOnline.Core
     {
         public static void SetWikiPageContent(string pageUrl, string content, Web web, ClientContext clientContext)
         {
-            //pageUrl = Utils.Urls.CombineUrl(web, pageUrl);
             File file = clientContext.Web.GetFileByServerRelativeUrl(pageUrl);
 
             clientContext.Load(file, f => f.ListItemAllFields);
@@ -27,25 +26,19 @@ namespace OfficeDevPnP.SPOnline.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use GetWikiPageContents extension on Web in OfficeDevPnP.Core")]
         public static string GetWikiPageContent(string serverRelativePageUrl, Web web, ClientContext clientContext)
         {
-            serverRelativePageUrl = Utils.Urls.CombineUrl(web, serverRelativePageUrl);
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
-            File file = clientContext.Web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+            web.Context.Load(file, f => f.ListItemAllFields);
+            web.Context.ExecuteQuery();
 
-            clientContext.Load(file, f => f.ListItemAllFields);
-            clientContext.ExecuteQuery();
-
-            ListItem item = file.ListItemAllFields;
-
-            string content = item["WikiField"] as string;
-
-            return content;
+            return file.ListItemAllFields["WikiField"] as string;
         }
 
         public static void AddWikiPage(string serverRelativePageUrl, Web web, ClientContext clientContext, string content = null)
         {
-            //serverRelativePageUrl = Utils.Urls.CombineUrl(web, serverRelativePageUrl);
             string folderName = serverRelativePageUrl.Substring(0, serverRelativePageUrl.LastIndexOf("/"));
             Folder folder = web.GetFolderByServerRelativeUrl(folderName);
             File file = folder.Files.AddTemplateFile(serverRelativePageUrl, TemplateFileType.WikiPage);
@@ -59,7 +52,7 @@ namespace OfficeDevPnP.SPOnline.Core
 
         public static void RemoveWikiPage(string serverRelativePageUrl, Web web, ClientContext clientContext)
         {
-            serverRelativePageUrl = Utils.Urls.CombineUrl(web, serverRelativePageUrl);
+            serverRelativePageUrl = System.UrlUtility.Combine(web.Url,serverRelativePageUrl);
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 

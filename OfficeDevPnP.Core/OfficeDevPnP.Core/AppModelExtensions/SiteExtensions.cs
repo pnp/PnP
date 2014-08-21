@@ -22,6 +22,7 @@ namespace Microsoft.SharePoint.Client
         const string SITE_STATUS_ACTIVE = "Active";
         const string SITE_STATUS_CREATING = "Creating";
         const string SITE_STATUS_RECYCLED = "Recycled";
+        const string INDEXED_PROPERTY_KEY = "vti_indexedpropertykeys";
 
         #region Check for site status in SharePoint Online
         /// <summary>
@@ -822,10 +823,34 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             props[key] = value;
+
             web.Update();
             web.Context.ExecuteQuery();
         }
 
+        /// <summary>
+        /// Removes a property bag value from the property bag
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <param name="key">The key to remove</param>
+        public static void RemovePropertyBagValue(this Web web, string key)
+        {
+            RemovePropertyBagValueInternal(web, key, true);
+        }
+
+        private static void RemovePropertyBagValueInternal(Web web, string key, bool checkIndexed)
+        {
+            // In order to remove a property from the property bag, remove it both from the AllProperties collection by setting it to null
+            // -and- by removing it from the FieldValues collection. Bug in CSOM?
+            web.AllProperties[key] = null;
+            web.AllProperties.FieldValues.Remove(key);
+
+            web.Update();
+
+            web.Context.ExecuteQuery();
+            if(checkIndexed)
+            RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
+        }
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
@@ -906,7 +931,103 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Used to convert the list of property keys is required format for listing keys to be index
+        /// </summary>
+        /// <param name="keys">list of keys to set to be searchable</param>
+        /// <returns>string formatted list of keys in proper format</returns>
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Returns all keys in the property bag that have been marked for indexing
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetIndexedPropertyBagKeys(this Web web)
+        {
+            List<string> keys = new List<string>();
+
+            if (web.PropertyBagContainsKey(INDEXED_PROPERTY_KEY))
+            {
+                foreach (string key in web.GetPropertyBagValueString(INDEXED_PROPERTY_KEY, "").Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    byte[] bytes = Convert.FromBase64String(key);
+                    keys.Add(Encoding.Unicode.GetString(bytes));
+                }
+            }
+
+            return keys;
+        }
+
+        /// <summary>
+        /// Marks a property bag key for indexing
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="key"></param>
+        /// <returns>Returns True if succeeded</returns>
+        public static bool AddIndexedPropertyBagKey(this Web web, string key)
+        {
+            bool result = false;
+            var keys = GetIndexedPropertyBagKeys(web).ToList();
+            if (!keys.Contains(key))
+            {
+                keys.Add(key);
+                web.SetPropertyBagValue(INDEXED_PROPERTY_KEY, GetEncodedValueForSearchIndexProperty(keys));
+                result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Unmarks a property bag key for indexing
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <param name="key">The key to unmark for indexed. Case-sensitive</param>
+        /// <returns>Returns True if succeeded</returns>
+        public static bool RemoveIndexedPropertyBagKey(this Web web, string key)
+        {
+            bool result = false;
+            var keys = GetIndexedPropertyBagKeys(web).ToList();
+            if (key.Contains(key))
+            {
+                keys.Remove(key);
+                if (keys.Any())
+                {
+                    web.SetPropertyBagValue(INDEXED_PROPERTY_KEY, GetEncodedValueForSearchIndexProperty(keys));
+                }
+                else
+                {
+                    RemovePropertyBagValueInternal(web, INDEXED_PROPERTY_KEY, false);
+                }
+                result = true;
+            }
+            return result;
+        }
+
         #endregion
+
+        /// <summary>
+        /// Queues a web for a _full_ crawl the next incremental crawl
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        public static void ReIndexSite(this Web web)
+        {
+            int searchversion = 0;
+            if (web.PropertyBagContainsKey("vti_searchversion"))
+            {
+                searchversion = (int)web.GetPropertyBagValueInt("vti_searchversion", 0);
+            }
+            web.SetPropertyBagValue("vti_searchversion", searchversion + 1);
+        }
 
         #region Localization
         /// <summary>

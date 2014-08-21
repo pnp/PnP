@@ -115,6 +115,7 @@
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
+    <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs">
       <SubType>Code</SubType>
