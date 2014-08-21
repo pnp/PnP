@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.XMLBasedFieldsAndContentTypes", "Core.XMLBasedFieldsAndContentTypes\Core.XMLBasedFieldsAndContentTypes.csproj", "{C6CA93A4-B710-4373-9D52-B00F70BF4515}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.XMLBasedFieldsAndConte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{2A3CAC33-50B7-4A72-A2AB-E54F7E194282}"
 	ProjectSection(SolutionItems) = preProject
-		Core.XMLBasedFieldsAndContentTypes.docx = Core.XMLBasedFieldsAndContentTypes.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{128DBD8C-FF72-4047-A3B2-CEA10E30178A}"
