@@ -62,7 +62,7 @@ namespace Core.AppScriptPartWeb
                 clientContext.Load(folder);
                 clientContext.ExecuteQuery();
 
-                //upload the "OneDrive for Business Usage Guidelines.docx"
+                //upload the "userprofileinformation.webpart" file
                 using (var stream = System.IO.File.OpenRead(
                                 Server.MapPath("~/userprofileinformation.webpart")))
                 {
@@ -74,7 +74,7 @@ namespace Core.AppScriptPartWeb
                     clientContext.ExecuteQuery();
                 }
 
-                // Let's update the group for just uplaoded web part
+                // Let's update the group for just uploaded web part
                 var list = clientContext.Web.Lists.GetByTitle("Web Part Gallery");
                 CamlQuery camlQuery = CamlQuery.CreateAllItemsQuery(100);
                 Microsoft.SharePoint.Client.ListItemCollection items = list.GetItems(camlQuery);
@@ -82,7 +82,7 @@ namespace Core.AppScriptPartWeb
                 clientContext.ExecuteQuery();
                 foreach (var item in items)
                 {
-                    // Just random group name to diffentiate it from the rest
+                    // Just random group name to differentiate it from the rest
                     if (item["FileLeafRef"].ToString().ToLowerInvariant() == "userprofileinformation.webpart")
                     {
                         item["Group"] = "App Script Part";
