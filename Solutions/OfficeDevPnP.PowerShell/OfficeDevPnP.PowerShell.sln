@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Commands", "Commands\OfficeDevPnP.PowerShell.Commands.csproj", "{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{8F9FCAE4-5137-4C24-8B62-B30AA7CBAFBA}"
+	ProjectSection(SolutionItems) = preProject
+		Install.ps1 = Install.ps1
+		PostBuild.ps1 = PostBuild.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.CmdletHelpAttributes", "HelpAttributes\OfficeDevPnP.PowerShell.CmdletHelpAttributes.csproj", "{FDD50BBD-AE78-4B10-9549-0566686719AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.CmdletHelpGenerator", "CmdletHelpGenerator\OfficeDevPnP.PowerShell.CmdletHelpGenerator.csproj", "{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Core", "Core\OfficeDevPnP.PowerShell.Core.csproj", "{48D26F35-6053-4251-85FF-EE5D95AD42E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9572E4E7-9612-4E9A-A29D-5EDD8F4D91D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{AB70588E-5972-4D9B-9342-C8CA3275F80A}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDD50BBD-AE78-4B10-9549-0566686719AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDD50BBD-AE78-4B10-9549-0566686719AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDD50BBD-AE78-4B10-9549-0566686719AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDD50BBD-AE78-4B10-9549-0566686719AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {9572E4E7-9612-4E9A-A29D-5EDD8F4D91D1}
+	EndGlobalSection
+EndGlobal
