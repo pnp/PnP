@@ -9,7 +9,13 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            WriteObject(PowerShell.Core.SPOWeb.GetHomePage(this.SelectedWeb, ClientContext));
+            Folder folder = this.SelectedWeb.RootFolder;
+
+            ClientContext.Load(folder, f => f.WelcomePage);
+
+            ClientContext.ExecuteQuery();
+
+            WriteObject(folder.WelcomePage);
         }
     }
 }
