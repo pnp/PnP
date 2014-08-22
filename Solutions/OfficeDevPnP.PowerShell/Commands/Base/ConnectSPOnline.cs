@@ -13,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         Remarks = @"This will prompt for username and password and creates a context for the other PowerShell commands to use.
  ")]
     [CmdletExample(
-        Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Local",
+        Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -CurrentCredentials",
         Remarks = @"This will use the current user credentials and connects to the server specified by the Url parameter.
     ")]
     [CmdletExample(
@@ -28,11 +28,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
         public CredentialPipeBind Credentials;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the local / current user credentials")]
+        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the current user credentials")]
         public SwitchParameter CurrentCredentials;
-
-        //[Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Specify if you're connecting to an on-premises environment")]
-        //public SwitchParameter OnPrem;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "Specifies a minimal server healthscore before any requests are executed.")]
         public int MinimalHealthScore = -1;
