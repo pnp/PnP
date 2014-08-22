@@ -1,4 +1,4 @@
-﻿# OfficeDevPnP.SPOnline PowerShell Commands #
+﻿# OfficeDevPnP.PowerShell Commands #
 
 ### Summary ###
 This solution shows how you can build a library of PowerShell commands that act towards SharePoint Online. The commands use CSOM and can work against both SharePoint Online as SharePoint On-Premises.
@@ -10,12 +10,10 @@ This solution shows how you can build a library of PowerShell commands that act 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
-*Name indicates that this would only work with SP online, but you can change the connection style to support on-premises as well.*
-
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-OfficeDevPnP.SPOnline | Erwin van Hunen (Knowit Reaktor Stockholm AB)
+OfficeDevPnP.PowerShell | Erwin van Hunen (Knowit Reaktor Stockholm AB)
 
 ### Version history ###
 Version  | Date | Comments
@@ -30,7 +28,7 @@ Version  | Date | Comments
 
 # HOW TO USE AGAINST OFFICE 365 #
 A build script will copy the required files to a folder in your users folder, called:
-*C:\Users\<YourUserName>\Documents\WindowsPowerShell\Modules\OfficeDevPnP.SPOnline.Commands*
+*C:\Users\<YourUserName>\Documents\WindowsPowerShell\Modules\OfficeDevPnP.PowerShell.Commands*
 
 This will automatically load the module after starting PowerShell 3.0.
 To use the library you first need to connect to your tenant:
