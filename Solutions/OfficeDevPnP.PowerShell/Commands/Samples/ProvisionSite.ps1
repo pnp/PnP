@@ -7,7 +7,8 @@ Connect-SPOnline -Url https://<tenant>-admin.sharepoint.com -Credentials $tenant
 
 New-SPOTenantSite -Title "PS Site" -Url "https://$tenant.sharepoint.com/sites/psdemo" -Owner $tenantAdmin -Lcid 1033 -TimeZone 24 -Template STS#0 -RemoveDeletedSite -Wait
 
-Connect-SPOnline -Url https://erwinmcm.sharepoint.com/sites/psdemo -Credentials $tenantAdmin
+# Connect with the tenant admin credentials to the newly created site collection
+Connect-SPOnline -Url https://$tenant.sharepoint.com/sites/psdemo -Credentials $tenantAdmin
 
 # Set Property Bag key to designate the type of site you're creating
 Set-SPOPropertyBagValue -Key "PNP_SiteType" -Value "PROJECT"
