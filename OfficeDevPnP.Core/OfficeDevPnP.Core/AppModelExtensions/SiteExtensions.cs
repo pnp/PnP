@@ -838,6 +838,12 @@ namespace Microsoft.SharePoint.Client
             RemovePropertyBagValueInternal(web, key, true);
         }
 
+        /// <summary>
+        /// Removes a property bag value
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">They key to remove</param>
+        /// <param name="checkIndexed"></param>
         private static void RemovePropertyBagValueInternal(Web web, string key, bool checkIndexed)
         {
             // In order to remove a property from the property bag, remove it both from the AllProperties collection by setting it to null
@@ -971,8 +977,8 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Marks a property bag key for indexing
         /// </summary>
-        /// <param name="web"></param>
-        /// <param name="key"></param>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">The key to mark for indexing</param>
         /// <returns>Returns True if succeeded</returns>
         public static bool AddIndexedPropertyBagKey(this Web web, string key)
         {
