@@ -111,6 +111,7 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\SPOViewPipeBind.cs" />
+    <None Include="Samples\GetContext.ps1" />
     <Compile Include="Site\NewSite.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
     <Compile Include="Taxonomy\SetTaxonomyFieldValue.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Wrappers\SPOnlineView.cs" />
     <Compile Include="Wrappers\SPOnlineWeb.cs" />
     <Compile Include="Wrappers\SPOnlineWebPart.cs" />
+    <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
