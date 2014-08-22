@@ -7,8 +7,8 @@
     <ProjectGuid>{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OfficeDevPnP.SPOnline.Commands</RootNamespace>
-    <AssemblyName>OfficeDevPnP.SPOnline.Commands</AssemblyName>
+    <RootNamespace>OfficeDevPnP.PowerShell.Commands</RootNamespace>
+    <AssemblyName>OfficeDevPnP.PowerShell.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -188,13 +188,13 @@
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
       <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\OfficeDevPnP.SPOnline.Core.csproj">
+    <ProjectReference Include="..\Core\OfficeDevPnP.PowerShell.Core.csproj">
       <Project>{48d26f35-6053-4251-85ff-ee5d95ad42e2}</Project>
-      <Name>OfficeDevPnP.SPOnline.Core</Name>
+      <Name>OfficeDevPnP.PowerShell.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HelpAttributes\OfficeDevPnP.SPOnline.CmdletHelpAttributes.csproj">
+    <ProjectReference Include="..\HelpAttributes\OfficeDevPnP.PowerShell.CmdletHelpAttributes.csproj">
       <Project>{fdd50bbd-ae78-4b10-9549-0566686719ab}</Project>
-      <Name>OfficeDevPnP.SPOnline.CmdletHelpAttributes</Name>
+      <Name>OfficeDevPnP.PowerShell.CmdletHelpAttributes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -207,14 +207,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ModuleFiles\OfficeDevPnP.SPOnline.Commands.psd1">
+    <None Include="ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\Debug\OfficeDevPnP.SPOnline.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\Debug\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
 
 "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -file "$(SolutionDir)\PostBuild.ps1" "$(ConfigurationName)" "$(TargetDir)
 </PostBuildEvent>
