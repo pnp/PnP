@@ -13,22 +13,48 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
         }
 
-        internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, bool onPrem, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
+        internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
             CmdLetContext context = new CmdLetContext(url.AbsoluteUri, host);
             context.ApplicationName = Properties.Resources.ApplicationName;
             context.RequestTimeout = requestTimeout;
             if (!currentCredentials)
             {
-                if (onPrem)
-                {
-                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
-                }
-                else
+                try
                 {
                     SharePointOnlineCredentials onlineCredentials = new SharePointOnlineCredentials(credentials.UserName, credentials.Password);
                     context.Credentials = (ICredentials)onlineCredentials;
+                    try
+                    {
+                        context.ExecuteQuery();
+                    }
+                    catch (Microsoft.SharePoint.Client.ClientRequestException)
+                    {
+                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    }
+                    catch (Microsoft.SharePoint.Client.ServerException)
+                    {
+                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    }
                 }
+                catch (ArgumentException)
+                {
+                    // OnPrem?
+                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    try
+                    {
+                        context.ExecuteQuery();
+                    }
+                    catch (Microsoft.SharePoint.Client.ClientRequestException ex)
+                    {
+                        throw new Exception("Error establishing a connection", ex);
+                    }
+                    catch (Microsoft.SharePoint.Client.ServerException ex)
+                    {
+                        throw new Exception("Error establishing a connection", ex);
+                    }
+                }
+
             }
             else
             {
@@ -38,7 +64,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
             }
             var connectionType = SPOnlineConnection.ConnectionTypes.OnPrem;
-            if (url.Host.ToLower().EndsWith("sharepoint.com"))
+            if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
                 connectionType = SPOnlineConnection.ConnectionTypes.O365;
             }
@@ -49,7 +75,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
                 }
             }
-            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, onPrem);
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials);
         }
 
 

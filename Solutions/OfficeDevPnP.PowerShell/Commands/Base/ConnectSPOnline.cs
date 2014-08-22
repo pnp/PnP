@@ -31,8 +31,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the local / current user credentials")]
         public SwitchParameter CurrentCredentials;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Specify if you're connecting to an on-premises environment")]
-        public SwitchParameter OnPrem;
+        //[Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Specify if you're connecting to an on-premises environment")]
+        //public SwitchParameter OnPrem;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "Specifies a minimal server healthscore before any requests are executed.")]
         public int MinimalHealthScore = -1;
@@ -61,7 +61,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 creds = this.Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
             }
-            SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, this.Host, CurrentCredentials, OnPrem, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, this.Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
 
         }
     }

@@ -24,21 +24,6 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (Force || ShouldContinue(string.Format(Properties.Resources.Delete0, Key), Properties.Resources.Confirm))
                 {
                     this.SelectedWeb.RemovePropertyBagValue(Key);
-
-                    // Due to some weird bug in CSOM the context will have to be reinitialized.
-                    SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(
-                        new Uri(ClientContext.Url),
-                        SPOnlineConnection.CurrentConnection.PSCredential,
-                        this.Host,
-                        false,
-                        SPOnlineConnection.CurrentConnection.OnPrem,
-                        SPOnlineConnection.CurrentConnection.MinimalHealthScore,
-                        SPOnlineConnection.CurrentConnection.RetryCount,
-                        SPOnlineConnection.CurrentConnection.RetryWait,
-                        ClientContext.RequestTimeout,
-                        false);
-
-                    ClientContext.ExecuteQuery();
                 }
             }
         }
