@@ -10,6 +10,7 @@ namespace OfficeDevPnP.PowerShell.Core
 {
     public static class SPOWikiPage
     {
+        [Obsolete("Use AddHtmlToWikiPage extension on Web in OfficeDevPnP.Core")]
         public static void SetWikiPageContent(string pageUrl, string content, Web web, ClientContext clientContext)
         {
             File file = clientContext.Web.GetFileByServerRelativeUrl(pageUrl);
@@ -37,6 +38,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return file.ListItemAllFields["WikiField"] as string;
         }
 
+        [Obsolete("Use AddWikiPage extension on Web in OfficeDevPnP.Core")]
         public static void AddWikiPage(string serverRelativePageUrl, Web web, ClientContext clientContext, string content = null)
         {
             string folderName = serverRelativePageUrl.Substring(0, serverRelativePageUrl.LastIndexOf("/"));
@@ -50,9 +52,9 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
+        [Obsolete("Use DeleteObject on File object instead")]
         public static void RemoveWikiPage(string serverRelativePageUrl, Web web, ClientContext clientContext)
         {
-            serverRelativePageUrl = System.UrlUtility.Combine(web.Url,serverRelativePageUrl);
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 

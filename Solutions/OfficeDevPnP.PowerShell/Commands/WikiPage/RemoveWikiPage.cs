@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client.WebParts;
+using System;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -9,11 +10,16 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveWikiPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
-        public string PageUrl = string.Empty;
+        [Alias("PageUrl")]
+        public string ServerRelativePageUrl = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWikiPage.RemoveWikiPage(PageUrl, this.SelectedWeb, ClientContext);
+            File file = this.SelectedWeb.GetFileByServerRelativeUrl(ServerRelativePageUrl);
+
+            file.DeleteObject();
+
+            ClientContext.ExecuteQuery();
         }
     }
 }
