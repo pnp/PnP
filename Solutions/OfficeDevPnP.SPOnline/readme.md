@@ -1,4 +1,4 @@
-# OfficeDevPnP.SPOnline PowerShell Commands #
+﻿# OfficeDevPnP.SPOnline PowerShell Commands #
 
 ### Summary ###
 This solution shows how you can build a library of PowerShell commands that act towards SharePoint Online. The commands use CSOM and can work against both SharePoint Online as SharePoint On-Premises.
@@ -56,51 +56,31 @@ Now you can use this entry to connect to your tenant as follows:
 ## Commands ##
 Here's list of different provider commands. We are looking to provide more examples to usage of these sooner or later.
 
-**Add-SPOApp**                                                                                             Adds an app, uploads a local .app file to a site
-
-**Add-SPOContentType**                                                                                            Creates a new content type
-
-**Add-SPOCustomAction**                                                                                                   	Adds a custom action to a site
-
-**Add-SPOField**                                                                                                           	Creates a new field
-
-**Add-SPOFieldToContentType**                                                                                              	Adds a field to an existing content type
-
-**Add-SPOFile**                                                                                                            	Uploads a file to a site
-
-**Add-SPONavigationLink**                                                                                                  	Adds a new link to the quicklaunch navigation
-
-**Add-SPOTaxonomyField**                                                                                                   	Creates a new Taxonomy field
-
-**Add-SPOUserToGroup**                                                                                                     	Adds a user to a group
-
-**Add-SPOView**                                                                                                            	Adds a new view to an existing list
-
-**Add-SPOWebPart**                                                                                                         	Adds a webpart to an existing page. The webparts needs to be available on the server
-
-**Add-SPOWikiPage**                                                                                                       	Adds a new wikipages to a site
-
-**Connect-SPOnline**                                                                                                      	Creates a new connection context to be used by all commands
-
-**Disable-SPOFeature**                                                                                                    	Disables a feature
-
-**Disconnect-SPOnline**                                                                                                   	Disconnects the context
-
-**Enable-SPOFeature**                                                                                                      	Enables a feature
-
-**Execute-SPOQuery**                                                                                                      	Convenience command that executes the current query. See **Get-SPOContext**
-
-**Export-SPOTaxonomy**                                                                                                    	Exports (a part of) the taxonomy terms
-
-**Find-SPOFile**                                                                                                           	Finds a file in the current site
-
-**Get-SPOAppInstance**                                                                                                     	Gets an app instance
-
-**Get-SPOConfiguration**                                                                                                   	Gets the current configuration (currently not being used)
-
-**Get-SPOContentType**                                                                                                     	Returns a content type
-
-**Get-SPOContext**                                                                                                         	Returns a ClientContext object for use in more detailed powershell commands. E.g.
+Command | Description
+--------|------------
+**Add-SPOApp** | Adds an app, uploads a local .app file to a site
+**Add-SPOContentType** | Creates a new content type
+**Add-SPOCustomAction** | Adds a custom action to a site
+**Add-SPOField** | Adds a new field
+**Add-SPOFieldToContentType** | Adds a field to an existing content type
+**Add-SPOFile** | Uploads a file to a site
+**Add-SPONavigationLink** | Adds a new link to the quicklaunch navigation
+**Add-SPOTaxonomyField** | Creates a new Taxonomy field
+**Add-SPOUserToGroup** | Adds a user to a group
+**Add-SPOView** | Adds a new view to an existing list
+**Add-SPOWebPart** | Adds a webpart to an existing page. The webparts needs to be available on the server
+**Add-SPOWikiPage** | Adds a new wikipages to a site
+**Connect-SPOnline** | Creates a new connection context to be used by all commands
+**Disable-SPOFeature** | Disables a feature
+**Disconnect-SPOnline** | Disconnects the context
+**Enable-SPOFeature**| Enables a feature
+**Execute-SPOQuery** | Convenience command that executes the current query. See **Get-SPOContext**
+**Export-SPOTaxonomy** | Exports (a part of) the taxonomy terms
+**Find-SPOFile** | Finds a file in the current site
+**Get-SPOAppInstance** | Gets an app instance
+**Get-SPOConfiguration** |	Gets the current configuration (currently not being used)
+**Get-SPOContentType** | Returns a content type
+**Get-SPOContext** | Returns a ClientContext object for use in more detailed powershell commands. E.g.
 
 	Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials CREDS
 	$ctx = Get-SPOContext
