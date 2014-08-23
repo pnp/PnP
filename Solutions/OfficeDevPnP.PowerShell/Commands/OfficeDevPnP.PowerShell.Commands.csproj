@@ -69,10 +69,9 @@
     <Compile Include="Admin\GetWebTemplates.cs" />
     <Compile Include="Admin\GetTimeZoneId.cs" />
     <Compile Include="Apps\RemoveApp.cs" />
-    <Compile Include="Base\CmdLetContext.cs" />
+    <Compile Include="Authentication\GetRealm.cs" />
     <Compile Include="Base\Configuration.cs" />
     <Compile Include="Base\Constants.cs" />
-    <Compile Include="Base\SPOFullObjectCmdlet.cs" />
     <Compile Include="Base\SetConfiguration.cs" />
     <Compile Include="Base\GetConfiguration.cs" />
     <Compile Include="Base\GetSPOContext.cs" />
@@ -112,6 +111,7 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\SPOViewPipeBind.cs" />
+    <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Site\NewSite.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />

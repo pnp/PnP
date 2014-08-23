@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SharePoint.Client;
+using System;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
@@ -19,9 +20,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
         }
 
-        public CmdLetContext Context { get; protected set; }
+        public ClientContext Context { get; protected set; }
 
-        public SPOnlineConnection(CmdLetContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential)
+        public SPOnlineConnection(ClientContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential)
         {
             if (context == null)
                 throw new ArgumentNullException("context");

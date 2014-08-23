@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Management.Automation;
@@ -43,6 +44,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "The request timeout. Default is 180000")]
         public int RequestTimeout = 1800000;
 
+        [Parameter(Mandatory = false, ParameterSetName = "Token")]
+        public string Realm;
+
+        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        public string AppId;
+
+        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        public string AppSecret;
+
+
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
 
@@ -52,14 +63,20 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (Credentials != null)
             {
                 creds = Credentials.Credential;
-
             }
-            if (!CurrentCredentials && creds == null)
+          
+            if (ParameterSetName == "Token")
             {
-                creds = this.Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, this.Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
-            SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, this.Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
-
+            else
+            {
+                if (!CurrentCredentials && creds == null)
+                {
+                    creds = this.Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, this.Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
         }
     }
 }
