@@ -16,7 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
             // check for existing configuration, if not existing, create it
             string appDataFolder = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string configFolder = System.IO.Path.Combine(appDataFolder, "Contoso.PSOnline.PowerShell");
+            string configFolder = System.IO.Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell");
             if (!Directory.Exists(configFolder))
             {
                 Directory.CreateDirectory(configFolder);

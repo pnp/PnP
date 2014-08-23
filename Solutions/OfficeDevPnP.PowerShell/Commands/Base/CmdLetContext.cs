@@ -44,7 +44,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         internal static string GetUserAgent()
         {
-            return string.Format((IFormatProvider)CultureInfo.InvariantCulture, Properties.Resources.ContosoSPOnlinePowerShellLibrary0, new object[1]
+            return string.Format((IFormatProvider)CultureInfo.InvariantCulture, Properties.Resources.OfficeDevPnPPowerShellLibrary0, new object[1]
       {
         (object) FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion
       });

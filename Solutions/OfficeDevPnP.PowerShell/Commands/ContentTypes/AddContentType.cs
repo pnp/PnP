@@ -32,8 +32,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            SPOContentType ct = new SPOContentType(this.SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType));
-            WriteObject(ct);
+            var ct = this.SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType);
+            WriteObject(new SPOContentType(ct));
         }
 
 
