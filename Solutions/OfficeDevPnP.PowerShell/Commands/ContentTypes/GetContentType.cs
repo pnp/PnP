@@ -7,6 +7,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -32,14 +33,18 @@ namespace OfficeDevPnP.PowerShell.Commands
                 }
                 if (ct != null)
                 {
-                    WriteObject(ct);
+
+                    WriteObject(new SPOContentType(ct));
                 }
             }
             else
             {
-                var cts = from ct in PowerShell.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext)
-                          select new SPOContentType(ct);
-                WriteObject(cts, true);
+                List<ContentType> cts = new List<ContentType>();
+                ClientContext.Load(this.SelectedWeb.ContentTypes);
+                ClientContext.ExecuteQuery();
+
+                var spocts = from ct in this.SelectedWeb.ContentTypes select new SPOContentType(ct);
+                WriteObject(spocts, true);
             }
         }
     }

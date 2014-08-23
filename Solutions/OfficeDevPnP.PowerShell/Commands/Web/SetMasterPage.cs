@@ -15,7 +15,12 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.SetMasterPage(MasterPageUrl, CustomMasterPageUrl, this.SelectedWeb, ClientContext);
+            if(!string.IsNullOrEmpty(MasterPageUrl))
+                this.SelectedWeb.SetMasterPageForSiteByUrl(MasterPageUrl);
+
+            if (!string.IsNullOrEmpty(CustomMasterPageUrl))
+                this.SelectedWeb.SetCustomMasterPageForSiteByUrl(CustomMasterPageUrl);
+            
         }
     }
 }

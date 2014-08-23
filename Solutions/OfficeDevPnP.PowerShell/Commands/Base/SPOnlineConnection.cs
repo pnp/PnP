@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SharePoint.Client;
+using System;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
@@ -11,7 +12,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         public int RetryCount { get; protected set; }
         public int RetryWait { get; protected set; }
         public PSCredential PSCredential { get; protected set; }
-        public bool OnPrem { get; protected set; }
         public string Url
         {
             get
@@ -20,9 +20,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
         }
 
-        public CmdLetContext Context { get; protected set; }
+        public ClientContext Context { get; protected set; }
 
-        public SPOnlineConnection(CmdLetContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential, bool onPrem)
+        public SPOnlineConnection(ClientContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -32,7 +32,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             this.RetryCount = retryCount;
             this.RetryWait = retryWait;
             this.PSCredential = credential;
-            this.OnPrem = OnPrem;
         }
 
         public enum ConnectionTypes

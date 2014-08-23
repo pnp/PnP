@@ -14,9 +14,10 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ParameterSetName = "FILE")]
         public string Path = string.Empty;
 
-        [Parameter(Mandatory = true, ParameterSetName = "FILE")]
-        [Parameter(Mandatory = true, ParameterSetName = "STRING")]
-        public string PageUrl = string.Empty;
+        [Parameter(Mandatory = true, ParameterSetName = "FILE", HelpMessage="Site Relative Page Url")]
+        [Parameter(Mandatory = true, ParameterSetName = "STRING", HelpMessage="Site Relative Page Url")]
+        [Alias("PageUrl")]
+        public string ServerRelativePageUrl = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
@@ -27,14 +28,12 @@ namespace OfficeDevPnP.PowerShell.Commands
                     System.IO.StreamReader fileStream = new System.IO.StreamReader(Path);
                     string contentString = fileStream.ReadToEnd();
                     fileStream.Close();
-
-                    PowerShell.Core.SPOWikiPage.SetWikiPageContent(PageUrl, contentString, this.SelectedWeb, ClientContext);
-
+                    this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, contentString);
                 }
             }
             else
             {
-                PowerShell.Core.SPOWikiPage.SetWikiPageContent(PageUrl, Content, this.SelectedWeb, ClientContext);
+                this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, Content);
             }
         }
     }

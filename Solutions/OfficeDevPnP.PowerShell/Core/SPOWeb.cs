@@ -18,6 +18,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// </summary>
         /// <param name="MasterPageUrl"></param>
         /// <param name="CustomMasterPageUrl"></param>
+        [Obsolete("Use OfficeDevPnP.Core extensions")]
         public static void SetMasterPage(string MasterPageUrl, string CustomMasterPageUrl, Web web, ClientContext clientContext)
         {
             if (!string.IsNullOrEmpty(MasterPageUrl))
@@ -32,6 +33,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use CSOM object model instead")]
         public static ExpandoObject GetMasterPage(Web web, ClientContext clientContext)
         {
             clientContext.Load(web, w => w.MasterUrl, w => w.CustomMasterUrl);
@@ -40,6 +42,7 @@ namespace OfficeDevPnP.PowerShell.Core
             dynamic returnObject = new ExpandoObject();
             returnObject.MasterUrl = web.MasterUrl;
             returnObject.CustomMasterUrl = web.CustomMasterUrl;
+
             return returnObject;
         }
 
@@ -325,6 +328,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use Microsoft.SharePoint.Client Object Model")]
         public static string GetHomePage(Web web, ClientContext clientContext)
         {
             Folder folder = web.RootFolder;

@@ -34,6 +34,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return cType;
         }
 
+        [Obsolete("Use CSOM")]
         public static List<ContentType> GetContentTypes(Web web, ClientContext clientContext)
         {
             List<ContentType> cts = new List<ContentType>();

@@ -61,7 +61,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contoso SPOnline PowerShell Library.
+        ///   Looks up a localized string similar to Office Dev PnP PowerShell Library.
         /// </summary>
         internal static string ApplicationName {
             get {
@@ -84,15 +84,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         internal static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contoso SPOnline PowerShell Library ({0}).
-        /// </summary>
-        internal static string ContosoSPOnlinePowerShellLibrary0 {
-            get {
-                return ResourceManager.GetString("ContosoSPOnlinePowerShellLibrary0", resourceCulture);
             }
         }
         
@@ -201,6 +192,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         internal static string NoContextPresent {
             get {
                 return ResourceManager.GetString("NoContextPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Office Dev PnP PowerShell Library ({0}).
+        /// </summary>
+        internal static string OfficeDevPnPPowerShellLibrary0 {
+            get {
+                return ResourceManager.GetString("OfficeDevPnPPowerShellLibrary0", resourceCulture);
             }
         }
         
