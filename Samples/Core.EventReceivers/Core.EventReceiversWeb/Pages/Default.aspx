@@ -4,41 +4,30 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
-    <script 
-        src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js" 
-        type="text/javascript">
-    </script>
-    <script 
-        type="text/javascript" 
-        src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js">
-    </script>      
-    <script 
-        type="text/javascript"
-        src="../scripts/ChromeLoader.js">
-    </script>
-
+    <title>Remote Event Receiver</title>
+    <script type="text/javascript" src="../Scripts/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="../Scripts/app.js"></script>
 </head>
-<body style="display: none">
+<body style="display: none; overflow: auto;">
     <form id="form1" runat="server">
-    <!-- Chrome control placeholder -->
-    <div id="chrome_ctrl_placeholder"></div>
-
-    <!-- The chrome control also makes the SharePoint
-          Website stylesheet available to your page -->
-    <h1 class="ms-accentText">Attaching Events to a List in the Host Web</h1>    
-    <div id="MainContent">
-        <p>This sample demonstrates how to attach remote 
-        event receivers to a list in the host web.  </p>
-        <p>
-        Attaching a remote event receiver to 
-        a list only requires Manage permissions for the list.
-        The app requests
-        Manage permissions for the Web it is being installed to because
-        the app will create a list "Remote Event Receiver Jobs" if one
-        does not already exist.</p>
+ <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="True" />
+    <div id="divSPChrome"></div>
+    <div style="left: 40px; position: absolute;">
+        <h1>Scenario: Demonstrate usage of the remote event receivers with list events</h1>
+        In this scenario you'll learn how to set remote event receiver to the list in site and how to process those requests. You could also apply this during the AppInstalled event.
+        <ul style="list-style-type: square;">
+            <li>Create remote event receiver to host web for handling remote events to provider hosted app</li>
+            <li>How to handle events in the remtoe service</li>
+            <li>How to uninstall events from the host web</li>
+        </ul>
+        <i>Notice that you could associate this example code also to site collection provisioning, which ensure that all new sites have automatically needed customizations.</i>
+        <br />
+        <br />       
+        <asp:Button runat="server" ID="btnScenario" Text="Run scenario" OnClick="btnScenario_Click" />
+        <asp:Button runat="server" ID="btnScenario1Remove" Text="Remove Event Receivers" OnClick="btnScenarioRemove_Click" />   <asp:Label ID="lblStatus" runat="server" />
+        <br />
+        <br />
     </div>
     </form>
 </body>
-
 </html>
