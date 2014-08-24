@@ -28,16 +28,24 @@ namespace Core.CrossDomainImagesWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-            using (var clientContext = spContext.CreateUserClientContextForSPAppWeb())
+            try
             {
-                //set access token in hidden field for client calls
-                hdnAccessToken.Value = spContext.UserAccessTokenForSPAppWeb;
+                var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+                using (var clientContext = spContext.CreateUserClientContextForSPAppWeb())
+                {
+                    //set access token in hidden field for client calls
+                    hdnAccessToken.Value = spContext.UserAccessTokenForSPAppWeb;
 
-                //set images
-                Image1.ImageUrl = spContext.SPAppWebUrl + "AppImages/O365.png";
-                Services.ImgService svc = new Services.ImgService();
-                Image2.ImageUrl = svc.GetImage(spContext.UserAccessTokenForSPAppWeb, spContext.SPAppWebUrl.ToString(), "AppImages", "O365.png");
+                    //set images
+                    Image1.ImageUrl = spContext.SPAppWebUrl + "AppImages/O365.png";
+                    Services.ImgService svc = new Services.ImgService();
+                    Image2.ImageUrl = svc.GetImage(spContext.UserAccessTokenForSPAppWeb, spContext.SPAppWebUrl.ToString(), "AppImages", "O365.png");
+                }
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
         }
     }
