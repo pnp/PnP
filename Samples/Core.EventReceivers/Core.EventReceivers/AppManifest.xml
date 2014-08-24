@@ -9,14 +9,12 @@
   <Properties>
     <Title>Contoso.EventReceivers</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
-    <InstalledEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</InstalledEventEndpoint>
-    <UninstallingEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</UninstallingEventEndpoint>
   </Properties>
 
   <AppPrincipal>
     <RemoteWebApplication ClientId="*" />
   </AppPrincipal>
-  <AppPermissionRequests>
+  <AppPermissionRequests AllowAppOnlyPolicy="false">
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="Manage" />
   </AppPermissionRequests>
 </App>
