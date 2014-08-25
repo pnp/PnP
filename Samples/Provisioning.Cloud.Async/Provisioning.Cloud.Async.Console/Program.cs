@@ -59,7 +59,7 @@ namespace Provisioning.Cloud.Async.Console
                             // Process request
                             string newUrl = ProcessSiteCreationRequest(ctx, listItem);
 
-                            // Mark it as provisioning
+                            // Mark it as finished & ready
                             UpdateStatusToList(ctx, listItem.Id, "Ready", "Created at " + DateTime.Now.ToString());
 
                             // Send email

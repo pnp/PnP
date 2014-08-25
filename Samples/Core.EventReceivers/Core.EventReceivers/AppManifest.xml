@@ -2,21 +2,19 @@
 <!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="ContosoEventReceivers"
-     ProductID="{352aa354-e5f5-47d5-8385-7cb0551636e3}"
+     ProductID="{352aa354-e5f5-47d5-8385-7cb0551636e6}"
      Version="1.0.0.0"
      SharePointMinVersion="15.0.0.0"
 >
   <Properties>
     <Title>Contoso.EventReceivers</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
-    <InstalledEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</InstalledEventEndpoint>
-    <UninstallingEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</UninstallingEventEndpoint>
   </Properties>
 
   <AppPrincipal>
     <RemoteWebApplication ClientId="*" />
   </AppPrincipal>
-  <AppPermissionRequests>
+  <AppPermissionRequests AllowAppOnlyPolicy="false">
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="Manage" />
   </AppPermissionRequests>
 </App>

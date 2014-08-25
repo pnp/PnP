@@ -60,7 +60,7 @@ namespace Core.XMLBasedFieldsAndContentTypesWeb
             {
                 // Start XML importing from the xml file located in this provider hosted app
                 clientContext.Web.CreateFieldsFromXMLFile(System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SiteColumns.xml")));
-                lblStatus.Text = string.Format("Site columns created to the host web. Check for <a href='#'>site columns</a> with group name of 'Contoso Fields'.",
+                lblStatus.Text = string.Format("Site columns created to the host web. Check for <a href='#'>site columns</a> with group name of 'Contoso Columns'.",
                                                 spContext.SPHostUrl.ToString() + "/_layouts/15/mngfield.aspx");
             }
         }
