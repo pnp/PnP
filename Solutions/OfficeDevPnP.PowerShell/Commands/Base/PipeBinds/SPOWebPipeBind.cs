@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
     {
         private Guid _id;
         private string _url;
-        private SPOnlineWeb _spOnlineWeb;
+        private WebEntity _spOnlineWeb;
         private Web _web;
 
         public SPOWebPipeBind()
@@ -35,7 +36,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             }
         }
 
-        public SPOWebPipeBind(SPOnlineWeb onlineWeb)
+        public SPOWebPipeBind(WebEntity onlineWeb)
         {
             this._spOnlineWeb = onlineWeb;
         }
@@ -61,7 +62,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             {
                 if (_spOnlineWeb != null)
                 {
-                    return _spOnlineWeb.ContextObject;
+                    return _spOnlineWeb.GetContextObject();
                 }
                 else
                 {

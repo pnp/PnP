@@ -26,13 +26,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
         public SwitchParameter Force;
 
         [Parameter(Mandatory = false)]
-        public OfficeDevPnP.PowerShell.Core.SPOFeatures.FeatureScope Scope = OfficeDevPnP.PowerShell.Core.SPOFeatures.FeatureScope.Web;
+        public FeatureScope Scope = FeatureScope.Web;
 
         protected override void ExecuteCmdlet()
         {
             Guid featureId = Identity.Id;
 
-            if(Scope == Core.SPOFeatures.FeatureScope.Web)
+            if (Scope == FeatureScope.Web)
             {
                 ClientContext.Web.DeactivateFeature(featureId);
             }
@@ -40,6 +40,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             {
                 ClientContext.Site.DeactivateFeature(featureId);
             }
+        }
+
+        public enum FeatureScope
+        {
+            Web,
+            Site
         }
     }
 }

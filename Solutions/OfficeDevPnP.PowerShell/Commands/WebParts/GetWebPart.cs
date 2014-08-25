@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Management.Automation;
 using OfficeDevPnP.PowerShell.Core;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -23,11 +24,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Identity.Id != Guid.Empty)
                 {
-                    WriteObject(new SPOnlineWebPart(SPOWebParts.GetWebPartById(PageUrl, this.SelectedWeb, Identity.Id, ClientContext)));
+                    WriteObject(new WebPartEntity(SPOWebParts.GetWebPartById(PageUrl, this.SelectedWeb, Identity.Id, ClientContext)));
                 }
                 else if (!string.IsNullOrEmpty(Identity.Title))
                 {
-                    WriteObject(new SPOnlineWebPart(SPOWebParts.GetWebPartByTitle(PageUrl, Identity.Title, this.SelectedWeb, ClientContext)));
+                    WriteObject(new WebPartEntity(SPOWebParts.GetWebPartByTitle(PageUrl, Identity.Title, this.SelectedWeb, ClientContext)));
                 }
             }
             else
@@ -36,7 +37,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
                 foreach (var webpart in definitions)
                 {
-                    WriteObject(new SPOnlineWebPart(webpart));
+                    WriteObject(new WebPartEntity(webpart));
                 }
 
             }

@@ -8,6 +8,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using SPO = OfficeDevPnP.PowerShell.Core;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -17,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true)]
         public GuidPipeBind Identity;
 
-        [Parameter(Mandatory = true, ParameterSetName="List")]
+        [Parameter(Mandatory = false, ParameterSetName="List")]
         public SPOListPipeBind List;
 
         [Parameter(Mandatory = false)]
@@ -31,14 +32,24 @@ namespace OfficeDevPnP.PowerShell.Commands
 
                 if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
                 {
-                    SPOEvents.RemoveEventReceiver(list, Identity.Id, ClientContext);
+                    var eventReceiver = list.GetEventReceiverById(Identity.Id);
+                    if(eventReceiver != null)
+                    {
+                        eventReceiver.DeleteObject();
+                        ClientContext.ExecuteQuery();
+                    }
                 }
             }
             else
             {
                 if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
                 {
-                    SPOEvents.RemoveEventReceiver(this.SelectedWeb, Identity.Id, ClientContext);
+                    var eventReceiver = this.SelectedWeb.GetEventReceiverById(Identity.Id);
+                    if (eventReceiver != null)
+                    {
+                        eventReceiver.DeleteObject();
+                        ClientContext.ExecuteQuery();
+                    }
                 }
             }
         }

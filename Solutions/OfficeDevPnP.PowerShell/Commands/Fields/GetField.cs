@@ -64,11 +64,12 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                ClientContext.Load(this.SelectedWeb.Fields);
+            
                 // Get a site column
                 if (Identity.Id == Guid.Empty && string.IsNullOrEmpty(Identity.Name))
                 {
                     // Get all columns
+                    ClientContext.Load(this.SelectedWeb.Fields);
                     ClientContext.ExecuteQuery();
                     WriteObject(this.SelectedWeb.Fields, true);
                 }

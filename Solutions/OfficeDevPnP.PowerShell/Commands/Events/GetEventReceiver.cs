@@ -8,17 +8,15 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using SPO = OfficeDevPnP.PowerShell.Core;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOEventReceiver")]
     public class GetEventReceiver : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, ParameterSetName = "List")]
+        [Parameter(Mandatory = false, ParameterSetName = "List")]
         public SPOListPipeBind List;
-
-        //[Parameter(Mandatory = false, ParameterSetName = "Web")]
-        //public SPOWebPipeBind Web;
 
         [Parameter(Mandatory = false)]
         public GuidPipeBind Identity;
@@ -33,48 +31,27 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     if (Identity == null)
                     {
-                        WriteObject(SPOEvents.GetEventReceivers(list, ClientContext));
+                        var query = ClientContext.LoadQuery(list.EventReceivers);
+                        ClientContext.ExecuteQuery();
+                        WriteObject(query, true);
                     }
                     else
                     {
-
-                        WriteObject(SPOEvents.GetEventReceivers(list, Identity.Id, ClientContext));
+                        WriteObject(list.GetEventReceiverById(Identity.Id));
                     }
                 }
             }
             else
             {
-                Microsoft.SharePoint.Client.Web web = SelectedWeb;
-                if (Web != null)
+                if (Identity == null)
                 {
-                    if (Web.Web != null)
-                    {
-                        web = Web.Web;
-                    }
-                    else if (Web.Id != Guid.Empty)
-                    {
-                        web = ClientContext.Site.OpenWebById(Web.Id);
-                        ClientContext.Load(web);
-                        ClientContext.ExecuteQuery();
-                    }
-                    else if (!string.IsNullOrEmpty(Web.Url))
-                    {
-                        web = ClientContext.Site.OpenWeb(Web.Url);
-                        ClientContext.Load(web);
-                        ClientContext.ExecuteQuery();
-                    }
+                    var query = ClientContext.LoadQuery(this.SelectedWeb.EventReceivers);
+                    ClientContext.ExecuteQuery();
+                    WriteObject(query, true);
                 }
-                if (web != null)
+                else
                 {
-                    if (Identity == null)
-                    {
-                        WriteObject(SPOEvents.GetEventReceivers(web, ClientContext));
-                    }
-                    else
-                    {
-
-                        WriteObject(SPOEvents.GetEventReceivers(web, Identity.Id, ClientContext));
-                    }
+                    WriteObject(this.SelectedWeb.GetEventReceiverById(Identity.Id));
                 }
             }
 

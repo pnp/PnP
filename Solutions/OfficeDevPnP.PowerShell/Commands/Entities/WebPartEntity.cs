@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOnlineWebPart
+    public class WebPartEntity
     {
         internal string _title;
         internal bool _hidden;
@@ -26,7 +26,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public int ZoneIndex { get { return _zoneindex; } }
         public PropertyValues Properties { get { return _properties; } }
 
-        public SPOnlineWebPart(WebPartDefinition definition)
+        public WebPartEntity(WebPartDefinition definition)
         {
             _id = definition.Id;
             _hidden = definition.WebPart.Hidden;

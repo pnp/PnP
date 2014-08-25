@@ -1,14 +1,9 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using SPO = OfficeDevPnP.PowerShell.Core;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -29,26 +24,48 @@ namespace OfficeDevPnP.PowerShell.Commands
                 var list = this.SelectedWeb.GetList(List);
                 if (list != null)
                 {
-                    IQueryable<SPOnlineView> query = null;
+                    IQueryable<ViewEntity> query = null;
                     View view = null;
                     if (Identity != null)
                     {
-
-
                         if (Identity.Id != Guid.Empty)
                         {
-                            view = SPO.SPOList.GetViews(list, ClientContext).Where(v => v.Id == Identity.Id).FirstOrDefault();
+                            var q = from v in list.Views where view.Id == Identity.Id select v;
+                            ClientContext.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+                            ClientContext.ExecuteQuery();
+                            if (q.Any())
+                            {
+                                view = q.FirstOrDefault();
+                            }
                         }
                         else if (!string.IsNullOrEmpty(Identity.Title))
                         {
-                            view = SPO.SPOList.GetViews(list, ClientContext).Where(v => v.Title == Identity.Title).FirstOrDefault();
+                            var q = from v in list.Views where view.Title == Identity.Title select v;
+                            ClientContext.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+                            ClientContext.ExecuteQuery();
+                            if (q.Any())
+                            {
+                                view = q.FirstOrDefault();
+                            }
                         }
                     }
                     else
                     {
-                        var views = SPO.SPOList.GetViews(list, ClientContext);
+                        var views = ClientContext.LoadQuery(list.Views.IncludeWithDefaultProperties(v => v.ViewFields));
+                        ClientContext.ExecuteQuery();
                         query = from v in views.AsQueryable()
-                                select new SPOnlineView(v);
+                                select new ViewEntity()
+                                {
+                                    ViewFields = v.ViewFields,
+                                    DefaultView = v.DefaultView,
+                                    Id = v.Id,
+                                    PersonalView = v.PersonalView,
+                                    Query = v.ViewQuery,
+                                    RowLimit = v.RowLimit,
+                                    Title = v.Title,
+                                    ViewType = v.ViewType,
+                                    _contextObject = v
+                                };
                     }
                     if (query != null)
                     {
@@ -66,7 +83,18 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                     else if (view != null)
                     {
-                        WriteObject(new SPOnlineView(view));
+                        WriteObject(new ViewEntity()
+                        {
+                            ViewFields = view.ViewFields,
+                            DefaultView = view.DefaultView,
+                            Id = view.Id,
+                            PersonalView = view.PersonalView,
+                            Query = view.ViewQuery,
+                            RowLimit = view.RowLimit,
+                            Title = view.Title,
+                            ViewType = view.ViewType,
+                            _contextObject = view
+                        });
                     }
                 }
             }

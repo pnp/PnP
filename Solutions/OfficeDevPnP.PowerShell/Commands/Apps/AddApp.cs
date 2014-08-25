@@ -3,7 +3,7 @@ using System.Management.Automation;
 using System.Globalization;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Base;
+using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Force)
                 {
-                    ClientContext.Site.ActivateFeature(Constants.AppSideLoadingFeatureId);
+                    ClientContext.Site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
                 }
                 AppInstance instance = null;
 
@@ -71,7 +71,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
                 if (Force)
                 {
-                    ClientContext.Site.DeactivateFeature(Constants.AppSideLoadingFeatureId);
+                    ClientContext.Site.DeactivateFeature(Constants.APPSIDELOADINGFEATUREID);
                 }
                 WriteObject(instance);
             }

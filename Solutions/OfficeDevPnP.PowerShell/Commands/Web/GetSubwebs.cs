@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Management.Automation;
 using OfficeDevPnP.PowerShell.Core;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -19,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             var webs = SPOWeb.GetSubWebs(this.SelectedWeb, ClientContext).AsQueryable();
             var query = from web in webs
-                        select new SPOnlineWeb(web);
+                        select new WebEntity(web);
             WriteObject(query.ToList(), true);
 
         }

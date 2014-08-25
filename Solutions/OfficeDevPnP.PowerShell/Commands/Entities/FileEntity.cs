@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOFile
+    public class FileEntity
     {
         public string ServerRelativeUrl { get; set; }
         public string Title { get; set; }

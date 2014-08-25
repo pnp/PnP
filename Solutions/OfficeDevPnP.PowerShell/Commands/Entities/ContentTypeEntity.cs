@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOContentType : SPOContextObject<ContentType>
+    public class ContentTypeEntity : EntityContextObject<ContentType>
     {
         private string _name;
         private string _id;
@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Description { get { return _description; } }
 
 
-        public SPOContentType(ContentType ct)
+        public ContentTypeEntity(ContentType ct)
         {
             _contextObject = ct;
             _name = ct.Name;

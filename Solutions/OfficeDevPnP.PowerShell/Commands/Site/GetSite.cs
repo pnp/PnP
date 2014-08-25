@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -13,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             var site = ClientContext.Site;
             ClientContext.Load(site);
-            WriteObject(new SPOSite(site));
+            WriteObject(new SiteEntity(site));
         }
     }
 

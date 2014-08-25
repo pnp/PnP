@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOList : SPOContextObject<List>
+    public class ListEntity : EntityContextObject<List>
     {
         private string _title;
         private Guid _id;
@@ -23,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public int BaseTemplate { get { return _basetemplate; } }
         public bool Hidden { get { return _hidden; } }
 
-        public SPOList(List list)
+        public ListEntity(List list)
         {
             _contextObject = list;
             _title = list.Title;

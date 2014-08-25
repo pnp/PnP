@@ -8,6 +8,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -34,7 +35,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (ct != null)
                 {
 
-                    WriteObject(new SPOContentType(ct));
+                    WriteObject(new ContentTypeEntity(ct));
                 }
             }
             else
@@ -43,7 +44,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ClientContext.Load(this.SelectedWeb.ContentTypes);
                 ClientContext.ExecuteQuery();
 
-                var spocts = from ct in this.SelectedWeb.ContentTypes select new SPOContentType(ct);
+                var spocts = from ct in this.SelectedWeb.ContentTypes select new ContentTypeEntity(ct);
                 WriteObject(spocts, true);
             }
         }
