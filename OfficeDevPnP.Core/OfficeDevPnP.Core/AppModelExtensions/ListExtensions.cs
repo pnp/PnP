@@ -14,6 +14,103 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class ListExtensions
     {
+        #region Event Receivers
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="list">The list to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                     in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                list.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = list.EventReceivers.Add(receiver);
+                list.Context.Load(def);
+                list.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this List list, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
@@ -312,7 +409,7 @@ namespace Microsoft.SharePoint.Client
             return results.FirstOrDefault();
         }
 
-        public static List GetListByUrl(this Web web,string siteRelativeUrl)
+        public static List GetListByUrl(this Web web, string siteRelativeUrl)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -479,13 +576,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="rowLimit"></param>
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
-        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null)
+        /// <param name="personal"></param>
+        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null, bool personal = false)
         {
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
             viewCreationInformation.RowLimit = rowLimit;
             viewCreationInformation.ViewFields = viewFields;
+            viewCreationInformation.PersonalView = personal;
             viewCreationInformation.SetAsDefaultView = setAsDefault;
             if (!string.IsNullOrEmpty(query))
             {
