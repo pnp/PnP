@@ -130,13 +130,13 @@ namespace Provisioning.PublishingFeaturesWeb
         {
             List styleLib = clientContext.Web.GetListByTitle("Style Library");
             Folder rootFolder = styleLib.RootFolder;
-            if (!rootFolder.SubFolderExists("Contoso"))
+            if (!rootFolder.FolderExists("Contoso"))
             {
                 rootFolder.Folders.Add("Contoso");
                 clientContext.ExecuteQuery();
             }
             Folder contosoFolder = rootFolder.ResolveSubFolder("Contoso");
-            if (!contosoFolder.SubFolderExists("Scripts"))
+            if (!contosoFolder.FolderExists("Scripts"))
             {
                 contosoFolder.Folders.Add("Scripts");
                 clientContext.ExecuteQuery();
