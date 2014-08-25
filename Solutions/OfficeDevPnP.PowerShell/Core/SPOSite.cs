@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
@@ -21,7 +22,7 @@ namespace OfficeDevPnP.PowerShell.Core
             if (appsideloading.Value == false)
             {
                 Site site = clientContext.Site;
-                SPOFeatures.ActivateFeature(new Guid(Properties.Resources.AppSideLoadingFeatureGuid), false, SPOFeatures.FeatureScope.Site, clientContext);
+                site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
         }
 
@@ -32,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Core
             if (appsideloading.Value == true)
             {
                 Site site = clientContext.Site;
-                SPOFeatures.DeactivateFeature(new Guid(Properties.Resources.AppSideLoadingFeatureGuid), false, SPOFeatures.FeatureScope.Site, clientContext);
+                site.DeactivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
         }
 
@@ -68,52 +69,6 @@ namespace OfficeDevPnP.PowerShell.Core
                 }
             }
         }
-
-        //private static SiteManager.SiteManagerClient GetSiteManagerClient(string serviceUrl, NetworkCredential credentials)
-        //{
-        //    BasicHttpBinding binding = new BasicHttpBinding();
-        //    if (serviceUrl.ToLower().Contains("https://"))
-        //    {
-        //        binding.Security.Mode = BasicHttpSecurityMode.Transport;
-        //    }
-        //    else
-        //    {
-        //        binding.Security.Mode = BasicHttpSecurityMode.TransportCredentialOnly;
-        //    }
-        //    binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Ntlm;
-
-        //    EndpointAddress endPoint = new EndpointAddress(serviceUrl);
-        //    //Set time outs
-        //    binding.ReceiveTimeout = TimeSpan.FromMinutes(15);
-        //    binding.CloseTimeout = TimeSpan.FromMinutes(15);
-        //    binding.OpenTimeout = TimeSpan.FromMinutes(15);
-        //    binding.SendTimeout = TimeSpan.FromMinutes(15);
-
-        //    //Create proxy instance
-        //    SiteManager.SiteManagerClient managerClient = new SiteManager.SiteManagerClient(binding, endPoint);
-        //    if (credentials != null)
-        //    {
-        //        managerClient.ClientCredentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
-
-        //        managerClient.ClientCredentials.Windows.ClientCredential = credentials;
-        //    }
-        //    return managerClient;
-        //}
-
-        //public static void NewSite(string serverUrl, string serviceUrl, NetworkCredential credentials, string title, string ownerLogin, string secondaryContactLogin, string description, string template, string url, UInt16 lcid)
-        //{
-        //    SiteManager.SiteManagerClient siteManagerClient = GetSiteManagerClient(serverUrl.TrimEnd('/') + serviceUrl, credentials);
-
-        //    SiteManager.SiteData data = new SiteManager.SiteData();
-        //    data.Title = title;
-        //    data.OwnerLogin = ownerLogin;
-        //    data.SecondaryContactLogin = secondaryContactLogin;
-        //    data.Description = description;
-        //    data.WebTemplate = template;
-        //    data.Url = url;
-        //    data.LcId = lcid.ToString();
-        //    siteManagerClient.CreateSiteCollection(data);
-        //}
 
         public static void NewTenantSite(string title, string url, string template, string owner, uint lcid, int timeZoneId, double userCodeMaximumLevel, double userCodeWarningLevel, long storageMaximumLevel, long storageWarningLevel, Tenant tenant, bool wait, bool removedDeletedSiteFirst)
         {

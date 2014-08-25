@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOEvents
     {
         public static void RemoveEventReceiver(List list, Guid id, ClientContext clientContext)
@@ -98,6 +99,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return receivers.ToList();
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static EventReceiverDefinition RegisterEventReceiver(List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force, ClientContext clientContext)
         {
             clientContext.Load(list.EventReceivers);
@@ -133,6 +135,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return def;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static EventReceiverDefinition RegisterEventReceiver(Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force, ClientContext clientContext)
         {
             clientContext.Load(web.EventReceivers);

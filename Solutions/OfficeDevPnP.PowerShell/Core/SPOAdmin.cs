@@ -74,7 +74,7 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
-        [Obsolete("Use OfficeDevPnP.Core")]
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static SPOTenantWebTemplateCollection GetWebTemplates(uint lcid, int compatibilityLevel, ClientContext clientContext)
         {
             Tenant tenant = new Tenant((ClientRuntimeContext)clientContext);

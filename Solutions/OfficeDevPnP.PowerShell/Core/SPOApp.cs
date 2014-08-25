@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOApp
     {
         /// <summary>

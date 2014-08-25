@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+     [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOList
     {
 
@@ -20,6 +21,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return field.Id;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static View AddView(List list, string title, string camlQuery, string[] viewFields, ViewType viewType, uint rowLimit, bool personal, bool setAsDefault, ClientContext clientContext)
         {
             ViewCreationInformation vInfo = new ViewCreationInformation();
@@ -37,6 +39,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return view;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static List CreateList(string title, string description, string url, ListTemplateType templateType, Web web, QuickLaunchOptions quicklaunchOptions)
         {
             ClientContext clientContext = web.Context as ClientContext;

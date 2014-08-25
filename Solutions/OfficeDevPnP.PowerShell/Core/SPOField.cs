@@ -10,6 +10,7 @@ namespace OfficeDevPnP.PowerShell.Core
 {
     public static class SPOField
     {
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddField(List list, string fieldXml, bool addToDefaultView, AddFieldOptions fieldOptions, ClientContext clientContext)
         {
             clientContext.Load(list.Fields);
@@ -21,6 +22,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return field;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddField(Web web, string fieldXml, AddFieldOptions fieldOptions, ClientContext clientContext)
         {
             clientContext.Load(web.Fields);
@@ -32,11 +34,12 @@ namespace OfficeDevPnP.PowerShell.Core
             return field;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddField(List list, string displayName, string internalName, string staticName, FieldType fieldType, Guid Id, bool required, bool addToDefaultView, AddFieldOptions fieldOptions, ClientContext clientContext, string[] choices = null, string group = null)
         {
-            string fieldString = GetFieldCAML(internalName, staticName, fieldType, Id, required, choices, group);
+            string fieldString = GetFieldCAML(displayName, internalName, staticName, fieldType, Id, required, choices, group);
 
-            Field f = AddField(list, fieldString, addToDefaultView, fieldOptions, clientContext);
+            Field f = list.CreateField(fieldString);
 
             f.Title = displayName;
             f.Update();
@@ -45,10 +48,12 @@ namespace OfficeDevPnP.PowerShell.Core
             return f;
         }
 
+
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddField(Web web, string displayName, string internalName, string staticName, FieldType fieldType, Guid Id, bool required, AddFieldOptions fieldOptions, ClientContext clientContext, string[] choices = null, string group = null)
         {
 
-            string fieldString = GetFieldCAML(internalName, staticName, fieldType, Id, required, choices, group);
+            string fieldString = GetFieldCAML(displayName, internalName, staticName, fieldType, Id, required, choices, group);
 
 
             Field f = AddField(web, fieldString, fieldOptions, clientContext);
@@ -60,6 +65,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return f;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static FieldLink AddField(ContentType contentType, Field field, ClientContext clientContext)
         {
             var fieldLink = contentType.FieldLinks.Add(new FieldLinkCreationInformation() { Field = field });
@@ -71,7 +77,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return fieldLink;
         }
 
-        private static string GetFieldCAML(string internalName, string staticName, FieldType fieldType, Guid Id, bool required, string[] choices, string group)
+        private static string GetFieldCAML(string displayName, string internalName, string staticName, FieldType fieldType, Guid Id, bool required, string[] choices = null, string group = null)
         {
             string fieldTypeString = Enum.GetName(typeof(FieldType), fieldType);
             string fieldXml = "<Field DisplayName='{0}' Name='{1}' StaticName='{2}' Type='{3}' ID='{{{4}}}' Required='{5}'{6}>";
@@ -88,6 +94,7 @@ namespace OfficeDevPnP.PowerShell.Core
             fieldXml += "</Field>";
 
             string fieldString = string.Format(fieldXml,
+                displayName,
                 internalName,
                 internalName,
                 staticName,
