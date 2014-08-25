@@ -12,7 +12,7 @@ namespace OfficeDevPnP.Core.Utilities
     public static class YammerUtility
     {
         /// <summary>
-        /// Returns Yammer Group is group exists. If group does not exists, returns null.
+        /// Returns Yammer Group if group exists. If the group does not exist, returns null.
         /// </summary>
         /// <param name="groupName">Group name to search for</param>
         /// <param name="accessToken"></param>
@@ -33,7 +33,7 @@ namespace OfficeDevPnP.Core.Utilities
         }
 
         /// <summary>
-        /// Returns Yammer Group is group exists. If group does not exists, returns null.
+        /// Returns Yammer Group if group exists. If the group does not exist, returns null.
         /// </summary>
         /// <param name="groupName">Group name to search for</param>
         /// <param name="accessToken"></param>
