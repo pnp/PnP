@@ -14,17 +14,13 @@
     <div id="divSPChrome"></div>
     <div style="left: 40px; position: absolute;">
         <h1>Scenario: Demonstrate usage of the remote event receivers with list events</h1>
-        In this scenario you'll learn how to set remote event receiver to the list in site and how to process those requests. You could also apply this during the AppInstalled event.
+        In this scenario you'll learn how to set remote event receiver to the list in site and how to process those requests. Remote event receiver is added during the AppInstalled event.
         <ul style="list-style-type: square;">
             <li>Create remote event receiver to host web for handling remote events to provider hosted app</li>
             <li>How to handle events in the remtoe service</li>
             <li>How to uninstall events from the host web</li>
         </ul>
         <i>Notice that you could associate this example code also to site collection provisioning, which ensure that all new sites have automatically needed customizations.</i>
-        <br />
-        <br />       
-        <asp:Button runat="server" ID="btnScenario" Text="Run scenario" OnClick="btnScenario_Click" />
-        <asp:Button runat="server" ID="btnScenario1Remove" Text="Remove Event Receivers" OnClick="btnScenarioRemove_Click" />   <asp:Label ID="lblStatus" runat="server" />
         <br />
         <br />
     </div>

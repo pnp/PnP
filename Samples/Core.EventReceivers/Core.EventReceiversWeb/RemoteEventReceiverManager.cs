@@ -59,10 +59,11 @@ namespace Contoso.Core.EventReceiversWeb
                 EventReceiverDefinitionCreationInformation receiver =
                     new EventReceiverDefinitionCreationInformation();
                 receiver.EventType = EventReceiverType.ItemAdded;
-                receiver.ReceiverUrl = HttpContext.Current.Request.Url.Scheme 
-                                        + "://"
-                                        + HttpContext.Current.Request.Url.Authority 
-                                        + HttpContext.Current.Request.ApplicationPath + "services/AppEventReceiver.svc";
+                
+                //Get WCF URL where this message was handled
+                OperationContext op = OperationContext.Current;
+                Message msg = op.RequestContext.RequestMessage;
+                receiver.ReceiverUrl = msg.Headers.To.ToString();
 
                 receiver.ReceiverName = RECEIVER_NAME;
                 receiver.Synchronization = EventReceiverSynchronization.Synchronous;

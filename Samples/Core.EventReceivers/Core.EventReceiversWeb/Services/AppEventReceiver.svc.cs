@@ -36,7 +36,7 @@ namespace Contoso.Core.EventReceiversWeb.Services
 
         public void ProcessOneWayEvent(SPRemoteEventProperties properties)
         {
-            // This method is not used by app events
+
         }
 
 

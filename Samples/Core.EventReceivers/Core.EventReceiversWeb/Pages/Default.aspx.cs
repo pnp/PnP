@@ -50,36 +50,5 @@ namespace Contoso.Core.EventReceiversWeb
             //register script in page
             Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);   
         }
-
-        /// <summary>
-        /// Demonstrates how to associate the event receiver to host web.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnScenario_Click(object sender, EventArgs e)
-        {
-
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
-            {
-                new RemoteEventReceiverManager().AssociateRemoteEventsToHostWeb(clientContext);
-            }
-        }
-
-                /// <summary>
-        /// Clean up
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnScenarioRemove_Click(object sender, EventArgs e)
-        {
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
-            {
-                new RemoteEventReceiverManager().RemoveEventReceiversFromHostWeb(clientContext);
-            }
-        }
     }
 }
