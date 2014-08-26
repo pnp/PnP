@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Core.CloudServices", "Core.CloudServices\Core.CloudServices.ccproj", "{5A424F33-7BF0-440E-97F4-7E3D342891CD}"
 EndProject
@@ -14,8 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CloudServices.Encrypto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{87EE2A7F-40DD-4C11-8DB4-C18C41BF9982}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		Using Azure cloud services to host SP provider hosted apps.docx = Using Azure cloud services to host SP provider hosted apps.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{FE341148-486A-4FF0-B5C2-5D5541C31B96}"

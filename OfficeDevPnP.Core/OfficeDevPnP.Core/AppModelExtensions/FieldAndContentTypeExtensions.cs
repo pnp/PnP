@@ -12,6 +12,8 @@ namespace Microsoft.SharePoint.Client
     public static class FieldAndContentTypeExtensions
     {
         const string FIELD_XML_FORMAT = @"<Field Type=""{0}"" Name=""{1}"" DisplayName=""{2}"" ID=""{3}"" Group=""{4}"" {5}/>";
+
+        #region Site Columns
         /// <summary>
         /// Create field to web remotely
         /// </summary>
@@ -131,16 +133,16 @@ namespace Microsoft.SharePoint.Client
 
                 return _field;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 ///If there is an exception the hidden field might be present
                 FieldCollection _fields = web.Fields;
                 web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
                 web.Context.ExecuteQuery();
                 var _hiddenField = id.ToString().Replace("-", "");
-          
+
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if(_field != null)
+                if (_field != null)
                 {
                     _field.DeleteObject();
                     web.Context.ExecuteQuery();
@@ -254,7 +256,116 @@ namespace Microsoft.SharePoint.Client
                 web.CreateField(field.OuterXml);
             }
         }
+        #endregion
 
+        #region List Fields
+        /// <summary>
+        /// Adds a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            return CreateField(list, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes);
+        }
+
+        /// <summary>
+        /// Add a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            list.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+
+            if (field != null)
+                throw new ArgumentException("id", "Field already exists");
+
+            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            field = fields.AddFieldAsXml(newFieldCAML, false, AddFieldOptions.AddFieldInternalNameHint);
+            list.Update();
+
+            list.Context.ExecuteQuery();
+
+            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
+            field.Title = displayName;
+            field.Update();
+            list.Context.Load(field);
+            return field;
+        }
+
+        /// <summary>
+        /// Adds field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            list.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+
+            if (field != null)
+                throw new ArgumentException("id", "Field already exists");
+
+            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
+            list.Context.Load(field);
+            list.Context.ExecuteQuery();
+
+            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
+            field.Title = displayName;
+            field.Update();
+            list.Context.Load(field);
+
+            return field;
+        }
+
+        /// <summary>
+        /// Adds a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="fieldAsXml">The XML declaration of SiteColumn definition</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, string fieldAsXml)
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields);
+            list.Context.ExecuteQuery();
+
+            Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
+            list.Update();
+
+            list.Context.ExecuteQuery();
+
+            return field;
+        }
+
+        #endregion
 
         public static void CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
         {
@@ -389,8 +500,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="description">Description for the content type</param>
         /// <param name="id">Complete ID for the content type</param>
         /// <param name="group">Group for the content type</param>
+        /// <param name="parentContentType">Parent Content Type</param>
         /// <returns></returns>
-        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group)
+        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
         {
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;
@@ -403,6 +515,7 @@ namespace Microsoft.SharePoint.Client
             newCt.Id = id;
             newCt.Description = description;
             newCt.Group = group;
+            newCt.ParentContentType = parentContentType;
             ContentType myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQuery();
 

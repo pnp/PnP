@@ -27,6 +27,22 @@ namespace Microsoft.SharePoint.Client
 
 
         /// <summary>
+        /// Returns the HTML contents of a wiki page
+        /// </summary>
+        /// <param name="serverRelativePageUrl">Server relative url of the page, e.g. /sites/demo/SitePages/Test.aspx</param>
+        /// <returns></returns>
+        public static string GetWikiPageContent(this Web web, string serverRelativePageUrl)
+        {
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            web.Context.Load(file, f => f.ListItemAllFields);
+
+            web.Context.ExecuteQuery();
+
+            return file.ListItemAllFields["WikiField"] as string;
+        }
+
+        /// <summary>
         /// List the web parts on a page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
@@ -248,6 +264,43 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        public static void AddLayoutToWikiPage(this Web web, WikiPageLayout layout, string serverRelativePageUrl)
+        {
+      
+            string html = "";
+            switch (layout)
+            {
+                case WikiPageLayout.OneColumn:
+                    html = WikiPage_OneColumn;
+                    break;
+                case WikiPageLayout.OneColumnSideBar:
+                    html = WikiPage_OneColumnSideBar;
+                    break;
+                case WikiPageLayout.TwoColumns:
+                    html = WikiPage_TwoColumns;
+                    break;
+                case WikiPageLayout.TwoColumnsHeader:
+                    html = WikiPage_TwoColumnsHeader;
+                    break;
+                case WikiPageLayout.TwoColumnsHeaderFooter:
+                    html = WikiPage_TwoColumnsHeaderFooter;
+                    break;
+                case WikiPageLayout.ThreeColumns:
+                    html = WikiPage_ThreeColumns;
+                    break;
+                case WikiPageLayout.ThreeColumnsHeader:
+                    html = WikiPage_ThreeColumnsHeader;
+                    break;
+                case WikiPageLayout.ThreeColumnsHeaderFooter:
+                    html = WikiPage_ThreeColumnsHeaderFooter;
+                    break;
+                default:
+                    break;
+            }
+
+            web.AddHtmlToWikiPage(serverRelativePageUrl, html);
+        }
+
         /// <summary>
         /// Applies a layout to a wiki page
         /// </summary>
@@ -331,6 +384,28 @@ namespace Microsoft.SharePoint.Client
             ListItem listItem = wikiPage.ListItemAllFields;
             listItem["WikiField"] = html;
             listItem.Update();
+            web.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Add HTML to a wiki page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="siteRelativePageUrl"></param>
+        /// <param name="html"></param>
+        public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html)
+        {
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            web.Context.Load(file, f => f.ListItemAllFields);
+            web.Context.ExecuteQuery();
+
+            ListItem item = file.ListItemAllFields;
+
+            item["WikiField"] = html;
+
+            item.Update();
+
             web.Context.ExecuteQuery();
         }
 
@@ -484,6 +559,19 @@ namespace Microsoft.SharePoint.Client
             }
 
             return wikiPageUrl;
+        }
+
+        public static void AddWikiPageByUrl(this Web web, string serverRelativePageUrl, string html = null)
+        {
+            string folderName = serverRelativePageUrl.Substring(0, serverRelativePageUrl.LastIndexOf("/"));
+            Folder folder = web.GetFolderByServerRelativeUrl(folderName);
+            File file = folder.Files.AddTemplateFile(serverRelativePageUrl, TemplateFileType.WikiPage);
+
+            web.Context.ExecuteQuery();
+            if (html != null)
+            {
+                web.AddHtmlToWikiPage(serverRelativePageUrl, html);
+            }
         }
     }
 }

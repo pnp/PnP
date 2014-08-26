@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.JavaScriptCustomization.App", "Core.JavaScriptCustomization.App\Core.JavaScriptCustomization.App.csproj", "{84906D3C-FBB2-4EE9-B84C-11AA03548BEE}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.JavaScriptCustomizatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{82F38CE5-8EAC-449C-AF0F-451A41820335}"
 	ProjectSection(SolutionItems) = preProject
-		JavaScript customization documentation.docx = JavaScript customization documentation.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7885CF3F-840B-44A3-96B6-78AB06CF78DA}"

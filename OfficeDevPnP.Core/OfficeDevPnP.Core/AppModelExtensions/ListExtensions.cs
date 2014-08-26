@@ -14,6 +14,103 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class ListExtensions
     {
+        #region Event Receivers
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="list">The list to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                     in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                list.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = list.EventReceivers.Add(receiver);
+                list.Context.Load(def);
+                list.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this List list, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
@@ -22,7 +119,8 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentException">Thrown when a arguement is null or <see cref="String.Empty"/></exception>
         public static void RemoveContentTypeByName(this List list, string contentTypeName)
         {
-            if(string.IsNullOrEmpty(contentTypeName)) {
+            if (string.IsNullOrEmpty(contentTypeName))
+            {
                 throw new ArgumentException(string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName"));
             }
 
@@ -46,7 +144,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="list">The list</param>
         /// <param name="contentTypeName">The content type name to remove from the list</param>
         [Obsolete("Use RemoveContentTypeByName")]
-        public static void RemoveContentType(this List list , string contentTypeName)
+        public static void RemoveContentType(this List list, string contentTypeName)
         {
             ContentTypeCollection _cts = list.ContentTypes;
             list.Context.Load(_cts);
@@ -55,7 +153,7 @@ namespace Microsoft.SharePoint.Client
             list.Context.ExecuteQuery();
 
             ContentType _ct = _results.FirstOrDefault();
-            if(_ct != null)
+            if (_ct != null)
             {
                 _ct.DeleteObject();
                 list.Update();
@@ -99,7 +197,7 @@ namespace Microsoft.SharePoint.Client
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
- 
+
 
         /// <summary>
         /// Checks if list exists on the particular site based on the list Title property.
@@ -311,17 +409,57 @@ namespace Microsoft.SharePoint.Client
             return results.FirstOrDefault();
         }
 
+        public static List GetListByUrl(this Web web, string siteRelativeUrl)
+        {
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+            if (!siteRelativeUrl.StartsWith("/")) siteRelativeUrl = "/" + siteRelativeUrl;
+            siteRelativeUrl = web.ServerRelativeUrl + siteRelativeUrl;
+            IEnumerable<List> lists = web.Context.LoadQuery(
+                web.Lists
+                    .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
+
+            web.Context.ExecuteQuery();
+
+            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(siteRelativeUrl.ToLower())).FirstOrDefault();
+
+            if (foundList != null)
+            {
+                return foundList;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        [Obsolete("Use CreateListViewsFormXMLFile")]
+        public static void CreateListVewsFromXMLFile(this Web web, string listUrl, string filePath)
+        {
+            CreateListViewsFromXMLFile(web, listUrl, filePath);
+        }
+
         /// <summary>
         /// Creates list views based on specific xml structure from file
         /// </summary>
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="filePath"></param>
-        public static void CreateListVewsFromXMLFile(this Web web, string listUrl, string filePath)
+        public static void CreateListViewsFromXMLFile(this Web web, string listUrl, string filePath)
         {
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
-            CreateListVewsFromXML(web, listUrl, xd);
+            CreateListViewsFromXML(web, listUrl, xd);
+        }
+
+        [Obsolete("Use CreateListViewsFromXMLString")]
+        public static void CreateListVewsFromXMLString(this Web web, string listUrl, string xmlString)
+        {
+            CreateListViewsFromXMLString(web, listUrl, xmlString);
         }
 
         /// <summary>
@@ -330,11 +468,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="xmlString"></param>
-        public static void CreateListVewsFromXMLString(this Web web, string listUrl, string xmlString)
+        public static void CreateListViewsFromXMLString(this Web web, string listUrl, string xmlString)
         {
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
-            CreateListVewsFromXML(web, listUrl, xd);
+            CreateListViewsFromXML(web, listUrl, xd);
+        }
+
+        [Obsolete("Use CreateListViewFromXML")]
+        public static void CreateListVewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
+        {
+            CreateListViewsFromXML(web, listUrl, xmlDoc);
         }
 
         /// <summary>
@@ -343,7 +487,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="xmlDoc"></param>
-        public static void CreateListVewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
+        public static void CreateListViewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
         {
             // Get instances to the list
             List list = web.GetList(listUrl);
@@ -351,7 +495,13 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             // Execute the actual xml based creation
-            list.CreateListVewsFromXML(xmlDoc);
+            list.CreateListViewsFromXML(xmlDoc);
+        }
+
+        [Obsolete("Use CreateListViewsFromXMLFile")]
+        public static void CreateListVewsFromXMLFile(this List list, string filePath)
+        {
+            CreateListViewsFromXMLFile(list, filePath);
         }
 
         /// <summary>
@@ -359,11 +509,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="filePath"></param>
-        public static void CreateListVewsFromXMLFile(this List list, string filePath)
+        public static void CreateListViewsFromXMLFile(this List list, string filePath)
         {
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
-            list.CreateListVewsFromXML(xd);
+            list.CreateListViewsFromXML(xd);
+        }
+
+        [Obsolete("Use CreateListViewsFromXMLString")]
+        public static void CreateListVewsFromXMLString(this List list, string xmlString)
+        {
+            CreateListViewsFromXMLString(list, xmlString);
         }
 
         /// <summary>
@@ -371,11 +527,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="xmlString"></param>
-        public static void CreateListVewsFromXMLString(this List list, string xmlString)
+        public static void CreateListViewsFromXMLString(this List list, string xmlString)
         {
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
-            list.CreateListVewsFromXML(xd);
+            list.CreateListViewsFromXML(xd);
+        }
+
+        [Obsolete("Use CreateListViewsFormXML")]
+        public static void CreateListVewsFromXML(this List list, XmlDocument xmlDoc)
+        {
+            CreateListViewsFromXML(list, xmlDoc);
         }
 
         /// <summary>
@@ -383,10 +545,10 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="xmlDoc"></param>
-        public static void CreateListVewsFromXML(this List list, XmlDocument xmlDoc)
+        public static void CreateListViewsFromXML(this List list, XmlDocument xmlDoc)
         {
             // Convert base type to string value used in the xml structure
-            string listType = list.BaseType.ToString(); 
+            string listType = list.BaseType.ToString();
             // Get only relevant list views for matching base list type
             XmlNodeList listViews = xmlDoc.SelectNodes("ListViews/List[@Type='" + listType + "']/View");
             int count = listViews.Count;
@@ -414,13 +576,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="rowLimit"></param>
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
-        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null)
+        /// <param name="personal"></param>
+        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null, bool personal = false)
         {
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
             viewCreationInformation.RowLimit = rowLimit;
             viewCreationInformation.ViewFields = viewFields;
+            viewCreationInformation.PersonalView = personal;
             viewCreationInformation.SetAsDefaultView = setAsDefault;
             if (!string.IsNullOrEmpty(query))
             {

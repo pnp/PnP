@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ContentTypesAndFields", "Core.ContentTypesAndFields\Core.ContentTypesAndFields.csproj", "{54ABC8BC-71DD-4A76-A0F6-958E08ABD4A7}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ContentTypesAndFieldsW
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F08DF526-FC3A-436D-9556-D7EF2FFA61C0}"
 	ProjectSection(SolutionItems) = preProject
-		Content Types and Fields.docx = Content Types and Fields.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{DFA8A683-70A0-4318-BD8D-EE52CA9CC8D2}"

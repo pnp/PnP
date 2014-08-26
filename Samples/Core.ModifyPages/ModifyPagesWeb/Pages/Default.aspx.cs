@@ -135,7 +135,7 @@ namespace Contoso.Core.ModifyPagesWeb
             {
                 if (new LabHelper().AddList(ctx, ctx.Web, 170, new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), "Links", false))
                 {
-                    new LabHelper().AddPromotedSiteLink(ctx, ctx.Web, "Links", "OfficeAMS on CodePlex", "http://officeams.codeplex.com");
+                    new LabHelper().AddPromotedSiteLink(ctx, ctx.Web, "Links", "OfficeDev PnP on GitHub", "https://github.com/OfficeDev/PnP");
                     new LabHelper().AddPromotedSiteLink(ctx, ctx.Web, "Links", "Bing", "http://www.bing.com");
                 }
 

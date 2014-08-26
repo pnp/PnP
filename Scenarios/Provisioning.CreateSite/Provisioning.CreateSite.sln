@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.CreateSite", "Provisioning.CreateSite\Provisioning.CreateSite.csproj", "{8C33B1A8-B0DA-4855-8B49-8D0DE7420CF3}"
 EndProject
@@ -8,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.CreateSiteWeb"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{44141F74-E38C-47D2-8380-0B83CD75D23C}"
 	ProjectSection(SolutionItems) = preProject
-		Provisioning.CreateSite.docx = Provisioning.CreateSite.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5E4CCB8E-6362-4846-88BD-9A0BD4DEF680}"

@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,6 +22,7 @@ namespace Microsoft.SharePoint.Client
         const string SITE_STATUS_ACTIVE = "Active";
         const string SITE_STATUS_CREATING = "Creating";
         const string SITE_STATUS_RECYCLED = "Recycled";
+        const string INDEXED_PROPERTY_KEY = "vti_indexedpropertykeys";
 
         #region Check for site status in SharePoint Online
         /// <summary>
@@ -252,6 +254,42 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Gets the collection of the URLs of all Web sites that are contained within the site collection, 
+        /// including the top-level site and its subsites.
+        /// </summary>
+        /// <param name="site">Site collection to retrieve the URLs for.</param>
+        /// <returns>An enumeration containing the full URLs as strings.</returns>
+        /// <remarks>
+        /// <para>
+        /// This is analagous to the <code>SPSite.AllWebs</code> property and can be used to get a collection
+        /// of all web site URLs to loop through, e.g. for branding.
+        /// </para>
+        /// </remarks>
+        public static IEnumerable<string> GetAllWebUrls(this Site site)
+        {
+            var siteContext = site.Context;
+            siteContext.Load(site, s => s.Url);
+            siteContext.ExecuteQuery();
+            var queue = new Queue<string>();
+            queue.Enqueue(site.Url);
+            while (queue.Count > 0)
+            {
+                var currentUrl = queue.Dequeue();
+                using (var webContext = new ClientContext(currentUrl))
+                {
+                    webContext.Credentials = siteContext.Credentials;
+                    webContext.Load(webContext.Web, web => web.Webs);
+                    webContext.ExecuteQuery();
+                    foreach (var subWeb in webContext.Web.Webs)
+                    {
+                        queue.Enqueue(subWeb.Url);
+                    }
+                }
+                yield return currentUrl;
+            }
+        }
+
         #endregion
 
         #region site (collection) creation and deletion
@@ -260,10 +298,20 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="properties">Describes the site collection to be created</param>
+        /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
+        /// <param name="wait">If true, processing will halt until the site collection has been created</param>
         /// <returns>Guid of the created site collection</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
-        public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties)
+        public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
+            if (removeFromRecycleBin)
+            {
+                if (CheckIfSiteExistsInTenant(web, properties.Url, SITE_STATUS_RECYCLED))
+                {
+                    web.DeleteSiteCollectionFromRecycleBinTenant(properties.Url);
+                }
+            }
+
             Tenant tenant = new Tenant(web.Context);
             SiteCreationProperties newsite = new SiteCreationProperties();
             newsite.Url = properties.Url;
@@ -284,30 +332,33 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
                 web.Context.ExecuteQuery();
 
-                //check if site creation operation is complete
-                while (!op.IsComplete)
+                if (wait)
                 {
-                    System.Threading.Thread.Sleep(op.PollingInterval);
-                    op.RefreshLoad();
-                    if (!op.IsComplete)
+                    //check if site creation operation is complete
+                    while (!op.IsComplete)
                     {
-                        try
+                        System.Threading.Thread.Sleep(op.PollingInterval);
+                        op.RefreshLoad();
+                        if (!op.IsComplete)
                         {
-                            web.Context.ExecuteQuery();
-                        }
-                        catch (WebException webEx)
-                        {
-                            // Context connection gets closed after action completed.
-                            // Calling ExecuteQuery again returns an error which can be ignored
-                            LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                            try
+                            {
+                                web.Context.ExecuteQuery();
+                            }
+                            catch (WebException webEx)
+                            {
+                                // Context connection gets closed after action completed.
+                                // Calling ExecuteQuery again returns an error which can be ignored
+                                LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                            }
                         }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
-                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1) 
+                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
                 {
                     throw ex;
                 }
@@ -337,7 +388,7 @@ namespace Microsoft.SharePoint.Client
         public static Guid CreateSiteCollectionTenant(this Web web, string url, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
                                                         int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
-                                                        uint lcid)
+                                                        uint lcid, bool removeFromRecycleBin = false, bool wait = true)
         {
             SiteEntity siteCol = new SiteEntity()
             {
@@ -353,7 +404,7 @@ namespace Microsoft.SharePoint.Client
                 Lcid = lcid
             };
 
-            return AddSiteCollectionTenant(web, siteCol);
+            return AddSiteCollectionTenant(web, siteCol, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -493,6 +544,26 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Returns available webtemplates/site definitions
+        /// </summary>
+        /// <param name="web">Site to be processed - needs to be tenant site admin site</param>
+        /// <param name="lcid"></param>
+        /// <param name="compatibilityLevel">14 for SharePoint 2010, 15 for SharePoint 2013/SharePoint Online</param>
+        /// <returns></returns>
+        public static SPOTenantWebTemplateCollection GetWebTemplatesTenant(this Web web, uint lcid, int compatibilityLevel)
+        {
+            Tenant tenant = new Tenant(web.Context);
+
+            var templates = tenant.GetSPOTenantWebTemplates(lcid, compatibilityLevel);
+
+            web.Context.Load(templates);
+
+            web.Context.ExecuteQuery();
+
+            return templates;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="web"></param>
@@ -553,6 +624,24 @@ namespace Microsoft.SharePoint.Client
 
         #endregion
 
+        #region Apps
+
+        /// <summary>
+        /// Returns all app instances
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <returns></returns>
+        public static ClientObjectList<AppInstance> GetAppInstances(this Web web)
+        {
+            ClientObjectList<AppInstance> instances = Microsoft.SharePoint.Client.AppCatalog.GetAppInstances(web.Context, web);
+            web.Context.Load(instances);
+            web.Context.ExecuteQuery();
+
+            return instances;
+        }
+
+        #endregion
+
         #region Site retrieval via search
         /// <summary>
         /// Returns all my site site collections
@@ -584,31 +673,42 @@ namespace Microsoft.SharePoint.Client
         /// <returns>All found site collections</returns>
         public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue)
         {
-            List<SiteEntity> sites = new List<SiteEntity>();
-
-            KeywordQuery keywordQuery = new KeywordQuery(web.Context);
-            keywordQuery.TrimDuplicates = false;
-
-            if (keywordQueryValue.Length == 0)
+            try
             {
-                keywordQueryValue = "contentclass:\"STS_Site\"";
-            }
+                LoggingUtility.Internal.TraceVerbose("Site search '{0}'", keywordQueryValue);
 
-            int startRow = 0;
-            int totalRows = 0;
+                List<SiteEntity> sites = new List<SiteEntity>();
 
-            totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                KeywordQuery keywordQuery = new KeywordQuery(web.Context);
+                keywordQuery.TrimDuplicates = false;
 
-            if (totalRows > 0)
-            {
-                while (totalRows >= sites.Count)
+                if (keywordQueryValue.Length == 0)
                 {
-                    startRow += 500;
-                    totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                    keywordQueryValue = "contentclass:\"STS_Site\"";
                 }
-            }
 
-            return sites;
+                int startRow = 0;
+                int totalRows = 0;
+
+                totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+
+                if (totalRows > 0)
+                {
+                    while (totalRows >= sites.Count)
+                    {
+                        startRow += 500;
+                        totalRows = web.ProcessQuery(keywordQueryValue, sites, keywordQuery, startRow);
+                    }
+                }
+
+                return sites;
+            }
+            catch (Exception ex)
+            {
+                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, "Site search error.");
+                // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
+                throw;
+            }
         }
 
         /// <summary>
@@ -723,10 +823,40 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             props[key] = value;
+
             web.Update();
             web.Context.ExecuteQuery();
         }
 
+        /// <summary>
+        /// Removes a property bag value from the property bag
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <param name="key">The key to remove</param>
+        public static void RemovePropertyBagValue(this Web web, string key)
+        {
+            RemovePropertyBagValueInternal(web, key, true);
+        }
+
+        /// <summary>
+        /// Removes a property bag value
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">They key to remove</param>
+        /// <param name="checkIndexed"></param>
+        private static void RemovePropertyBagValueInternal(Web web, string key, bool checkIndexed)
+        {
+            // In order to remove a property from the property bag, remove it both from the AllProperties collection by setting it to null
+            // -and- by removing it from the FieldValues collection. Bug in CSOM?
+            web.AllProperties[key] = null;
+            web.AllProperties.FieldValues.Remove(key);
+
+            web.Update();
+
+            web.Context.ExecuteQuery();
+            if (checkIndexed)
+                RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
+        }
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
@@ -804,6 +934,203 @@ namespace Microsoft.SharePoint.Client
             else
             {
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Used to convert the list of property keys is required format for listing keys to be index
+        /// </summary>
+        /// <param name="keys">list of keys to set to be searchable</param>
+        /// <returns>string formatted list of keys in proper format</returns>
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Returns all keys in the property bag that have been marked for indexing
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetIndexedPropertyBagKeys(this Web web)
+        {
+            List<string> keys = new List<string>();
+
+            if (web.PropertyBagContainsKey(INDEXED_PROPERTY_KEY))
+            {
+                foreach (string key in web.GetPropertyBagValueString(INDEXED_PROPERTY_KEY, "").Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    byte[] bytes = Convert.FromBase64String(key);
+                    keys.Add(Encoding.Unicode.GetString(bytes));
+                }
+            }
+
+            return keys;
+        }
+
+        /// <summary>
+        /// Marks a property bag key for indexing
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">The key to mark for indexing</param>
+        /// <returns>Returns True if succeeded</returns>
+        public static bool AddIndexedPropertyBagKey(this Web web, string key)
+        {
+            bool result = false;
+            var keys = GetIndexedPropertyBagKeys(web).ToList();
+            if (!keys.Contains(key))
+            {
+                keys.Add(key);
+                web.SetPropertyBagValue(INDEXED_PROPERTY_KEY, GetEncodedValueForSearchIndexProperty(keys));
+                result = true;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Unmarks a property bag key for indexing
+        /// </summary>
+        /// <param name="web">The site to process</param>
+        /// <param name="key">The key to unmark for indexed. Case-sensitive</param>
+        /// <returns>Returns True if succeeded</returns>
+        public static bool RemoveIndexedPropertyBagKey(this Web web, string key)
+        {
+            bool result = false;
+            var keys = GetIndexedPropertyBagKeys(web).ToList();
+            if (key.Contains(key))
+            {
+                keys.Remove(key);
+                if (keys.Any())
+                {
+                    web.SetPropertyBagValue(INDEXED_PROPERTY_KEY, GetEncodedValueForSearchIndexProperty(keys));
+                }
+                else
+                {
+                    RemovePropertyBagValueInternal(web, INDEXED_PROPERTY_KEY, false);
+                }
+                result = true;
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Search
+        /// <summary>
+        /// Queues a web for a _full_ crawl the next incremental crawl
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        public static void ReIndexSite(this Web web)
+        {
+            int searchversion = 0;
+            if (web.PropertyBagContainsKey("vti_searchversion"))
+            {
+                searchversion = (int)web.GetPropertyBagValueInt("vti_searchversion", 0);
+            }
+            web.SetPropertyBagValue("vti_searchversion", searchversion + 1);
+        }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                   in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                web.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = web.EventReceivers.Add(receiver);
+                web.Context.Load(def);
+                web.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this Web web, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this Web web, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
             }
         }
 
