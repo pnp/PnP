@@ -1,14 +1,22 @@
 ﻿'use strict';
 
 (function ($, undefined) {
-    var html = "";
-    var context;
+    var html = "",
 
-    function onReady() {
-        getNavItems().then(getUserLanguage).then(getTaxonomy).then(getAllTerms).then(enumerateTerms).then(addTermsToNavigation).fail(onError);
-    }
+    context = null,
 
-    function getNavItems() {
+
+    onReady = function () {
+
+        getNavItems()
+        .then(getUserLanguage, onError)
+        .then(getTaxonomy, onError)
+        .then(getAllTerms, onError)
+        .then(enumerateTerms, onError)
+        .then(addTermsToNavigation, onError);
+    },
+
+    getNavItems = function () {
 
         var deferred = new $.Deferred();
 
@@ -29,9 +37,9 @@
         }, 'core.js');
 
         return deferred.promise();
-    }
+    },
 
-    function getUserLanguage() {
+    getUserLanguage = function () {
 
         var deferred = new $.Deferred();
 
@@ -55,37 +63,40 @@
             }
 
             deferred.resolve(lcid);
-        });
-
-        return deferred.promise();
-    }
-
-    function getTaxonomy(userLCID) {
-        var deferred = new $.Deferred();
-
-        var nid = SP.UI.Notify.addNotification("<img src='/_layouts/15/images/loadingcirclests16.gif?rev=23' style='vertical-align:bottom; display:inline-block; margin-" + (document.documentElement.dir == "rtl" ? "left" : "right") + ":2px;' />&nbsp;<span style='vertical-align:top;'>Loading navigation...</span>", false);
-
-        var context = SP.ClientContext.get_current();
-        var taxSession = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
-        var termStores = taxSession.get_termStores();
-        var termStore = taxSession.getDefaultSiteCollectionTermStore();
-        var termSet = termStore.getTermSet("56ca0eea-635e-4cc1-ac35-fc2040f4cfe5");
-
-        context.load(termStore);
-        context.executeQueryAsync(function () {
-
-            deferred.resolve(userLCID, termSet, termStore);
-
         }, function (sender, args) {
-
             deferred.reject(sender, args);
-
         });
 
         return deferred.promise();
-    }
+    },
 
-    function getAllTerms(userLCID, termSet, termStore) {
+     getTaxonomy = function (userLCID) {
+
+         var deferred = new $.Deferred();
+
+         var nid = SP.UI.Notify.addNotification("<img src='/_layouts/15/images/loadingcirclests16.gif?rev=23' style='vertical-align:bottom; display:inline-block; margin-" + (document.documentElement.dir == "rtl" ? "left" : "right") + ":2px;' />&nbsp;<span style='vertical-align:top;'>Loading navigation...</span>", false);
+
+         var context = SP.ClientContext.get_current();
+         var taxSession = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
+         var termStores = taxSession.get_termStores();
+         var termStore = taxSession.getDefaultSiteCollectionTermStore();
+         var termSet = termStore.getTermSet("56ca0eea-635e-4cc1-ac35-fc2040f4cfe5");
+
+         context.load(termStore);
+         context.executeQueryAsync(function () {
+
+             deferred.resolve(userLCID, termSet, termStore);
+
+         }, function (sender, args) {
+
+             deferred.reject(sender, args);
+
+         });
+
+         return deferred.promise();
+     },
+
+    getAllTerms = function (userLCID, termSet, termStore) {
 
         var deferred = new $.Deferred();
 
@@ -111,36 +122,36 @@
         }
 
         return deferred.promise();
-    }
+    },
 
-    function enumerateTerms(terms, lcid) {
+     enumerateTerms = function (terms, lcid) {
 
-        var deferred = new $.Deferred();
+         var deferred = new $.Deferred();
 
-        var termItems = [];
-        var termLabels = [];
-        var termEnumerator = terms.getEnumerator();
-        while (termEnumerator.moveNext()) {
-            var currentTerm = termEnumerator.get_current();
-            var label = currentTerm.getDefaultLabel(lcid);
+         var termItems = [];
+         var termLabels = [];
+         var termEnumerator = terms.getEnumerator();
+         while (termEnumerator.moveNext()) {
+             var currentTerm = termEnumerator.get_current();
+             var label = currentTerm.getDefaultLabel(lcid);
 
-            termItems.push(currentTerm);
-            termLabels.push(label);
-            context.load(currentTerm);
-        }
+             termItems.push(currentTerm);
+             termLabels.push(label);
+             context.load(currentTerm);
+         }
 
-        context.executeQueryAsync(function () {
+         context.executeQueryAsync(function () {
 
-            deferred.resolve(termItems, termLabels, lcid);
+             deferred.resolve(termItems, termLabels, lcid);
 
-        }, function (sender, args) {
-            deferred.reject(sender, args);
-        });
+         }, function (sender, args) {
+             deferred.reject(sender, args);
+         });
 
-        return deferred.promise();
-    }
+         return deferred.promise();
+     },
 
-    function addTermsToNavigation(termItems, termLabels, nid) {
+    addTermsToNavigation = function (termItems, termLabels, nid) {
 
         html += "<ul style='margin-top: 0px; margin-bottom: 0px;'>"
         for (var i in termItems) {
@@ -156,11 +167,11 @@
         $('#DeltaTopNavigation').html(html);
         SP.UI.Notify.removeNotification(nid);
 
-    }
+    },
 
-    function onError(sender, args) {
-        alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
-    };
+     onError = function (sender, args) {
+         alert('Request failed. ' + args.get_message() + '\n' + args.get_stackTrace());
+     };
 
     $(document).on({
         ready: onReady
