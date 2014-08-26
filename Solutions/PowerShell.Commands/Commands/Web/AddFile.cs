@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
+using System;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -11,11 +12,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
     public class AddFile : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The local file path.")]
+        [Parameter(Mandatory = true, HelpMessage = "The local file path.")]
         public string Path = string.Empty;
 
-        [Parameter(Mandatory = false, HelpMessage = "The full server relative url, including the filename, of the destination location.")]
+        [Parameter(Mandatory = false, HelpMessage = "The full server relative url, including the filename, of the destination location.", ParameterSetName = "Relative")]
         public string Url = string.Empty;
+
+        [Parameter(Mandatory = false, HelpMessage = "The destination folder in the site", ParameterSetName = "Folder")]
+        public string Folder = string.Empty;
 
         [Parameter(Mandatory = false, HelpMessage = "If versioning is enabled, this will check out the file first if it exists, upload the file, then check it in again.")]
         public SwitchParameter Checkout;
@@ -37,7 +41,39 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.AddFile(Path, Url, this.SelectedWeb, Checkout, UseWebDav, ClientContext, publish: Publish, publishComment: PublishComment, approve: Approve, approveComment: ApproveComment);
+            if (ParameterSetName == "Url")
+            {
+                if (!Url.ToLower().EndsWith(System.IO.Path.GetFileName(Path).ToLower()))
+                {
+                    Url = UrlUtility.Combine(Url, System.IO.Path.GetFileName(Path));
+                }
+            }
+            else
+            {
+                Url = UrlUtility.Combine(Folder, System.IO.Path.GetFileName(Path));
+            }
+
+            // Check if the file exists
+            if (Checkout)
+                this.SelectedWeb.CheckOutFile(Url);
+
+            if (ParameterSetName == "Folder")
+            {
+                this.SelectedWeb.UploadDocumentToFolder(Path, Folder);
+            }
+            else
+            {
+                this.SelectedWeb.UploadFileToServerRelativeUrl(Path, Url, UseWebDav);
+            }
+
+            if (Checkout)
+                this.SelectedWeb.CheckInFile(Url, CheckinType.MajorCheckIn, "");
+
+            if (Publish)
+                this.SelectedWeb.PublishFile(Url, PublishComment);
+
+            if (Approve)
+                this.SelectedWeb.ApproveFile(Url, PublishComment);
         }
     }
 }

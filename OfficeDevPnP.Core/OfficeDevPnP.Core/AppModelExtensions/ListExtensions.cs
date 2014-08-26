@@ -418,7 +418,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static List GetListByUrl(this Web web, string siteRelativeUrl)
         {
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();

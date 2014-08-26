@@ -12,8 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.CheckOutFile(Url, this.SelectedWeb, ClientContext);
-
+            this.SelectedWeb.CheckOutFile(Url);
         }
     }
 }
