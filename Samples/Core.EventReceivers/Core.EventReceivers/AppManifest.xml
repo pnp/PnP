@@ -9,6 +9,8 @@
   <Properties>
     <Title>Contoso.EventReceivers</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+    <InstalledEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</InstalledEventEndpoint>
+    <UninstallingEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</UninstallingEventEndpoint>
   </Properties>
 
   <AppPrincipal>
