@@ -26,17 +26,24 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
         {
             if (SPOnlineConnection.CurrentConnection.ConnectionType == SPOnlineConnection.ConnectionTypes.OnPrem)
             {
-                WriteObject(SPO.SPOSite.GetSite(ClientContext));
+                WriteObject(ClientContext.Site);
             }
             else
             {
+
                 if (!string.IsNullOrEmpty(Identity))
                 {
-                    WriteObject(PowerShell.Core.SPOSite.GetTenantSitePropertiesByUrl(Tenant, Identity, Detailed));
+                    var list = this.Tenant.GetSitePropertiesByUrl(Identity, Detailed);
+                    list.Context.Load(list);
+                    list.Context.ExecuteQuery();
+                    WriteObject(list);
                 }
                 else
                 {
-                    WriteObject(PowerShell.Core.SPOSite.GetTenantSiteProperties(Tenant, Detailed));
+                    var list = this.Tenant.GetSiteProperties(0, Detailed);
+                    list.Context.Load(list);
+                    list.Context.ExecuteQuery();
+                    WriteObject(list);
                 }
             }
         }

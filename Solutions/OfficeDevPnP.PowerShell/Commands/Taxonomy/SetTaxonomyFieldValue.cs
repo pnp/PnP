@@ -4,7 +4,6 @@ using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
-using OfficeDevPnP.PowerShell.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -35,17 +34,20 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
 
         protected override void ExecuteCmdlet()
         {
-            Guid fieldId = PowerShell.Core.SPOList.GetFieldId(ListItem.ParentList, InternalFieldName);
+            Field field = ListItem.ParentList.Fields.GetByInternalNameOrTitle(InternalFieldName);
+            ClientContext.Load(field);
+            ClientContext.ExecuteQuery();
+
             switch (ParameterSetName)
             {
                 case "ITEM":
                     {
-                        SPOTaxonomy.SetTaxonomyFieldValue(ListItem, fieldId, Label, TermId.Id, ClientContext.Web);
+                        ListItem.SetTaxonomyFieldValue(field.Id, Label, TermId.Id);
                         break;
                     }
                 case "PATH":
                     {
-                        SPOTaxonomy.SetTaxonomyFieldValueByTermPath(ListItem, TermPath, fieldId, ClientContext.Web);
+                        ListItem.SetTaxonomyFieldValueByTermPath(TermPath, field.Id);
                         break;
                     }
                 case "ID":

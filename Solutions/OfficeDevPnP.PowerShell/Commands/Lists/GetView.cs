@@ -30,23 +30,12 @@ namespace OfficeDevPnP.PowerShell.Commands
                     {
                         if (Identity.Id != Guid.Empty)
                         {
-                            var q = from v in list.Views where view.Id == Identity.Id select v;
-                            ClientContext.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
-                            ClientContext.ExecuteQuery();
-                            if (q.Any())
-                            {
-                                view = q.FirstOrDefault();
-                            }
+                            view = list.GetViewById(Identity.Id);
+                            
                         }
                         else if (!string.IsNullOrEmpty(Identity.Title))
                         {
-                            var q = from v in list.Views where view.Title == Identity.Title select v;
-                            ClientContext.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
-                            ClientContext.ExecuteQuery();
-                            if (q.Any())
-                            {
-                                view = q.FirstOrDefault();
-                            }
+                            view = list.GetViewByName(Identity.Title);
                         }
                     }
                     else

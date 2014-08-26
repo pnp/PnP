@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Core;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -20,7 +21,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(SPOTaxonomy.GetTaxonomyItemByPath(Term, ClientContext));
+
+            WriteObject(ClientContext.Site.GetTaxonomyItemByPath(Term));
         }
 
     }
