@@ -854,8 +854,8 @@ namespace Microsoft.SharePoint.Client
             web.Update();
 
             web.Context.ExecuteQuery();
-            if(checkIndexed)
-            RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
+            if (checkIndexed)
+                RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
         }
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
@@ -1021,6 +1021,7 @@ namespace Microsoft.SharePoint.Client
 
         #endregion
 
+        #region Search
         /// <summary>
         /// Queues a web for a _full_ crawl the next incremental crawl
         /// </summary>
@@ -1034,6 +1035,106 @@ namespace Microsoft.SharePoint.Client
             }
             web.SetPropertyBagValue("vti_searchversion", searchversion + 1);
         }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                   in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                web.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = web.EventReceivers.Add(receiver);
+                web.Context.Load(def);
+                web.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this Web web, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this Web web, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
 
         #region Localization
         /// <summary>

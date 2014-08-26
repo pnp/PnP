@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOnlineWeb : SPOContextObject<Web>
+    public class WebEntity : EntityContextObject<Web>
     {
         private Guid _id;
         private string _title;
@@ -25,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         public Guid Id { get { return _id; } }
 
-        public SPOnlineWeb(Web web)
+        public WebEntity(Web web)
         {
             this._contextObject = web;
             this._id = web.Id;
@@ -35,7 +35,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             this._features = new Lazy<FeatureCollection>(() =>
             {
-                return this.ContextObject.Features.Load();
+                return this.GetContextObject().Features.Load();
             });
         }
     }

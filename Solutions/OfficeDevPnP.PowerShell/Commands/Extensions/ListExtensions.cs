@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -35,14 +36,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             return list;
         }
 
-        public static IEnumerable<SPOList> GetLists(this Web web)
+        public static IEnumerable<ListEntity> GetLists(this Web web)
         {
             var lists = web.Context.LoadQuery(web.Lists.IncludeWithDefaultProperties(l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden));
 
             web.Context.ExecuteQuery();
 
 
-            return lists.Select(x => new SPOList(x));
+            return lists.Select(x => new ListEntity(x));
          }
     }
 }

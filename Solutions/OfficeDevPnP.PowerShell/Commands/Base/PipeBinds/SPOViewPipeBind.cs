@@ -1,29 +1,27 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public class SPOViewPipeBind
     {
-        private SPOnlineView _onlineView;
+        private ViewEntity _viewEntity;
         private View _view;
         private Guid _id;
         private string _name;
 
         public SPOViewPipeBind()
         {
-            _onlineView = null;
+            _viewEntity = null;
             _view = null;
             _id = Guid.Empty;
             _name = string.Empty;
         }
 
-        public SPOViewPipeBind(SPOnlineView view)
+        public SPOViewPipeBind(ViewEntity view)
         {
-            this._onlineView = view;
+            this._viewEntity = view;
         }
 
         public SPOViewPipeBind(View view)
@@ -53,9 +51,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             get
             {
-                if (_onlineView != null)
+                if (_viewEntity != null)
                 {
-                    return _onlineView.ContextObject;
+                    return _viewEntity.GetContextObject();
                 }
                 else
                 {

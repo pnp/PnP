@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOApp
     {
         /// <summary>
@@ -16,6 +17,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// </summary>
         /// <param name="clientContext"></param>
         /// <returns></returns>
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static ClientObjectList<AppInstance> GetAppInstances(ClientContext clientContext)
         {
             ClientObjectList<AppInstance> instances = Microsoft.SharePoint.Client.AppCatalog.GetAppInstances(clientContext, clientContext.Web);
@@ -31,6 +33,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <param name="stream"></param>
         /// <param name="web"></param>
         /// <returns></returns>
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static AppInstance LoadAndInstallApp(Stream stream, Web web, bool LoadOnly, int LCID)
         {
             ClientContext clientContext = web.Context as ClientContext;
@@ -50,6 +53,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return appInstance;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static void UninstallApp(Guid appId, ClientContext clientContext)
         {
             var instances = GetAppInstances(clientContext) as ClientObjectList<AppInstance>;
@@ -60,6 +64,7 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static void UninstallApp(AppInstance appInstance, ClientContext clientContext)
         {
             appInstance.Uninstall();

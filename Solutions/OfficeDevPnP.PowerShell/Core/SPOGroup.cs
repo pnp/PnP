@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOGroup
     {
         public static Group GetGroup(string name, Web web)

@@ -51,7 +51,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, ParameterSetName = "ListXML")]
         public SwitchParameter Required;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = "ListPara")]
+        [Parameter(Mandatory = false, ParameterSetName = "ListXML")]
+        public string Group;
+
+        [Parameter(Mandatory = false, DontShow = true)]
+        [Obsolete("Not in use")]
         public AddFieldOptions FieldOptions = AddFieldOptions.DefaultValue;
 
         public object GetDynamicParameters()
@@ -80,53 +85,41 @@ namespace OfficeDevPnP.PowerShell.Commands
                 Field f = null;
                 if (!string.IsNullOrEmpty(FieldXml))
                 {
-                    f = SPO.SPOField.AddField(list, FieldXml, AddToDefaultView, FieldOptions, ClientContext);
+                    f = list.CreateField(FieldXml);
                 }
                 else
                 {
                     if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                     {
-                        f = SPO.SPOField.AddField(list, DisplayName, InternalName, StaticName, Type, Id.Id, Required, AddToDefaultView, FieldOptions, ClientContext, context.Choices);
+                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                        f = list.CreateField(fieldXml);
                     }
                     else
                     {
-                        f = SPO.SPOField.AddField(list, DisplayName, InternalName, StaticName, Type, Id.Id, Required, AddToDefaultView, FieldOptions, ClientContext);
+                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                        f = list.CreateField(fieldXml);
                     }
                 }
                 WriteObject(f);
             }
             else
             {
-                Web web = ClientContext.Web;
-                if (Web != null)
-                {
-                    if (Web.Web != null)
-                    {
-                        web = Web.Web;
-                    }
-                    else if (Web.Id != Guid.Empty)
-                    {
-                        web = SPO.SPOWeb.GetWebById(Web.Id, ClientContext);
-                    }
-                    else if (!string.IsNullOrEmpty(Web.Url))
-                    {
-                        web = SPO.SPOWeb.GetWebByUrl(Web.Url, ClientContext);
-                    }
-                }
                 Field f = null;
                 if (!string.IsNullOrEmpty(FieldXml))
                 {
-                    f = SPO.SPOField.AddField(web, FieldXml, FieldOptions, ClientContext);
+                    f = this.SelectedWeb.CreateField(FieldXml);
                 }
                 else
                 {
                     if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                     {
-                        f = SPO.SPOField.AddField(web, DisplayName, InternalName, StaticName, Type, Id.Id, Required, FieldOptions, ClientContext, context.Choices);
+                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                        f = this.SelectedWeb.CreateField(fieldXml);
                     }
                     else
                     {
-                        f = SPO.SPOField.AddField(web, DisplayName, InternalName, StaticName, Type, Id.Id, Required, FieldOptions, ClientContext);
+                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                        f = this.SelectedWeb.CreateField(fieldXml);
                     }
 
                 }
@@ -143,6 +136,35 @@ namespace OfficeDevPnP.PowerShell.Commands
                 set { choices = value; }
             }
             private string[] choices;
+        }
+
+        private static string GetFieldCAML(string displayName, string internalName, string staticName, FieldType fieldType, Guid Id, bool required, string[] choices = null, string group = null)
+        {
+            string fieldTypeString = Enum.GetName(typeof(FieldType), fieldType);
+            string fieldXml = "<Field DisplayName='{0}' Name='{1}' StaticName='{2}' Type='{3}' ID='{{{4}}}' Required='{5}'{6}>";
+
+            if (choices != null)
+            {
+                fieldXml += "<CHOICES>";
+                foreach (var choice in choices)
+                {
+                    fieldXml += string.Format("<CHOICE>{0}</CHOICE>", choice);
+                }
+                fieldXml += "</CHOICES>";
+            }
+            fieldXml += "</Field>";
+
+            string fieldString = string.Format(fieldXml,
+                displayName,
+                internalName,
+                internalName,
+                staticName,
+                fieldTypeString,
+                Id == Guid.Empty ? Guid.NewGuid() : Id,
+                required ? "TRUE" : "FALSE",
+                !string.IsNullOrEmpty(group) ? string.Format(" Group='{0}'", group) : ""
+                );
+            return fieldString;
         }
 
     }

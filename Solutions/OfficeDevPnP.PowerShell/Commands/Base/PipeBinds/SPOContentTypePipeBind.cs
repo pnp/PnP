@@ -1,9 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
@@ -33,9 +29,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         }
 
-        public SPOContentTypePipeBind(SPOContentType contentType)
+        public SPOContentTypePipeBind(ContentTypeEntity contentType)
         {
-            this._contentType = contentType.ContextObject;
+            this._contentType = contentType.GetContextObject();
         }
 
 

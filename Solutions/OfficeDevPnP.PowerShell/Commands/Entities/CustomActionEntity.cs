@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands
+namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
-    public class SPOCustomAction
+    public class CustomActionEntity
     {
         public Guid Id { get; set; }
         public string Group { get; set; }

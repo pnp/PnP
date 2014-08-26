@@ -93,6 +93,12 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Entities\SiteEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Entities\ViewEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
     <Compile Include="ContentTypes\RemoveContentType.cs" />
@@ -173,15 +179,13 @@
     <Compile Include="WikiPage\AddWikiPage.cs" />
     <Compile Include="WikiPage\GetWikiPageContent.cs" />
     <Compile Include="WikiPage\SetWikiPageContent.cs" />
-    <Compile Include="Wrappers\SPOContextObject.cs" />
-    <Compile Include="Wrappers\SPOCustomAction.cs" />
-    <Compile Include="Wrappers\SPOFile.cs" />
-    <Compile Include="Wrappers\SPOContentType.cs" />
-    <Compile Include="Wrappers\SPOList.cs" />
-    <Compile Include="Wrappers\SPOSite.cs" />
-    <Compile Include="Wrappers\SPOnlineView.cs" />
-    <Compile Include="Wrappers\SPOnlineWeb.cs" />
-    <Compile Include="Wrappers\SPOnlineWebPart.cs" />
+    <Compile Include="Entities\EntityContextObject.cs" />
+    <Compile Include="Entities\CustomActionEntity.cs" />
+    <Compile Include="Entities\FileEntity.cs" />
+    <Compile Include="Entities\ContentTypeEntity.cs" />
+    <Compile Include="Entities\ListEntity.cs" />
+    <Compile Include="Entities\WebEntity.cs" />
+    <Compile Include="Entities\WebPartEntity.cs" />
     <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>

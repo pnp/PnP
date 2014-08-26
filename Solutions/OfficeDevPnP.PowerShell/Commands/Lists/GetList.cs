@@ -9,6 +9,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using SPO = OfficeDevPnP.PowerShell.Core;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -27,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (Identity != null)
             {
                 var list = this.SelectedWeb.GetList(Identity);
-                WriteObject(new SPOList(list));
+                WriteObject(new ListEntity(list));
 
             }
             else

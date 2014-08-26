@@ -7,6 +7,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -33,7 +34,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             var ct = this.SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType);
-            WriteObject(new SPOContentType(ct));
+            WriteObject(new ContentTypeEntity(ct));
         }
 
 

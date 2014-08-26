@@ -8,6 +8,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using SPO = OfficeDevPnP.PowerShell.Core;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -47,8 +48,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (list != null)
             {
-                View v = SPO.SPOList.AddView(list, Title, Query, Fields, ViewType, RowLimit, Personal, SetAsDefault, ClientContext);
-                WriteObject(new SPOnlineView(v));
+                list.CreateListView(Title, ViewType, Fields, RowLimit, SetAsDefault, Query, Personal);
             }
         }
     }

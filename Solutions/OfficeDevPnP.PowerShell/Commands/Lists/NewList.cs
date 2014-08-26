@@ -26,9 +26,6 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "If set, will override the url of the list.")]
         public string Url = null;
 
-        [Parameter(Mandatory = false, HelpMessage = "The description of the list.")]
-        public string Description = null;
-
         [Parameter(Mandatory = false)]
         public SwitchParameter EnableVersioning;
 
