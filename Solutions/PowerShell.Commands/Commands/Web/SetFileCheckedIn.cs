@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.CheckInFile(Url, CheckinType, Comment, this.SelectedWeb, ClientContext);
+            this.SelectedWeb.CheckInFile(Url, CheckinType, Comment);
         }
     }
 }

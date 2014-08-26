@@ -23,7 +23,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.ApplyTheme(ColorPaletteUrl, FontSchemeUrl, BackgroundImageUrl, ShareGenerated, this.SelectedWeb, ClientContext);
+            this.SelectedWeb.ApplyTheme(ColorPaletteUrl, FontSchemeUrl, BackgroundImageUrl, ShareGenerated);
+            ClientContext.ExecuteQuery();
         }
     }
 }
