@@ -36,11 +36,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     throw new Exception("Restricted delimiter specified");
                 }
-                exportedTerms = SPOTaxonomy.ExportTermSet(TermSetId.Id, IncludeID, ClientContext, Delimiter);
+                exportedTerms = ClientContext.Site.ExportTermSet(TermSetId.Id, IncludeID, Delimiter);
             }
             else
             {
-                exportedTerms = SPOTaxonomy.ExportAllTerms(IncludeID, ClientContext, Delimiter);
+                exportedTerms = ClientContext.Site.ExportAllTerms(IncludeID, Delimiter);
             }
 
             if (Path == null)

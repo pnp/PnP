@@ -111,6 +111,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         #endregion
+        
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
@@ -409,6 +410,12 @@ namespace Microsoft.SharePoint.Client
             return results.FirstOrDefault();
         }
 
+        /// <summary>
+        /// Get list by using Url
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        /// <param name="siteRelativeUrl">Site relative Url of list, e.g. /lists/testlist</param>
+        /// <returns></returns>
         public static List GetListByUrl(this Web web, string siteRelativeUrl)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -416,15 +423,15 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
-            if (!siteRelativeUrl.StartsWith("/")) siteRelativeUrl = "/" + siteRelativeUrl;
-            siteRelativeUrl = web.ServerRelativeUrl + siteRelativeUrl;
+            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, siteRelativeUrl);
+
             IEnumerable<List> lists = web.Context.LoadQuery(
                 web.Lists
                     .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
 
             web.Context.ExecuteQuery();
 
-            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(siteRelativeUrl.ToLower())).FirstOrDefault();
+            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(serverRelativeUrl.ToLower())).FirstOrDefault();
 
             if (foundList != null)
             {
@@ -593,6 +600,48 @@ namespace Microsoft.SharePoint.Client
 
             list.Views.Add(viewCreationInformation);
             list.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Gets a view by Id
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewById(this List list, Guid id)
+        {
+            var q = from v in list.Views where v.Id == id select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+            list.Context.ExecuteQuery();
+            if (q.Any())
+            {
+                return (q.FirstOrDefault());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a view by Name
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="name"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewByName(this List list, string name)
+        {
+            var q = from v in list.Views where v.Title == name select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+            list.Context.ExecuteQuery();
+            if (q.Any())
+            {
+                return (q.FirstOrDefault());
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -49,7 +49,7 @@ Now you can use this entry to connect to your tenant as follows:
 
 
 ## Commands ##
-Here's list of different provider commands. Many commands provide built-in help and examples, e.g. 
+Here's a list of different provider commands. Many commands provide built-in help and examples, e.g. 
 
    Get-Help Add-SPOApp -Detailed
 
@@ -104,6 +104,7 @@ Command | Description
 **Get-SPOWebPart** | Returns the webparts on a given page
 **Get-SPOWebTemplates** | Returns all webtemplates
 **Get-SPOWikiPageContent** | Returns the HTML content of a wikipage
+**Get-SPORealm** | Returns the authentication realm for use for app only authentication. See **Connect-SPOnline -AppId -AppSecret -Realm**
 **Import-SPOTaxonomy** | Imports a taxonomy into the managed metadata service. See the help of the command for examples
 **New-SPOList** | Creates a new list
 **New-SPOOnPremSite** | Currently not implemented
