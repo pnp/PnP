@@ -17,7 +17,7 @@ PS:> Find-SPOFile -Match *.master
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(PowerShell.Core.SPOWeb.FindFiles(this.SelectedWeb, Match, ClientContext), true);
+            WriteObject(this.SelectedWeb.FindFiles(Match));
         }
     }
 }

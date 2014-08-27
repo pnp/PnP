@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use CSOM")]
     public static class SPOUser
     {
 

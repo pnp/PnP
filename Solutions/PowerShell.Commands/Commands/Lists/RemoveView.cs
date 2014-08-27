@@ -37,11 +37,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                     {
                         if (Identity.Id != Guid.Empty)
                         {
-                            view = SPO.SPOList.GetViews(list, ClientContext).Where(v => v.Id == Identity.Id).FirstOrDefault();
+                            view = list.GetViewById(Identity.Id);
                         }
                         else if (!string.IsNullOrEmpty(Identity.Title))
                         {
-                            view = SPO.SPOList.GetViews(list, ClientContext).Where(v => v.Title == Identity.Title).FirstOrDefault();
+                            view = list.GetViewByName(Identity.Title);
                         }
                         else if (Identity.View != null)
                         {

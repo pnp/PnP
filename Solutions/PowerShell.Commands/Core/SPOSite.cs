@@ -13,6 +13,7 @@ using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOSite
     {
         public static void EnableAppSideLoading(ClientContext clientContext)

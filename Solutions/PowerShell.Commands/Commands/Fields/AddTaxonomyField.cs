@@ -1,22 +1,15 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
+﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using SPO = OfficeDevPnP.PowerShell.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOTaxonomyField")]
     public class AddTaxonomyField : SPOWebCmdlet
     {
-        [Parameter(Mandatory=true)]
+        [Parameter(Mandatory = false)]
         public SPOListPipeBind List;
 
         [Parameter(Mandatory = true)]
@@ -27,6 +20,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         [Parameter(Mandatory = true)]
         public string TermSetPath;
+
+        [Parameter(Mandatory = false)]
+        public string TermPathDelimiter = "|";
 
         [Parameter(Mandatory = false)]
         public string Group;
@@ -46,20 +42,28 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public AddFieldOptions FieldOptions = AddFieldOptions.DefaultValue;
 
-       
+
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(List);
-
+            var termSet = ClientContext.Site.GetTaxonomyItemByPath(TermSetPath, TermPathDelimiter);
             Guid id = Id.Id;
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 id = Guid.NewGuid();
             }
 
-            var termStore = (TermStore) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetDefaultKeywordsTermStore(ClientContext);
-            var termSet = (TermSet) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetTaxonomyItemByPath(TermSetPath, ClientContext);
-            OfficeDevPnP.PowerShell.Core.SPOField.AddTaxonomyField(list, DisplayName, InternalName, Group, termStore, termSet, id, Required, AddToDefaultView, MultiValue, ClientContext);
+            if (List != null)
+            {
+                var list = this.SelectedWeb.GetList(List);
+
+                //var termStore = (TermStore) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetDefaultKeywordsTermStore(ClientContext);
+                //var termSet = (TermSet) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetTaxonomyItemByPath(TermSetPath, ClientContext);
+                list.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+            }
+            else
+            {
+                this.SelectedWeb.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+            }
         }
 
     }

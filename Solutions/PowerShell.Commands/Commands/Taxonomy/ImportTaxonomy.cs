@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Core;
 using OfficeDevPnP.PowerShell.Commands.Base;
+using Microsoft.SharePoint.Client;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -39,7 +40,7 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 lines = Terms;
             }
-            SPOTaxonomy.ImportTerms(lines, LCID, Delimiter, ClientContext);
+            ClientContext.Site.ImportTerms(lines, LCID, Delimiter);
         }
 
     }

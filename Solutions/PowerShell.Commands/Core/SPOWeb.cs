@@ -81,6 +81,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <param name="path">Local path of the file, including filename</param>
         /// <param name="url">Remote url of the file, including filename</param>
         /// <param name="web">The web to add the file to</param>
+        [Obsolete("Use OfficeDev/PnP.Core extensions methods")]
         public static void AddFile(string path, string url, Web web, bool Checkout, bool useWebDav, ClientContext clientContext, bool publish = false, string publishComment = "", bool approve = false, string approveComment = "")
         {
             //FileCollection files = null;
@@ -223,6 +224,7 @@ namespace OfficeDevPnP.PowerShell.Core
             } while (bytesRead != 0);
         }
 
+        [Obsolete("Use Web.UploadDocument() or Web.UploadFileToServerRelativeUrl() in OfficeDev/PnP.Core")]
         public static Microsoft.SharePoint.Client.File AddFile(byte[] bytes, string url, Web web, bool Checkout, ClientContext clientContext, bool publish = false, string publishComment = "", bool approve = false, string approveComment = "")
         {
             FileCollection files = null;
@@ -340,6 +342,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return folder.WelcomePage;
         }
 
+        [Obsolete("Use Web.PublishFile() in OfficeDev/PnP.Core")]
         public static void PublishFile(string url, string comment, Web web, ClientContext clientContext)
         {
             Microsoft.SharePoint.Client.File file = null;
@@ -353,6 +356,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use Web.ApproveFile() in OfficeDev/PnP.Core")]
         public static void ApproveFile(string url, string comment, Web web, ClientContext clientContext)
         {
             Microsoft.SharePoint.Client.File file = null;
@@ -366,6 +370,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use Web.CheckOutFile in OfficeDev/PnP.Core")]
         public static void CheckOutFile(string url, Web web, ClientContext clientContext)
         {
 
@@ -383,7 +388,7 @@ namespace OfficeDevPnP.PowerShell.Core
                 }
             }
         }
-
+        [Obsolete("Use Web.CheckInFile in OfficeDev/PnP.Core")]
         public static void CheckInFile(string url, CheckinType checkinType, string comment, Web web, ClientContext clientContext)
         {
             Microsoft.SharePoint.Client.File file = null;
@@ -402,6 +407,7 @@ namespace OfficeDevPnP.PowerShell.Core
         }
 
 
+        [Obsolete("Use CSOM")]
         public static void ApplyTheme(string colorPaletteUrl, string fontSchemeUrl, string backgroundImageUrl, bool shareGenerated, Web web, ClientContext clientContext)
         {
             web.ApplyTheme(colorPaletteUrl, fontSchemeUrl, backgroundImageUrl, shareGenerated);
@@ -417,6 +423,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return values.FieldValues;
         }
 
+        [Obsolete("Use SetPropertyBagValue in OfficeDev/PnP.Core")]
         public static void SetPropertyBagValue(string key, object value, Web web, ClientContext clientContext)
         {
             clientContext.Load(web.AllProperties);
@@ -425,9 +432,10 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use RemovePropertyBagValue in OfficeDev/PnP.Core")]
         public static void RemovePropertyBagEntry(string key, Web web, ClientContext clientContext)
         {
-            
+
             web.AllProperties[key] = null;
             web.AllProperties.FieldValues.Remove(key);
 
@@ -436,6 +444,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use AddIndexedPropertyBagKey() RemoveIndexedPropertyBagKey() in OfficeDev/PnP.Core")]
         public static void SetIndexedPropertyKeys(List<string> keys, Web web, ClientContext clientContext)
         {
             clientContext.Load(web.AllProperties);
@@ -545,6 +554,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return false;
         }
 
+      [Obsolete("Use FindFiles() in OfficeWeb/PnP.Core")]
         public static List<Microsoft.SharePoint.Client.File> FindFiles(Web web, string match, ClientContext clientContext)
         {
             Folder rootFolder = web.RootFolder;
