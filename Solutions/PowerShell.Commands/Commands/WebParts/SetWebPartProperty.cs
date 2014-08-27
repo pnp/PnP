@@ -22,7 +22,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWebParts.SetWebPartProperty(Key, Value, Identity.Id, PageUrl, this.SelectedWeb, ClientContext);
+            this.SelectedWeb.SetWebPartProperty(Key, Value, Identity.Id, PageUrl);
         }
 
 

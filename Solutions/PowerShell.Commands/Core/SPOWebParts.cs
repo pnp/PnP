@@ -9,8 +9,10 @@ using System.Xml;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDevPnP.Core extensions")]
     public static class SPOWebParts
     {
+        
         /// <summary>
         /// Adds a webpart to page
         /// </summary>
@@ -18,6 +20,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <param name="relativePageUrl">Server relative url of the page, e.g. /default.aspx</param>
         /// <param name="zoneId">The name of the Zone, e.g. "Left"</param>
         /// <param name="zoneIndex">The index of the WebPart, starting at 1.</param>
+        [Obsolete("Use Web.AddWebPartToWebPartPage() in OfficeDevPnP.Core")]
         public static void ImportWebPart(string webPartXml, string relativePageUrl, string zoneId, int zoneIndex, Web web, ClientContext clientContext)
         {
             if (zoneIndex > 0)
@@ -45,6 +48,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <param name="relativePageUrl">The Page to add the webpart to</param>
         /// <param name="zoneId">The Zone to add the webpart to</param>
         /// <param name="zoneIndex">The index of the webpart in the zone</param>
+        [Obsolete("Use Web.AddWebPartToWikiPage() in OfficeDevPnP.Core")]
         public static void AddWebPart(WebPart webPart, string relativePageUrl, string zoneId, int zoneIndex, Web web, ClientContext clientContext)
         {
             if (zoneIndex > 0)
@@ -70,7 +74,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <returns></returns>
         public static WebPartDefinition GetWebPartByTitle(string relativePageUrl, string title, Web web, ClientContext clientContext)
         {
-            var webparts = GetWebParts(relativePageUrl, web, clientContext);
+            var webparts = web.GetWebParts(relativePageUrl);
 
             var definition = webparts.Where(def => def.WebPart.Title == title).FirstOrDefault();
 
@@ -79,12 +83,13 @@ namespace OfficeDevPnP.PowerShell.Core
 
         public static WebPartDefinition GetWebPartById(string relativePageUrl, Web web, Guid identity, ClientContext clientContext)
         {
-            var webparts = GetWebParts(relativePageUrl, web, clientContext);
+            var webparts = web.GetWebParts(relativePageUrl);
             var webPart = webparts.Where(w => w.Id == identity).FirstOrDefault();
 
             return webPart;
         }
 
+        [Obsolete("Use Web.GetParts() in OfficeDevPnP.Core")]
         public static List<WebPartDefinition> GetWebParts(string relativePageUrl, Web web, ClientContext clientContext)
         {
             //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);
@@ -136,6 +141,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use DeleteWebPartByName() in OfficeDevPnP.Core")]
         public static void RemoveWebPartById(string relativePageUrl, Guid id, Web web, ClientContext clientContext)
         {
             //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);
@@ -160,6 +166,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
         }
 
+        [Obsolete("Use AddWebPartToWikiPage() in OfficeDevPnP.Core")]
         public static void AddWebPart(string webPartXml, Web web, string relativePageUrl, ClientContext clientContext, int row = 1, int column = 1)
         {
             //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);
@@ -243,6 +250,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return xml;
         }
 
+        [Obsolete("Use SetWebPartProperty() in OfficeDevPnP.Core")]
         public static void SetWebPartProperty(string Key, string Value, Guid identity, string relativePageUrl, Web web, ClientContext clientContext)
         {
             //relativePageUrl = Utils.Urls.CombineUrl(web, relativePageUrl);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete()]
     public static class SPOField
     {
         [Obsolete("Use OfficeDev/PnP.Core")]
@@ -106,6 +107,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return fieldString;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddTaxonomyField(Web web, string displayName, string internalName, string group, TermStore termStore, TermSet termSet, Guid Id, bool required, bool multiValue, ClientContext clientContext)
         {
             clientContext.Load(web.Fields);
@@ -118,6 +120,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return f;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core")]
         public static Field AddTaxonomyField(List list, string displayName, string internalName, string group, TermStore termStore, TermSet termSet, Guid Id, bool required, bool addToDefaultView, bool multiValue, ClientContext clientContext)
         {
             clientContext.Load(list.Fields);
@@ -132,6 +135,7 @@ namespace OfficeDevPnP.PowerShell.Core
             clientContext.ExecuteQuery();
             return f;
         }
+
 
         private static string GetTaxonomyFieldXml(string displayName, string internalName, string group, TermStore termStore, TermSet termSet, Guid Id, bool required, bool multiValue)
         {

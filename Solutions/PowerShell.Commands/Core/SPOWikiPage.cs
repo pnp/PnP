@@ -8,6 +8,7 @@ using Microsoft.SharePoint.Client.Publishing;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDevPnP.Core")]
     public static class SPOWikiPage
     {
         [Obsolete("Use AddHtmlToWikiPage extension on Web in OfficeDevPnP.Core")]

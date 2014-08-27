@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
-     [Obsolete("Use OfficeDev/PnP.Core")]
+    [Obsolete("Use OfficeDev/PnP.Core")]
     public static class SPOList
     {
 
@@ -114,7 +114,7 @@ namespace OfficeDevPnP.PowerShell.Core
 
         public static List GetListByUrl(string siteRelativeUrl, Web web, ClientContext context)
         {
-            context.Load(web, w=> w.ServerRelativeUrl);
+            context.Load(web, w => w.ServerRelativeUrl);
             context.ExecuteQuery();
             if (!siteRelativeUrl.StartsWith("/")) siteRelativeUrl = "/" + siteRelativeUrl;
             siteRelativeUrl = web.ServerRelativeUrl + siteRelativeUrl;
