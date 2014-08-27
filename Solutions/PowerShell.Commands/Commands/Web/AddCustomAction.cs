@@ -3,6 +3,7 @@ using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System.Collections.Generic;
 using System.Management.Automation;
+using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -11,7 +12,10 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddCustomAction : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
-        public string Name = string.Empty;
+        public string Title = string.Empty;
+
+        [Parameter(Mandatory = true)]
+        public string Description = string.Empty;
 
         [Parameter(Mandatory = true)]
         public string Group = string.Empty;
@@ -21,9 +25,6 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         [Parameter(Mandatory = true)]
         public int Sequence = 0;
-
-        [Parameter(Mandatory = true)]
-        public string Title = string.Empty;
 
         [Parameter(Mandatory = true)]
         public string Url = string.Empty;
@@ -38,7 +39,21 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 permissions.Set(kind);
             }
-            PowerShell.Core.SPOWeb.AddCustomAction(this.SelectedWeb, Title, Group, Location, Name, Sequence, Url, permissions, ClientContext);
+            CustomActionEntity ca = new CustomActionEntity();
+            ca.Description = Description;
+            ca.Location = Location;
+            ca.Group = Group;
+            ca.Sequence = Sequence;
+            ca.Title = Title;
+            ca.Url = Url;
+            ca.Rights = new BasePermissions();
+
+            foreach(var permission in Rights)
+            {
+                ca.Rights.Set(permission);
+            }
+
+            this.SelectedWeb.AddCustomAction(ca);
         }
     }
 }

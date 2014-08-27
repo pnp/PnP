@@ -11,6 +11,7 @@ using Microsoft.SharePoint.Client.Publishing;
 
 namespace OfficeDevPnP.PowerShell.Core
 {
+    [Obsolete("Use OfficeDev.PnP.Core extensions")]
     public static class SPOWeb
     {
         /// <summary>
@@ -55,6 +56,7 @@ namespace OfficeDevPnP.PowerShell.Core
         /// <param name="description"></param>
         /// <param name="webtemplate"></param>
         /// <param name="useSamePermissionAsParentSite"></param>
+        [Obsolete("Use Web.CreateWeb() in OfficeDev/PnP.Core")]
         public static Web CreateWeb(string url, string title, int locale, string description, string webtemplate, Web web, ClientContext clientContext, bool useSamePermissionAsParentSite = false)
         {
             var webCreateInfo = new WebCreationInformation();
@@ -156,6 +158,7 @@ namespace OfficeDevPnP.PowerShell.Core
             //}
         }
 
+        [Obsolete("Use Web.GetFileAsString() in OfficeDev/PnP.Core")]
         public static string GetFile(string url, Web web, ClientContext clientContext)
         {
             string returnString = string.Empty;
@@ -183,6 +186,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return returnString;
         }
 
+        [Obsolete("Use Web.SaveFileToLocal() in OfficeDev/PnP.Core")]
         public static void GetFile(string url, string pathOut, string fileName, Web web, ClientContext clientContext)
         {
             var file = web.GetFileByServerRelativeUrl(url);
@@ -213,7 +217,7 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
-        static private void CopyStream(Stream source, Stream destination)
+        private static void CopyStream(Stream source, Stream destination)
         {
             byte[] buffer = new byte[32768];
             int bytesRead;
@@ -319,11 +323,18 @@ namespace OfficeDevPnP.PowerShell.Core
             return uploadedFile;
         }
 
-        public static void SetHomePage(string rootFolderRelativePath, Web web, ClientContext clientContext)
+        /// <summary>
+        /// Sets the homepage of the site
+        /// </summary>
+        /// <param name="rootFolderRelativeUrl">The url of the homepage relative to the  </param>
+        /// <param name="web"></param>
+        /// <param name="clientContext"></param>
+        [Obsolete("Use Web.SetHomePage() in OfficeDev/PnP.Core")]
+        public static void SetHomePage(string rootFolderRelativeUrl, Web web, ClientContext clientContext)
         {
             Folder folder = web.RootFolder;
 
-            folder.WelcomePage = rootFolderRelativePath;
+            folder.WelcomePage = rootFolderRelativeUrl;
 
             folder.Update();
 
@@ -479,6 +490,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return stringBuilder.ToString();
         }
 
+        [Obsolete("Use Web.AddCustomAction() in OfficeDev/PnP.Core")]
         public static UserCustomAction AddCustomAction(Web web, string title, string group, string location, string name, int sequence, string url, BasePermissions rights, ClientContext clientContext)
         {
             UserCustomAction customAction = null;
@@ -502,6 +514,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return customAction;
         }
 
+        [Obsolete("Use Web.GetCustomActions() in OfficeDev/PnP.Core")]
         public static List<UserCustomAction> GetCustomActions(Web web, ClientContext clientContext)
         {
             List<UserCustomAction> actions = new List<UserCustomAction>();
@@ -516,6 +529,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return actions;
         }
 
+        [Obsolete("Use Web.DeleteCustomAction() in OfficeDev/PnP.Core")]
         public static void DeleteCustomAction(Guid id, Web web, ClientContext clientContext)
         {
             clientContext.Load(web.UserCustomActions);
@@ -554,7 +568,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return false;
         }
 
-      [Obsolete("Use FindFiles() in OfficeWeb/PnP.Core")]
+        [Obsolete("Use FindFiles() in OfficeWeb/PnP.Core")]
         public static List<Microsoft.SharePoint.Client.File> FindFiles(Web web, string match, ClientContext clientContext)
         {
             Folder rootFolder = web.RootFolder;
@@ -596,7 +610,7 @@ namespace OfficeDevPnP.PowerShell.Core
         }
 
 
-
+        [Obsolete("Use CSOM")]
         public static Web GetWeb(ClientContext clientContext)
         {
             Web web = clientContext.Web;
@@ -607,6 +621,7 @@ namespace OfficeDevPnP.PowerShell.Core
 
         }
 
+        [Obsolete("Use CSOM")]
         public static Web GetWebById(Guid guid, ClientContext clientContext)
         {
             Site site = clientContext.Site;
@@ -617,6 +632,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return web;
         }
 
+        [Obsolete("Use CSOM")]
         public static Web GetWebByUrl(string url, ClientContext clientContext)
         {
             Site site = clientContext.Site;
@@ -627,6 +643,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return web;
         }
 
+        [Obsolete("Use CSOM")]
         public static List<Web> GetSubWebs(Web web, ClientContext clientContext)
         {
             List<Web> webs = new List<Web>();
@@ -640,6 +657,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return webs;
         }
 
+        [Obsolete("Use OfficeDev/PnP.Core Web.AddNavigationNode()")]
         public static void AddNavigationLink(Web web, NavigationNodeType nodeType, string title, string url, bool asLast, string header, string previous, ClientContext clientContext)
         {
             var nodes = (nodeType == NavigationNodeType.QuickLaunch) ? web.Navigation.QuickLaunch : web.Navigation.TopNavigationBar;
@@ -687,6 +705,7 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
+        [Obsolete()]
         public enum NavigationNodeType
         {
             Top,

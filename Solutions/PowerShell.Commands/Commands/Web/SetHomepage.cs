@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            PowerShell.Core.SPOWeb.SetHomePage(Path, this.SelectedWeb, ClientContext);
+            this.SelectedWeb.SetHomePage(Path);
         }
     }
 

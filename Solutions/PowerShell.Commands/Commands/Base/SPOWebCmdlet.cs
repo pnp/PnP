@@ -29,11 +29,11 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (Web.Id != Guid.Empty)
             {
-                web = SPOWeb.GetWebById(Web.Id, ClientContext);
+                web = web.GetWebById(Web.Id);
             }
             else if (!string.IsNullOrEmpty(Web.Url))
             {
-                web = SPOWeb.GetWebByUrl(Web.Url, ClientContext);
+                web = web.GetWebByUrl(Web.Url);
             }
             else if (Web.Web != null)
             {

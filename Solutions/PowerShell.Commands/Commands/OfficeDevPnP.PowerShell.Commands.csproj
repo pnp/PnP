@@ -107,6 +107,7 @@
     <Compile Include="Events\RegisterEventReceiver.cs" />
     <Compile Include="Events\GetEventReceiver.cs" />
     <Compile Include="Events\RemoveEventReceiver.cs" />
+    <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="Features\GetFeature.cs" />
     <Compile Include="Fields\AddTaxonomyField.cs" />
     <Compile Include="Fields\RemoveField.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="Taxonomy\ExportTaxonomy.cs" />
     <Compile Include="Taxonomy\GetTaxonomySession.cs" />
     <Compile Include="Utilities\SendMail.cs" />
-    <Compile Include="Web\AddNavigationLink.cs" />
+    <Compile Include="Web\AddNavigationNode.cs" />
     <Compile Include="WebParts\SetWebPartProperty.cs" />
     <Compile Include="WebParts\RemoveWebPart.cs" />
     <Compile Include="WebParts\GetWebPart.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="Web\GetCustomAction.cs" />
     <Compile Include="Web\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
+    <Compile Include="Web\RemoveNavigationNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Web\RemovePropertyBagValue.cs" />
     <Compile Include="Web\RequestReIndexWeb.cs" />
     <Compile Include="Web\GetMasterPage.cs" />
