@@ -8,11 +8,10 @@ using OfficeDevPnP.PowerShell.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Add, "SPONavigationLink")]
-    public class AddNavigationLink : SPOWebCmdlet
+    [Cmdlet(VerbsCommon.Add, "SPONavigationNode")]
+    public class AddNavigationNode : SPOWebCmdlet
     {
-
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage="Either 'Top' or 'Quicklaunch'")]
         public SPOWeb.NavigationNodeType Location;
 
         [Parameter(Mandatory = true)]
@@ -22,13 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Url;
 
         [Parameter(Mandatory = false)]
-        public SwitchParameter AsLast;
-
-        [Parameter(Mandatory = false)]
         public string Header;
-
-        [Parameter(Mandatory = false)]
-        public string Previous;
 
         protected override void ExecuteCmdlet()
         {
@@ -38,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ClientContext.ExecuteQuery();
                 Url = this.SelectedWeb.Url;
             }
-            SPOWeb.AddNavigationLink(this.SelectedWeb, Location, Title, Url, AsLast, Header, Previous, ClientContext);
+            this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == SPOWeb.NavigationNodeType.QuickLaunch ? true : false);
         }
     }
 
