@@ -489,22 +489,20 @@ namespace Microsoft.SharePoint.Client
         /// <param name="page">Page to remove the web part from</param>
         public static void DeleteWebPart(this Web web, string folder, string title, string page)
         {
+            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            DeleteWebPart(web, serverRelativeUrl, title);
+        }
 
-            //Note: getfilebyserverrelativeurl did not work...not sure why not
-            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl(folder);
-            web.Context.Load(pagesLib.Files);
-            web.Context.ExecuteQuery();
+        /// <summary>
+        /// Deletes a web part from a page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="serverRelativePageUrl">Server relative URL of the page to remove</param>
+        /// <param name="title">Title of the web part that needs to be deleted</param>
+        public static void DeleteWebPart(this Web web, string serverRelativePageUrl, string title)
+        {
 
-            Microsoft.SharePoint.Client.File webPartPage = null;
-
-            foreach (Microsoft.SharePoint.Client.File aspxFile in pagesLib.Files)
-            {
-                if (aspxFile.Name.Equals(page, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webPartPage = aspxFile;
-                    break;
-                }
-            }
+            var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
             {
@@ -582,6 +580,54 @@ namespace Microsoft.SharePoint.Client
             {
                 web.AddHtmlToWikiPage(serverRelativePageUrl, html);
             }
+        }
+
+        /// <summary>
+        /// Sets a web part property
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">The key to update</param>
+        /// <param name="value">The value to set</param>
+        /// <param name="id">The id of the webpart</param>
+        /// <param name="serverRelativePageUrl"></param>
+        public static void SetWebPartProperty(this Web web, string key, string value, Guid id, string serverRelativePageUrl)
+        {
+            ClientContext context = web.Context as ClientContext;
+
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            context.Load(file, f => f.ListItemAllFields);
+            context.ExecuteQuery();
+
+            ListItem listItem = file.ListItemAllFields;
+            LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            context.Load(wpm.WebParts);
+
+            WebPartDefinition def = wpm.WebParts.GetById(id);
+
+            switch (key.ToLower())
+            {
+                case "title":
+                    {
+                        def.WebPart.Title = value;
+                        break;
+                    }
+                case "titleurl":
+                    {
+                        def.WebPart.TitleUrl = value;
+                        break;
+                    }
+                default:
+                    {
+                        def.WebPart.Properties[key] = value;
+                        break;
+                    }
+            }
+            def.SaveWebPartChanges();
+
+            context.ExecuteQuery();
+
         }
     }
 }
