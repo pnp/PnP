@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
+using System.Linq;
 
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -12,22 +13,28 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ParameterSetName = "ID")]
         public GuidPipeBind Identity;
 
-        [Parameter(Mandatory = true, ParameterSetName = "TITLE")]
-        public string Title = string.Empty;
+        [Parameter(Mandatory = true, ParameterSetName = "NAME")]
+        public string Name = string.Empty;
 
         [Parameter(Mandatory = true, ParameterSetName = "ID")]
-        [Parameter(Mandatory = true, ParameterSetName = "TITLE")]
+        [Parameter(Mandatory = true, ParameterSetName = "NAME")]
         public string PageUrl = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            if (ParameterSetName == "TITLE")
+            if (ParameterSetName == "NAME")
             {
-                PowerShell.Core.SPOWebParts.RemoveWebPartByTitle(PageUrl, Title, this.SelectedWeb, ClientContext);
+                this.SelectedWeb.DeleteWebPart(PageUrl, Name);
             }
             else
             {
-                PowerShell.Core.SPOWebParts.RemoveWebPartById(PageUrl, Identity.Id, this.SelectedWeb, ClientContext);
+                var wps = this.SelectedWeb.GetWebParts(PageUrl);
+                var wp = from w in wps where w.Id == Identity.Id select w;
+                if(wp.Any())
+                {
+                    wp.FirstOrDefault().DeleteWebPart();
+                    ClientContext.ExecuteQuery();
+                }
             }
         }
     }
