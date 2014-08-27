@@ -20,9 +20,6 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public string Header;
 
-        [Parameter(Mandatory = false)]
-        public SwitchParameter QuickLaunch = true;
-
         protected override void ExecuteCmdlet()
         {
             this.SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch ? true : false);
