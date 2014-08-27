@@ -46,42 +46,34 @@ namespace Microsoft.SharePoint.Client
         /// List the web parts on a page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="folder">Name of the library holding the pages</param>
-        public static void GetWebParts(this Web web, string folder)
+        /// <param name="serverRelativePageUrl">Server relative url of the page containing the webparts</param>
+        public static IEnumerable<WebPartDefinition> GetWebParts(this Web web, string serverRelativePageUrl)
         {
-            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl(folder);
-            web.Context.Load(pagesLib.Files);
+            List<WebPartDefinition> webparts = new List<WebPartDefinition>();
+
+            Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+            LimitedWebPartManager limitedWebPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            var query = web.Context.LoadQuery(limitedWebPartManager.WebParts.IncludeWithDefaultProperties(wp => wp.Id, wp => wp.WebPart, wp => wp.WebPart.Title, wp => wp.WebPart.Properties, wp => wp.WebPart.Hidden));
+
             web.Context.ExecuteQuery();
 
-            Microsoft.SharePoint.Client.File ofile = pagesLib.Files[0];
-            web.Context.Load(ofile);
-            web.Context.ExecuteQuery();
-
-            LimitedWebPartManager limitedWebPartManager = ofile.GetLimitedWebPartManager(PersonalizationScope.Shared);
-            web.Context.Load(limitedWebPartManager.WebParts, wps => wps.Include(wp => wp.WebPart.Title, wp => wp.Id));
-            web.Context.ExecuteQuery();
-
-            if (limitedWebPartManager.WebParts.Count >= 0)
-            {
-                for (int i = 0; i < limitedWebPartManager.WebParts.Count; i++)
-                {
-                    WebPart oWebPart = limitedWebPartManager.WebParts[i].WebPart;
-                    Console.WriteLine(oWebPart.Title);
-                    Console.WriteLine(limitedWebPartManager.WebParts[i].Id);
-                }
-            }
+            return query;
         }
-
-        /// <summary>
-        /// Inserts a web part on a web part page
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="webPart">Information about the web part to insert</param>
-        /// <param name="page">Page to add the web part on</param>
-        public static void AddWebPartToWebPartPage(this Web web, WebPartEntity webPart, string page)
+        
+        [Obsolete("Use AddWebPartToWebPartPage(Web,ServerRelativePageUrl,WebPartEntity)")]
+         public static void AddWebPartToWebPartPage(this Web web, WebPartEntity webPart, string page)
         {
+            if(!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, page);
 
-            //Note: getfilebyserverrelativeurl did not work...not sure why not
+            AddWebPartToWebPartPage(web, serverRelativeUrl, webPart);
+            /*
+             *    //Note: getfilebyserverrelativeurl did not work...not sure why not
             Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl("");
             web.Context.Load(pagesLib.Files);
             web.Context.ExecuteQuery();
@@ -95,7 +87,18 @@ namespace Microsoft.SharePoint.Client
                     webPartPage = aspxFile;
                     break;
                 }
-            }
+            }*/
+        }
+
+        /// <summary>
+        /// Inserts a web part on a web part page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="webPart">Information about the web part to insert</param>
+        /// <param name="page">Page to add the web part on</param>
+        public static void AddWebPartToWebPartPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart)
+        {
+            var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
             {
@@ -112,6 +115,28 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
+        public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
+        {
+            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            AddWebPartToWikiPage(web, serverRelativeUrl, webPart, row, col, addSpace);
+            /*
+            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl(folder);
+                 web.Context.Load(pagesLib.Files);
+                 web.Context.ExecuteQuery();
+
+                 Microsoft.SharePoint.Client.File webPartPage = null;
+
+                 foreach (Microsoft.SharePoint.Client.File aspxFile in pagesLib.Files)
+                 {
+                     if (aspxFile.Name.Equals(page, StringComparison.InvariantCultureIgnoreCase))
+                     {
+                         webPartPage = aspxFile;
+                         break;
+                     }
+                 }
+             */
+        }
+
         /// <summary>
         /// Add web part to a wiki style page
         /// </summary>
@@ -122,24 +147,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
-        public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
+        public static void AddWebPartToWikiPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart, int row, int col, bool addSpace)
         {
-
-            //Note: getfilebyserverrelativeurl did not work...not sure why not
-            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl(folder);
-            web.Context.Load(pagesLib.Files);
-            web.Context.ExecuteQuery();
-
-            Microsoft.SharePoint.Client.File webPartPage = null;
-
-            foreach (Microsoft.SharePoint.Client.File aspxFile in pagesLib.Files)
-            {
-                if (aspxFile.Name.Equals(page, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webPartPage = aspxFile;
-                    break;
-                }
-            }
+            File webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
             {
