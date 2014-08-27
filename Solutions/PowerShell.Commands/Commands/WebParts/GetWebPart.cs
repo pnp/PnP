@@ -20,21 +20,31 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
+            var definitions = this.SelectedWeb.GetWebParts(PageUrl);
+
             if (Identity != null)
             {
                 if (Identity.Id != Guid.Empty)
                 {
-                    WriteObject(new WebPartEntity(SPOWebParts.GetWebPartById(PageUrl, this.SelectedWeb, Identity.Id, ClientContext)));
+                    var wpfound = from wp in definitions where wp.Id == Identity.Id select wp;
+                    if(wpfound.Any())
+                    {
+                        WriteObject(new WebPartEntity(wpfound.FirstOrDefault()));
+
+                    }
                 }
                 else if (!string.IsNullOrEmpty(Identity.Title))
                 {
-                    WriteObject(new WebPartEntity(SPOWebParts.GetWebPartByTitle(PageUrl, Identity.Title, this.SelectedWeb, ClientContext)));
+                    var wpfound = from wp in definitions where wp.WebPart.Title == Identity.Title select wp;
+                    if (wpfound.Any())
+                    {
+                        WriteObject(new WebPartEntity(wpfound.FirstOrDefault()));
+
+                    }
                 }
             }
             else
             {
-                var definitions = SPOWebParts.GetWebParts(PageUrl, this.SelectedWeb, ClientContext);
-
                 foreach (var webpart in definitions)
                 {
                     WriteObject(new WebPartEntity(webpart));
