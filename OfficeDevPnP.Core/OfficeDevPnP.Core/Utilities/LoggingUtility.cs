@@ -46,6 +46,7 @@ namespace OfficeDevPnP.Core.Utilities
     /// <summary>
     /// Logging event categories enumeration
     /// </summary>
+    [Obsolete("Use specific EventId instead.")]
     public enum EventCategory {
         Unknown,
         Mail,
