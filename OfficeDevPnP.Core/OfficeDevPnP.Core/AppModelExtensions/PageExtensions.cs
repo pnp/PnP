@@ -61,7 +61,12 @@ namespace Microsoft.SharePoint.Client
             return query;
         }
         
-        [Obsolete("Use AddWebPartToWebPartPage(Web,ServerRelativePageUrl,WebPartEntity)")]
+        /// <summary>
+        /// Inserts a web part on a web part page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="webPart">Information about the web part to insert</param>
+        /// <param name="page">Page to add the web part on</param>
          public static void AddWebPartToWebPartPage(this Web web, WebPartEntity webPart, string page)
         {
             if(!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -72,30 +77,14 @@ namespace Microsoft.SharePoint.Client
             var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, page);
 
             AddWebPartToWebPartPage(web, serverRelativeUrl, webPart);
-            /*
-             *    //Note: getfilebyserverrelativeurl did not work...not sure why not
-            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl("");
-            web.Context.Load(pagesLib.Files);
-            web.Context.ExecuteQuery();
-
-            Microsoft.SharePoint.Client.File webPartPage = null;
-
-            foreach (Microsoft.SharePoint.Client.File aspxFile in pagesLib.Files)
-            {
-                if (aspxFile.Name.Equals(page, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    webPartPage = aspxFile;
-                    break;
-                }
-            }*/
         }
 
         /// <summary>
         /// Inserts a web part on a web part page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="serverRelativePageUrl">Page to add the web part on</param>
         /// <param name="webPart">Information about the web part to insert</param>
-        /// <param name="page">Page to add the web part on</param>
         public static void AddWebPartToWebPartPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart)
         {
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -115,28 +104,6 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
-        public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
-        {
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
-            AddWebPartToWikiPage(web, serverRelativeUrl, webPart, row, col, addSpace);
-            /*
-            Microsoft.SharePoint.Client.Folder pagesLib = web.GetFolderByServerRelativeUrl(folder);
-                 web.Context.Load(pagesLib.Files);
-                 web.Context.ExecuteQuery();
-
-                 Microsoft.SharePoint.Client.File webPartPage = null;
-
-                 foreach (Microsoft.SharePoint.Client.File aspxFile in pagesLib.Files)
-                 {
-                     if (aspxFile.Name.Equals(page, StringComparison.InvariantCultureIgnoreCase))
-                     {
-                         webPartPage = aspxFile;
-                         break;
-                     }
-                 }
-             */
-        }
-
         /// <summary>
         /// Add web part to a wiki style page
         /// </summary>
@@ -144,6 +111,21 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder">System name of the wiki page library - typically sitepages</param>
         /// <param name="webPart">Information about the web part to insert</param>
         /// <param name="page">Page to add the web part on</param>
+        /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
+        /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
+        /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
+        public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
+        {
+            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            AddWebPartToWikiPage(web, serverRelativeUrl, webPart, row, col, addSpace);
+        }
+
+        /// <summary>
+        /// Add web part to a wiki style page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="serverRelativePageUrl">Server relative url of the page to add the webpart to</param>
+        /// <param name="webPart">Information about the web part to insert</param>
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
