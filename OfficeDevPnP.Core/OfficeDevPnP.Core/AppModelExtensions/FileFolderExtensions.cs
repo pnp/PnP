@@ -484,5 +484,87 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Returns a file as string
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <returns></returns>
+        public static string GetFileAsString(this Web web, string serverRelativeUrl)
+        {
+            string returnString = string.Empty;
+
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            web.Context.Load(file);
+
+            web.Context.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            web.Context.ExecuteQuery();
+
+            using (Stream memStream = new MemoryStream())
+            {
+                CopyStream(stream.Value, memStream);
+
+                memStream.Position = 0;
+
+                StreamReader reader = new StreamReader(memStream);
+
+                returnString = reader.ReadToEnd();
+            }
+            return returnString;
+        }
+
+        /// <summary>
+        /// Saves a remote file to a local folder
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <param name="localPath">The local folder</param>
+        /// <param name="localFileName">The local filename. If null the filename of the file on the server will be used</param>
+        public static void SaveFileToLocal(this Web web, string serverRelativeUrl, string localPath, string localFileName = null)
+        {
+            var clientContext = web.Context as ClientContext;
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            clientContext.Load(file);
+
+            clientContext.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            clientContext.ExecuteQuery();
+
+            string fileOut;
+
+
+            if (!string.IsNullOrEmpty(localFileName))
+            {
+                fileOut = Path.Combine(localPath, localFileName);
+            }
+            else
+            {
+                fileOut = Path.Combine(localPath, file.Name);
+            }
+
+            using (Stream fileStream = new FileStream(fileOut, FileMode.Create))
+            {
+                CopyStream(stream.Value, fileStream);
+            }
+        }
+
+        private static void CopyStream(Stream source, Stream destination)
+        {
+            byte[] buffer = new byte[32768];
+            int bytesRead;
+            do
+            {
+                bytesRead = source.Read(buffer, 0, buffer.Length);
+                destination.Write(buffer, 0, bytesRead);
+            } while (bytesRead != 0);
+        }
+
     }
 }

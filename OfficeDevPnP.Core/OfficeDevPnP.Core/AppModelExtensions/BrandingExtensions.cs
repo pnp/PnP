@@ -52,7 +52,7 @@ namespace Microsoft.SharePoint.Client
         public static void DeployThemeToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
             DeployThemeToWebImplementation(web, rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
-        }        
+        }
 
         private static void DeployThemeToWebImplementation(Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
@@ -268,7 +268,7 @@ namespace Microsoft.SharePoint.Client
                         </Where>
                      </Query>
                 </View>";
-                
+
                 // Let's update the theme name accordingly
                 camlString = string.Format(camlString, themeName);
                 query.ViewXml = camlString;
@@ -351,7 +351,8 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
-        public static void DeployFileToThemeFolderSite(this Web web, string sourceFileAddress, string themeFolderVersion = "15") {
+        public static void DeployFileToThemeFolderSite(this Web web, string sourceFileAddress, string themeFolderVersion = "15")
+        {
             // Get the path to the file which we are about to deploy
             var fileBytes = System.IO.File.ReadAllBytes(sourceFileAddress);
             var fileName = Path.GetFileName(sourceFileAddress);
@@ -369,7 +370,7 @@ namespace Microsoft.SharePoint.Client
             // get the theme list
             web.Context.Load(themesList);
             web.Context.ExecuteQuery();
-            
+
             Folder rootFolder = themesList.RootFolder;
             FolderCollection rootFolders = rootFolder.Folders;
             web.Context.Load(rootFolder);
@@ -768,5 +769,23 @@ namespace Microsoft.SharePoint.Client
             }
             (languages[key] as List<string>).Add(item.TemplateName);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="rootFolderRelativePath">The path relative to the root folder of the site, e.g. SitePages/Home.aspx</param>
+        public static void SetHomePage(this Web web, string rootFolderRelativePath)
+        {
+            Folder folder = web.RootFolder;
+
+            folder.WelcomePage = rootFolderRelativePath;
+
+            folder.Update();
+
+            web.Context.ExecuteQuery();
+        }
+
+
     }
 }
