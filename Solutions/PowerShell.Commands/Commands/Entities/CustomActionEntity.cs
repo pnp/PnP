@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
+    [Obsolete("Use OfficeDev/PnP.Core CustomActionEntity")]
     public class CustomActionEntity
     {
         public Guid Id { get; set; }

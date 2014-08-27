@@ -18,7 +18,15 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var webs = SPOWeb.GetSubWebs(this.SelectedWeb, ClientContext).AsQueryable();
+            List<Web> webs = new List<Web>();
+            ClientContext.Load(this.SelectedWeb.Webs);
+
+            ClientContext.ExecuteQuery();
+            foreach (var w in this.SelectedWeb.Webs)
+            {
+                webs.Add(w);
+            }
+            
             var query = from web in webs
                         select new WebEntity(web);
             WriteObject(query.ToList(), true);
