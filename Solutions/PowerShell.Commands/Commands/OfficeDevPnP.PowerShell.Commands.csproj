@@ -142,11 +142,12 @@
     <Compile Include="Taxonomy\ExportTaxonomy.cs" />
     <Compile Include="Taxonomy\GetTaxonomySession.cs" />
     <Compile Include="Utilities\SendMail.cs" />
+    <Compile Include="WebParts\AddWebPartToWebPartPage.cs" />
+    <Compile Include="WebParts\AddWebPartToWikiPage.cs" />
     <Compile Include="Web\AddNavigationNode.cs" />
     <Compile Include="WebParts\SetWebPartProperty.cs" />
     <Compile Include="WebParts\RemoveWebPart.cs" />
     <Compile Include="WebParts\GetWebPart.cs" />
-    <Compile Include="WebParts\AddWebPart.cs" />
     <Compile Include="Base\SPOCmdlet.cs" />
     <Compile Include="Apps\AddApp.cs" />
     <Compile Include="Apps\GetAppInstance.cs" />
