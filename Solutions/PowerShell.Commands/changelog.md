@@ -1,6 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
 **2014-08-27**
+* Split up Add-SPOWebPart in two cmdlets, Add-SPOWebPartToWikiPage and Add-SPOWebPartToWebPartPage, to reduce confusing parameter sets
 * Changed parameters of Add-SPOCustomAction cmdlet
 * Changed name of Add-SPONavigationLink to Add-SPONavigationNode, in sync with method name of OfficeDevPnP.Core. Changed parameters of cmdlet.
 
