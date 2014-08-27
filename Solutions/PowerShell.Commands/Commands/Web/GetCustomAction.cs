@@ -17,7 +17,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var actions = PowerShell.Core.SPOWeb.GetCustomActions(this.SelectedWeb, ClientContext);
+            var actions = this.SelectedWeb.GetCustomActions();
 
             if (Identity != null)
             {
