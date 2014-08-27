@@ -23,6 +23,8 @@ namespace Microsoft.SharePoint.Client
         const string AvailablePageLayouts = "__PageLayouts";
         const string DefaultPageLayout = "__DefaultPageLayout";
         const string AvailableWebTemplates = "__WebTemplates";
+        const string InheritWebTemplates = "__InheritWebTemplates";
+        const string Inherit = "__Inherit";
 
         /// <summary>
         /// Deploy new theme to site collection. To be used with root web in site collection
@@ -676,7 +678,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void SetSiteToInheritPageLayouts(this Web web)
         {
-            web.SetPropertyBagValue(DefaultPageLayout, "__inherit");
+            web.SetPropertyBagValue(DefaultPageLayout, Inherit);
         }
 
         /// <summary>
@@ -736,7 +738,7 @@ namespace Microsoft.SharePoint.Client
             //Save the xml entry to property bag
             web.SetPropertyBagValue(AvailableWebTemplates, propertyValue);
             //Set that templates are not inherited
-            web.SetPropertyBagValue("__InheritWebTemplates", "False");
+            web.SetPropertyBagValue(InheritWebTemplates, "False");
         }
 
         /// <summary>
