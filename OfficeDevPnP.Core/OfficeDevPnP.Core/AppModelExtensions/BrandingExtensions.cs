@@ -85,7 +85,7 @@ namespace Microsoft.SharePoint.Client
         public static bool ThemeEntryExists(this Web web, string themeName)
         {
             // Let's get instance to the composite look gallery
-            List themesList = web.GetCatalog(124);
+            List themesList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
             web.Context.Load(themesList);
             web.Context.ExecuteQuery();
 
@@ -175,7 +175,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, "Adding theme option '{0}' to '{1}'", themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery of specific site
-            List themesOverviewList = web.GetCatalog(124);
+            List themesOverviewList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
             web.Context.Load(themesOverviewList);
             web.Context.ExecuteQuery();
             // Is the item already in the list?
@@ -248,7 +248,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, "Setting theme '{0}' for '{1}'", themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery
-            List themeList = rootWeb.GetCatalog(124);
+            List themeList = rootWeb.GetCatalog((int)ListTemplateType.DesignCatalog);
             rootWeb.Context.Load(themeList);
             LoggingUtility.Internal.TraceVerbose("Getting theme list (catalog 124)");
             rootWeb.Context.ExecuteQuery();
@@ -365,7 +365,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployThemeFile, "Deploying file '{0}' to '{1}' folder '{2}'.", fileName, web.Context.Url, themeFolderVersion);
 
             // Get the path to the file which we are about to deploy
-            List themesList = web.GetCatalog(123);
+            List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
 
             // get the theme list
             web.Context.Load(themesList);
@@ -407,7 +407,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, "Deploying page layout '{0}' to '{1}'.", fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
@@ -463,7 +463,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, "Deploying masterpage '{0}' to '{1}'.", fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
@@ -563,7 +563,7 @@ namespace Microsoft.SharePoint.Client
 
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
             query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
@@ -582,7 +582,7 @@ namespace Microsoft.SharePoint.Client
 
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
         {
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
             query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.aspx</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
