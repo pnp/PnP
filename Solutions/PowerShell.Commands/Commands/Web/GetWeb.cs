@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using OfficeDevPnP.PowerShell.Commands.Entities;
 using System;
@@ -16,23 +17,26 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity == null)
             {
-                WriteObject(new WebEntity(PowerShell.Core.SPOWeb.GetWeb(ClientContext)));
+                ClientContext.Load(ClientContext.Web);
+                ClientContext.ExecuteQuery();
+                WriteObject(new WebEntity(this.ClientContext.Web));
             }
             else
             {
                 if (Identity.Id != null && Identity.Id != Guid.Empty)
                 {
-                    WriteObject(new WebEntity(PowerShell.Core.SPOWeb.GetWebById(Identity.Id, ClientContext)));
+                    WriteObject(new WebEntity(ClientContext.Web.GetWebById(Identity.Id)));
                 }
                 else if (Identity.Web != null)
                 {
-                    WriteObject(new WebEntity(PowerShell.Core.SPOWeb.GetWebById(Identity.Web.Id, ClientContext)));
+                    WriteObject(new WebEntity(ClientContext.Web.GetWebById(Identity.Web.Id)));
                 }
                 else if (Identity.Url != null)
                 {
-                    WriteObject(new WebEntity(PowerShell.Core.SPOWeb.GetWebByUrl(Identity.Url, ClientContext)));
+                    WriteObject(new WebEntity(ClientContext.Web.GetWebByUrl(Identity.Url)));
                 }
             }
         }
+
     }
 }
