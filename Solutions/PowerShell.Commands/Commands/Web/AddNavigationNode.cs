@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddNavigationNode : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage="Either 'Top' or 'Quicklaunch'")]
-        public SPOWeb.NavigationNodeType Location;
+        public NavigationNodeType Location;
 
         [Parameter(Mandatory = true)]
         public string Title;
@@ -31,7 +31,13 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ClientContext.ExecuteQuery();
                 Url = this.SelectedWeb.Url;
             }
-            this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == SPOWeb.NavigationNodeType.QuickLaunch ? true : false);
+            this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+        }
+
+        public enum NavigationNodeType
+        {
+            Top,
+            QuickLaunch
         }
     }
 

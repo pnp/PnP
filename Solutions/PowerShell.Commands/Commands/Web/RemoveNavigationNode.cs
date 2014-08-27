@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveNavigationNode : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage="Either 'Top' or 'Quicklaunch'")]
-        public SPOWeb.NavigationNodeType Location;
+        public NavigationNodeType Location;
 
         [Parameter(Mandatory = true)]
         public string Title;
@@ -25,7 +25,13 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeleteNavigationNode(Title, Header, Location == SPOWeb.NavigationNodeType.QuickLaunch ? true : false);
+            this.SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+        }
+
+        public enum NavigationNodeType
+        {
+            Top,
+            QuickLaunch
         }
     }
 
