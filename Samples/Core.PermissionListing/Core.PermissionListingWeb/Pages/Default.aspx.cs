@@ -89,12 +89,14 @@ namespace Contoso.Core.PermissionListingWeb
                 var web = ctx.Web;
                 ctx.Load(web);
 
-                outPutText += ctx.Web.Url + "<br/>";
+                
                 ProcessRoleAssignments(web, ctx);
 
                 WebCollection webs = web.Webs;
                 ctx.Load<WebCollection>(webs);
                 ctx.ExecuteQuery();
+
+                outPutText += web.Url + "<br/>";
 
                 foreach (var subWeb in webs)
                 {
