@@ -1,7 +1,7 @@
 # Provisioning.Cloud.Async #
 
 ### Summary ###
-This sample demonstrates common tasks related on the publishing features, like how to deploy page layouts and master pages. It also shows how you can use property bag entries in the Web object to control the available page layouts and available web templates settings for the publishing sites. 
+This sample shows how branding elements like master pages, page layouts, images and CSS files can be uploaded, published and approved using CSOM. The sample also shows how to change master page for a site.
 
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices)
