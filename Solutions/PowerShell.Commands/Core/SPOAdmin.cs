@@ -12,6 +12,7 @@ namespace OfficeDevPnP.PowerShell.Core
 {
     public static class SPOAdmin
     {
+        [Obsolete()]
         public static bool IsTenantAdminSite(ClientContext clientContext)
         {
             try
@@ -30,6 +31,7 @@ namespace OfficeDevPnP.PowerShell.Core
             }
         }
 
+        [Obsolete()]
         public static IEnumerable<Zone> FindZone(string match)
         {
             var zones = AllZones();
@@ -39,8 +41,7 @@ namespace OfficeDevPnP.PowerShell.Core
             return results;
         }
 
-        
-
+        [Obsolete()]
         public static IEnumerable<Zone> AllZones()
         {
             foreach (var zone in Enum.GetValues(typeof(OfficeDevPnP.Core.Enums.TimeZone)))
@@ -48,15 +49,15 @@ namespace OfficeDevPnP.PowerShell.Core
                 var description = zone.ToString();
                 var identifier = description.Split('_')[0];
                 identifier = identifier.Replace("PLUS", "+").Replace("MINUS", "-");
-                if(identifier.Length > 3)
+                if (identifier.Length > 3)
                 {
-                    identifier = identifier.Substring(0, identifier.Length - 2) + ":" + identifier.Substring(identifier.Length-2, 2);
+                    identifier = identifier.Substring(0, identifier.Length - 2) + ":" + identifier.Substring(identifier.Length - 2, 2);
                 }
 
                 description = description.Substring(description.IndexOf('_') + 1).Replace("_", " ");
 
-                yield return new Zone((int)zone,identifier,description);
-                 
+                yield return new Zone((int)zone, identifier, description);
+
             }
         }
 
