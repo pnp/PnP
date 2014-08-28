@@ -7,6 +7,11 @@ This scenario shows how an app can use the App Installed event to perform additi
  
 For more information on this scenario, see the blog post: [http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx](http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx). 
 
+### Walkthrough Video ###
+Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Using-appinstalled-events-to-attach-remote-event-receivers-to-SharePoint-Host-Webs-Office-365-Develo](http://channel9.msdn.com/Blogs/Office-365-Dev/Using-appinstalled-events-to-attach-remote-event-receivers-to-SharePoint-Host-Webs-Office-365-Develo)
+
+![](http://i.imgur.com/ASdp83p.png)
+
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
