@@ -460,10 +460,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="subsite">Information describing the sub site to be added</param>
         /// <param name="inheritPermissions">Does the sub site inherit the permissions of the parent site</param>
         /// <param name="inheritNavigation">Does the sub site inherit the navigation of the parent site</param>
+        [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         public static void AddSite(this Web web, SiteEntity parent, SiteEntity subsite, bool inheritPermissions, bool inheritNavigation)
         {
             // Call actual implementation
-            CreateSite(web, subsite, inheritPermissions, inheritNavigation);
+            CreateWeb(web, subsite.Title, subsite.Url, subsite.Description, subsite.Template, (int)subsite.Lcid, inheritPermissions, inheritNavigation);
         }
 
         /// <summary>
@@ -476,12 +477,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="language">Language code for the site, like 1033</param>
         /// <param name="inheritPermissions">Should the new site inherit permissions</param>
         /// <param name="inheritNavigation">Should the new site inherent navigation</param>
+        [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
         {
             // Call centralized route to call internal creation logic
-            CreateSite(web, title, url, description, template, (int)language, inheritPermissions, inheritNavigation);
+            CreateWeb(web, title, url, description, template, (int)language, inheritPermissions, inheritNavigation);
         }
-
 
         /// <summary>
         /// 
@@ -490,106 +491,96 @@ namespace Microsoft.SharePoint.Client
         /// <param name="subsite"></param>
         /// <param name="inheritPermissions"></param>
         /// <param name="inheritNavigation"></param>
+        [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         public static Web CreateSite(this Web web, SiteEntity subsite, bool inheritPermissions = true, bool inheritNavigation = true)
         {
             // Call actual implementation
-            return CreateSite(web, subsite.Title, subsite.Url, subsite.Description, subsite.Template, (int)subsite.Lcid, inheritPermissions, inheritNavigation);
+            return CreateWeb(web, subsite.Title, subsite.Url, subsite.Description, subsite.Template, (int)subsite.Lcid, inheritPermissions, inheritNavigation);
+        }
+
+        [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        public static Web CreateSite(this Web web, string title, string url, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
+        {
+            return CreateWeb(web, title, url, description, template, language, inheritPermissions, inheritNavigation);
         }
 
         /// <summary>
-        /// 
+        /// Adds a new child Web (site) to a parent Web.
         /// </summary>
-        /// <param name="web"></param>
-        /// <param name="title"></param>
-        /// <param name="description"></param>
-        /// <param name="template"></param>
-        /// <param name="language"></param>
-        /// <param name="inheritPermissions"></param>
-        /// <param name="inheritNavigation"></param>
-        public static Web CreateSite(this Web web, string title, string url, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
+        /// <param name="parentWeb">The parent Web (site) to create under</param>
+        /// <param name="subsite">Details of the Web (site) to add. Only Title, Url (as the leaf URL), Description, Template and Language are used.</param>
+        /// <param name="inheritPermissions">Specifies whether the new site will inherit permissions from its parent site.</param>
+        /// <param name="inheritNavigation">Specifies whether the site inherits navigation.</param>
+        /// <returns></returns>
+        public static Web CreateWeb(this Web parentWeb, SiteEntity subsite, bool inheritPermissions = true, bool inheritNavigation = true)
         {
+            return CreateWeb(parentWeb, subsite.Title, subsite.Url, subsite.Description, subsite.Template, (int)subsite.Lcid, inheritPermissions, inheritNavigation);
+        }
+
+        /// <summary>
+        /// Adds a new child Web (site) to a parent Web.
+        /// </summary>
+        /// <param name="parentWeb">The parent Web (site) to create under</param>
+        /// <param name="title">The title of the new site. </param>
+        /// <param name="leafUrl">A string that represents the URL leaf name.</param>
+        /// <param name="description">The description of the new site. </param>
+        /// <param name="template">The name of the site template to be used for creating the new site. </param>
+        /// <param name="language">The locale ID that specifies the language of the new site. </param>
+        /// <param name="inheritPermissions">Specifies whether the new site will inherit permissions from its parent site.</param>
+        /// <param name="inheritNavigation">Specifies whether the site inherits navigation.</param>
+        public static Web CreateWeb(this Web parentWeb, string title, string leafUrl, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
+            }
+
             WebCreationInformation wci = new WebCreationInformation();
-            wci.Url = url;
+            wci.Url = leafUrl;
             wci.Title = title;
             wci.Description = description;
             wci.UseSamePermissionsAsParentSite = inheritPermissions;
             wci.WebTemplate = template;
             wci.Language = language;
 
-            Web w = web.Webs.Add(wci);
+            Web w = parentWeb.Webs.Add(wci);
             w.Navigation.UseShared = inheritNavigation;
             w.Update();
 
-            web.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQuery();
 
             return w;
         }
 
         /// <summary>
-        /// Checks if a site collection exists
+        /// Deletes the child website with the specified leaf URL, from a parent Web, if it exists. 
         /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the site collection check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
-        public static bool SiteExists(this Web web, string siteUrl)
+        /// <param name="parentWeb">The parent Web (site) to delete from</param>
+        /// <param name="leafUrl">A string that represents the URL leaf name.</param>
+        /// <returns>true if the web was deleted; otherwise false if nothing was done</returns>
+        public static bool DeleteWeb(this Web parentWeb, string leafUrl)
         {
-            return web.SubSiteExists(siteUrl);
-        }
-
-
-        /// <summary>
-        /// Checks if a subsite exists
-        /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the sub site check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
-        public static bool SubSiteExists(this Web web, string siteUrl)
-        {
-            try
+            // TODO: Check for any other illegal characters in SharePoint
+            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
             {
-                bool ret = false;
-
-                ClientContext test = new ClientContext(siteUrl);
-                test.Credentials = web.Context.Credentials;
-                test.Load(test.Web, w => w.Title);
-                test.ExecuteQuery();
-
-                ret = true;
-
-                return ret;
+                throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException &&
-                    (ex.Message.IndexOf("Unable to access site") != -1 ||
-                     ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        public static bool SubSiteExistsWithUrl(this Web web, string url)
-        {
-            Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
-
-            string siteUrl = string.Format("{0}/{1}", web.ServerRelativeUrl, url).ToLowerInvariant();
-            WebCollection subSites = web.Webs;
-            IEnumerable<Web> results = web.Context.LoadQuery<Web>(subSites.Where(item => item.ServerRelativeUrl == siteUrl));
-            web.Context.ExecuteQuery();
-            Web existingWeb = results.FirstOrDefault();
+            var deleted = false;
+            Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
+            var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
+            var webs = parentWeb.Webs;
+            var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl.ToUpperInvariant() == serverRelativeUrl.ToUpperInvariant()));
+            parentWeb.Context.ExecuteQuery();
+            var existingWeb = results.FirstOrDefault();
             if (existingWeb != null)
             {
-                return true;
+                existingWeb.DeleteObject();
+                parentWeb.Context.ExecuteQuery();
+                deleted = true;
             }
-
-            return false;
+            return deleted;
         }
-
 
         /// <summary>
         /// Gets the collection of the URLs of all Web sites that are contained within the site collection, 
@@ -625,6 +616,93 @@ namespace Microsoft.SharePoint.Client
                 }
                 yield return currentUrl;
             }
+        }
+
+        /// <summary>
+        /// Checks if a site collection exists
+        /// </summary>
+        /// <param name="web">Site object opened with credentials that are reused for the site collection check</param>
+        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
+        /// <returns>true if exists, false otherwise</returns>
+        [Obsolete("Should use Context.WebExistsFullUrl(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        public static bool SiteExists(this Web web, string siteUrl)
+        {
+            return WebExistsFullUrl(web.Context, siteUrl);
+        }
+
+        /// <summary>
+        /// Checks if a subsite exists
+        /// </summary>
+        /// <param name="web">Site object opened with credentials that are reused for the sub site check</param>
+        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
+        /// <returns>true if exists, false otherwise</returns>
+        [Obsolete("Should use Context.WebExists(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        public static bool SubSiteExists(this Web web, string siteUrl)
+        {
+            return WebExistsFullUrl(web.Context, siteUrl);
+        }
+
+        [Obsolete("Should use WebExists(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        public static bool SubSiteExistsWithUrl(this Web web, string url)
+        {
+            return WebExists(web, url);
+        }
+
+        /// <summary>
+        /// Determines if a child Web site with the specified leaf URL exists. 
+        /// </summary>
+        /// <param name="parentWeb">The Web site to check under</param>
+        /// <param name="leafUrl">A string that represents the URL leaf name.</param>
+        /// <returns>true if the Web (site) exists; otherwise false</returns>
+        public static bool WebExists(this Web parentWeb, string leafUrl)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
+            }
+
+            Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
+            var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
+            var webs = parentWeb.Webs;
+            var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl.ToUpperInvariant() == serverRelativeUrl.ToUpperInvariant()));
+            parentWeb.Context.ExecuteQuery();
+            var exists = results.Any();
+            return exists;
+        }
+
+        /// <summary>
+        /// Determines if a Web (site) exists at the specified full URL, either accessible or that returns an access error.
+        /// </summary>
+        /// <param name="context">Existing context, used to provide credentials.</param>
+        /// <param name="webFullUrl">Full URL of the site to check.</param>
+        /// <returns>true if the Web (site) exists; otherwise false</returns>
+        public static bool WebExistsFullUrl(this ClientRuntimeContext context, string webFullUrl)
+        {
+            bool exists = false;
+            try
+            {
+                using(ClientContext testContext = new ClientContext(webFullUrl))
+                {
+                    testContext.Credentials = context.Credentials;
+                    testContext.Load(testContext.Web, w => w.Title);
+                    testContext.ExecuteQuery();
+                    exists = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is Microsoft.SharePoint.Client.ServerException &&
+                    (ex.Message.IndexOf("Unable to access site") != -1 ||
+                     ex.Message.IndexOf("Cannot get site") != -1))
+                {
+                    // Site exists, but you don't have access .. not sure if this is really valid
+                    // (I guess if checking if URL is already taken, e.g. want to create a new site
+                    // then this makes sense).
+                    exists = true;
+                }
+            }
+            return exists;
         }
 
         #endregion
