@@ -43,7 +43,7 @@ Version  | Date | Comments
 # Introduction #
 The solution is a provider-hosted app (remote event receivers are not supported with SharePoint-hosted apps).
 
-This sample shows addign the remote event receiver to teh host web by clicking button in the provider hsoted app, but this could be done also automatically either when the site or site collection is provisioned; or when the app is installed by using App Installed and Handle App Uninstalling properties of the Visual Studio solution.
+This sample shows adding the remote event receiver to the host web by clicking button in the provider hosted app, but this could be done also automatically either when the site or site collection is provisioned; or when the app is installed by using App Installed and Handle App Uninstalling properties of the Visual Studio solution.
 
 ![](http://i.imgur.com/PbnYf3t.png)
 
@@ -107,11 +107,11 @@ To execute the sample, first change the SharePoint URL to a valid SharePoint env
 
 For more information on Remote Event Receiver debugging, see the section “Debugging Remote Events” at [http://msdn.microsoft.com/en-us/library/office/jj220047.aspx#DebugRER](http://msdn.microsoft.com/en-us/library/office/jj220047.aspx#DebugRER).  
 
-Once the Windows Azure Service Bus connection string is configured, simply press F5 in Visual Studio.  The web project will run in IIS Express, while the app is deployed to SharePoint.  Add a breakpoint in the ProcessEvent method to debug the app. When the app is run, you must click Trust It in order to grant the necessary permissions.
+Once the Windows Azure Service Bus connection string is configured, simply press F5 in Visual Studio.  The web project will run in IIS Express, while the app is deployed to SharePoint.  Add a break-point in the ProcessEvent method to debug the app. When the app is run, you must click Trust It in order to grant the necessary permissions.
 
 ![](http://i.imgur.com/1MfAFV9.png)
 
-The app begins to install, and the breakpoint will be hit.
+The app begins to install, and the break-point will be hit.
 
 ![](http://i.imgur.com/YQHRadM.png)
 
