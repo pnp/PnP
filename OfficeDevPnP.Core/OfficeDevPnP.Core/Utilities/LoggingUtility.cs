@@ -19,9 +19,11 @@ namespace OfficeDevPnP.Core.Utilities
         // XX: sequential ids
 
         AuthenticationContext = 1301,
-
+        
         UploadFile = 1501,
         InstallSolution = 1502,
+        CreateWeb = 1503,
+        CreateSiteCollection = 1504,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -42,6 +44,8 @@ namespace OfficeDevPnP.Core.Utilities
 
         SiteSearchUnhandledException = 5401,
 
+        DeleteWeb = 8501,
+        DeleteSiteCollection = 8502,
     }
 
     /// <summary>
