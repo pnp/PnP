@@ -535,22 +535,24 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, "Creating web '{0}' with template '{1}'.", leafUrl, template);
+            WebCreationInformation creationInfo = new WebCreationInformation()
+            {
+                Url = leafUrl,
+                Title = title,
+                Description = description,
+                UseSamePermissionsAsParentSite = inheritPermissions,
+                WebTemplate = template,
+                Language = language
+            };
 
-            WebCreationInformation wci = new WebCreationInformation();
-            wci.Url = leafUrl;
-            wci.Title = title;
-            wci.Description = description;
-            wci.UseSamePermissionsAsParentSite = inheritPermissions;
-            wci.WebTemplate = template;
-            wci.Language = language;
-
-            Web w = parentWeb.Webs.Add(wci);
-            w.Navigation.UseShared = inheritNavigation;
-            w.Update();
+            Web newWeb = parentWeb.Webs.Add(creationInfo);
+            newWeb.Navigation.UseShared = inheritNavigation;
+            newWeb.Update();
 
             parentWeb.Context.ExecuteQuery();
 
-            return w;
+            return newWeb;
         }
 
         /// <summary>
@@ -575,9 +577,14 @@ namespace Microsoft.SharePoint.Client
             var existingWeb = results.FirstOrDefault();
             if (existingWeb != null)
             {
+                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, "Deleting web '{0}'.", serverRelativeUrl);
                 existingWeb.DeleteObject();
                 parentWeb.Context.ExecuteQuery();
                 deleted = true;
+            }
+            else
+            {
+                LoggingUtility.Internal.TraceVerbose("Delete requested but web '{0}' not found, nothing to do.", serverRelativeUrl);
             }
             return deleted;
         }
