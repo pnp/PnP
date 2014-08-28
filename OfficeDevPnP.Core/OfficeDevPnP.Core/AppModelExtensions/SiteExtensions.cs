@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
-    /// Class that deals with site (collection) creation, status, retrieval and settings
+    /// Class that deals with site (both site collection and web site) creation, status, retrieval and settings
     /// </summary>
     public static class SiteExtensions
     {
@@ -25,277 +25,10 @@ namespace Microsoft.SharePoint.Client
         const string SITE_STATUS_RECYCLED = "Recycled";
         const string INDEXED_PROPERTY_KEY = "vti_indexedpropertykeys";
 
-        #region Check for site status in SharePoint Online
-        /// <summary>
-        /// Gets the ID of site collection with specified URL
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
-        public static Guid GetSiteGuidByUrlTenant(this Web web, string siteUrl)
-        {
-            if (!string.IsNullOrEmpty(siteUrl))
-                throw new ArgumentNullException("siteUrl");
-
-            return web.GetSiteGuidByUrlTenant(new Uri(siteUrl));
-        }
+        #region Site (collection) query, creation and deletion
 
         /// <summary>
-        /// Gets the ID of site collection with specified URL
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
-        public static Guid GetSiteGuidByUrlTenant(this Web web, Uri siteUrl)
-        {
-            Guid siteGuid = Guid.Empty;
-
-            Site site = null;
-            Tenant tenant = new Tenant(web.Context);
-            site = tenant.GetSiteByUrl(siteUrl.OriginalString);
-            web.Context.Load(site);
-            web.Context.ExecuteQuery();
-            siteGuid = site.Id;
-
-            return siteGuid;
-        }
-
-        /// <summary>
-        /// Returns if a site collection is in a particular status. If the url contains a sub site then returns true is the sub site exists, false if not. 
-        /// Status is irrelevant for sub sites
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">Url to the site collection</param>
-        /// <param name="status">Status to check (Active, Creating, Recycled)</param>
-        /// <returns>True if in status, false if not in status</returns>
-        public static bool CheckIfSiteExistsInTenant(this Web web, string siteUrl, string status)
-        {
-            bool ret = false;
-            //Get the site name
-            var url = new Uri(siteUrl);
-            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var UrlPath = url.PathAndQuery.Substring(0, idx);
-            var Name = url.PathAndQuery.Substring(idx);
-            var index = Name.IndexOf('/');
-            Tenant tenant = new Tenant(web.Context);
-
-            //Judge whether this site collection is existing or not
-            if (index == -1)
-            {
-                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
-                web.Context.Load(properties);
-                web.Context.ExecuteQuery();
-                ret = properties.Status.Equals(status, StringComparison.OrdinalIgnoreCase);
-            }
-            //Judge whether this sub web site is existing or not
-            else
-            {
-                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
-                var subweb = site.OpenWeb(Name.Substring(index + 1));
-                web.Context.Load(subweb, w => w.Title);
-                web.Context.ExecuteQuery();
-                ret = true;
-            }
-            return ret;
-        }
-
-        /// <summary>
-        /// Checks if a site collection exists
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if existing, false if not</returns>
-        public static bool DoesSiteExistInTenant(this Web web, string siteUrl)
-        {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_ACTIVE) ||
-                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_CREATING) ||
-                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_RECYCLED);
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                    LoggingUtility.LogError("Could not determine if site exists in tenant.", ex, EventCategory.Site);
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a sub site exists
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">URL to the sub site</param>
-        /// <returns>True if existing, false if not</returns>
-        public static bool SubSiteExistsInTenant(this Web web, string siteUrl)
-        {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, "");
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checks if a site collection exists
-        /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the site collection check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
-        public static bool SiteExists(this Web web, string siteUrl)
-        {
-            return web.SubSiteExists(siteUrl);
-        }
-
-
-        /// <summary>
-        /// Checks if a subsite exists
-        /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the sub site check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
-        public static bool SubSiteExists(this Web web, string siteUrl)
-        {
-            try
-            {
-                bool ret = false;
-
-                ClientContext test = new ClientContext(siteUrl);
-                test.Credentials = web.Context.Credentials;
-                test.Load(test.Web, w => w.Title);
-                test.ExecuteQuery();
-
-                ret = true;
-
-                return ret;
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException &&
-                    (ex.Message.IndexOf("Unable to access site") != -1 ||
-                     ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checks if a site collection exists, relies on tenant admin API
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if existing, false if not</returns>
-        public static bool SiteExistsInTenant(this Web web, string siteUrl)
-        {
-            try
-            {
-                //Get the site name
-                Tenant tenant = new Tenant(web.Context);
-                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
-                web.Context.Load(properties);
-                web.Context.ExecuteQuery();
-
-                // Will cause an exception if site URL is not there. Not optimal, but the way it works.
-                return true;
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checks if a site collection is Active
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if active, false if not</returns>
-        public static bool IsSiteActiveTenant(this Web web, string siteUrl)
-        {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, "Active");
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.StartsWith("Cannot get site"))
-                {
-                    return false;
-                }
-                LoggingUtility.LogError("Error finding if site is active tenant.", ex, EventCategory.Site);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Gets the collection of the URLs of all Web sites that are contained within the site collection, 
-        /// including the top-level site and its subsites.
-        /// </summary>
-        /// <param name="site">Site collection to retrieve the URLs for.</param>
-        /// <returns>An enumeration containing the full URLs as strings.</returns>
-        /// <remarks>
-        /// <para>
-        /// This is analagous to the <code>SPSite.AllWebs</code> property and can be used to get a collection
-        /// of all web site URLs to loop through, e.g. for branding.
-        /// </para>
-        /// </remarks>
-        public static IEnumerable<string> GetAllWebUrls(this Site site)
-        {
-            var siteContext = site.Context;
-            siteContext.Load(site, s => s.Url);
-            siteContext.ExecuteQuery();
-            var queue = new Queue<string>();
-            queue.Enqueue(site.Url);
-            while (queue.Count > 0)
-            {
-                var currentUrl = queue.Dequeue();
-                using (var webContext = new ClientContext(currentUrl))
-                {
-                    webContext.Credentials = siteContext.Credentials;
-                    webContext.Load(webContext.Web, web => web.Webs);
-                    webContext.ExecuteQuery();
-                    foreach (var subWeb in webContext.Web.Webs)
-                    {
-                        queue.Enqueue(subWeb.Url);
-                    }
-                }
-                yield return currentUrl;
-            }
-        }
-
-        #endregion
-
-        #region site (collection) creation and deletion
-        /// <summary>
-        /// Launches a site collection creation and waits for the creation to finish
+        /// Adds a SiteEntity by launching site collection creation and waits for the creation to finish
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="properties">Describes the site collection to be created</param>
@@ -372,6 +105,46 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Returns if a site collection is in a particular status. If the url contains a sub site then returns true is the sub site exists, false if not. 
+        /// Status is irrelevant for sub sites
+        /// </summary>
+        /// <param name="web">Tenant admin web</param>
+        /// <param name="siteUrl">Url to the site collection</param>
+        /// <param name="status">Status to check (Active, Creating, Recycled)</param>
+        /// <returns>True if in status, false if not in status</returns>
+        public static bool CheckIfSiteExistsInTenant(this Web web, string siteUrl, string status)
+        {
+            bool ret = false;
+            //Get the site name
+            var url = new Uri(siteUrl);
+            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
+            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
+            var UrlPath = url.PathAndQuery.Substring(0, idx);
+            var Name = url.PathAndQuery.Substring(idx);
+            var index = Name.IndexOf('/');
+            Tenant tenant = new Tenant(web.Context);
+
+            //Judge whether this site collection is existing or not
+            if (index == -1)
+            {
+                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
+                web.Context.Load(properties);
+                web.Context.ExecuteQuery();
+                ret = properties.Status.Equals(status, StringComparison.OrdinalIgnoreCase);
+            }
+            //Judge whether this sub web site is existing or not
+            else
+            {
+                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
+                var subweb = site.OpenWeb(Name.Substring(index + 1));
+                web.Context.Load(subweb, w => w.Title);
+                web.Context.ExecuteQuery();
+                ret = true;
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Launches a site collection creation and waits for the creation to finish 
         /// </summary>
         /// <param name="web">Context to admin site</param>
@@ -406,36 +179,6 @@ namespace Microsoft.SharePoint.Client
             };
 
             return AddSiteCollectionTenant(web, siteCol, removeFromRecycleBin, wait);
-        }
-
-        /// <summary>
-        /// Adds a sub site to an existing site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="parent">Information about the parent site</param>
-        /// <param name="subsite">Information describing the sub site to be added</param>
-        /// <param name="inheritPermissions">Does the sub site inherit the permissions of the parent site</param>
-        /// <param name="inheritNavigation">Does the sub site inherit the navigation of the parent site</param>
-        public static void AddSite(this Web web, SiteEntity parent, SiteEntity subsite, bool inheritPermissions, bool inheritNavigation)
-        {
-            // Call actual implementation
-            CreateSite(web, subsite, inheritPermissions, inheritNavigation);
-        }
-
-        /// <summary>
-        /// Adds a sub site to an existing site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="title">Title for the site</param>
-        /// <param name="description">Description for the new site</param>
-        /// <param name="template">Template for the site, like STS#0</param>
-        /// <param name="language">Language code for the site, like 1033</param>
-        /// <param name="inheritPermissions">Should the new site inherit permissions</param>
-        /// <param name="inheritNavigation">Should the new site inherent navigation</param>
-        public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
-        {
-            // Call centralized route to call internal creation logic
-            CreateSite(web, title, url, description, template, (int)language, inheritPermissions, inheritNavigation);
         }
 
         /// <summary>
@@ -545,6 +288,67 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Checks if a site collection exists
+        /// </summary>
+        /// <param name="web">Tenant admin web</param>
+        /// <param name="siteUrl">URL to the site collection</param>
+        /// <returns>True if existing, false if not</returns>
+        public static bool DoesSiteExistInTenant(this Web web, string siteUrl)
+        {
+            try
+            {
+                return web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_ACTIVE) ||
+                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_CREATING) ||
+                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_RECYCLED);
+            }
+            catch (Exception ex)
+            {
+                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                {
+                    return true;
+                }
+                else
+                    LoggingUtility.LogError("Could not determine if site exists in tenant.", ex, EventCategory.Site);
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ID of site collection with specified URL
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
+        /// <returns>The Guid of a site collection</returns>
+        public static Guid GetSiteGuidByUrlTenant(this Web web, string siteUrl)
+        {
+            if (!string.IsNullOrEmpty(siteUrl))
+                throw new ArgumentNullException("siteUrl");
+
+            return web.GetSiteGuidByUrlTenant(new Uri(siteUrl));
+        }
+
+        /// <summary>
+        /// Gets the ID of site collection with specified URL
+        /// </summary>
+        /// <param name="web">Tenant admin web</param>
+        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
+        /// <returns>The Guid of a site collection</returns>
+        public static Guid GetSiteGuidByUrlTenant(this Web web, Uri siteUrl)
+        {
+            Guid siteGuid = Guid.Empty;
+
+            Site site = null;
+            Tenant tenant = new Tenant(web.Context);
+            site = tenant.GetSiteByUrl(siteUrl.OriginalString);
+            web.Context.Load(site);
+            web.Context.ExecuteQuery();
+            siteGuid = site.Id;
+
+            return siteGuid;
+        }
+
+        /// <summary>
         /// Returns available webtemplates/site definitions
         /// </summary>
         /// <param name="web">Site to be processed - needs to be tenant site admin site</param>
@@ -563,6 +367,121 @@ namespace Microsoft.SharePoint.Client
 
             return templates;
         }
+
+        /// <summary>
+        /// Checks if a site collection is Active
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="siteUrl">URL to the site collection</param>
+        /// <returns>True if active, false if not</returns>
+        public static bool IsSiteActiveTenant(this Web web, string siteUrl)
+        {
+            try
+            {
+                return web.CheckIfSiteExistsInTenant(siteUrl, "Active");
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.StartsWith("Cannot get site"))
+                {
+                    return false;
+                }
+                LoggingUtility.LogError("Error finding if site is active tenant.", ex, EventCategory.Site);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a site collection exists, relies on tenant admin API
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="siteUrl">URL to the site collection</param>
+        /// <returns>True if existing, false if not</returns>
+        public static bool SiteExistsInTenant(this Web web, string siteUrl)
+        {
+            try
+            {
+                //Get the site name
+                Tenant tenant = new Tenant(web.Context);
+                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
+                web.Context.Load(properties);
+                web.Context.ExecuteQuery();
+
+                // Will cause an exception if site URL is not there. Not optimal, but the way it works.
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks if a sub site exists
+        /// </summary>
+        /// <param name="web">Tenant admin web</param>
+        /// <param name="siteUrl">URL to the sub site</param>
+        /// <returns>True if existing, false if not</returns>
+        public static bool SubSiteExistsInTenant(this Web web, string siteUrl)
+        {
+            try
+            {
+                return web.CheckIfSiteExistsInTenant(siteUrl, "");
+            }
+            catch (Exception ex)
+            {
+                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Web (site) query, creation and deletion
+
+        /// <summary>
+        /// Adds a sub site to an existing site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="parent">Information about the parent site</param>
+        /// <param name="subsite">Information describing the sub site to be added</param>
+        /// <param name="inheritPermissions">Does the sub site inherit the permissions of the parent site</param>
+        /// <param name="inheritNavigation">Does the sub site inherit the navigation of the parent site</param>
+        public static void AddSite(this Web web, SiteEntity parent, SiteEntity subsite, bool inheritPermissions, bool inheritNavigation)
+        {
+            // Call actual implementation
+            CreateSite(web, subsite, inheritPermissions, inheritNavigation);
+        }
+
+        /// <summary>
+        /// Adds a sub site to an existing site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="title">Title for the site</param>
+        /// <param name="description">Description for the new site</param>
+        /// <param name="template">Template for the site, like STS#0</param>
+        /// <param name="language">Language code for the site, like 1033</param>
+        /// <param name="inheritPermissions">Should the new site inherit permissions</param>
+        /// <param name="inheritNavigation">Should the new site inherent navigation</param>
+        public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
+        {
+            // Call centralized route to call internal creation logic
+            CreateSite(web, title, url, description, template, (int)language, inheritPermissions, inheritNavigation);
+        }
+
 
         /// <summary>
         /// 
@@ -606,6 +525,54 @@ namespace Microsoft.SharePoint.Client
             return w;
         }
 
+        /// <summary>
+        /// Checks if a site collection exists
+        /// </summary>
+        /// <param name="web">Site object opened with credentials that are reused for the site collection check</param>
+        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
+        /// <returns>true if exists, false otherwise</returns>
+        public static bool SiteExists(this Web web, string siteUrl)
+        {
+            return web.SubSiteExists(siteUrl);
+        }
+
+
+        /// <summary>
+        /// Checks if a subsite exists
+        /// </summary>
+        /// <param name="web">Site object opened with credentials that are reused for the sub site check</param>
+        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
+        /// <returns>true if exists, false otherwise</returns>
+        public static bool SubSiteExists(this Web web, string siteUrl)
+        {
+            try
+            {
+                bool ret = false;
+
+                ClientContext test = new ClientContext(siteUrl);
+                test.Credentials = web.Context.Credentials;
+                test.Load(test.Web, w => w.Title);
+                test.ExecuteQuery();
+
+                ret = true;
+
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                if (ex is Microsoft.SharePoint.Client.ServerException &&
+                    (ex.Message.IndexOf("Unable to access site") != -1 ||
+                     ex.Message.IndexOf("Cannot get site") != -1))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
         public static bool SubSiteExistsWithUrl(this Web web, string url)
         {
             Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
@@ -623,9 +590,46 @@ namespace Microsoft.SharePoint.Client
             return false;
         }
 
+
+        /// <summary>
+        /// Gets the collection of the URLs of all Web sites that are contained within the site collection, 
+        /// including the top-level site and its subsites.
+        /// </summary>
+        /// <param name="site">Site collection to retrieve the URLs for.</param>
+        /// <returns>An enumeration containing the full URLs as strings.</returns>
+        /// <remarks>
+        /// <para>
+        /// This is analagous to the <code>SPSite.AllWebs</code> property and can be used to get a collection
+        /// of all web site URLs to loop through, e.g. for branding.
+        /// </para>
+        /// </remarks>
+        public static IEnumerable<string> GetAllWebUrls(this Site site)
+        {
+            var siteContext = site.Context;
+            siteContext.Load(site, s => s.Url);
+            siteContext.ExecuteQuery();
+            var queue = new Queue<string>();
+            queue.Enqueue(site.Url);
+            while (queue.Count > 0)
+            {
+                var currentUrl = queue.Dequeue();
+                using (var webContext = new ClientContext(currentUrl))
+                {
+                    webContext.Credentials = siteContext.Credentials;
+                    webContext.Load(webContext.Web, web => web.Webs);
+                    webContext.ExecuteQuery();
+                    foreach (var subWeb in webContext.Web.Webs)
+                    {
+                        queue.Enqueue(subWeb.Url);
+                    }
+                }
+                yield return currentUrl;
+            }
+        }
+
         #endregion
 
-        #region Apps
+        #region Apps and sandbox solutions
 
         /// <summary>
         /// Returns all app instances
@@ -639,6 +643,43 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             return instances;
+        }
+
+        /// <summary>
+        /// Uploads and installs a sandbox solution package (.WSP) file, replacing existing solution if necessary.
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest (required for the remove step)</param>
+        /// <param name="sourceFilePath">Path to the sandbox solution package (.WSP) file</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
+        public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
+        {
+            string fileName = Path.GetFileName(sourceFilePath);
+            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
+
+            var rootWeb = site.RootWeb;
+            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
+
+            var packageInfo = new DesignPackageInfo()
+            {
+                PackageName = fileName,
+                PackageGuid = packageGuid,
+                MajorVersion = majorVersion,
+                MinorVersion = minorVersion
+            };
+
+            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
+            DesignPackage.UnInstall(site.Context, site, packageInfo);
+            site.Context.ExecuteQuery();
+
+            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+            DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
+            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
+            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
+            site.Context.ExecuteQuery();
         }
 
         #endregion
@@ -785,7 +826,7 @@ namespace Microsoft.SharePoint.Client
         }
         #endregion
 
-        #region Site Property Bag Modifiers
+        #region Web (site) Property Bag Modifiers
 
         /// <summary>
         /// Sets a key/value pair in the web property bag
@@ -1027,7 +1068,17 @@ namespace Microsoft.SharePoint.Client
         /// Queues a web for a _full_ crawl the next incremental crawl
         /// </summary>
         /// <param name="web">Site to be processed</param>
+        [Obsolete("Use ReIndexWeb()")]
         public static void ReIndexSite(this Web web)
+        {
+            ReIndexWeb(web);
+        }
+
+        /// <summary>
+        /// Queues a web for a full crawl the next incremental crawl
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        public static void ReIndexWeb(this Web web)
         {
             int searchversion = 0;
             if (web.PropertyBagContainsKey("vti_searchversion"))
@@ -1160,43 +1211,6 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
         #endregion
-
-        /// <summary>
-        /// Uploads and installs a sandbox solution package (.WSP) file, replacing existing solution if necessary.
-        /// </summary>
-        /// <param name="site">Site collection to install to</param>
-        /// <param name="packageGuid">ID of the solution, from the solution manifest (required for the remove step)</param>
-        /// <param name="sourceFilePath">Path to the sandbox solution package (.WSP) file</param>
-        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
-        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
-        public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
-        {
-            string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
-
-            var rootWeb = site.RootWeb;
-            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
-            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
-
-            var packageInfo = new DesignPackageInfo()
-            {
-                PackageName = fileName,
-                PackageGuid = packageGuid,
-                MajorVersion = majorVersion,
-                MinorVersion = minorVersion
-            };
-
-            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
-            DesignPackage.UnInstall(site.Context, site, packageInfo);
-            site.Context.ExecuteQuery();
-
-            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
-            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
-            DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
-            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
-            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
-            site.Context.ExecuteQuery();
-        }
 
     }
 }
