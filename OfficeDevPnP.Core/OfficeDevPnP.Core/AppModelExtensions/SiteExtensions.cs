@@ -579,7 +579,7 @@ namespace Microsoft.SharePoint.Client
             var webs = parentWeb.Webs;
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
-            parentWeb.Context.Load(webs);
+            parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
             parentWeb.Context.ExecuteQuery();
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
@@ -684,7 +684,7 @@ namespace Microsoft.SharePoint.Client
             var webs = parentWeb.Webs;
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
-            parentWeb.Context.Load(webs);
+            parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
             parentWeb.Context.ExecuteQuery();
             var exists = webs.Any(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return exists;
