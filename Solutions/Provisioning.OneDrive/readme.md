@@ -14,7 +14,7 @@ Code also stores the version of the used branding, so that changes are only appl
 
 ### Walkthrough Video ###
 
-Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Publishing-Features-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Publishing-Features-Office-365-Developer-Patterns-and-Practices)
+Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
 
 ![](http://i.imgur.com/kWyLYet.png)
 
