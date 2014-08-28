@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
@@ -1159,6 +1160,43 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
         #endregion
+
+        /// <summary>
+        /// Uploads and installs a sandbox solution package (.WSP) file, replacing existing solution if necessary.
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest (required for the remove step)</param>
+        /// <param name="sourceFilePath">Path to the sandbox solution package (.WSP) file</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
+        public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
+        {
+            string fileName = Path.GetFileName(sourceFilePath);
+            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
+
+            var rootWeb = site.RootWeb;
+            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
+
+            var packageInfo = new DesignPackageInfo()
+            {
+                PackageName = fileName,
+                PackageGuid = packageGuid,
+                MajorVersion = majorVersion,
+                MinorVersion = minorVersion
+            };
+
+            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
+            DesignPackage.UnInstall(site.Context, site, packageInfo);
+            site.Context.ExecuteQuery();
+
+            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+            DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
+            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
+            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
+            site.Context.ExecuteQuery();
+        }
 
     }
 }
