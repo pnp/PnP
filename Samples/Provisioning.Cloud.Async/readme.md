@@ -30,15 +30,3 @@ Version  | Date | Comments
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
-----------
-
-# Deploy page layouts #
-Detailed documentation in progress.
-
-
-# Master page vs. Theme #
-Detailed documentation in progress.
-
-
-# Controlling available site templates and page layouts for publishing webs using CSOM #
-Detailed documentation in progress.
