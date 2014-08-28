@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Core.Utils;
 
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Entities
 {
