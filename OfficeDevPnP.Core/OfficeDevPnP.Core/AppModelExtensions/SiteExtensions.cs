@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -461,6 +462,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritPermissions">Does the sub site inherit the permissions of the parent site</param>
         /// <param name="inheritNavigation">Does the sub site inherit the navigation of the parent site</param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddSite(this Web web, SiteEntity parent, SiteEntity subsite, bool inheritPermissions, bool inheritNavigation)
         {
             // Call actual implementation
@@ -478,6 +480,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritPermissions">Should the new site inherit permissions</param>
         /// <param name="inheritNavigation">Should the new site inherent navigation</param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
         {
             // Call centralized route to call internal creation logic
@@ -492,6 +495,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritPermissions"></param>
         /// <param name="inheritNavigation"></param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Web CreateSite(this Web web, SiteEntity subsite, bool inheritPermissions = true, bool inheritNavigation = true)
         {
             // Call actual implementation
@@ -499,6 +503,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Web CreateSite(this Web web, string title, string url, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
         {
             return CreateWeb(web, title, url, description, template, language, inheritPermissions, inheritNavigation);
@@ -572,9 +577,11 @@ namespace Microsoft.SharePoint.Client
             Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
             var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
             var webs = parentWeb.Webs;
-            var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl.ToUpperInvariant() == serverRelativeUrl.ToUpperInvariant()));
+            // NOTE: Predicate does not take into account a required case-insensitive comparison
+            //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
+            parentWeb.Context.Load(webs);
             parentWeb.Context.ExecuteQuery();
-            var existingWeb = results.FirstOrDefault();
+            var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
                 LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, "Deleting web '{0}'.", serverRelativeUrl);
@@ -632,6 +639,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="siteUrl">Fully qualified URL to the sub site</param>
         /// <returns>true if exists, false otherwise</returns>
         [Obsolete("Should use Context.WebExistsFullUrl(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SiteExists(this Web web, string siteUrl)
         {
             return WebExistsFullUrl(web.Context, siteUrl);
@@ -644,12 +652,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="siteUrl">Fully qualified URL to the sub site</param>
         /// <returns>true if exists, false otherwise</returns>
         [Obsolete("Should use Context.WebExists(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SubSiteExists(this Web web, string siteUrl)
         {
             return WebExistsFullUrl(web.Context, siteUrl);
         }
 
         [Obsolete("Should use WebExists(), to avoid confusion betweeen Site (collection) and Web (site)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SubSiteExistsWithUrl(this Web web, string url)
         {
             return WebExists(web, url);
@@ -672,9 +682,11 @@ namespace Microsoft.SharePoint.Client
             Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
             var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
             var webs = parentWeb.Webs;
-            var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl.ToUpperInvariant() == serverRelativeUrl.ToUpperInvariant()));
+            // NOTE: Predicate does not take into account a required case-insensitive comparison
+            //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
+            parentWeb.Context.Load(webs);
             parentWeb.Context.ExecuteQuery();
-            var exists = results.Any();
+            var exists = webs.Any(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return exists;
         }
 
