@@ -4,9 +4,9 @@
 This sample shows how to provide app script part to SharePoint, which is using JavaScript from provider hosted app for building up the UI in SharePoint
 
 ### Walkthrough Video ###
-Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Wiki-Pages-in-Apps-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Wiki-Pages-in-Apps-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
+Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/App-Script-Parts-in-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/App-Script-Parts-in-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
-![](http://i.imgur.com/IBMsNa0.png)
+![](http://i.imgur.com/cpZnC76.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
