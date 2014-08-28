@@ -40,5 +40,5 @@ Detailed documentation in progress.
 Detailed documentation in progress.
 
 
-# Controlling avaialble site templates and page layouts for publishing webs using CSOM #
+# Controlling available site templates and page layouts for publishing webs using CSOM #
 Detailed documentation in progress.
