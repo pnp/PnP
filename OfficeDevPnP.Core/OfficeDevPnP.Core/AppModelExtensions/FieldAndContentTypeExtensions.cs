@@ -12,6 +12,8 @@ namespace Microsoft.SharePoint.Client
     public static class FieldAndContentTypeExtensions
     {
         const string FIELD_XML_FORMAT = @"<Field Type=""{0}"" Name=""{1}"" DisplayName=""{2}"" ID=""{3}"" Group=""{4}"" {5}/>";
+
+        #region Site Columns
         /// <summary>
         /// Create field to web remotely
         /// </summary>
@@ -109,91 +111,11 @@ namespace Microsoft.SharePoint.Client
             return field;
         }
 
-        /// <summary>
-        /// Can be used to create taxonomy field remotely to web. Associated to group and term set in the GetDefaultSiteCollectionTermStore 
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="mmsGroupName">Taxonomy group </param>
-        /// <param name="mmsTermSetName">Term set name</param>
-        /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName)
-        {
-            try
-            {
-                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                web.WireUpTaxonomyField(id, mmsGroupName, mmsTermSetName);
-                _field.Update();
-                web.Context.ExecuteQuery();
+        
 
-                return _field;
-            }
-            catch(Exception)
-            {
-                ///If there is an exception the hidden field might be present
-                FieldCollection _fields = web.Fields;
-                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
-          
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if(_field != null)
-                {
-                    _field.DeleteObject();
-                    web.Context.ExecuteQuery();
-                }
-                throw;
-            }
-        }
+        
 
-        /// <summary>
-        /// Wires up MMS field to the specified term set.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="field">Field to be wired up</param>
-        /// <param name="mmsGroupName">Taxonomy group</param>
-        /// <param name="mmsTermSetName">Term set name</param>
-        public static void WireUpTaxonomyField(this Web web, Field field, string mmsGroupName, string mmsTermSetName)
-        {
-            TermStore termStore = GetDefaultTermStore(web);
 
-            if (termStore == null)
-                throw new NullReferenceException("The default term store is not available.");
-
-            if (string.IsNullOrEmpty(mmsTermSetName))
-                throw new ArgumentNullException("mmsTermSetName", "The MMS term set is not specified.");
-
-            // get the term group and term set
-            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
-            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
-            web.Context.Load(termStore);
-            web.Context.Load(termSet);
-            web.Context.ExecuteQuery();
-
-            // set the SSP ID and Term Set ID on the taxonomy field
-            var taxField = web.Context.CastTo<TaxonomyField>(field);
-            taxField.SspId = termStore.Id;
-            taxField.TermSetId = termSet.Id;
-            taxField.Update();
-            web.Context.ExecuteQuery();
-        }
-
-        /// <summary>
-        /// Wires up MMS field to the specified term set.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Field ID to be wired up</param>
-        /// <param name="mmsGroupName">Taxonomy group</param>
-        /// <param name="mmsTermSetName">Term set name</param>
-        public static void WireUpTaxonomyField(this Web web, Guid id, string mmsGroupName, string mmsTermSetName)
-        {
-            var field = web.Fields.GetById(id);
-            web.Context.Load(field);
-            web.WireUpTaxonomyField(field, mmsGroupName, mmsTermSetName);
-        }
 
         /// <summary>
         /// Creates fields from feature element xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
@@ -254,7 +176,116 @@ namespace Microsoft.SharePoint.Client
                 web.CreateField(field.OuterXml);
             }
         }
+        #endregion
 
+        #region List Fields
+        /// <summary>
+        /// Adds a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            return CreateField(list, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes);
+        }
+
+        /// <summary>
+        /// Add a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            list.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+
+            if (field != null)
+                throw new ArgumentException("id", "Field already exists");
+
+            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            field = fields.AddFieldAsXml(newFieldCAML, false, AddFieldOptions.AddFieldInternalNameHint);
+            list.Update();
+
+            list.Context.ExecuteQuery();
+
+            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
+            field.Title = displayName;
+            field.Update();
+            list.Context.Load(field);
+            return field;
+        }
+
+        /// <summary>
+        /// Adds field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "")
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            list.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+
+            if (field != null)
+                throw new ArgumentException("id", "Field already exists");
+
+            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
+            list.Context.Load(field);
+            list.Context.ExecuteQuery();
+
+            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
+            field.Title = displayName;
+            field.Update();
+            list.Context.Load(field);
+            list.Context.ExecuteQuery();
+            return field;
+        }
+
+        /// <summary>
+        /// Adds a field to a list
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="fieldAsXml">The XML declaration of SiteColumn definition</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, string fieldAsXml)
+        {
+            FieldCollection fields = list.Fields;
+            list.Context.Load(fields);
+            list.Context.ExecuteQuery();
+
+            Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
+            list.Update();
+
+            list.Context.ExecuteQuery();
+
+            return field;
+        }
+
+        #endregion
 
         public static void CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
         {
@@ -335,36 +366,12 @@ namespace Microsoft.SharePoint.Client
                 string MMSGroupName = mmsfield.Attributes["MMSGroupName"].Value;
                 string TermSet = mmsfield.Attributes["TermSet"].Value;
 
-                FieldAndContentTypeExtensions.WireUpTaxonomyField(web, new Guid(fieldGuid), MMSGroupName, TermSet);
+                TaxonomyExtensions.WireUpTaxonomyField(web, new Guid(fieldGuid), MMSGroupName, TermSet);
             }
         }
 
 
-        /// <summary>
-        /// Private method used for resolving taxonomy term set for taxonomy field
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <returns></returns>
-        private static TermStore GetDefaultTermStore(Web web)
-        {
-            TermStore termStore = null;
-            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
-            web.Context.Load(taxonomySession,
-                ts => ts.TermStores.Include(
-                    store => store.Name,
-                    store => store.Groups.Include(
-                        group => group.Name
-                        )
-                    )
-                );
-            web.Context.ExecuteQuery();
-            if (taxonomySession != null)
-            {
-                termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
-            }
-
-            return termStore;
-        }
+       
 
         /// <summary>
         /// Create new content type to web

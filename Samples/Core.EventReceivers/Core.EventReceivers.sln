@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.EventReceivers", "Core.EventReceivers\Core.EventReceivers.csproj", "{EE16F3AE-B0FB-445F-A047-F89593617CA9}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.EventReceiversWeb", "C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{E344F526-9665-4DD9-9150-11F6D296F60A}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		SharePoint Remote Event Receivers in the Host Web.docx = SharePoint Remote Event Receivers in the Host Web.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

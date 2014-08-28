@@ -24,23 +24,38 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Web web, string key, string scriptLinks)
         {
-            if (String.IsNullOrWhiteSpace(scriptLinks))
+            return web.AddJsLink(key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)));
+        }
+	
+        /// <summary>
+        /// Injects links to javascript files via a adding a custom action to the site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="key">Identifier (key) for the custom action that will be created</param>
+        /// <param name="scriptLinks">IEnumerable list of links to javascript files</param>
+        /// <returns>True if action was ok</returns>
+        public static bool AddJsLink(this Web web, string key, IEnumerable<string> scriptLinks)
+        {
+            if (scriptLinks.Count() == 0)
             {
-                throw new ArgumentException("scriptLinks");
+                throw new ArgumentException("Parameter scriptLinks can't be empty");
             }
 
-            StringBuilder scripts = new StringBuilder(@"
-var headID = document.getElementsByTagName('head')[0]; 
+            StringBuilder scripts = new StringBuilder(@" var headID = document.getElementsByTagName('head')[0]; 
 var");
-            var files = scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (var f in files)
+            foreach (var link in scriptLinks)
             {
-                scripts.AppendFormat(@"
+                if (!string.IsNullOrEmpty(link))
+                {
+                    scripts.AppendFormat(@"
 newScript = document.createElement('script');
 newScript.type = 'text/javascript';
 newScript.src = '{0}';
-headID.appendChild(newScript);", f);
+headID.appendChild(newScript);", link);
+                }
+                
             }
+
             bool ret = web.AddJsBlock(key, scripts.ToString());
             return ret;
         }

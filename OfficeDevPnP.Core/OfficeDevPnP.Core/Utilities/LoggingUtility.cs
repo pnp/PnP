@@ -21,6 +21,7 @@ namespace OfficeDevPnP.Core.Utilities
         AuthenticationContext = 1301,
 
         UploadFile = 1501,
+        InstallSolution = 1502,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -46,6 +47,7 @@ namespace OfficeDevPnP.Core.Utilities
     /// <summary>
     /// Logging event categories enumeration
     /// </summary>
+    [Obsolete("Use specific EventId instead.")]
     public enum EventCategory {
         Unknown,
         Mail,
@@ -102,7 +104,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <remarks>
         /// Applications should use their own trace source names.
         /// </remarks>
-        public static LoggingUtility Internal = new LoggingUtility("OfficeDevPnP.Core");
+        public static readonly LoggingUtility Internal = new LoggingUtility("OfficeDevPnP.Core");
 
         /// <summary>
         /// Creates a new instance with the specified TraceSource name.

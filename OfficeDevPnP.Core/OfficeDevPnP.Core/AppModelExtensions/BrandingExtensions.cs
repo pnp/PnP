@@ -23,6 +23,8 @@ namespace Microsoft.SharePoint.Client
         const string AvailablePageLayouts = "__PageLayouts";
         const string DefaultPageLayout = "__DefaultPageLayout";
         const string AvailableWebTemplates = "__WebTemplates";
+        const string InheritWebTemplates = "__InheritWebTemplates";
+        const string Inherit = "__Inherit";
 
         /// <summary>
         /// Deploy new theme to site collection. To be used with root web in site collection
@@ -50,7 +52,7 @@ namespace Microsoft.SharePoint.Client
         public static void DeployThemeToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
             DeployThemeToWebImplementation(web, rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
-        }        
+        }
 
         private static void DeployThemeToWebImplementation(Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
@@ -83,7 +85,7 @@ namespace Microsoft.SharePoint.Client
         public static bool ThemeEntryExists(this Web web, string themeName)
         {
             // Let's get instance to the composite look gallery
-            List themesList = web.GetCatalog(124);
+            List themesList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
             web.Context.Load(themesList);
             web.Context.ExecuteQuery();
 
@@ -173,7 +175,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, "Adding theme option '{0}' to '{1}'", themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery of specific site
-            List themesOverviewList = web.GetCatalog(124);
+            List themesOverviewList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
             web.Context.Load(themesOverviewList);
             web.Context.ExecuteQuery();
             // Is the item already in the list?
@@ -246,7 +248,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, "Setting theme '{0}' for '{1}'", themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery
-            List themeList = rootWeb.GetCatalog(124);
+            List themeList = rootWeb.GetCatalog((int)ListTemplateType.DesignCatalog);
             rootWeb.Context.Load(themeList);
             LoggingUtility.Internal.TraceVerbose("Getting theme list (catalog 124)");
             rootWeb.Context.ExecuteQuery();
@@ -266,7 +268,7 @@ namespace Microsoft.SharePoint.Client
                         </Where>
                      </Query>
                 </View>";
-                
+
                 // Let's update the theme name accordingly
                 camlString = string.Format(camlString, themeName);
                 query.ViewXml = camlString;
@@ -349,7 +351,8 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
-        public static void DeployFileToThemeFolderSite(this Web web, string sourceFileAddress, string themeFolderVersion = "15") {
+        public static void DeployFileToThemeFolderSite(this Web web, string sourceFileAddress, string themeFolderVersion = "15")
+        {
             // Get the path to the file which we are about to deploy
             var fileBytes = System.IO.File.ReadAllBytes(sourceFileAddress);
             var fileName = Path.GetFileName(sourceFileAddress);
@@ -362,12 +365,12 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployThemeFile, "Deploying file '{0}' to '{1}' folder '{2}'.", fileName, web.Context.Url, themeFolderVersion);
 
             // Get the path to the file which we are about to deploy
-            List themesList = web.GetCatalog(123);
+            List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
 
             // get the theme list
             web.Context.Load(themesList);
             web.Context.ExecuteQuery();
-            
+
             Folder rootFolder = themesList.RootFolder;
             FolderCollection rootFolders = rootFolder.Folders;
             web.Context.Load(rootFolder);
@@ -404,7 +407,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, "Deploying page layout '{0}' to '{1}'.", fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
@@ -460,7 +463,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, "Deploying masterpage '{0}' to '{1}'.", fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
@@ -560,7 +563,7 @@ namespace Microsoft.SharePoint.Client
 
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
             query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
@@ -579,7 +582,7 @@ namespace Microsoft.SharePoint.Client
 
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
         {
-            List masterPageGallery = web.GetCatalog(116);
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
             query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.aspx</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
@@ -676,7 +679,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void SetSiteToInheritPageLayouts(this Web web)
         {
-            web.SetPropertyBagValue(DefaultPageLayout, "__inherit");
+            web.SetPropertyBagValue(DefaultPageLayout, Inherit);
         }
 
         /// <summary>
@@ -736,7 +739,7 @@ namespace Microsoft.SharePoint.Client
             //Save the xml entry to property bag
             web.SetPropertyBagValue(AvailableWebTemplates, propertyValue);
             //Set that templates are not inherited
-            web.SetPropertyBagValue("__InheritWebTemplates", "False");
+            web.SetPropertyBagValue(InheritWebTemplates, "False");
         }
 
         /// <summary>
@@ -766,5 +769,23 @@ namespace Microsoft.SharePoint.Client
             }
             (languages[key] as List<string>).Add(item.TemplateName);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="rootFolderRelativePath">The path relative to the root folder of the site, e.g. SitePages/Home.aspx</param>
+        public static void SetHomePage(this Web web, string rootFolderRelativePath)
+        {
+            Folder folder = web.RootFolder;
+
+            folder.WelcomePage = rootFolderRelativePath;
+
+            folder.Update();
+
+            web.Context.ExecuteQuery();
+        }
+
+
     }
 }

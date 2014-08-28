@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
@@ -133,7 +134,51 @@ namespace Microsoft.SharePoint.Client
                 folder.Context.Load(uploadFile);
                 folder.Context.ExecuteQuery();
             }
+        }
 
+        /// <summary>
+        /// Uploads a file to a server relative url
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
+        /// <param name="serverRelativeUrl">Full server relative destination url of the file on the server</param>
+        /// <param name="useWebDav">Use webdav uploads, better suitable for larger files.</param>
+        public static void UploadFileToServerRelativeUrl(this Web web, string filePath, string serverRelativeUrl, bool useWebDav = false)
+        {
+            if(!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))
+            {
+                serverRelativeUrl = UrlUtility.Combine(serverRelativeUrl, filePath);
+            }
+            var clientContext = web.Context as ClientContext;
+            if (useWebDav)
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                {
+                    clientContext.ExecuteQuery();
+                    Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, serverRelativeUrl, fs, true);
+                }
+            }
+            else
+            {
+                var files = web.RootFolder.Files;
+                clientContext.Load(files);
+
+                clientContext.ExecuteQuery();
+
+                if (files != null)
+                {
+                    using (FileStream stream = new FileStream(filePath, FileMode.Open))
+                    {
+                        FileCreationInformation createInfo = new FileCreationInformation();
+                        createInfo.ContentStream = stream;
+
+                        createInfo.Overwrite = true;
+                        createInfo.Url = serverRelativeUrl;
+                        files.Add(createInfo);
+                        clientContext.ExecuteQuery();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -311,5 +356,215 @@ namespace Microsoft.SharePoint.Client
         {
             return folder.FolderExists(folderName);
         }
+
+        /// <summary>
+        /// Publishes a file existing on a server url
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">the server relative url of the file to publish</param>
+        /// <param name="comment"></param>
+        public static void PublishFile(this Web web, string serverRelativeUrl, string comment)
+        {
+            File file = null;
+            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+            if (file.Exists)
+            {
+                file.Publish(comment);
+            }
+            web.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Approves a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url of the file to approve</param>
+        /// <param name="comment"></param>
+        public static void ApproveFile(this Web web, string serverRelativeUrl, string comment)
+        {
+            File file = null;
+            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+            if (file.Exists)
+            {
+                file.Approve(comment);
+            }
+            web.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Checks out a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkout</param>
+        public static void CheckOutFile(this Web web, string serverRelativeUrl)
+        {
+            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+
+            if (file.Exists)
+            {
+                if (file.CheckOutType == CheckOutType.None)
+                {
+                    file.CheckOut();
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks in a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkin</param>
+        public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
+        {
+            File file = web.GetFileByServerRelativeUrl(url);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+
+            if (file.Exists)
+            {
+                if (file.CheckOutType != CheckOutType.None)
+                {
+                    file.CheckIn(comment, checkinType);
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        private static string WildcardToRegex(string pattern)
+        {
+            return "^" + Regex.Escape(pattern).
+                               Replace(@"\*", ".*").
+                               Replace(@"\?", ".") + "$";
+        }
+
+
+        /// <summary>
+        /// Finds files in the web. Can be slow.
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="match">a wildcard pattern to match</param>
+        /// <returns></returns>
+        public static List<Microsoft.SharePoint.Client.File> FindFiles(this Web web, string match)
+        {
+            Folder rootFolder = web.RootFolder;
+            match = WildcardToRegex(match);
+            List<Microsoft.SharePoint.Client.File> files = new List<Microsoft.SharePoint.Client.File>();
+
+            ParseFiles(rootFolder, match, web.Context as ClientContext, ref files);
+
+            return files;
+        }
+
+      
+        private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<Microsoft.SharePoint.Client.File> foundFiles)
+        {
+
+            FileCollection files = folder.Files;
+            context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
+            context.Load(folder.Folders);
+            context.ExecuteQuery();
+            foreach (Microsoft.SharePoint.Client.File file in files)
+            {
+                if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
+                {
+
+                    foundFiles.Add(file);
+                }
+            }
+            foreach (Folder subfolder in folder.Folders)
+            {
+                ParseFiles(subfolder, match, context, ref foundFiles);
+            }
+        }
+
+        /// <summary>
+        /// Returns a file as string
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <returns></returns>
+        public static string GetFileAsString(this Web web, string serverRelativeUrl)
+        {
+            string returnString = string.Empty;
+
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            web.Context.Load(file);
+
+            web.Context.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            web.Context.ExecuteQuery();
+
+            using (Stream memStream = new MemoryStream())
+            {
+                CopyStream(stream.Value, memStream);
+
+                memStream.Position = 0;
+
+                StreamReader reader = new StreamReader(memStream);
+
+                returnString = reader.ReadToEnd();
+            }
+            return returnString;
+        }
+
+        /// <summary>
+        /// Saves a remote file to a local folder
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <param name="localPath">The local folder</param>
+        /// <param name="localFileName">The local filename. If null the filename of the file on the server will be used</param>
+        public static void SaveFileToLocal(this Web web, string serverRelativeUrl, string localPath, string localFileName = null)
+        {
+            var clientContext = web.Context as ClientContext;
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            clientContext.Load(file);
+
+            clientContext.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            clientContext.ExecuteQuery();
+
+            string fileOut;
+
+
+            if (!string.IsNullOrEmpty(localFileName))
+            {
+                fileOut = Path.Combine(localPath, localFileName);
+            }
+            else
+            {
+                fileOut = Path.Combine(localPath, file.Name);
+            }
+
+            using (Stream fileStream = new FileStream(fileOut, FileMode.Create))
+            {
+                CopyStream(stream.Value, fileStream);
+            }
+        }
+
+        private static void CopyStream(Stream source, Stream destination)
+        {
+            byte[] buffer = new byte[32768];
+            int bytesRead;
+            do
+            {
+                bytesRead = source.Read(buffer, 0, buffer.Length);
+                destination.Write(buffer, 0, bytesRead);
+            } while (bytesRead != 0);
+        }
+
     }
 }

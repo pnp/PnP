@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
@@ -854,8 +855,8 @@ namespace Microsoft.SharePoint.Client
             web.Update();
 
             web.Context.ExecuteQuery();
-            if(checkIndexed)
-            RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
+            if (checkIndexed)
+                RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
         }
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
@@ -1021,6 +1022,7 @@ namespace Microsoft.SharePoint.Client
 
         #endregion
 
+        #region Search
         /// <summary>
         /// Queues a web for a _full_ crawl the next incremental crawl
         /// </summary>
@@ -1034,6 +1036,106 @@ namespace Microsoft.SharePoint.Client
             }
             web.SetPropertyBagValue("vti_searchversion", searchversion + 1);
         }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                   in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                web.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = web.EventReceivers.Add(receiver);
+                web.Context.Load(def);
+                web.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this Web web, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this Web web, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in web.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = web.Context.LoadQuery(query);
+            web.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
 
         #region Localization
         /// <summary>
@@ -1058,6 +1160,43 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
         #endregion
+
+        /// <summary>
+        /// Uploads and installs a sandbox solution package (.WSP) file, replacing existing solution if necessary.
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest (required for the remove step)</param>
+        /// <param name="sourceFilePath">Path to the sandbox solution package (.WSP) file</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
+        public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
+        {
+            string fileName = Path.GetFileName(sourceFilePath);
+            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
+
+            var rootWeb = site.RootWeb;
+            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
+
+            var packageInfo = new DesignPackageInfo()
+            {
+                PackageName = fileName,
+                PackageGuid = packageGuid,
+                MajorVersion = majorVersion,
+                MinorVersion = minorVersion
+            };
+
+            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
+            DesignPackage.UnInstall(site.Context, site, packageInfo);
+            site.Context.ExecuteQuery();
+
+            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+            DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
+            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
+            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
+            site.Context.ExecuteQuery();
+        }
 
     }
 }

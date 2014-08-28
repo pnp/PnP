@@ -14,6 +14,104 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class ListExtensions
     {
+        #region Event Receivers
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="list">The list to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                     in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                list.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = list.EventReceivers.Add(receiver);
+                list.Context.Load(def);
+                list.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this List list, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+        
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
@@ -312,22 +410,28 @@ namespace Microsoft.SharePoint.Client
             return results.FirstOrDefault();
         }
 
-        public static List GetListByUrl(this Web web,string siteRelativeUrl)
+        /// <summary>
+        /// Get list by using Url
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        /// <param name="siteRelativeUrl">Site relative Url of list, e.g. /lists/testlist</param>
+        /// <returns></returns>
+        public static List GetListByUrl(this Web web, string siteRelativeUrl)
         {
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
-            if (!siteRelativeUrl.StartsWith("/")) siteRelativeUrl = "/" + siteRelativeUrl;
-            siteRelativeUrl = web.ServerRelativeUrl + siteRelativeUrl;
+            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, siteRelativeUrl);
+
             IEnumerable<List> lists = web.Context.LoadQuery(
                 web.Lists
                     .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
 
             web.Context.ExecuteQuery();
 
-            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(siteRelativeUrl.ToLower())).FirstOrDefault();
+            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(serverRelativeUrl.ToLower())).FirstOrDefault();
 
             if (foundList != null)
             {
@@ -479,13 +583,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="rowLimit"></param>
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
-        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null)
+        /// <param name="personal"></param>
+        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null, bool personal = false)
         {
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
             viewCreationInformation.RowLimit = rowLimit;
             viewCreationInformation.ViewFields = viewFields;
+            viewCreationInformation.PersonalView = personal;
             viewCreationInformation.SetAsDefaultView = setAsDefault;
             if (!string.IsNullOrEmpty(query))
             {
@@ -494,6 +600,48 @@ namespace Microsoft.SharePoint.Client
 
             list.Views.Add(viewCreationInformation);
             list.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Gets a view by Id
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewById(this List list, Guid id)
+        {
+            var q = from v in list.Views where v.Id == id select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+            list.Context.ExecuteQuery();
+            if (q.Any())
+            {
+                return (q.FirstOrDefault());
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a view by Name
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="name"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewByName(this List list, string name)
+        {
+            var q = from v in list.Views where v.Title == name select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
+            list.Context.ExecuteQuery();
+            if (q.Any())
+            {
+                return (q.FirstOrDefault());
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
