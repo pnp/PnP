@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core
         public static readonly Guid APPSIDELOADINGFEATUREID = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D");
         public static readonly Guid MINIMALDOWNLOADSTRATEGYFEATUREID = new Guid("87294c72-f260-42f3-a41b-981a2ffce37a");
 
-        internal const string EXCEPTION_MSG_INVALID_ARG = "{The argument {0}, is invalid or not supplied.";
+        internal const string EXCEPTION_MSG_INVALID_ARG = "The argument {0}, is invalid or not supplied.";
         internal const string FIELD_XML_FORMAT = @"<Field Type=""{0}"" Name=""{1}"" DisplayName=""{2}"" ID=""{3}"" Group=""{4}"" {5}/>";
         internal const string THEMES_DIRECTORY = "/_catalogs/theme/15/{0}";
         internal const string MASTERPAGE_SEATTLE = "/_catalogs/masterpage/seattle.master";

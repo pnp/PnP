@@ -577,7 +577,7 @@ namespace Microsoft.SharePoint.Client
 
             foreach (ContentType ct in contentTypes)
             {
-                if (ct.Name.ToLowerInvariant() == contentType.Name.ToString().ToLowerInvariant())
+                if (ct.Id.StringValue.Equals(contentType.Id.StringValue, StringComparison.OrdinalIgnoreCase))
                 {
                     // Already there, abort
                     return;

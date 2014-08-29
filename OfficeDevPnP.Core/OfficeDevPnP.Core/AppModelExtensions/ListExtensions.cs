@@ -122,7 +122,8 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(contentTypeName))
             {
-                throw new ArgumentException(string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName"));
+                var message = string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName");
+                throw new ArgumentNullException("contentTypeName", message);
             }
 
             ContentTypeCollection _cts = list.ContentTypes;
