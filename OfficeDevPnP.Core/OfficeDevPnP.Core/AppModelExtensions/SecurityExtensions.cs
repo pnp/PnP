@@ -76,7 +76,7 @@ namespace Microsoft.SharePoint.Client
                     web.AssociatedOwnerGroup.Update();
                 }
                 web.Context.ExecuteQuery();
-            }            
+            }
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Microsoft.SharePoint.Client
                 adminToRemove.Update();
                 web.Context.ExecuteQuery();
             }
-            
+
         }
 
         /// <summary>
@@ -174,27 +174,7 @@ namespace Microsoft.SharePoint.Client
             SiteProperties site = tenant.GetSitePropertiesByUrl(siteUrl.OriginalString, true);
             web.Context.Load(site);
             web.Context.ExecuteQuery();
-            return site.SharingCapability.ToString();            
-        }
-
-        /// <summary>
-        /// Sets the capability to share with external users on a site. Only works in Office 365 Multi-Tenant
-        /// </summary>
-        /// <param name="web">Tenant administration web</param>
-        /// <param name="siteUrl">The url of the site to set the sharing type on</param>
-        /// <param name="sharingCapability"></param>
-        public static void SetSiteSharingCapabilityTenant(this Web web, string siteUrl, Microsoft.Online.SharePoint.TenantManagement.SharingCapabilities sharingCapability)
-        {
-            Tenant tenant = new Tenant(web.Context);
-            var siteProps = tenant.GetSitePropertiesByUrl(siteUrl, true);
-            web.Context.Load(siteProps);
-            web.Context.ExecuteQuery();
-            if (siteProps != null)
-            {
-                siteProps.SharingCapability = sharingCapability;
-                siteProps.Update();
-                web.Context.ExecuteQuery();
-            }
+            return site.SharingCapability.ToString();
         }
 
         /// <summary>
@@ -287,7 +267,7 @@ namespace Microsoft.SharePoint.Client
                             InvitedBy = externalUser.InvitedBy,
                             UniqueId = externalUser.UniqueId,
                             WhenCreated = externalUser.WhenCreated
-                        });                        
+                        });
                     }
 
                 }
@@ -352,7 +332,7 @@ namespace Microsoft.SharePoint.Client
         {
             GroupCreationInformation groupCreationInformation = new GroupCreationInformation();
             groupCreationInformation.Title = groupName;
-            groupCreationInformation.Description = groupDescription;            
+            groupCreationInformation.Description = groupDescription;
             Group group = web.SiteGroups.Add(groupCreationInformation);
             if (groupIsOwner)
             {
@@ -361,7 +341,7 @@ namespace Microsoft.SharePoint.Client
 
             group.OnlyAllowMembersViewMembership = false;
             group.Update();
-            
+
             if (updateAndExecuteQuery)
             {
                 web.Context.ExecuteQuery();
@@ -466,7 +446,7 @@ namespace Microsoft.SharePoint.Client
         {
             User user = web.EnsureUser(userLoginName);
             web.Context.ExecuteQuery();
-            if(user!=null)
+            if (user != null)
             {
                 group.Users.AddUser(user);
                 web.Context.ExecuteQuery();
@@ -616,7 +596,7 @@ namespace Microsoft.SharePoint.Client
                         else
                         {
                             // Load the role definition to remove (e.g. contribute)
-                            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);                            
+                            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                             rdc.Remove(roleDefinition);
                         }
 
@@ -739,7 +719,7 @@ namespace Microsoft.SharePoint.Client
                     result = true;
                 }
             }
-            catch(Microsoft.SharePoint.Client.ServerException ex)
+            catch (Microsoft.SharePoint.Client.ServerException ex)
             {
                 if (ex.Message.IndexOf("Group cannot be found", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
