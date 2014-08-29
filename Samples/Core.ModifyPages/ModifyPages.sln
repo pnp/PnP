@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModifyPages", "ModifyPages\ModifyPages.csproj", "{6F64D3BF-8519-497C-8250-000935580650}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModifyPagesWeb", "ModifyPag
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dcouments", "Dcouments", "{B4468A84-E02C-447D-8212-7FF6A04FE090}"
 	ProjectSection(SolutionItems) = preProject
-		ModifyPages.docx = ModifyPages.docx
-		ModifyPages.txt = ModifyPages.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

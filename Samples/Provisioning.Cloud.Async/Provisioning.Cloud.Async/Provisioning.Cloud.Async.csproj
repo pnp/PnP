@@ -22,6 +22,7 @@
     <WorkflowPartId>{558451ae-44f8-44df-9d73-5925bf0e3a42}</WorkflowPartId>
     <CspkgPartId>{8ba456be-0e80-4988-85ee-2edf4aa1561a}</CspkgPartId>
     <SqlPackagePartId>{8544a405-9bc4-4de0-b798-ddf1004d28fe}</SqlPackagePartId>
+    <ActivePublishProfile>vesku-asyncsite - Web Deploy</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

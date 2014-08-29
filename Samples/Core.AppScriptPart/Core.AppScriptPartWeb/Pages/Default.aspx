@@ -16,7 +16,7 @@
         <h1>Scenario: Add script app part to host web</h1>
         In this scenario you'll learn how to inject app script part to host web, which still uses scripts and processes from the provider hosted app without app parts.
         <ul style="list-style-type: square;">
-            <li>How to create app script part which is refencing scripts from provider hosted app</li>
+            <li>How to create app script part which is referencing scripts from provider hosted app</li>
             <li>How to deploy app script web part to be available for use from web part gallery</li>
         </ul>
         <br />

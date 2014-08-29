@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.Async", "Provisioning.Cloud.Async\Provisioning.Cloud.Async.csproj", "{B7613ADD-F4B2-41EF-9D4E-5F9A8E233A0D}"
 EndProject
@@ -9,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.AsyncWeb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{241793ED-4422-4E18-B297-22C1084F9A4C}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

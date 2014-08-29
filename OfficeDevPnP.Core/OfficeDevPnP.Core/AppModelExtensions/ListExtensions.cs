@@ -14,6 +14,104 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static class ListExtensions
     {
+        #region Event Receivers
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="list">The list to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            var query = from receiver
+                     in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+            list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+
+            var receiverExists = query.Any();
+            if (receiverExists && force)
+            {
+                var receiver = query.FirstOrDefault();
+                receiver.DeleteObject();
+                list.Context.ExecuteQuery();
+                receiverExists = false;
+            }
+            EventReceiverDefinition def = null;
+
+            if (!receiverExists)
+            {
+                EventReceiverDefinitionCreationInformation receiver = new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = eventReceiverType;
+                receiver.ReceiverUrl = url;
+                receiver.ReceiverName = name;
+                receiver.Synchronization = synchronization;
+                def = list.EventReceivers.Add(receiver);
+                list.Context.Load(def);
+                list.Context.ExecuteQuery();
+            }
+            return def;
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverById(this List list, Guid id)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverId == id
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Returns an event receiver definition
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
+        {
+            IEnumerable<EventReceiverDefinition> receivers = null;
+            var query = from receiver
+                        in list.EventReceivers
+                        where receiver.ReceiverName == name
+                        select receiver;
+
+            receivers = list.Context.LoadQuery(query);
+            list.Context.ExecuteQuery();
+            if (receivers.Any())
+            {
+                return receivers.FirstOrDefault();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+        
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
@@ -24,7 +122,8 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(contentTypeName))
             {
-                throw new ArgumentException(string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName"));
+                var message = string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName");
+                throw new ArgumentNullException("contentTypeName", message);
             }
 
             ContentTypeCollection _cts = list.ContentTypes;
@@ -289,8 +388,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listName">List to operate on</param>
         public static Guid GetListID(this Web web, string listName)
         {
-            Guid ret = Guid.NewGuid();
-
+            if (string.IsNullOrEmpty(listName))
+                throw new ArgumentNullException("listName");
+            
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
             web.Context.ExecuteQuery();
@@ -306,28 +406,41 @@ namespace Microsoft.SharePoint.Client
         /// <returns>Loaded list instance matching to title or null</returns>
         public static List GetListByTitle(this Web web, string listTitle)
         {
+            if (string.IsNullOrEmpty(listTitle))
+                throw new ArgumentNullException("listTitle");
+            
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
         }
 
-        public static List GetListByUrl(this Web web,string siteRelativeUrl)
+        /// <summary>
+        /// Get list by using Url
+        /// </summary>
+        /// <param name="web">Site to be processed</param>
+        /// <param name="siteRelativeUrl">Site relative Url of list, e.g. /lists/testlist</param>
+        /// <returns></returns>
+        public static List GetListByUrl(this Web web, string siteRelativeUrl)
         {
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            if (string.IsNullOrEmpty(siteRelativeUrl))
+                throw new ArgumentNullException("siteRelativeUrl");
+            
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
-            if (!siteRelativeUrl.StartsWith("/")) siteRelativeUrl = "/" + siteRelativeUrl;
-            siteRelativeUrl = web.ServerRelativeUrl + siteRelativeUrl;
+            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, siteRelativeUrl);
+
             IEnumerable<List> lists = web.Context.LoadQuery(
                 web.Lists
                     .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
 
             web.Context.ExecuteQuery();
 
-            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.ToLower().StartsWith(siteRelativeUrl.ToLower())).FirstOrDefault();
+            List foundList = lists.FirstOrDefault(l =>
+                l.RootFolder.ServerRelativeUrl.StartsWith(serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
 
             if (foundList != null)
             {
@@ -354,6 +467,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath"></param>
         public static void CreateListViewsFromXMLFile(this Web web, string listUrl, string filePath)
         {
+            if (string.IsNullOrEmpty(listUrl))
+                throw new ArgumentNullException("listUrl");
+            
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+            
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
             CreateListViewsFromXML(web, listUrl, xd);
@@ -373,6 +492,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlString"></param>
         public static void CreateListViewsFromXMLString(this Web web, string listUrl, string xmlString)
         {
+            if (string.IsNullOrEmpty(listUrl))
+                throw new ArgumentNullException("listUrl");
+            
+            if (string.IsNullOrEmpty(xmlString))
+                throw new ArgumentNullException("xmlString");
+            
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
             CreateListViewsFromXML(web, listUrl, xd);
@@ -392,6 +517,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlDoc"></param>
         public static void CreateListViewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
         {
+            if (string.IsNullOrEmpty(listUrl))
+                throw new ArgumentNullException("listUrl");
+            
+            if (xmlDoc == null)
+                throw new ArgumentNullException("xmlDoc");
+            
             // Get instances to the list
             List list = web.GetList(listUrl);
             web.Context.Load(list);
@@ -414,6 +545,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath"></param>
         public static void CreateListViewsFromXMLFile(this List list, string filePath)
         {
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+            
+            if (!System.IO.File.Exists(filePath))
+                throw new System.IO.FileNotFoundException(filePath);
+            
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
             list.CreateListViewsFromXML(xd);
@@ -432,6 +569,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlString"></param>
         public static void CreateListViewsFromXMLString(this List list, string xmlString)
         {
+            if (string.IsNullOrEmpty(xmlString))
+                throw new ArgumentNullException("xmlString");
+            
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
             list.CreateListViewsFromXML(xd);
@@ -450,6 +590,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlDoc"></param>
         public static void CreateListViewsFromXML(this List list, XmlDocument xmlDoc)
         {
+            if (xmlDoc == null)
+                throw new ArgumentNullException("xmlDoc");
+            
             // Convert base type to string value used in the xml structure
             string listType = list.BaseType.ToString();
             // Get only relevant list views for matching base list type
@@ -479,13 +622,25 @@ namespace Microsoft.SharePoint.Client
         /// <param name="rowLimit"></param>
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
-        public static void CreateListView(this List list, string viewName, ViewType viewType, string[] viewFields, uint rowLimit, bool setAsDefault, string query = null)
+        /// <param name="personal"></param>
+        public static void CreateListView(this List list,
+                                            string viewName,
+                                            ViewType viewType,
+                                            string[] viewFields,
+                                            uint rowLimit,
+                                            bool setAsDefault,
+                                            string query = null,
+                                            bool personal = false)
         {
+            if (string.IsNullOrEmpty(viewName))
+                throw new ArgumentNullException("viewName");
+            
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
             viewCreationInformation.RowLimit = rowLimit;
             viewCreationInformation.ViewFields = viewFields;
+            viewCreationInformation.PersonalView = personal;
             viewCreationInformation.SetAsDefaultView = setAsDefault;
             if (!string.IsNullOrEmpty(query))
             {
@@ -496,80 +651,23 @@ namespace Microsoft.SharePoint.Client
             list.Context.ExecuteQuery();
         }
 
-
-        #region List Properties
         /// <summary>
-        /// Sets a key/value pair in the web property bag
+        /// Gets a view by Id
         /// </summary>
-        /// <param name="web">Web that will hold the property bag entry</param>
-        /// <param name="key">Key for the property bag entry</param>
-        /// <param name="value">Integer value for the property bag entry</param>
-        public static void SetPropertyBagValue(this List list, string key, int value)
+        /// <param name="list"></param>
+        /// <param name="id"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewById(this List list, Guid id)
         {
-            SetPropertyBagValueInternal(list, key, value);
-        }
-
-
-        /// <summary>
-        /// Sets a key/value pair in the list property bag
-        /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
-        /// <param name="key">Key for the property bag entry</param>
-        /// <param name="value">String value for the property bag entry</param>
-        public static void SetPropertyBagValue(this List list, string key, string value)
-        {
-            SetPropertyBagValueInternal(list, key, value);
-        }
-
-
-        /// <summary>
-        /// Sets a key/value pair in the list property bag
-        /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
-        /// <param name="key">Key for the property bag entry</param>
-        /// <param name="value">Value for the property bag entry</param>
-        private static void SetPropertyBagValueInternal(List list, string key, object value)
-        {
-            var props = list.RootFolder.Properties;
-            list.Context.Load(props);
+            if (id == Guid.Empty)
+                throw new ArgumentNullException("id");
+            
+            var q = from v in list.Views where v.Id == id select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();
-
-            props[key] = value;
-            list.Update();
-            list.Context.ExecuteQuery();
-        }
-
-        /// <summary>
-        /// Get int typed property bag value. If does not contain, returns default value.
-        /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
-        /// <param name="key">Key of the property bag entry to return</param>
-        /// <returns>Value of the property bag entry as integer</returns>
-        public static int? GetPropertyBagValueInt(this List list, string key, int defaultValue)
-        {
-            object value = GetPropertyBagValueInternal(list, key);
-            if (value != null)
+            if (q.Any())
             {
-                return (int)value;
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        /// <summary>
-        /// Get string typed property bag value. If does not contain, returns given default value.
-        /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
-        /// <param name="key">Key of the property bag entry to return</param>
-        /// <returns>Value of the property bag entry as string</returns>
-        public static string GetPropertyBagValueString(this List list, string key, string defaultValue)
-        {
-            object value = GetPropertyBagValueInternal(list, key);
-            if (value != null)
-            {
-                return (string)value;
+                return (q.FirstOrDefault());
             }
             else
             {
@@ -578,48 +676,27 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Type independent implementation of the property gettter.
+        /// Gets a view by Name
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
-        /// <param name="key">Key of the property bag entry to return</param>
-        /// <returns>Value of the property bag entry</returns>
-        private static object GetPropertyBagValueInternal(List list, string key)
+        /// <param name="list"></param>
+        /// <param name="name"></param>
+        /// <returns>returns null if not found</returns>
+        public static View GetViewByName(this List list, string name)
         {
-            var props = list.RootFolder.Properties;
-            list.Context.Load(props);
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+            
+            var q = from v in list.Views where v.Title == name select v;
+            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();
-            if (props.FieldValues.ContainsKey(key))
+            if (q.Any())
             {
-                return props.FieldValues[key];
+                return (q.FirstOrDefault());
             }
             else
             {
                 return null;
             }
         }
-
-        /// <summary>
-        /// Checks if the given property bag entry exists
-        /// </summary>
-        /// <param name="web">List to be processed</param>
-        /// <param name="key">Key of the property bag entry to check</param>
-        /// <returns>True if the entry exists, false otherwise</returns>
-        public static bool PropertyBagContainsKey(this List list, string key)
-        {
-            var props = list.RootFolder.Properties;
-            list.Context.Load(props);
-            list.Context.ExecuteQuery();
-            if (props.FieldValues.ContainsKey(key))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        #endregion
-
     }
 }

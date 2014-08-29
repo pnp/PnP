@@ -109,11 +109,18 @@ namespace Microsoft.SharePoint.Client
         /// <param name="siteUrl">Url of the site to operate on</param>
         public static void AddAdministratorsTenant(this Web web, String[] adminLogins, Uri siteUrl)
         {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+            
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+            
             Tenant tenant = new Tenant(web.Context);
 
             foreach (var admin in adminLogins)
             {
-                tenant.SetSiteAdmin(siteUrl.ToString(), admin, true);
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin, true);
                 var spAdmin = web.EnsureUser(admin);
                 web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
                 web.AssociatedOwnerGroup.Update();
@@ -128,13 +135,20 @@ namespace Microsoft.SharePoint.Client
         /// <param name="adminLogins">Array of admins loginnames to add</param>
         /// <param name="siteUrl">Url of the site to operate on</param>
         /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
-        public static void AddAdministratorsTenant(this Web web, List<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
+        public static void AddAdministratorsTenant(this Web web, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
         {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+            
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+            
             Tenant tenant = new Tenant(web.Context);
 
             foreach (UserEntity admin in adminLogins)
             {
-                tenant.SetSiteAdmin(siteUrl.ToString(), admin.LoginName, true);
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
                 var spAdmin = web.EnsureUser(admin.LoginName);
                 if (addToOwnersGroup)
                 {
@@ -170,6 +184,9 @@ namespace Microsoft.SharePoint.Client
         /// <returns>Sharing capabilities of the site collection</returns>
         public static string GetSharingCapabilitiesTenant(this Web web, Uri siteUrl)
         {
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+            
             Tenant tenant = new Tenant(web.Context);
             SiteProperties site = tenant.GetSitePropertiesByUrl(siteUrl.OriginalString, true);
             web.Context.Load(site);
@@ -231,6 +248,9 @@ namespace Microsoft.SharePoint.Client
         /// <returns>A list of <see cref="OfficeDevPnP.Core.Entities.ExternalUserEntity"/> objects</returns>
         public static List<ExternalUserEntity> GetExternalUsersForSiteTenant(this Web web, Uri siteUrl)
         {
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+            
             Tenant tenantAdmin = new Tenant(web.Context);
             Office365Tenant tenant = new Office365Tenant(web.Context);
             Site site = tenantAdmin.GetSiteByUrl(siteUrl.OriginalString);
@@ -294,6 +314,9 @@ namespace Microsoft.SharePoint.Client
         /// <returns>Integer group ID</returns>
         public static int GetGroupID(this Web web, string groupName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             return web.GetGroupID(null, groupName);
         }
 
@@ -306,6 +329,12 @@ namespace Microsoft.SharePoint.Client
         /// <returns>Integer group ID</returns>
         public static int GetGroupID(this Web web, Uri siteUrl, string groupName)
         {
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+            
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             int groupID = 0;
 
             var manageMessageGroup = web.SiteGroups.GetByName(groupName);
@@ -330,6 +359,9 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The created group</returns>
         public static Group AddGroup(this Web web, string groupName, string groupDescription, bool groupIsOwner, bool updateAndExecuteQuery = true)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             GroupCreationInformation groupCreationInformation = new GroupCreationInformation();
             groupCreationInformation.Title = groupName;
             groupCreationInformation.Description = groupDescription;            
@@ -388,6 +420,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userLoginName">Loginname of the user</param>
         public static void AddUserToGroup(this Web web, string groupName, string userLoginName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             //Ensure the user is known
             UserCreationInformation userToAdd = new UserCreationInformation();
             userToAdd.LoginName = userLoginName;
@@ -413,6 +451,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userLoginName">Login name of the user</param>
         public static void AddUserToGroup(this Web web, int groupId, string userLoginName)
         {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             Group group = web.SiteGroups.GetById(groupId);
             web.Context.Load(group);
             User user = web.EnsureUser(userLoginName);
@@ -432,6 +473,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="user">User object representing the user</param>
         public static void AddUserToGroup(this Web web, Group group, User user)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+            
+            if (user == null)
+                throw new ArgumentNullException("user");
+            
             group.Users.AddUser(user);
             web.Context.ExecuteQuery();
         }
@@ -444,6 +491,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userLoginName">Login name of the user</param>
         public static void AddUserToGroup(this Web web, Group group, string userLoginName)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+            
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             User user = web.EnsureUser(userLoginName);
             web.Context.ExecuteQuery();
             if(user!=null)
@@ -462,6 +515,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that user</param>
         public static void AddPermissionLevelToUser(this Web web, string userLoginName, RoleType permissionLevel, bool removeExistingPermissionLevels = false)
         {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
@@ -477,6 +533,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that group</param>
         public static void AddPermissionLevelToGroup(this Web web, string groupName, RoleType permissionLevel, bool removeExistingPermissionLevels = false)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -547,6 +606,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
         public static void RemovePermissionLevelFromUser(this Web web, string userLoginName, RoleType permissionLevel, bool removeAllPermissionLevels = false)
         {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
@@ -562,6 +624,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
         public static void RemovePermissionLevelFromGroup(this Web web, string groupName, RoleType permissionLevel, bool removeAllPermissionLevels = false)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -620,6 +685,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userLoginName">Loginname of the user</param>
         public static void RemoveUserFromGroup(this Web web, string groupName, string userLoginName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -641,6 +709,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="user">User object that needs to be removed</param>
         public static void RemoveUserFromGroup(this Web web, Group group, User user)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+            
+            if (user == null)
+                throw new ArgumentNullException("user");
+            
             group.Users.Remove(user);
             group.Update();
             web.Context.ExecuteQuery();
@@ -653,6 +727,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="groupName">Name of the group</param>
         public static void RemoveGroup(this Web web, string groupName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -669,6 +746,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="group">Group object to remove</param>
         public static void RemoveGroup(this Web web, Group group)
         {
+            if (group == null)
+                throw new ArgumentNullException("group");
+            
             GroupCollection groups = web.SiteGroups;
             groups.Remove(group);
             web.Context.ExecuteQuery();
@@ -683,6 +763,12 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if the user is in the group, false otherwise</returns>
         public static bool IsUserInGroup(this Web web, string groupName, string userLoginName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+            
             bool result = false;
 
             var group = web.SiteGroups.GetByName(groupName);
@@ -707,6 +793,9 @@ namespace Microsoft.SharePoint.Client
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         public static bool GroupExists(this Web web, string groupName)
         {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+            
             bool result = false;
 
             try
@@ -728,7 +817,7 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     //rethrow exception
-                    throw ex;
+                    throw;
                 }
             }
 

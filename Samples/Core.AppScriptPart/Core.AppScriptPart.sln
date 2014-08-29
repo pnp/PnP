@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppScriptPart", "Core.AppScriptPart\Core.AppScriptPart.csproj", "{C59F5388-EE67-4A2C-9008-B874479341CA}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppScriptPartWeb", "Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{CDABE020-E077-4BFE-8254-37D13A0BC724}"
 	ProjectSection(SolutionItems) = preProject
-		App Script Part.docx = App Script Part.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

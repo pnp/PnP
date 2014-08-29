@@ -225,6 +225,81 @@ namespace Microsoft.SharePoint.Client
             
             return true;
         }
+
+        /// <summary>
+        /// Returns all custom actions in a web
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <returns></returns>
+        public static IEnumerable<UserCustomAction> GetCustomActions(this Web web)
+        {
+            var clientContext = web.Context as ClientContext;
+
+            List<UserCustomAction> actions = new List<UserCustomAction>();
+
+            clientContext.Load(web.UserCustomActions);
+            clientContext.ExecuteQuery();
+
+            foreach (UserCustomAction uca in web.UserCustomActions)
+            {
+                actions.Add(uca);
+            }
+            return actions;
+        }
+
+        /// <summary>
+        /// Removes a custom action
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions"/></param>
+        public static void DeleteCustomAction(this Web web, Guid id)
+        {
+            var clientContext = web.Context as ClientContext;
+
+            clientContext.Load(web.UserCustomActions);
+            clientContext.ExecuteQuery();
+
+            foreach (UserCustomAction action in web.UserCustomActions)
+            {
+                if (action.Id == id)
+                {
+                    action.DeleteObject();
+                    clientContext.ExecuteQuery();
+                    break;
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Utility method to check particular custom action already exists on the web
+        /// </summary>
+        /// <param name="clientContext"></param>
+        /// <param name="name">Name of the custom action</param>
+        /// <returns></returns>
+        private static bool CustomActionAlreadyExists(ClientContext clientContext, string name)
+        {
+            if (clientContext == null)
+                throw new ArgumentNullException("clientContext");
+
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            clientContext.Load(clientContext.Web.UserCustomActions);
+            clientContext.ExecuteQuery();
+
+            var customActions = clientContext.Web.UserCustomActions.Cast<UserCustomAction>();
+            foreach (var customAction in customActions)
+            {
+                var customActionName = customAction.Name;
+                if (!string.IsNullOrEmpty(customActionName) &&
+                    customActionName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #endregion
     }
 }

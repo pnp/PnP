@@ -28,11 +28,27 @@ namespace Contoso.Core.EventReceiversWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // The following code gets the client context and Title property by using TokenHelper.
-            // To access other properties, the app may need to request permissions on the host web.
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+            // define initial script, needed to render the chrome control
+            string script = @"
+            function chromeLoaded() {
+                $('body').show();
+            }
 
-            
+            //function callback to render chrome after SP.UI.Controls.js loads
+            function renderSPChrome() {
+                //Set the chrome options for launching Help, Account, and Contact pages
+                var options = {
+                    'appTitle': document.title,
+                    'onCssLoaded': 'chromeLoaded()'
+                };
+
+                //Load the Chrome Control in the divSPChrome element of the page
+                var chromeNavigation = new SP.UI.Controls.Navigation('divSPChrome', options);
+                chromeNavigation.setVisible(true);
+            }";
+
+            //register script in page
+            Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);   
         }
     }
 }

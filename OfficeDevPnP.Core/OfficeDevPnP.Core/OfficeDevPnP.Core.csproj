@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -101,7 +102,7 @@
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
-    <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
     <Compile Include="Constants.cs" />
@@ -114,15 +115,12 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
-    <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
-    <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
-    <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
+    <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\HttpVariablesExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
