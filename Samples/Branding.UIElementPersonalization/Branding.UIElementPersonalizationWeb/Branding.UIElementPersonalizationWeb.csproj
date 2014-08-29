@@ -56,9 +56,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\JDP DEV\DEV\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
     </Reference>
-    <Reference Include="OfficeAMS.Core">
-      <HintPath>..\..\..\..\..\..\JDP DEV\DEV\OfficeAMS.Core\OfficeAMS.Core\bin\Debug\OfficeAMS.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
@@ -122,6 +119,12 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
