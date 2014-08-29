@@ -7,7 +7,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using OfficeAMS.Core;
+using OfficeDevPnP.Core;
 
 namespace Branding.UIElementPersonalizationWeb
 {
