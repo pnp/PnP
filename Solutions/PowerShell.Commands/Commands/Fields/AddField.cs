@@ -1,14 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using SPO = OfficeDevPnP.PowerShell.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -123,6 +116,8 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
 
                 }
+                ClientContext.Load(f);
+                ClientContext.ExecuteQuery();
                 WriteObject(f);
             }
         }
@@ -156,7 +151,6 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             string fieldString = string.Format(fieldXml,
                 displayName,
-                internalName,
                 internalName,
                 staticName,
                 fieldTypeString,

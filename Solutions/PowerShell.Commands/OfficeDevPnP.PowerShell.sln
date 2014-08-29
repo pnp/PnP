@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Cmd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.CmdletHelpGenerator", "CmdletHelpGenerator\OfficeDevPnP.PowerShell.CmdletHelpGenerator.csproj", "{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Core", "Core\OfficeDevPnP.PowerShell.Core.csproj", "{48D26F35-6053-4251-85FF-EE5D95AD42E2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9572E4E7-9612-4E9A-A29D-5EDD8F4D91D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
@@ -45,10 +43,6 @@ Global
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48D26F35-6053-4251-85FF-EE5D95AD42E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU

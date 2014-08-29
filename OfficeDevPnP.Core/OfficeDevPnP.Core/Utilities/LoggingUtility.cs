@@ -17,11 +17,14 @@ namespace OfficeDevPnP.Core.Utilities
         // B: 0 = syntax, 1 = control, 2 = connection, 3 = authentication, 9 = unknown
         //    4 = search, 5 = provisioning, 6 = branding, 7 = workflow
         // XX: sequential ids
+        Unknown = 0,
 
         AuthenticationContext = 1301,
-
+        
         UploadFile = 1501,
         InstallSolution = 1502,
+        CreateWeb = 1503,
+        CreateSiteCollection = 1504,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -42,6 +45,8 @@ namespace OfficeDevPnP.Core.Utilities
 
         SiteSearchUnhandledException = 5401,
 
+        DeleteWeb = 8501,
+        DeleteSiteCollection = 8502,
     }
 
     /// <summary>
@@ -94,9 +99,11 @@ namespace OfficeDevPnP.Core.Utilities
     ///   Install-Package Essential.Diagnostics.Config
     /// </code>
     /// </remarks>
-    public partial class LoggingUtility 
+    public sealed partial class LoggingUtility 
     {
         const int InitializeBehaviourEventId = 100;
+        static LoggingUtility _internal;
+        static readonly object _lockObj = new object();
 
         /// <summary>
         /// The Default trace source, which should be used for all internal logging.
@@ -104,7 +111,16 @@ namespace OfficeDevPnP.Core.Utilities
         /// <remarks>
         /// Applications should use their own trace source names.
         /// </remarks>
-        public static readonly LoggingUtility Internal = new LoggingUtility("OfficeDevPnP.Core");
+        public static LoggingUtility Internal {
+            get {
+                if (_internal == null) {
+                    lock (_lockObj) {
+                        _internal = new LoggingUtility("OfficeDevPnP.Core");
+                    }
+                }
+                return _internal;
+            }
+        }
 
         /// <summary>
         /// Creates a new instance with the specified TraceSource name.

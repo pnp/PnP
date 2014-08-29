@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeDevPnP.PowerShell.Commands.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
@@ -32,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
                 }
                 else if (_storedcredential != null)
                 {
-                    return OfficeDevPnP.PowerShell.Core.Utils.Credentials.GetCredential(_storedcredential);
+                    return CredentialManager.GetCredential(_storedcredential);
                 }
                 else
                 {

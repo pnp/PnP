@@ -1,5 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Core;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
 using System.Management.Automation.Host;
@@ -32,7 +32,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
             if (skipAdminCheck == false)
             {
-                if (SPOAdmin.IsTenantAdminSite(context))
+                if (IsTenantAdminSite(context))
                 {
                     connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
                 }
@@ -97,7 +97,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
             if (skipAdminCheck == false)
             {
-                if (SPOAdmin.IsTenantAdminSite(context))
+                if (IsTenantAdminSite(context))
                 {
                     connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
                 }
@@ -153,6 +153,23 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return null;
         }
 
+        private static bool IsTenantAdminSite(ClientContext clientContext)
+        {
+            try
+            {
+                Tenant tenant = new Tenant((ClientRuntimeContext)clientContext);
+                clientContext.ExecuteQuery();
+                return true;
+            }
+            catch (Microsoft.SharePoint.Client.ClientRequestException)
+            {
+                return false;
+            }
+            catch (Microsoft.SharePoint.Client.ServerException)
+            {
+                return false;
+            }
+        }
 
     }
 }

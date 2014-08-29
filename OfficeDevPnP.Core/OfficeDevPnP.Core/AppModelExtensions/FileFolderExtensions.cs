@@ -285,6 +285,9 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static bool FolderExists(this Folder parentFolder, string folderName)
         {
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
             var folderCollection = parentFolder.Folders;
             var exists = FolderExistsImplementation(folderCollection, folderName);
             return exists;
@@ -292,6 +295,12 @@ namespace Microsoft.SharePoint.Client
 
         private static bool FolderExistsImplementation(FolderCollection folderCollection, string folderName)
         {
+            if (folderCollection == null)
+                throw new ArgumentNullException("folderCollection");
+
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
             // TODO: Check for any other illegal characters in SharePoint
             if (folderName.Contains('/') || folderName.Contains('\\'))
             {
@@ -302,7 +311,7 @@ namespace Microsoft.SharePoint.Client
             folderCollection.Context.ExecuteQuery();
             foreach (Folder folder in folderCollection)
             {
-                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                if (folder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
@@ -338,12 +347,15 @@ namespace Microsoft.SharePoint.Client
 
         public static Folder ResolveSubFolder(this Folder folder, string folderName)
         {
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
             folder.Context.Load(folder);
             folder.Context.Load(folder.Folders);
             folder.Context.ExecuteQuery();
             foreach (Folder subFolder in folder.Folders)
             {
-                if (subFolder.Name.ToLowerInvariant() == folderName.ToLowerInvariant())
+                if (subFolder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return subFolder;
                 }

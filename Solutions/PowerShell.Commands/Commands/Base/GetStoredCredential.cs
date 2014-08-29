@@ -1,4 +1,5 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Utilities;
 using System;
 using System.Management.Automation;
 
@@ -14,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            WriteObject(PowerShell.Core.Utils.Credentials.GetCredential(Name));
+            WriteObject(CredentialManager.GetCredential(Name));
         }
     }
 }

@@ -71,6 +71,9 @@ namespace Microsoft.SharePoint.Client
 
         public static TermSetCollection GetTermSetsByName(this Site site, string name, int lcid = 1033)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
             TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
             TermStore store = session.GetDefaultSiteCollectionTermStore();
             var termsets = store.GetTermSetsByName(name, lcid);
@@ -82,6 +85,9 @@ namespace Microsoft.SharePoint.Client
 
         public static TermGroup GetTermGroupByName(this Site site, string name)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
             TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
             var store = session.GetDefaultSiteCollectionTermStore();
             IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Name == name);
@@ -98,6 +104,8 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static Term GetTermByName(this Site site, Guid termSetId, string term)
         {
+            if (string.IsNullOrEmpty(term))
+                throw new ArgumentNullException("term");
 
             TermCollection termMatches = null;
             ExceptionHandlingScope scope = new ExceptionHandlingScope(site.Context);
@@ -138,6 +146,9 @@ namespace Microsoft.SharePoint.Client
 
         public static Term AddTermToTermset(this Site site, Guid termSetId, string term, Guid termId)
         {
+            if (string.IsNullOrEmpty(term))
+                throw new ArgumentNullException("term");
+
             Term t = null;
             TaxonomySession tSession = TaxonomySession.GetTaxonomySession(site.Context);
             TermStore ts = tSession.GetDefaultSiteCollectionTermStore();

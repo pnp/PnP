@@ -1,7 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
