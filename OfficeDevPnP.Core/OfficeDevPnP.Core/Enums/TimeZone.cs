@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core.Enums
     /// </summary>
     public enum TimeZone
     {
+        None = 0,
         UTC_GREENWICH_MEAN_TIME_DUBLIN_EDINBURGH_LISBON_LONDON = 2,
         UTCPLUS0100_BRUSSELS_COPENHAGEN_MADRID_PARIS = 3,
         UTCPLUS0100_AMSTERDAM_BERLIN_BERN_ROME_STOCKHOLM_VIENNA = 4,

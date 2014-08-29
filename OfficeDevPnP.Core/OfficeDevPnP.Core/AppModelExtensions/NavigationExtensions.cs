@@ -279,12 +279,21 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         private static bool CustomActionAlreadyExists(ClientContext clientContext, string name)
         {
+            if (clientContext == null)
+                throw new ArgumentNullException("clientContext");
+
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
             clientContext.Load(clientContext.Web.UserCustomActions);
             clientContext.ExecuteQuery();
-            for (int i = 0; i < clientContext.Web.UserCustomActions.Count - 1; i++)
+
+            var customActions = clientContext.Web.UserCustomActions.Cast<UserCustomAction>();
+            foreach (var customAction in customActions)
             {
-                if (!string.IsNullOrEmpty(clientContext.Web.UserCustomActions[i].Name) &&
-                        clientContext.Web.UserCustomActions[i].Name.ToLowerInvariant() == name.ToLowerInvariant())
+                var customActionName = customAction.Name;
+                if (!string.IsNullOrEmpty(customActionName) &&
+                    customActionName.Equals(name, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

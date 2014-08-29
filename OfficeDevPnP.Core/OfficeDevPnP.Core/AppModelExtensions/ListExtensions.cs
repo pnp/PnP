@@ -546,7 +546,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
             
-            if (System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath))
                 throw new System.IO.FileNotFoundException(filePath);
             
             XmlDocument xd = new XmlDocument();
