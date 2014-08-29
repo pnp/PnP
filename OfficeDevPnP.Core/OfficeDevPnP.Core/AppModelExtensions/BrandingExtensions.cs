@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -25,11 +26,17 @@ namespace Microsoft.SharePoint.Client
         const string AvailableWebTemplates = "__WebTemplates";
         const string InheritWebTemplates = "__InheritWebTemplates";
         const string Inherit = "__Inherit";
-        const string THEMES_DIRECTORY = "/_catalogs/theme/15/{0}";
-        const string MASTERPAGE_SEATTLE = "/_catalogs/masterpage/seattle.master";
-        const string MASTERPAGE_DIRECTORY = "/_catalogs/masterpage/{0}";
-        const string MASTERPAGE_CONTENT_TYPE = "0x01010500B45822D4B60B7B40A2BFCC0995839404";
-        const string PAGE_LAYOUT_CONTENT_TYPE = "0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811";
+        const string CAML_QUERY_FIND_BY_FILENAME = @"
+                <View>
+                    <Query>                
+                        <Where>
+                            <Eq>
+                                <FieldRef Name='Name' />
+                                <Value Type='Text'>{0}</Value>
+                            </Eq>
+                        </Where>
+                     </Query>
+                </View>";
 
         /// <summary>
         /// Deploy new theme to site collection. To be used with root web in site collection
@@ -197,24 +204,24 @@ namespace Microsoft.SharePoint.Client
                 item["Title"] = themeName;
                 if (!string.IsNullOrEmpty(colorFileName))
                 {
-                    item["ThemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(THEMES_DIRECTORY, Path.GetFileName(colorFileName)));
+                    item["ThemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(colorFileName)));
                 }
                 if (!string.IsNullOrEmpty(fontFileName))
                 {
-                    item["FontSchemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
+                    item["FontSchemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
                 }
                 if (!string.IsNullOrEmpty(backgroundName))
                 {
-                    item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(THEMES_DIRECTORY, Path.GetFileName(backgroundName)));
+                    item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundName)));
                 }
                 // we use seattle master if anything else is not set
                 if (string.IsNullOrEmpty(masterPageName))
                 {
-                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, MASTERPAGE_SEATTLE);
+                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, Constants.MASTERPAGE_SEATTLE);
                 }
                 else
                 {
-                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(MASTERPAGE_DIRECTORY, Path.GetFileName(masterPageName)));
+                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterPageName)));
                 }
 
                 item["DisplayOrder"] = 11;
@@ -267,25 +274,14 @@ namespace Microsoft.SharePoint.Client
             // Double checking that theme exists
             if (rootWeb.ThemeEntryExists(themeName, themeList))
             {
-                CamlQuery query = new CamlQuery();
-                string camlString = @"
-                <View>
-                    <Query>                
-                        <Where>
-                            <Eq>
-                                <FieldRef Name='Name' />
-                                <Value Type='Text'>{0}</Value>
-                            </Eq>
-                        </Where>
-                     </Query>
-                </View>";
-
                 // Let's update the theme name accordingly
-                camlString = string.Format(camlString, themeName);
+                CamlQuery query = new CamlQuery();
+                // Find the theme by themeName
+                string camlString = string.Format(CAML_QUERY_FIND_BY_FILENAME, themeName);
                 query.ViewXml = camlString;
                 var found = themeList.GetItems(query);
                 rootWeb.Context.Load(found);
-                LoggingUtility.Internal.TraceVerbose("Getting theme");
+                LoggingUtility.Internal.TraceVerbose("Getting theme: {0}", themeName);
                 rootWeb.Context.ExecuteQuery();
                 if (found.Count > 0)
                 {
@@ -474,7 +470,7 @@ namespace Microsoft.SharePoint.Client
             listItem["Title"] = title;
             listItem["MasterPageDescription"] = description;
             // set the item as page layout
-            listItem["ContentTypeId"] = PAGE_LAYOUT_CONTENT_TYPE;
+            listItem["ContentTypeId"] = Constants.PAGE_LAYOUT_CONTENT_TYPE;
             // Set the associated content type ID property
             listItem["PublishingAssociatedContentType"] = string.Format(";#{0};#{1};#", associatedCt.Name, associatedCt.Id);
             listItem["UIVersion"] = Convert.ToString(15);
@@ -534,7 +530,7 @@ namespace Microsoft.SharePoint.Client
             listItem["Title"] = title;
             listItem["MasterPageDescription"] = description;
             // Set content type as master page
-            listItem["ContentTypeId"] = MASTERPAGE_CONTENT_TYPE;
+            listItem["ContentTypeId"] = Constants.MASTERPAGE_CONTENT_TYPE;
             listItem["UIVersion"] = uiVersion;
             listItem.Update();
             if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)

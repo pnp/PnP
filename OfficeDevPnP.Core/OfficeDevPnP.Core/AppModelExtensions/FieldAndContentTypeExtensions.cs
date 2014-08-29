@@ -11,7 +11,6 @@ namespace Microsoft.SharePoint.Client
 {
     public static class FieldAndContentTypeExtensions
     {
-        const string FIELD_XML_FORMAT = @"<Field Type=""{0}"" Name=""{1}"" DisplayName=""{2}"" ID=""{3}"" Group=""{4}"" {5}/>";
 
         #region Site Columns
         /// <summary>
@@ -74,7 +73,7 @@ namespace Microsoft.SharePoint.Client
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
             LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             web.Context.Load(field);
@@ -213,7 +212,7 @@ namespace Microsoft.SharePoint.Client
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
             LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
             field = fields.AddFieldAsXml(newFieldCAML, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
@@ -249,7 +248,7 @@ namespace Microsoft.SharePoint.Client
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = string.Format(FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
             LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             list.Context.Load(field);
