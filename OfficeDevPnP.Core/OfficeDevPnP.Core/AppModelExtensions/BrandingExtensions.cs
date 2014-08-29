@@ -563,6 +563,9 @@ namespace Microsoft.SharePoint.Client
 
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+                throw new ArgumentNullException("masterPageName");
+
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
             query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
@@ -572,9 +575,10 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
             foreach (var item in galleryItems)
             {
-                if (item["FileRef"].ToString().ToLowerInvariant().Contains(masterPageName.ToLowerInvariant()))
+                var fileRef = item["FileRef"].ToString();
+                if (fileRef.ToUpperInvariant().Contains(masterPageName.ToUpperInvariant()))
                 {
-                    return item["FileRef"].ToString().ToLowerInvariant();
+                    return fileRef.ToLowerInvariant();
                 }
             }
             return string.Empty;

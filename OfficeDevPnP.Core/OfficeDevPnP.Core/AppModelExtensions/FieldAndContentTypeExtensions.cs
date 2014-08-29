@@ -660,7 +660,7 @@ namespace Microsoft.SharePoint.Client
             IList<ContentTypeId> newOrder = new List<ContentTypeId>();
             foreach (ContentType ct in ctCol)
             {
-                if (ct.StringId.ToLowerInvariant().StartsWith(contentTypeId.ToLowerInvariant()))
+                if (ct.StringId.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
                 {
                     newOrder.Add(ct.Id);
                 }
@@ -854,7 +854,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
             {
-                if (item.Id.StringValue.ToLowerInvariant().StartsWith(contentTypeId.ToLowerInvariant()))
+                if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -913,7 +913,7 @@ namespace Microsoft.SharePoint.Client
 
             foreach (var item in ctCol)
             {
-                if (item.Id.StringValue.ToLowerInvariant().StartsWith(contentTypeId.ToLowerInvariant()))
+                if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -971,7 +971,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
             foreach (var item in fields)
             {
-                if (item.Id.ToString().ToLowerInvariant() == fieldId.ToString().ToLowerInvariant())
+                if (item.Id == fieldId)
                 {
                     return true;
                 }
@@ -1025,7 +1025,7 @@ namespace Microsoft.SharePoint.Client
             list.Context.ExecuteQuery();
             foreach (var item in fields)
             {
-                if (item.Id.ToString().ToLowerInvariant() == fieldId.ToString().ToLowerInvariant())
+                if (item.Id == fieldId)
                 {
                     return true;
                 }
@@ -1111,7 +1111,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
             {
-                if (item.Id.StringValue.ToLowerInvariant() == contentTypeId.ToLowerInvariant())
+                if (item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase))
                 {
                     return item;
                 }
