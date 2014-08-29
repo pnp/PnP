@@ -178,6 +178,26 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Sets the capability to share with external users on a site. Only works in Office 365 Multi-Tenant
+        /// </summary>
+        /// <param name="web">Tenant administration web</param>
+        /// <param name="siteUrl">The url of the site to set the sharing type on</param>
+        /// <param name="sharingCapability"></param>
+        public static void SetSiteSharingCapabilityTenant(this Web web, string siteUrl, Microsoft.Online.SharePoint.TenantManagement.SharingCapabilities sharingCapability)
+        {
+            Tenant tenant = new Tenant(web.Context);
+            var siteProps = tenant.GetSitePropertiesByUrl(siteUrl, true);
+            web.Context.Load(siteProps);
+            web.Context.ExecuteQuery();
+            if (siteProps != null)
+            {
+                siteProps.SharingCapability = sharingCapability;
+                siteProps.Update();
+                web.Context.ExecuteQuery();
+            }
+        }
+
+        /// <summary>
         /// Returns a list all external users in your tenant
         /// </summary>
         /// <param name="web">Tenant administration web</param>
