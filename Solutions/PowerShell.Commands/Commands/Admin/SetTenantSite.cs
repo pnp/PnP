@@ -1,6 +1,4 @@
-﻿
-
-using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
@@ -41,7 +39,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
         protected override void ExecuteCmdlet()
         {
-            ClientContext.Web.SetTenantSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
+            this.Tenant.SetSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
         }
     }
 

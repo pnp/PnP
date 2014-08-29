@@ -450,53 +450,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        /// <summary>
-        /// Sets tenant site Properties
-        /// </summary>
-        /// <param name="web"></param>
-        /// <param name="siteUrl"></param>
-        /// <param name="title"></param>
-        /// <param name="allowSelfServiceUpgrade"></param>
-        /// <param name="sharingCapability"></param>
-        /// <param name="storageMaximumLevel"></param>
-        /// <param name="storageWarningLevel"></param>
-        /// <param name="userCodeMaximumLevel"></param>
-        /// <param name="userCodeWarningLevel"></param>
-        public static void SetTenantSiteProperties(this Web web, string siteUrl,
-            string title = null,
-            Nullable<bool> allowSelfServiceUpgrade = null,
-            Nullable<SharingCapabilities> sharingCapability = null,
-            Nullable<long> storageMaximumLevel = null,
-            Nullable<long> storageWarningLevel = null,
-            Nullable<double> userCodeMaximumLevel = null,
-            Nullable<double> userCodeWarningLevel = null
-            )
-        {
-            Tenant tenant = new Tenant(web.Context);
-            var siteProps = tenant.GetSitePropertiesByUrl(siteUrl, true);
-            web.Context.Load(siteProps);
-            web.Context.ExecuteQuery();
-            if (siteProps != null)
-            {
-                if (allowSelfServiceUpgrade != null)
-                    siteProps.AllowSelfServiceUpgrade = allowSelfServiceUpgrade.Value;
-                if (sharingCapability != null)
-                    siteProps.SharingCapability = sharingCapability.Value;
-                if (storageMaximumLevel != null)
-                    siteProps.StorageMaximumLevel = storageMaximumLevel.Value;
-                if (storageWarningLevel != null)
-                    siteProps.StorageWarningLevel = storageMaximumLevel.Value;
-                if (userCodeMaximumLevel != null)
-                    siteProps.UserCodeMaximumLevel = userCodeMaximumLevel.Value;
-                if (userCodeWarningLevel != null)
-                    siteProps.UserCodeWarningLevel = userCodeWarningLevel.Value;
-                if (title != null)
-                    siteProps.Title = title;
-
-                siteProps.Update();
-                web.Context.ExecuteQuery();
-            }
-        }
+       
 
         #endregion
 

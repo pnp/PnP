@@ -103,6 +103,7 @@
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
+    <Compile Include="AppModelExtensions\TenantExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
     <Compile Include="Constants.cs" />
