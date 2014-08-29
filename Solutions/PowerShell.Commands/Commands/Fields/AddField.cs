@@ -116,6 +116,8 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
 
                 }
+                ClientContext.Load(f);
+                ClientContext.ExecuteQuery();
                 WriteObject(f);
             }
         }
@@ -149,7 +151,6 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             string fieldString = string.Format(fieldXml,
                 displayName,
-                internalName,
                 internalName,
                 staticName,
                 fieldTypeString,
