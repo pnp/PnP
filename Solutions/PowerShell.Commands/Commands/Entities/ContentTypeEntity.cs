@@ -24,6 +24,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Entities
         {
             _contextObject = ct;
             _name = ct.Name;
+            if(!ct.IsObjectPropertyInstantiated("StringId"))
+            {
+                ct.Context.Load(ct, c => c.StringId);
+                ct.Context.ExecuteQuery();
+            }
             _id = ct.StringId;
             _group = ct.Group;
             _description = ct.Description;
