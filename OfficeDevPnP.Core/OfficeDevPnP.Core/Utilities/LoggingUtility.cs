@@ -103,7 +103,7 @@ namespace OfficeDevPnP.Core.Utilities
     {
         const int InitializeBehaviourEventId = 100;
         static LoggingUtility _internal;
-        static object _lockObj = new object();
+        static readonly object _lockObj = new object();
 
         /// <summary>
         /// The Default trace source, which should be used for all internal logging.

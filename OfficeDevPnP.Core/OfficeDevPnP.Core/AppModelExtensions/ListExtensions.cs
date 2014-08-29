@@ -439,7 +439,8 @@ namespace Microsoft.SharePoint.Client
 
             web.Context.ExecuteQuery();
 
-            List foundList = lists.Where(l => l.RootFolder.ServerRelativeUrl.StartsWith(serverRelativeUrl, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+            List foundList = lists.FirstOrDefault(l =>
+                l.RootFolder.ServerRelativeUrl.StartsWith(serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
 
             if (foundList != null)
             {
