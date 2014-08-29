@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using System;
 using System.Management.Automation;
 
@@ -30,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     throw new Exception(Properties.Resources.NoContextPresent);
                 }
             }
-            WriteObject(PowerShell.Core.Utils.Health.GetHealthScore(url));
+            WriteObject(Utility.GetHealthScore(url));
         }
     }
 }

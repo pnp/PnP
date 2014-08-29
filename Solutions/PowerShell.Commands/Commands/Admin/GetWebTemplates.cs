@@ -1,13 +1,7 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Core;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.Commands.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {

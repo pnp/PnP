@@ -99,6 +99,7 @@
     <Compile Include="Entities\ViewEntity.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
     <Compile Include="ContentTypes\RemoveContentType.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Taxonomy\ImportTaxonomy.cs" />
     <Compile Include="Taxonomy\ExportTaxonomy.cs" />
     <Compile Include="Taxonomy\GetTaxonomySession.cs" />
+    <Compile Include="Utilities\CredentialManager.cs" />
     <Compile Include="Utilities\SendMail.cs" />
     <Compile Include="WebParts\AddWebPartToWebPartPage.cs" />
     <Compile Include="WebParts\AddWebPartToWikiPage.cs" />
@@ -197,10 +199,6 @@
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
       <Name>OfficeDevPnP.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\OfficeDevPnP.PowerShell.Core.csproj">
-      <Project>{48d26f35-6053-4251-85ff-ee5d95ad42e2}</Project>
-      <Name>OfficeDevPnP.PowerShell.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\HelpAttributes\OfficeDevPnP.PowerShell.CmdletHelpAttributes.csproj">
       <Project>{fdd50bbd-ae78-4b10-9549-0566686719ab}</Project>

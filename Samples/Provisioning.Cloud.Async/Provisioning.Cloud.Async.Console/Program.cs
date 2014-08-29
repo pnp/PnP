@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -118,20 +119,46 @@ namespace Provisioning.Cloud.Async.Console
                 }
             }
 
+            ApplyTemplateForCreatedSiteCollection(webUrl, token, realm);
+
+            return webUrl;
+        }
+
+        /// <summary>
+        /// Used to uplaod and apply branding to the newly created site. You could add new libraries and whatever needed.
+        /// </summary>
+        /// <param name="webUrl"></param>
+        /// <param name="token"></param>
+        /// <param name="realm"></param>
+        private static void ApplyTemplateForCreatedSiteCollection(string webUrl, string token, string realm)
+        {
             //get the new site collection
             var siteUri = new Uri(webUrl);
             token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
             using (var newWebContext = TokenHelper.GetClientContextWithAccessToken(siteUri.ToString(), token))
             {
-                var newWeb = newWebContext.Web;
-                newWebContext.Load(newWeb);
-                newWebContext.ExecuteQuery();
+                // Set the time out as high as possible
+                newWebContext.RequestTimeout = int.MaxValue;
 
-                // Do some branding just for the demo... could be much more complex stuff than this
-                SetThemeBasedOnName(newWebContext, newWeb, "Orange");
+                // Let's first upload the custom theme to host web
+                RemoteManager.DeployThemeToWeb(newWebContext.Web, "Garage",
+                                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagewhite.spcolor"),
+                                string.Empty,
+                                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagebg.jpg"),
+                                "seattle.master");
+
+                // Apply theme. We could upload a custom one as well or apply any other changes to newly created site
+                RemoteManager.SetThemeBasedOnName(newWebContext.Web, "Garage");
+
+                // Upload the assets to host web
+                RemoteManager.UploadLogoToHostWeb(newWebContext.Web);
+
+                // Set the properties accordingly
+                // This is waiting for 16 version of the CSOM update. Should be there on Sep.
+                //ctx.Web.SiteLogoUrl = ctx.Web.ServerRelativeUrl + "/SiteAssets/garagelogo.png";
+                //ctx.Web.Update();
+                //ctx.Web.Context.ExecuteQuery();
             }
-
-            return webUrl;
         }
 
         private static void SendEmailToRequestorAndNotifiedEmail(ClientContext ctx, ListItem listItem, string siteUrl)

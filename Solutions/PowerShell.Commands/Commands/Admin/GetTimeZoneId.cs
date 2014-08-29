@@ -1,11 +1,8 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -29,18 +26,56 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Match != null)
             {
-                WriteObject(SPOAdmin.FindZone(Match));
+                WriteObject(FindZone(Match));
             }
             else
             {
-                WriteObject(SPOAdmin.AllZones());
+                WriteObject(AllZones());
             }
+        }
+
+        private IEnumerable<Zone> FindZone(string match)
+        {
+            var zones = AllZones();
+
+            var results = zones.Where(x => x.Description.ToLower().IndexOf(match.ToLower()) > -1 || x.Identifier.ToLower().Contains(match.ToLower()));
+
+            return results;
         }
 
 
 
+        public IEnumerable<Zone> AllZones()
+        {
+            foreach (var zone in Enum.GetValues(typeof(OfficeDevPnP.Core.Enums.TimeZone)))
+            {
+                var description = zone.ToString();
+                var identifier = description.Split('_')[0];
+                identifier = identifier.Replace("PLUS", "+").Replace("MINUS", "-");
+                if (identifier.Length > 3)
+                {
+                    identifier = identifier.Substring(0, identifier.Length - 2) + ":" + identifier.Substring(identifier.Length - 2, 2);
+                }
 
+                description = description.Substring(description.IndexOf('_') + 1).Replace("_", " ");
 
+                yield return new Zone((int)zone, identifier, description);
 
+            }
+        }
+
+        public class Zone
+        {
+            public int Id { get; set; }
+            public string Description { get; set; }
+            public string Identifier { get; set; }
+
+            public Zone(int id, string identifier, string description)
+            {
+                this.Id = id;
+                this.Identifier = identifier;
+                this.Description = description;
+            }
+        }
     }
 }

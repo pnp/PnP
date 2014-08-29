@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             if (SPOnlineConnection.CurrentConnection.MinimalHealthScore != -1)
             {
-                int healthScore = PowerShell.Core.Utils.Health.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
+                int healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
                 if(healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
                 {
                     ExecuteCmdlet();
@@ -52,7 +53,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                         {
                             WriteWarning(string.Format(Properties.Resources.Retry0ServerNotHealthyWaiting1seconds, retry, SPOnlineConnection.CurrentConnection.RetryWait, healthScore));
                             Thread.Sleep(SPOnlineConnection.CurrentConnection.RetryWait * 1000);
-                            healthScore = PowerShell.Core.Utils.Health.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
+                            healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
                             if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
                             {
                                 ExecuteCmdlet();

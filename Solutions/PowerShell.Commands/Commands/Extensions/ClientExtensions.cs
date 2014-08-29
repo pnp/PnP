@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Core.Utils
+namespace OfficeDevPnP.PowerShell.Commands.Extensions
 {
-    public static class Extensions
+    public static class ClientExtensions
     {
         public static T Load<T>(this T collection) where T : ClientObjectCollection
         {
