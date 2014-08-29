@@ -1,7 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using System.Management.Automation;
-using SPO = OfficeDevPnP.PowerShell.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {

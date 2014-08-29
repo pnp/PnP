@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Automation;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using System.Management.Automation;
-using System.Security;
 
-namespace OfficeDevPnP.PowerShell.Core.Utils
+namespace OfficeDevPnP.PowerShell.Commands.Utilities
 {
-    public static class Credentials 
+    internal static class CredentialManager
     {
+
         public static PSCredential GetCredential(string Name)
         {
             PSCredential psCredential = null;
             IntPtr credPtr;
 
-            bool success = CredRead(Name, CRED_TYPE.GENERIC,0,out credPtr);
-            if(success)
+            bool success = CredRead(Name, CRED_TYPE.GENERIC, 0, out credPtr);
+            if (success)
             {
                 var critCred = new CriticalCredentialHandle(credPtr);
                 var cred = critCred.GetCredential();
@@ -25,7 +26,7 @@ namespace OfficeDevPnP.PowerShell.Core.Utils
                 var securePassword = new SecureString();
                 string credentialBlob = cred.CredentialBlob;
                 char[] passwordChars = credentialBlob.ToCharArray();
-                foreach(char c in passwordChars)
+                foreach (char c in passwordChars)
                 {
                     securePassword.AppendChar(c);
                 }
@@ -144,7 +145,5 @@ namespace OfficeDevPnP.PowerShell.Core.Utils
 
         [DllImport("Advapi32.dll", EntryPoint = "CredFree", SetLastError = true)]
         public static extern bool CredFree([In] IntPtr cred);
-
-
     }
 }

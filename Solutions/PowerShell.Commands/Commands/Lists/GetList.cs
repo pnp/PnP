@@ -1,14 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using SPO = OfficeDevPnP.PowerShell.Core;
 using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
