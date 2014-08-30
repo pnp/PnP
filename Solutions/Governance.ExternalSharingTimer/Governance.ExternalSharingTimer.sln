@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Governance.ExternalSharingTimer", "Governance.ExternalSharingTimer\Governance.ExternalSharingTimer.csproj", "{4F3C6BF9-57A3-425F-966C-529192EDC4B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Governance.ExternalSharingTimer.Web", "Governance.ExternalSharingTimer.Web\Governance.ExternalSharingTimer.Web.csproj", "{16B4ADC2-CCFF-43AC-BE3A-0DC84073603F}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Governance.ExternalSharingTimer.Data", "Governance.ExternalSharingTimer.Data\Governance.ExternalSharingTimer.Data.sqlproj", "{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F3C6BF9-57A3-425F-966C-529192EDC4B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3C6BF9-57A3-425F-966C-529192EDC4B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3C6BF9-57A3-425F-966C-529192EDC4B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3C6BF9-57A3-425F-966C-529192EDC4B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B4ADC2-CCFF-43AC-BE3A-0DC84073603F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B4ADC2-CCFF-43AC-BE3A-0DC84073603F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B4ADC2-CCFF-43AC-BE3A-0DC84073603F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B4ADC2-CCFF-43AC-BE3A-0DC84073603F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F95BFA-DACA-4AE5-923B-AC2CD28B7A95}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
