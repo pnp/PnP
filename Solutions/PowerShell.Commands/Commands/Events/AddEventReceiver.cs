@@ -4,8 +4,8 @@ using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsLifecycle.Register, "SPOEventReceiver")]
-    public class RegisterEventReceiver : SPOWebCmdlet
+    [Cmdlet(VerbsCommon.Add, "SPOEventReceiver")]
+    public class AddEventReceiver : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ParameterSetName = "List")]
         public SPOListPipeBind List;
@@ -32,12 +32,12 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (ParameterSetName == "List")
             {
                 var list = this.SelectedWeb.GetList(List);
-                WriteObject(list.RegisterRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
+                WriteObject(list.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
             }
             else
             {
                 Microsoft.SharePoint.Client.Web web = SelectedWeb;
-                WriteObject(this.SelectedWeb.RegisterRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
+                WriteObject(this.SelectedWeb.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
             }
 
         }
