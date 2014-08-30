@@ -1,4 +1,5 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
@@ -449,6 +450,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+       
+
         #endregion
 
         #region Web (site) query, creation and deletion
@@ -769,7 +772,22 @@ namespace Microsoft.SharePoint.Client
 
             LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
             DesignPackage.UnInstall(site.Context, site, packageInfo);
-            site.Context.ExecuteQuery();
+            try
+            {
+                site.Context.ExecuteQuery();
+            }
+            catch (ServerException ex)
+            {
+                // The execute query fails is the package does not already exist; would be better if we could test beforehand
+                if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
+                {
+                    LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
