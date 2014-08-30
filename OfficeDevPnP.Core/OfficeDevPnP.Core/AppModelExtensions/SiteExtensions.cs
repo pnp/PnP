@@ -971,7 +971,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="synchronization"></param>
         /// <param name="force">If True any event already registered with the same name will be removed first.</param>
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        [Obsolete("Use Web.AddRemoteEventReceiver()")]
         public static EventReceiverDefinition RegisterRemoteEventReceiver(this Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
+        {
+            return web.AddRemoteEventReceiver(name, url, eventReceiverType, synchronization, force);
+        }
+
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition AddRemoteEventReceiver(this Web web, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
         {
             var query = from receiver
                    in web.EventReceivers
