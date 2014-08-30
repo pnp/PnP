@@ -151,7 +151,7 @@
     <Compile Include="AppModelExtensions\PageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppModelExtensions\SecurityExtensions.cs" />
-    <Compile Include="AppModelExtensions\SiteExtensions.cs" />
+    <Compile Include="AppModelExtensions\WebExtensions.cs" />
     <Compile Include="Utilities\EncryptionUtility.cs" />
     <Compile Include="Utilities\JsonUtility.cs" />
     <Compile Include="Utilities\MailUtility.cs" />
