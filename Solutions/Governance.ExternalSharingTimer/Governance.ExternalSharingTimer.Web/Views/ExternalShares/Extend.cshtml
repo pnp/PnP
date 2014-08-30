@@ -1,0 +1,12 @@
+﻿@model Governance.ExternalSharingTimer.Web.ExternalShare
+
+@{
+    ViewBag.Title = "Extend";
+    int cutoff = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["CutoffDuration"]);
+}
+
+<h2>External Access Extended</h2>
+<div>
+    <hr />
+    <p>The external access for @Html.DisplayFor(model => model.LoginName) has been extended an additional @cutoff days for the site at <a href="@Html.DisplayFor(model => model.SiteCollectionUrl)">@Html.DisplayFor(model => model.SiteCollectionUrl)</a></p>
+</div>
