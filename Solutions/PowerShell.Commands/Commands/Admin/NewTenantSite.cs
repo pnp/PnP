@@ -68,7 +68,7 @@ available quota.
 
         protected override void ProcessRecord()
         {
-            ClientContext.Web.CreateSiteCollectionTenant(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid,RemoveDeletedSite,Wait);
+            this.Tenant.AddSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
         }
 
     }

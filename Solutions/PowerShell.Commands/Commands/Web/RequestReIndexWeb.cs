@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.ReIndexSite();
+            this.SelectedWeb.ReIndexWeb();
         }
     }
 }
