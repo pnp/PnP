@@ -60,6 +60,7 @@ Command | Description
 **Add-SPOContentType** | Creates a new content type
 **Add-SPOContentTypeToList** | Adds an existing content type to a list
 **Add-SPOCustomAction** | Adds a custom action to a site
+**Add-SPOEventReceiver** |	Registers an event receiver to a site/list
 **Add-SPOField** | Adds a new field
 **Add-SPOFieldToContentType** | Adds a field to an existing content type
 **Add-SPOFile** | Uploads a file to a site
@@ -110,7 +111,6 @@ Command | Description
 **New-SPOTenantSite** | Creates a new site collection in your tenant
 **New-SPOUser** | Equivalent to web.EnsureUser(user)
 **New-SPOWeb** | Creates a new web
-**Register-SPOEventReceiver** |	Registers an event receiver to a site/list
 **Remove-SPOApp** | Removes an app from the site contents
 **Remove-SPOContentType** | Removes a content types
 **Remove-SPOCustomAction** | Removes a custom action from a site
