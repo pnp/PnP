@@ -41,7 +41,7 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
-            if (ParameterSetName == "Url")
+            if (ParameterSetName == "Relative")
             {
                 if (!Url.ToLower().EndsWith(System.IO.Path.GetFileName(Path).ToLower()))
                 {
