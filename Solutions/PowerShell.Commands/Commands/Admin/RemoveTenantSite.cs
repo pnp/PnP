@@ -36,11 +36,11 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
             {
                 if (!FromRecycleBin)
                 {
-                    ClientContext.Web.DeleteSiteCollectionTenant(Url, !SkipRecycleBin);
+                    this.Tenant.DeleteSiteCollection(Url, !SkipRecycleBin);
                 }
                 else
                 {
-                    ClientContext.Web.DeleteSiteCollectionFromRecycleBinTenant(Url);
+                    this.Tenant.DeleteSiteCollectionFromRecycleBin(Url);
                 }
             }
         }

@@ -68,6 +68,9 @@
   <ItemGroup>
     <Compile Include="Admin\GetWebTemplates.cs" />
     <Compile Include="Admin\GetTimeZoneId.cs" />
+    <Compile Include="Admin\SetTenantSite.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Apps\RemoveApp.cs" />
     <Compile Include="Authentication\GetRealm.cs" />
     <Compile Include="Base\Configuration.cs" />
@@ -93,6 +96,8 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
+    <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Entities\SiteEntity.cs">
       <SubType>Code</SubType>
     </Compile>

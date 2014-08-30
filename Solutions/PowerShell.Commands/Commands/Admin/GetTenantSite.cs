@@ -16,7 +16,8 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
     public class GetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site")]
-        public string Identity;
+        [Alias("Identity")]
+        public string Url;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Detailed;
@@ -30,9 +31,9 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
             else
             {
 
-                if (!string.IsNullOrEmpty(Identity))
+                if (!string.IsNullOrEmpty(Url))
                 {
-                    var list = this.Tenant.GetSitePropertiesByUrl(Identity, Detailed);
+                    var list = this.Tenant.GetSitePropertiesByUrl(Url, Detailed);
                     list.Context.Load(list);
                     list.Context.ExecuteQuery();
                     WriteObject(list);

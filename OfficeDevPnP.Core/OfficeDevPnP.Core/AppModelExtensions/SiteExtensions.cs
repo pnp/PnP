@@ -1,4 +1,5 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
@@ -37,72 +38,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="wait">If true, processing will halt until the site collection has been created</param>
         /// <returns>Guid of the created site collection</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
+        [Obsolete("Use Tenant.AddSiteCollection()")]
         public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
-            if (removeFromRecycleBin)
-            {
-                if (CheckIfSiteExistsInTenant(web, properties.Url, SITE_STATUS_RECYCLED))
-                {
-                    web.DeleteSiteCollectionFromRecycleBinTenant(properties.Url);
-                }
-            }
-
             Tenant tenant = new Tenant(web.Context);
-            SiteCreationProperties newsite = new SiteCreationProperties();
-            newsite.Url = properties.Url;
-            newsite.Owner = properties.SiteOwnerLogin;
-            newsite.Template = properties.Template;
-            newsite.Title = properties.Title;
-            newsite.StorageMaximumLevel = properties.StorageMaximumLevel;
-            newsite.StorageWarningLevel = properties.StorageWarningLevel;
-            newsite.TimeZoneId = properties.TimeZoneId;
-            newsite.UserCodeMaximumLevel = properties.UserCodeMaximumLevel;
-            newsite.UserCodeWarningLevel = properties.UserCodeWarningLevel;
-            newsite.Lcid = properties.Lcid;
-
-            try
-            {
-                SpoOperation op = tenant.CreateSite(newsite);
-                web.Context.Load(tenant);
-                web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-                web.Context.ExecuteQuery();
-
-                if (wait)
-                {
-                    //check if site creation operation is complete
-                    while (!op.IsComplete)
-                    {
-                        System.Threading.Thread.Sleep(op.PollingInterval);
-                        op.RefreshLoad();
-                        if (!op.IsComplete)
-                        {
-                            try
-                            {
-                                web.Context.ExecuteQuery();
-                            }
-                            catch (WebException webEx)
-                            {
-                                // Context connection gets closed after action completed.
-                                // Calling ExecuteQuery again returns an error which can be ignored
-                                LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
-                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
-                {
-                    throw ex;
-                }
-            }
-
-            // Get site guid and return
-            var siteGuid = web.GetSiteGuidByUrlTenant(new Uri(properties.Url));
-
-            return siteGuid;
+            return tenant.AddSiteCollection(properties, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -113,36 +53,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="siteUrl">Url to the site collection</param>
         /// <param name="status">Status to check (Active, Creating, Recycled)</param>
         /// <returns>True if in status, false if not in status</returns>
+        [Obsolete("Use Tenant.CheckIfSiteExists()")]
         public static bool CheckIfSiteExistsInTenant(this Web web, string siteUrl, string status)
         {
-            bool ret = false;
-            //Get the site name
-            var url = new Uri(siteUrl);
-            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var UrlPath = url.PathAndQuery.Substring(0, idx);
-            var Name = url.PathAndQuery.Substring(idx);
-            var index = Name.IndexOf('/');
             Tenant tenant = new Tenant(web.Context);
-
-            //Judge whether this site collection is existing or not
-            if (index == -1)
-            {
-                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
-                web.Context.Load(properties);
-                web.Context.ExecuteQuery();
-                ret = properties.Status.Equals(status, StringComparison.OrdinalIgnoreCase);
-            }
-            //Judge whether this sub web site is existing or not
-            else
-            {
-                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
-                var subweb = site.OpenWeb(Name.Substring(index + 1));
-                web.Context.Load(subweb, w => w.Title);
-                web.Context.ExecuteQuery();
-                ret = true;
-            }
-            return ret;
+            return tenant.CheckIfSiteExists(siteUrl, status);
         }
 
         /// <summary>
@@ -160,26 +75,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userCodeWarningLevel">The user code quota warning level in points</param>
         /// <param name="lcid">The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's</param>
         /// <returns></returns>
+        [Obsolete("Use Tenant.AddSiteCollection()")]
         public static Guid CreateSiteCollectionTenant(this Web web, string url, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
                                                         int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
                                                         uint lcid, bool removeFromRecycleBin = false, bool wait = true)
         {
-            SiteEntity siteCol = new SiteEntity()
-            {
-                Url = url,
-                Title = title,
-                SiteOwnerLogin = siteOwnerLogin,
-                Template = template,
-                StorageMaximumLevel = storageMaximumLevel,
-                StorageWarningLevel = storageWarningLevel,
-                TimeZoneId = timeZoneId,
-                UserCodeMaximumLevel = userCodeMaximumLevel,
-                UserCodeWarningLevel = userCodeWarningLevel,
-                Lcid = lcid
-            };
-
-            return AddSiteCollectionTenant(web, siteCol, removeFromRecycleBin, wait);
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.AddSiteCollection(url, title, siteOwnerLogin, template, storageMaximumLevel, storageWarningLevel, timeZoneId, userCodeMaximumLevel, userCodeWarningLevel, lcid, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -189,66 +92,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="siteUrl">Url of the site collection to delete</param>
         /// <param name="useRecycleBin">Leave the deleted site collection in the site collection recycle bin</param>
         /// <returns>True if deleted</returns>
+        [Obsolete("Use Tenant.DeleteSiteCollection()")]
         public static bool DeleteSiteCollectionTenant(this Web web, string siteUrl, bool useRecycleBin)
         {
-            bool ret = false;
             Tenant tenant = new Tenant(web.Context);
-            SpoOperation op = tenant.RemoveSite(siteUrl);
-            web.Context.Load(tenant);
-            web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-            web.Context.ExecuteQuery();
-
-            //check if site creation operation is complete
-            while (!op.IsComplete)
-            {
-                System.Threading.Thread.Sleep(op.PollingInterval);
-                op.RefreshLoad();
-                if (!op.IsComplete)
-                {
-                    try
-                    {
-                        web.Context.ExecuteQuery();
-                    }
-                    catch (WebException webEx)
-                    {
-                        // Context connection gets closed after action completed.
-                        // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
-                    }
-                }
-            }
-
-            if (useRecycleBin)
-            {
-                return true;
-            }
-
-            // To delete Site collection completely, (may take a longer time)
-            op = tenant.RemoveDeletedSite(siteUrl);
-            web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-            web.Context.ExecuteQuery();
-
-            while (!op.IsComplete)
-            {
-                System.Threading.Thread.Sleep(op.PollingInterval);
-                op.RefreshLoad();
-                if (!op.IsComplete)
-                {
-                    try
-                    {
-                        web.Context.ExecuteQuery();
-                    }
-                    catch (WebException webEx)
-                    {
-                        // Context connection gets closed after action completed.
-                        // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
-                    }
-                }
-            }
-
-            ret = true;
-            return ret;
+            return tenant.DeleteSiteCollection(siteUrl, useRecycleBin);
         }
 
         /// <summary>
@@ -257,35 +105,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="siteUrl">URL of the site collection to delete</param>
         /// <returns>True if deleted</returns>
+        [Obsolete("Use Tenant.DeleteSiteCollection()")]
         public static bool DeleteSiteCollectionFromRecycleBinTenant(this Web web, string siteUrl)
         {
-            bool ret = false;
             Tenant tenant = new Tenant(web.Context);
-            SpoOperation op = tenant.RemoveDeletedSite(siteUrl);
-            web.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-            web.Context.ExecuteQuery();
-
-            while (!op.IsComplete)
-            {
-                System.Threading.Thread.Sleep(op.PollingInterval);
-                op.RefreshLoad();
-                if (!op.IsComplete)
-                {
-                    try
-                    {
-                        web.Context.ExecuteQuery();
-                    }
-                    catch (WebException webEx)
-                    {
-                        // Context connection gets closed after action completed.
-                        // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
-                    }
-                }
-            }
-
-            ret = true;
-            return ret;
+            return tenant.DeleteSiteCollectionFromRecycleBin(siteUrl);
         }
 
         /// <summary>
@@ -294,25 +118,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Tenant admin web</param>
         /// <param name="siteUrl">URL to the site collection</param>
         /// <returns>True if existing, false if not</returns>
+        [Obsolete("Use Tenant.DoesSiteExist()")]
         public static bool DoesSiteExistInTenant(this Web web, string siteUrl)
         {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_ACTIVE) ||
-                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_CREATING) ||
-                       web.CheckIfSiteExistsInTenant(siteUrl, SITE_STATUS_RECYCLED);
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                    LoggingUtility.LogError("Could not determine if site exists in tenant.", ex, EventCategory.Site);
-
-                return false;
-            }
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.DoesSiteExist(siteUrl);
         }
 
         /// <summary>
@@ -321,12 +131,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
         /// <returns>The Guid of a site collection</returns>
+        [Obsolete("Use Tenant.GetSiteGuidByUrl()")]
         public static Guid GetSiteGuidByUrlTenant(this Web web, string siteUrl)
         {
-            if (!string.IsNullOrEmpty(siteUrl))
-                throw new ArgumentNullException("siteUrl");
-
-            return web.GetSiteGuidByUrlTenant(new Uri(siteUrl));
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.GetSiteGuidByUrl(siteUrl);
         }
 
         /// <summary>
@@ -335,18 +144,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Tenant admin web</param>
         /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
         /// <returns>The Guid of a site collection</returns>
+        [Obsolete("Use Tenant.GetSiteGuidByUrl()")]
         public static Guid GetSiteGuidByUrlTenant(this Web web, Uri siteUrl)
         {
-            Guid siteGuid = Guid.Empty;
-
-            Site site = null;
             Tenant tenant = new Tenant(web.Context);
-            site = tenant.GetSiteByUrl(siteUrl.OriginalString);
-            web.Context.Load(site);
-            web.Context.ExecuteQuery();
-            siteGuid = site.Id;
-
-            return siteGuid;
+            return tenant.GetSiteGuidByUrl(siteUrl);
         }
 
         /// <summary>
@@ -356,17 +158,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="lcid"></param>
         /// <param name="compatibilityLevel">14 for SharePoint 2010, 15 for SharePoint 2013/SharePoint Online</param>
         /// <returns></returns>
+        [Obsolete("Use Tenant.GetWebTemplates()")]
         public static SPOTenantWebTemplateCollection GetWebTemplatesTenant(this Web web, uint lcid, int compatibilityLevel)
         {
             Tenant tenant = new Tenant(web.Context);
 
-            var templates = tenant.GetSPOTenantWebTemplates(lcid, compatibilityLevel);
-
-            web.Context.Load(templates);
-
-            web.Context.ExecuteQuery();
-
-            return templates;
+            return tenant.GetWebTemplates(lcid, compatibilityLevel);
         }
 
         /// <summary>
@@ -375,21 +172,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="siteUrl">URL to the site collection</param>
         /// <returns>True if active, false if not</returns>
+        [Obsolete("Use Tenant.IsSiteActive()")]
         public static bool IsSiteActiveTenant(this Web web, string siteUrl)
         {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, "Active");
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.StartsWith("Cannot get site"))
-                {
-                    return false;
-                }
-                LoggingUtility.LogError("Error finding if site is active tenant.", ex, EventCategory.Site);
-                throw;
-            }
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.IsSiteActive(siteUrl);
         }
 
         /// <summary>
@@ -398,30 +185,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="siteUrl">URL to the site collection</param>
         /// <returns>True if existing, false if not</returns>
+        [Obsolete("Use Tenant.SiteExists()")]
         public static bool SiteExistsInTenant(this Web web, string siteUrl)
         {
-            try
-            {
-                //Get the site name
-                Tenant tenant = new Tenant(web.Context);
-                var properties = tenant.GetSitePropertiesByUrl(siteUrl, false);
-                web.Context.Load(properties);
-                web.Context.ExecuteQuery();
-
-                // Will cause an exception if site URL is not there. Not optimal, but the way it works.
-                return true;
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.SiteExists(siteUrl);
         }
 
         /// <summary>
@@ -430,24 +198,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Tenant admin web</param>
         /// <param name="siteUrl">URL to the sub site</param>
         /// <returns>True if existing, false if not</returns>
+        [Obsolete("Use Tenant.SubSiteExists()")]
         public static bool SubSiteExistsInTenant(this Web web, string siteUrl)
         {
-            try
-            {
-                return web.CheckIfSiteExistsInTenant(siteUrl, "");
-            }
-            catch (Exception ex)
-            {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            Tenant tenant = new Tenant(web.Context);
+            return tenant.SubSiteExists(siteUrl);
         }
+
+       
 
         #endregion
 
@@ -769,7 +527,22 @@ namespace Microsoft.SharePoint.Client
 
             LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
             DesignPackage.UnInstall(site.Context, site, packageInfo);
-            site.Context.ExecuteQuery();
+            try
+            {
+                site.Context.ExecuteQuery();
+            }
+            catch (ServerException ex)
+            {
+                // The execute query fails is the package does not already exist; would be better if we could test beforehand
+                if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
+                {
+                    LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);

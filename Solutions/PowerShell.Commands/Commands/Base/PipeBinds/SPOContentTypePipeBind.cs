@@ -35,6 +35,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         }
 
 
+        public SPOContentTypePipeBind(ContentType contentType)
+        {
+            this._contentType = contentType;
+        }
+
         public string Id
         {
             get

@@ -34,7 +34,7 @@ PS:> New-SPOWeb -Title ""Project A Web"" -Url projectA -Description ""Informatio
         public SwitchParameter InheritNavigation = true;
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.CreateSite(Title, Url, Description, Template, Locale, !BreakInheritance,InheritNavigation);
+            this.SelectedWeb.CreateWeb(Title, Url, Description, Template, Locale, !BreakInheritance,InheritNavigation);
             WriteVerbose(string.Format(Properties.Resources.Web0CreatedAt1, Title, Url));
         }
 
