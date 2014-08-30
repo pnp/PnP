@@ -3,8 +3,6 @@
 ### Summary ###
 This solution shows how you can build a library of PowerShell commands that act towards SharePoint Online. The commands use CSOM and can work against both SharePoint Online as SharePoint On-Premises.
 
-***Notice***. *We are in progress of updating these commands to use the `[Core component](https://github.com/OfficeDev/PnP/tree/master/OfficeDevPnP.Core)`, so that code is shared cross provider hosted platform and the PowerShell commands for proper code. *reuse.
-
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
@@ -60,6 +58,7 @@ Command | Description
 --------|------------
 **Add-SPOApp** | Adds an app, uploads a local .app file to a site
 **Add-SPOContentType** | Creates a new content type
+**Add-SPOContentTypeToList** | Adds an existing content type to a list
 **Add-SPOCustomAction** | Adds a custom action to a site
 **Add-SPOField** | Adds a new field
 **Add-SPOFieldToContentType** | Adds a field to an existing content type
