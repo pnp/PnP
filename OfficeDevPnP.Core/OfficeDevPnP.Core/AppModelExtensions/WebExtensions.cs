@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// Class that deals with site (both site collection and web site) creation, status, retrieval and settings
     /// </summary>
-    public static class SiteExtensions
+    public static class WebExtensions
     {
         const string MSG_CONTEXT_CLOSED = "ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.";
         const string SITE_STATUS_ACTIVE = "Active";
