@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-08-29**
+* Removed OfficeDevPnP.PowerShell.Core project, not in use anymore as all cmdlets now make use of the OfficeDevPnP.Core project.
+
 **2014-08-27**
 * Split up Add-SPOWebPart in two cmdlets, Add-SPOWebPartToWikiPage and Add-SPOWebPartToWebPartPage, to reduce confusing parameter sets
 * Changed parameters of Add-SPOCustomAction cmdlet

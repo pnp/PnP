@@ -110,7 +110,7 @@
     <Compile Include="ContentTypes\RemoveContentType.cs" />
     <Compile Include="ContentTypes\GetContentType.cs" />
     <Compile Include="ContentTypes\AddContentType.cs" />
-    <Compile Include="Events\RegisterEventReceiver.cs" />
+    <Compile Include="Events\AddEventReceiver.cs" />
     <Compile Include="Events\GetEventReceiver.cs" />
     <Compile Include="Events\RemoveEventReceiver.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
