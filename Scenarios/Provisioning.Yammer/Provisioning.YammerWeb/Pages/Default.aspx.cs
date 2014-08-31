@@ -105,7 +105,7 @@ namespace Provisioning.YammerWeb
                                     string title, string description, string feedType, string yammerGroupName)
         {
             // Create new sub site
-            Web newWeb = hostWeb.CreateSite(title, url, description, template, 1033);
+            Web newWeb = hostWeb.CreateWeb(title, url, description, template, 1033);
 
             // Set theme for the site
             newWeb.SetThemeToSubWeb(hostWeb, "Orange");
