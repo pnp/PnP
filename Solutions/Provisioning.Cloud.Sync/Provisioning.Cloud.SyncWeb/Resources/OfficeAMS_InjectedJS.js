@@ -19,7 +19,7 @@ function OfficeAMSSubSite_OverrideLinkToAppUrl() {
     var value;
     ctx = new SP.ClientContext(appRootsiteUrl);
     rootWeb = ctx.get_web();
-    list = rootWeb.get_lists().getByTitle('OfficeAMSConfig');
+    list = rootWeb.get_lists().getByTitle('OfficeDevPnPConfig');
     ctx.load(list);
     ctx.executeQueryAsync(function () {
         // Get list items
