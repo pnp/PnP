@@ -287,3 +287,12 @@ also includes making it available for others (i.e. Publish). In PowerShell
 Cmdlets use Import-.
 
 
+Version folders
+--------------------
+All code should be version independent, meanign that code shuold not make any assumptions to 15 or 16 folders in the code unless the folder usage would work in both cases and the numeber is not meaning ful.
+
+
+Multilingual support
+--------------------
+Core component code cannot assume that the code is executed agains english language. Hardcoded references to library names are not acceptable for the core component implementation, like assuming that publishing site has "pages" library.
+
