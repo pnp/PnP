@@ -20,6 +20,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
     {
 
         public const string ScriptLocation = "ScriptLink";
+        public const string ConfigList = "OfficeDevPnPConfig";
 
         /// <summary>
         /// 
@@ -698,28 +699,37 @@ headID.appendChild(newScript);", f);
             var token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, tenantRootUri.Authority, realm).AccessToken;
             using (var adminContext = TokenHelper.GetClientContextWithAccessToken(tenantRootUri.ToString(), token))
             {
-                Web rootWeb = adminContext.Web;
-                adminContext.Load(rootWeb);
-                ListCollection listCollection = rootWeb.Lists;
-                adminContext.Load(listCollection, lists => lists.Include(list => list.Title).Where(list => list.Title == "OfficeAMSConfig"));
-                adminContext.ExecuteQuery();
+                //Check if config list exists and if not, create the list and SubSiteAppUrl item.
+                
+                //Using ExceptionHandlingScope for this so that only one call is made to the server instead of multiple calls. 
+                ExceptionHandlingScope scope = new ExceptionHandlingScope(adminContext);
 
-                if (listCollection.Count == 0)
+                using (scope.StartScope())
                 {
-                    ListCreationInformation listCreationInfo = new ListCreationInformation();
-                    listCreationInfo.Title = "OfficeAMSConfig";
-                    listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
-                    List oList = rootWeb.Lists.Add(listCreationInfo);
-                    Field oField = oList.Fields.AddFieldAsXml("<Field DisplayName='Value' Type='Text' />", true, AddFieldOptions.DefaultValue);
-                    adminContext.ExecuteQuery();
-                    ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-                    ListItem item = oList.AddItem(itemCreateInfo);
-                    item["Title"] = "SubSiteAppUrl";
-                    item["Value"] = "https://localhost:44323";
-                    item.Update();
-                    adminContext.ExecuteQuery();
-                    
+                    using (scope.StartTry())
+                    {
+                        List configList = adminContext.Web.Lists.GetByTitle(ConfigList);
+
+                        configList.Update();
+                    }
+
+                    using (scope.StartCatch())
+                    {
+                        ListCreationInformation listCreationInfo = new ListCreationInformation();
+                        listCreationInfo.Title = ConfigList;
+                        listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
+                        List configList = adminContext.Web.Lists.Add(listCreationInfo);
+                        Field oField = configList.Fields.AddFieldAsXml("<Field DisplayName='Value' Type='Text' />", true, AddFieldOptions.DefaultValue);
+                        
+                        ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                        ListItem item = configList.AddItem(itemCreateInfo);
+                        item["Title"] = "SubSiteAppUrl";
+                        item["Value"] = "https://localhost:44323";
+                        item.Update();
+                    }
                 }
+
+                adminContext.ExecuteQuery();
             }
         }
     }
