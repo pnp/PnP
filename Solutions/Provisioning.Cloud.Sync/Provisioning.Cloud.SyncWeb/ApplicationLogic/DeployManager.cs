@@ -202,7 +202,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
             // Use CSOM to uplaod the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(fullPathToLogo);
-            newFile.Url = themeAssetsFolder.ServerRelativeUrl + "/siteIcon-2129F729.themedpng";
+            newFile.Url = UrlUtility.EnsureTrailingSlash(themeAssetsFolder.ServerRelativeUrl) + "siteIcon-2129F729.themedpng";
             newFile.Overwrite = true;
             Microsoft.SharePoint.Client.File uploadFile = themeAssetsFolder.Files.Add(newFile);
             cc.Load(uploadFile);
@@ -653,7 +653,7 @@ headID.appendChild(newScript);", f);
             {
                 FileCreationInformation newFile = new FileCreationInformation();
                 newFile.Content = System.IO.File.ReadAllBytes(fullFilePath);
-                newFile.Url = folder.ServerRelativeUrl + "/" + Path.GetFileName(fullFilePath);
+                newFile.Url = UrlUtility.EnsureTrailingSlash(folder.ServerRelativeUrl) + Path.GetFileName(fullFilePath);
                 newFile.Overwrite = true;
                 Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(newFile);
                 context.Load(uploadFile);
