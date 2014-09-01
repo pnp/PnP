@@ -8,8 +8,8 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Add, "SPOField")]
     public class AddField : SPOWebCmdlet, IDynamicParameters
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "ListPara")]
-        [Parameter(Mandatory = true, ValueFromPipeline = true, ParameterSetName = "ListXML")]
+        [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListPara")]
+        [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListXML")]
         public SPOListPipeBind List;
 
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]

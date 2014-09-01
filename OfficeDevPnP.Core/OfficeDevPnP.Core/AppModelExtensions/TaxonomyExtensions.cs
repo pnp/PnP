@@ -604,31 +604,22 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
-            try
-            {
-                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                web.WireUpTaxonomyField(id, mmsGroupName, mmsTermSetName, multiValue);
-                _field.Update();
-                web.Context.ExecuteQuery();
+            TermStore termStore = GetDefaultTermStore(web);
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                ///If there is an exception the hidden field might be present
-                FieldCollection _fields = web.Fields;
-                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+            if (termStore == null)
+                throw new NullReferenceException("The default term store is not available.");
 
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.DeleteObject();
-                    web.Context.ExecuteQuery();
-                }
-                throw;
-            }
+            if (string.IsNullOrEmpty(mmsTermSetName))
+                throw new ArgumentNullException("mmsTermSetName", "The MMS term set is not specified.");
+
+            // get the term group and term set
+            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
+            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
+            web.Context.Load(termStore);
+            web.Context.Load(termSet);
+            web.Context.ExecuteQuery();
+
+            return web.CreateTaxonomyField(id, internalName, displayName, group, termSet, multiValue);
         }
 
         /// <summary>
@@ -646,12 +637,37 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+                if (!termSet.IsObjectPropertyInstantiated("TermStore"))
+                {
+                    web.Context.Load(termSet.TermStore);
+                    web.Context.ExecuteQuery();
+                }
+                var taxFieldId = Guid.NewGuid();
+                var fieldType = multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType";
+                var mult = multiValue ? "Mult=\"TRUE\"" : "Indexed=\"TRUE\"";
+                string taxField = string.Format(OfficeDevPnP.Core.Constants.TAXONOMY_FIELD_XML_FORMAT,
+                        fieldType,
+                        displayName,
+                        false,
+                        mult,
+                        internalName,
+                        termSet.TermStore.Id.ToString("D"),
+                        termSet.Id.ToString("D"),
+                        id.ToString("B"),
+                        taxFieldId.ToString("B"),
+                        group);
 
-                WireUpTaxonomyField(web, _field, termSet, multiValue);
-                _field.Update();
+                var _field = web.Fields.AddFieldAsXml(taxField, false, AddFieldOptions.AddFieldInternalNameHint);
 
+                web.Context.Load(_field);
                 web.Context.ExecuteQuery();
+
+                //var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+
+                //WireUpTaxonomyField(web, _field, termSet, multiValue);
+                //_field.Update();
+
+                //web.Context.ExecuteQuery();
 
                 return _field;
             }
@@ -686,31 +702,24 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
-            try
-            {
-                var _field = list.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                list.WireUpTaxonomyField(_field, mmsGroupName, mmsTermSetName, multiValue);
-                _field.Update();
-                list.Context.ExecuteQuery();
+            var clientContext = list.Context as ClientContext;
+            TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                ///If there is an exception the hidden field might be present
-                FieldCollection _fields = list.Fields;
-                list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                list.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+            if (termStore == null)
+                throw new NullReferenceException("The default term store is not available.");
 
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.DeleteObject();
-                    list.Context.ExecuteQuery();
-                }
-                throw;
-            }
+            if (string.IsNullOrEmpty(mmsTermSetName))
+                throw new ArgumentNullException("mmsTermSetName", "The MMS term set is not specified.");
+
+            // get the term group and term set
+            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
+            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
+            list.Context.Load(termStore);
+            list.Context.Load(termSet);
+            list.Context.ExecuteQuery();
+
+            return list.CreateTaxonomyField(id, internalName, displayName, group, termSet, multiValue);
+
         }
 
         /// <summary>
@@ -727,9 +736,29 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                var _field = list.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                list.WireUpTaxonomyField(_field, termSet, multiValue);
-                _field.Update();
+                if (!termSet.IsObjectPropertyInstantiated("TermStore"))
+                {
+                    list.Context.Load(termSet.TermStore);
+                    list.Context.ExecuteQuery();
+                }
+                var taxFieldId = Guid.NewGuid();
+                var fieldType = multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType";
+                var mult = multiValue ? "Mult=\"TRUE\"" : "Indexed=\"TRUE\"";
+                string taxField = string.Format(OfficeDevPnP.Core.Constants.TAXONOMY_FIELD_XML_FORMAT,
+                        fieldType,
+                        displayName,
+                        false,
+                        mult,
+                        internalName,
+                        termSet.TermStore.Id.ToString("D"),
+                        termSet.Id.ToString("D"),
+                        id.ToString("B"),
+                        taxFieldId.ToString("B"),
+                        group);
+
+                var _field = list.Fields.AddFieldAsXml(taxField, false, AddFieldOptions.AddFieldInternalNameHint);
+
+                list.Context.Load(_field);
                 list.Context.ExecuteQuery();
 
                 return _field;
@@ -777,13 +806,6 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             WireUpTaxonomyField(web, field, termSet, allowMultipleValues);
-
-            //// set the SSP ID and Term Set ID on the taxonomy field
-            //var taxField = web.Context.CastTo<TaxonomyField>(field);
-            //taxField.SspId = termStore.Id;
-            //taxField.TermSetId = termSet.Id;
-            //taxField.Update();
-            //web.Context.ExecuteQuery();
         }
 
         public static void WireUpTaxonomyField(this Web web, Field field, TermSet termSet, bool allowMultipleValues = false)
@@ -869,13 +891,6 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQuery();
 
             list.WireUpTaxonomyField(field, termSet, allowMultipleValues);
-
-            //// set the SSP ID and Term Set ID on the taxonomy field
-            //var taxField = clientContext.CastTo<TaxonomyField>(field);
-            //taxField.SspId = termStore.Id;
-            //taxField.TermSetId = termSet.Id;
-            //taxField.Update();
-            //clientContext.ExecuteQuery();
         }
 
         /// <summary>

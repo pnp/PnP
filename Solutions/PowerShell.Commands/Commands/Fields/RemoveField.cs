@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveField : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
-        public SPOFieldIdPipeBind Identity = new SPOFieldIdPipeBind();
+        public FieldPipeBind Identity = new FieldPipeBind();
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 1)]
         public SPOListPipeBind List;
@@ -21,16 +21,19 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             var list = this.SelectedWeb.GetList(List);
 
-            Field f = null;
+            Field f = Identity.Field;
             if (list != null)
             {
-                if (Identity.Id != Guid.Empty)
+                if (f == null)
                 {
-                    f = list.Fields.GetById(Identity.Id);
-                }
-                else if (!string.IsNullOrEmpty(Identity.Name))
-                {
-                    f = list.Fields.GetByInternalNameOrTitle(Identity.Name);
+                    if (Identity.Id != Guid.Empty)
+                    {
+                        f = list.Fields.GetById(Identity.Id);
+                    }
+                    else if (!string.IsNullOrEmpty(Identity.Name))
+                    {
+                        f = list.Fields.GetByInternalNameOrTitle(Identity.Name);
+                    }
                 }
                 if (f != null)
                 {
