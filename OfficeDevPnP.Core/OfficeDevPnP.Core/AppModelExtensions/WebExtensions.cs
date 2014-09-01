@@ -562,7 +562,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>All my site site collections</returns>
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
-            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND site:{0}", web.Context.Url);
+            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
             return web.SiteSearch(keywordQuery);
         }
 
@@ -582,8 +582,9 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="keywordQueryValue">Keyword query</param>
+        /// <param name="trimDublicates">Indicates if dublicates should be trimmed or not</param>
         /// <returns>All found site collections</returns>
-        public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue)
+        public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue, bool trimDublicates = true)
         {
             try
             {
