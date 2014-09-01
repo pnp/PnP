@@ -251,19 +251,21 @@ namespace Microsoft.SharePoint.Client
         }
 
         #endregion
-        
+
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
         /// <param name="list">The list</param>
         /// <param name="contentTypeName">The content type name to remove from the list</param>
-        /// <exception cref="System.ArgumentException">Thrown when a arguement is null or <see cref="String.Empty"/></exception>
+        /// <exception cref="System.ArgumentException">Thrown when contentTypeName is a zero-length string or contains only white space</exception>
+        /// <exception cref=" System.ArgumentNullException">contentTypeName is null.</exception>
         public static void RemoveContentTypeByName(this List list, string contentTypeName)
         {
             if (string.IsNullOrEmpty(contentTypeName))
             {
-                var message = string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName");
-                throw new ArgumentNullException("contentTypeName", message);
+                throw (contentTypeName == null)
+                  ? new ArgumentNullException("contentTypeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName");
             }
 
             ContentTypeCollection _cts = list.ContentTypes;
