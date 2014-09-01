@@ -79,12 +79,28 @@ namespace System
         }
         #endregion
 
-        #region [ MakeRelativeUrl ]
+        #region [ RelativeUrl ]
 
         public static string MakeRelativeUrl(string urlToProcess) {
             Uri uri = new Uri(urlToProcess);
             return uri.AbsolutePath;
-        } 
+        }
+
+        /// <summary>
+        /// Ensures that there is a trailing slash at the end of the url
+        /// </summary>
+        /// <param name="urlToProcess"></param>
+        /// <returns></returns>
+        public static string EnsureTrailingSlash(string urlToProcess) 
+        {
+            if (!urlToProcess.EndsWith("/"))
+            {
+                return urlToProcess + "/";
+            }
+
+            return urlToProcess;
+        }
         #endregion
+
     }
 }

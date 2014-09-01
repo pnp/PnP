@@ -116,8 +116,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
         public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
         {
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+
+            var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
             var serverRelativeUrl = UrlUtility.Combine(folder, page);
-            AddWebPartToWikiPage(web, serverRelativeUrl, webPart, row, col, addSpace);
+            AddWebPartToWikiPage(web, webServerRelativeUrl + serverRelativeUrl, webPart, row, col, addSpace);
         }
 
         /// <summary>
@@ -471,8 +475,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="page">Page to remove the web part from</param>
         public static void DeleteWebPart(this Web web, string folder, string title, string page)
         {
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+
+            var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
+
             var serverRelativeUrl = UrlUtility.Combine(folder, page);
-            DeleteWebPart(web, serverRelativeUrl, title);
+            
+            DeleteWebPart(web, webServerRelativeUrl + serverRelativeUrl, title);
         }
 
         /// <summary>
@@ -482,7 +492,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverRelativePageUrl">Server relative URL of the page to remove</param>
         /// <param name="title">Title of the web part that needs to be deleted</param>
         public static void DeleteWebPart(this Web web, string serverRelativePageUrl, string title)
-        {
+        {   
+           
 
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
