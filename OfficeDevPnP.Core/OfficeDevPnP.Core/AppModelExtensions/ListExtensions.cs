@@ -282,28 +282,7 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
-        /// <summary>
-        /// Removes a content type from a list/library 
-        /// </summary>
-        /// <param name="list">The list</param>
-        /// <param name="contentTypeName">The content type name to remove from the list</param>
-        [Obsolete("Use RemoveContentTypeByName")]
-        public static void RemoveContentType(this List list, string contentTypeName)
-        {
-            ContentTypeCollection _cts = list.ContentTypes;
-            list.Context.Load(_cts);
-
-            IEnumerable<ContentType> _results = list.Context.LoadQuery<ContentType>(_cts.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
-
-            ContentType _ct = _results.FirstOrDefault();
-            if (_ct != null)
-            {
-                _ct.DeleteObject();
-                list.Update();
-                list.Context.ExecuteQuery();
-            }
-        }
+    
         /// <summary>
         /// Adds a list to a site
         /// </summary>
