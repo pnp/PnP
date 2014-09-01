@@ -82,7 +82,7 @@
     <Compile Include="Base\GetHealthScore.cs" />
     <Compile Include="Base\ExecuteSPOQuery.cs" />
     <Compile Include="Base\DisconnectSPOnline.cs" />
-    <Compile Include="Base\PipeBinds\SPOFieldIdPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\FieldPipeBind.cs" />
     <Compile Include="Base\PipeBinds\SPOListPipeBind.cs" />
     <Compile Include="Base\PipeBinds\AppPipeBind.cs" />
     <Compile Include="Base\PipeBinds\GroupPipeBind.cs" />
@@ -227,10 +227,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\"$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
 
-"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -file "$(SolutionDir)\PostBuild.ps1" "$(ConfigurationName)" "$(TargetDir)
-</PostBuildEvent>
+"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -file "$(SolutionDir)\PostBuild.ps1" "$(ConfigurationName)" "$(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
