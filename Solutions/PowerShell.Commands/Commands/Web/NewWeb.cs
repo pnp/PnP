@@ -30,7 +30,7 @@ PS:> New-SPOWeb -Title ""Project A Web"" -Url projectA -Description ""Informatio
         [Parameter(Mandatory = false, HelpMessage="By default the subweb will inherit its security from its parent, specify this switch to break this inheritance")]
         public SwitchParameter BreakInheritance = false;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, HelpMessage="Specifies whether the site inherits navigation.")]
         public SwitchParameter InheritNavigation = true;
         protected override void ExecuteCmdlet()
         {
