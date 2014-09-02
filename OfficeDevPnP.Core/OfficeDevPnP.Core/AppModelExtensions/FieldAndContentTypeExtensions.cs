@@ -588,24 +588,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="defaultContent"></param>
         public static void AddContentTypeToList(this List list, ContentType contentType, bool defaultContent = false)
         {
+            if (contentType == null)
+                throw new ArgumentNullException("contentType");
+
+            if (list.ContentTypeExistsById(contentType.Id.StringValue))
+                return;
+
             list.ContentTypesEnabled = true;
             list.Update();
             list.Context.ExecuteQuery();
-            ContentTypeCollection contentTypes = list.ContentTypes;
-            list.Context.Load(contentTypes);
-            list.Context.ExecuteQuery();
 
-
-            foreach (ContentType ct in contentTypes)
-            {
-                if (ct.Id.StringValue.Equals(contentType.Id.StringValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    // Already there, abort
-                    return;
-                }
-            }
-
-            contentTypes.AddExistingContentType(contentType);
+            list.ContentTypes.AddExistingContentType(contentType);
             list.Context.ExecuteQuery();
             //set the default content type
             if (defaultContent)
