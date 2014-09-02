@@ -48,4 +48,4 @@ Check also new SharePoint Online Solution Pack for branding and provisioning. Th
 - [Download the package](http://www.microsoft.com/downloads/details.aspx?FamilyID=2c8011b0-441a-4bab-bf19-6b1009c7d8dd)
 - [MSDN Code Gallery (9 samples)](http://code.msdn.microsoft.com/SharePoint-2013-Sample-81b03d1e)
 
-You can find introduction to this SharePoint Online Solution Pack for branding and provisioning from following blog post - [Introduction to SharePoint Online Solution Pack for branding and provisioning released](http://t.co/QIkWNohEHe).
+You can find introduction to this SharePoint Online Solution Pack for branding and provisioning from following blog post - [Introduction to SharePoint Online Solution Pack for branding and provisioning released](http://t.co/QIkWNohEHe). 
