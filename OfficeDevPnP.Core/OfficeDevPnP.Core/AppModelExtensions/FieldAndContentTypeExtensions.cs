@@ -55,6 +55,21 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
+            return CreateField<Field>(web, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+        }
+
+        /// <summary>
+        /// Create field to web remotely
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
             if (string.IsNullOrEmpty(internalName))
                 throw new ArgumentNullException("internalName");
 
@@ -68,7 +83,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQuery();
 
-            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+            Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
 
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
@@ -81,7 +96,7 @@ namespace Microsoft.SharePoint.Client
             if (executeQuery)
                 web.Context.ExecuteQuery();
 
-            return field;
+            return web.Context.CastTo<TField>(field);
         }
 
         /// <summary>
@@ -107,11 +122,6 @@ namespace Microsoft.SharePoint.Client
 
             return field;
         }
-
-        
-
-        
-
 
 
         /// <summary>
@@ -186,9 +196,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField(list, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes);
+            return CreateField(list, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes, executeQuery);
         }
 
         /// <summary>
@@ -201,29 +211,9 @@ namespace Microsoft.SharePoint.Client
         /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "")
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            FieldCollection fields = list.Fields;
-            list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            list.Context.ExecuteQuery();
-
-            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
-
-            if (field != null)
-                throw new ArgumentException("id", "Field already exists");
-
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
-            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
-            field = fields.AddFieldAsXml(newFieldCAML, false, AddFieldOptions.AddFieldInternalNameHint);
-            list.Update();
-
-            list.Context.ExecuteQuery();
-
-            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
-            field.Title = displayName;
-            field.Update();
-            list.Context.Load(field);
-            return field;
+            return CreateField(list, id, internalName, fieldType, false, displayName, group, additionalXmlAttributes, executeQuery);
         }
 
         /// <summary>
@@ -237,13 +227,41 @@ namespace Microsoft.SharePoint.Client
         /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "")
+        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
+            return CreateField<Field>(list, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+        }
+
+        /// <summary>
+        /// Adds field to a list
+        /// </summary>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <param name="additionalXmlAttributes"></param>
+        /// <param name="executeQuery"></param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
+            if (string.IsNullOrEmpty(internalName))
+                throw new ArgumentNullException("internalName");
+
+            if (string.IsNullOrEmpty(fieldType))
+                throw new ArgumentNullException("fieldType");
+
+            if (string.IsNullOrEmpty(displayName))
+                throw new ArgumentNullException("displayName");
+
             FieldCollection fields = list.Fields;
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             list.Context.ExecuteQuery();
 
-            var field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
+            Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName) as TField;
 
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
@@ -258,8 +276,11 @@ namespace Microsoft.SharePoint.Client
             field.Title = displayName;
             field.Update();
             list.Context.Load(field);
-            list.Context.ExecuteQuery();
-            return field;
+
+            if (executeQuery)
+                list.Context.ExecuteQuery();
+
+            return list.Context.CastTo<TField>(field);
         }
 
         /// <summary>
