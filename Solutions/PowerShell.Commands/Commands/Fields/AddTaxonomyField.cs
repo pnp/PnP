@@ -45,6 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
+            Field field = null;
             var termSet = ClientContext.Site.GetTaxonomyItemByPath(TermSetPath, TermPathDelimiter);
             Guid id = Id.Id;
             if (id == Guid.Empty)
@@ -56,14 +57,13 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 var list = this.SelectedWeb.GetList(List);
 
-                //var termStore = (TermStore) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetDefaultKeywordsTermStore(ClientContext);
-                //var termSet = (TermSet) OfficeDevPnP.PowerShell.Core.SPOTaxonomy.GetTaxonomyItemByPath(TermSetPath, ClientContext);
-                list.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+                field = list.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
             }
             else
             {
-                this.SelectedWeb.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+                field = this.SelectedWeb.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
             }
+            WriteObject(field);
         }
 
     }

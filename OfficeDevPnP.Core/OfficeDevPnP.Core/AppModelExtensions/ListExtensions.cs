@@ -411,13 +411,13 @@ namespace Microsoft.SharePoint.Client
             return created;
         }
 
-        public static void CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
+        public static void CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
             // Call actual implementation
-            CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
+            CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
         }
 
-        private static void CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
+        private static void CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enabledContentTypes = false)
         {
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
@@ -434,7 +434,10 @@ namespace Microsoft.SharePoint.Client
                 newList.EnableVersioning = true;
                 newList.EnableMinorVersions = true;
             }
-
+            if(enabledContentTypes)
+            {
+                newList.ContentTypesEnabled = true;
+            }
             if (updateAndExecuteQuery)
             {
                 newList.Update();
