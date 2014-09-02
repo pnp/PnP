@@ -251,19 +251,21 @@ namespace Microsoft.SharePoint.Client
         }
 
         #endregion
-        
+
         /// <summary>
         /// Removes a content type from a list/library by name
         /// </summary>
         /// <param name="list">The list</param>
         /// <param name="contentTypeName">The content type name to remove from the list</param>
-        /// <exception cref="System.ArgumentException">Thrown when a arguement is null or <see cref="String.Empty"/></exception>
+        /// <exception cref="System.ArgumentException">Thrown when contentTypeName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">contentTypeName is null</exception>
         public static void RemoveContentTypeByName(this List list, string contentTypeName)
         {
             if (string.IsNullOrEmpty(contentTypeName))
             {
-                var message = string.Format(Constants.EXCEPTION_MSG_INVALID_ARG, "contentTypeName");
-                throw new ArgumentNullException("contentTypeName", message);
+                throw (contentTypeName == null)
+                  ? new ArgumentNullException("contentTypeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "contentTypeName");
             }
 
             ContentTypeCollection _cts = list.ContentTypes;
@@ -280,28 +282,7 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
-        /// <summary>
-        /// Removes a content type from a list/library 
-        /// </summary>
-        /// <param name="list">The list</param>
-        /// <param name="contentTypeName">The content type name to remove from the list</param>
-        [Obsolete("Use RemoveContentTypeByName")]
-        public static void RemoveContentType(this List list, string contentTypeName)
-        {
-            ContentTypeCollection _cts = list.ContentTypes;
-            list.Context.Load(_cts);
-
-            IEnumerable<ContentType> _results = list.Context.LoadQuery<ContentType>(_cts.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
-
-            ContentType _ct = _results.FirstOrDefault();
-            if (_ct != null)
-            {
-                _ct.DeleteObject();
-                list.Update();
-                list.Context.ExecuteQuery();
-            }
-        }
+    
         /// <summary>
         /// Adds a list to a site
         /// </summary>
@@ -346,9 +327,18 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list to be checked.</param>
-        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">Thrown when listTitle is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listTitle is null</exception>
+        /// <returns>True if the list exists</returns>
         public static bool ListExists(this Web web, string listTitle)
         {
+            if (string.IsNullOrEmpty(listTitle))
+            {
+                throw (listTitle == null)
+                  ? new ArgumentNullException("listTitle")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+            }
+
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
             web.Context.ExecuteQuery();
@@ -455,8 +445,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="enableVersioning">True to enable versioning, false to disable</param>
         /// <param name="enableMinorversioning">Enable/Disable minor versioning</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static void UpdateListVersioning(this Web web, string listName, bool enableVersioning, bool enableMinorVersioning = true, bool updateAndExecuteQuery = true)
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
+
             List listToUpdate = web.Lists.GetByTitle(listName);
             listToUpdate.EnableVersioning = enableVersioning;
             listToUpdate.EnableMinorVersions = enableMinorVersioning;
@@ -485,9 +484,7 @@ namespace Microsoft.SharePoint.Client
                 list.Update();
                 list.Context.ExecuteQuery();
             }
-
         }
-
 
         /// <summary>
         /// Can be used to set translations for different cultures. 
@@ -498,8 +495,35 @@ namespace Microsoft.SharePoint.Client
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
         /// <param name="descriptionResource">Localized Description string</param>
+        /// <exception cref="System.ArgumentException">Thrown when listTitle, cultureName, titleResource, descriptionResource is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listTitle, cultureName, titleResource, descriptionResource is null</exception>
         public static void SetLocalizationLabelsForList(this Web web, string listTitle, string cultureName, string titleResource, string descriptionResource)
         {
+            if (string.IsNullOrEmpty(listTitle))
+            {
+                throw (listTitle == null)
+                  ? new ArgumentNullException("listTitle")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+            }
+            if (string.IsNullOrEmpty(cultureName))
+            {
+                throw (cultureName == null)
+                  ? new ArgumentNullException("cultureName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "cultureName");
+            }
+            if (string.IsNullOrEmpty(titleResource))
+            {
+                throw (titleResource == null)
+                  ? new ArgumentNullException("titleResource")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "titleResource");
+            }
+            if (string.IsNullOrEmpty(descriptionResource))
+            {
+                throw (descriptionResource == null)
+                  ? new ArgumentNullException("descriptionResource")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "descriptionResource");
+            }
+
             List list = web.GetList(listTitle);
             SetLocalizationLabelsForList(list, cultureName, titleResource, descriptionResource);
         }
@@ -529,10 +553,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">List to operate on</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static Guid GetListID(this Web web, string listName)
         {
             if (string.IsNullOrEmpty(listName))
-                throw new ArgumentNullException("listName");
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
             
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
@@ -547,11 +577,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list to return</param>
         /// <returns>Loaded list instance matching to title or null</returns>
+        /// <exception cref="System.ArgumentException">Thrown when listTitle is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listTitle is null</exception>
         public static List GetListByTitle(this Web web, string listTitle)
         {
             if (string.IsNullOrEmpty(listTitle))
-                throw new ArgumentNullException("listTitle");
-            
+            {
+                throw (listTitle == null)
+                  ? new ArgumentNullException("listTitle")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+            }
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
             web.Context.ExecuteQuery();
