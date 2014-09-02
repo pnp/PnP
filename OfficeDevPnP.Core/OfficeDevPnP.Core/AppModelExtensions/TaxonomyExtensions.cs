@@ -618,14 +618,6 @@ namespace Microsoft.SharePoint.Client
             if (termStore == null)
                 throw new NullReferenceException("The default term store is not available.");
 
-            if (string.IsNullOrEmpty(mmsGroupName))
-            {
-                throw (mmsGroupName == null)
-                  ? new ArgumentNullException("mmsGroupName")
-                  : new ArgumentException("Argument empty", "mmsGroup");
-            }
-            if (string.IsNullOrEmpty(mmsTermSetName))
-                throw new ArgumentNullException("mmsTermSetName", "The MMS term set is not specified.");
 
             // get the term group and term set
             TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
@@ -699,19 +691,18 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
+            id.ValidateNotNullOrEmpty("id");
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
+            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
+
             var clientContext = list.Context as ClientContext;
             TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
          
             if (termStore == null)
                 throw new NullReferenceException("The default term store is not available.");
-
-            if (string.IsNullOrEmpty(mmsTermSetName))
-            {
-                throw (mmsTermSetName == null)
-                  ? new ArgumentNullException("mmsTermSetName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "mmsTermSetName");
-            }
 
             // get the term group and term set
             TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
