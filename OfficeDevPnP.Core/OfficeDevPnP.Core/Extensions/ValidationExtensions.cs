@@ -20,9 +20,6 @@ namespace System
         /// <exception cref="System.ArgumentNullException">Thrown when variable is null</exception>
         public static void ValidateNotNullOrEmpty<T>(this T input, string variableName)
         {
-            var properties = typeof(T).GetProperties();
-            var objectName = properties[0].Name;
-
             if (typeof(T) == typeof(string))
             {
                 if (string.IsNullOrEmpty(input as string))
