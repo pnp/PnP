@@ -126,6 +126,7 @@
     <Compile Include="Base\PipeBinds\SPOViewPipeBind.cs" />
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
+    <Compile Include="Principals\NewGroup.cs" />
     <Compile Include="Site\NewSite.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
     <Compile Include="Taxonomy\SetTaxonomyFieldValue.cs" />
