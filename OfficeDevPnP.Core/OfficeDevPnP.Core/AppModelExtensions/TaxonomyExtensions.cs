@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -605,6 +606,13 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
+            id.ValidateNotNullOrEmpty("id");
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            // Group can be emtpy
+            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
+            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
+
             TermStore termStore = GetDefaultTermStore(web);
 
             if (termStore == null)
@@ -643,6 +651,10 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            termSet.ValidateNotNullOrEmpty("termSet");
+           
             try
             {
                 var _field = web.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
@@ -690,11 +702,16 @@ namespace Microsoft.SharePoint.Client
             var clientContext = list.Context as ClientContext;
             TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
+         
             if (termStore == null)
                 throw new NullReferenceException("The default term store is not available.");
 
             if (string.IsNullOrEmpty(mmsTermSetName))
-                throw new ArgumentNullException("mmsTermSetName", "The MMS term set is not specified.");
+            {
+                throw (mmsTermSetName == null)
+                  ? new ArgumentNullException("mmsTermSetName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "mmsTermSetName");
+            }
 
             // get the term group and term set
             TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
@@ -719,6 +736,10 @@ namespace Microsoft.SharePoint.Client
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            termSet.ValidateNotNullOrEmpty("termSet");
+
             try
             {
                 var _field = list.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
