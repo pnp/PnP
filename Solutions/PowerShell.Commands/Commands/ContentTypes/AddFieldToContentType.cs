@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddFieldToContentType : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
-        public Field Field;
+        public FieldPipeBind Field;
 
         [Parameter(Mandatory = true)]
         public SPOContentTypePipeBind ContentType;
@@ -28,30 +28,47 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (ContentType.ContentType != null)
+            Field field = Field.Field;
+            if (field == null)
             {
-                this.SelectedWeb.AddFieldToContentType(ContentType.ContentType, Field, Required, Hidden);
-            }
-            else if (!string.IsNullOrEmpty(ContentType.Id))
-            {
-                //var cts = SPOnline.Core.SPOContentType.GetContentTypes(this.SelectedWeb, ClientContext);
-
-                if (!string.IsNullOrEmpty(ContentType.Id))
+                if (Field.Id != Guid.Empty)
                 {
-                    var ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
-                    if (ct != null)
-                    {
-                        this.SelectedWeb.AddFieldToContentType(ct, Field, Required, false);
-                    }
+                    field = this.SelectedWeb.Fields.GetById(Field.Id);
+                }
+                else if (!string.IsNullOrEmpty(Field.Name))
+                {
+                    field = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
+                }
+                ClientContext.Load(field);
+                ClientContext.ExecuteQuery();
+            }
+            if (field != null)
+            {
+                if (ContentType.ContentType != null)
+                {
+                    this.SelectedWeb.AddFieldToContentType(ContentType.ContentType, field, Required, Hidden);
                 }
                 else
                 {
-                    var ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                    ContentType ct = null;
+                    if (!string.IsNullOrEmpty(ContentType.Id))
+                    {
+                        ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                      
+                    }
+                    else
+                    {
+                        ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                    }
                     if (ct != null)
                     {
-                        this.SelectedWeb.AddFieldToContentType(ct, Field, Required, Hidden);
+                        this.SelectedWeb.AddFieldToContentType(ct, field, Required, false);
                     }
                 }
+            }
+            else
+            {
+                throw new Exception("Field not found");
             }
         }
 
