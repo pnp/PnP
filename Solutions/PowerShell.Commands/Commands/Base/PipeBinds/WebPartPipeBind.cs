@@ -6,19 +6,17 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public class SPOWebPartPipeBind
+    public class WebPartPipeBind
     {
         private Guid _id;
         private string _title;
 
-
-
-        public SPOWebPartPipeBind(Guid guid)
+        public WebPartPipeBind(Guid guid)
         {
             this._id = guid;
         }
 
-        public SPOWebPartPipeBind(string id)
+        public WebPartPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
@@ -33,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public string Title { get { return _title; } }
 
-        public SPOWebPartPipeBind()
+        public WebPartPipeBind()
         {
             this._id = Guid.Empty;
             this._title = string.Empty;
