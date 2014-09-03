@@ -1,22 +1,21 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public sealed class SPOContentTypePipeBind
+    public sealed class ContentTypePipeBind
     {
         private string _id;
         private string _name;
         private ContentType _contentType;
 
-        public SPOContentTypePipeBind()
+        public ContentTypePipeBind()
         {
             _id = string.Empty; ;
             _name = string.Empty;
             _contentType = null;
         }
 
-        public SPOContentTypePipeBind(string id)
+        public ContentTypePipeBind(string id)
         {
             if (id.ToLower().StartsWith("0x0"))
             {
@@ -29,13 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         }
 
-        public SPOContentTypePipeBind(ContentTypeEntity contentType)
-        {
-            this._contentType = contentType.GetContextObject();
-        }
-
-
-        public SPOContentTypePipeBind(ContentType contentType)
+        public ContentTypePipeBind(ContentType contentType)
         {
             this._contentType = contentType;
         }

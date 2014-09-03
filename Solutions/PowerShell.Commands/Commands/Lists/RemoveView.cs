@@ -9,10 +9,10 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveView : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Title of the list.")]
-        public SPOViewPipeBind Identity = new SPOViewPipeBind();
+        public ViewPipeBind Identity = new ViewPipeBind();
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 1, HelpMessage = "The ID or Url of the list.")]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

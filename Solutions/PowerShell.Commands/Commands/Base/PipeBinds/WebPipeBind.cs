@@ -1,34 +1,27 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public sealed class SPOWebPipeBind
+    public sealed class WebPipeBind
     {
         private Guid _id;
         private string _url;
-        private WebEntity _spOnlineWeb;
         private Web _web;
 
-        public SPOWebPipeBind()
+        public WebPipeBind()
         {
             _id = Guid.Empty;
             _url = string.Empty;
-            _spOnlineWeb = null;
             _web = null;
         }
 
-        public SPOWebPipeBind(Guid guid)
+        public WebPipeBind(Guid guid)
         {
             this._id = guid;
         }
 
-        public SPOWebPipeBind(string id)
+        public WebPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
@@ -36,12 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             }
         }
 
-        public SPOWebPipeBind(WebEntity onlineWeb)
-        {
-            this._spOnlineWeb = onlineWeb;
-        }
-
-        public SPOWebPipeBind(Web web)
+        public WebPipeBind(Web web)
         {
             this._web = web;
         }
@@ -60,14 +48,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             get
             {
-                if (_spOnlineWeb != null)
-                {
-                    return _spOnlineWeb.GetContextObject();
-                }
-                else
-                {
-                    return _web;
-                }
+                return _web;
             }
         }
 
