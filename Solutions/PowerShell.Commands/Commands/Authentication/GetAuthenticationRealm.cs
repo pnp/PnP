@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetAuthenticationRealm : SPOCmdlet
     {
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public string Url;
 
         protected override void ProcessRecord()

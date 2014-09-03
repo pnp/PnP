@@ -15,7 +15,7 @@ PS:> Get-SPOGroup -Name 'Site Members'
 ", SortOrder = 2)]
     public class GetGroup : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, ParameterSetName = "ByName", HelpMessage = "Get a specific group by name")]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true, ParameterSetName = "ByName", HelpMessage = "Get a specific group by name")]
         public string Name = string.Empty;
 
         [Parameter(Mandatory = false, ParameterSetName = "Members", HelpMessage = "Retrieve the associated member group")]
