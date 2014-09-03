@@ -239,8 +239,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Set theme for the root web of a site collection</param>
         /// <param name="themeName">Name of the new theme</param>
+        /// <exception cref="System.ArgumentException">Thrown when themeName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">themeName is null</exception>
         public static void SetThemeToWeb(this Web web, string themeName)
         {
+            if (string.IsNullOrEmpty(themeName))
+            {
+                throw (themeName == null)
+                  ? new ArgumentNullException("themeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+            }
             SetThemeToWebImplementation(web, web, themeName);
         }
 
@@ -250,8 +258,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Set theme for a sub site</param>
         /// <param name="rootWeb">Root web, needed as the theme is stored in the root web</param>
         /// <param name="themeName">Name of the new theme</param>
+        /// <exception cref="System.ArgumentException">Thrown when themeName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">themeName is null</exception>
         public static void SetThemeToSubWeb(this Web web, Web rootWeb, string themeName)
         {
+            if (string.IsNullOrEmpty(themeName))
+            {
+                throw (themeName == null)
+                  ? new ArgumentNullException("themeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+            }
+
             SetThemeToWebImplementation(web, rootWeb, themeName);
         }
 
@@ -549,8 +566,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="masterPageName"></param>
         /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesForSiteByName(this Web web, string masterPageName, string customMasterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+            if (string.IsNullOrEmpty(customMasterPageName))
+            {
+                throw (customMasterPageName == null)
+                  ? new ArgumentNullException("customMasterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+            }
+
             web.SetMasterPageForSiteByName(masterPageName);
             web.SetCustomMasterPageForSiteByName(customMasterPageName);
         }
@@ -561,8 +593,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="masterPageName"></param>
         /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesForSiteByUrl(this Web web, string masterPageName, string customMasterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+            if (string.IsNullOrEmpty(customMasterPageName))
+            {
+                throw (customMasterPageName == null)
+                  ? new ArgumentNullException("customMasterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+            }
+
             web.SetMasterPageForSiteByUrl(masterPageName);
             web.SetCustomMasterPageForSiteByUrl(customMasterPageName);
         }
@@ -572,8 +619,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Current web</param>
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         public static void SetMasterPageForSiteByName(this Web web, string masterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
@@ -587,8 +642,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Current web</param>
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         public static void SetCustomMasterPageForSiteByName(this Web web, string masterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
