@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid AddSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
-            return tenant.AddSiteCollection(properties, removeFromRecycleBin, wait);
+            return tenant.CreateSiteCollection(properties, removeFromRecycleBin, wait);
         }
 
         [Obsolete("Use tenant.CreateSiteCollection() instead.")]
@@ -42,7 +42,7 @@ namespace Microsoft.SharePoint.Client
                 UserCodeWarningLevel = userCodeWarningLevel,
                 Lcid = lcid
             };
-            return tenant.AddSiteCollection(siteCol, removeFromRecycleBin, wait);
+            return tenant.CreateSiteCollection(siteCol, removeFromRecycleBin, wait);
         }
 
         /// <summary>
