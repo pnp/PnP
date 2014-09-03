@@ -59,6 +59,24 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Adds field to a list
+        /// </summary>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="web">Site to be processed</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <param name="additionalXmlAttributes"></param>
+        /// <param name="executeQuery"></param>
+        /// <returns>The newly created field or existing field.</returns>
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+            return CreateField<TField>(web, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+        }
+
+        /// <summary>
         /// Create field to web remotely
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
@@ -83,20 +101,8 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQuery();
 
-            Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName);
-
-            if (field != null)
-                throw new ArgumentException("id", "Field already exists");
-
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
-            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
-            field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
-            web.Context.Load(field);
-
-            if (executeQuery)
-                web.Context.ExecuteQuery();
-
-            return web.Context.CastTo<TField>(field);
+            var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            return field;
         }
 
         /// <summary>
@@ -246,6 +252,25 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes"></param>
         /// <param name="executeQuery"></param>
         /// <returns>The newly created field or existing field.</returns>
+        public static TField CreateField<TField>(this List list, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
+            return CreateField<TField>(list, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+        }
+
+        /// <summary>
+        /// Adds field to a list
+        /// </summary>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="list">List to process</param>
+        /// <param name="id">Guid for the new field.</param>
+        /// <param name="internalName">Internal name of the field</param>
+        /// <param name="fieldType">Field type to be created.</param>
+        /// <param name="addToDefaultView">Bool to add to the default view</param>
+        /// <param name="displayName">The display name of the field</param>
+        /// <param name="group">The field group name</param>
+        /// <param name="additionalXmlAttributes"></param>
+        /// <param name="executeQuery"></param>
+        /// <returns>The newly created field or existing field.</returns>
         public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
             if (string.IsNullOrEmpty(internalName))
@@ -261,6 +286,11 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             list.Context.ExecuteQuery();
 
+            var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            return field;
+        }
+
+        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
             Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName) as TField;
 
             if (field != null)
@@ -269,18 +299,18 @@ namespace Microsoft.SharePoint.Client
             string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
             LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
-            list.Context.Load(field);
-            list.Context.ExecuteQuery();
+            fields.Context.Load(field);
+            fields.Context.ExecuteQuery();
 
             // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
             field.Title = displayName;
             field.Update();
-            list.Context.Load(field);
+            fields.Context.Load(field);
 
             if (executeQuery)
-                list.Context.ExecuteQuery();
+                fields.Context.ExecuteQuery();
 
-            return list.Context.CastTo<TField>(field);
+            return fields.Context.CastTo<TField>(field);
         }
 
         /// <summary>
