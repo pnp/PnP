@@ -71,8 +71,8 @@
     <Compile Include="Admin\SetTenantSite.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Apps\RemoveApp.cs" />
-    <Compile Include="Authentication\GetRealm.cs" />
+    <Compile Include="Apps\UninstallAppInstance.cs" />
+    <Compile Include="Authentication\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Configuration.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\SetConfiguration.cs" />
@@ -157,7 +157,7 @@
     <Compile Include="WebParts\RemoveWebPart.cs" />
     <Compile Include="WebParts\GetWebPart.cs" />
     <Compile Include="Base\SPOCmdlet.cs" />
-    <Compile Include="Apps\AddApp.cs" />
+    <Compile Include="Apps\ImportAppPackage.cs" />
     <Compile Include="Apps\GetAppInstance.cs" />
     <Compile Include="Web\GetFile.cs" />
     <Compile Include="Web\GetWeb.cs" />
