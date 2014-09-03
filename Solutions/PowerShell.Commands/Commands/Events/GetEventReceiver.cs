@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetEventReceiver : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ParameterSetName = "List")]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = false)]
         public GuidPipeBind Identity;

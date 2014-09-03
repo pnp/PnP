@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class SPOWebCmdlet : SPOCmdlet
     {
         [Parameter(Mandatory = false)]
-        public SPOWebPipeBind Web = new SPOWebPipeBind();
+        public WebPipeBind Web = new WebPipeBind();
 
         internal Microsoft.SharePoint.Client.Web SelectedWeb
         {

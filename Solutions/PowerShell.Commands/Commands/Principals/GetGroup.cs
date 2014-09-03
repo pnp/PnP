@@ -65,7 +65,7 @@ PS:> Get-SPOGroup -Name 'Site Members'
             {
                 var groups = ClientContext.LoadQuery(this.SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
                 ClientContext.ExecuteQuery();
-                WriteObject(groups);
+                WriteObject(groups,true);
             }
 
         }

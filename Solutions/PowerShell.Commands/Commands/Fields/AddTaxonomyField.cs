@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddTaxonomyField : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = true)]
         public string DisplayName;

@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveList : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Title of the list.")]
-        public SPOListPipeBind Identity = new SPOListPipeBind();
+        public ListPipeBind Identity = new ListPipeBind();
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

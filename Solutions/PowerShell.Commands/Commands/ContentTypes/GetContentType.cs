@@ -1,14 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -16,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetContentType : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]
-        public SPOContentTypePipeBind Identity;
+        public ContentTypePipeBind Identity;
 
         protected override void ExecuteCmdlet()
         {
@@ -35,17 +27,15 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (ct != null)
                 {
 
-                    WriteObject(new ContentTypeEntity(ct));
+                    WriteObject(ct);
                 }
             }
             else
             {
-                List<ContentType> cts = new List<ContentType>();
-                ClientContext.Load(this.SelectedWeb.ContentTypes);
+                var cts = ClientContext.LoadQuery(this.SelectedWeb.ContentTypes);
                 ClientContext.ExecuteQuery();
-
-                var spocts = from ct in this.SelectedWeb.ContentTypes select new ContentTypeEntity(ct);
-                WriteObject(spocts, true);
+    
+                WriteObject(cts, true);
             }
         }
     }

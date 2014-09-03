@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
 
         [Parameter(Mandatory = true)]
-        public SPOContentTypePipeBind Identity;
+        public ContentTypePipeBind Identity;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

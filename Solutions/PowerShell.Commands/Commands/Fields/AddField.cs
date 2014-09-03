@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListXML")]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = true, ParameterSetName = "WebPara")]

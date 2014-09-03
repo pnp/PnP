@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public FieldPipeBind Field;
 
         [Parameter(Mandatory = true)]
-        public SPOContentTypePipeBind ContentType;
+        public ContentTypePipeBind ContentType;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Required;
