@@ -7,18 +7,18 @@ using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Add, "SPOApp")]
+    [Cmdlet(VerbsData.Import, "SPOAppPackage")]
     [CmdletHelp("Adds a SharePoint App to a site",
         Details = "This commands requires that you have an app package to deploy")]
     [CmdletExample(
-        Code = @"PS:> Add-SPOnlineApp -Path c:\files\demo.app -LoadOnly",
+        Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -LoadOnly",
         Remarks = @"This will load the app in the demo.app package, but will not install it to the site.
  ")]
     [CmdletExample(
-        Code = @"PS:> Add-SPOnlineApp -Path c:\files\demo.app -Force",
+        Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -Force",
         Remarks = @"This load first activate the app sideloading feature, upload and install the app, and deactivate the app sideloading feature.
     ")]
-    public class AddApp : SPOWebCmdlet
+    public class ImportAppPackage : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "Path pointing to the .app file")]
         public string Path = string.Empty;
