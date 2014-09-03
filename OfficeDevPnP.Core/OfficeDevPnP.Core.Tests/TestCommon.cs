@@ -13,7 +13,15 @@ namespace OfficeDevPnP.Core.Tests {
             TenantUrl = ConfigurationManager.AppSettings["SPOTenantUrl"];
             DevSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
             UserName = ConfigurationManager.AppSettings["SPOUserName"];
-            Password = ConfigurationManager.AppSettings["SPOPassword"].ToSecureString();
+            var password = ConfigurationManager.AppSettings["SPOPassword"];
+
+            if (string.IsNullOrEmpty(TenantUrl) ||
+                string.IsNullOrEmpty(TenantUrl) ||
+                string.IsNullOrEmpty(TenantUrl) ||
+                string.IsNullOrEmpty(TenantUrl))
+                throw new ConfigurationErrorsException("Tenant credentials in App.config are not set up.");
+
+            Password = password.ToSecureString();
 
             Credentials = new SharePointOnlineCredentials(UserName, Password);
         }
