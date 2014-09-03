@@ -5,16 +5,20 @@ using System.Net;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Get, "SPORealm")]
+    [Cmdlet(VerbsCommon.Get, "SPOAuthenticationRealm")]
     [CmdletHelp("Gets the authentication realm for the current web")]
-    public class GetRealm : PSCmdlet
+    public class GetAuthenticationRealm : SPOCmdlet
     {
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = false)]
         public string Url;
 
         protected override void ProcessRecord()
         {
+            if(string.IsNullOrEmpty(Url))
+            {
+                Url = ClientContext.Url;
+            }
             WebRequest request = WebRequest.Create(new Uri(Url) + "/_vti_bin/client.svc");
             request.Headers.Add("Authorization: Bearer ");
 
