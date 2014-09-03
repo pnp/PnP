@@ -91,7 +91,7 @@
     <Compile Include="Base\PipeBinds\ContentTypePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WebPipeBind.cs" />
     <Compile Include="Base\PipeBinds\GuidPipeBind.cs" />
-    <Compile Include="Base\PipeBinds\SPOWebPartPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\WebPartPipeBind.cs" />
     <Compile Include="Base\SPOAdminCmdlet.cs" />
     <Compile Include="Base\SPOnlineConnection.cs" />
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />

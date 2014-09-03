@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
     [CmdletHelp("Gets all features")]
     public class GetFeature : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public FeaturePipeBind Identity;
 
         [Parameter(Mandatory = false, HelpMessage = "The scope of the feature. Defaults to Web.")]
@@ -32,9 +32,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             }
             
             var query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            ClientContext.ExecuteQuery();
             if (Identity == null)
             {
-                ClientContext.ExecuteQuery();
                 WriteObject(query, true);
             }
             else

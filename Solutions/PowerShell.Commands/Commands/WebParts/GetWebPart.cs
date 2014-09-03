@@ -13,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string PageUrl = string.Empty;
 
         [Parameter(Mandatory = false)]
-        public SPOWebPartPipeBind Identity;
+        public WebPartPipeBind Identity;
 
         protected override void ExecuteCmdlet()
         {

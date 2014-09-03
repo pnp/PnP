@@ -17,8 +17,8 @@ PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.s
 PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor -AsString", Remarks = "Downloads the file and outputs its contents to the console", SortOrder = 3)]
     public class GetFile : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, ParameterSetName = "FILE")]
-        [Parameter(Mandatory = true, ParameterSetName = "STRING")]
+        [Parameter(Mandatory = true, ParameterSetName = "FILE", Position=0, ValueFromPipeline=true)]
+        [Parameter(Mandatory = true, ParameterSetName = "STRING", Position=0, ValueFromPipeline=true)]
         public string ServerRelativeUrl = string.Empty;
 
         [Parameter(Mandatory = false, ParameterSetName = "FILE")]

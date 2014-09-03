@@ -6,7 +6,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Remove, "SPOPropertyBagValue", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
     public class RemovePropertyBagValue : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
         public string Key;
 
         [Parameter(Mandatory = false)]

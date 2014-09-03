@@ -7,7 +7,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Set, "SPOFileCheckedIn")]
     public class SetFileCheckedIn : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
         public string Url = string.Empty;
 
         [Parameter(Mandatory = false)]

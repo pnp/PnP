@@ -15,7 +15,7 @@ PS:> Get-SPOTenantSite", Remarks = "Returns all site collections")]
 PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", Remarks = "Returns information about the project site.")]
     public class GetTenantSite : SPOAdminCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The URL of the site")]
+        [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]
         [Alias("Identity")]
         public string Url;
 

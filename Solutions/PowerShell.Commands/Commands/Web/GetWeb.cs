@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "SPOWeb")]
     public class GetWeb : SPOCmdlet
     {
-        [Parameter(Mandatory = false, ValueFromPipeline = true)]
+        [Parameter(Mandatory = false, ValueFromPipeline = true, Position=0)]
         public WebPipeBind Identity;
 
         protected override void ExecuteCmdlet()

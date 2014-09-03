@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, ValueFromPipeline = true)]
         public ListPipeBind List;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public FieldPipeBind Identity = new FieldPipeBind();
 
         protected override void ExecuteCmdlet()

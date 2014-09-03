@@ -7,7 +7,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "SPOContentType")]
     public class GetContentType : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public ContentTypePipeBind Identity;
 
         protected override void ExecuteCmdlet()
