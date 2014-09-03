@@ -3,6 +3,7 @@ using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -193,7 +194,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, "Creating web '{0}' with template '{1}'.", leafUrl, template);
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
             WebCreationInformation creationInfo = new WebCreationInformation()
             {
                 Url = leafUrl,
@@ -237,7 +238,7 @@ namespace Microsoft.SharePoint.Client
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
-                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, "Deleting web '{0}'.", serverRelativeUrl);
+                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
                 existingWeb.DeleteObject();
                 parentWeb.Context.ExecuteQuery();
                 deleted = true;
@@ -431,7 +432,7 @@ namespace Microsoft.SharePoint.Client
                 if (string.Equals(app.Title, appTitle, StringComparison.OrdinalIgnoreCase))
                 {
                     removed = true;
-                    LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, "Removing app '{0}' instance {1}.", appTitle, app.Id);
+                    LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
                     app.Uninstall();
                     web.Context.ExecuteQuery();
                 }
@@ -454,7 +455,7 @@ namespace Microsoft.SharePoint.Client
         public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
         {
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
@@ -503,6 +504,8 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <returns>All my site site collections</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
+            Justification="Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
             string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
@@ -561,7 +564,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, "Site search error.");
+                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, CoreResources.WebExtensions_SiteSearchUnhandledException);
                 // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
                 throw;
             }

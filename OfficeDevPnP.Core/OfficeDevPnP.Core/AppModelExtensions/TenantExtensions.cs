@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -10,7 +11,6 @@ namespace Microsoft.SharePoint.Client
 {
     public static class TenantExtensions
     {
-        const string MSG_CONTEXT_CLOSED = "ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.";
         const string SITE_STATUS_ACTIVE = "Active";
         const string SITE_STATUS_CREATING = "Creating";
         const string SITE_STATUS_RECYCLED = "Recycled";
@@ -99,7 +99,7 @@ namespace Microsoft.SharePoint.Client
                             {
                                 // Context connection gets closed after action completed.
                                 // Calling ExecuteQuery again returns an error which can be ignored
-                                LoggingUtility.Internal.TraceWarning((int)EventId.IgnoreClosedContext, webEx, MSG_CONTEXT_CLOSED);
+                                LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                             }
                         }
                     }
@@ -225,7 +225,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.Internal.TraceWarning((int)EventId.IgnoreClosedContext, webEx, MSG_CONTEXT_CLOSED);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -254,7 +254,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.Internal.TraceWarning((int)EventId.IgnoreClosedContext, webEx, MSG_CONTEXT_CLOSED);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -290,7 +290,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.Internal.TraceWarning((int)EventId.IgnoreClosedContext, webEx, MSG_CONTEXT_CLOSED);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -321,7 +321,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, "Could not determine if site exists in tenant.");
+                    LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
                 }
 
                 return false;
@@ -398,7 +398,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     return false;
                 }
-                LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, "Error finding if site is active tenant.");
+                LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
                 throw;
             }
         }

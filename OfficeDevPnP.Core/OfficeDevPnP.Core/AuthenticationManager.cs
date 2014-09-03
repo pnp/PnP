@@ -30,8 +30,8 @@ namespace OfficeDevPnP.Core
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.AuthenticationContext, "Getting authentication context for '{0}'", siteUrl);
-            LoggingUtility.Internal.TraceVerbose("Tenant user '{0}'", tenantUser);
+            LoggingUtility.Internal.TraceInformation((int)EventId.AuthenticationContext, CoreResources.AuthenticationManager_GetContext, siteUrl);
+            LoggingUtility.Internal.TraceVerbose(CoreResources.AuthenticationManager_TenantUser, tenantUser);
 
             if (sharepointOnlineCredentials == null)
             {
@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core
             {
                 lock (tokenLock)
                 {
-                    LoggingUtility.LogVerbose(string.Format("AuthenticationManager:EnsureToken(siteUrl:{0},realm:{1},appId:{2},appSecret:PRIVATE)", siteUrl, realm, appId), EventCategory.Authorization);
+                    LoggingUtility.Internal.TraceVerbose("AuthenticationManager:EnsureToken(siteUrl:{0},realm:{1},appId:{2},appSecret:PRIVATE)", siteUrl, realm, appId);
                     if (this.appOnlyAccessToken == null)
                     {
                         TokenHelper.Realm = realm;
@@ -106,7 +106,7 @@ namespace OfficeDevPnP.Core
                         {
                             try
                             {
-                                LoggingUtility.LogVerbose("Lease expiration date: " + response.ExpiresOn, EventCategory.Authorization);
+                                LoggingUtility.Internal.TraceVerbose("Lease expiration date: {0}", response.ExpiresOn);
                                 var lease = response.ExpiresOn - DateTime.Now;
                                 lease =
                                     TimeSpan.FromSeconds(
@@ -117,7 +117,7 @@ namespace OfficeDevPnP.Core
                             }
                             catch (Exception ex)
                             {
-                                LoggingUtility.LogWarning("Could not determine lease for appOnlyAccessToken.", ex, EventCategory.Authorization);
+                                LoggingUtility.Internal.TraceWarning((int)EventId.ProblemDeterminingTokenLease, ex, CoreResources.AuthenticationManger_ProblemDeterminingTokenLease);
                                 this.appOnlyAccessToken = null;
                             }
                         });
