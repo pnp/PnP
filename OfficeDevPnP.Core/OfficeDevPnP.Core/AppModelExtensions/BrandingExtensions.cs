@@ -426,7 +426,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="associatedContentTypeID">Associated content type ID</param>
         /// <param name="webPartEntities">Default web parts on page layout</param>
         /// <param name="folderPath">Folder where the page layouts will be stored</param>
-        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, List<WebPartEntity> webPartEntities, string folderPath = string.empty)
+        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, List<WebPartEntity> webPartEntities, string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
