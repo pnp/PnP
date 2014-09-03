@@ -1,39 +1,41 @@
-Taxonomy menu
-===============================================
+# Taxonomy menu #
 
-Summary	
---------
-This sample shows how to create a menu that is populated from Term Store using JavaScript CSOM. The menu uses the language labels on terms and shows translated navigation nodes depending on users preferred language in user profile. This solution works cross site collections. 
+### Summary ###
+This sample shows how to create a menu that is populated from Term Store using JavaScript CSOM. The menu uses the language labels on terms and shows translated navigation nodes depending on users preferred language in user profile. This solution works cross site collections.
 
 To set up this sample a provider-hosted app using  .NET CSOM creates a term group, a term set with terms in term store. Also JavaScript files are uploaded to host web and script links are added.
 
-Applies to
------------
-* Office 365 Multi Tenant (MT)
-* Office 365 Dedicated (D)
-* SharePoint 2013 on-premises
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
 
-Solution
----------
+### Prerequisites ###
+None
 
-Solution                                       | Author                      |
------------------------------------------------|:---------------------------:|
-Contoso.TaxonomyMenu, version 1.0              | Johan SkÂrman (Microsoft)   |
+### Solution ###
+Solution | Author(s)
+---------|----------
+Contoso.TaxonomyMenu | Johan Sk√•rman (**Microsoft**)
 
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | February 26th 2014 | Initial release
 
-Disclaimer
-----------
+### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+
+----------
 
 ![Screenshot of navigation](http://i.imgur.com/Pa28h5K.png "Screenshot of navigation")
 
-Step 1: Set up term store
-=========================
+# Step 1: Set up term store #
 
 The first step is to set up some terms in term store that can be used by the navigation. This is all done using .NET CSOM in the TaxonomyHelper class. 
 
-Setup term store languages
---------------------------
+## Setup term store languages ##
 
 To start with the code checks to see that all required languages (in this example English, French, German and Swedish) are enabled in Term Store. If not, the languages are added. This will enable language specific term labels to be created.
 
@@ -48,14 +50,12 @@ termStore.CommitAll();
 clientContext.ExecuteQuery();
 ```
 
-Create term group
------------------
+## Create term group ##
 Before setting up the terms the code checks to see if a Term Group with a specific ID exists. If not, the group is created.
 termGroup = termStore.CreateGroup("Taxonomy Navigation", groupId);
 
-Create term set
----------------
-Next, the code checks to see if a Term Set with a specific ID exists. If not, the Term Set is created. As part of the creation a custom property (_Sys_Nav_IsNavigationTermSet) is set to True. This is the same as checking ìUse this Term Set for Site Navigationî on the Term Set in Term Store Management Tool. The property is set so that the Navigation tab will be shown on Terms to make it easy to administer Term URLs. The code also loads the Terms collection on the Term Set for later use.
+## Create term set ##
+Next, the code checks to see if a Term Set with a specific ID exists. If not, the Term Set is created. As part of the creation a custom property (_Sys_Nav_IsNavigationTermSet) is set to True. This is the same as checking ‚ÄúUse this Term Set for Site Navigation‚Äù on the Term Set in Term Store Management Tool. The property is set so that the Navigation tab will be shown on Terms to make it easy to administer Term URLs. The code also loads the Terms collection on the Term Set for later use.
 
 ```javascript
 termSet = termGroup.CreateTermSet("Taxonomy Navigation", termSetId, 1033);
@@ -63,9 +63,8 @@ termSet.SetCustomProperty("_Sys_Nav_IsNavigationTermSet", "True");
 clientContext.Load(termSet, ts => ts.Terms);
 ```
 
-Create terms
-------------
-Next, the code creates the terms. For each term three language specific labels are also created. Also the custom property _Sys_Nav_SimpleLinkUrl is set which is the same as setting ìSimple Link or Headerî on terms in Term Store Management Tool.
+## Create terms ##
+Next, the code creates the terms. For each term three language specific labels are also created. Also the custom property _Sys_Nav_SimpleLinkUrl is set which is the same as setting ‚ÄúSimple Link or Header‚Äù on terms in Term Store Management Tool.
 
 ```javascript
 var term = termSet.CreateTerm(termName, 1033, Guid.NewGuid());
@@ -79,9 +78,7 @@ When the first step is completed the Term store should look like this in Term St
 
 ![Screenshot of navigation](http://i.imgur.com/tQ1EWih.png "Screenshot of term store")
 
-Step 2: Add scripts
-===================
-
+# Step 2: Add scripts #
 To demonstrate the menu on the host web taxnav.js and JQuery are uploaded to the Site Assets library. Script links are also added using CustomActions so that the files will be referenced in master page. This is all done using .NET CSOM. If building a custom branding solution with master page the links could of course be added directly to the master page.
 
 ```javascript
@@ -93,13 +90,10 @@ customActionTaxonomy.Sequence = 1010;
 customActionTaxonomy.Update();
 ```
 
-Menu creation
-=============
+# Menu creation #
 The menu is created using JavaScript CSOM and JQuery. 
 
-Getting user preferred language
--------------------------------
-
+## Getting user preferred language ##
 First the code checks the current users profile to see preferred language. Because the property value consists of language codes (e.g. en-US, sv-SE) and Term Store uses LCID (1033, 1053) the language codes are translated using a key-value array. In production code the result could be cached to minimize client callbacks.
 
 ```javascript
@@ -107,8 +101,7 @@ var peopleManager = new SP.UserProfiles.PeopleManager(context);
 var userProperty = peopleManager.getUserProfilePropertyFor(targetUser, "SPS-MUILanguages");
 ```
 
-Getting terms
--------------
+## Getting terms ##
 After the code has checked that the users preferred language is also one of the languages set up in Term Store, the terms are loaded as well as the labels for that language.
 
 ```javascript
