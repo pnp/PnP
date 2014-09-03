@@ -140,6 +140,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\SystemWebUIExtensions.cs" />
+    <Compile Include="Extensions\ValidationExtensions.cs" />
     <Compile Include="Utilities\LoggingUtility.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>

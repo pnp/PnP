@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OfficeWebWidgets", "Core.OfficeWebWidgets\Core.OfficeWebWidgets.csproj", "{304F716F-584E-4BE7-B767-ECC0D7D01EA2}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OfficeWebWidgetsWeb", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{386B173C-1237-42E9-B151-38E549CF1008}"
 	ProjectSection(SolutionItems) = preProject
-		Office Web Widgets for provider hosted SP apps.docx = Office Web Widgets for provider hosted SP apps.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public SPOListPipeBind List;
 
         [Parameter(Mandatory = false)]
-        public SPOFieldIdPipeBind Identity = new SPOFieldIdPipeBind();
+        public FieldPipeBind Identity = new FieldPipeBind();
 
         protected override void ExecuteCmdlet()
         {
@@ -57,7 +57,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-            
+
                 // Get a site column
                 if (Identity.Id == Guid.Empty && string.IsNullOrEmpty(Identity.Name))
                 {

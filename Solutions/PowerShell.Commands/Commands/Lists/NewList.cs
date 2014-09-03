@@ -22,12 +22,15 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public SwitchParameter EnableVersioning;
 
-        [Parameter(Mandatory = false, HelpMessage = "Obsolete", DontShow=true)]
+        [Parameter(Mandatory = false, HelpMessage = "Obsolete", DontShow = true)]
         public QuickLaunchOptions QuickLaunchOptions;
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter EnableContentTypes;
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url);
+            this.SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
         }
     }
 
