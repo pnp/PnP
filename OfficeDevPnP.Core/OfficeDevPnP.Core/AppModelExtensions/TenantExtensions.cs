@@ -347,7 +347,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
         /// <param name="siteFullUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
+        /// <returns>The Guid of a site collection or an Guid.Empty if the Site does not exist</returns>
         public static Guid GetSiteGuidByUrl(this Tenant tenant, Uri siteFullUrl)
         {
             Guid siteGuid = Guid.Empty;
