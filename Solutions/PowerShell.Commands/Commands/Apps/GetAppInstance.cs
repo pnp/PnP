@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 var instances = this.SelectedWeb.GetAppInstances();
                 if (instances.Count > 1)
                 {
-                    WriteObject(instances);
+                    WriteObject(instances,true);
                 }
                 else if (instances.Count == 1)
                 {
