@@ -32,9 +32,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             }
             
             var query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            ClientContext.ExecuteQuery();
             if (Identity == null)
             {
-                ClientContext.ExecuteQuery();
                 WriteObject(query, true);
             }
             else
