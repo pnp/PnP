@@ -36,6 +36,7 @@ namespace OfficeDevPnP.Core.Utilities
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
 
+        IgnoreClosedContext = 4201,
         ThemeNotOverwritten = 4601,
 
         LibraryMissing = 5501,
@@ -44,9 +45,12 @@ namespace OfficeDevPnP.Core.Utilities
         ThemeMissing = 5601,
 
         SiteSearchUnhandledException = 5401,
+        UnknownExceptionAccessingSite = 5901,
 
         DeleteWeb = 8501,
         DeleteSiteCollection = 8502,
+        RemoveAppInstance = 8503,
+
     }
 
     /// <summary>
