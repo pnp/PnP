@@ -35,11 +35,7 @@ namespace OfficeDevPnP.Core
 
             if (sharepointOnlineCredentials == null)
             {
-                var spoPassword = new SecureString();
-                foreach (char c in tenantUserPassword)
-                {
-                    spoPassword.AppendChar(c);
-                }
+                var spoPassword = tenantUserPassword.ToSecureString();
                 sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, spoPassword);
             }
 
