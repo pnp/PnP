@@ -295,6 +295,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uninstall app {0}?.
+        /// </summary>
+        internal static string UninstallApp0 {
+            get {
+                return ResourceManager.GetString("UninstallApp0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Web &apos;{0}&apos; created at {1}.
         /// </summary>
         internal static string Web0CreatedAt1 {
