@@ -2,6 +2,7 @@
 using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="force">If True any event already registered with the same name will be removed first.</param>
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
         [Obsolete("Use List.AddRemoteEventReceiver()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
         {
             return list.AddRemoteEventReceiver(name, url, eventReceiverType, synchronization, force);
@@ -632,6 +634,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewsFormXMLFile")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXMLFile(this Web web, string listUrl, string filePath)
         {
             CreateListViewsFromXMLFile(web, listUrl, filePath);
@@ -657,6 +660,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewsFromXMLString")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXMLString(this Web web, string listUrl, string xmlString)
         {
             CreateListViewsFromXMLString(web, listUrl, xmlString);
@@ -682,6 +686,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewFromXML")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
         {
             CreateListViewsFromXML(web, listUrl, xmlDoc);
@@ -711,6 +716,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewsFromXMLFile")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXMLFile(this List list, string filePath)
         {
             CreateListViewsFromXMLFile(list, filePath);
@@ -735,6 +741,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewsFromXMLString")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXMLString(this List list, string xmlString)
         {
             CreateListViewsFromXMLString(list, xmlString);
@@ -756,6 +763,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateListViewsFormXML")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void CreateListVewsFromXML(this List list, XmlDocument xmlDoc)
         {
             CreateListViewsFromXML(list, xmlDoc);
