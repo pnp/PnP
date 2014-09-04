@@ -750,7 +750,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                return null;
+                return defaultValue;
             }
         }
 
