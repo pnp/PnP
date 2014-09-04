@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -354,6 +355,7 @@ namespace Microsoft.SharePoint.Client
         //TODO: to be replaced by new site logo CSOM once we've the April 2014 CU
         //Note: does seem to broken on the current SPO implementation (20/03/2014) as there's no _themes folder anymore in the root web
         [Obsolete("Use Web.SiteLogoUrl property")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetSiteLogo(this Web web, string fullPathToLogo)
         {
             if (string.IsNullOrEmpty(fullPathToLogo) || !System.IO.File.Exists(fullPathToLogo))
