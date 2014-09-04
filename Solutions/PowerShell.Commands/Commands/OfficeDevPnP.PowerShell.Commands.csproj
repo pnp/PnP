@@ -186,6 +186,7 @@
     <Compile Include="Web\SetMasterPage.cs" />
     <Compile Include="Web\SetTheme.cs" />
     <Compile Include="Base\SPOWebCmdlet.cs" />
+    <Compile Include="Web\SetWeb.cs" />
     <Compile Include="WikiPage\RemoveWikiPage.cs" />
     <Compile Include="WikiPage\AddWikiPage.cs" />
     <Compile Include="WikiPage\GetWikiPageContent.cs" />
