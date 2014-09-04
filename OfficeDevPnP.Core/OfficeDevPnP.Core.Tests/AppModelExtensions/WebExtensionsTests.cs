@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core.Tests;
+using System.IO;
 namespace Microsoft.SharePoint.Client.Tests
 {
     [TestClass()]
@@ -15,6 +16,7 @@ namespace Microsoft.SharePoint.Client.Tests
         private string _key = null;
         private string _value_string = null;
         private int _value_int = 12345;
+        const string APPNAME = "HelloWorldApp";
 
         #region SETUP AND TEARDOWN
         [TestInitialize()]
@@ -22,6 +24,14 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             _key = "TEST_KEY_" + DateTime.Now.ToFileTime();
             _value_string = "TEST_VALUE_" + DateTime.Now.ToFileTime();
+
+            // Activate sideloading in order to test apps
+            using(var clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Load(clientContext.Site);
+                clientContext.ExecuteQuery();
+                clientContext.Site.ActivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+            }
         }
 
         [TestCleanup()]
@@ -29,6 +39,11 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
+                // Deactivate sideloading
+                clientContext.Load(clientContext.Site);
+                clientContext.ExecuteQuery();
+                clientContext.Site.DeactivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+
                 var props = clientContext.Web.AllProperties;
                 clientContext.Load(props);
                 clientContext.ExecuteQuery();
@@ -45,6 +60,19 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
                 clientContext.Web.Update();
                 clientContext.ExecuteQuery();
+
+                var instances = AppCatalog.GetAppInstances(clientContext, clientContext.Web);
+                clientContext.Load(instances);
+                clientContext.ExecuteQuery();
+                foreach(var instance in instances)
+                {
+                    if(string.Equals(instance.Title, APPNAME, StringComparison.OrdinalIgnoreCase))
+                    {
+                        instance.Uninstall();
+                        clientContext.ExecuteQuery();
+                        break;
+                    }
+                }
             }
         }
         #endregion
@@ -282,5 +310,53 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         #endregion
+
+        [TestMethod()]
+        public void GetAppInstancesTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                var instances = web.GetAppInstances();
+                Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
+                int instanceCount = instances.Count;
+
+                using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+                {
+                    web.LoadApp(stream, 1033);
+                    clientContext.ExecuteQuery();
+                }
+
+                instances = web.GetAppInstances();
+                Assert.AreNotEqual(instances.Count, instanceCount, "App count is same after upload");
+            }
+
+        }
+
+        [TestMethod()]
+        public void RemoveAppInstanceByTitleTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                var instances = web.GetAppInstances();
+                Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
+                int instanceCount = instances.Count;
+
+                using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+                {
+                    web.LoadApp(stream, 1033);
+                    clientContext.ExecuteQuery();
+                }
+
+                Assert.IsTrue(web.RemoveAppInstanceByTitle(APPNAME));
+
+                instances = web.GetAppInstances();
+
+                Assert.AreEqual(instances.Count, instanceCount);
+            }
+        }
     }
 }
