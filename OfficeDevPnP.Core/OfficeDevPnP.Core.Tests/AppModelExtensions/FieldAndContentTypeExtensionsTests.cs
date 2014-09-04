@@ -62,6 +62,48 @@ namespace Microsoft.SharePoint.Client.Tests {
                 clientContext.ExecuteQuery();
             }
         }
+
+	//FIXME: Tests does not revert target to a clean slate after running.
+	//FIXME: Tests are tighthly coupled to eachother
+	[TestMethod]
+        public void DeleteExistingFieldTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                clientContext.Load(web.Fields);
+                clientContext.ExecuteQuery();
+                var beforeNrOfFields = web.Fields.Count;
+
+                web.RemoveFieldByInternalName("Test_ABC123");
+
+                clientContext.Load(web.Fields);
+                clientContext.ExecuteQuery();
+                var afterNrOfFields = web.Fields.Count;
+                Assert.AreEqual(beforeNrOfFields - 1, afterNrOfFields);
+            }
+        }
+
+	[TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                try
+                {
+                    web.RemoveFieldByInternalName("FieldThatDoesNotExistEver");
+                }
+                catch (ArgumentException ex)
+                {
+                    Assert.AreEqual(ex.Message, "Could not find field with internalName FieldThatDoesNotExistEver");
+                    throw;
+                }
+            }
+        }
         #endregion
     }
 }

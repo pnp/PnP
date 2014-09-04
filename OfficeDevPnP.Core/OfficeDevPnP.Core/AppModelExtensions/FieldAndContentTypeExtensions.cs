@@ -140,6 +140,19 @@ namespace Microsoft.SharePoint.Client
             return field;
         }
 
+        public static void RemoveFieldByInternalName(this Web web, string internalName)
+        {
+            var fields = web.Context.LoadQuery(web.Fields.Where(f => f.InternalName == internalName));
+            web.Context.ExecuteQuery();
+
+            if (fields.Count() == 0)
+            {
+                throw new ArgumentException(string.Format("Could not find field with internalName {0}", internalName));
+            }
+
+            fields.First().DeleteObject();
+        }
+
         /// <summary>
         /// Creates fields from feature element xml file schema. XML file can contain one or many field definitions created using classic feature framework structure.
         /// </summary>
