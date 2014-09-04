@@ -353,13 +353,13 @@ namespace Microsoft.SharePoint.Client
 
         //TODO: to be replaced by new site logo CSOM once we've the April 2014 CU
         //Note: does seem to broken on the current SPO implementation (20/03/2014) as there's no _themes folder anymore in the root web
+        [Obsolete("Use Web.SiteLogoUrl property")]
         public static void SetSiteLogo(this Web web, string fullPathToLogo)
         {
             if (string.IsNullOrEmpty(fullPathToLogo) || !System.IO.File.Exists(fullPathToLogo))
             {
                 return;
             }
-
             // Not natively supported, but we can update the themed site icon. If initial theme was just applied, image is at
             // _themes/0/siteIcon-2129F729.themedpng
             Folder rootFolder = web.RootFolder;
@@ -660,8 +660,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
-            Justification="URLs are commonly standardised to lower case.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+            Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
