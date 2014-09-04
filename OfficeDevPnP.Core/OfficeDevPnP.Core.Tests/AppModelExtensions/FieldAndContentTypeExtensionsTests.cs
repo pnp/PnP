@@ -12,6 +12,31 @@ namespace Microsoft.SharePoint.Client.Tests {
     [TestClass()]
     public class FieldAndContentTypeExtensionsTests {
         #region [ CreateField ]
+        [TestCleanup]
+        public void Cleanup()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
+                clientContext.ExecuteQuery();
+                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var field in testFields)
+                {
+                    field.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
+
+                var lists = clientContext.LoadQuery(clientContext.Web.Lists);
+                clientContext.ExecuteQuery();
+                var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var list in testLists)
+                {
+                    list.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
+            }
+        }
+
         [TestMethod()]
         public void CreateFieldTest() {
             using (var clientContext = TestCommon.CreateClientContext()) {
@@ -65,25 +90,6 @@ namespace Microsoft.SharePoint.Client.Tests {
 
 	//FIXME: Tests does not revert target to a clean slate after running.
 	//FIXME: Tests are tighthly coupled to eachother
-	[TestMethod]
-        public void DeleteExistingFieldTest()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                var web = clientContext.Web;
-
-                clientContext.Load(web.Fields);
-                clientContext.ExecuteQuery();
-                var beforeNrOfFields = web.Fields.Count;
-
-                web.RemoveFieldByInternalName("Test_ABC123");
-
-                clientContext.Load(web.Fields);
-                clientContext.ExecuteQuery();
-                var afterNrOfFields = web.Fields.Count;
-                Assert.AreEqual(beforeNrOfFields - 1, afterNrOfFields);
-            }
-        }
 
 	[TestMethod]
         [ExpectedException(typeof(ArgumentException))]
