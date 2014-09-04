@@ -19,6 +19,31 @@ namespace Microsoft.SharePoint.Client.Tests
 
 
         #region [ CreateField ]
+        [TestCleanup]
+        public void Cleanup()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
+                clientContext.ExecuteQuery();
+                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var field in testFields)
+                {
+                    field.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
+
+                var lists = clientContext.LoadQuery(clientContext.Web.Lists);
+                clientContext.ExecuteQuery();
+                var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var list in testLists)
+                {
+                    list.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
+            }
+        }
+
         [TestMethod()]
         public void CreateFieldTest()
         {
@@ -71,6 +96,29 @@ namespace Microsoft.SharePoint.Client.Tests
                 var field = clientContext.Web.Fields.GetByTitle(fieldName);
                 clientContext.Load(field);
                 clientContext.ExecuteQuery();
+            }
+        }
+
+	//FIXME: Tests does not revert target to a clean slate after running.
+	//FIXME: Tests are tighthly coupled to eachother
+
+	[TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                try
+                {
+                    web.RemoveFieldByInternalName("FieldThatDoesNotExistEver");
+                }
+                catch (ArgumentException ex)
+                {
+                    Assert.AreEqual(ex.Message, "Could not find field with internalName FieldThatDoesNotExistEver");
+                    throw;
+                }
             }
         }
         #endregion
