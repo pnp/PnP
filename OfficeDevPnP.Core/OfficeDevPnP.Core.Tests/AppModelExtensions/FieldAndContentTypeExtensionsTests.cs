@@ -123,32 +123,5 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            // Remove all created Test Artifacts
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Fields
-                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
-                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_",StringComparison.OrdinalIgnoreCase));
-                foreach(var field in testFields)
-                {
-                    field.DeleteObject();
-                }
-                clientContext.ExecuteQuery();
-
-                // Lists
-                var lists = clientContext.LoadQuery(clientContext.Web.Lists);
-                clientContext.ExecuteQuery();
-                var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach(var list in testLists)
-                {
-                    list.DeleteObject();
-                }
-                clientContext.ExecuteQuery();
-            }
-        }
     }
 }
