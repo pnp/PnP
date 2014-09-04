@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Site Provisioning</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap-3.1.1-custom/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/main.min.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <form id="wizard" action="#">
+
+        <h1>Account</h1>
+        <fieldset>
+            <legend>Which type of site would you like to create?</legend>            
+            <span class="selection-error">Please select a type of site to continue</span>
+
+            <div class="tiles">
+
+                <div class="media">
+                    <div class="pull-left tile"></div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Team Site</h4>
+                        <p>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</p>
+                    </div>
+                </div>
+
+                <div class="media">
+                    <div class="pull-left tile"></div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Publishing Site</h4>
+                        <p>Ut fusce varius nisl ac ipsum gravida vel pretium tellus tincidunt integer eu augue augue nunc elit dolor, luctus placerat.</p>
+                    </div>
+                </div>
+
+                <div class="media">
+                    <div class="pull-left tile"></div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Blog Site</h4>
+                        <p>In malesuada semper mi, id sollicitudin urna fermentum ut fusce varius nisl.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <h1>The Details</h1>
+        <fieldset>
+            <legend>The Details</legend>
+
+            <div class="form-group">
+                <label for="name" class="control-label">Give it a name</label>
+                <input type="text" class="form-control input-lg" name="name" placeholder="Example 'Contoso Portal'" required>
+            </div>
+
+            <div class="form-group form-url">
+                <label for="url" class="control-label">What should its URL be?</label>
+                <p class="form-control-static input-lg pull-left">htp://www.contoso.com/sites/</p>
+                <input type="text" class="form-control input-lg pull-left required" name="url" placeholder="Example 'contoso'" required>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Give it a description</label>
+                <textarea class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Add additional owners (everyone needs a backup)</label>
+                <textarea class="form-control" rows="3"></textarea>
+            </div>
+
+        </fieldset>
+
+    </form>
+
+    <!-- JS -->
+    <script src="js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="js/vendor/jquery.steps.min.js"></script>
+    <script src="js/vendor/jquery-validation-1.12.0/jquery.validate.min.js"></script>
+    <script src="js/main.min.js"></script>
+
+</body>
+</html>

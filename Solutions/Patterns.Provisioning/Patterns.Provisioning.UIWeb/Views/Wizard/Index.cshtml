@@ -1,0 +1,87 @@
+﻿@model Patterns.Provisioning.UIWeb.WizardModel
+@{ Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Site Provisioning</title>
+        @Styles.Render("~/bundles/wizardcss")
+        <link href="~/Content/css/Office.Controls.css" rel="stylesheet" />
+</head>
+<body>
+    @using (Html.BeginForm("SubmitRequest", "Wizard", new { SPHostUrl = ViewBag.HostUrl }, FormMethod.Post)) {
+        @Html.AntiForgeryToken()
+    <div id="wizard">
+
+        <h1>Account</h1>
+        <fieldset>
+            <legend>Which type of site would you like to create?</legend>
+            <span class="selection-error">Please select a type of site to continue</span>
+
+            @Html.HiddenFor(model => model.Template)
+
+            <div class="tiles">
+                @foreach (SiteTemplate template in ViewBag.SiteTemplates) {
+                    <div class="media" data-tmpid="tmp-@template.TemplateId" data-tmpname="@template.Name" data-tmptitle="@template.Title">
+                        <div class="pull-left tile"></div>
+                        <div class="media-body">
+                            <h4 class="media-heading">@template.Title</h4>
+                            <p>@template.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </fieldset>
+
+        <h1>The Details</h1>
+        <fieldset>
+            <legend>The Details</legend>
+
+            <div class="form-group">
+                <label for="name" class="control-label">Give it a name</label>
+                @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control input-lg", name="name", placeholder = "Example 'Contoso Portal'", required = "required" })
+            </div>
+
+            <div class="form-group form-url">
+                <label for="url" class="control-label">What should its URL be?</label>
+                <p class="form-control-static pull-left">@ViewBag.HostUrl</p>
+                @Html.TextBoxFor(model => model.SiteUrl, new { @class = "form-control input-lg pull-left required", name = "url", placeholder = "Example 'contoso'", required = "required" })
+                <p class="form-control-static pull-left" id="SiteUrlExists" style="padding-left: 10px"></p>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Give it a description</label>
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3" })
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Add additional owners (everyone needs a backup)</label>
+                <div id="OwnersPicker"></div>
+                @Html.HiddenFor(model => model.OtherOwners)
+            </div>
+
+        </fieldset>
+    </div>
+    <input type="submit" id="submitForm" style="display:none" />
+    }
+    @Scripts.Render(
+            "~/bundles/jquery",
+            "~/bundles/jqueryval",
+            "~/bundles/bootstrap",
+            "~/bundles/wizard")
+    <script type="text/javascript">
+        var __hostUrl = '@ViewBag.HostUrl';
+        var __appSiteUrl = '@ViewBag.AppSiteUrl';
+        var __appWebUrl = '@ViewBag.AppWebUrl';
+        var __language = '@ViewBag.Language';
+    </script>
+
+    <script src="~/Scripts/MicrosoftAjax.js" type="text/javascript"></script>
+    <script src="~/Content/js/app.js" type="text/javascript"></script>
+    <script src="~/Scripts/Office.Controls.js" type="text/javascript"></script>
+    <script src="~/Scripts/Office.Controls.PeoplePicker.js" type="text/javascript"></script>
+    <script src="~/Scripts/Office.Controls.ListView.js" type="text/javascript"></script>
+</body>
+</html>
