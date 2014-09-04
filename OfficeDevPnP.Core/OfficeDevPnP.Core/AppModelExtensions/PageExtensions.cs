@@ -360,7 +360,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html);
         }
