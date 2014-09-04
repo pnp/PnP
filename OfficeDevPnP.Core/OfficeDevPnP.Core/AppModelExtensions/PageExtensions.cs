@@ -49,8 +49,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverRelativePageUrl">Server relative url of the page containing the webparts</param>
         public static IEnumerable<WebPartDefinition> GetWebParts(this Web web, string serverRelativePageUrl)
         {
-            List<WebPartDefinition> webparts = new List<WebPartDefinition>();
-
             Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
             LimitedWebPartManager limitedWebPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
