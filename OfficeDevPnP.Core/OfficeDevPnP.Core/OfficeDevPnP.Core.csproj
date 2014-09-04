@@ -140,6 +140,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\SystemWebUIExtensions.cs" />
+    <Compile Include="Extensions\ValidationExtensions.cs" />
+    <Compile Include="CoreResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\LoggingUtility.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>
@@ -160,7 +166,12 @@
     <Compile Include="Utilities\X509CertificateUtility.cs" />
     <Compile Include="Utilities\YammerUtility.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="CoreResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <TFSBaseBuildYear>2014</TFSBaseBuildYear>

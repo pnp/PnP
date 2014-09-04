@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetAppInstance : SPOWebCmdlet
     {
 
-        [Parameter(Mandatory = false, ValueFromPipeline = true, HelpMessage = "The Id of the App Instance")]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline = true, HelpMessage = "The Id of the App Instance")]
         public GuidPipeBind Identity;
 
         protected override void ExecuteCmdlet()
@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 var instances = this.SelectedWeb.GetAppInstances();
                 if (instances.Count > 1)
                 {
-                    WriteObject(instances);
+                    WriteObject(instances,true);
                 }
                 else if (instances.Count == 1)
                 {

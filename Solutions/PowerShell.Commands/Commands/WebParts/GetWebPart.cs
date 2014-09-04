@@ -3,7 +3,6 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Linq;
 using System.Management.Automation;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -14,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string PageUrl = string.Empty;
 
         [Parameter(Mandatory = false)]
-        public SPOWebPartPipeBind Identity;
+        public WebPartPipeBind Identity;
 
         protected override void ExecuteCmdlet()
         {
@@ -27,7 +26,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     var wpfound = from wp in definitions where wp.Id == Identity.Id select wp;
                     if(wpfound.Any())
                     {
-                        WriteObject(new WebPartEntity(wpfound.FirstOrDefault()));
+                        WriteObject(wpfound.FirstOrDefault());
 
                     }
                 }
@@ -36,18 +35,13 @@ namespace OfficeDevPnP.PowerShell.Commands
                     var wpfound = from wp in definitions where wp.WebPart.Title == Identity.Title select wp;
                     if (wpfound.Any())
                     {
-                        WriteObject(new WebPartEntity(wpfound.FirstOrDefault()));
-
+                        WriteObject(wpfound.FirstOrDefault());
                     }
                 }
             }
             else
             {
-                foreach (var webpart in definitions)
-                {
-                    WriteObject(new WebPartEntity(webpart));
-                }
-
+                WriteObject(definitions, true);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System.Management.Automation;
-using OfficeDevPnP.PowerShell.Commands.Entities;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -13,20 +13,21 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetList : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Url of the list.")]
-        public SPOListPipeBind Identity;
+        public ListPipeBind Identity;
 
         protected override void ExecuteCmdlet()
         {
             if (Identity != null)
             {
                 var list = this.SelectedWeb.GetList(Identity);
-                WriteObject(new ListEntity(list));
+                WriteObject(list);
 
             }
             else
             {
-                var lists = this.SelectedWeb.GetLists();
-                WriteObject(lists);
+                var lists = ClientContext.LoadQuery(this.SelectedWeb.Lists.IncludeWithDefaultProperties(l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden));
+                ClientContext.ExecuteQuery();
+                WriteObject(lists,true);
             }
         }
     }

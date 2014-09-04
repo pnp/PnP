@@ -55,8 +55,19 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
             // Check if the file exists
             if (Checkout)
-                this.SelectedWeb.CheckOutFile(Url);
-
+            {
+                try
+                {
+                    var existingFile = this.SelectedWeb.GetFileByServerRelativeUrl(Url);
+                    if (existingFile.Exists)
+                    {
+                        this.SelectedWeb.CheckOutFile(Url);
+                    }
+                }
+                catch
+                { // Swallow exception, file does not exist 
+                }
+            }
             if (ParameterSetName == "Folder")
             {
                 this.SelectedWeb.UploadDocumentToFolder(Path, Folder);

@@ -68,7 +68,7 @@ namespace Microsoft.SharePoint.Client
 
         private static void DeployThemeToWebImplementation(Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployTheme, "Deploying theme '{0}' to '{1}'", themeName, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployTheme, CoreResources.BrandingExtension_DeployTheme, themeName, web.Context.Url);
 
             // Deploy files one by one to proper location
             if (!string.IsNullOrEmpty(colorFilePath) && System.IO.File.Exists(colorFilePath))
@@ -184,7 +184,7 @@ namespace Microsoft.SharePoint.Client
 
         private static void AddNewThemeOptionToWebImplementation(this Web web, Web rootWeb, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, "Adding theme option '{0}' to '{1}'", themeName, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, CoreResources.BrandingExtension_AddThemeOption, themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery of specific site
             List themesOverviewList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
@@ -230,7 +230,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                LoggingUtility.Internal.TraceWarning((int)EventId.ThemeNotOverwritten, "Theme '{0}' already exists (and was not overwritten). No changes made.", themeName);
+                LoggingUtility.Internal.TraceWarning((int)EventId.ThemeNotOverwritten, CoreResources.BrandingExtension_ThemeNotOverwritten, themeName);
             }
         }
 
@@ -239,8 +239,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Set theme for the root web of a site collection</param>
         /// <param name="themeName">Name of the new theme</param>
+        /// <exception cref="System.ArgumentException">Thrown when themeName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">themeName is null</exception>
         public static void SetThemeToWeb(this Web web, string themeName)
         {
+            if (string.IsNullOrEmpty(themeName))
+            {
+                throw (themeName == null)
+                  ? new ArgumentNullException("themeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+            }
             SetThemeToWebImplementation(web, web, themeName);
         }
 
@@ -250,8 +258,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Set theme for a sub site</param>
         /// <param name="rootWeb">Root web, needed as the theme is stored in the root web</param>
         /// <param name="themeName">Name of the new theme</param>
+        /// <exception cref="System.ArgumentException">Thrown when themeName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">themeName is null</exception>
         public static void SetThemeToSubWeb(this Web web, Web rootWeb, string themeName)
         {
+            if (string.IsNullOrEmpty(themeName))
+            {
+                throw (themeName == null)
+                  ? new ArgumentNullException("themeName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+            }
+
             SetThemeToWebImplementation(web, rootWeb, themeName);
         }
 
@@ -263,7 +280,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(themeName))
                 throw new ArgumentNullException("themeName");
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, "Setting theme '{0}' for '{1}'", themeName, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, CoreResources.BrandingExtension_SetTheme, themeName, web.Context.Url);
 
             // Let's get instance to the composite look gallery
             List themeList = rootWeb.GetCatalog((int)ListTemplateType.DesignCatalog);
@@ -325,12 +342,12 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, "Theme '{0}' not found.", themeName);
+                    LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, CoreResources.BrandingExtension_ThemeMissing, themeName);
                 }
             }
             else
             {
-                LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, "Theme '{0}' does not exist.", themeName);
+                LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, CoreResources.BrandingExtension_ThemeMissing, themeName);
             }
         }
 
@@ -385,7 +402,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(themeFolderVersion))
                 throw new ArgumentNullException("themeFolderVersion");
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployThemeFile, "Deploying file '{0}' to '{1}' folder '{2}'.", fileName, web.Context.Url, themeFolderVersion);
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployThemeFile, CoreResources.BrandingExtension_DeployThemeFile, fileName, web.Context.Url, themeFolderVersion);
 
             // Get the path to the file which we are about to deploy
             List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
@@ -433,7 +450,7 @@ namespace Microsoft.SharePoint.Client
                 throw new FileNotFoundException("File for param sourceFilePath file does not exist", sourceFilePath);
 
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, "Deploying page layout '{0}' to '{1}'.", fileName, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, CoreResources.BrandingExtension_DeployPageLayout, fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
@@ -495,7 +512,7 @@ namespace Microsoft.SharePoint.Client
                 throw new FileNotFoundException("File for param sourceFilePath not found.", sourceFilePath);
 
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, "Deploying masterpage '{0}' to '{1}'.", fileName, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, CoreResources.BrandingExtension_DeployMasterPage, fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
@@ -549,8 +566,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="masterPageName"></param>
         /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesForSiteByName(this Web web, string masterPageName, string customMasterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+            if (string.IsNullOrEmpty(customMasterPageName))
+            {
+                throw (customMasterPageName == null)
+                  ? new ArgumentNullException("customMasterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+            }
+
             web.SetMasterPageForSiteByName(masterPageName);
             web.SetCustomMasterPageForSiteByName(customMasterPageName);
         }
@@ -561,8 +593,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="masterPageName"></param>
         /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesForSiteByUrl(this Web web, string masterPageName, string customMasterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+            if (string.IsNullOrEmpty(customMasterPageName))
+            {
+                throw (customMasterPageName == null)
+                  ? new ArgumentNullException("customMasterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+            }
+
             web.SetMasterPageForSiteByUrl(masterPageName);
             web.SetCustomMasterPageForSiteByUrl(customMasterPageName);
         }
@@ -572,8 +619,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Current web</param>
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         public static void SetMasterPageForSiteByName(this Web web, string masterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
@@ -587,8 +642,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Current web</param>
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         public static void SetCustomMasterPageForSiteByName(this Web web, string masterPageName)
         {
+            if (string.IsNullOrEmpty(masterPageName))
+            {
+                throw (masterPageName == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+            }
+
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
@@ -596,6 +660,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
+            Justification="URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
@@ -653,7 +719,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(masterPageUrl))
                 throw new ArgumentNullException("masterPageUrl");
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, "Setting master URL '{0}' to '{1}'.", masterPageUrl, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, CoreResources.BrandingExtension_SetMasterUrl, masterPageUrl, web.Context.Url);
 
             web.MasterUrl = masterPageUrl;
             web.Update();
@@ -670,7 +736,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(masterPageUrl))
                 throw new ArgumentNullException("masterPageUrl");
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetCustomMasterUrl, "Setting custom master URL '{0}' to '{1}'.", masterPageUrl, web.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.SetCustomMasterUrl, CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageUrl, web.Context.Url);
 
             web.CustomMasterUrl = masterPageUrl;
             web.Update();

@@ -195,6 +195,9 @@
   <data name="Retry0ServerNotHealthyWaiting1seconds" xml:space="preserve">
     <value>Retry {0}: Server not healthy, waiting {1} seconds (Server Health Score: {2})</value>
   </data>
+  <data name="UninstallApp0" xml:space="preserve">
+    <value>Uninstall app {0}?</value>
+  </data>
   <data name="Web0CreatedAt1" xml:space="preserve">
     <value>Web '{0}' created at {1}</value>
   </data>

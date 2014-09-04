@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public sealed class SPOFieldIdPipeBind
+    public sealed class FieldPipeBind
     {
         private string _name;
-        private Guid _id;
+        private Guid _id = Guid.Empty;
+        private Field _field;
 
-        public SPOFieldIdPipeBind(Guid guid)
+        public FieldPipeBind(Guid guid)
         {
             this._id = guid;
         }
 
-        public SPOFieldIdPipeBind(string id)
+        public FieldPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
@@ -25,7 +26,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             }
         }
 
-        public SPOFieldIdPipeBind()
+        public FieldPipeBind(Field field)
+        {
+            _field = field;
+        }
+
+        public FieldPipeBind()
         {
             this._id = Guid.Empty;
             this._name = String.Empty;
@@ -39,6 +45,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         public string Name
         {
             get { return _name; }
+        }
+
+        public Field Field
+        {
+            get { return _field; }
         }
     }
 }

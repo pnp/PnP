@@ -1,13 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -18,10 +11,10 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddContentTypeToList : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = true)]
-        public SPOContentTypePipeBind ContentType;
+        public ContentTypePipeBind ContentType;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter DefaultContentType;

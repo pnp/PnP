@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
     [Cmdlet(VerbsCommon.Remove, "SPOUserFromGroup")]
     [CmdletHelp("Removes a user from a group")]
     [CmdletExample(Code = @"
-PS:> Remove-SPOUserFromGroup -LogonName user@company.com -GroupName 'Marketing Site Members'
+PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'
 ")]
     public class RemoveUserFromGroup : SPOWebCmdlet
     {

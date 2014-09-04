@@ -1,44 +1,32 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public sealed class SPOListPipeBind
+    public sealed class ListPipeBind
     {
-        private ListEntity _onlineList;
         private List _list;
         private Guid _id;
         private string _name;
 
-        public SPOListPipeBind()
+        public ListPipeBind()
         {
-            _onlineList = null;
             _list = null;
             _id = Guid.Empty;
             _name = string.Empty;
         }
 
-        public SPOListPipeBind(ListEntity list)
-        {
-            this._onlineList = list;
-        }
-
-        public SPOListPipeBind(List list)
+        public ListPipeBind(List list)
         {
             this._list = list;
         }
 
-        public SPOListPipeBind(Guid guid)
+        public ListPipeBind(Guid guid)
         {
             this._id = guid;
         }
 
-        public SPOListPipeBind(string id)
+        public ListPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
@@ -55,14 +43,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             get
             {
-                if (_onlineList != null)
-                {
-                    return _onlineList.GetContextObject();
-                }
-                else
-                {
-                    return _list;
-                }
+                return _list;
             }
         }
 

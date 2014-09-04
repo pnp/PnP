@@ -59,6 +59,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
+            // Turn off OfficeDev.PnP.Core logging to console for powershell commands
+            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Listeners.Clear();
+            
             PSCredential creds = null;
             if (Credentials != null)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -601,52 +602,54 @@ namespace Microsoft.SharePoint.Client
         /// <param name="group">Site column group</param>
         /// <param name="mmsGroupName">Taxonomy group </param>
         /// <param name="mmsTermSetName">Term set name</param>
+        /// <param name="multiValue">If true, create a multi value field</param>
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
-            try
-            {
-                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                web.WireUpTaxonomyField(id, mmsGroupName, mmsTermSetName, multiValue);
-                _field.Update();
-                web.Context.ExecuteQuery();
+            id.ValidateNotNullOrEmpty("id");
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            // Group can be emtpy
+            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
+            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                ///If there is an exception the hidden field might be present
-                FieldCollection _fields = web.Fields;
-                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+            TermStore termStore = GetDefaultTermStore(web);
 
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.DeleteObject();
-                    web.Context.ExecuteQuery();
-                }
-                throw;
-            }
+            if (termStore == null)
+                throw new NullReferenceException("The default term store is not available.");
+
+
+            // get the term group and term set
+            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
+            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
+            web.Context.Load(termStore);
+            web.Context.Load(termSet);
+            web.Context.ExecuteQuery();
+
+            return web.CreateTaxonomyField(id, internalName, displayName, group, termSet, multiValue);
         }
 
+
         /// <summary>
-        /// Can be used to create taxonomy field remotely to web. Associated to group and term set in the GetDefaultSiteCollectionTermStore 
+        /// Can be used to create taxonomy field remotely to web.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="id">Unique Id for the taxonomy field</param>
         /// <param name="internalName">Internal Name of the field</param>
         /// <param name="displayName">Display name</param>
         /// <param name="group">Site column group</param>
-        /// <param name="mmsGroupName">Taxonomy group </param>
-        /// <param name="mmsTermSetName">Term set name</param>
+        /// <param name="termSet">Taxonomy Termset</param>
+        /// <param name="multiValue">if true, create a multivalue taxonomy field</param>
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            termSet.ValidateNotNullOrEmpty("termSet");
+           
             try
             {
-                var _field = web.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+                var _field = web.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
 
                 WireUpTaxonomyField(web, _field, termSet, multiValue);
                 _field.Update();
@@ -670,6 +673,7 @@ namespace Microsoft.SharePoint.Client
                     web.Context.ExecuteQuery();
                 }
                 throw;
+                
             }
         }
 
@@ -683,38 +687,35 @@ namespace Microsoft.SharePoint.Client
         /// <param name="group">Site column group</param>
         /// <param name="mmsGroupName">Taxonomy group </param>
         /// <param name="mmsTermSetName">Term set name</param>
+        /// <param name="multiValue">If true, create multi value field</param>
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
-            try
-            {
-                var _field = list.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                list.WireUpTaxonomyField(_field, mmsGroupName, mmsTermSetName, multiValue);
-                _field.Update();
-                list.Context.ExecuteQuery();
+            id.ValidateNotNullOrEmpty("id");
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
+            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                ///If there is an exception the hidden field might be present
-                FieldCollection _fields = list.Fields;
-                list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                list.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+            var clientContext = list.Context as ClientContext;
+            TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.DeleteObject();
-                    list.Context.ExecuteQuery();
-                }
-                throw;
-            }
+         
+            if (termStore == null)
+                throw new NullReferenceException("The default term store is not available.");
+
+            // get the term group and term set
+            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
+            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
+            list.Context.Load(termStore);
+            list.Context.Load(termSet);
+            list.Context.ExecuteQuery();
+
+            return list.CreateTaxonomyField(id, internalName, displayName, group, termSet, multiValue);
         }
 
         /// <summary>
-        /// Can be used to create taxonomy field remotely in a list. Associated to group and term set in the GetDefaultSiteCollectionTermStore 
+        /// Can be used to create taxonomy field remotely in a list. 
         /// </summary>
         /// <param name="list">List to be processed</param>
         /// <param name="id">Unique Id for the taxonomy field</param>
@@ -722,14 +723,21 @@ namespace Microsoft.SharePoint.Client
         /// <param name="displayName">Display name</param>
         /// <param name="group">Site column group</param>
         /// <param name="termSet">Taxonomy TermSet</param>
+        /// <param name="multiValue">If true, create a multivalue field</param>
         /// <returns>New taxonomy field</returns>
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
+            internalName.ValidateNotNullOrEmpty("internalName");
+            displayName.ValidateNotNullOrEmpty("displayName");
+            termSet.ValidateNotNullOrEmpty("termSet");
+
             try
             {
-                var _field = list.CreateField(id, internalName, "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
-                list.WireUpTaxonomyField(_field, termSet, multiValue);
+                var _field = list.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+
+                WireUpTaxonomyField(list, _field, termSet, multiValue);
                 _field.Update();
+
                 list.Context.ExecuteQuery();
 
                 return _field;
@@ -777,13 +785,6 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
             WireUpTaxonomyField(web, field, termSet, allowMultipleValues);
-
-            //// set the SSP ID and Term Set ID on the taxonomy field
-            //var taxField = web.Context.CastTo<TaxonomyField>(field);
-            //taxField.SspId = termStore.Id;
-            //taxField.TermSetId = termSet.Id;
-            //taxField.Update();
-            //web.Context.ExecuteQuery();
         }
 
         public static void WireUpTaxonomyField(this Web web, Field field, TermSet termSet, bool allowMultipleValues = false)
@@ -869,13 +870,6 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQuery();
 
             list.WireUpTaxonomyField(field, termSet, allowMultipleValues);
-
-            //// set the SSP ID and Term Set ID on the taxonomy field
-            //var taxField = clientContext.CastTo<TaxonomyField>(field);
-            //taxField.SspId = termStore.Id;
-            //taxField.TermSetId = termSet.Id;
-            //taxField.Update();
-            //clientContext.ExecuteQuery();
         }
 
         /// <summary>
