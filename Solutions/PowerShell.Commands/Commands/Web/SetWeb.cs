@@ -16,6 +16,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public string AlternateCssUrl;
 
+        [Parameter(Mandatory = false)]
+        public string Title;
+
         protected override void ExecuteCmdlet()
         {
             if (!string.IsNullOrEmpty(SiteLogoUrl))
@@ -26,6 +29,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (!string.IsNullOrEmpty(AlternateCssUrl))
             {
                 this.SelectedWeb.AlternateCssUrl = AlternateCssUrl;
+                this.SelectedWeb.Update();
+            }
+            if(!string.IsNullOrEmpty(Title))
+            {
+                this.SelectedWeb.Title = Title;
                 this.SelectedWeb.Update();
             }
             ClientContext.ExecuteQuery();
