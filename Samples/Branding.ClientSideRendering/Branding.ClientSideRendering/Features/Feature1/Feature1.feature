@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feature deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" title="Branding.ClientSideRendering Feature1" dslVersion="1.0.0.0" Id="dd6a5990-3163-4325-9cef-5449aea0577c" featureId="dd6a5990-3163-4325-9cef-5449aea0577c" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+</feature>
