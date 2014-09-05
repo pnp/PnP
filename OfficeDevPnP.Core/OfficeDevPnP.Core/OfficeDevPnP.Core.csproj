@@ -175,9 +175,9 @@
     <TFSBaseBuildYear>2014</TFSBaseBuildYear>
   </PropertyGroup>
   <Import Project="..\TFSBuildNumber.targets" />
-  <Target Name="BeforeBuild" DependsOnTargets="GetMajorMinorFromCSharpAssemblyInfoFile;WriteProjectTextAssemblyVersionFile;UpdateCSharpAssemblyInfoFile">
+  <Target Name="BeforeBuild" DependsOnTargets="">
   </Target>
-  <Target Name="AfterBuild" DependsOnTargets="ResetCSharpAssemblyInfoFile">
+  <Target Name="AfterBuild" DependsOnTargets="">
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
