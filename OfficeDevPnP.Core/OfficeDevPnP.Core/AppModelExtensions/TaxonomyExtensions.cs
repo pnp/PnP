@@ -543,7 +543,13 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region Fields
-
+        /// <summary>
+        /// Sets a value in a taxonomy field
+        /// </summary>
+        /// <param name="item">The item to set the value to</param>
+        /// <param name="TermPath">The path of the term in the shape of "TermGroupName|TermSetName|TermName"</param>
+        /// <param name="fieldId">The id of the field</param>
+        /// <exception cref="KeyNotFoundException"/>
         public static void SetTaxonomyFieldValueByTermPath(this ListItem item, string TermPath, Guid fieldId)
         {
             var clientContext = item.Context as ClientContext;
@@ -554,7 +560,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                throw new Exception("Taxonomy Term not found.");
+                throw new KeyNotFoundException("Taxonomy Term not found");
             }
         }
 
@@ -646,7 +652,7 @@ namespace Microsoft.SharePoint.Client
             internalName.ValidateNotNullOrEmpty("internalName");
             displayName.ValidateNotNullOrEmpty("displayName");
             termSet.ValidateNotNullOrEmpty("termSet");
-           
+
             try
             {
                 var _field = web.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
@@ -673,7 +679,7 @@ namespace Microsoft.SharePoint.Client
                     web.Context.ExecuteQuery();
                 }
                 throw;
-                
+
             }
         }
 
@@ -700,7 +706,7 @@ namespace Microsoft.SharePoint.Client
             var clientContext = list.Context as ClientContext;
             TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
-         
+
             if (termStore == null)
                 throw new NullReferenceException("The default term store is not available.");
 
@@ -753,6 +759,8 @@ namespace Microsoft.SharePoint.Client
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
                 if (_field != null)
                 {
+                    _field.Hidden = false; // Cannot delete a hidden column
+                    _field.Update();
                     _field.DeleteObject();
                     list.Context.ExecuteQuery();
                 }
