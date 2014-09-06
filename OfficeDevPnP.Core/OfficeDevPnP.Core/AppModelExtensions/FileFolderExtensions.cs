@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.Core.Utilities;
+﻿using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,7 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     // have to abort, list does not exist.
-                    string errorMessage = string.Format("Target library does not exist in the web. Web: {0}, List: {1}", web.Url, libraryName);
+                    string errorMessage = string.Format(CoreResources.FileFolderExtensions_LibraryMissing, web.Url, libraryName);
                     LoggingUtility.Internal.TraceError((int)EventId.LibraryMissing, errorMessage);
                     throw new WebException(errorMessage);
                 }
@@ -84,7 +85,7 @@ namespace Microsoft.SharePoint.Client
         public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createLibrary = false)
         {
             var filename = Path.GetFileName(filePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, "Uploading file '{0}' to folder '{1}'.", filename, folderName);
+            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile, filename, folderName);
 
             Folder folder;
             if (!DoesFolderExists(web, folderName))
@@ -96,7 +97,7 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     // have to abort, list does not exist.
-                    string errorMessage = string.Format("Target folder does not exist in the web. Web: {0}, Folder: {1}", web.Url, folderName);
+                    string errorMessage = string.Format(CoreResources.FileFolderExtensions_FolderMissing, web.Url, folderName);
                     LoggingUtility.Internal.TraceError((int)EventId.FolderMissing, errorMessage);
                     throw new WebException(errorMessage);
                 }

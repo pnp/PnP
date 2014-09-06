@@ -13,7 +13,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 ", Details = "Office365 only")]
     public class RemoveSite : SPOAdminCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
         public string Url;
 
         [Parameter(Mandatory = false, HelpMessage = "Do not add to the trashcan if selected.")]

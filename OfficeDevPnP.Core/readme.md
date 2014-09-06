@@ -178,13 +178,13 @@ for operations, such as ExecuteQuery.
 
 The App Model Extensions API should extend from the relevant entity object, 
 e.g. creating a new List should extended from the Web where it should be 
-created, adding an exising Content Type to a List should extend from a List.
+created, adding an existing Content Type to a List should extend from a List.
 
 Do not generally extend from collections, as they are less discoverable, e.g.
 do not extend from ContentTypeCollection.
 
 Do not extend from an irrelevant type; if you do not use any properties or
-methods (other than Context) then you are probably exteneding from the wrong
+methods (other than Context) then you are probably extending from the wrong
 object. 
 
 If there is no relevant object, then consider just extending from 
@@ -273,7 +273,7 @@ group.
 #### Less common verbs ####
 
 **Deploy:** Uploads a file (or multiple files) as a resource (master page, 
-theme, etc) and then (generally) makes it available for use (i.e. generally
+theme, etc.) and then (generally) makes it available for use (i.e. generally
 includes Publish). In PowerShell Cmdlets use Install-.
 
 **Ensure:** Checks if an element exists, creating it if necessary, and then
@@ -286,13 +286,16 @@ Cmdlets use Test-.
 also includes making it available for others (i.e. Publish). In PowerShell
 Cmdlets use Import-.
 
+Unit tests
+--------------------
+Unit tests are in the OfficeDevPnP.Core.Tests project. Follow guidance for MSTest unit testing. **App.config** is not included (marked in .gitignore), but a sample file is included and should aid in setting up parameters for proper local unit testing.
 
 Version folders
 --------------------
-All code should be version independent, meanign that code shuold not make any assumptions to 15 or 16 folders in the code unless the folder usage would work in both cases and the numeber is not meaning ful.
+All code should be version independent, meaning that code should not assume that paths are in the 15 or 16 folders unless the folder usage would work in both cases and the number is not meaningful.
 
 
 Multilingual support
 --------------------
-Core component code cannot assume that the code is executed agains english language. Hardcoded references to library names are not acceptable for the core component implementation, like assuming that publishing site has "pages" library.
+The Core component code cannot assume that the code is executed against the English language. Hardcoded references to library names are not acceptable for the Core component implementation, like assuming that publishing site has a "Pages" library.
 

@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public FieldPipeBind Identity = new FieldPipeBind();
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 1)]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

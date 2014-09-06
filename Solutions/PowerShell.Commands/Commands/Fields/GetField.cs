@@ -9,9 +9,9 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetField : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true)]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public FieldPipeBind Identity = new FieldPipeBind();
 
         protected override void ExecuteCmdlet()
