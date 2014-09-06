@@ -43,8 +43,9 @@ Select Windows Credentials and add a new credential:
  
 Now you can use this entry to connect to your tenant as follows:
 
+```powershell
 	Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials yourlabel
-
+```
 
 ## Commands ##
 Here's a list of different provider commands. Many commands provide built-in help and examples, e.g. 
@@ -54,7 +55,7 @@ Here's a list of different provider commands. Many commands provide built-in hel
 We are looking to provide more examples to usage of these sooner or later.
 
 
-### Base Cmdlets ###
+#### Base Cmdlets ####
 Command | Description
 --------|------------
 **Connect-SPOnline** | Creates a new connection context to be used by all commands
