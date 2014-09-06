@@ -202,6 +202,7 @@ Command | Description
 **Set-SPOWebPartProperty** | Sets a webpart property
 
 #### Wiki Page Cmdlets ####
+Command | Description
 :--------|:------------
 **Add-SPOWikiPage** | Adds a new wikipages to a site
 **Get-SPOWikiPageContent** | Returns the HTML content of a wikipage
