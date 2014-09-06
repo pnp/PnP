@@ -31,7 +31,9 @@ A build script will copy the required files to a folder in your users folder, ca
 This will automatically load the module after starting PowerShell 3.0.
 To use the library you first need to connect to your tenant:
 
-	Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials (Get-Credential)
+```powershell
+Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials (Get-Credential)
+```
 
 In case of an unattended script you might want to add a new entry in your credential manager of windows. 
 
@@ -44,20 +46,22 @@ Select Windows Credentials and add a new credential:
 Now you can use this entry to connect to your tenant as follows:
 
 ```powershell
-	Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials yourlabel
+Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials yourlabel
 ```
 
 ## Commands ##
 Here's a list of different provider commands. Many commands provide built-in help and examples, e.g. 
 
-   Get-Help Connect-SPOnline -Detailed
+```powershell
+Get-Help Connect-SPOnline -Detailed
+```
 
 We are looking to provide more examples to usage of these sooner or later.
 
 
 #### Base Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Connect-SPOnline** | Creates a new connection context to be used by all commands
 **Disconnect-SPOnline** | Disconnects the context
 **Execute-SPOQuery** | Convenience command that executes the current query. See **Get-SPOContext**
@@ -67,9 +71,9 @@ Command | Description
 **Get-SPOStoredCredential** | Returns a stored credentials from the credential manager as a PowerShell credential
 **Set-SPOConfiguration** | Sets a configuration value, stored locally, alike a local property bag
 
-### Tenant Administration Cmdlets ###
+#### Tenant Administration Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Get-SPOTenantSite** | Returns a site from your tenant administration. For this to work you need to connect to your tenant admin first with 
 **Get-SPOTimeZoneId** |	Returns all timezone ids to  be used to create a new site collection in your tenant
 **Get-SPOWebTemplates** | Returns all webtemplates
@@ -77,21 +81,21 @@ Command | Description
 **Remove-SPOTenantSite** | Removes a site from your tenant
 **Set-SPOTenantSite** | Sets properties on an existing tenant site collection
 
-### App Cmdlets ###
+#### App Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Import-SPOAppPackage** | Uploads an app package to a site
 **Get-SPOAppInstance** | Gets an app instance
 **Uninstall-SPOAppInstance** | Removes an app instance from a site
 
-### App Authentication Cmdlets ###
+#### App Authentication Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Get-SPOAuthenticationRealm** | Returns the authentication realm for use for app only authentication. See **Connect-SPOnline -AppId -AppSecret -Realm**
 
-### Content Type Cmdlets
+#### Content Type Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOContentType** | Creates a new content type
 **Add-SPOContentTypeToList** | Adds an existing content type to a list
 **Add-SPOFieldToContentType** | Adds a field to an existing content type
@@ -99,31 +103,31 @@ Command | Description
 **Remove-SPOContentType** | Removes a content types
 **Set-SPODefaultContentTypeToList** | Sets the default content type to use for a list
 
-### Event Receiver Cmdlets ###
+#### Event Receiver Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOEventReceiver** |	Registers an event receiver to a site/list
 **Get-SPOEventReceiver** | Returns event receivers
 **Remove-SPOEventReceiver** | Removes an event receiver
 
-### Feature Cmdlets ###
+#### Feature Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Disable-SPOFeature** | Disables a feature
 **Enable-SPOFeature**| Enables a feature
 **Get-SPOFeature** | Returns features
 
-### Field Cmdlets ###
+#### Field Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOField** | Adds a new field
 **Add-SPOTaxonomyField** | Creates a new Taxonomy field
 **Get-SPOField** | Returns a field
 **Remove-SPOField** | Removes a field
 
-### List Cmdlets ###
+#### List Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOView** | Adds a new view to an existing list
 **Get-SPOList** | Returns a list
 **Get-SPOView** | Returns the views of a list
@@ -131,38 +135,38 @@ Command | Description
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
 
-### User and Group Cmdlets ###
+#### User and Group Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOUserToGroup** | Adds a user to a group
 **Get-SPOGroup** | Returns a group
 **New-SPOGroup** | Creates a group
 **New-SPOUser** | Adds a user to the Site User Info List. Equivalent to web.EnsureUser(user)
 **Remove-SPOUserFromGroup** | Removes a user from a group
 
-### Site Cmdlets ###
+#### Site Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Get-SPOSite** | Returns the current site
 **Set-SPOAppSideLoading** | Turns app sideloading on or off for a site
 
-### Taxonomy / Managed Metadata Cmdlets ###
+#### Taxonomy / Managed Metadata Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Export-SPOTaxonomy** | Exports (a part of) the taxonomy terms
 **Get-SPOTaxonomyItem** | Returns a specific item from the taxonomy
 **Get-SPOTaxonomySession** | Returns a taxonomy session
 **Import-SPOTaxonomy** | Imports a taxonomy into the managed metadata service. See the help of the command for examples
 **Set-SPOTaxonomyFieldValue** | Sets a taxonomy field value
 
-### Utility Cmdlets ###
+#### Utility Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Send-SPOMail** | Sends an email. Server defaults to smtp.office365.com but can be changed.
 
-### Web Cmdlets ###
+#### Web Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOCustomAction** | Adds a custom action to a site
 **Add-SPOFile** | Uploads a file to a site
 **Add-SPONavigationNode** | Adds a new link to the quicklaunch or top navigation
@@ -188,16 +192,17 @@ Command | Description
 **Set-SPOPropertyBagValue** | Sets a property bag value
 **Set-SPOTheme** | Sets the current theme
 
-### Web Part Cmdlets ###
+#### Web Part Cmdlets ####
 Command | Description
---------|------------
+:--------|:------------
 **Add-SPOWebPartToWebPartPage** | Adds a webpart to an existing web part page. The webparts needs to be available on the server
 **Add-SPOWebPartToWikiPage** | Adds a webpart to an existing wiki page. The webparts needs to be available on the server
 **Get-SPOWebPart** | Returns the webparts on a given page
 **Remove-SPOWebPart** |	Removes a webpart from a page
 **Set-SPOWebPartProperty** | Sets a webpart property
 
-### Wiki PAge Cmdlets ###
+#### Wiki Page Cmdlets ####
+:--------|:------------
 **Add-SPOWikiPage** | Adds a new wikipages to a site
 **Get-SPOWikiPageContent** | Returns the HTML content of a wikipage
 **Remove-SPOWikiPage**| Removes a wiki page
