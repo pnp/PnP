@@ -69,5 +69,33 @@ namespace OfficeDevPnP.Core.Tests.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] TestSolution {
+            get {
+                object obj = ResourceManager.GetObject("TestSolution", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2c388d20-b865-4b32-bc28-32e4e5fa7ff6.
+        /// </summary>
+        internal static string TestSolutionFeatureGuid {
+            get {
+                return ResourceManager.GetString("TestSolutionFeatureGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 6e7c6522-30d3-44a0-8f7a-62ec92acaed7.
+        /// </summary>
+        internal static string TestSolutionGuid {
+            get {
+                return ResourceManager.GetString("TestSolutionGuid", resourceCulture);
+            }
+        }
     }
 }
