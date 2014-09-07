@@ -501,6 +501,14 @@ namespace Microsoft.SharePoint.Client
             site.Context.ExecuteQuery();
         }
 
+        /// <summary>
+        /// Uninstalls a sandbox solution package (.WSP) file
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest</param>
+        /// <param name="fileName">filename of the WSP file to uninstall</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
         public static void UninstallSolution(this Site site, Guid packageGuid, string fileName, int majorVersion = 1, int minorVersion = 0)
         {
             LoggingUtility.Internal.TraceInformation((int)EventId.UninstallSolution, CoreResources.WebExtensions_UninstallSolution, packageGuid);
