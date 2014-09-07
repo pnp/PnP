@@ -204,4 +204,7 @@
   <data name="WebExtensions_SiteSearchUnhandledException" xml:space="preserve">
     <value>Site search error.</value>
   </data>
+  <data name="WebExtensions_UninstallSolution" xml:space="preserve">
+    <value>Removing sandbox solution '{0}'</value>
+  </data>
 </root>
