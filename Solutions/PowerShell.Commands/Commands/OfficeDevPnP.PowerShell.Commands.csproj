@@ -128,6 +128,8 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
+    <Compile Include="Site\UninstallSolution.cs" />
+    <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Site\NewSite.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
     <Compile Include="Taxonomy\SetTaxonomyFieldValue.cs" />
