@@ -88,6 +88,7 @@
     <None Include="App.config" />
     <None Include="App.config.sample" />
     <None Include="Resources\HelloWorldApp.app" />
+    <None Include="Resources\TestSolution.wsp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
