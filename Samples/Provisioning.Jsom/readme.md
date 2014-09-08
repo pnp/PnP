@@ -1,4 +1,4 @@
-# title of the PnP sample #
+# JavaScript Object Model Provisioning #
 
 ### Summary ###
 This application sample demonstrates how to use the JavaScript Object Model to provision a variety of common assets to a SharePoint site collection.
