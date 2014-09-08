@@ -5,7 +5,7 @@ using Microsoft.SharePoint.Client;
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
     [TestClass]
-    public class WebExtensions
+    public class PageExtensionsTests
     {
         private string folder = "SitePages";
         private string pageName = "Home.aspx";
