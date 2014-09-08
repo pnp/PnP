@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
@@ -487,6 +488,60 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
+
+        /// <summary>
+        /// Sets the default value for a managed metadata column in the specified list. This operation will not change existing items in the list
+        /// </summary>
+        /// <param name="web">Extension web</param>
+        /// <param name="termName">Name of a specific term</param>
+        /// <param name="listName">Name of list</param>
+        /// <param name="fieldInternalName">Internal name of field</param>
+        /// <param name="groupGuid">TermGroup Guid</param>
+        /// <param name="termSetGuid">TermSet Guid</param>
+        public static void UpdateTaxonomyFieldDefaultValue(this Web web, string termName, string listName, string fieldInternalName, Guid groupGuid, Guid termSetGuid)
+        {
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
+            TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+            var termGroup = termStore.GetGroup(groupGuid);
+            var termSet = termGroup.TermSets.GetById(termSetGuid);
+            var terms = termSet.Terms;
+            var term = web.Context.LoadQuery(termSet.Terms.Where(t => t.Name == termName));
+
+            web.Context.ExecuteQuery();
+
+            var foundTerm = term.First();
+
+            var list = web.GetListByTitle(listName);
+
+            var fields = web.Context.LoadQuery(list.Fields.Where(f => f.InternalName == fieldInternalName));
+            web.Context.ExecuteQuery();
+
+            var taxField = web.Context.CastTo<TaxonomyField>(fields.First());
+
+            //The default value requires that the item is present in the TaxonomyHiddenList (which gives it it's WssId)
+            //To solve this, we create a folder that we assign the value, which creates the listitem in the hidden list
+            var item = list.AddItem(new ListItemCreationInformation()
+            {
+                UnderlyingObjectType = FileSystemObjectType.Folder,
+                LeafName = string.Concat("Temporary_Folder_For_WssId_Creation_", DateTime.Now.ToFileTime().ToString())
+            });
+
+            item.SetTaxonomyFieldValue(taxField.Id, foundTerm.Name, foundTerm.Id);
+
+            web.Context.Load(item);
+            web.Context.ExecuteQuery();
+
+            dynamic val = item[fieldInternalName];
+
+            //The folder has now served it's purpose and can safely be removed
+            item.DeleteObject();
+
+            taxField.DefaultValue = string.Format("{0};#{1}|{2}", val.WssId, val.Label, val.TermGuid);
+            taxField.Update();
+
+            web.Context.ExecuteQuery();
+        }
+
 
         /// <summary>
         /// Can be used to set translations for different cultures. 
