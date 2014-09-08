@@ -358,7 +358,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html);
         }
@@ -420,7 +420,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html, int row, int col)
         {
-            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+
+            var serverRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl) + serverRelativePageUrl);
+	    
+            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
             web.Context.ExecuteQuery();
