@@ -15,10 +15,10 @@ namespace Contoso.Core.SiteEnumeration
         {
 
             // Office 365 Multi-tenant sample
-            ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline-my.sharepoint.com", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
+            ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://yourtenant-my.sharepoint.com", "keyzersoze@yourtenant.com", GetPassWord());
 
             // Office 365 Dedicated sample - On-Premises sample
-            //ClientContext cc = new AuthenticationManager().GetNetworkCredentialAuthenticatedContext("https://my.microsoft.com", "bjansen", GetPassWord(), "europe");
+            //ClientContext cc = new AuthenticationManager().GetNetworkCredentialAuthenticatedContext("https://my.contoso.com", "keyzersoze", GetPassWord(), "contoso");
             
             Console.WriteLine("----------------------------------------------------------------------");
 
@@ -29,16 +29,16 @@ namespace Contoso.Core.SiteEnumeration
             //List<SiteEntity> sites = cc.Web.SiteSearch();
 
             // Lists site collections scoped to an URL
-            //List<SiteEntity> sites = cc.Web.SiteSearchScopedByUrl("https://bertonline.sharepoint.com");
+            //List<SiteEntity> sites = cc.Web.SiteSearchScopedByUrl("https://yourtenant.sharepoint.com");
             // List site collections scoped by title
             //List<SiteEntity> sites = cc.Web.SiteSearchScopedByTitle("test");
 
             // if needed furhter refine the returned set of site collections
-            var bertSites = from p in sites
-                            where p.Url.Contains("kevin")
-                            select p;
+            var filteredSites = from p in sites
+                                where p.Url.Contains("my")
+                                select p;
 
-            foreach (var site in bertSites)
+            foreach (var site in filteredSites)
             {
                 Console.WriteLine("Title: {0}", site.Title);
                 Console.WriteLine("Path: {0}", site.Url);

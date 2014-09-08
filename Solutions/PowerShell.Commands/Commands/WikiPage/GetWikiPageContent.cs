@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "SPOWikiPageContent")]
     public class GetWikiPageContent : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true)]
+        [Parameter(Mandatory = true, ValueFromPipeline = true, ValueFromPipelineByPropertyName = true, Position=0)]
         [Alias("PageUrl")]
         public string ServerRelativePageUrl = string.Empty;
 

@@ -64,9 +64,11 @@ This solution uses a provider-hosted approach, but does not have a tradition Sha
 
 Permission Request XML:
 
-    <AppPermissionRequests AllowAppOnlyPolicy="true">
+```XML
+<AppPermissionRequests AllowAppOnlyPolicy="true">
     <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
-    </AppPermissionRequests>
+</AppPermissionRequests>
+```
 
 Example of Configuration in /_layouts/15/AppInv.aspx
 ![](http://i.imgur.com/rhfQQQh.png)
@@ -87,24 +89,25 @@ Both the configuration files (console app and MVC app) are pre-configured to use
 ## Application Settings ##
 Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web app project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
 
-
-    <appSettings>
-      <!-- The client id and client secret of the app as provided in /_layouts/15/appregnew.aspx -->
-      <add key="ClientID" value="YOUR_CLIENT_ID_FROM_APPREGNEW.ASPX" />
-      <add key="ClientSecret" value="YOUR_CLIENT_SECRET_FROM_APPREGNEW.ASPX" />
-      
-      <!-- WarningDuration is the number of days before an expiration warning is sent out -->
-      <add key="WarningDuration" value="50" />
-      
-      <!-- CutoffCuration is the number of days before an external user is revoked -->
-      <add key="CutoffDuration" value="60" />
-      
-      <!-- TenantName is the registered name for the Office 365 tenant such as Contoso-->
-      <add key="TenantName" value="contoso" />
-      
-      <!-- TenantUpnDomain is the registered UPN for the users...default is TENANTNAME.onmicrosoft.com -->
-      <add key="TenantUpnDomain" value="contoso.onmicrosoft.com" />
-    </appSettings>
+```XML
+<appSettings>
+  <!-- The client id and client secret of the app as provided in /_layouts/15/appregnew.aspx -->
+  <add key="ClientID" value="YOUR_CLIENT_ID_FROM_APPREGNEW.ASPX" />
+  <add key="ClientSecret" value="YOUR_CLIENT_SECRET_FROM_APPREGNEW.ASPX" />
+  
+  <!-- WarningDuration is the number of days before an expiration warning is sent out -->
+  <add key="WarningDuration" value="50" />
+  
+  <!-- CutoffCuration is the number of days before an external user is revoked -->
+  <add key="CutoffDuration" value="60" />
+  
+  <!-- TenantName is the registered name for the Office 365 tenant such as Contoso-->
+  <add key="TenantName" value="contoso" />
+  
+  <!-- TenantUpnDomain is the registered UPN for the users...default is TENANTNAME.onmicrosoft.com -->
+  <add key="TenantUpnDomain" value="contoso.onmicrosoft.com" />
+</appSettings>
+```
 
 # Running the Solutions #
 The solution is hard-coded to look through a specific array of site collections. This could easily be changed to iterate tenant site collections using other PnP samples, but was not the focus of this solution. You can add your own site collections to the array at the top of the Program.cs file in the console application project.

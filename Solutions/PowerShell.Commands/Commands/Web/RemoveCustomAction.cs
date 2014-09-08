@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Remove, "SPOCustomAction", ConfirmImpact = ConfirmImpact.High)]
     public class RemoveCustomAction : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
         public GuidPipeBind Identity;
 
         [Parameter(Mandatory = false)]

@@ -6,7 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.UIElementPersonali
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.UIElementPersonalizationWeb", "Branding.UIElementPersonalizationWeb\Branding.UIElementPersonalizationWeb.csproj", "{9D5B6B25-50A4-4428-AE8F-F1C730A4B9FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{BCF553A8-DAAD-47C5-998E-A0BB3B05F372}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +27,6 @@ Global
 		{9D5B6B25-50A4-4428-AE8F-F1C730A4B9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D5B6B25-50A4-4428-AE8F-F1C730A4B9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D5B6B25-50A4-4428-AE8F-F1C730A4B9FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
