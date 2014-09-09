@@ -14,6 +14,388 @@ namespace Microsoft.SharePoint.Client
     public static class FileFolderExtensions
     {
         /// <summary>
+        /// Approves a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url of the file to approve</param>
+        /// <param name="comment"></param>
+        public static void ApproveFile(this Web web, string serverRelativeUrl, string comment)
+        {
+            File file = null;
+            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+            if (file.Exists)
+            {
+                file.Approve(comment);
+            }
+            web.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Checks in a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkin</param>
+        public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
+        {
+            File file = web.GetFileByServerRelativeUrl(url);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+
+            if (file.Exists)
+            {
+                if (file.CheckOutType != CheckOutType.None)
+                {
+                    file.CheckIn(comment, checkinType);
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks out a file
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkout</param>
+        public static void CheckOutFile(this Web web, string serverRelativeUrl)
+        {
+            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+
+            if (file.Exists)
+            {
+                if (file.CheckOutType == CheckOutType.None)
+                {
+                    file.CheckOut();
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        private static void CopyStream(Stream source, Stream destination)
+        {
+            byte[] buffer = new byte[32768];
+            int bytesRead;
+            do
+            {
+                bytesRead = source.Read(buffer, 0, buffer.Length);
+                destination.Write(buffer, 0, bytesRead);
+            } while (bytesRead != 0);
+        }
+
+        [Obsolete("Use EnsureFolder() instead, which works for both web sites and subfolders.")]
+        public static Folder CreateFolder(this Web web, string folderName)
+        {
+            return EnsureFolder(web, folderName);
+        }
+
+        /// <summary>
+        /// Checks if a specific folder exists
+        /// </summary>
+        /// <param name="clientContext">Current User Context</param>
+        /// <param name="serverRelativeFolderUrl">Folder to check</param>
+        /// <returns></returns>
+        public static bool DoesFolderExists(this Web web, string serverRelativeFolderUrl)
+        {
+            Folder folder = web.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
+            web.Context.Load(folder);
+            bool exists = false;
+
+            try
+            {
+                web.Context.ExecuteQuery();
+                exists = true;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return exists;
+        }
+
+        /// <summary>
+        /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
+        /// </summary>
+        /// <param name="web">Web to check for the named folder</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The existing or newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static Folder EnsureFolder(this Web web, string folderName)
+        {
+            var folderCollection = web.Folders;
+            var folder = EnsureFolderImplementation(folderCollection, folderName);
+            return folder;
+        }
+
+        /// <summary>
+        /// Checks if the subfolder exists, and if it does not exist creates it.
+        /// </summary>
+        /// <param name="parentFolder">Parent folder to create under</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The existing or newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static Folder EnsureFolder(this Folder parentFolder, string folderName)
+        {
+            var folderCollection = parentFolder.Folders;
+            var folder = EnsureFolderImplementation(folderCollection, folderName);
+            return folder;
+        }
+
+        private static Folder EnsureFolderImplementation(FolderCollection folderCollection, string folderName)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            folderCollection.Context.Load(folderCollection);
+            folderCollection.Context.ExecuteQuery();
+            foreach (Folder folder in folderCollection)
+            {
+                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return folder;
+                }
+            }
+
+            var newFolder = folderCollection.Add(folderName);
+            folderCollection.Context.Load(newFolder);
+            folderCollection.Context.ExecuteQuery();
+
+            return newFolder;
+        }
+
+        /// <summary>
+        /// Finds files in the web. Can be slow.
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="match">a wildcard pattern to match</param>
+        /// <returns></returns>
+        public static List<Microsoft.SharePoint.Client.File> FindFiles(this Web web, string match)
+        {
+            Folder rootFolder = web.RootFolder;
+            match = WildcardToRegex(match);
+            List<Microsoft.SharePoint.Client.File> files = new List<Microsoft.SharePoint.Client.File>();
+
+            ParseFiles(rootFolder, match, web.Context as ClientContext, ref files);
+
+            return files;
+        }
+
+        /// <summary>
+        /// Checks if the folder exists at the top level of the web site.
+        /// </summary>
+        /// <param name="web">Web to check for the named folder</param>
+        /// <param name="folderName">Folder name to retrieve</param>
+        /// <returns>true if the folder exists; false otherwise</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static bool FolderExists(this Web web, string folderName)
+        {
+            var folderCollection = web.Folders;
+            var exists = FolderExistsImplementation(folderCollection, folderName);
+            return exists;
+        }
+
+        /// <summary>
+        /// Checks if the subfolder exists.
+        /// </summary>
+        /// <param name="parentFolder">Parent folder to check for the named subfolder</param>
+        /// <param name="folderName">Folder name to retrieve</param>
+        /// <returns>true if the folder exists; false otherwise</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
+        public static bool FolderExists(this Folder parentFolder, string folderName)
+        {
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
+            var folderCollection = parentFolder.Folders;
+            var exists = FolderExistsImplementation(folderCollection, folderName);
+            return exists;
+        }
+
+        private static bool FolderExistsImplementation(FolderCollection folderCollection, string folderName)
+        {
+            if (folderCollection == null)
+                throw new ArgumentNullException("folderCollection");
+
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            folderCollection.Context.Load(folderCollection);
+            folderCollection.Context.ExecuteQuery();
+            foreach (Folder folder in folderCollection)
+            {
+                if (folder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns a file as string
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <returns></returns>
+        public static string GetFileAsString(this Web web, string serverRelativeUrl)
+        {
+            string returnString = string.Empty;
+
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            web.Context.Load(file);
+
+            web.Context.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            web.Context.ExecuteQuery();
+
+            using (Stream memStream = new MemoryStream())
+            {
+                CopyStream(stream.Value, memStream);
+
+                memStream.Position = 0;
+
+                StreamReader reader = new StreamReader(memStream);
+
+                returnString = reader.ReadToEnd();
+            }
+            return returnString;
+        }
+
+        private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<Microsoft.SharePoint.Client.File> foundFiles)
+        {
+
+            FileCollection files = folder.Files;
+            context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
+            context.Load(folder.Folders);
+            context.ExecuteQuery();
+            foreach (Microsoft.SharePoint.Client.File file in files)
+            {
+                if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
+                {
+
+                    foundFiles.Add(file);
+                }
+            }
+            foreach (Folder subfolder in folder.Folders)
+            {
+                ParseFiles(subfolder, match, context, ref foundFiles);
+            }
+        }
+
+        /// <summary>
+        /// Publishes a file existing on a server url
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativeUrl">the server relative url of the file to publish</param>
+        /// <param name="comment"></param>
+        public static void PublishFile(this Web web, string serverRelativeUrl, string comment)
+        {
+            File file = null;
+            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            web.Context.ExecuteQuery();
+            if (file.Exists)
+            {
+                file.Publish(comment);
+            }
+            web.Context.ExecuteQuery();
+        }
+      
+        public static Folder ResolveSubFolder(this Folder folder, string folderName)
+        {
+            if (string.IsNullOrEmpty(folderName))
+                throw new ArgumentNullException("folderName");
+
+            folder.Context.Load(folder);
+            folder.Context.Load(folder.Folders);
+            folder.Context.ExecuteQuery();
+            foreach (Folder subFolder in folder.Folders)
+            {
+                if (subFolder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return subFolder;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Saves a remote file to a local folder
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativeUrl">The server relative url to the file</param>
+        /// <param name="localPath">The local folder</param>
+        /// <param name="localFileName">The local filename. If null the filename of the file on the server will be used</param>
+        public static void SaveFileToLocal(this Web web, string serverRelativeUrl, string localPath, string localFileName = null)
+        {
+            var clientContext = web.Context as ClientContext;
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            clientContext.Load(file);
+
+            clientContext.ExecuteQuery();
+
+            ClientResult<Stream> stream = file.OpenBinaryStream();
+
+            clientContext.ExecuteQuery();
+
+            string fileOut;
+
+
+            if (!string.IsNullOrEmpty(localFileName))
+            {
+                fileOut = Path.Combine(localPath, localFileName);
+            }
+            else
+            {
+                fileOut = Path.Combine(localPath, file.Name);
+            }
+
+            using (Stream fileStream = new FileStream(fileOut, FileMode.Create))
+            {
+                CopyStream(stream.Value, fileStream);
+            }
+        }
+
+        [Obsolete("Use FolderExists() instead, which works for both web sites and subfolders.")]
+        public static bool SubFolderExists(this Folder folder, string folderName)
+        {
+            return folder.FolderExists(folderName);
+        }
+
+        /// <summary>
         /// Upload document to library
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
@@ -120,7 +502,7 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(folder);
                 web.Context.ExecuteQuery();
             }
-            
+
             using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
                 FileCreationInformation flciNewFile = new FileCreationInformation();
@@ -146,7 +528,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="useWebDav">Use webdav uploads, better suitable for larger files.</param>
         public static void UploadFileToServerRelativeUrl(this Web web, string filePath, string serverRelativeUrl, bool useWebDav = false)
         {
-            if(!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))
+            if (!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))
             {
                 serverRelativeUrl = UrlUtility.Combine(serverRelativeUrl, filePath);
             }
@@ -182,401 +564,11 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        /// <summary>
-        /// Create folder to web
-        /// </summary>
-        /// <param name="web">Web to be processed - can be root web or sub site</param>
-        /// <param name="folderUrl">Folder URL to be created</param>
-        /// <returns></returns>
-        [Obsolete("Use EnsureFolder() instead, which works for both web sites and subfolders.")]
-        public static Folder CreateFolder(this Web web, string folderName)
-        {
-            return EnsureFolder(web, folderName);
-        }
-
-        /// <summary>
-        /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
-        /// </summary>
-        /// <param name="web">Web to check for the named folder</param>
-        /// <param name="folderName">Folder name to retrieve or create</param>
-        /// <returns>The existing or newly created folder</returns>
-        /// <remarks>
-        /// <para>
-        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
-        /// </para>
-        /// </remarks>
-        public static Folder EnsureFolder(this Web web, string folderName)
-        {
-            var folderCollection = web.Folders;
-            var folder = EnsureFolderImplementation(folderCollection, folderName);
-            return folder;
-        }
-
-        /// <summary>
-        /// Checks if the subfolder exists, and if it does not exist creates it.
-        /// </summary>
-        /// <param name="parentFolder">Parent folder to create under</param>
-        /// <param name="folderName">Folder name to retrieve or create</param>
-        /// <returns>The existing or newly created folder</returns>
-        /// <remarks>
-        /// <para>
-        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
-        /// </para>
-        /// </remarks>
-        public static Folder EnsureFolder(this Folder parentFolder, string folderName)
-        {
-            var folderCollection = parentFolder.Folders;
-            var folder = EnsureFolderImplementation(folderCollection, folderName);
-            return folder;
-        }
-
-        private static Folder EnsureFolderImplementation(FolderCollection folderCollection, string folderName)
-        {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
-            {
-                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
-            }
-
-            folderCollection.Context.Load(folderCollection);
-            folderCollection.Context.ExecuteQuery();
-            foreach (Folder folder in folderCollection)
-            {
-                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return folder;
-                }
-            }
-
-            var newFolder = folderCollection.Add(folderName);
-            folderCollection.Context.Load(newFolder);
-            folderCollection.Context.ExecuteQuery();
-
-            return newFolder;
-        }
-
-        /// <summary>
-        /// Checks if the folder exists at the top level of the web site.
-        /// </summary>
-        /// <param name="web">Web to check for the named folder</param>
-        /// <param name="folderName">Folder name to retrieve</param>
-        /// <returns>true if the folder exists; false otherwise</returns>
-        /// <remarks>
-        /// <para>
-        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
-        /// </para>
-        /// </remarks>
-        public static bool FolderExists(this Web web, string folderName)
-        {
-            var folderCollection = web.Folders;
-            var exists = FolderExistsImplementation(folderCollection, folderName);
-            return exists;
-        }
-
-        /// <summary>
-        /// Checks if the subfolder exists.
-        /// </summary>
-        /// <param name="parentFolder">Parent folder to check for the named subfolder</param>
-        /// <param name="folderName">Folder name to retrieve</param>
-        /// <returns>true if the folder exists; false otherwise</returns>
-        /// <remarks>
-        /// <para>
-        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
-        /// </para>
-        /// </remarks>
-        public static bool FolderExists(this Folder parentFolder, string folderName)
-        {
-            if (string.IsNullOrEmpty(folderName))
-                throw new ArgumentNullException("folderName");
-
-            var folderCollection = parentFolder.Folders;
-            var exists = FolderExistsImplementation(folderCollection, folderName);
-            return exists;
-        }
-
-        private static bool FolderExistsImplementation(FolderCollection folderCollection, string folderName)
-        {
-            if (folderCollection == null)
-                throw new ArgumentNullException("folderCollection");
-
-            if (string.IsNullOrEmpty(folderName))
-                throw new ArgumentNullException("folderName");
-
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
-            {
-                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
-            }
-
-            folderCollection.Context.Load(folderCollection);
-            folderCollection.Context.ExecuteQuery();
-            foreach (Folder folder in folderCollection)
-            {
-                if (folder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Checks if a specific folder exists
-        /// </summary>
-        /// <param name="clientContext">Current User Context</param>
-        /// <param name="serverRelativeFolderUrl">Folder to check</param>
-        /// <returns></returns>
-        public static bool DoesFolderExists(this Web web, string serverRelativeFolderUrl)
-        {
-            Folder folder = web.GetFolderByServerRelativeUrl(serverRelativeFolderUrl);
-            web.Context.Load(folder);
-            bool exists = false;
-
-            try
-            {
-                web.Context.ExecuteQuery();
-                exists = true;
-            }
-            catch
-            {
-                return false;
-            }
-
-            return exists;
-        }
-
-        public static Folder ResolveSubFolder(this Folder folder, string folderName)
-        {
-            if (string.IsNullOrEmpty(folderName))
-                throw new ArgumentNullException("folderName");
-
-            folder.Context.Load(folder);
-            folder.Context.Load(folder.Folders);
-            folder.Context.ExecuteQuery();
-            foreach (Folder subFolder in folder.Folders)
-            {
-                if (subFolder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return subFolder;
-                }
-            }
-            return null;
-        }
-
-        [Obsolete("Use FolderExists() instead, which works for both web sites and subfolders.")]
-        public static bool SubFolderExists(this Folder folder, string folderName)
-        {
-            return folder.FolderExists(folderName);
-        }
-
-        /// <summary>
-        /// Publishes a file existing on a server url
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">the server relative url of the file to publish</param>
-        /// <param name="comment"></param>
-        public static void PublishFile(this Web web, string serverRelativeUrl, string comment)
-        {
-            File file = null;
-            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
-            if (file.Exists)
-            {
-                file.Publish(comment);
-            }
-            web.Context.ExecuteQuery();
-        }
-
-        /// <summary>
-        /// Approves a file
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">The server relative url of the file to approve</param>
-        /// <param name="comment"></param>
-        public static void ApproveFile(this Web web, string serverRelativeUrl, string comment)
-        {
-            File file = null;
-            file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
-            if (file.Exists)
-            {
-                file.Approve(comment);
-            }
-            web.Context.ExecuteQuery();
-        }
-
-        /// <summary>
-        /// Checks out a file
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkout</param>
-        public static void CheckOutFile(this Web web, string serverRelativeUrl)
-        {
-            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
-
-            if (file.Exists)
-            {
-                if (file.CheckOutType == CheckOutType.None)
-                {
-                    file.CheckOut();
-                    web.Context.ExecuteQuery();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Checks in a file
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkin</param>
-        public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
-        {
-            File file = web.GetFileByServerRelativeUrl(url);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
-
-            if (file.Exists)
-            {
-                if (file.CheckOutType != CheckOutType.None)
-                {
-                    file.CheckIn(comment, checkinType);
-                    web.Context.ExecuteQuery();
-                }
-            }
-        }
-
         private static string WildcardToRegex(string pattern)
         {
             return "^" + Regex.Escape(pattern).
                                Replace(@"\*", ".*").
                                Replace(@"\?", ".") + "$";
-        }
-
-
-        /// <summary>
-        /// Finds files in the web. Can be slow.
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="match">a wildcard pattern to match</param>
-        /// <returns></returns>
-        public static List<Microsoft.SharePoint.Client.File> FindFiles(this Web web, string match)
-        {
-            Folder rootFolder = web.RootFolder;
-            match = WildcardToRegex(match);
-            List<Microsoft.SharePoint.Client.File> files = new List<Microsoft.SharePoint.Client.File>();
-
-            ParseFiles(rootFolder, match, web.Context as ClientContext, ref files);
-
-            return files;
-        }
-
-      
-        private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<Microsoft.SharePoint.Client.File> foundFiles)
-        {
-
-            FileCollection files = folder.Files;
-            context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
-            context.Load(folder.Folders);
-            context.ExecuteQuery();
-            foreach (Microsoft.SharePoint.Client.File file in files)
-            {
-                if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
-                {
-
-                    foundFiles.Add(file);
-                }
-            }
-            foreach (Folder subfolder in folder.Folders)
-            {
-                ParseFiles(subfolder, match, context, ref foundFiles);
-            }
-        }
-
-        /// <summary>
-        /// Returns a file as string
-        /// </summary>
-        /// <param name="web">The Web to process</param>
-        /// <param name="serverRelativeUrl">The server relative url to the file</param>
-        /// <returns></returns>
-        public static string GetFileAsString(this Web web, string serverRelativeUrl)
-        {
-            string returnString = string.Empty;
-
-            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-
-            web.Context.Load(file);
-
-            web.Context.ExecuteQuery();
-
-            ClientResult<Stream> stream = file.OpenBinaryStream();
-
-            web.Context.ExecuteQuery();
-
-            using (Stream memStream = new MemoryStream())
-            {
-                CopyStream(stream.Value, memStream);
-
-                memStream.Position = 0;
-
-                StreamReader reader = new StreamReader(memStream);
-
-                returnString = reader.ReadToEnd();
-            }
-            return returnString;
-        }
-
-        /// <summary>
-        /// Saves a remote file to a local folder
-        /// </summary>
-        /// <param name="web">The Web to process</param>
-        /// <param name="serverRelativeUrl">The server relative url to the file</param>
-        /// <param name="localPath">The local folder</param>
-        /// <param name="localFileName">The local filename. If null the filename of the file on the server will be used</param>
-        public static void SaveFileToLocal(this Web web, string serverRelativeUrl, string localPath, string localFileName = null)
-        {
-            var clientContext = web.Context as ClientContext;
-            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-
-            clientContext.Load(file);
-
-            clientContext.ExecuteQuery();
-
-            ClientResult<Stream> stream = file.OpenBinaryStream();
-
-            clientContext.ExecuteQuery();
-
-            string fileOut;
-
-
-            if (!string.IsNullOrEmpty(localFileName))
-            {
-                fileOut = Path.Combine(localPath, localFileName);
-            }
-            else
-            {
-                fileOut = Path.Combine(localPath, file.Name);
-            }
-
-            using (Stream fileStream = new FileStream(fileOut, FileMode.Create))
-            {
-                CopyStream(stream.Value, fileStream);
-            }
-        }
-
-        private static void CopyStream(Stream source, Stream destination)
-        {
-            byte[] buffer = new byte[32768];
-            int bytesRead;
-            do
-            {
-                bytesRead = source.Read(buffer, 0, buffer.Length);
-                destination.Write(buffer, 0, bytesRead);
-            } while (bytesRead != 0);
         }
 
     }
