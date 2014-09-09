@@ -5,7 +5,7 @@ var Contoso = Contoso || {};
 Contoso.JSOMProvisioning = Contoso.JSOMProvisioning || {};
 
 Contoso.JSOMProvisioning.ProvisioningClerk = function () {
-    var appweburl, hostweburl
+    var appweburl, hostweburl;
     var sitename, siteurl, sitetemplate;
     var sitecolumnname, sitecolumndisplayname, sitecolumntype;
     var contenttypename, contenttypeid;
@@ -43,7 +43,7 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
     function constructFCI() {
         var fci = new SP.FileCreationInformation();
         fci.set_url(filename);
-        fci.set_content(new SP.Base64EncodedByteArray())
+        fci.set_content(new SP.Base64EncodedByteArray());
         return fci;
     }
 
@@ -59,9 +59,9 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         get_webtemplate: function () { return sitetemplate; },
         set_webtemplate: function (rhs) { sitetemplate = rhs; },
         get_sitecolumnname: function () { return sitecolumnname; },
-        set_sitecolumnname: function (rhs) { sitecolumnname = rhs },
+        set_sitecolumnname: function (rhs) { sitecolumnname = rhs; },
         get_sitecolumndisplayname: function () { return sitecolumndisplayname; },
-        set_sitecolumndisplayname: function (rhs) { sitecolumndisplayname = rhs },
+        set_sitecolumndisplayname: function (rhs) { sitecolumndisplayname = rhs; },
         get_sitecolumntype: function () { return sitecolumntype; },
         set_sitecolumntype: function (rhs) { sitecolumntype = rhs; },
         get_contenttypename: function () { return contenttypename; },
@@ -88,7 +88,7 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
             var appctx = new SP.AppContextSite(ctx, hostweburl);
 
             var targetWeb = appctx.get_site().get_rootWeb();
-            var fields = targetWeb.get_fields()
+            var fields = targetWeb.get_fields();
             fields.addFieldAsXml(fieldschema, false, SP.AddFieldOptions.addFieldCheckDisplayName);
 
             ctx.executeQueryAsync(function () { dfd.resolve(); }, function (sender, args) {
@@ -106,7 +106,7 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
             var appctx = new SP.AppContextSite(ctx, hostweburl);
 
             var targetWeb = appctx.get_site().get_rootWeb();
-            var fields = targetWeb.get_fields()
+            var fields = targetWeb.get_fields();
             var field = fields.getByTitle(sitecolumndisplayname);
             field.deleteObject();
 
@@ -125,11 +125,11 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
             var appctx = new SP.AppContextSite(ctx, hostweburl);
 
             var targetWeb = appctx.get_site().get_rootWeb();
-            var fields = targetWeb.get_fields()
+            var fields = targetWeb.get_fields();
             var field = fields.getByInternalNameOrTitle(sitecolumnname);
             ctx.load(fields);
             ctx.load(field);
-            var ctci = constructContentTypeCreationInformation(contenttypeid, contenttypename)
+            var ctci = constructContentTypeCreationInformation(contenttypeid, contenttypename);
             var newType = targetWeb.get_contentTypes().add(ctci);
             ctx.load(newType);
 
@@ -169,7 +169,7 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
 
             var targetWeb = appctx.get_site().get_rootWeb();
             var webTypes = targetWeb.get_contentTypes();
-            var targetType = webTypes.getById(contenttypeid)
+            var targetType = webTypes.getById(contenttypeid);
             targetType.deleteObject();
             ctx.executeQueryAsync(succeed, fail);
             function succeed() { dfd.resolve(); }
@@ -189,7 +189,7 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
 
             var thisWeb = appctx.get_web();
             ctx.load(thisWeb);
-            var wci = constructWebCreationInformation(sitename, siteurl, sitetemplate)
+            var wci = constructWebCreationInformation(sitename, siteurl, sitetemplate);
             thisWeb.get_webs().add(wci);
             thisWeb.update();
 
@@ -258,9 +258,9 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
                         function () {
                             listTypes.addExistingContentType(targetType);
                             newList.update();
-                            ctx.executeQueryAsync(function () { dfd.resolve() }, function (sender, args) {
+                            ctx.executeQueryAsync(function () { dfd.resolve(); }, function (sender, args) {
                                 console.log("Document library creation failure: " + args.get_message());
-                                dfd.reject()
+                                dfd.reject();
                             });
                         },
                         function (sender, args) {
