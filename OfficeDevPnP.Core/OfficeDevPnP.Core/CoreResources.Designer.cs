@@ -178,7 +178,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activating feature {0} in site collection {1}..
+        ///   Looks up a localized string similar to Activating feature {0} in site collection..
         /// </summary>
         internal static string FeatureExtensions_ActivateSiteCollectionFeature {
             get {
@@ -187,7 +187,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activating feature {0} in web {1}..
+        ///   Looks up a localized string similar to Activating feature {0} in web..
         /// </summary>
         internal static string FeatureExtensions_ActivateWebFeature {
             get {
@@ -196,7 +196,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deactivating feature {0} in site collection {1}..
+        ///   Looks up a localized string similar to Deactivating feature {0} in site collection..
         /// </summary>
         internal static string FeatureExtensions_DeactivateSiteCollectionFeature {
             get {
@@ -205,7 +205,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deactivating feature {0} in web {1}..
+        ///   Looks up a localized string similar to Deactivating feature {0} in web..
         /// </summary>
         internal static string FeatureExtensions_DeactivateWebFeature {
             get {
