@@ -122,10 +122,65 @@ namespace Microsoft.SharePoint.Client
             return documentSetFolder;
         }
 
-        [Obsolete("Use EnsureFolder() instead, which works for both web sites and subfolders.")]
+        /// <summary>
+        /// Creates a folder with the given name as a child of the Web. 
+        /// Note it is more common to create folders within an existing Folder, such as the RootFolder of a List.
+        /// </summary>
+        /// <param name="web">Web to check for the named folder</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// </remarks>
         public static Folder CreateFolder(this Web web, string folderName)
         {
-            return EnsureFolder(web, folderName);
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            var folderCollection = web.Folders;
+            var folder = CreateFolderImplementation(folderCollection, folderName);
+            return folder;
+        }
+
+        /// <summary>
+        /// Creates a folder with the given name.
+        /// </summary>
+        /// <param name="parentFolder">Parent folder to create under</param>
+        /// <param name="folderName">Folder name to retrieve or create</param>
+        /// <returns>The newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
+        /// </para>
+        /// <example>
+        ///     var folder = list.RootFolder.CreateFolder("new-folder");
+        /// </example>
+        /// </remarks>
+        public static Folder CreateFolder(this Folder parentFolder, string folderName)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
+            var folderCollection = parentFolder.Folders;
+            var folder = CreateFolderImplementation(folderCollection, folderName);
+            return folder;
+        }
+
+        private static Folder CreateFolderImplementation(FolderCollection folderCollection, string folderName)
+        {
+            var newFolder = folderCollection.Add(folderName);
+            folderCollection.Context.Load(newFolder);
+            folderCollection.Context.ExecuteQuery();
+
+            return newFolder;
         }
 
         /// <summary>
@@ -155,6 +210,7 @@ namespace Microsoft.SharePoint.Client
 
         /// <summary>
         /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
+        /// Note it is more common to create folders within an existing Folder, such as the RootFolder of a List.
         /// </summary>
         /// <param name="web">Web to check for the named folder</param>
         /// <param name="folderName">Folder name to retrieve or create</param>
@@ -166,6 +222,12 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder EnsureFolder(this Web web, string folderName)
         {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
             var folderCollection = web.Folders;
             var folder = EnsureFolderImplementation(folderCollection, folderName);
             return folder;
@@ -184,6 +246,12 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder EnsureFolder(this Folder parentFolder, string folderName)
         {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (folderName.Contains('/') || folderName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
+            }
+
             var folderCollection = parentFolder.Folders;
             var folder = EnsureFolderImplementation(folderCollection, folderName);
             return folder;
@@ -191,27 +259,25 @@ namespace Microsoft.SharePoint.Client
 
         private static Folder EnsureFolderImplementation(FolderCollection folderCollection, string folderName)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
-            {
-                throw new ArgumentException("The argument must be a single folder name and cannot contain path characters.", "folderName");
-            }
+            Folder folder = null;
 
             folderCollection.Context.Load(folderCollection);
             folderCollection.Context.ExecuteQuery();
-            foreach (Folder folder in folderCollection)
+            foreach (Folder existingFolder in folderCollection)
             {
                 if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return folder;
+                    folder = existingFolder;
+                    break;
                 }
             }
 
-            var newFolder = folderCollection.Add(folderName);
-            folderCollection.Context.Load(newFolder);
-            folderCollection.Context.ExecuteQuery();
+            if (folder == null)
+            {
+                folder = CreateFolderImplementation(folderCollection, folderName);
+            }
 
-            return newFolder;
+            return folder;
         }
 
         /// <summary>
