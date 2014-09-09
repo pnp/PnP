@@ -494,6 +494,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use FolderExists() instead, which works for both web sites and subfolders.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SubFolderExists(this Folder folder, string folderName)
         {
             return folder.FolderExists(folderName);
@@ -506,6 +507,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath">Path to source location like c:\fuu.txt</param>
         /// <param name="libraryName">Name of the document library</param>
         /// <param name="createLibrary">Should library be created if it's not present</param>
+        [Obsolete("Prefer list.RootFolder.UploadFile() instead.")]
         public static void UploadDocumentToLibrary(this Web web, string filePath, string libraryName, bool createLibrary = false)
         {
 
@@ -517,58 +519,40 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
+                    LoggingUtility.Internal.TraceError((int)EventId.LibraryMissing, CoreResources.FileFolderExtensions_LibraryMissing, web.Url, libraryName);
                     // have to abort, list does not exist.
                     string errorMessage = string.Format(CoreResources.FileFolderExtensions_LibraryMissing, web.Url, libraryName);
-                    LoggingUtility.Internal.TraceError((int)EventId.LibraryMissing, errorMessage);
                     throw new WebException(errorMessage);
                 }
             }
 
-            UploadDocumentToLibrary(web.Lists.GetByTitle(libraryName), filePath);
+            var list = web.Lists.GetByTitle(libraryName);
+            list.RootFolder.UploadFile(filePath);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="filePath">Path to source location like c:\fuu.txt</param>
-        /// <param name="library">Target library where the file is uploaded</param>
+        [Obsolete("Use list.RootFolder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this Web web, string filePath, List library)
         {
-            UploadDocumentToLibrary(library, filePath);
+            var file = library.RootFolder.UploadFile(filePath);
         }
 
-        /// <summary>
-        /// Upload file to library 
-        /// </summary>
-        /// <param name="list">List to be processed - can be root web or sub site</param>
-        /// <param name="filePath">Path to source location like c:\fuu.txt</param>
+        [Obsolete("Use list.RootFolder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this List list, string filePath)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            {
-                FileCreationInformation flciNewFile = new FileCreationInformation();
-
-                // This is the key difference for the first case - using ContentStream property
-                flciNewFile.ContentStream = fs;
-                flciNewFile.Url = System.IO.Path.GetFileName(filePath);
-                flciNewFile.Overwrite = true;
-
-                Microsoft.SharePoint.Client.File uploadFile = list.RootFolder.Files.Add(flciNewFile);
-
-                list.Context.Load(uploadFile);
-                list.Context.ExecuteQuery();
-            }
+            var file = list.RootFolder.UploadFile(filePath);
         }
 
         /// <summary>
-        /// Upload document to folder
+        /// Upload document to folder within a Web
         /// </summary>
         /// <param name="web">Web to be processed - can be root web or sub site</param>
         /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
         /// <param name="folderName">Folder Name in the site</param>
-        /// <param name="createLibrary">Should folder be created, if it does not exist</param>
-        public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createLibrary = false)
+        /// <param name="createFolder">Should folder be created, if it does not exist</param>
+        [Obsolete("Prefer web.RootFolder.UploadFile() instead.")]
+        public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createFolder = false)
         {
             var filename = Path.GetFileName(filePath);
             LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile, filename, folderName);
@@ -576,7 +560,7 @@ namespace Microsoft.SharePoint.Client
             Folder folder;
             if (!DoesFolderExists(web, folderName))
             {
-                if (createLibrary)
+                if (createFolder)
                 {
                     folder = web.Folders.Add(folderName);
                 }
@@ -590,37 +574,15 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Upload document to the folder
-            UploadDocumentToFolder(web, filePath, web.Folders.GetByUrl(folderName));
+            var destinationFolder = web.Folders.GetByUrl(folderName);
+            destinationFolder.UploadFile(filePath);
         }
 
-        /// <summary>
-        /// Upload document to folder
-        /// </summary>
-        /// <param name="web">Web to be processed - can be root web or sub site</param>
-        /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
-        /// <param name="folder">Folder Name in the site</param>
+        [Obsolete("Use list.RootFolder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadDocumentToFolder(this Web web, string filePath, Folder folder)
         {
-            if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
-            {
-                web.Context.Load(folder);
-                web.Context.ExecuteQuery();
-            }
-
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            {
-                FileCreationInformation flciNewFile = new FileCreationInformation();
-
-                // This is the key difference for the first case - using ContentStream property
-                flciNewFile.ContentStream = fs;
-                flciNewFile.Url = System.IO.Path.GetFileName(filePath);
-                flciNewFile.Overwrite = true;
-
-                Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(flciNewFile);
-
-                folder.Context.Load(uploadFile);
-                folder.Context.ExecuteQuery();
-            }
+            folder.UploadFile(filePath);
         }
 
         /// <summary>
@@ -692,6 +654,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
         /// <param name="serverRelativeUrl">Full server relative destination url of the file on the server</param>
         /// <param name="useWebDav">Use webdav uploads, better suitable for larger files.</param>
+        [Obsolete("Prefer folder.UploadFile() instead.")]
         public static void UploadFileToServerRelativeUrl(this Web web, string filePath, string serverRelativeUrl, bool useWebDav = false)
         {
             if (!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))
