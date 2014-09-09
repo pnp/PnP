@@ -68,6 +68,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\JavaScriptExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\PageExtensionsTests.cs" />
