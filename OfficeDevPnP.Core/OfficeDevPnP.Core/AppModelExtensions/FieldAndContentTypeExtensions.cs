@@ -728,6 +728,56 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// ContentTypeId for 'Document Set'. To get content type from a list, use BestMatchContentTypeId().
+        /// </summary>
+        public const string DocumentSetContentTypeId = "0x0120D520";
+
+        /// <summary>
+        /// Searches the list content types and returns the content type identifier (ID) that is the 
+        /// nearest match to the specified content type ID.
+        /// </summary>
+        /// <param name="list">The list to check for content types</param>
+        /// <param name="baseContentTypeId">A string with the base content type ID to match.</param>
+        /// <returns>The value of the Id property for the content type with the closest match to the value 
+        /// of the specified content type ID. </returns>
+        /// <remarks>
+        /// <para>
+        /// If the search finds multiple matches, the shorter ID is returned. For example, if 0x0101 is the 
+        /// argument, and the collection contains both 0x010109 and 0x01010901, the method returns 0x010109.
+        /// </para>
+        /// </remarks>
+        public static ContentTypeId BestMatchContentTypeId(this List list, string baseContentTypeId)
+        {
+            if (baseContentTypeId == null) { throw new ArgumentNullException("contentTypeId"); }
+            if (string.IsNullOrWhiteSpace(baseContentTypeId)) { throw new ArgumentException("Content type must be provided and cannot be empty.", "contentTypeId"); }
+            return BestMatchContentTypeIdImplementation(list, baseContentTypeId);
+        }
+
+        private static ContentTypeId BestMatchContentTypeIdImplementation(this List list, string baseContentTypeId)
+        {
+            var contentTypes = list.ContentTypes;
+            list.Context.Load(contentTypes);
+            list.Context.ExecuteQuery();
+            LoggingUtility.Internal.TraceVerbose("Checking {0} content types in list for best match", contentTypes.Count);
+            var shortestMatchLength = int.MaxValue;
+            ContentTypeId bestMatchId = null;
+            foreach (var contentType in contentTypes)
+            {
+                if (contentType.StringId.StartsWith(baseContentTypeId, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    LoggingUtility.Internal.TraceVerbose("Found match {0}", contentType.StringId);
+                    if (contentType.StringId.Length < shortestMatchLength)
+                    {
+                        bestMatchId = contentType.Id;
+                        shortestMatchLength = contentType.StringId.Length;
+                        LoggingUtility.Internal.TraceVerbose(" - Is best match. Best match length now {0}", shortestMatchLength);
+                    }
+                }
+            }
+            return bestMatchId;
+        }
+
+        /// <summary>
         /// Does content type exists in the web
         /// </summary>
         /// <param name="web">Web to be processed</param>
