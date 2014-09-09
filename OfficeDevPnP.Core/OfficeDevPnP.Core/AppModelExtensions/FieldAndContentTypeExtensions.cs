@@ -728,11 +728,6 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// ContentTypeId for 'Document Set'. To get content type from a list, use BestMatchContentTypeId().
-        /// </summary>
-        public const string DocumentSetContentTypeId = "0x0120D520";
-
-        /// <summary>
         /// Searches the list content types and returns the content type identifier (ID) that is the 
         /// nearest match to the specified content type ID.
         /// </summary>

@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.DocumentSet;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -83,6 +84,42 @@ namespace Microsoft.SharePoint.Client
                 bytesRead = source.Read(buffer, 0, buffer.Length);
                 destination.Write(buffer, 0, bytesRead);
             } while (bytesRead != 0);
+        }
+
+        /// <summary>
+        /// Creates a new document set as a child of an existing folder, with the specified content type ID.
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="documentSetName"></param>
+        /// <param name="contentTypeId">Content type of the document set</param>
+        /// <returns>A Folder representing the document set</returns>
+        /// <remarks>
+        /// <example>
+        ///     var setContentType = list.BestMatchContentTypeId(BuiltInContentTypeId.DocumentSet);
+        ///     var set1 = list.RootFolder.CreateDocumentSet("Set 1", setContentType);
+        /// </example>
+        /// </remarks>
+        public static Folder CreateDocumentSet(this Folder folder, string documentSetName, ContentTypeId contentTypeId)
+        {
+            if (folder == null) { throw new ArgumentNullException("folder"); }
+            if (documentSetName == null) { throw new ArgumentNullException("documentSetName"); }
+            if (contentTypeId == null) { throw new ArgumentNullException("contentTypeId"); }
+            // TODO: Check for any other illegal characters in SharePoint
+            if (documentSetName.Contains('/') || documentSetName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single document set name and cannot contain path characters.", "documentSetName");
+            }
+
+            LoggingUtility.Internal.TraceInformation(1, "Creating document set '{0}'.", documentSetName);
+
+            var result = DocumentSet.DocumentSet.Create(folder.Context, folder, documentSetName, contentTypeId);
+            folder.Context.ExecuteQuery();
+
+            var fullUri = new Uri(result.Value);
+            var serverRelativeUrl = fullUri.AbsolutePath;
+            var documentSetFolder = folder.Folders.GetByUrl(serverRelativeUrl);
+
+            return documentSetFolder;
         }
 
         [Obsolete("Use EnsureFolder() instead, which works for both web sites and subfolders.")]

@@ -105,6 +105,7 @@
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
+    <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
