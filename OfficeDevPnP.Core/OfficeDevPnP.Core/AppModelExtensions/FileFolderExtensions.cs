@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client.DocumentSet;
+using System.ComponentModel;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -92,7 +93,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder"></param>
         /// <param name="documentSetName"></param>
         /// <param name="contentTypeId">Content type of the document set</param>
-        /// <returns>A Folder representing the document set</returns>
+        /// <returns>The created Folder representing the document set, so that additional operations (such as setting properties) can be done.</returns>
         /// <remarks>
         /// <example>
         ///     var setContentType = list.BestMatchContentTypeId(BuiltInContentTypeId.DocumentSet);
@@ -128,7 +129,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to check for the named folder</param>
         /// <param name="folderName">Folder name to retrieve or create</param>
-        /// <returns>The newly created folder</returns>
+        /// <returns>The newly created Folder, so that additional operations (such as setting properties) can be done.</returns>
         /// <remarks>
         /// <para>
         /// Note that this only checks one level of folder (the Folders collection) and cannot accept a name with path characters.
@@ -620,6 +621,68 @@ namespace Microsoft.SharePoint.Client
                 folder.Context.Load(uploadFile);
                 folder.Context.ExecuteQuery();
             }
+        }
+
+        /// <summary>
+        /// Uploads a file to the specified folder, with an optional content type.
+        /// </summary>
+        /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="filePath">Location of the file to be uploaded.</param>
+        /// <param name="contentTypeId">Optional content type; if null (default) the default content type will be used.</param>
+        /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
+        /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFile(this Folder folder, string filePath, ContentTypeId contentTypeId = null, bool overwriteIfExists = true, bool useWebDav = true)
+        {
+            if (filePath == null) { throw new ArgumentNullException("filePath"); }
+            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
+
+            var fileName = System.IO.Path.GetFileName(filePath);
+
+            LoggingUtility.Internal.TraceInformation(1, "Uploading file '{0}'.", fileName);
+
+            File file = null;
+            if (useWebDav)
+            {
+                if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+                {
+                    folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                    folder.Context.ExecuteQuery();
+                }
+                var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
+                using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
+                {
+                    using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
+                        File.SaveBinaryDirect(uploadContext, serverRelativeUrl, fs, overwriteIfExists);
+                        folder.Context.ExecuteQuery();
+                    }
+                }
+                file = folder.Files.GetByUrl(serverRelativeUrl);
+            }
+            else
+            {
+                using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+                {
+                    FileCreationInformation fileCreation = new FileCreationInformation();
+                    fileCreation.ContentStream = fs;
+                    fileCreation.Url = fileName;
+                    fileCreation.Overwrite = overwriteIfExists;
+                    LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
+                    file = folder.Files.Add(fileCreation);
+                    folder.Context.ExecuteQuery();
+                }
+            }
+
+            if (contentTypeId != null)
+            {
+                LoggingUtility.Internal.TraceVerbose("Setting content type to '{0}'", contentTypeId.StringValue);
+                file.ListItemAllFields["ContentTypeId"] = contentTypeId.StringValue;
+                file.ListItemAllFields.Update();
+            }
+
+            return file;
         }
 
         /// <summary>
