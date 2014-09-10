@@ -16,12 +16,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ParameterSetName = "WebPara")]
         public string DisplayName;
 
-        [Parameter(Mandatory = false, ParameterSetName = "ListPara")]
-        [Parameter(Mandatory = false, ParameterSetName = "WebPara")]
-        public string InternalName;
-
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = true, ParameterSetName = "WebPara")]
+        public string InternalName;
+
+        [Parameter(Mandatory = false, ParameterSetName = "ListPara")]
+        [Parameter(Mandatory = false, ParameterSetName = "WebPara")]
         public string StaticName;
 
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]
