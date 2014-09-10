@@ -553,6 +553,40 @@ namespace Microsoft.SharePoint.Client
 
             return false;
         }
+
+        /// <summary>
+        /// Updates the display name for a field
+        /// </summary>
+        /// <param name="list">List to process</param>
+        /// <param name="fieldName">Name of the field</param>
+        /// <param name="newDisplayName">New display name for the field</param>
+        public static void UpdateFieldDisplayName(this List list, string fieldName, string newDisplayName)
+        {
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new ArgumentNullException("fieldName");
+            }
+
+            if (string.IsNullOrEmpty(newDisplayName))
+            {
+                throw new ArgumentNullException("newDisplayName");
+            }
+
+            FieldCollection fields = list.Fields;
+            IEnumerable<Field> results = list.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
+            list.Context.ExecuteQuery();
+
+            var targetField = results.FirstOrDefault();
+
+            if (targetField != null)
+            {
+                targetField.Title = newDisplayName;
+                targetField.Update();
+
+                list.Context.Load(targetField);
+                list.Context.ExecuteQuery();
+            }
+        }
         #endregion
 
         #region Content Types
