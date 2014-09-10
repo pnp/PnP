@@ -20,7 +20,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">The web to process</param>
         /// <param name="serverRelativeUrl">The server relative url of the file to approve</param>
-        /// <param name="comment"></param>
+        /// <param name="comment">Message to be recorded with the approval</param>
         public static void ApproveFile(this Web web, string serverRelativeUrl, string comment)
         {
             File file = null;
@@ -38,7 +38,9 @@ namespace Microsoft.SharePoint.Client
         /// Checks in a file
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkin</param>
+        /// <param name="url">The server rrelative url of the file to checkin</param>
+        /// <param name="checkinType">The type of the checkin</param>
+        /// <param name="comment">Message to be recorded with the approval</param>
         public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
         {
             File file = web.GetFileByServerRelativeUrl(url);
@@ -286,7 +288,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">The web to process</param>
         /// <param name="match">a wildcard pattern to match</param>
-        /// <returns></returns>
+        /// <returns>A list with the found <see cref="Microsoft.SharePoint.Client.File"/> objects</returns>
         public static List<Microsoft.SharePoint.Client.File> FindFiles(this Web web, string match)
         {
             Folder rootFolder = web.RootFolder;
@@ -369,29 +371,22 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">The Web to process</param>
         /// <param name="serverRelativeUrl">The server relative url to the file</param>
-        /// <returns></returns>
+        /// <returns>The file contents as a string</returns>
         public static string GetFileAsString(this Web web, string serverRelativeUrl)
         {
             string returnString = string.Empty;
 
             var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-
             web.Context.Load(file);
-
             web.Context.ExecuteQuery();
-
             ClientResult<Stream> stream = file.OpenBinaryStream();
-
             web.Context.ExecuteQuery();
 
             using (Stream memStream = new MemoryStream())
             {
                 CopyStream(stream.Value, memStream);
-
                 memStream.Position = 0;
-
                 StreamReader reader = new StreamReader(memStream);
-
                 returnString = reader.ReadToEnd();
             }
             return returnString;
@@ -399,7 +394,6 @@ namespace Microsoft.SharePoint.Client
 
         private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<Microsoft.SharePoint.Client.File> foundFiles)
         {
-
             FileCollection files = folder.Files;
             context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
             context.Load(folder.Folders);
@@ -408,7 +402,6 @@ namespace Microsoft.SharePoint.Client
             {
                 if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
                 {
-
                     foundFiles.Add(file);
                 }
             }
@@ -423,7 +416,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">The web to process</param>
         /// <param name="serverRelativeUrl">the server relative url of the file to publish</param>
-        /// <param name="comment"></param>
+        /// <param name="comment">Comment recorded with the publish action</param>
         public static void PublishFile(this Web web, string serverRelativeUrl, string comment)
         {
             File file = null;
@@ -437,6 +430,12 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
       
+        /// <summary>
+        /// Gets a folder with a given name in a given <see cref="Microsoft.SharePoint.Client.Folder"/>
+        /// </summary>
+        /// <param name="folder"><see cref="Microsoft.SharePoint.Client.Folder"/> in which to search for</param>
+        /// <param name="folderName">Name of the folder to search for</param>
+        /// <returns>The found <see cref="Microsoft.SharePoint.Client.Folder"/> if available, null otherwise</returns>
         public static Folder ResolveSubFolder(this Folder folder, string folderName)
         {
             if (string.IsNullOrEmpty(folderName))
