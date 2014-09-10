@@ -51,7 +51,6 @@
     <Content Include="Elements.xml" />
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
-    <None Include="readme.md" />
     <None Include="SharePointProjectItem.spdata">
       <SharePointProjectItemId>{61baa022-0395-45ea-9e43-e8bbdc14fc1c}</SharePointProjectItemId>
     </None>
@@ -61,7 +60,6 @@
     <None Include="Scripts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{6a06a1f8-a3a9-4b96-9fcc-4206ec074ce1}</SharePointProjectItemId>
     </None>
-    <Content Include="readme.txt" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
     <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
