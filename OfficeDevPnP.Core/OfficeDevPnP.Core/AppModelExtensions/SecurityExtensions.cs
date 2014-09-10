@@ -136,7 +136,7 @@ namespace Microsoft.SharePoint.Client
 
         #region Permissions management
         /// <summary>
-        /// Add read access to the group "Everyone except external users". Notice that this -only- works on Tenants running in the English Locale (1033)
+        /// Add read access to the group "Everyone except external users".
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         public static void AddReaderAccess(this Web web)
