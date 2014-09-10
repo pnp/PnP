@@ -315,8 +315,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
+        [Obsolete("Please use the CreateDocumentLibrary method")]
         public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
@@ -327,8 +336,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static void CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
