@@ -294,8 +294,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listName">Name of the list</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
+
             // Call actual implementation
             CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
         }
