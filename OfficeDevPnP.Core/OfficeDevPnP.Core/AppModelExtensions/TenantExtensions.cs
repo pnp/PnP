@@ -4,6 +4,7 @@ using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 
@@ -502,6 +503,72 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
+        /// that does not have a dependency on the Tenant administration csom.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="adminLogins">Array of logins for the additional admins</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        public static void AddAdministrators(this Tenant tenant, String[] adminLogins, Uri siteUrl)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (var admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin, true);
+                tenant.Context.ExecuteQuery();
+
+                using (var clientContext = new ClientContext(siteUrl))
+                {
+                    var spAdmin = clientContext.Web.EnsureUser(admin);
+                    clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                    clientContext.Web.AssociatedOwnerGroup.Update();
+                    clientContext.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a site collection administrator to a site collection
+        /// </summary>
+        /// <param name="web">Site to operate on</param>
+        /// <param name="adminLogins">Array of admins loginnames to add</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
+        public static void AddAdministrators(this Tenant tenant, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (UserEntity admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
+                tenant.Context.ExecuteQuery();
+                if (addToOwnersGroup)
+                {
+                    // Create a separate context to the web
+                    using (var clientContext = new ClientContext(siteUrl))
+                    {
+                        clientContext.Credentials = tenant.Context.Credentials;
+                        var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
+                        clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                        clientContext.Web.AssociatedOwnerGroup.Update();
+                        clientContext.ExecuteQuery();
+                    }
                 }
             }
         }
