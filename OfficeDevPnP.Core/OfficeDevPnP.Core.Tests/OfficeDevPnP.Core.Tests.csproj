@@ -74,6 +74,7 @@
     <Compile Include="AppModelExtensions\FeatureExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\JavaScriptExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\ListExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
