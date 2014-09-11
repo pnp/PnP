@@ -98,12 +98,13 @@ namespace Microsoft.SharePoint.Client.Tests
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Setup
-                var userstring = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", clientContext.Web.GetAuthenticationRealm());
-
+                var userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", clientContext.Web.GetAuthenticationRealm());
+                
+                
                 // Test
                 clientContext.Web.AddReaderAccess();
 
-                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userstring);
+                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity);
                 Assert.IsNotNull(existingUser, "No user returned");
                 Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
 
@@ -119,6 +120,32 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestMethod()]
+        public void AddReaderAccessTest1()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Setup
+                var userIdentity = "c:0(.s|true";
+
+                // Test
+                clientContext.Web.AddReaderAccess(OfficeDevPnP.Core.Enums.BuiltInIdentity.Everyone);
+
+                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity);
+                Assert.IsNotNull(existingUser, "No user returned");
+                Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
+
+                // Cleanup
+
+                if (existingUser != null)
+                {
+                    clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
+                    clientContext.Web.AssociatedVisitorGroup.Update();
+                    clientContext.ExecuteQuery();
+                }
+
+            }
+        }
 
     }
 }

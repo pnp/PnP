@@ -2,6 +2,7 @@
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,15 +142,50 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         public static void AddReaderAccess(this Web web)
         {
-            string everyOneExceptExternalUser = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
-            var spReader = web.EnsureUser(everyOneExceptExternalUser);
-            web.Context.Load(spReader);
-            web.Context.ExecuteQuery();
-
-            web.AssociatedVisitorGroup.Users.AddUser(spReader);
-            web.AssociatedVisitorGroup.Update();
-            web.Context.ExecuteQuery();
+            AddReaderAccessImplementation(web, BuiltInIdentity.EveryoneButExternalUsers);
         }
+
+        /// <summary>
+        /// Add read access to the group "Everyone except external users".
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="user">Built in user to add to the visitors group</param>
+        public static void AddReaderAccess(this Web web, BuiltInIdentity user)
+        {
+            AddReaderAccessImplementation(web, user);
+        }
+
+        private static void AddReaderAccessImplementation(Web web, BuiltInIdentity user)
+        {
+            switch (user)
+            {
+                case BuiltInIdentity.Everyone:
+                    {
+                        string userIdentity = "c:0(.s|true";
+                        var spReader = web.EnsureUser(userIdentity);
+                        web.Context.Load(spReader);
+                        web.Context.ExecuteQuery();
+
+                        web.AssociatedVisitorGroup.Users.AddUser(spReader);
+                        web.AssociatedVisitorGroup.Update();
+                        web.Context.ExecuteQuery();
+                        break;
+                    }
+                case BuiltInIdentity.EveryoneButExternalUsers:
+                    {
+                        string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
+                        var spReader = web.EnsureUser(userIdentity);
+                        web.Context.Load(spReader);
+                        web.Context.ExecuteQuery();
+
+                        web.AssociatedVisitorGroup.Users.AddUser(spReader);
+                        web.AssociatedVisitorGroup.Update();
+                        web.Context.ExecuteQuery();
+                        break;
+                    }
+            }
+        }
+
         #endregion
 
         #region External sharing management
