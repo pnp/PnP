@@ -954,6 +954,7 @@ namespace Microsoft.SharePoint.Client
             ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
+
             ContentType ct = results.FirstOrDefault();
             if (ct != null)
             {
