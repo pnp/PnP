@@ -2,9 +2,11 @@
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -107,25 +109,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="adminLogins">Array of logins for the additional admins</param>
         /// <param name="siteUrl">Url of the site to operate on</param>
+        [Obsolete("Use Tenant.AddAdministrators() extension method")]
         public static void AddAdministratorsTenant(this Web web, String[] adminLogins, Uri siteUrl)
         {
-            if (adminLogins == null)
-                throw new ArgumentNullException("adminLogins");
-            
-            if (siteUrl == null)
-                throw new ArgumentNullException("siteUrl");
-            
             Tenant tenant = new Tenant(web.Context);
 
-            foreach (var admin in adminLogins)
-            {
-                var siteUrlString = siteUrl.ToString();
-                tenant.SetSiteAdmin(siteUrlString, admin, true);
-                var spAdmin = web.EnsureUser(admin);
-                web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
-                web.AssociatedOwnerGroup.Update();
-                web.Context.ExecuteQuery();
-            }
+            tenant.AddAdministrators(adminLogins, siteUrl);
         }
 
         /// <summary>
@@ -135,44 +124,68 @@ namespace Microsoft.SharePoint.Client
         /// <param name="adminLogins">Array of admins loginnames to add</param>
         /// <param name="siteUrl">Url of the site to operate on</param>
         /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
+        [Obsolete("Use Tenant.AddAdministrator() extension method")]
         public static void AddAdministratorsTenant(this Web web, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
         {
-            if (adminLogins == null)
-                throw new ArgumentNullException("adminLogins");
-            
-            if (siteUrl == null)
-                throw new ArgumentNullException("siteUrl");
-            
             Tenant tenant = new Tenant(web.Context);
 
-            foreach (UserEntity admin in adminLogins)
-            {
-                var siteUrlString = siteUrl.ToString();
-                tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
-                var spAdmin = web.EnsureUser(admin.LoginName);
-                if (addToOwnersGroup)
-                {
-                    web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
-                    web.AssociatedOwnerGroup.Update();
-                }
-                web.Context.ExecuteQuery();
-            }
+            tenant.AddAdministrators(adminLogins, siteUrl, addToOwnersGroup);
+
         }
 
         #endregion
 
         #region Permissions management
         /// <summary>
-        /// Add read access to the group "Everyone except external users"
+        /// Add read access to the group "Everyone except external users".
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         public static void AddReaderAccess(this Web web)
         {
-            var spReader = web.EnsureUser("Everyone except external users");
-            web.AssociatedVisitorGroup.Users.AddUser(spReader);
-            web.AssociatedVisitorGroup.Update();
-            web.Context.ExecuteQuery();
+            AddReaderAccessImplementation(web, BuiltInIdentity.EveryoneButExternalUsers);
         }
+
+        /// <summary>
+        /// Add read access to the group "Everyone except external users".
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="user">Built in user to add to the visitors group</param>
+        public static void AddReaderAccess(this Web web, BuiltInIdentity user)
+        {
+            AddReaderAccessImplementation(web, user);
+        }
+
+        private static void AddReaderAccessImplementation(Web web, BuiltInIdentity user)
+        {
+            switch (user)
+            {
+                case BuiltInIdentity.Everyone:
+                    {
+                        string userIdentity = "c:0(.s|true";
+                        var spReader = web.EnsureUser(userIdentity);
+                        web.Context.Load(spReader);
+                        web.Context.ExecuteQuery();
+
+                        web.AssociatedVisitorGroup.Users.AddUser(spReader);
+                        web.AssociatedVisitorGroup.Update();
+                        web.Context.ExecuteQuery();
+                        break;
+                    }
+                case BuiltInIdentity.EveryoneButExternalUsers:
+                    {
+                        string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
+                        var spReader = web.EnsureUser(userIdentity);
+                        web.Context.Load(spReader);
+                        web.Context.ExecuteQuery();
+
+                        web.AssociatedVisitorGroup.Users.AddUser(spReader);
+                        web.AssociatedVisitorGroup.Update();
+                        web.Context.ExecuteQuery();
+                        break;
+                    }
+            }
+        }
+
         #endregion
 
         #region External sharing management
@@ -186,7 +199,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (siteUrl == null)
                 throw new ArgumentNullException("siteUrl");
-            
+
             Tenant tenant = new Tenant(web.Context);
             SiteProperties site = tenant.GetSitePropertiesByUrl(siteUrl.OriginalString, true);
             web.Context.Load(site);
@@ -250,7 +263,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (siteUrl == null)
                 throw new ArgumentNullException("siteUrl");
-            
+
             Tenant tenantAdmin = new Tenant(web.Context);
             Office365Tenant tenant = new Office365Tenant(web.Context);
             Site site = tenantAdmin.GetSiteByUrl(siteUrl.OriginalString);
@@ -316,7 +329,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             return web.GetGroupID(null, groupName);
         }
 
@@ -331,10 +344,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (siteUrl == null)
                 throw new ArgumentNullException("siteUrl");
-            
+
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             int groupID = 0;
 
             var manageMessageGroup = web.SiteGroups.GetByName(groupName);
@@ -361,7 +374,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             GroupCreationInformation groupCreationInformation = new GroupCreationInformation();
             groupCreationInformation.Title = groupName;
             groupCreationInformation.Description = groupDescription;
@@ -422,10 +435,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             //Ensure the user is known
             UserCreationInformation userToAdd = new UserCreationInformation();
             userToAdd.LoginName = userLoginName;
@@ -453,7 +466,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             Group group = web.SiteGroups.GetById(groupId);
             web.Context.Load(group);
             User user = web.EnsureUser(userLoginName);
@@ -475,10 +488,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (group == null)
                 throw new ArgumentNullException("group");
-            
+
             if (user == null)
                 throw new ArgumentNullException("user");
-            
+
             group.Users.AddUser(user);
             web.Context.ExecuteQuery();
         }
@@ -493,10 +506,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (group == null)
                 throw new ArgumentNullException("group");
-            
+
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             User user = web.EnsureUser(userLoginName);
             web.Context.ExecuteQuery();
             if (user != null)
@@ -517,7 +530,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
@@ -535,7 +548,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -608,7 +621,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
@@ -626,7 +639,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -687,7 +700,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -711,10 +724,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (group == null)
                 throw new ArgumentNullException("group");
-            
+
             if (user == null)
                 throw new ArgumentNullException("user");
-            
+
             group.Users.Remove(user);
             group.Update();
             web.Context.ExecuteQuery();
@@ -729,7 +742,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
@@ -748,7 +761,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (group == null)
                 throw new ArgumentNullException("group");
-            
+
             GroupCollection groups = web.SiteGroups;
             groups.Remove(group);
             web.Context.ExecuteQuery();
@@ -765,10 +778,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             if (string.IsNullOrEmpty(userLoginName))
                 throw new ArgumentNullException("userLoginName");
-            
+
             bool result = false;
 
             var group = web.SiteGroups.GetByName(groupName);
@@ -795,7 +808,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
-            
+
             bool result = false;
 
             try
@@ -825,5 +838,56 @@ namespace Microsoft.SharePoint.Client
         }
 
         #endregion
+
+        public static Guid GetAuthenticationRealm(this Web web)
+        {
+            Guid returnGuid = Guid.Empty;
+            if (!web.IsPropertyAvailable("Url"))
+            {
+                web.Context.Load(web, w => w.Url);
+                web.Context.ExecuteQuery();
+            }
+            WebRequest request = WebRequest.Create(new Uri(web.Url) + "/_vti_bin/client.svc");
+            request.Headers.Add("Authorization: Bearer ");
+
+            try
+            {
+                using (request.GetResponse())
+                {
+                }
+            }
+            catch (WebException e)
+            {
+                if (e.Response == null)
+                {
+                }
+
+                string bearerResponseHeader = e.Response.Headers["WWW-Authenticate"];
+                if (string.IsNullOrEmpty(bearerResponseHeader))
+                {
+                }
+
+                const string bearer = "Bearer realm=\"";
+                int bearerIndex = bearerResponseHeader.IndexOf(bearer, StringComparison.Ordinal);
+                if (bearerIndex < 0)
+                {
+                }
+
+                int realmIndex = bearerIndex + bearer.Length;
+
+                if (bearerResponseHeader.Length >= realmIndex + 36)
+                {
+                    string targetRealm = bearerResponseHeader.Substring(realmIndex, 36);
+
+                    Guid realmGuid;
+
+                    if (Guid.TryParse(targetRealm, out realmGuid))
+                    {
+                        returnGuid = realmGuid;
+                    }
+                }
+            }
+            return returnGuid;
+        }
     }
 }

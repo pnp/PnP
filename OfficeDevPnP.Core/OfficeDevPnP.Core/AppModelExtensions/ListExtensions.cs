@@ -1,9 +1,11 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -978,5 +980,103 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+
+        /// <summary>
+        /// <para>Sets default values for column values.</para>
+        /// <para>In order to for instance set the default Enterprise Metadata keyword field to a term, add the enterprise metadata keyword to a library (internal name "TaxKeyword")</para>
+        /// <para> </para>
+        /// <para>Column values are defined by the DefaultColumnValue class that has 3 properties:</para>
+        /// <para>RelativeFolderPath : / to set a default value for the root of the document library, or /foldername to specify a subfolder</para>
+        /// <para>FieldInternalName : The name of the field to set. For instance "TaxKeyword" to set the Enterprise Metadata field</para>
+        /// <para>TermPaths : A collection of string values to set in the shape of TermGroup|TermSet|Term </para>
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="columnValues"></param>
+        public static void AddDefaultColumnValues(this List list, IEnumerable<DefaultColumnValue> columnValues)
+        {
+            using (var clientContext = list.Context as ClientContext)
+            {
+                try
+                {
+
+                    clientContext.Load(list.RootFolder);
+                    clientContext.Load(list.RootFolder.Folders);
+                    clientContext.ExecuteQuery();
+
+                    var metadataString = new StringBuilder("<MetadataDefaults>");
+
+                    foreach (var defaultcolumnvalue in columnValues)
+                    {
+                        var path = defaultcolumnvalue.FolderRelativePath;
+                        if (path == "/")
+                        {
+                            path = list.RootFolder.ServerRelativeUrl;
+                        }
+                        else
+                        {
+                            path = list.RootFolder.ServerRelativeUrl + path;
+                        }
+                        path = path.Replace(" ", "%20");
+                        metadataString.AppendFormat("<a href=\"{0}\">", path);
+
+                        var fieldName = defaultcolumnvalue.FieldInternalName;
+
+                        var counter = 0;
+
+                        var fieldStringBuilder = new StringBuilder();
+
+                        foreach (var value in defaultcolumnvalue.TermPaths)
+                        {
+                            var term = clientContext.Site.GetTaxonomyItemByPath(value);
+                            if (term != null)
+                            {
+                                counter++;
+                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", counter, term.Name, term.Id);
+                            }
+                        }
+                        var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
+                        metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+
+                        metadataString.AppendFormat("</a>");
+                    }
+
+                    metadataString.AppendFormat("</MetadataDefaults>");
+
+                    var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
+                    if (formsFolder != null)
+                    {
+                        var objFileInfo = new FileCreationInformation();
+                        objFileInfo.Url = "client_LocationBasedDefaults.html";
+                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(metadataString.ToString()));
+                        objFileInfo.Overwrite = true;
+                        formsFolder.Files.Add(objFileInfo);
+                        clientContext.ExecuteQuery();
+                    }
+
+                    // Add the event receiver if not already there
+                    if (list.GetEventReceiverByName("LocationBasedMetadataDefaultsReceiver ItemAdded") == null)
+                    {
+                        EventReceiverDefinitionCreationInformation eventCi = new EventReceiverDefinitionCreationInformation();
+                        eventCi.Synchronization = EventReceiverSynchronization.DefaultSynchronization;
+                        eventCi.EventType = EventReceiverType.ItemAdded;
+                        eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+                        eventCi.ReceiverClass = "Microsoft.Office.DocumentManagement.LocationBasedMetadataDefaultsReceiver";
+                        eventCi.ReceiverName = "LocationBasedMetadataDefaultsReceiver ItemAdded";
+                        eventCi.SequenceNumber = 1000;
+
+                        list.EventReceivers.Add(eventCi);
+
+                        list.Update();
+
+                        clientContext.ExecuteQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error applying default column values", ex);
+                }
+            }
+        }
+
     }
 }
