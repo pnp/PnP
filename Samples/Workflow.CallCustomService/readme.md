@@ -1,4 +1,4 @@
-# title of the PnP sample #
+# Call custom web services from a workflow #
 
 ### Summary ###
 This sample shows how to create a workflow that calls a custom web service that updates SharePoint list data.
@@ -17,7 +17,7 @@ Workflow.CallCustomService | Todd Baginski, Tyler Lu, Ring Li (**Canviz LLC**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | November 6th 2013 (to update) | Initial release
+1.0  | June 6th 2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
