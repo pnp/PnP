@@ -327,7 +327,7 @@ Click **Deploy your web project**.
 
 ![](http://i.imgur.com/jCOwBdq.png)
 
-Click Publish. 
+Click **Publish**. 
 
 ![](http://i.imgur.com/4kWII2B.png)
 
@@ -339,6 +339,7 @@ In a few minutes, the site will be published to Microsoft Azure.
 ### ADD REMOTE ENDPOINT ###
 
 ![](http://i.imgur.com/chqi6uO.png)
+
 In the **Soluction Explorer**, click **AppManifest.xml**.
 
 ![](http://i.imgur.com/VtphdOo.png)
