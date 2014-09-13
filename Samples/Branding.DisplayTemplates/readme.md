@@ -8,10 +8,8 @@ The Display Templates sample demonstrates how to use Display Templates to render
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
--> Remove platforms if needed
-
 ### Prerequisites ###
-Any special pre-requisites?
+None
 
 ### Solution ###
 Solution | Author(s)
