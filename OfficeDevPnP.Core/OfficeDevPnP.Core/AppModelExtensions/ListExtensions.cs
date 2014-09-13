@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -287,7 +288,7 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
-    
+
         /// <summary>
         /// Adds a list to a site
         /// </summary>
@@ -467,7 +468,7 @@ namespace Microsoft.SharePoint.Client
                 newList.EnableVersioning = true;
                 newList.EnableMinorVersions = true;
             }
-            if(enabledContentTypes)
+            if (enabledContentTypes)
             {
                 newList.ContentTypesEnabled = true;
             }
@@ -661,7 +662,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("listName")
                   : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
             }
-            
+
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
             web.Context.ExecuteQuery();
@@ -701,7 +702,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(siteRelativeUrl))
                 throw new ArgumentNullException("siteRelativeUrl");
-            
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -746,10 +747,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
             CreateListViewsFromXML(web, listUrl, xd);
@@ -772,10 +773,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (string.IsNullOrEmpty(xmlString))
                 throw new ArgumentNullException("xmlString");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
             CreateListViewsFromXML(web, listUrl, xd);
@@ -798,10 +799,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (xmlDoc == null)
                 throw new ArgumentNullException("xmlDoc");
-            
+
             // Get instances to the list
             List list = web.GetList(listUrl);
             web.Context.Load(list);
@@ -827,10 +828,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
-            
+
             if (!System.IO.File.Exists(filePath))
                 throw new System.IO.FileNotFoundException(filePath);
-            
+
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
             list.CreateListViewsFromXML(xd);
@@ -852,7 +853,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(xmlString))
                 throw new ArgumentNullException("xmlString");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
             list.CreateListViewsFromXML(xd);
@@ -874,7 +875,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (xmlDoc == null)
                 throw new ArgumentNullException("xmlDoc");
-            
+
             // Convert base type to string value used in the xml structure
             string listType = list.BaseType.ToString();
             // Get only relevant list views for matching base list type
@@ -916,7 +917,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(viewName))
                 throw new ArgumentNullException("viewName");
-            
+
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
@@ -943,7 +944,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (id == Guid.Empty)
                 throw new ArgumentNullException("id");
-            
+
             var q = from v in list.Views where v.Id == id select v;
             list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();
@@ -967,7 +968,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            
+
             var q = from v in list.Views where v.Title == name select v;
             list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();
@@ -992,12 +993,36 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="columnValues"></param>
-        public static void AddDefaultColumnValues(this List list, IEnumerable<DefaultColumnValue> columnValues)
+        public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermPathValue> columnValues)
+        {
+            using (var clientContext = list.Context as ClientContext)
+            {
+                List<DefaultColumnTermValue> newValues = new List<DefaultColumnTermValue>();
+                foreach (var value in columnValues)
+                {
+
+                    DefaultColumnTermValue newValue = new DefaultColumnTermValue();
+                    newValue.FieldInternalName = value.FieldInternalName;
+                    newValue.FolderRelativePath = value.FolderRelativePath;
+
+                    foreach (var termpath in value.TermPaths)
+                    {
+                        var term = clientContext.Site.GetTaxonomyItemByPath(termpath) as Term;
+                        newValue.Terms.Add(term);
+                    }
+                    newValues.Add(newValue);
+                }
+                list.SetDefaultColumnValues(newValues);
+            }
+        }
+
+        private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
         {
             using (var clientContext = list.Context as ClientContext)
             {
                 try
                 {
+                    List<DefaultColumnTermValue> values = columnValues.ToList();
 
                     clientContext.Load(list.RootFolder);
                     clientContext.Load(list.RootFolder.Folders);
@@ -1005,41 +1030,51 @@ namespace Microsoft.SharePoint.Client
 
                     var metadataString = new StringBuilder("<MetadataDefaults>");
 
-                    foreach (var defaultcolumnvalue in columnValues)
+                    while (values.Any())
                     {
-                        var path = defaultcolumnvalue.FolderRelativePath;
-                        if (path == "/")
+
+                        // Get the first entry 
+                        var defaultColumnValue = values.First();
+                        var path = defaultColumnValue.FolderRelativePath;
+                        if (path.Equals("/"))
                         {
                             path = list.RootFolder.ServerRelativeUrl;
                         }
                         else
                         {
-                            path = list.RootFolder.ServerRelativeUrl + path;
+                            path = UrlUtility.Combine(list.RootFolder.ServerRelativeUrl, path);
                         }
-                        path = path.Replace(" ", "%20");
+                        // Find all in the same path:
+                        var defaultColumnValuesInSamePath = columnValues.Where(x => x.FolderRelativePath == defaultColumnValue.FolderRelativePath);
+                        path = Uri.EscapeUriString(path);
+
                         metadataString.AppendFormat("<a href=\"{0}\">", path);
 
-                        var fieldName = defaultcolumnvalue.FieldInternalName;
-
-                        var counter = 0;
-
-                        var fieldStringBuilder = new StringBuilder();
-
-                        foreach (var value in defaultcolumnvalue.TermPaths)
+                        foreach (var defaultColumnValueInSamePath in defaultColumnValuesInSamePath)
                         {
-                            var term = clientContext.Site.GetTaxonomyItemByPath(value);
-                            if (term != null)
+                            var fieldName = defaultColumnValueInSamePath.FieldInternalName;
+                            var fieldStringBuilder = new StringBuilder();
+
+                            foreach (var term in defaultColumnValueInSamePath.Terms)
                             {
-                                counter++;
-                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", counter, term.Name, term.Id);
+                                if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
+                                {
+                                    clientContext.Load(term, t => t.Id, t => t.Name);
+                                    clientContext.ExecuteQuery();
+                                }
+                                var wssId = list.ParentWeb.GetWssIdForTerm(term);
+                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
                             }
+
+                            var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
+                            metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+
+                            values.Remove(defaultColumnValueInSamePath);
                         }
-                        var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
-                        metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
 
                         metadataString.AppendFormat("</a>");
-                    }
 
+                    }
                     metadataString.AppendFormat("</MetadataDefaults>");
 
                     var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
@@ -1075,6 +1110,120 @@ namespace Microsoft.SharePoint.Client
                 {
                     throw new Exception("Error applying default column values", ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// <para>Sets default values for column values.</para>
+        /// <para>In order to for instance set the default Enterprise Metadata keyword field to a term, add the enterprise metadata keyword to a library (internal name "TaxKeyword")</para>
+        /// <para> </para>
+        /// <para>Column values are defined by the DefaultColumnValue class that has 3 properties:</para>
+        /// <para>RelativeFolderPath : / to set a default value for the root of the document library, or /foldername to specify a subfolder</para>
+        /// <para>FieldInternalName : The name of the field to set. For instance "TaxKeyword" to set the Enterprise Metadata field</para>
+        /// <para>Terms : A collection of Taxonomy terms to set</para>
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="columnValues"></param>
+        public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
+        {
+
+            using (var clientContext = list.Context as ClientContext)
+            {
+                clientContext.Load(list.RootFolder);
+                clientContext.Load(list.RootFolder.Folders);
+                clientContext.ExecuteQuery();
+                TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                // Check if default values file is present
+                var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
+                List<DefaultColumnTermValue> existingValues = new List<DefaultColumnTermValue>();
+
+                if (formsFolder != null)
+                {
+                    var configFile = formsFolder.Files.GetByUrl("client_LocationBasedDefaults.html");
+                    clientContext.Load(configFile, c => c.Exists);
+                    bool fileExists = false;
+                    try
+                    {
+                        clientContext.ExecuteQuery();
+                        fileExists = true;
+                    }
+                    catch { }
+
+                    if (fileExists)
+                    {
+                        var streamResult = configFile.OpenBinaryStream();
+                        clientContext.ExecuteQuery();
+                        XDocument document = XDocument.Load(streamResult.Value);
+                        var values = from a in document.Descendants("a") select a;
+
+                        List<DefaultColumnTermValue> defaultColumnTermValues = new List<DefaultColumnTermValue>();
+
+                        foreach (var value in values)
+                        {
+                            var href = value.Attribute("href").Value;
+                            href = Uri.UnescapeDataString(href);
+                            href = href.Replace(list.RootFolder.ServerRelativeUrl, "/");
+                            var defaultValues = from d in value.Descendants("DefaultValue") select d;
+                            foreach (var defaultValue in defaultValues)
+                            {
+                                var fieldName = defaultValue.Attribute("FieldName").Value;
+                                var termsIdentifier = defaultValue.Value;
+
+                                var terms = termsIdentifier.Split(new string[] { ";#" }, StringSplitOptions.None);
+
+                                List<Term> existingTerms = new List<Term>();
+                                for (int q = 1; q < terms.Length; q++)
+                                {
+                                    var termIdString = terms[q].Split(new char[] { '|' })[1];
+                                    var term = taxSession.GetTerm(new Guid(termIdString));
+                                    clientContext.Load(term, t => t.Id, t => t.Name);
+                                    clientContext.ExecuteQuery();
+                                    existingTerms.Add(term);
+                                    q++; // Skip one
+                                }
+
+                                DefaultColumnTermValue defaultColumnTermValue = new DefaultColumnTermValue()
+                                {
+                                    FieldInternalName = fieldName,
+                                    FolderRelativePath = href,
+                                    Terms = existingTerms
+                                };
+
+                                existingValues.Add(defaultColumnTermValue);
+                            }
+
+                        }
+                    }
+
+
+                }
+                List<DefaultColumnTermValue> termsList = columnValues.Union(existingValues, new DefaultColumnTermValueComparer()).ToList();
+
+                list.SetDefaultColumnValuesImplementation(termsList);
+            }
+        }
+
+        private class DefaultColumnTermValueComparer : IEqualityComparer<DefaultColumnTermValue>
+        {
+            public bool Equals(DefaultColumnTermValue x, DefaultColumnTermValue y)
+            {
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                return x.FieldInternalName == y.FieldInternalName && x.FolderRelativePath == y.FolderRelativePath;
+            }
+
+            public int GetHashCode(DefaultColumnTermValue defaultValue)
+            {
+                if (Object.ReferenceEquals(defaultValue, null)) return 0;
+
+                int hashFolder = defaultValue.FolderRelativePath == null ? 0 : defaultValue.FolderRelativePath.GetHashCode();
+
+                int hashFieldInternalName = defaultValue.FieldInternalName.GetHashCode();
+
+                return hashFolder ^ hashFieldInternalName;
             }
         }
 
