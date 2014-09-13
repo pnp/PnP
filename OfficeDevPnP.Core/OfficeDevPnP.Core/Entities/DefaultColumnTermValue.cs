@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SharePoint.Client.Taxonomy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace OfficeDevPnP.Core.Entities
     /// <summary>
     /// Specifies a default column value for a document library
     /// </summary>
-    public class DefaultColumnValue
+    public class DefaultColumnTermValue
     {
         /// <summary>
         /// The Path of the folder, Rootfolder of the document library is "/" 
@@ -24,11 +25,11 @@ namespace OfficeDevPnP.Core.Entities
         /// <summary>
         /// Taxonomy paths in the shape of "TermGroup|TermSet|Term"
         /// </summary>
-        public List<string> TermPaths { get; set; }
+        public List<Term> Terms { get; set; }
 
-        public DefaultColumnValue()
+        public DefaultColumnTermValue()
         {
-            TermPaths = new List<string>();
+            Terms = new List<Term>();
         }
     }
 }
