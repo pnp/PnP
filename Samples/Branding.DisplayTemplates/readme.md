@@ -14,7 +14,7 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Branding.DisplayTemplates | enny Zhang (Canviz  LLC),Cindy Yan (Canviz LLC), Lucas Smith (Canviz LLC),            Todd Baginski (Canviz LLC)
+Branding.DisplayTemplates | Enny Zhang, Cindy Yan, Lucas Smith, Todd Baginski (**Canviz LLC**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -149,7 +149,7 @@ After you have successfully configured your SharePoint environment and deployed 
 
 Continue to the next section to interact with the pages.
 
-## Pages and Channels ## 
+## Pages and Channels ##
 The pages within the Pages library render the Home Hero slider with different views. The Home Hero slider is a Content By Search Web Part.  Customized Display Templates are used to render the data returned via the Search Service.
 
 Important Note: The Content By Search Web Part will only display the data from the SharePoint list after the list items have been crawled and indexed.
