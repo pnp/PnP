@@ -108,7 +108,8 @@
     <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
-    <Compile Include="Entities\DefaultColumnValue.cs" />
+    <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
+    <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
