@@ -415,7 +415,7 @@ However, there are disadvantages as well.
 3.Enter some text in the Notes text area and click **Add** to save the note to the Notes list in the App Web.
 4.Click the **View Notes List in App Web** link to see the out of the box view of the Notes list.  This is helpful for comparing the data in the Notes page with the data in the Notes list in the App Web.
 
-### CODE ### 
+### CODE ###
 This page is an MCV view defined in the CustomerDashboard\Notes.cshmtl file.  The calls to the SharePoint REST API are written in JavaScript and are located in the Scripts/*CustomerDashboard.js* file.  The functions the Notes scenario uses require the *SP.RequestExecutor* function to execute the cross domain request.
 The *getNotesAndShow* function returns all the notes for a customer. 
 
@@ -465,7 +465,7 @@ function addNoteToList(note, customerID) {
 }
 ```
 
-## List Query Thresholds ## 
+## List Query Thresholds ##
 
 To demonstrate the data limits associated with list storage in the App Web you can load enough data to exceed the list query threshold limit.  To do this, follow these steps.
 
