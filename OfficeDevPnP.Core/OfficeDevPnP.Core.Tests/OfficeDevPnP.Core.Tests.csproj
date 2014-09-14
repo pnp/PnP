@@ -80,6 +80,7 @@
     <Compile Include="AppModelExtensions\UrlUtilityTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\PageExtensionsTests.cs" />
+    <Compile Include="CredentialManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
