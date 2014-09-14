@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Tests
             return CreateContext(TenantUrl, Credentials);
         }
 
-        public static ClientContext CreateContext(string contextUrl, ICredentials credentials)
+        private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
         {
             var context = new ClientContext(contextUrl);
             context.Credentials = credentials;
