@@ -157,16 +157,16 @@
     <value>Theme '{0}' already exists (and was not overwritten). No changes made.</value>
   </data>
   <data name="FeatureExtensions_ActivateSiteCollectionFeature" xml:space="preserve">
-    <value>Activating feature {0} in site collection {1}.</value>
+    <value>Activating feature {0} in site collection.</value>
   </data>
   <data name="FeatureExtensions_ActivateWebFeature" xml:space="preserve">
-    <value>Activating feature {0} in web {1}.</value>
+    <value>Activating feature {0} in web.</value>
   </data>
   <data name="FeatureExtensions_DeactivateSiteCollectionFeature" xml:space="preserve">
-    <value>Deactivating feature {0} in site collection {1}.</value>
+    <value>Deactivating feature {0} in site collection.</value>
   </data>
   <data name="FeatureExtensions_DeactivateWebFeature" xml:space="preserve">
-    <value>Deactivating feature {0} in web {1}.</value>
+    <value>Deactivating feature {0} in web.</value>
   </data>
   <data name="FeatureExtensions_FeatureActivationProblem" xml:space="preserve">
     <value>Problem with activation for feature id {0}.</value>
@@ -203,5 +203,8 @@
   </data>
   <data name="WebExtensions_SiteSearchUnhandledException" xml:space="preserve">
     <value>Site search error.</value>
+  </data>
+  <data name="WebExtensions_UninstallSolution" xml:space="preserve">
+    <value>Removing sandbox solution '{0}'</value>
   </data>
 </root>

@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.DisplayTemplates", "Branding.DisplayTemplates\Branding.DisplayTemplates.csproj", "{64211832-027A-45B9-B860-34740EBADEE5}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.DisplayTemplatesWe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{8F560B03-A708-4E94-AD6F-F4416D029F26}"
 	ProjectSection(SolutionItems) = preProject
-		Display Templates.docx = Display Templates.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

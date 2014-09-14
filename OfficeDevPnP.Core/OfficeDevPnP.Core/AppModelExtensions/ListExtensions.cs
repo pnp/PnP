@@ -1,8 +1,11 @@
 ﻿using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -293,8 +296,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listName">Name of the list</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
+
             // Call actual implementation
             CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
         }
@@ -305,8 +317,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
+        [Obsolete("Please use the CreateDocumentLibrary method")]
         public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
@@ -317,8 +338,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static void CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
+            if (string.IsNullOrEmpty(listName))
+            {
+                throw (listName == null)
+                  ? new ArgumentNullException("listName")
+                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+            }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
@@ -363,6 +392,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listName">Name of the list</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        [Obsolete("Prefer CreateList()")]
         public static bool AddList(this Web web, int listType, Guid featureID, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             bool created = false;
@@ -403,13 +433,22 @@ namespace Microsoft.SharePoint.Client
             return created;
         }
 
-        public static void CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
+        /// <summary>
+        /// Adds a list to a site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listType">Type of the list</param>
+        /// <param name="featureID">Feature guid that brings this list type</param>
+        /// <param name="listName">Name of the list</param>
+        /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        public static List CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
             // Call actual implementation
-            CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
+            return CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
         }
 
-        private static void CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enabledContentTypes = false)
+        private static List CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enabledContentTypes = false)
         {
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
@@ -417,7 +456,9 @@ namespace Microsoft.SharePoint.Client
             lci.TemplateType = (int)listType;
 
             if (!string.IsNullOrEmpty(urlPath))
+            {
                 lci.Url = urlPath;
+            }
 
             List newList = listCol.Add(lci);
 
@@ -437,6 +478,7 @@ namespace Microsoft.SharePoint.Client
                 web.Context.ExecuteQuery();
             }
 
+            return newList;
         }
 
         /// <summary>
@@ -487,6 +529,60 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
+
+        /// <summary>
+        /// Sets the default value for a managed metadata column in the specified list. This operation will not change existing items in the list
+        /// </summary>
+        /// <param name="web">Extension web</param>
+        /// <param name="termName">Name of a specific term</param>
+        /// <param name="listName">Name of list</param>
+        /// <param name="fieldInternalName">Internal name of field</param>
+        /// <param name="groupGuid">TermGroup Guid</param>
+        /// <param name="termSetGuid">TermSet Guid</param>
+        public static void UpdateTaxonomyFieldDefaultValue(this Web web, string termName, string listName, string fieldInternalName, Guid groupGuid, Guid termSetGuid)
+        {
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
+            TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+            var termGroup = termStore.GetGroup(groupGuid);
+            var termSet = termGroup.TermSets.GetById(termSetGuid);
+            var terms = termSet.Terms;
+            var term = web.Context.LoadQuery(termSet.Terms.Where(t => t.Name == termName));
+
+            web.Context.ExecuteQuery();
+
+            var foundTerm = term.First();
+
+            var list = web.GetListByTitle(listName);
+
+            var fields = web.Context.LoadQuery(list.Fields.Where(f => f.InternalName == fieldInternalName));
+            web.Context.ExecuteQuery();
+
+            var taxField = web.Context.CastTo<TaxonomyField>(fields.First());
+
+            //The default value requires that the item is present in the TaxonomyHiddenList (which gives it it's WssId)
+            //To solve this, we create a folder that we assign the value, which creates the listitem in the hidden list
+            var item = list.AddItem(new ListItemCreationInformation()
+            {
+                UnderlyingObjectType = FileSystemObjectType.Folder,
+                LeafName = string.Concat("Temporary_Folder_For_WssId_Creation_", DateTime.Now.ToFileTime().ToString())
+            });
+
+            item.SetTaxonomyFieldValue(taxField.Id, foundTerm.Name, foundTerm.Id);
+
+            web.Context.Load(item);
+            web.Context.ExecuteQuery();
+
+            dynamic val = item[fieldInternalName];
+
+            //The folder has now served it's purpose and can safely be removed
+            item.DeleteObject();
+
+            taxField.DefaultValue = string.Format("{0};#{1}|{2}", val.WssId, val.Label, val.TermGuid);
+            taxField.Update();
+
+            web.Context.ExecuteQuery();
+        }
+
 
         /// <summary>
         /// Can be used to set translations for different cultures. 
@@ -884,5 +980,103 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+
+        /// <summary>
+        /// <para>Sets default values for column values.</para>
+        /// <para>In order to for instance set the default Enterprise Metadata keyword field to a term, add the enterprise metadata keyword to a library (internal name "TaxKeyword")</para>
+        /// <para> </para>
+        /// <para>Column values are defined by the DefaultColumnValue class that has 3 properties:</para>
+        /// <para>RelativeFolderPath : / to set a default value for the root of the document library, or /foldername to specify a subfolder</para>
+        /// <para>FieldInternalName : The name of the field to set. For instance "TaxKeyword" to set the Enterprise Metadata field</para>
+        /// <para>TermPaths : A collection of string values to set in the shape of TermGroup|TermSet|Term </para>
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="columnValues"></param>
+        public static void AddDefaultColumnValues(this List list, IEnumerable<DefaultColumnValue> columnValues)
+        {
+            using (var clientContext = list.Context as ClientContext)
+            {
+                try
+                {
+
+                    clientContext.Load(list.RootFolder);
+                    clientContext.Load(list.RootFolder.Folders);
+                    clientContext.ExecuteQuery();
+
+                    var metadataString = new StringBuilder("<MetadataDefaults>");
+
+                    foreach (var defaultcolumnvalue in columnValues)
+                    {
+                        var path = defaultcolumnvalue.FolderRelativePath;
+                        if (path == "/")
+                        {
+                            path = list.RootFolder.ServerRelativeUrl;
+                        }
+                        else
+                        {
+                            path = list.RootFolder.ServerRelativeUrl + path;
+                        }
+                        path = path.Replace(" ", "%20");
+                        metadataString.AppendFormat("<a href=\"{0}\">", path);
+
+                        var fieldName = defaultcolumnvalue.FieldInternalName;
+
+                        var counter = 0;
+
+                        var fieldStringBuilder = new StringBuilder();
+
+                        foreach (var value in defaultcolumnvalue.TermPaths)
+                        {
+                            var term = clientContext.Site.GetTaxonomyItemByPath(value);
+                            if (term != null)
+                            {
+                                counter++;
+                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", counter, term.Name, term.Id);
+                            }
+                        }
+                        var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
+                        metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+
+                        metadataString.AppendFormat("</a>");
+                    }
+
+                    metadataString.AppendFormat("</MetadataDefaults>");
+
+                    var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
+                    if (formsFolder != null)
+                    {
+                        var objFileInfo = new FileCreationInformation();
+                        objFileInfo.Url = "client_LocationBasedDefaults.html";
+                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(metadataString.ToString()));
+                        objFileInfo.Overwrite = true;
+                        formsFolder.Files.Add(objFileInfo);
+                        clientContext.ExecuteQuery();
+                    }
+
+                    // Add the event receiver if not already there
+                    if (list.GetEventReceiverByName("LocationBasedMetadataDefaultsReceiver ItemAdded") == null)
+                    {
+                        EventReceiverDefinitionCreationInformation eventCi = new EventReceiverDefinitionCreationInformation();
+                        eventCi.Synchronization = EventReceiverSynchronization.DefaultSynchronization;
+                        eventCi.EventType = EventReceiverType.ItemAdded;
+                        eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+                        eventCi.ReceiverClass = "Microsoft.Office.DocumentManagement.LocationBasedMetadataDefaultsReceiver";
+                        eventCi.ReceiverName = "LocationBasedMetadataDefaultsReceiver ItemAdded";
+                        eventCi.SequenceNumber = 1000;
+
+                        list.EventReceivers.Add(eventCi);
+
+                        list.Update();
+
+                        clientContext.ExecuteQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error applying default column values", ex);
+                }
+            }
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 param ([string]$config, [string]$target)
 
-$PSModuleHome = "$Home\Documents\WindowsPowerShell\Modules\OfficeDevPnP.PowerShell.Commands"
+$documentsFolder = [environment]::getfolderpath("mydocuments");
+
+$PSModuleHome = "$documentsFolder\WindowsPowerShell\Modules\OfficeDevPnP.PowerShell.Commands"
 New-Item -Path $PSModuleHome -ItemType Directory -Force
 
 Write-Host "Copying files from $target to $PSModuleHome"

@@ -105,8 +105,10 @@
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
+    <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
+    <Compile Include="Entities\DefaultColumnValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
+    <Compile Include="Enums\BuiltInIdentity.cs" />
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />

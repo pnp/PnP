@@ -232,42 +232,63 @@ For reference to standard PowerShell verbs, see:
 [http://msdn.microsoft.com/en-us/library/ms714428(v=vs.85).aspx]
 
 
-**Add:** The verb Add should not be used to create new elements (use Create 
-instead). Add should be used for associating existing items with each other.
-In PowerShell Cmdlets use Add-.
+**Create** / **Delete**: Use the verb Create for operations that create new 
+elements, even if they are children of other objects (do not use Add). 
+In PowerShell Cmdlets use New-.
 
-Examples: Add can be used for adding an existing site column to a content 
-type, or adding a content type to a list. 
+Delete is used for destroying an object. 
+In PowerShell Cmdlets use Remove- (the same verb is used for both delete and remove in PowerShell).
 
-In some cases verbs may be used for consistency, e.g. use the same verb for
-adding a list column as for adding a site column, even though one is actually
-a create operation.
-
-
-**Create:** Use the verb Create for operations that create new elements, even if 
-they are children of other objects (do not use Add). In PowerShell Cmdlets 
-use New-.
 
 Examples: Creating a new site collection, creating a new site content type (in 
-the context of a Web), adding a new child Web, adding a new List.
+the context of a Web), adding a new child Web, adding a new List, deleting a site column from 
+a Web (contrast with removing a site column from a Content Type or List), deleting a child Web
 
 Note that the last two (new child Web, new List) are still Create operations
 in the API, as primarily they still create new elements, even though in the UI
 the term add may be used (e.g. 'add an app').
 
+Applies to:
 
-**Delete:** Used for destroying an object. In PowerShell Cmdlets use Remove- 
-(the same verb is used for both meanings in PowerShell).
+- SiteCollection
+- Web
+- ContentType in a Web
+- Field in a Web
+- List, and specific types (e.g. document library)
+- View
+- Folder, and specific types (e.g. document set)
+- User
+- Group
+- ListItem, and variants including Page, WikiPage (for File use Upload/Delete)
 
-Examples: Deleting a site column from a Web (contrast with removing a site
-column from a Content Type or List), deleting a child Web.
+Use **Upload** / **Delete** as a variant for:
+
+- File
 
 
-**Remove:** Use the verb Remove for operations that removing associations 
-between objects, but does not destroy them. In PowerShell Cmdlets use Remove-.
+**Add** / **Remove**: The verb Add should not be used to create new elements 
+(use Create instead). Add should be used for associating existing items with each other.
+In PowerShell Cmdlets use Add-.
 
-Examples: Removing a site column from a content type or removing a user from a
-group.
+Use the verb Remove for operations that removing associations 
+between objects, but does not destroy them. 
+In PowerShell Cmdlets use Remove-.
+
+In some cases verbs may be used for consistency, e.g. use the same verb for
+adding a list column as for adding a site column, even though one is actually
+a create operation.
+
+Examples: Add can be used for adding an existing site column to a content 
+type, or adding a content type to a list. 
+
+Applies to:
+
+- ContentType in a List
+- Field in a List (used consistently irrespective of whether it is a site column or list field)
+- Field in a ContentType
+- Users in a Group
+- WebPart in Page
+- NavigationNode in a navigation menu
 
 
 #### Less common verbs ####
@@ -286,16 +307,58 @@ Cmdlets use Test-.
 also includes making it available for others (i.e. Publish). In PowerShell
 Cmdlets use Import-.
 
+
+#### Patterns by object ####
+
+Sometimes the pattern to use (e.g. Create/Delete vs Add/Remove) is not clear,
+as both apply; e.g. is a new List created, or are you adding a relationship
+between the parent Web and the ListTemplate; similarly a Field is created at
+the Web level, but what about when adding a copy of that field to a List?
+
+Use the following patterns:
+
+**SiteCollection**: Create/Delete
+
+**Web**: Create/Delete
+
+**List**, and specific types (e.g. document library): Create/Delete
+
+**View**: Create/Delete
+
+**ContentType** in a Web: Create/Delete
+
+**ContentType** in a List: Add/Remove
+
+**Field** in a Web: Create/Delete
+
+**Field** in a List: Add/Remove 
+
+**Field** in a ContentType: Add/Remove
+
+**Folder**, and specific types (e.g. document set): Create/Delete
+
+**File**: Upload/Delete
+
+
+
 Unit tests
 --------------------
-Unit tests are in the OfficeDevPnP.Core.Tests project. Follow guidance for MSTest unit testing. **App.config** is not included (marked in .gitignore), but a sample file is included and should aid in setting up parameters for proper local unit testing.
+Unit tests are in the OfficeDevPnP.Core.Tests project. Follow guidance for 
+MSTest unit testing. **App.config** is not included (marked in .gitignore), 
+but a sample file is included and should aid in setting up parameters for 
+proper local unit testing.
 
 Version folders
 --------------------
-All code should be version independent, meaning that code should not assume that paths are in the 15 or 16 folders unless the folder usage would work in both cases and the number is not meaningful.
+All code should be version independent, meaning that code should not assume 
+that paths are in the 15 or 16 folders unless the folder usage would work in 
+both cases and the number is not meaningful.
 
 
 Multilingual support
 --------------------
-The Core component code cannot assume that the code is executed against the English language. Hardcoded references to library names are not acceptable for the Core component implementation, like assuming that publishing site has a "Pages" library.
+The Core component code cannot assume that the code is executed against the 
+English language. Hardcoded references to library names are not acceptable 
+for the Core component implementation, like assuming that publishing site 
+has a "Pages" library.
 

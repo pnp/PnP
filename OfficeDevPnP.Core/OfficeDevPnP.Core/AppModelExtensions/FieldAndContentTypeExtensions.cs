@@ -556,195 +556,6 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region Content Types
-        /// <summary>
-        /// Create a content type based on the classic feature framework structure.
-        /// </summary>
-        /// <param name="web">Web to operate against</param>
-        /// <param name="absolutePathToFile">Absolute path to the xml location</param>
-        public static void CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
-        {
-            XmlDocument xd = new XmlDocument();
-            xd.Load(absolutePathToFile);
-            CreateContentTypeFromXML(web, xd);
-        }
-
-        /// <summary>
-        /// Create a content type based on the classic feature framework structure.
-        /// </summary>
-        /// <param name="web">Web to operate against</param>
-        /// <param name="xmlStructure">XML structure in string format</param>
-        public static void CreateContentTypeFromXMLString(this Web web, string xmlStructure)
-        {
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(xmlStructure);
-            CreateContentTypeFromXML(web, xd);
-        }
-
-        /// <summary>
-        /// Create a content type based on the classic feature framework structure.
-        /// </summary>
-        /// <param name="web">Web to operate against</param>
-        /// <param name="xmlDoc">Actual XML document</param>
-        public static void CreateContentTypeFromXML(this Web web, XmlDocument xmlDoc)
-        {
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
-
-            XmlNodeList fields = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
-            int count = fields.Count;
-            foreach (XmlNode ct in fields)
-            {
-                string ctid = ct.Attributes["ID"].Value;
-                string name = ct.Attributes["Name"].Value;
-                string description = ct.Attributes["Description"].Value;
-                string group = ct.Attributes["Group"].Value;
-
-                if (web.ContentTypeExistsByName(name))
-                    continue;
-
-                //Create CT
-                web.CreateContentType(name, description, ctid, group);
-
-                //Add fields to content type 
-                XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
-                XmlAttribute attr = null;
-                foreach (XmlNode fr in fieldRefs)
-                {
-                    bool required = false;
-                    bool hidden = false;
-                    string frid = fr.Attributes["ID"].Value;
-                    string frName = fr.Attributes["Name"].Value;
-                    attr = fr.Attributes["Required"];
-                    if (attr != null)
-                    {
-                        required = attr.Value.ToBoolean();
-                    }
-                    attr = fr.Attributes["Hidden"];
-                    if (attr != null)
-                    {
-                       hidden = attr.Value.ToBoolean();
-                    }
-                    web.AddFieldToContentTypeById(ctid, frid, required, hidden);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Create new content type to web
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="name">Name of the content type</param>
-        /// <param name="id">Complete ID for the content type</param>
-        /// <param name="group">Group for the content type</param>
-        /// <returns></returns>
-        public static ContentType CreateContentType(this Web web, string name, string id, string group)
-        {
-            // Load the current collection of content types
-            return CreateContentType(web, name, string.Empty, id, group);
-        }
-
-        /// <summary>
-        /// Create new content type to web
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="name">Name of the content type</param>
-        /// <param name="description">Description for the content type</param>
-        /// <param name="id">Complete ID for the content type</param>
-        /// <param name="group">Group for the content type</param>
-        /// <param name="parentContentType">Parent Content Type</param>
-        /// <returns>The created content type</returns>
-        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
-        {
-            // Load the current collection of content types
-            ContentTypeCollection contentTypes = web.ContentTypes;
-            web.Context.Load(contentTypes);
-            web.Context.ExecuteQuery();
-            ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
-
-            // Set the properties for the content type
-            newCt.Name = name;
-            newCt.Id = id;
-            newCt.Description = description;
-            newCt.Group = group;
-            newCt.ParentContentType = parentContentType;
-            ContentType myContentType = contentTypes.Add(newCt);
-            web.Context.ExecuteQuery();
-
-            //Return the content type object
-            return myContentType;
-        }
-
-        /// <summary>
-        /// Associates field to content type
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Complete ID for the content type</param>
-        /// <param name="fieldID">String representation of the field ID (=guid)</param>
-        public static void AddFieldToContentTypeById(this Web web, string contentTypeID, string fieldID, bool required = false, bool hidden = false)
-        {
-            // Get content type
-            ContentType ct = web.GetContentTypeById(contentTypeID);
-            web.Context.Load(ct);
-            web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
-
-            // Get field
-            Field fld = web.Fields.GetById(new Guid(fieldID));
-
-            // Add field association to content type
-            AddFieldToContentType(web, ct, fld, required, hidden);
-        }
-
-        /// <summary>
-        /// Associates field to content type
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="contentTypeName">Name of the content type</param>
-        /// <param name="fieldID">Guid representation of the field ID</param>
-        public static void AddFieldToContentTypeByName(this Web web, string contentTypeName, Guid fieldID, bool required = false, bool hidden = false)
-        {
-            // Get content type
-            ContentType ct = web.GetContentTypeByName(contentTypeName);
-            web.Context.Load(ct);
-            web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
-
-            // Get field
-            Field fld = web.Fields.GetById(fieldID);
-
-            // Add field association to content type
-            AddFieldToContentType(web, ct, fld, required, hidden);
-        }
-
-        /// <summary>
-        /// Associates field to content type
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="contentType">Content type to associate field to</param>
-        /// <param name="field">Field to associate to the content type</param>
-        /// <param name="required">Optionally make this a required field</param>
-        /// <param name="hidden">Optionally make this a hidden field</param>
-        public static void AddFieldToContentType(this Web web, ContentType contentType, Field field, bool required = false, bool hidden = false)
-        {
-            FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
-            fldInfo.Field = field;
-            contentType.FieldLinks.Add(fldInfo);
-            contentType.Update(true);
-            web.Context.ExecuteQuery();
-
-            web.Context.Load(field);
-            web.Context.ExecuteQuery();
-
-            if (required || hidden)
-            {
-                //Update FieldLink
-                FieldLink flink = contentType.FieldLinks.GetById(field.Id);
-                flink.Required = required;
-                flink.Hidden = hidden;
-                contentType.Update(true);
-                web.Context.ExecuteQuery();
-            }
-        }
 
         /// <summary>
         /// Adds content type to list
@@ -845,88 +656,120 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Set default content type to list
+        /// Associates field to content type
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
-        public static void SetDefaultContentTypeToList(this Web web, List list, string contentTypeId)
+        /// <param name="id">Complete ID for the content type</param>
+        /// <param name="fieldID">String representation of the field ID (=guid)</param>
+        public static void AddFieldToContentTypeById(this Web web, string contentTypeID, string fieldID, bool required = false, bool hidden = false)
         {
-            SetDefaultContentTypeToList(list, contentTypeId);
-        }
-
-        /// <summary>
-        /// Set default content type to list
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="list">List to update</param>
-        /// <param name="contentType">Content type to make default</param>
-        public static void SetDefaultContentTypeToList(this Web web, List list, ContentType contentType)
-        {
-            SetDefaultContentTypeToList(list, contentType.Id.ToString());
-        }
-
-        /// <summary>
-        /// Set default content type to list
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listTitle">Title of the list to be updated</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
-        public static void SetDefaultContentTypeToList(this Web web, string listTitle, string contentTypeId)
-        {
-            // Get list instances
-            List list = web.GetListByTitle(listTitle);
-            web.Context.Load(list);
+            // Get content type
+            ContentType ct = web.GetContentTypeById(contentTypeID);
+            web.Context.Load(ct);
+            web.Context.Load(ct.FieldLinks);
             web.Context.ExecuteQuery();
-            // Add content type to list
-            SetDefaultContentTypeToList(list, contentTypeId);
+
+            // Get field
+            Field fld = web.Fields.GetById(new Guid(fieldID));
+
+            // Add field association to content type
+            AddFieldToContentType(web, ct, fld, required, hidden);
         }
 
         /// <summary>
-        /// Set's default content type list. 
+        /// Associates field to content type
         /// </summary>
-        /// <remarks>Notice. Currently removes other content types from the list. Known issue</remarks>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listTitle">Title of the list to be updated</param>
-        /// <param name="contentType">Content type to make default</param>
-        public static void SetDefaultContentTypeToList(this Web web, string listTitle, ContentType contentType)
+        /// <param name="contentTypeName">Name of the content type</param>
+        /// <param name="fieldID">Guid representation of the field ID</param>
+        public static void AddFieldToContentTypeByName(this Web web, string contentTypeName, Guid fieldID, bool required = false, bool hidden = false)
         {
-            SetDefaultContentTypeToList(web, listTitle, contentType.Id.ToString());
+            // Get content type
+            ContentType ct = web.GetContentTypeByName(contentTypeName);
+            web.Context.Load(ct);
+            web.Context.Load(ct.FieldLinks);
+            web.Context.ExecuteQuery();
+
+            // Get field
+            Field fld = web.Fields.GetById(fieldID);
+
+            // Add field association to content type
+            AddFieldToContentType(web, ct, fld, required, hidden);
         }
 
         /// <summary>
-        /// Set's default content type list. 
+        /// Associates field to content type
         /// </summary>
-        /// <remarks>Notice. Currently removes other content types from the list. Known issue</remarks>
-        /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
-        public static void SetDefaultContentTypeToList(this List list, string contentTypeId)
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="contentType">Content type to associate field to</param>
+        /// <param name="field">Field to associate to the content type</param>
+        /// <param name="required">Optionally make this a required field</param>
+        /// <param name="hidden">Optionally make this a hidden field</param>
+        public static void AddFieldToContentType(this Web web, ContentType contentType, Field field, bool required = false, bool hidden = false)
         {
-            ContentTypeCollection ctCol = list.ContentTypes;
-            list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
-            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
-            foreach (ContentType ct in ctCol)
+            FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
+            fldInfo.Field = field;
+            contentType.FieldLinks.Add(fldInfo);
+            contentType.Update(true);
+            web.Context.ExecuteQuery();
+
+            web.Context.Load(field);
+            web.Context.ExecuteQuery();
+
+            if (required || hidden)
             {
-                if (ct.StringId.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                //Update FieldLink
+                FieldLink flink = contentType.FieldLinks.GetById(field.Id);
+                flink.Required = required;
+                flink.Hidden = hidden;
+                contentType.Update(true);
+                web.Context.ExecuteQuery();
+            }
+        }
+
+        /// <summary>
+        /// Searches the list content types and returns the content type identifier (ID) that is the 
+        /// nearest match to the specified content type ID.
+        /// </summary>
+        /// <param name="list">The list to check for content types</param>
+        /// <param name="baseContentTypeId">A string with the base content type ID to match.</param>
+        /// <returns>The value of the Id property for the content type with the closest match to the value 
+        /// of the specified content type ID. </returns>
+        /// <remarks>
+        /// <para>
+        /// If the search finds multiple matches, the shorter ID is returned. For example, if 0x0101 is the 
+        /// argument, and the collection contains both 0x010109 and 0x01010901, the method returns 0x010109.
+        /// </para>
+        /// </remarks>
+        public static ContentTypeId BestMatchContentTypeId(this List list, string baseContentTypeId)
+        {
+            if (baseContentTypeId == null) { throw new ArgumentNullException("contentTypeId"); }
+            if (string.IsNullOrWhiteSpace(baseContentTypeId)) { throw new ArgumentException("Content type must be provided and cannot be empty.", "contentTypeId"); }
+            return BestMatchContentTypeIdImplementation(list, baseContentTypeId);
+        }
+
+        private static ContentTypeId BestMatchContentTypeIdImplementation(this List list, string baseContentTypeId)
+        {
+            var contentTypes = list.ContentTypes;
+            list.Context.Load(contentTypes);
+            list.Context.ExecuteQuery();
+            LoggingUtility.Internal.TraceVerbose("Checking {0} content types in list for best match", contentTypes.Count);
+            var shortestMatchLength = int.MaxValue;
+            ContentTypeId bestMatchId = null;
+            foreach (var contentType in contentTypes)
+            {
+                if (contentType.StringId.StartsWith(baseContentTypeId, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    newOrder.Add(ct.Id);
+                    LoggingUtility.Internal.TraceVerbose("Found match {0}", contentType.StringId);
+                    if (contentType.StringId.Length < shortestMatchLength)
+                    {
+                        bestMatchId = contentType.Id;
+                        shortestMatchLength = contentType.StringId.Length;
+                        LoggingUtility.Internal.TraceVerbose(" - Is best match. Best match length now {0}", shortestMatchLength);
+                    }
                 }
             }
-            list.RootFolder.UniqueContentTypeOrder = newOrder;
-            list.RootFolder.Update();
-            list.Update();
-            list.Context.ExecuteQuery();
-        }
-
-        /// <summary>
-        /// Set default content type to list
-        /// </summary>
-        /// <param name="list">List to update</param>
-        /// <param name="contentType">Content type to make default</param>
-        public static void SetDefaultContentTypeToList(this List list, ContentType contentType)
-        {
-            SetDefaultContentTypeToList(list, contentType.Id.ToString());
+            return bestMatchId;
         }
 
         /// <summary>
@@ -1071,6 +914,124 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Create a content type based on the classic feature framework structure.
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="absolutePathToFile">Absolute path to the xml location</param>
+        public static void CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
+        {
+            XmlDocument xd = new XmlDocument();
+            xd.Load(absolutePathToFile);
+            CreateContentTypeFromXML(web, xd);
+        }
+
+        /// <summary>
+        /// Create a content type based on the classic feature framework structure.
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="xmlStructure">XML structure in string format</param>
+        public static void CreateContentTypeFromXMLString(this Web web, string xmlStructure)
+        {
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(xmlStructure);
+            CreateContentTypeFromXML(web, xd);
+        }
+
+        /// <summary>
+        /// Create a content type based on the classic feature framework structure.
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="xmlDoc">Actual XML document</param>
+        public static void CreateContentTypeFromXML(this Web web, XmlDocument xmlDoc)
+        {
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+
+            XmlNodeList fields = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
+            int count = fields.Count;
+            foreach (XmlNode ct in fields)
+            {
+                string ctid = ct.Attributes["ID"].Value;
+                string name = ct.Attributes["Name"].Value;
+                string description = ct.Attributes["Description"].Value;
+                string group = ct.Attributes["Group"].Value;
+
+                if (web.ContentTypeExistsByName(name))
+                    continue;
+
+                //Create CT
+                web.CreateContentType(name, description, ctid, group);
+
+                //Add fields to content type 
+                XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
+                XmlAttribute attr = null;
+                foreach (XmlNode fr in fieldRefs)
+                {
+                    bool required = false;
+                    bool hidden = false;
+                    string frid = fr.Attributes["ID"].Value;
+                    string frName = fr.Attributes["Name"].Value;
+                    attr = fr.Attributes["Required"];
+                    if (attr != null)
+                    {
+                        required = attr.Value.ToBoolean();
+                    }
+                    attr = fr.Attributes["Hidden"];
+                    if (attr != null)
+                    {
+                        hidden = attr.Value.ToBoolean();
+                    }
+                    web.AddFieldToContentTypeById(ctid, frid, required, hidden);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create new content type to web
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="name">Name of the content type</param>
+        /// <param name="id">Complete ID for the content type</param>
+        /// <param name="group">Group for the content type</param>
+        /// <returns></returns>
+        public static ContentType CreateContentType(this Web web, string name, string id, string group)
+        {
+            // Load the current collection of content types
+            return CreateContentType(web, name, string.Empty, id, group);
+        }
+
+        /// <summary>
+        /// Create new content type to web
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="name">Name of the content type</param>
+        /// <param name="description">Description for the content type</param>
+        /// <param name="id">Complete ID for the content type</param>
+        /// <param name="group">Group for the content type</param>
+        /// <param name="parentContentType">Parent Content Type</param>
+        /// <returns>The created content type</returns>
+        public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
+        {
+            // Load the current collection of content types
+            ContentTypeCollection contentTypes = web.ContentTypes;
+            web.Context.Load(contentTypes);
+            web.Context.ExecuteQuery();
+            ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
+
+            // Set the properties for the content type
+            newCt.Name = name;
+            newCt.Id = id;
+            newCt.Description = description;
+            newCt.Group = group;
+            newCt.ParentContentType = parentContentType;
+            ContentType myContentType = contentTypes.Add(newCt);
+            web.Context.ExecuteQuery();
+
+            //Return the content type object
+            return myContentType;
+        }
+
+        /// <summary>
         /// Return content type by name
         /// </summary>
         /// <param name="web">Web to be processed</param>
@@ -1151,6 +1112,92 @@ namespace Microsoft.SharePoint.Client
             }
             return null;
         }
+
+        /// <summary>
+        /// Set default content type to list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="list">List to update</param>
+        /// <param name="contentTypeID">Complete ID for the content type</param>
+        public static void SetDefaultContentTypeToList(this Web web, List list, string contentTypeId)
+        {
+            SetDefaultContentTypeToList(list, contentTypeId);
+        }
+
+        /// <summary>
+        /// Set default content type to list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="list">List to update</param>
+        /// <param name="contentType">Content type to make default</param>
+        public static void SetDefaultContentTypeToList(this Web web, List list, ContentType contentType)
+        {
+            SetDefaultContentTypeToList(list, contentType.Id.ToString());
+        }
+
+        /// <summary>
+        /// Set default content type to list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listTitle">Title of the list to be updated</param>
+        /// <param name="contentTypeID">Complete ID for the content type</param>
+        public static void SetDefaultContentTypeToList(this Web web, string listTitle, string contentTypeId)
+        {
+            // Get list instances
+            List list = web.GetListByTitle(listTitle);
+            web.Context.Load(list);
+            web.Context.ExecuteQuery();
+            // Add content type to list
+            SetDefaultContentTypeToList(list, contentTypeId);
+        }
+
+        /// <summary>
+        /// Set's default content type list. 
+        /// </summary>
+        /// <remarks>Notice. Currently removes other content types from the list. Known issue</remarks>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listTitle">Title of the list to be updated</param>
+        /// <param name="contentType">Content type to make default</param>
+        public static void SetDefaultContentTypeToList(this Web web, string listTitle, ContentType contentType)
+        {
+            SetDefaultContentTypeToList(web, listTitle, contentType.Id.ToString());
+        }
+
+        /// <summary>
+        /// Set's default content type list. 
+        /// </summary>
+        /// <remarks>Notice. Currently removes other content types from the list. Known issue</remarks>
+        /// <param name="list">List to update</param>
+        /// <param name="contentTypeID">Complete ID for the content type</param>
+        public static void SetDefaultContentTypeToList(this List list, string contentTypeId)
+        {
+            ContentTypeCollection ctCol = list.ContentTypes;
+            list.Context.Load(ctCol);
+            list.Context.ExecuteQuery();
+            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
+            foreach (ContentType ct in ctCol)
+            {
+                if (ct.StringId.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                {
+                    newOrder.Add(ct.Id);
+                }
+            }
+            list.RootFolder.UniqueContentTypeOrder = newOrder;
+            list.RootFolder.Update();
+            list.Update();
+            list.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Set default content type to list
+        /// </summary>
+        /// <param name="list">List to update</param>
+        /// <param name="contentType">Content type to make default</param>
+        public static void SetDefaultContentTypeToList(this List list, ContentType contentType)
+        {
+            SetDefaultContentTypeToList(list, contentType.Id.ToString());
+        }
+
         #endregion
 
         #region Localization
