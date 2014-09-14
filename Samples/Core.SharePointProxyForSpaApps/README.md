@@ -12,7 +12,7 @@ Demonstration of how to write WebAPI controller that acts as proxy for SPA apps 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-solution name | Matt Mazzola (Microsoft)
+SharePointProxyForSpaApps | Matt Mazzola (Microsoft)
 
 ### Version history ###
 Version  | Date | Comments
