@@ -62,10 +62,8 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 _listId = list.Id;
             }
-                
-            
-
         }
+
         [TestCleanup]
         public void Cleanup()
         {
@@ -107,7 +105,7 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
-                var listName = "Unit_Test_list_" + DateTime.Now.ToFileTime();
+                var listName = "Test_list_" + DateTime.Now.ToFileTime();
 
                 //Create List
                 var web = clientContext.Web;
