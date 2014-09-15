@@ -24,7 +24,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
         [TestInitialize()]
         public void Initialize()
-        {
+        {   
+            /*** Make sure that the user defined in the App.config has permissions to Manage Terms ***/
+
             // Create some taxonomy groups and terms
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -60,6 +62,8 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 _listId = list.Id;
             }
+                
+            
 
         }
         [TestCleanup]
@@ -99,6 +103,30 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void CreateListTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var listName = "Unit_Test_list_" + DateTime.Now.ToFileTime();
+
+                //Create List
+                var web = clientContext.Web;
+
+                web.CreateList(ListTemplateType.GenericList, listName, false);
+
+                //Get List
+                var list = web.GetListByTitle(listName);
+
+                Assert.IsNotNull(list);
+                Assert.AreEqual(listName, list.Title);
+                    
+                //Delete List
+                list.DeleteObject();
+                clientContext.ExecuteQuery();
+            }
+        }
+
+        [TestMethod()]
         public void AddDefaultColumnValuesTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -121,5 +149,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
             }
         }
+
+        
     }
 }
