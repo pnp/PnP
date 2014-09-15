@@ -1,4 +1,4 @@
-﻿# OfficeDevPnP.PowerShell Commands #
+# OfficeDevPnP.PowerShell Commands #
 
 ### Summary ###
 This solution shows how you can build a library of PowerShell commands that act towards SharePoint Online. The commands use CSOM and can work against both SharePoint Online as SharePoint On-Premises.
@@ -39,7 +39,7 @@ In case of an unattended script you might want to add a new entry in your creden
 
 ![](http://i.imgur.com/6NiMaFL.png)
  
-Select Windows Credentials and add a new credential:
+Select Windows Credentials and add a new *generic* credential:
 
 ![](http://i.imgur.com/rhtgL1U.png)
  
