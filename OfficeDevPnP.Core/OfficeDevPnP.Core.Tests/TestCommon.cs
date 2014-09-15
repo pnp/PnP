@@ -36,21 +36,24 @@ namespace OfficeDevPnP.Core.Tests {
         }
 
         public static ClientContext CreateClientContext() {
-            var clientContext = new ClientContext(DevSiteUrl);
-            clientContext.Credentials = Credentials;
-            return clientContext;
+            return CreateContext(DevSiteUrl, Credentials);
         }
 
         public static ClientContext CreateTenantClientContext() {
-            var clientContext = new ClientContext(TenantUrl);
-            clientContext.Credentials = Credentials;
-            return clientContext;
+            return CreateContext(TenantUrl, Credentials);
+        }
+
+        private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
+        {
+            var context = new ClientContext(contextUrl);
+            context.Credentials = credentials;
+            return context;
         }
 
         static string TenantUrl { get; set; }
         static string DevSiteUrl { get; set; }
         static string UserName { get; set; }
         static SecureString Password { get; set; }
-        static System.Net.ICredentials Credentials { get; set; }
+        static ICredentials Credentials { get; set; }
     }
 }
