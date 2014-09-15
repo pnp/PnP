@@ -84,11 +84,43 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestMethod()]
         public void AddPermissionLevelToUserTest()
         {
-            // Untestable with a dev tenant...
-
             using (var clientContext = TestCommon.CreateClientContext())
             {
-                clientContext.Web.AddPermissionLevelToUser(_userLogin, RoleType.Administrator);
+                Web web = clientContext.Web;
+
+                RoleType roleType = RoleType.Contributor;
+
+                //Setup: Make sure permission does not already exist
+                web.RemovePermissionLevelFromUser(_userLogin, roleType);
+
+                //Add Permission
+                web.AddPermissionLevelToUser(_userLogin, roleType);
+
+                //Get User
+                User user = web.SiteUsers.GetByEmail(_userLogin);
+                clientContext.Load(user);
+                clientContext.ExecuteQuery();
+
+                //Get Roles for the User
+                RoleDefinitionBindingCollection roleDefinitionBindingCollection = web.RoleAssignments.GetByPrincipal(user).RoleDefinitionBindings;
+                clientContext.Load(roleDefinitionBindingCollection);
+                clientContext.ExecuteQuery();
+
+                //Check if assigned role is found
+                bool roleExists = false;
+                foreach (RoleDefinition rd in roleDefinitionBindingCollection)
+                {
+                    if (rd.RoleTypeKind == roleType)
+                    {
+                        roleExists = true;
+                    }
+                }
+
+                //Assert
+                Assert.AreEqual(roleExists, true);
+
+                //Teardown: Expicitly remove given permission. 
+                web.RemovePermissionLevelFromUser(_userLogin, roleType);
             }
         }
 
@@ -99,8 +131,8 @@ namespace Microsoft.SharePoint.Client.Tests
             {
                 // Setup
                 var userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", clientContext.Web.GetAuthenticationRealm());
-                
-                
+
+
                 // Test
                 clientContext.Web.AddReaderAccess();
 
