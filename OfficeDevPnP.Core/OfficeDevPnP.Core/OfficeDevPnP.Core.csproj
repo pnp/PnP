@@ -100,6 +100,7 @@
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
@@ -153,7 +154,6 @@
     </Compile>
     <Compile Include="AppModelExtensions\FeatureExtensions.cs" />
     <Compile Include="AppModelExtensions\JavaScriptExtensions.cs" />
-    <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensions.cs" />
     <Compile Include="AppModelExtensions\PageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

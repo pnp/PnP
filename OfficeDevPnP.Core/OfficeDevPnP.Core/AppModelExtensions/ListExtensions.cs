@@ -864,13 +864,13 @@ namespace Microsoft.SharePoint.Client
         /// <param name="query"></param>
         /// <param name="personal"></param>
         public static View CreateView(this List list,
-                                            string viewName,
-                                            ViewType viewType,
-                                            string[] viewFields,
-                                            uint rowLimit,
-                                            bool setAsDefault,
-                                            string query = null,
-                                            bool personal = false)
+                                      string viewName,
+                                      ViewType viewType,
+                                      string[] viewFields,
+                                      uint rowLimit,
+                                      bool setAsDefault,
+                                      string query = null,
+                                      bool personal = false)
         {
             if (string.IsNullOrEmpty(viewName))
                 throw new ArgumentNullException("viewName");
