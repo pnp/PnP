@@ -77,6 +77,7 @@
     <Compile Include="AppModelExtensions\ListExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\UrlUtilityTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\PageExtensionsTests.cs" />
@@ -104,7 +105,11 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\office365.png" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
