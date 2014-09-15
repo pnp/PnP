@@ -287,7 +287,7 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
             }
         }
-    
+
         /// <summary>
         /// Adds a list to a site
         /// </summary>
@@ -467,7 +467,7 @@ namespace Microsoft.SharePoint.Client
                 newList.EnableVersioning = true;
                 newList.EnableMinorVersions = true;
             }
-            if(enabledContentTypes)
+            if (enabledContentTypes)
             {
                 newList.ContentTypesEnabled = true;
             }
@@ -661,7 +661,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("listName")
                   : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
             }
-            
+
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
             web.Context.ExecuteQuery();
@@ -701,7 +701,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(siteRelativeUrl))
                 throw new ArgumentNullException("siteRelativeUrl");
-            
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -729,37 +729,23 @@ namespace Microsoft.SharePoint.Client
 
         }
 
-        [Obsolete("Use CreateListViewsFormXMLFile")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXMLFile(this Web web, string listUrl, string filePath)
-        {
-            CreateListViewsFromXMLFile(web, listUrl, filePath);
-        }
-
         /// <summary>
         /// Creates list views based on specific xml structure from file
         /// </summary>
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="filePath"></param>
-        public static void CreateListViewsFromXMLFile(this Web web, string listUrl, string filePath)
+        public static void CreateViewsFromXMLFile(this Web web, string listUrl, string filePath)
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
-            CreateListViewsFromXML(web, listUrl, xd);
-        }
-
-        [Obsolete("Use CreateListViewsFromXMLString")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXMLString(this Web web, string listUrl, string xmlString)
-        {
-            CreateListViewsFromXMLString(web, listUrl, xmlString);
+            CreateViewsFromXML(web, listUrl, xd);
         }
 
         /// <summary>
@@ -768,24 +754,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="xmlString"></param>
-        public static void CreateListViewsFromXMLString(this Web web, string listUrl, string xmlString)
+        public static void CreateViewsFromXMLString(this Web web, string listUrl, string xmlString)
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (string.IsNullOrEmpty(xmlString))
                 throw new ArgumentNullException("xmlString");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
-            CreateListViewsFromXML(web, listUrl, xd);
-        }
-
-        [Obsolete("Use CreateListViewFromXML")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
-        {
-            CreateListViewsFromXML(web, listUrl, xmlDoc);
+            CreateViewsFromXML(web, listUrl, xd);
         }
 
         /// <summary>
@@ -794,28 +773,21 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         /// <param name="listUrl"></param>
         /// <param name="xmlDoc"></param>
-        public static void CreateListViewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
+        public static void CreateViewsFromXML(this Web web, string listUrl, XmlDocument xmlDoc)
         {
             if (string.IsNullOrEmpty(listUrl))
                 throw new ArgumentNullException("listUrl");
-            
+
             if (xmlDoc == null)
                 throw new ArgumentNullException("xmlDoc");
-            
+
             // Get instances to the list
             List list = web.GetList(listUrl);
             web.Context.Load(list);
             web.Context.ExecuteQuery();
 
             // Execute the actual xml based creation
-            list.CreateListViewsFromXML(xmlDoc);
-        }
-
-        [Obsolete("Use CreateListViewsFromXMLFile")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXMLFile(this List list, string filePath)
-        {
-            CreateListViewsFromXMLFile(list, filePath);
+            list.CreateViewsFromXML(xmlDoc);
         }
 
         /// <summary>
@@ -823,24 +795,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="filePath"></param>
-        public static void CreateListViewsFromXMLFile(this List list, string filePath)
+        public static void CreateViewsFromXMLFile(this List list, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentNullException("filePath");
-            
+
             if (!System.IO.File.Exists(filePath))
                 throw new System.IO.FileNotFoundException(filePath);
-            
+
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
-            list.CreateListViewsFromXML(xd);
-        }
-
-        [Obsolete("Use CreateListViewsFromXMLString")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXMLString(this List list, string xmlString)
-        {
-            CreateListViewsFromXMLString(list, xmlString);
+            list.CreateViewsFromXML(xd);
         }
 
         /// <summary>
@@ -848,21 +813,14 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="xmlString"></param>
-        public static void CreateListViewsFromXMLString(this List list, string xmlString)
+        public static void CreateViewsFromXMLString(this List list, string xmlString)
         {
             if (string.IsNullOrEmpty(xmlString))
                 throw new ArgumentNullException("xmlString");
-            
+
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(xmlString);
-            list.CreateListViewsFromXML(xd);
-        }
-
-        [Obsolete("Use CreateListViewsFormXML")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void CreateListVewsFromXML(this List list, XmlDocument xmlDoc)
-        {
-            CreateListViewsFromXML(list, xmlDoc);
+            list.CreateViewsFromXML(xd);
         }
 
         /// <summary>
@@ -870,11 +828,11 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="xmlDoc"></param>
-        public static void CreateListViewsFromXML(this List list, XmlDocument xmlDoc)
+        public static void CreateViewsFromXML(this List list, XmlDocument xmlDoc)
         {
             if (xmlDoc == null)
                 throw new ArgumentNullException("xmlDoc");
-            
+
             // Convert base type to string value used in the xml structure
             string listType = list.BaseType.ToString();
             // Get only relevant list views for matching base list type
@@ -890,7 +848,7 @@ namespace Microsoft.SharePoint.Client
                 string query = view.SelectSingleNode("./ViewQuery").InnerText;
 
                 //Create View
-                list.CreateListView(name, type, viewFields, rowLimit, defaultView, query);
+                list.CreateView(name, type, viewFields, rowLimit, defaultView, query);
             }
         }
 
@@ -905,7 +863,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
         /// <param name="personal"></param>
-        public static void CreateListView(this List list,
+        public static View CreateView(this List list,
                                             string viewName,
                                             ViewType viewType,
                                             string[] viewFields,
@@ -916,7 +874,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(viewName))
                 throw new ArgumentNullException("viewName");
-            
+
             ViewCreationInformation viewCreationInformation = new ViewCreationInformation();
             viewCreationInformation.Title = viewName;
             viewCreationInformation.ViewTypeKind = viewType;
@@ -929,8 +887,11 @@ namespace Microsoft.SharePoint.Client
                 viewCreationInformation.Query = query;
             }
 
-            list.Views.Add(viewCreationInformation);
+            View view = list.Views.Add(viewCreationInformation);
+            list.Context.Load(view);
             list.Context.ExecuteQuery();
+
+            return view;
         }
 
         /// <summary>
@@ -943,7 +904,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (id == Guid.Empty)
                 throw new ArgumentNullException("id");
-            
+
             var q = from v in list.Views where v.Id == id select v;
             list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();
@@ -967,7 +928,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            
+
             var q = from v in list.Views where v.Title == name select v;
             list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
             list.Context.ExecuteQuery();

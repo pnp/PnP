@@ -40,7 +40,9 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (list != null)
             {
-                list.CreateListView(Title, ViewType, Fields, RowLimit, SetAsDefault, Query, Personal);
+                var view = list.CreateView(Title, ViewType, Fields, RowLimit, SetAsDefault, Query, Personal);
+
+                WriteObject(view);
             }
         }
     }
