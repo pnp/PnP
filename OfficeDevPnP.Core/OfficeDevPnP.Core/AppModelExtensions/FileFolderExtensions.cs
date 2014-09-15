@@ -38,7 +38,7 @@ namespace Microsoft.SharePoint.Client
         /// Checks in a file
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="url">The server rrelative url of the file to checkin</param>
+        /// <param name="url">The server relative url of the file to checkin</param>
         /// <param name="checkinType">The type of the checkin</param>
         /// <param name="comment">Message to be recorded with the approval</param>
         public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
