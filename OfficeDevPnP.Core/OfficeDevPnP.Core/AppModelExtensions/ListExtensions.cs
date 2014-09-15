@@ -905,7 +905,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="setAsDefault"></param>
         /// <param name="query"></param>
         /// <param name="personal"></param>
-        public static void CreateListView(this List list,
+        public static View CreateListView(this List list,
                                             string viewName,
                                             ViewType viewType,
                                             string[] viewFields,
@@ -929,8 +929,11 @@ namespace Microsoft.SharePoint.Client
                 viewCreationInformation.Query = query;
             }
 
-            list.Views.Add(viewCreationInformation);
+            View view = list.Views.Add(viewCreationInformation);
+            list.Context.Load(view);
             list.Context.ExecuteQuery();
+
+            return view;
         }
 
         /// <summary>
