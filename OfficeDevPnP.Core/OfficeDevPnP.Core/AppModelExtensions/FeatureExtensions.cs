@@ -69,25 +69,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if active, false otherwise</returns>
         public static bool IsFeatureActive(this Site site, Guid featureID)
         {
-            bool featureIsActive = false;
-
-            FeatureCollection clientSiteFeatures = site.Features;
-            site.Context.Load(clientSiteFeatures);
-            site.Context.ExecuteQuery();
-            Feature iprFeature = clientSiteFeatures.GetById(featureID);
-            site.Context.Load(iprFeature);
-            site.Context.ExecuteQuery();
-
-            if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && iprFeature.DefinitionId.Equals(featureID))
-            {
-                featureIsActive = true;
-            }
-            else
-            {
-                featureIsActive = false;
-            }
-
-            return featureIsActive;
+            return IsFeatureActiveInternal(site.Features, featureID);
         }
 
         /// <summary>
@@ -98,14 +80,25 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if active, false otherwise</returns>
         public static bool IsFeatureActive(this Web web, Guid featureID)
         {
+            return IsFeatureActiveInternal(web.Features, featureID);
+        }
+
+        /// <summary>
+        /// Checks if a feature is active in the given FeatureCollection.
+        /// </summary>
+        /// <param name="features">FeatureCollection to check in</param>
+        /// <param name="featureID">ID of the feature to check</param>
+        /// <returns>True if active, false otherwise</returns>
+        private static bool IsFeatureActiveInternal(FeatureCollection features, Guid featureID)
+        {
             bool featureIsActive = false;
 
-            FeatureCollection clientSiteFeatures = web.Features;
-            web.Context.Load(clientSiteFeatures);
-            web.Context.ExecuteQuery();
-            Feature iprFeature = clientSiteFeatures.GetById(featureID);
-            web.Context.Load(iprFeature);
-            web.Context.ExecuteQuery();
+            features.Context.Load(features);
+            features.Context.ExecuteQuery();
+
+            Feature iprFeature = features.GetById(featureID);
+            features.Context.Load(iprFeature);
+            features.Context.ExecuteQuery();
 
             if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && iprFeature.DefinitionId.Equals(featureID))
             {
