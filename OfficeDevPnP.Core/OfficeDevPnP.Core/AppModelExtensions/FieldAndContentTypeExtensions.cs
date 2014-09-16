@@ -536,7 +536,7 @@ namespace Microsoft.SharePoint.Client
         /// Field exists in list by name
         /// </summary>
         /// <param name="list">List to process</param>
-        /// <param name="fieldName">Name of the field</param>
+        /// <param name="fieldName">Internal name of the field</param>
         /// <returns>True if the fields exists, false otherwise</returns>
         public static bool FieldExistsByName(this List list, string fieldName)
         {
@@ -552,6 +552,25 @@ namespace Microsoft.SharePoint.Client
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets a list of fields from a list by names.
+        /// </summary>
+        /// <param name="list">The target list containing the fields.</param>
+        /// <param name="fieldInternalNames">List of field names to retreieve.</param>
+        /// <returns>List of fields requested.</returns>
+        public static IEnumerable<Field> GetFields(this List list, params string[] fieldInternalNames) {
+            var fields = new List<Field>();
+
+            if (fieldInternalNames == null || fieldInternalNames.Length == 0)
+                return fields;
+
+            foreach (var fieldName in fieldInternalNames) {
+                var field = list.Fields.GetByInternalNameOrTitle(fieldName);
+                fields.Add(field);
+            }
+            return fields;
         }
         #endregion
 
