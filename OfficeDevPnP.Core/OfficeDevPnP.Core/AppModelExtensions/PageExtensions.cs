@@ -40,7 +40,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -65,7 +65,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -97,7 +97,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
             
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -124,7 +124,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             if (webPart == null)
@@ -167,7 +167,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (folder == null)
                   ? new ArgumentNullException("folder")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "folder");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
             }
 
             if (webPart == null)
@@ -179,7 +179,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -210,7 +210,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
             
             if (webPart == null)
@@ -357,7 +357,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             string html = "";
@@ -409,14 +409,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (folder == null)
                   ? new ArgumentNullException("folder")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "folder");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
             }
 
             if (string.IsNullOrEmpty(page))
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
 
             string html = "";
@@ -468,21 +468,21 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (folder == null)
                   ? new ArgumentNullException("folder")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "folder");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
             }
 
             if (string.IsNullOrEmpty(html))
             {
                 throw (html == null)
                   ? new ArgumentNullException("html")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "html");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
             }
 
             if (string.IsNullOrEmpty(page))
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -512,14 +512,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             if (string.IsNullOrEmpty(html))
             {
                 throw (html == null)
                   ? new ArgumentNullException("html")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "html");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
             }
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -553,21 +553,21 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (folder == null)
                   ? new ArgumentNullException("folder")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "folder");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
             }
 
             if (string.IsNullOrEmpty(html))
             {
                 throw (html == null)
                   ? new ArgumentNullException("html")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "html");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
             }
 
             if (string.IsNullOrEmpty(page))
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -599,14 +599,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             if (string.IsNullOrEmpty(html))
             {
                 throw (html == null)
                   ? new ArgumentNullException("html")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "html");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
             }
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -654,21 +654,21 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (folder == null)
                   ? new ArgumentNullException("folder")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "folder");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
             }
 
             if (string.IsNullOrEmpty(title))
             {
                 throw (title == null)
                   ? new ArgumentNullException("title")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "title");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
             }
 
             if (string.IsNullOrEmpty(page))
             {
                 throw (page == null)
                   ? new ArgumentNullException("page")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "page");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
@@ -698,14 +698,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             } 
             
             if (string.IsNullOrEmpty(title))
             {
                 throw (title == null)
                   ? new ArgumentNullException("title")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "title");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
             }
             
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -752,14 +752,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (wikiPageLibraryName == null)
                   ? new ArgumentNullException("wikiPageLibraryName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "wikiPageLibraryName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "wikiPageLibraryName");
             }
 
             if (string.IsNullOrEmpty(wikiPageName))
             {
                 throw (wikiPageName == null)
                   ? new ArgumentNullException("wikiPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "wikiPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "wikiPageName");
             }
 
             string wikiPageUrl = "";
@@ -804,7 +804,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             string folderName = serverRelativePageUrl.Substring(0, serverRelativePageUrl.LastIndexOf("/"));
@@ -834,14 +834,14 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (key == null)
                   ? new ArgumentNullException("key")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "key");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "key");
             }
 
             if (string.IsNullOrEmpty(serverRelativePageUrl))
             {
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "serverRelativePageUrl");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
             ClientContext context = web.Context as ClientContext;
