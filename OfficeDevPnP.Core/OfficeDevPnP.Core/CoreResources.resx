@@ -156,6 +156,9 @@
   <data name="BrandingExtension_ThemeNotOverwritten" xml:space="preserve">
     <value>Theme '{0}' already exists (and was not overwritten). No changes made.</value>
   </data>
+  <data name="Exception_Message_EmptyString_Arg" xml:space="preserve">
+    <value>The passed argument is a zero-length string or contains only whitespace.</value>
+  </data>
   <data name="FeatureExtensions_ActivateSiteCollectionFeature" xml:space="preserve">
     <value>Activating feature {0} in site collection.</value>
   </data>

@@ -26,7 +26,7 @@ namespace System
                 {
                     throw (input == null)
                       ? new ArgumentNullException(variableName)
-                      : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, variableName);
+                      : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, variableName);
                 }
             }
             else if (typeof(T).IsSubclassOf(typeof(ClientObject)))

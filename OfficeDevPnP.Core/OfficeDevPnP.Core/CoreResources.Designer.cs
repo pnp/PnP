@@ -178,6 +178,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The passed argument is a zero-length string or contains only whitespace..
+        /// </summary>
+        internal static string Exception_Message_EmptyString_Arg {
+            get {
+                return ResourceManager.GetString("Exception_Message_EmptyString_Arg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activating feature {0} in site collection..
         /// </summary>
         internal static string FeatureExtensions_ActivateSiteCollectionFeature {

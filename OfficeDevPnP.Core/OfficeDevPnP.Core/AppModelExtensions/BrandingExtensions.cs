@@ -248,7 +248,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (themeName == null)
                   ? new ArgumentNullException("themeName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "themeName");
             }
             SetThemeToWebImplementation(web, web, themeName);
         }
@@ -267,7 +267,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (themeName == null)
                   ? new ArgumentNullException("themeName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "themeName");
             }
 
             SetThemeToWebImplementation(web, rootWeb, themeName);
@@ -590,13 +590,13 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
             if (string.IsNullOrEmpty(customMasterPageName))
             {
                 throw (customMasterPageName == null)
                   ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
             web.SetMasterPageByName(masterPageName);
@@ -631,13 +631,13 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (masterPageUrl == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
             if (string.IsNullOrEmpty(customMasterPageUrl))
             {
                 throw (customMasterPageUrl == null)
                   ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
             web.SetMasterPageForSiteByUrl(masterPageUrl);
@@ -670,7 +670,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
@@ -706,7 +706,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
 
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
