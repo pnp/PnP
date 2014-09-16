@@ -113,107 +113,73 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Activates or deactivates a site collection or site scoped feature
+        /// Activates or deactivates a site collection scoped feature
         /// </summary>
         /// <param name="site">Site to be processed</param>
         /// <param name="featureID">ID of the feature to activate/deactivate</param>
         /// <param name="activate">True to activate, false to deactivate the feature</param>
         private static void ProcessFeature(this Site site, Guid featureID, bool activate)
         {
-            FeatureCollection clientSiteFeatures = site.Features;
-
-            site.Context.Load(clientSiteFeatures);
-            site.Context.ExecuteQuery();
-
-            // The original number of active features...use this to track if the feature activation went OK
-            int oldCount = clientSiteFeatures.Count();
-
-            if (activate)
-            {
-                // GetById does not seem to work for site scoped features...if (clientSiteFeatures.GetById(featureID) == null)
-
-                // FeatureDefinitionScope defines how the features have been deployed. All OOB features are farm deployed
-                clientSiteFeatures.Add(featureID, true, FeatureDefinitionScope.Farm);
-                site.Context.ExecuteQuery();
-
-                // retry logic needed to make this more bulletproof :-(
-                site.Context.Load(clientSiteFeatures);
-                site.Context.ExecuteQuery();
-
-                int tries = 0;
-                int currentCount = clientSiteFeatures.Count();
-                while (currentCount <= oldCount && tries < 5)
-                {
-                    tries++;
-                    clientSiteFeatures.Add(featureID, true, FeatureDefinitionScope.Farm);
-                    site.Context.ExecuteQuery();
-                    site.Context.Load(clientSiteFeatures);
-                    site.Context.ExecuteQuery();
-                    currentCount = clientSiteFeatures.Count();
-                }
-            }
-            else
-            {
-                try
-                {
-                    clientSiteFeatures.Remove(featureID, false);
-                    site.Context.ExecuteQuery();
-                }
-                catch (Exception ex) 
-                {
-                    LoggingUtility.Internal.TraceError((int)EventId.FeatureActivationProblem, ex, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID);
-                }
-            }
+            ProcessFeatureInternal(site.Features, featureID, activate);
         }
-        
+
         /// <summary>
-        /// Activates or deactivates a site collection or site scoped feature
+        /// Activates or deactivates a web scoped feature
         /// </summary>
         /// <param name="web">Web to be processed - can be root web or sub web</param>
         /// <param name="featureID">ID of the feature to activate/deactivate</param>
         /// <param name="activate">True to activate, false to deactivate the feature</param>
         private static void ProcessFeature(this Web web, Guid featureID, bool activate)
         {
-            FeatureCollection clientSiteFeatures = web.Features;
+            ProcessFeatureInternal(web.Features, featureID, activate);
+        }
 
-            web.Context.Load(clientSiteFeatures);
-            web.Context.ExecuteQuery();
+        /// <summary>
+        /// Activates or deactivates a site collection or web scoped feature
+        /// </summary>
+        /// <param name="features">Feature Collection which contains the feature</param>
+        /// <param name="featureID">ID of the feature to activate/deactivate</param>
+        /// <param name="activate">True to activate, false to deactivate the feature</param>
+        private static void ProcessFeatureInternal(FeatureCollection features, Guid featureID, bool activate)
+        {
+            features.Context.Load(features);
+            features.Context.ExecuteQuery();
 
             // The original number of active features...use this to track if the feature activation went OK
-            int oldCount = clientSiteFeatures.Count();
+            int oldCount = features.Count();
 
             if (activate)
             {
                 // GetById does not seem to work for site scoped features...if (clientSiteFeatures.GetById(featureID) == null)
 
                 // FeatureDefinitionScope defines how the features have been deployed. All OOB features are farm deployed
-                clientSiteFeatures.Add(featureID, true, FeatureDefinitionScope.Farm);
-                web.Context.ExecuteQuery();
+                features.Add(featureID, true, FeatureDefinitionScope.Farm);
+                features.Context.ExecuteQuery();
 
                 // retry logic needed to make this more bulletproof :-(
-                web.Context.Load(clientSiteFeatures);
-                web.Context.ExecuteQuery();
+                features.Context.Load(features);
+                features.Context.ExecuteQuery();
 
                 int tries = 0;
-                int currentCount = clientSiteFeatures.Count();
+                int currentCount = features.Count();
                 while (currentCount <= oldCount && tries < 5)
                 {
                     tries++;
-                    clientSiteFeatures.Add(featureID, true, FeatureDefinitionScope.Farm);
-                    web.Context.ExecuteQuery();
-                    web.Context.Load(clientSiteFeatures);
-                    web.Context.ExecuteQuery();
-                    currentCount = clientSiteFeatures.Count();
+                    features.Add(featureID, true, FeatureDefinitionScope.Farm);
+                    features.Context.ExecuteQuery();
+                    features.Context.Load(features);
+                    features.Context.ExecuteQuery();
+                    currentCount = features.Count();
                 }
             }
             else
             {
                 try
                 {
-                    clientSiteFeatures.Remove(featureID, false);
-                    web.Context.ExecuteQuery();
+                    features.Remove(featureID, false);
+                    features.Context.ExecuteQuery();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     LoggingUtility.Internal.TraceError((int)EventId.FeatureActivationProblem, ex, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID);
                 }
