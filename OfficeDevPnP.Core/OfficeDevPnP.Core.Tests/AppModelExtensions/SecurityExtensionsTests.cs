@@ -117,7 +117,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
 
                 //Assert
-                Assert.AreEqual(roleExists, true);
+                Assert.IsTrue(roleExists);
 
                 //Teardown: Expicitly remove given permission. 
                 web.RemovePermissionLevelFromUser(_userLogin, roleType);
