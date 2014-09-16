@@ -25,6 +25,7 @@ namespace OfficeDevPnP.Core.Utilities
         InstallSolution = 1502,
         CreateWeb = 1503,
         CreateSiteCollection = 1504,
+        UninstallSolution = 1505,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,

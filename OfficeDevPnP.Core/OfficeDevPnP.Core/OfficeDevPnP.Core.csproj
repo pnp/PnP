@@ -100,13 +100,17 @@
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
+    <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
+    <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
+    <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
+    <Compile Include="Enums\BuiltInIdentity.cs" />
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
@@ -150,7 +155,6 @@
     </Compile>
     <Compile Include="AppModelExtensions\FeatureExtensions.cs" />
     <Compile Include="AppModelExtensions\JavaScriptExtensions.cs" />
-    <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensions.cs" />
     <Compile Include="AppModelExtensions\PageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

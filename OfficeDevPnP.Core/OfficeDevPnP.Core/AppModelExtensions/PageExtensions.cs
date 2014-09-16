@@ -29,6 +29,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns the HTML contents of a wiki page
         /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">Server relative url of the page, e.g. /sites/demo/SitePages/Test.aspx</param>
         /// <returns></returns>
         public static string GetWikiPageContent(this Web web, string serverRelativePageUrl)
@@ -346,7 +347,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="folder">System name of the wiki page library - typically sitepages</param>
-        /// <param name="webPart">The html to insert</param>
+        /// <param name="html">The html to insert</param>
         /// <param name="page">Page to add the html on</param>
         public static void AddHtmlToWikiPage(this Web web, string folder, string html, string page)
         {
@@ -358,7 +359,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html);
         }
@@ -367,7 +368,7 @@ namespace Microsoft.SharePoint.Client
         /// Add HTML to a wiki page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteRelativePageUrl"></param>
+        /// <param name="serverRelativePageUrl"></param>
         /// <param name="html"></param>
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html)
         {
@@ -404,7 +405,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html, row, col);
         }
@@ -415,12 +416,19 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">server relative Url of the page to add the fragment to</param>
         /// <param name="html">html to be inserted</param>
-        /// <param name="page">Page to add the web part on</param>
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html, int row, int col)
         {
-            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+
+            var serverRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl) + serverRelativePageUrl);
+	    
+            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
             web.Context.ExecuteQuery();
@@ -480,8 +488,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="title">Title of the web part that needs to be deleted</param>
         public static void DeleteWebPart(this Web web, string serverRelativePageUrl, string title)
         {
-
-
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)

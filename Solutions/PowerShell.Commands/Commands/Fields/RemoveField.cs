@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
         public FieldPipeBind Identity = new FieldPipeBind();
 
-        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 1)]
+        [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 1)]
         public ListPipeBind List;
 
         [Parameter(Mandatory = false)]
@@ -36,6 +36,28 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                 }
                 if (f != null)
+                {
+                    if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
+                    {
+                        f.DeleteObject();
+                        ClientContext.ExecuteQuery();
+                    }
+                }
+            }
+            else
+            {
+                if (f == null)
+                {
+                    if (Identity.Id != Guid.Empty)
+                    {
+                        f = this.SelectedWeb.Fields.GetById(Identity.Id);
+                    }
+                    else if (!string.IsNullOrEmpty(Identity.Name))
+                    {
+                        f = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
+                    }
+                }
+                if(f != null)
                 {
                     if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
                     {
