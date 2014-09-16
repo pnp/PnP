@@ -894,6 +894,32 @@ namespace Microsoft.SharePoint.Client
             clientContext.Load(field);
             list.WireUpTaxonomyField(field, mmsGroupName, mmsTermSetName, allowMultipleValues);
         }
+
+        /// <summary>
+        /// Returns the Id for a term if present in the TaxonomyHiddenList. Otherwise returns -1;
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="term"></param>
+        /// <returns></returns>
+        public static int GetWssIdForTerm(this Web web, Term term)
+        {
+            var list = web.GetListByUrl("Lists/TaxonomyHiddenList");
+            CamlQuery camlQuery = new CamlQuery();
+            camlQuery.ViewXml = string.Format(@"<View><Query><Where><Eq><FieldRef Name='IdForTerm' /><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", term.Id);
+
+            var items = list.GetItems(camlQuery);
+            web.Context.Load(items);
+            web.Context.ExecuteQuery();
+
+            if (items.Any())
+            {
+                return items[0].Id;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         #endregion
     }
 }

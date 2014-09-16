@@ -129,9 +129,9 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
-                List<DefaultColumnValue> defaultValues = new List<DefaultColumnValue>();
+                List<DefaultColumnTermPathValue> defaultValues = new List<DefaultColumnTermPathValue>();
 
-                var defaultColumnValue = new DefaultColumnValue();
+                var defaultColumnValue = new DefaultColumnTermPathValue();
 
                 defaultColumnValue.FieldInternalName = "TaxKeyword"; // Enterprise metadata field, should be present on the list
 
@@ -143,7 +143,36 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var list = clientContext.Web.Lists.GetById(_listId);
 
-                list.AddDefaultColumnValues(defaultValues);
+                list.SetDefaultColumnValues(defaultValues);
+
+            }
+        }
+
+        [TestMethod()]
+        public void SetDefaultColumnValuesTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                List<DefaultColumnTermValue> defaultValues = new List<DefaultColumnTermValue>();
+
+                var defaultColumnValue = new DefaultColumnTermValue();
+
+                defaultColumnValue.FieldInternalName = "TaxKeyword"; // Enterprise metadata field, should be present on the list
+
+                defaultColumnValue.FolderRelativePath = "/"; // Root Folder
+
+                var term = taxSession.GetTerm(_termId);
+                //clientContext.Load(term, t => t.Id, t => t.Name);
+                //clientContext.ExecuteQuery();
+
+                defaultColumnValue.Terms.Add(term);
+
+                defaultValues.Add(defaultColumnValue);
+
+                var list = clientContext.Web.Lists.GetById(_listId);
+
+                list.SetDefaultColumnValues(defaultValues);
 
             }
         }
