@@ -62,8 +62,6 @@ private string ResolveAdditionalFilter(string aboutMeValue)
     
     return "";
 }
-
-
 ```
 
 ## Dependencies ##
