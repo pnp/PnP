@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         public GuidPipeBind Identity;
 
         [Parameter(Mandatory = false, ParameterSetName="List")]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

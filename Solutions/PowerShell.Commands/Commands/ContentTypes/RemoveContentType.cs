@@ -14,8 +14,8 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class RemoveContentType : SPOWebCmdlet
     {
 
-        [Parameter(Mandatory = true)]
-        public SPOContentTypePipeBind Identity;
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
+        public ContentTypePipeBind Identity;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="SPOTenantUrl" value="https://[tenant]-admin.sharepoint.com" />
+    <add key="SPODevSiteUrl" value="https://[tenant].sharepoint.com/sites/dev" />
+    
+    <add key="SPOCredentialManagerLabel" value="[yourlabel]"/>
+    <!-- If the above value is specified, a lookup will be done to the Windows Credential
+    manager for a -Windows- Credential that maps to the label. If not specified, it assumes you want to specify the username 
+    and password in the values below -->
+   
+    <add key="SPOUserName" value="user@[tenant].onmicrosoft.com" />
+    <add key="SPOPassword" value="" />
+  </appSettings>
+</configuration>

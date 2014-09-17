@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel.JsonToOfficeTable", "Excel.JsonToOfficeTable\Excel.JsonToOfficeTable.csproj", "{3F5A5B07-90C3-4E05-9610-831D81D16670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excel.JsonToOfficeTableWeb", "Excel.JsonToOfficeTableWeb\Excel.JsonToOfficeTableWeb.csproj", "{6BE9007C-5248-4F3A-A686-7E4EDB6B3841}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{A05CD111-A166-4778-889A-1B63CCAC4083}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

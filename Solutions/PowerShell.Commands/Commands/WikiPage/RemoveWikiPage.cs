@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Remove, "SPOWikiPage", ConfirmImpact = ConfirmImpact.High)]
     public class RemoveWikiPage : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position=0,ValueFromPipeline=true)]
         [Alias("PageUrl")]
         public string ServerRelativePageUrl = string.Empty;
 

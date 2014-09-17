@@ -23,7 +23,7 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Excel.JsonToOfficeTable | Richard diZerega (Microsoft)
+Excel.JsonToOfficeTable | Richard diZerega (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -41,31 +41,35 @@ This sample adds two extension methods to the **Office.TableData** object, which
 
 The **addHeaders** extension method initializes the table headers based on an object passed in. This object will typically be the table’s first row of data. The method will loop through and add headers/columns for each property of the object, ignoring complex data types (ex: typeof == object). Complex data types are ignored as they could represent one:many relationships between tables. This would be an interesting enhancement for a v2, but for now I’m keeping it simple with a single table.
 
-    //extension to Office.TableData to add headers
-    Office.TableData.prototype.addHeaders = function (obj) {
-        var h = new Array();
-        for (var prop in obj) {
-            //ignore complex types empty columns and __type from WCF
-            if (typeof (obj[prop]) != 'object' &&
-                prop.trim().length > 0 &&
-                prop != '__type')
-                h.push(prop);
-        }
-        this.headers = h;
+```JavaScript
+//extension to Office.TableData to add headers
+Office.TableData.prototype.addHeaders = function (obj) {
+    var h = new Array();
+    for (var prop in obj) {
+        //ignore complex types empty columns and __type from WCF
+        if (typeof (obj[prop]) != 'object' &&
+            prop.trim().length > 0 &&
+            prop != '__type')
+            h.push(prop);
     }
+    this.headers = h;
+}
+```
 
 The **addRange** extension method appends rows to the Office.TableData based on an array of data passed in. This method was specifically designed to support multiple appends, as would be common with throttled/paged results. The addRange method only looks at object properties that are defined as headers in the TableData object. As such, the headers should be set (manually or via addHeaders) prior to calling addRange.
 
-    //extension to Office.TableData to add a range of rows
-    Office.TableData.prototype.addRange = function (array) {
-        for (i = 0; i < array.length; i++) {
-            var itemsTemp = new Array();
-            $(this.headers[0]).each(function (ii, ee) {
-                itemsTemp.push(array[i][ee]);
-            });
-            this.rows.push(itemsTemp);
-        }
+```JavaScript
+//extension to Office.TableData to add a range of rows
+Office.TableData.prototype.addRange = function (array) {
+    for (i = 0; i < array.length; i++) {
+        var itemsTemp = new Array();
+        $(this.headers[0]).each(function (ii, ee) {
+            itemsTemp.push(array[i][ee]);
+        });
+        this.rows.push(itemsTemp);
     }
+}
+```
 
 # Client-side Data Access #
 Because the extensions methods use JSON, client-side processing from a REST call is very simple:
@@ -77,14 +81,16 @@ Because the extensions methods use JSON, client-side processing from a REST call
 
 Below is a code sample that demonstrates these four steps. The data variable is the JSON returned from a REST call:
 
-    //initalize the Office.TableData and load headers/rows from data
-    var officeTable = new Office.TableData();
-    //add columns to table based on first row of data
-    officeTable.addHeaders(data.d[0]);
-    //add rows to table
-    officeTable.addRange(data.d);
-    //inject the Office.TableData in the Excel workbook
-    setExcelData(officeTable);
+```JavaScript
+//initalize the Office.TableData and load headers/rows from data
+var officeTable = new Office.TableData();
+//add columns to table based on first row of data
+officeTable.addHeaders(data.d[0]);
+//add rows to table
+officeTable.addRange(data.d);
+//inject the Office.TableData in the Excel workbook
+setExcelData(officeTable);
+```
 
 # Server-side Data Access #
 The Web Extensibility Framework (WEF) that enables Apps for Office only provides client-side APIs for interaction with the Office document. The strategy for server-side data access will be the following:
@@ -97,23 +103,25 @@ The Web Extensibility Framework (WEF) that enables Apps for Office only provides
 
 The code below shows a server-side button click event that retrieves data, serializes the data as a JSON string, and injects the JSON into the page using the Page's  ClientScriptManager.
 
-    protected void btnSubmit2_Click(object sender, EventArgs e)
+```C#
+protected void btnSubmit2_Click(object sender, EventArgs e)
+{
+    //use the stock service to get the history
+    //although this samples a local service...
+    //ANY data access .NET supports could be used
+    Services.Stocks s = new Services.Stocks();
+    var history = s.GetHistory(txtSymbol2.Text, Convert.ToInt32(cboFromYear2.SelectedValue));
+    using (MemoryStream stream = new MemoryStream())
     {
-        //use the stock service to get the history
-        //although this samples a local service...
-        //ANY data access .NET supports could be used
-        Services.Stocks s = new Services.Stocks();
-        var history = s.GetHistory(txtSymbol2.Text, Convert.ToInt32(cboFromYear2.SelectedValue));
-        using (MemoryStream stream = new MemoryStream())
-        {
-            //serialize the List<StockStats> to a JSON string
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<Services.StockStat>));
-            ser.WriteObject(stream, history);
-            stream.Position = 0;
-            StreamReader sr = new StreamReader(stream);
-            var json = sr.ReadToEnd();
+        //serialize the List<StockStats> to a JSON string
+        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<Services.StockStat>));
+        ser.WriteObject(stream, history);
+        stream.Position = 0;
+        StreamReader sr = new StreamReader(stream);
+        var json = sr.ReadToEnd();
 
-            //output the json string of stock history as javascript on the page so script can read and process it
-            Page.ClientScript.RegisterStartupScript(typeof(Default), "JSONData", String.Format("var jsonData = {0};", json), true);
-        }
+        //output the json string of stock history as javascript on the page so script can read and process it
+        Page.ClientScript.RegisterStartupScript(typeof(Default), "JSONData", String.Format("var jsonData = {0};", json), true);
     }
+}
+```

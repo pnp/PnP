@@ -7,7 +7,7 @@
     <title>TaxonomyPicker Samples</title>
     <link rel="Stylesheet" type="text/css" href="../Styles/taxonomypickercontrol.css" />
     <script src="../Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="../Scripts/app.js" type="text/javascript"></script>
+    <script src="../Scripts/app.js?rev=1" type="text/javascript"></script>
     <script src="../Scripts/taxonomypickercontrol.js" type="text/javascript"></script>
 </head>
 <body style="display: none;">

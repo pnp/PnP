@@ -13,8 +13,6 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true)]
         public List<string> Keys;
 
-
-
         protected override void ExecuteCmdlet()
         {
             if (Keys != null && Keys.Count > 0)

@@ -9,10 +9,10 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class GetField : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true)]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
-        [Parameter(Mandatory = false)]
-        public SPOFieldIdPipeBind Identity = new SPOFieldIdPipeBind();
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
+        public FieldPipeBind Identity = new FieldPipeBind();
 
         protected override void ExecuteCmdlet()
         {
@@ -57,7 +57,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-            
+
                 // Get a site column
                 if (Identity.Id == Guid.Empty && string.IsNullOrEmpty(Identity.Name))
                 {

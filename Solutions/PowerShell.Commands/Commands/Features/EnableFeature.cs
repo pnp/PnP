@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
     [CmdletExample(Code = "PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web")]
     public class EnableFeature : SPOCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The id of the feature to enable.")]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true, HelpMessage = "The id of the feature to enable.")]
         public GuidPipeBind Identity;
 
         [Parameter(Mandatory = false, HelpMessage = "Forcibly enable the feature.")]

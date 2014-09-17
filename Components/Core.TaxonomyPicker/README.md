@@ -1,61 +1,59 @@
-Taxonomy picker for sharepoint apps
-===============================================
+# Taxonomy picker for sharepoint app #
 
-Summary	
---------
-This sample shows an implementation of a SharePoint Taxonomy Picker control that can be used on provider hosted SharePoint apps.	
+### Summary ###
+This sample shows an implementation of a SharePoint Taxonomy Picker control that can be used on provider hosted SharePoint apps.
 
-Applies to
------------
-* Office 365 Multi Tenant (MT)
-* Office 365 Dedicated (D)
-* SharePoint 2013 on-premises
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
 
-Solution
----------
+### Prerequisites ###
+None
 
-Solution                                       | Author                      |
------------------------------------------------|:---------------------------:|
-Contoso.Components.TaxonomyPicker, version 2.0 | Richard diZerega, Microsoft |
+### Solution ###
+Solution | Author(s)
+---------|----------
+Contoso.Components.TaxonomyPicker | Richard diZerega (**Microsoft**)
 
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+2.0  | March 26th 2014 | Updates
+1.0  | October 30th 2013 | Initial release
 
-Disclaimer
-----------
+### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
-How to use the taxonomy picker in your provider hosted sp app
-=============================================================
+----------
+
+
+# How to use the taxonomy picker in your provider hosted sp app #
 
 Using the Taxonomy Picker in your provider hosted app does not require many steps ?
 
-Ensure you trigger the creation of an app web
----------------------------------------------
-
+## Ensure you trigger the creation of an app web ##
 When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. 
 
-Since the Taxonomy Picker control uses the CSOM object model from JavaScript it’s required to have an app web. 
+Since the Taxonomy Picker control uses the CSOM object model from JavaScript itâ€™s required to have an app web. 
 
 To ensure you have an app web you can just add an empty module to your SharePoint app as shown below:
 
 ![Screenshot of module](http://i.imgur.com/FBh3CfY.png "Screenshot of module")
 
-App permissions
----------------
-The Taxonomy Picker communicates with SharePoint’s Managed Metadata Service, which requires special permissions in the app model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the app will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
+## App permissions ##
+The Taxonomy Picker communicates with SharePointâ€™s Managed Metadata Service, which requires special permissions in the app model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the app will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
 
 ![Screenshot of app permissions](http://i.imgur.com/MjQHxN1.png "Screenshot of app permissions")
  
-Required files
---------------
-The Taxonomy Picker is implemented as a jQuery extension, which means it requires a reference to jQuery on and pages it will be used.  
-In addition to jQuery, the Taxonomy Picker control requires the reference of a taxonomypicker.js and taxonomypicker.css files included in the sample solution.
+## Required files ##
+The Taxonomy Picker is implemented as a jQuery extension, which means it requires a reference to jQuery on and pages it will be used. In addition to jQuery, the Taxonomy Picker control requires the reference of a taxonomypicker.js and taxonomypicker.css files included in the sample solution.
 
 ![Screenshot of script tag](http://i.imgur.com/azNdlUM.png "Screenshot of script tags")
  
-Loading required scripts and establishing clientcontext
--------------------------------------------------------
-The Taxonomy Picker uses SharePoint’s JavaScript Client Object Model (JSOM) for communication back to SharePoint and the Managed Metadata Service.  The JavaScript below shows how to load the appropriate JSOM scripts, initialize SharePoint ClientContext, and wiring up a RequestExecutor to make cross-domain calls.  Notice the reference to sp.taxonomy.js, which is a JSOM script specific to working with taxonomies:  
+## Loading required scripts and establishing clientcontext ##
+The Taxonomy Picker uses SharePointâ€™s JavaScript Client Object Model (JSOM) for communication back to SharePoint and the Managed Metadata Service.  The JavaScript below shows how to load the appropriate JSOM scripts, initialize SharePoint ClientContext, and wiring up a RequestExecutor to make cross-domain calls.  Notice the reference to sp.taxonomy.js, which is a JSOM script specific to working with taxonomies:  
 
 ```javascript
 //Wait for the page to load
@@ -97,25 +95,22 @@ $(document).ready(function () {
 });
 ```
 
-Adding the taxonomy picker to html
-----------------------------------
+## Adding the taxonomy picker to html ##
 Any hidden input element can be converted to a Taxonomy Picker.  This includes regular hidden input elements and server-side controls that render hidden inputs elements (ex: asp:HiddenField):
 
-Client-side example
--------------------
+### Client-side example ###
+
 ```html
 <input type="hidden" id="taxPickerGeography" />
 ```
 
-Server-side example
--------------------
+### Server-side example ###
+
 ```c#
 <asp:HiddenField runat="server" ID="taxPickerGeography" />
 ```
 
-Transforming the html into a taxonomy picker control
-----------------------------------------------------
-
+### Transforming the html into a taxonomy picker control ###
 The Taxonomy Picker is implemented as a jQuery extension, which makes it extremely easy to wire-up on the hidden input element:
 
 ```javascript
@@ -126,14 +121,13 @@ $('#taxPickerGeography').taxpicker({
 }, context);
 ```
 
-Parameters
-----------
-
-options	The first parameter of the Taxonomy Picker sets the options for the control.  The properties that can be set include:
+### Parameters ###
+The first parameter of the Taxonomy Picker sets the options for the control. The properties that can be set include:
 
 | Parameter | Description |
-| ----------|:-------------:|
+| ----------|-------------|
 | isMulti | Boolean indicating if taxonomy picker support multiple value |
+| isReadOnly | Boolean indicating if the taxonomy picker is rendered in read only mode |
 | allowFillIn | Boolean indicating if the control allows fill=ins (Open TermSets only) |
 | termSetId | the GUID of the TermSet to bind against (available from Term Mgmt) |
 | useHashtags | Boolean indicating if the default hashtags TermSet should be used |
@@ -144,8 +138,7 @@ options	The first parameter of the Taxonomy Picker sets the options for the cont
 
  The second parameter is an initialized SP.ClientContext object 
 
-Sample implementations
-----------------------
+## Sample implementations ##
 
 ```javascript
 //Single-select open termset field
@@ -186,9 +179,7 @@ $('#taxPickerKeywords').taxpicker({
 , context);
 ```
 
-Setting values
---------------
-
+## Setting values ##
 The sample project includes a TaxonomyPickerExtensions.cs file, containing extension methods to help set values of a Taxonomy Picker server-side.  This includes extension methods for converting TaxonomyFieldValue and TaxonomyFieldValueCollection objects into JSON that the Taxonomy Picker script can read from the hidden fields.  Here is an example of using these methods to set the value of two Taxonomy Picker fields using C#:
 
 ```c#
@@ -209,12 +200,10 @@ using (var clientContext = spContext.CreateUserClientContextForSPHost())
 }
 ```
 
-Reading values
---------------
-The Taxonomy Picker will store the selected terms in the hidden field using JSON string format.  These values can be accessed by other client-side scripts or server-side following a post.  The JSON will include the Term Name, Id, and PathOfTerm (ex: World;North America;United States).  JSON.parse can be used client-side to convert the hidden input’s value to a typed object and any number of server-side libraries can be used (ex: JSON.net)
+## Reading values ##
+The Taxonomy Picker will store the selected terms in the hidden field using JSON string format.  These values can be accessed by other client-side scripts or server-side following a post.  The JSON will include the Term Name, Id, and PathOfTerm (ex: World;North America;United States).  JSON.parse can be used client-side to convert the hidden inputâ€™s value to a typed object and any number of server-side libraries can be used (ex: JSON.net)
 
-Language support
-----------------
+## Language support ##
 The strings displayed by the control will be loaded dynamically based on the passed language. This requires you to pass the language via taking over the SPLanguage url parameter (see sample) or by hardcoding it. If no language is passed the control assumes the language is English (en-us). 
 $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true, lcid: 1031, language: 'de-de' }, context);
 If you would like to add additional languages you need to create the appropriate JavaScript language resource files:

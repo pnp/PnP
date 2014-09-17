@@ -1,8 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
-using OfficeDevPnP.PowerShell.Commands.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -13,8 +11,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             var site = ClientContext.Site;
-            ClientContext.Load(site);
-            WriteObject(new SiteEntity(site));
+            ClientContext.Load(site, s => s.Url, s => s.CompatibilityLevel);
+            ClientContext.ExecuteQuery();
+            WriteObject(site);
         }
     }
 

@@ -6,8 +6,8 @@ using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Add, "SPOWebPartToWebPartPage")]
-    public class AddWebPartToWebPartPage : SPOWebCmdlet
+    [Cmdlet(VerbsCommon.Add, "SPOWebPartToWikiPage")]
+    public class AddWebPartToWikiPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
         public string PageUrl = string.Empty;

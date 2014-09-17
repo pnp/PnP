@@ -3,6 +3,7 @@ using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -29,53 +30,25 @@ namespace Microsoft.SharePoint.Client
 
         #region Site (collection) query, creation and deletion
 
-        /// <summary>
-        /// Adds a SiteEntity by launching site collection creation and waits for the creation to finish
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="properties">Describes the site collection to be created</param>
-        /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
-        /// <param name="wait">If true, processing will halt until the site collection has been created</param>
-        /// <returns>Guid of the created site collection</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
-        [Obsolete("Use Tenant.AddSiteCollection()")]
+        [Obsolete("Use Tenant.CreateSiteCollection()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.AddSiteCollection(properties, removeFromRecycleBin, wait);
         }
 
-        /// <summary>
-        /// Returns if a site collection is in a particular status. If the url contains a sub site then returns true is the sub site exists, false if not. 
-        /// Status is irrelevant for sub sites
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">Url to the site collection</param>
-        /// <param name="status">Status to check (Active, Creating, Recycled)</param>
-        /// <returns>True if in status, false if not in status</returns>
         [Obsolete("Use Tenant.CheckIfSiteExists()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool CheckIfSiteExistsInTenant(this Web web, string siteUrl, string status)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.CheckIfSiteExists(siteUrl, status);
         }
 
-        /// <summary>
-        /// Launches a site collection creation and waits for the creation to finish 
-        /// </summary>
-        /// <param name="web">Context to admin site</param>
-        /// <param name="url">The SPO url</param>
-        /// <param name="title">The site title</param>
-        /// <param name="siteOwnerLogin">Owner account</param>
-        /// <param name="template">Site template being used</param>
-        /// <param name="storageMaximumLevel">Site quota in MB</param>
-        /// <param name="storageWarningLevel">Site quota warning level in MB</param>
-        /// <param name="timeZoneId">TimeZoneID for the site. "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris" = 3 </param>
-        /// <param name="userCodeMaximumLevel">The user code quota in points</param>
-        /// <param name="userCodeWarningLevel">The user code quota warning level in points</param>
-        /// <param name="lcid">The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's</param>
-        /// <returns></returns>
-        [Obsolete("Use Tenant.AddSiteCollection()")]
+        [Obsolete("Use Tenant.CreateSiteCollection()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid CreateSiteCollectionTenant(this Web web, string url, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
                                                         int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
@@ -85,173 +58,96 @@ namespace Microsoft.SharePoint.Client
             return tenant.AddSiteCollection(url, title, siteOwnerLogin, template, storageMaximumLevel, storageWarningLevel, timeZoneId, userCodeMaximumLevel, userCodeWarningLevel, lcid, removeFromRecycleBin, wait);
         }
 
-        /// <summary>
-        /// Deletes a site collection
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">Url of the site collection to delete</param>
-        /// <param name="useRecycleBin">Leave the deleted site collection in the site collection recycle bin</param>
-        /// <returns>True if deleted</returns>
         [Obsolete("Use Tenant.DeleteSiteCollection()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool DeleteSiteCollectionTenant(this Web web, string siteUrl, bool useRecycleBin)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.DeleteSiteCollection(siteUrl, useRecycleBin);
         }
 
-        /// <summary>
-        /// Deletes a site collection from the site collection recycle bin
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">URL of the site collection to delete</param>
-        /// <returns>True if deleted</returns>
         [Obsolete("Use Tenant.DeleteSiteCollection()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool DeleteSiteCollectionFromRecycleBinTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.DeleteSiteCollectionFromRecycleBin(siteUrl);
         }
 
-        /// <summary>
-        /// Checks if a site collection exists
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if existing, false if not</returns>
         [Obsolete("Use Tenant.DoesSiteExist()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool DoesSiteExistInTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.DoesSiteExist(siteUrl);
         }
 
-        /// <summary>
-        /// Gets the ID of site collection with specified URL
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
         [Obsolete("Use Tenant.GetSiteGuidByUrl()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid GetSiteGuidByUrlTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.GetSiteGuidByUrl(siteUrl);
         }
 
-        /// <summary>
-        /// Gets the ID of site collection with specified URL
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
         [Obsolete("Use Tenant.GetSiteGuidByUrl()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid GetSiteGuidByUrlTenant(this Web web, Uri siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.GetSiteGuidByUrl(siteUrl);
         }
 
-        /// <summary>
-        /// Returns available webtemplates/site definitions
-        /// </summary>
-        /// <param name="web">Site to be processed - needs to be tenant site admin site</param>
-        /// <param name="lcid"></param>
-        /// <param name="compatibilityLevel">14 for SharePoint 2010, 15 for SharePoint 2013/SharePoint Online</param>
-        /// <returns></returns>
         [Obsolete("Use Tenant.GetWebTemplates()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static SPOTenantWebTemplateCollection GetWebTemplatesTenant(this Web web, uint lcid, int compatibilityLevel)
         {
             Tenant tenant = new Tenant(web.Context);
-
             return tenant.GetWebTemplates(lcid, compatibilityLevel);
         }
 
-        /// <summary>
-        /// Checks if a site collection is Active
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if active, false if not</returns>
         [Obsolete("Use Tenant.IsSiteActive()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool IsSiteActiveTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.IsSiteActive(siteUrl);
         }
 
-        /// <summary>
-        /// Checks if a site collection exists, relies on tenant admin API
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">URL to the site collection</param>
-        /// <returns>True if existing, false if not</returns>
         [Obsolete("Use Tenant.SiteExists()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SiteExistsInTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.SiteExists(siteUrl);
         }
 
-        /// <summary>
-        /// Checks if a sub site exists
-        /// </summary>
-        /// <param name="web">Tenant admin web</param>
-        /// <param name="siteUrl">URL to the sub site</param>
-        /// <returns>True if existing, false if not</returns>
         [Obsolete("Use Tenant.SubSiteExists()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SubSiteExistsInTenant(this Web web, string siteUrl)
         {
             Tenant tenant = new Tenant(web.Context);
             return tenant.SubSiteExists(siteUrl);
         }
 
-       
-
         #endregion
 
         #region Web (site) query, creation and deletion
 
-        /// <summary>
-        /// Adds a sub site to an existing site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="parent">Information about the parent site</param>
-        /// <param name="subsite">Information describing the sub site to be added</param>
-        /// <param name="inheritPermissions">Does the sub site inherit the permissions of the parent site</param>
-        /// <param name="inheritNavigation">Does the sub site inherit the navigation of the parent site</param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddSite(this Web web, SiteEntity parent, SiteEntity subsite, bool inheritPermissions, bool inheritNavigation)
         {
-            // Call actual implementation
             CreateWeb(web, subsite.Title, subsite.Url, subsite.Description, subsite.Template, (int)subsite.Lcid, inheritPermissions, inheritNavigation);
         }
 
-        /// <summary>
-        /// Adds a sub site to an existing site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="title">Title for the site</param>
-        /// <param name="description">Description for the new site</param>
-        /// <param name="template">Template for the site, like STS#0</param>
-        /// <param name="language">Language code for the site, like 1033</param>
-        /// <param name="inheritPermissions">Should the new site inherit permissions</param>
-        /// <param name="inheritNavigation">Should the new site inherent navigation</param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddSite(this Web web, string title, string url, string description, string template, uint language, bool inheritPermissions, bool inheritNavigation)
         {
-            // Call centralized route to call internal creation logic
             CreateWeb(web, title, url, description, template, (int)language, inheritPermissions, inheritNavigation);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="web"></param>
-        /// <param name="subsite"></param>
-        /// <param name="inheritPermissions"></param>
-        /// <param name="inheritNavigation"></param>
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Web CreateSite(this Web web, SiteEntity subsite, bool inheritPermissions = true, bool inheritNavigation = true)
@@ -298,7 +194,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, "Creating web '{0}' with template '{1}'.", leafUrl, template);
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
             WebCreationInformation creationInfo = new WebCreationInformation()
             {
                 Url = leafUrl,
@@ -342,7 +238,7 @@ namespace Microsoft.SharePoint.Client
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
-                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, "Deleting web '{0}'.", serverRelativeUrl);
+                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
                 existingWeb.DeleteObject();
                 parentWeb.Context.ExecuteQuery();
                 deleted = true;
@@ -391,11 +287,35 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Checks if a site collection exists
+        /// Returns the child Web site with the specified leaf URL.
         /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the site collection check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
+        /// <param name="parentWeb">The Web site to check under</param>
+        /// <param name="leafUrl">A string that represents the URL leaf name.</param>
+        /// <returns>The requested Web, if it exists, otherwise null.</returns>
+        /// <remarks>
+        /// <para>
+        /// The ServerRelativeUrl property of the retrieved Web is instantiated.
+        /// </para>
+        /// </remarks>
+        public static Web GetWeb(this Web parentWeb, string leafUrl)
+        {
+            // TODO: Check for any other illegal characters in SharePoint
+            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
+            }
+
+            Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
+            var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
+            var webs = parentWeb.Webs;
+            // NOTE: Predicate does not take into account a required case-insensitive comparison
+            //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
+            parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
+            parentWeb.Context.ExecuteQuery();
+            var childWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
+            return childWeb;
+        }
+
         [Obsolete("Should use Context.WebExistsFullUrl(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SiteExists(this Web web, string siteUrl)
@@ -403,12 +323,6 @@ namespace Microsoft.SharePoint.Client
             return WebExistsFullUrl(web.Context, siteUrl);
         }
 
-        /// <summary>
-        /// Checks if a subsite exists
-        /// </summary>
-        /// <param name="web">Site object opened with credentials that are reused for the sub site check</param>
-        /// <param name="siteUrl">Fully qualified URL to the sub site</param>
-        /// <returns>true if exists, false otherwise</returns>
         [Obsolete("Should use Context.WebExists(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool SubSiteExists(this Web web, string siteUrl)
@@ -459,7 +373,7 @@ namespace Microsoft.SharePoint.Client
             bool exists = false;
             try
             {
-                using(ClientContext testContext = new ClientContext(webFullUrl))
+                using (ClientContext testContext = new ClientContext(webFullUrl))
                 {
                     testContext.Credentials = context.Credentials;
                     testContext.Load(testContext.Web, w => w.Title);
@@ -493,11 +407,41 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static ClientObjectList<AppInstance> GetAppInstances(this Web web)
         {
-            ClientObjectList<AppInstance> instances = Microsoft.SharePoint.Client.AppCatalog.GetAppInstances(web.Context, web);
+            var instances = AppCatalog.GetAppInstances(web.Context, web);
             web.Context.Load(instances);
             web.Context.ExecuteQuery();
 
             return instances;
+        }
+
+        /// <summary>
+        /// Removes the app instance with the specified title.
+        /// </summary>
+        /// <param name="web">Web to remove the app instance from</param>
+        /// <param name="appTitle">Title of the app instance to remove</param>
+        /// <returns>true if the the app instance was removed; false if it does not exist</returns>
+        public static bool RemoveAppInstanceByTitle(this Web web, string appTitle)
+        {
+            // Removes the association between the App and the Web
+            bool removed = false;
+            var instances = AppCatalog.GetAppInstances(web.Context, web);
+            web.Context.Load(instances);
+            web.Context.ExecuteQuery();
+            foreach (var app in instances)
+            {
+                if (string.Equals(app.Title, appTitle, StringComparison.OrdinalIgnoreCase))
+                {
+                    removed = true;
+                    LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
+                    app.Uninstall();
+                    web.Context.ExecuteQuery();
+                }
+            }
+            if (!removed)
+            {
+                LoggingUtility.Internal.TraceVerbose("Requested to remove app '{0}', but no instances found; nothing to remove.", appTitle);
+            }
+            return removed;
         }
 
         /// <summary>
@@ -511,18 +455,18 @@ namespace Microsoft.SharePoint.Client
         public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
         {
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, "Installing sandbox solution '{0}' to '{1}'.", fileName, site.Context.Url);
+            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
-            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
-
+            //rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
+            rootWeb.UploadDocumentToFolder(sourceFilePath, rootWeb.RootFolder);
             var packageInfo = new DesignPackageInfo()
             {
                 PackageName = fileName,
                 PackageGuid = packageGuid,
                 MajorVersion = majorVersion,
-                MinorVersion = minorVersion
+                MinorVersion = minorVersion,
             };
 
             LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
@@ -544,12 +488,71 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            //var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
-            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
-            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
+
+            // Remove package from rootfolder
+            var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
+            uploadedSolutionFile.DeleteObject();
             site.Context.ExecuteQuery();
+
+            site.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Uninstalls a sandbox solution package (.WSP) file
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest</param>
+        /// <param name="fileName">filename of the WSP file to uninstall</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
+        public static void UninstallSolution(this Site site, Guid packageGuid, string fileName, int majorVersion = 1, int minorVersion = 0)
+        {
+            LoggingUtility.Internal.TraceInformation((int)EventId.UninstallSolution, CoreResources.WebExtensions_UninstallSolution, packageGuid);
+
+            var rootWeb = site.RootWeb;
+            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+
+            var camlQuery = new CamlQuery();
+            camlQuery.ViewXml = string.Format(
+              @"<View>  
+                        <Query> 
+                           <Where><Eq><FieldRef Name='SolutionId' /><Value Type='Guid'>{0}</Value></Eq></Where> 
+                        </Query> 
+                         <ViewFields><FieldRef Name='ID' /><FieldRef Name='FileLeafRef' /></ViewFields> 
+                  </View>", packageGuid);
+
+            var solutions = solutionGallery.GetItems(camlQuery);
+            site.Context.Load(solutions);
+            site.Context.ExecuteQuery();
+
+            if (solutions.AreItemsAvailable)
+            {
+                var packageItem = solutions.FirstOrDefault();
+                var packageInfo = new DesignPackageInfo()
+                {
+                    PackageGuid = packageGuid,
+                    PackageName = fileName,
+                    MajorVersion = majorVersion,
+                    MinorVersion = minorVersion
+                };
+
+                DesignPackage.UnInstall(site.Context, site, packageInfo);
+                try
+                {
+                    site.Context.ExecuteQuery();
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -560,9 +563,11 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <returns>All my site site collections</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
+            Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
-            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND site:{0}", web.Context.Url);
+            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
             return web.SiteSearch(keywordQuery);
         }
 
@@ -582,8 +587,9 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="keywordQueryValue">Keyword query</param>
+        /// <param name="trimDublicates">Indicates if dublicates should be trimmed or not</param>
         /// <returns>All found site collections</returns>
-        public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue)
+        public static List<SiteEntity> SiteSearch(this Web web, string keywordQueryValue, bool trimDublicates = true)
         {
             try
             {
@@ -617,7 +623,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, "Site search error.");
+                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, CoreResources.WebExtensions_SiteSearchUnhandledException);
                 // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
                 throw;
             }
@@ -803,7 +809,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                return null;
+                return defaultValue;
             }
         }
 

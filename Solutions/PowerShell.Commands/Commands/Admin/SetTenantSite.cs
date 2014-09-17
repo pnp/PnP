@@ -14,7 +14,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 ", Details = "Requires a connection to a SharePoint Tenant Admin site.")]
     public class SetTenantSite : SPOAdminCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The URL of the site")]
+        [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]
         public string Url;
 
         [Parameter(Mandatory = false)]

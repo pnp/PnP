@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "SPOPropertyBag")]
     public class GetPropertyBag : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
         public string Key = string.Empty;
         protected override void ExecuteCmdlet()
         {

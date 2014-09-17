@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     ")]
     public class GetTimeZoneId : PSCmdlet
     {
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, Position=0)]
         public string Match;
 
         protected override void ProcessRecord()

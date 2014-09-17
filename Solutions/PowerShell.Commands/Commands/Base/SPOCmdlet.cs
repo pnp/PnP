@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.PowerShell.Commands.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.PowerShell.Commands.Base
+namespace OfficeDevPnP.PowerShell.Commands
 {
     public class SPOCmdlet : PSCmdlet
     {

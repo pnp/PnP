@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddView : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Url of the list.")]
-        public SPOListPipeBind List;
+        public ListPipeBind List;
 
         [Parameter(Mandatory = true)]
         public string Title;
@@ -40,7 +40,9 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (list != null)
             {
-                list.CreateListView(Title, ViewType, Fields, RowLimit, SetAsDefault, Query, Personal);
+                var view = list.CreateView(Title, ViewType, Fields, RowLimit, SetAsDefault, Query, Personal);
+
+                WriteObject(view);
             }
         }
     }
