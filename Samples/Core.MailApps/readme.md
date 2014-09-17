@@ -26,7 +26,7 @@ Version  | Date | Comments
 # OFFICE MAIL APP MANIFEST #
 The Office App Manifest is used to describe to the Exchange server what the app is supposed to look for. In the sample app, the app looks for the following:
 
-[image:AppManifest UI]
+![AppManifest UI](http://i.imgur.com/MiGzyqh.png)
 
 The regular expression for this URL search will either yield results or will not yield them. If it does yield a result, the app button will appear in the message. The data for this app will be available by using the following methods:
 
@@ -41,17 +41,17 @@ These methods will be the point for making the content easily available within t
 ## CONFIGURATION ##
 Office mail apps require that the tenant or the individual subscribe to a manifest file, which can be hosted at a web site location or added directly to the user’s apps. Settings->Options->Apps takes you to the Installed Apps page which looks like this when the app is deployed:
 
-[image:Installed Apps]
+![Exchange Installed Apps](http://i.imgur.com/Sett4zB.png)
 
 The manifest simply points back to the host URL where a web site provides the script for running the application which runs in an iframe. You can have many apps under the Visual Studio Project and these will be deployed to your specific mailbox In the solution during build. The manifest file for the YouTube application is located under Core.MailApps and looks like this:
 
-[image:Project structure]
+![Mail app project structure](http://i.imgur.com/ew65dw6.png)
 
 When building this project, there is a post-build event which runs the UpdateAppUrl.ps1 script. The file will update the SourceLocation in all manifest files ~remoteAppUrl property in the project with whatever is set in the $hostUrl property in the script. This is the URL that will be used at the user or tenant level for adding an app. Below is a screenshot of the tenant-level administration page where the app is being added.
 
-[image:Add from URL menu]
+![Add from URL menu](http://i.imgur.com/xUyLCRN.png)
 
-[image:Add from URL dialog]
+![Add from URL dialog](http://i.imgur.com/pG9VWDF.png)
 
 ## WEB APPLICATION ##
 The web application is not unlike any other web application. It can be a .NET application, Node.js, PHP, Java, etc. The point is that it’s limitless what you can create here, the web page is within the iframe. Note that the Office.css is included in the project to ensure that the UI follows the inteface of Outlook and Outlook Web Access.
@@ -60,7 +60,7 @@ The web project contains the App.css and App.js for providing application-level 
 ### PROJECT STRUCTURE ###
 When you create a Mail app, you are given the choice to create an app that reads the contents of your email or that writes/composes an email. In the YouTube sample, the app simply reads the email, finds URLs which match the youtube watch format, matches them with a regular expression and makes them available to the app. The final result looks like so:
 
-[image:App demo image]
+![App Demo](http://i.imgur.com/r6yCv8e.png)
 
 ## References ##
 For more information on developing mail apps, visit the Office Mail Apps development center on MSDN:
