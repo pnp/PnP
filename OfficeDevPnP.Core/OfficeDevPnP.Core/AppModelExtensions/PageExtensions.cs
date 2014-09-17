@@ -204,6 +204,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
         /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or webPart is null</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddWebPartToWikiPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart, int row, int col, bool addSpace)
         {
             if (string.IsNullOrEmpty(serverRelativePageUrl))
@@ -593,6 +594,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl or html is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or html is null</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html, int row, int col)
         {
             if (string.IsNullOrEmpty(serverRelativePageUrl))

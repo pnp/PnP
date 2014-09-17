@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -461,7 +462,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentException("id", "Field already exists");
 
             string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
-            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateFieldBase, newFieldCAML);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
             fields.Context.ExecuteQuery();
