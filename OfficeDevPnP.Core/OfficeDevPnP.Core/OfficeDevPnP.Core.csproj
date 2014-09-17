@@ -149,6 +149,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\Caml.cs" />
     <Compile Include="Utilities\LoggingUtility.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>

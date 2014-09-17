@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Configuration";
+}
+
+<h2>Configure your events application</h2>
+@using (Html.BeginForm()) {
+<h3>Initialize the data</h3>
+
+<div>
+    @if (string.IsNullOrEmpty(ViewBag.Status)) {
+        <button>Initialize the data store</button>
+    }
+    else {
+        <text>Configuration status: </text> @ViewBag.Status
+    }
+</div>
+}

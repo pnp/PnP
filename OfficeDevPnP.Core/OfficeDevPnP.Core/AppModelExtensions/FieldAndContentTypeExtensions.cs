@@ -111,7 +111,7 @@ namespace Microsoft.SharePoint.Client
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQuery();
-
+            
             var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
             return field;
         }
@@ -218,17 +218,51 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True or false depending on the field existence</returns>
         public static bool FieldExistsById(this Web web, Guid fieldId)
         {
-            FieldCollection fields = web.Fields;
-            web.Context.Load(fields);
-            web.Context.ExecuteQuery();
-            foreach (var item in fields)
-            {
-                if (item.Id == fieldId)
-                {
-                    return true;
-                }
-            }
+            var field = web.GetFieldById<Field>(fieldId);
+
+            if (field != null)
+                return true;
+
             return false;
+        }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <param name="TField">Field type to be returned</param>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field {
+            var fields = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldId));
+            web.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault();
+            if (field == null)
+                return null;
+            else
+                return web.Context.CastTo<TField>(field);
+        }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <param name="TField">Field type to be returned</param>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldByName<TField>(this FieldCollection fields, string internalName) where TField : Field {
+            if (!fields.ServerObjectIsNull.HasValue ||
+                fields.ServerObjectIsNull.Value) {
+                    fields.Context.Load(fields);
+                    fields.Context.ExecuteQuery();
+            }
+
+            var field = fields.FirstOrDefault(f=>f.StaticName == internalName);
+            if (field == null)
+                return null;
+            else
+                return fields.Context.CastTo<TField>(field);
         }
 
         /// <summary>
@@ -460,7 +494,7 @@ namespace Microsoft.SharePoint.Client
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            string newFieldCAML = FormatFieldXml(id, internalName, fieldType, displayName, group, additionalXmlAttributes);
             LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
@@ -475,6 +509,11 @@ namespace Microsoft.SharePoint.Client
                 fields.Context.ExecuteQuery();
 
             return fields.Context.CastTo<TField>(field);
+        }
+
+        public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes) {
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            return newFieldCAML;
         }
 
         /// <summary>
@@ -568,8 +607,10 @@ namespace Microsoft.SharePoint.Client
 
             foreach (var fieldName in fieldInternalNames) {
                 var field = list.Fields.GetByInternalNameOrTitle(fieldName);
+                list.Context.Load(field);
                 fields.Add(field);
             }
+            list.Context.ExecuteQuery();
             return fields;
         }
         #endregion
