@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="OfficeDev PnP PowerShell Commands" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+     >
+  <Product Id="*" Name="Office 365 Developer PnP PowerShell Commands" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate />
+    <MediaTemplate  EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="OfficeDev PnP PowerShell Commands" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
+    <PropertyRef Id="NETFRAMEWORK45"/>
+    <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    </Condition>
+    <Property Id="POWERSHELLCOMPATIBLE">
+      <RegistrySearch Id="PSCompatible"
+                      Root="HKLM"
+                      Key="SOFTWARE\Microsoft\PowerShell\3\PowerShellEngine"
+                      Name="PSCompatibleVersion"
+                      Type="raw" />
+    </Property>
+    <Condition Message="PowerShell 3.0 is required. Please install PowerShell 3.0 then run this installer again.">
+      <![CDATA[Installed OR (POWERSHELLCOMPATIBLE >< "3.0")]]>
+    </Condition>
   </Product>
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
@@ -22,12 +39,18 @@
         </Directory>
       </Directory>
     </Directory>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="Apache License Version 2.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="officedevpnp.bmp"/>
+    <UIRef Id="WixUI_Minimal" />
+
   </Fragment>
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="PowerShellCommands" Guid="ee934ac8-fca6-42b0-8203-69ce050c1c06">
-        <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)"/>
+        <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)" />
         <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
         <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>
         <File Id="CmdletHelpAttributes" Source="$(var.OfficeDevPnP.PowerShell.CmdletHelpAttributes.TargetPath)"/>
