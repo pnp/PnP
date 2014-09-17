@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="OfficeDev PnP PowerShell Commands" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="OfficeDev PnP PowerShell Commands" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="APPFOLDER" Name="OfficeDevPnP">
+          <Directory Id="PowerShell" Name="PowerShell">
+            <Directory Id="Modules" Name="Modules">
+              <Directory Id="INSTALLFOLDER" Name="OfficeDevPnP.PowerShell.Commands" />
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="PowerShellCommands" Guid="ee934ac8-fca6-42b0-8203-69ce050c1c06">
+        <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)"/>
+        <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
+        <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>
+        <File Id="CmdletHelpAttributes" Source="$(var.OfficeDevPnP.PowerShell.CmdletHelpAttributes.TargetPath)"/>
+        <File Id="FormatFile" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.Format.ps1xml" />
+        <File Id="PSD1File" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1" />
+        <File Id="TenantDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
