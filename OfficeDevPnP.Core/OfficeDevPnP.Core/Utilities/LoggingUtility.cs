@@ -33,6 +33,8 @@ namespace OfficeDevPnP.Core.Utilities
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
+        CreateField = 1701,
+
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
         SetTheme = 2601,

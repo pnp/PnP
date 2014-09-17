@@ -63,5 +63,6 @@ When you create a Mail app, you are given the choice to create an app that reads
 ![App Demo](http://i.imgur.com/r6yCv8e.png)
 
 ## References ##
-For more information on developing mail apps, visit the Office Mail Apps development center on MSDN:
-[http://msdn.microsoft.com/en-us/library/office/fp161135(v=office.15).aspx](http://msdn.microsoft.com/en-us/library/office/fp161135(v=office.15).aspx)
+For more information on developing mail apps, visit the [Office Mail Apps development center](http://msdn.microsoft.com/en-us/library/office/fp161135(v=office.15).aspx) on MSDN.
+
+Also, check out [So, You Want to Build an Office Mail App](http://blogs.msdn.com/b/sumanc/archive/2014/05/12/so-you-want-to-build-an-office-mail-app.aspx) on Suman Chakrabarti's blog.

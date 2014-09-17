@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -23,10 +24,13 @@ namespace CorporateEvents.SharePointWeb.Models {
         }
 
         // properties
+        [Key]
         public int Id { get; set; }
+        [Required]
         public string Title { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
+
         protected ListItem ListItem { get; set; }
         protected bool IsNew { get; set; }
 
@@ -58,8 +62,9 @@ namespace CorporateEvents.SharePointWeb.Models {
             EnsureFieldsRetrieved(ListItem);
 
             BaseSet(ListItem, TITLE, Title);
-            BaseSet(ListItem, CREATED, Created);
-            BaseSet(ListItem, MODIFIED, Modified);
+            // use if you want to override the created/modified date
+            //BaseSet(ListItem, CREATED, Created);
+            //BaseSet(ListItem, MODIFIED, Modified);
 
             if (!string.IsNullOrEmpty(ContentTypeName) && list.ContentTypeExistsById(ContentTypeName)) {
                 var contentType = list.GetContentTypeByName(ContentTypeName);
@@ -121,8 +126,8 @@ namespace CorporateEvents.SharePointWeb.Models {
         /// <param name="internalName"></param>
         /// <param name="value"></param>
         protected void BaseSet(ListItem item, string internalName, object value) {
-            var field = _fields[internalName.ToLowerInvariant()];
-            item[field.InternalName] = value;
+            //var field = _fields[internalName.ToLowerInvariant()];
+            item[internalName] = value;
         }
 
         /// <summary>

@@ -20,12 +20,12 @@ namespace CorporateEvents.SharePointWeb.Models {
         }
 
         [Required]
-        [Display(Name = "EventId")]
+        [Display(Name = "Event Id")]
         public string EventId { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
         [Display(Name="First name")]
@@ -76,7 +76,7 @@ namespace CorporateEvents.SharePointWeb.Models {
 
         protected override void ReadProperties(Microsoft.SharePoint.Client.ListItem item) {
             EventId = BaseGet<string>(item, FIELD_EVENT_ID);
-            Date = BaseGet<DateTime?>(item, FIELD_DATE);
+            Date = BaseGet<DateTime>(item, FIELD_DATE);
             FirstName = BaseGet<string>(item, FIELD_FIRST_NAME);
             LastName = BaseGet<string>(item, FIELD_LAST_NAME);
             UserId = BaseGet<string>(item, FIELD_USER_ID);

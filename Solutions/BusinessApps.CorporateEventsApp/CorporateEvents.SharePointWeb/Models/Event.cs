@@ -23,15 +23,24 @@ namespace CorporateEvents.SharePointWeb.Models {
 
         [Display(Name="Event Id")]
         public string RegisteredEventId { get; set; }
+
+        [DataType(DataType.MultilineText)]
         public string Description { get; set; }
+
         public string Category { get; set; }
+
         [Display(Name="Event Date")]
         public DateTime? EventDate { get; set; }
+
         public string Location { get; set; }
+
         [Display(Name="Contact Email")]
         [DataType(DataType.EmailAddress)]
         public string ContactEmail { get; set; }
+
+        [EnumDataType(typeof(EventStatus))]
         public EventStatus Status { get; set; }
+
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 

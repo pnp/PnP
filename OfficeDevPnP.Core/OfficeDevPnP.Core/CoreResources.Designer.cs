@@ -232,6 +232,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating document set &apos;{0}&apos;..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_CreateDocumentSet {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_CreateDocumentSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Field as XML: {0}.
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_CreateFieldBase {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_CreateFieldBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target folder does not exist in the web. Web: {0}, Folder: {1}.
         /// </summary>
         internal static string FileFolderExtensions_FolderMissing {

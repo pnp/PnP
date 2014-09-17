@@ -113,7 +113,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentException("The argument must be a single document set name and cannot contain path characters.", "documentSetName");
             }
 
-            LoggingUtility.Internal.TraceInformation(1, "Creating document set '{0}'.", documentSetName);
+            LoggingUtility.Internal.TraceInformation(1, CoreResources.FieldAndContentTypeExtensions_CreateDocumentSet, documentSetName);
 
             var result = DocumentSet.DocumentSet.Create(folder.Context, folder, documentSetName, contentTypeId);
             folder.Context.ExecuteQuery();
@@ -600,7 +600,7 @@ namespace Microsoft.SharePoint.Client
 
             var fileName = System.IO.Path.GetFileName(filePath);
 
-            LoggingUtility.Internal.TraceInformation(1, "Uploading file '{0}'.", fileName);
+            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile, fileName, filePath);
 
             File file = null;
             if (useWebDav)

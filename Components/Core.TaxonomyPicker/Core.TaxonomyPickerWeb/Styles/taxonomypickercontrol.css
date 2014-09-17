@@ -17,6 +17,20 @@
     min-height: 19px;
 }
 
+.cam-taxpicker-editor-readonly {
+    border: 1px solid #99b0c1;
+    cursor: text;
+    color: GrayText; 
+    word-break: break-all;
+    word-wrap: break-word;
+    min-height: 1em;
+    outline: none medium invert;
+    padding: 2px;
+    width: 360px;
+    float: left;
+    min-height: 19px;
+}
+
 .cam-taxpicker-button {
     margin: 2px;
     background: url(images/EMMCopyTerm.png) no-repeat;
