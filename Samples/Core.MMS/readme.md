@@ -16,7 +16,7 @@ Contoso.Core.MMS | Vesa Juvonen, Bert Jansen, Frank Marasco (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | November 6th 2013 (to update) | Initial release
+1.0  | 5-MAY-2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
