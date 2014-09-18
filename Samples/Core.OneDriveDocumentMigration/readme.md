@@ -32,8 +32,8 @@ Migrating users’ files from existing SharePoint 2010 MySite to Office One Driv
 The users and their Mysite/OneDrive tokens are provided via comma-separated file (.csv, sample attached). The same csv file could be used for automated OneDrive for Business site promotion (small changes to Core.OneDriveProvision needed, however).
 
 ### DEPENDENCIES ###
-•Microsoft.SharePoint.Client.dll
-•Microsoft.SharePoint.Client.Runtime.dll
+- Microsoft.SharePoint.Client.dll
+- Microsoft.SharePoint.Client.Runtime.dll
 
 ### CSV FILE EXAMPLE ###
 CSV file containing relevat user information. First line is removed in solution.
