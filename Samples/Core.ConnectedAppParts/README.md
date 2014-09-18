@@ -1,4 +1,4 @@
-# title of the PnP sample #
+# Connected App Parts with SignalR #
 
 ### Summary ###
 This sample shows how to inject custom CSS to the host web using SP App. For more information on this sample, please see Vesa Juvonen's thorough blog post on the concept: [http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx](http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx "Connected SharePoint app parts with SignalR")
