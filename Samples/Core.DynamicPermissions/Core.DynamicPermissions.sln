@@ -1,14 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.DynamicPermissionsWeb", "Core.DynamicPermissionsWeb\Core.DynamicPermissionsWeb.csproj", "{43FAA263-A9D7-4A03-86C9-BC9CAA1A71B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{650BCA36-4B12-4FE4-95CE-69A77BF85214}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
-		SharePoint Dynamic App Permissions.docx = SharePoint Dynamic App Permissions.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

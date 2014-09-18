@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-09-06**
+* Added new Set-SPOWeb cmdlet to set Title, SiteLogo, or AlternateCssUrl
+
 **2014-09-03**
 * Renamed Add-SPOApp to Import-SPOAppPackage to align with server cmdlet
 * Renamed Remove-SPOApp to Uninstall-SPOAppInstance to align with server cmdlet

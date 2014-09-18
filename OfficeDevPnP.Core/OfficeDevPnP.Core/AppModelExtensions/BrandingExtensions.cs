@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -247,7 +248,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (themeName == null)
                   ? new ArgumentNullException("themeName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "themeName");
             }
             SetThemeToWebImplementation(web, web, themeName);
         }
@@ -266,7 +267,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (themeName == null)
                   ? new ArgumentNullException("themeName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "themeName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "themeName");
             }
 
             SetThemeToWebImplementation(web, rootWeb, themeName);
@@ -353,13 +354,14 @@ namespace Microsoft.SharePoint.Client
 
         //TODO: to be replaced by new site logo CSOM once we've the April 2014 CU
         //Note: does seem to broken on the current SPO implementation (20/03/2014) as there's no _themes folder anymore in the root web
+        [Obsolete("Use Web.SiteLogoUrl property")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetSiteLogo(this Web web, string fullPathToLogo)
         {
             if (string.IsNullOrEmpty(fullPathToLogo) || !System.IO.File.Exists(fullPathToLogo))
             {
                 return;
             }
-
             // Not natively supported, but we can update the themed site icon. If initial theme was just applied, image is at
             // _themes/0/siteIcon-2129F729.themedpng
             Folder rootFolder = web.RootFolder;
@@ -568,23 +570,10 @@ namespace Microsoft.SharePoint.Client
         /// <param name="customMasterPageName"></param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
+        [Obsolete("Use SetMasterPagesByName")]
         public static void SetMasterPagesForSiteByName(this Web web, string masterPageName, string customMasterPageName)
         {
-            if (string.IsNullOrEmpty(masterPageName))
-            {
-                throw (masterPageName == null)
-                  ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
-            }
-            if (string.IsNullOrEmpty(customMasterPageName))
-            {
-                throw (customMasterPageName == null)
-                  ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
-            }
-
-            web.SetMasterPageForSiteByName(masterPageName);
-            web.SetCustomMasterPageForSiteByName(customMasterPageName);
+            web.SetMasterPagesByName(masterPageName, customMasterPageName);
         }
 
         /// <summary>
@@ -595,23 +584,77 @@ namespace Microsoft.SharePoint.Client
         /// <param name="customMasterPageName"></param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
-        public static void SetMasterPagesForSiteByUrl(this Web web, string masterPageName, string customMasterPageName)
+        public static void SetMasterPagesByName(this Web web, string masterPageName, string customMasterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
             if (string.IsNullOrEmpty(customMasterPageName))
             {
                 throw (customMasterPageName == null)
                   ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "customMasterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
-            web.SetMasterPageForSiteByUrl(masterPageName);
-            web.SetCustomMasterPageForSiteByUrl(customMasterPageName);
+            web.SetMasterPageByName(masterPageName);
+            web.SetCustomMasterPageByName(customMasterPageName);
+        }
+
+           /// <summary>
+        /// Can be used to set master page and custom master page in single command
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="masterPageName"></param>
+        /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
+        [Obsolete("Use SetMasterPagesByUrl")]
+        public static void SetMasterPagesForSiteByUrl(this Web web, string masterPageUrl, string customMasterPageUrl)
+        {
+            web.SetMasterPagesByUrl(masterPageUrl, customMasterPageUrl);
+        }
+
+        /// <summary>
+        /// Can be used to set master page and custom master page in single command
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="masterPageName"></param>
+        /// <param name="customMasterPageName"></param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
+        public static void SetMasterPagesByUrl(this Web web, string masterPageUrl, string customMasterPageUrl)
+        {
+            if (string.IsNullOrEmpty(masterPageUrl))
+            {
+                throw (masterPageUrl == null)
+                  ? new ArgumentNullException("masterPageName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
+            }
+            if (string.IsNullOrEmpty(customMasterPageUrl))
+            {
+                throw (customMasterPageUrl == null)
+                  ? new ArgumentNullException("customMasterPageName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
+            }
+
+            web.SetMasterPageForSiteByUrl(masterPageUrl);
+            web.SetCustomMasterPageForSiteByUrl(customMasterPageUrl);
+        }
+
+          /// <summary>
+        /// Master page is set by using master page name. Master page is set from the current web.
+        /// </summary>
+        /// <param name="web">Current web</param>
+        /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
+        [Obsolete("Use SetMasterPageByName")]
+        public static void SetMasterPageForSiteByName(this Web web, string masterPageName)
+        {
+            web.SetMasterPageByName(masterPageName);
         }
 
         /// <summary>
@@ -621,13 +664,13 @@ namespace Microsoft.SharePoint.Client
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
-        public static void SetMasterPageForSiteByName(this Web web, string masterPageName)
+        public static void SetMasterPageByName(this Web web, string masterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
@@ -644,13 +687,26 @@ namespace Microsoft.SharePoint.Client
         /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
+        [Obsolete("Use SetCustomMasterPageByName")]
         public static void SetCustomMasterPageForSiteByName(this Web web, string masterPageName)
+        {
+            web.SetCustomMasterPageByName(masterPageName);
+        }
+
+        /// <summary>
+        /// Master page is set by using master page name. Master page is set from the current web.
+        /// </summary>
+        /// <param name="web">Current web</param>
+        /// <param name="masterPageName">Name of the master page. Path is resolved from this.</param>
+        /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
+        public static void SetCustomMasterPageByName(this Web web, string masterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
             {
                 throw (masterPageName == null)
                   ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "masterPageName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
             }
 
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
@@ -660,8 +716,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase", 
-            Justification="URLs are commonly standardised to lower case.")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+            Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
             if (string.IsNullOrEmpty(masterPageName))
@@ -708,13 +764,23 @@ namespace Microsoft.SharePoint.Client
             return null;
         }
 
+         /// <summary>
+        /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
+        /// </summary>
+        /// <param name="web">Context web</param>
+        /// <param name="masterPageName">URL to the master page.</param>
+        [Obsolete("Use SetMasterPageByUrl")]
+        public static void SetMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        {
+            web.SetMasterPageByUrl(masterPageUrl);
+        }
 
         /// <summary>
         /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
         /// <param name="masterPageName">URL to the master page.</param>
-        public static void SetMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        public static void SetMasterPageByUrl(this Web web, string masterPageUrl)
         {
             if (string.IsNullOrEmpty(masterPageUrl))
                 throw new ArgumentNullException("masterPageUrl");

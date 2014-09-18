@@ -30,8 +30,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             {
                 featureCollection = this.SelectedWeb.Features;
             }
-            
-            var query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            IEnumerable<Feature> query = null;
+            if (ClientContext.ServerVersion.Major > 15)
+            {
+                 query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            }
+            else
+            {
+                query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties());
+            }
             ClientContext.ExecuteQuery();
             if (Identity == null)
             {

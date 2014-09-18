@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.DataStorageModels", "Core.DataStorageModels\Core.DataStorageModels.csproj", "{3332E06C-ADE2-49D0-A6C9-679A6C432B95}"
 EndProject
@@ -9,9 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.DataStorageModelsWeb",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{148A011D-C5E6-4B6D-BB2F-72A2C1657576}"
 	ProjectSection(SolutionItems) = preProject
-		Data Storage Models.docx = Data Storage Models.docx
 		northwind.sql = northwind.sql
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

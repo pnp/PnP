@@ -373,7 +373,7 @@ namespace Microsoft.SharePoint.Client
             bool exists = false;
             try
             {
-                using(ClientContext testContext = new ClientContext(webFullUrl))
+                using (ClientContext testContext = new ClientContext(webFullUrl))
                 {
                     testContext.Credentials = context.Credentials;
                     testContext.Load(testContext.Web, w => w.Title);
@@ -459,14 +459,13 @@ namespace Microsoft.SharePoint.Client
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
-            rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
-
+            rootWeb.RootFolder.UploadFile(sourceFilePath);
             var packageInfo = new DesignPackageInfo()
             {
                 PackageName = fileName,
                 PackageGuid = packageGuid,
                 MajorVersion = majorVersion,
-                MinorVersion = minorVersion
+                MinorVersion = minorVersion,
             };
 
             LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
@@ -488,12 +487,68 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
+            var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
-            //Console.WriteLine("Applying package '{0}'", packageInfo.PackageName);
-            //DesignPackage.Apply(siteContext, siteContext.Site, packageInfo);
+
+            // Remove package from rootfolder
+            var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
+            uploadedSolutionFile.DeleteObject();
             site.Context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Uninstalls a sandbox solution package (.WSP) file
+        /// </summary>
+        /// <param name="site">Site collection to install to</param>
+        /// <param name="packageGuid">ID of the solution, from the solution manifest</param>
+        /// <param name="fileName">filename of the WSP file to uninstall</param>
+        /// <param name="majorVersion">Optional major version of the solution, defaults to 1</param>
+        /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
+        public static void UninstallSolution(this Site site, Guid packageGuid, string fileName, int majorVersion = 1, int minorVersion = 0)
+        {
+            LoggingUtility.Internal.TraceInformation((int)EventId.UninstallSolution, CoreResources.WebExtensions_UninstallSolution, packageGuid);
+
+            var rootWeb = site.RootWeb;
+            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+
+            var camlQuery = new CamlQuery();
+            camlQuery.ViewXml = string.Format(
+              @"<View>  
+                        <Query> 
+                           <Where><Eq><FieldRef Name='SolutionId' /><Value Type='Guid'>{0}</Value></Eq></Where> 
+                        </Query> 
+                         <ViewFields><FieldRef Name='ID' /><FieldRef Name='FileLeafRef' /></ViewFields> 
+                  </View>", packageGuid);
+
+            var solutions = solutionGallery.GetItems(camlQuery);
+            site.Context.Load(solutions);
+            site.Context.ExecuteQuery();
+
+            if (solutions.AreItemsAvailable)
+            {
+                var packageItem = solutions.FirstOrDefault();
+                var packageInfo = new DesignPackageInfo()
+                {
+                    PackageGuid = packageGuid,
+                    PackageName = fileName,
+                    MajorVersion = majorVersion,
+                    MinorVersion = minorVersion
+                };
+
+                DesignPackage.UnInstall(site.Context, site, packageInfo);
+                try
+                {
+                    site.Context.ExecuteQuery();
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -505,7 +560,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <returns>All my site site collections</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
-            Justification="Search Query code")]
+            Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
             string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);

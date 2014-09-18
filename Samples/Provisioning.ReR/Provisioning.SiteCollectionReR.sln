@@ -1,12 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{1D86B4C8-38DC-45A2-BD87-EED1B112C64D}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		SiteCreation.docx = SiteCreation.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.SiteCollectionReRCreation", "Provisioning.SiteCollectionReR\Provisioning.SiteCollectionReRCreation.csproj", "{DDB5138E-527E-4CC1-B389-FBD5179303A8}"

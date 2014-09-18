@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 
@@ -10,6 +11,7 @@ namespace System
     public static class UrlUtility
     {
         const char PATH_DELIMITER = '/';
+        const string INVALID_CHARS_REGEX = @"[\\~#%&*{}/:<>?+|\""]";
 
         #region [ Combine ]
         /// <summary>
@@ -101,6 +103,19 @@ namespace System
             return urlToProcess;
         }
         #endregion
+
+        public static bool ContainsInvalidUrlChars(this string content)
+        {
+	    return Regex.IsMatch(content, INVALID_CHARS_REGEX);
+        }
+        public static string StripInvalidUrlChars(this string content)
+        {
+            return ReplaceInvalidUrlChars(content, "");
+        }
+        public static string ReplaceInvalidUrlChars(this string content, string replacer)
+        {
+	    return new Regex(INVALID_CHARS_REGEX).Replace(content, replacer);
+        }
 
     }
 }

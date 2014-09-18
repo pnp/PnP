@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.CallServiceUpdateSPViaProxy", "Workflow.CallServiceUpdateSPViaProxy\Workflow.CallServiceUpdateSPViaProxy.csproj", "{673406A7-7EFF-4C0B-B7AD-97661FD456D8}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.CallServiceUpdateS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{0E14C9AE-E367-498A-8976-8B3F3D2DC3B3}"
 	ProjectSection(SolutionItems) = preProject
-		Call Custom Web Service Update SharePoint via Web Proxy.docx = Call Custom Web Service Update SharePoint via Web Proxy.docx
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

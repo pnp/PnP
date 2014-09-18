@@ -1,4 +1,6 @@
-$ModuleHome = "$Home\Documents\WindowsPowerShell\Modules\OfficeDevPnP.PowerShell"
+$documentsFolder = [environment]::getfolderpath("mydocuments");
+
+$ModuleHome = "$documentsFolder\WindowsPowerShell\Modules\OfficeDevPnP.PowerShell"
 New-Item -Path $ModuleHome -ItemType Directory -Force
 
 Write-Host "Copying files from $target to $PSModuleHome"
