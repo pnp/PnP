@@ -65,15 +65,18 @@ namespace CorporateEvents.SharePointWeb.Models {
             Location = BaseGet<string>(item, FIELD_LOCATION);
             ContactEmail = BaseGet<string>(item, FIELD_CONTACT_EMAIL);
             Status = BaseGetEnum<EventStatus>(item, FIELD_STATUS);
-            ImageUrl = BaseGet<string>(item, FIELD_IMAGE_URL);
+            var imageUrl = BaseGet<FieldUrlValue>(item, FIELD_IMAGE_URL);
+
+            if (imageUrl != null)
+                ImageUrl = imageUrl.Url;
         }
 
         protected override string ListTitle {
-            get { throw new NotImplementedException(); }
+            get { return ListDetails.EventsListName; }
         }
 
         protected override string ContentTypeName {
-            get { throw new NotImplementedException(); }
+            get { return ContentTypes.CorporateEvent; }
         }
 
         protected override string[] FieldInternalNames {

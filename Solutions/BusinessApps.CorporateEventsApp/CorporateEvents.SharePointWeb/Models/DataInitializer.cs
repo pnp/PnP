@@ -69,6 +69,13 @@ namespace CorporateEvents.SharePointWeb.Models {
                 // Create fields for speakers list
                 ApplyListSchema(web, contentTypeId, ListDetails.SpeakersListName);
             }
+
+            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                var web = clientContext.Web;
+                clientContext.Load(web);
+                clientContext.ExecuteQuery();
+                CreateSampleData(web);
+            }
         }
 
         #region [ List schemas ]
@@ -148,6 +155,8 @@ namespace CorporateEvents.SharePointWeb.Models {
                 "Email",
                 ListDetails.CorporateEventsSiteColumnsGroup,
                 "Required='TRUE' Customization=''"));
+
+            fields.Add(web.GetFieldById<Field>(new Guid("{E10F8222-BCC3-4348-9463-4963D0AD4900}")));
 
             TryCreateFields(web, fields, fieldsXml);
             #endregion
@@ -494,6 +503,51 @@ namespace CorporateEvents.SharePointWeb.Models {
                 ct.DeleteObject();
                 web.Context.ExecuteQuery();
             }
+        }
+
+        private static void CreateSampleData(Web web) {
+            var context = web.Context;
+            var host = "https://" + HttpContext.Current.Request.Url.Authority;
+
+            var event1 = new Event() {
+                Title = "Corporate Event 1",
+                Category = "Featured",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet augue in dolor dapibus feugiat in eu odio. Proin vel egestas purus. Integer sit amet orci rhoncus, elementum nibh sit amet, maximus dui. Vivamus rutrum neque et massa hendrerit, varius consequat quam efficitur. Quisque aliquam pellentesque quam, a bibendum nibh dignissim sit amet. Curabitur accumsan tincidunt lectus et tincidunt.",
+                ImageUrl = host + "/Images/company-events1.jpg",
+                Location = "Pittsburgh, PA",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT001",
+                EventDate = DateTime.Now.AddDays(25)
+            };
+
+            var event2 = new Event() {
+                Title = "Corporate Event 2",
+                Category = "Featured",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Vestibulum ex mauris, feugiat in vehicula id, congue eleifend elit. Morbi orci quam, mattis sit amet nisl sed, dictum fermentum velit. Quisque rhoncus, arcu vitae dignissim tempus, nisl felis volutpat ipsum, non lobortis tellus lectus at mauris. Fusce porta, lectus feugiat egestas fringilla, dui velit tincidunt est, nec congue ligula urna a felis. Nam vitae ullamcorper lectus. Sed vitae justo felis.",
+                ImageUrl = host + "/Images/company-events2.jpg",
+                Location = "Helsinki, Finland",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT002",
+                EventDate = DateTime.Now.AddDays(45)
+            };
+
+            var event3 = new Event() {
+                Title = "Corporate Event 3",
+                Category = "Featured",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Vivamus scelerisque lectus et sapien mollis, ut vestibulum nunc vulputate. Nullam sed quam felis. Praesent sit amet egestas nunc, nec aliquam eros. Maecenas et nisl dapibus, varius metus ac, luctus quam. Donec vitae justo vitae nisi placerat ultrices nec sed ante.",
+                ImageUrl = host + "/Images/company-events3.jpg",
+                Location = "Chicago, IL",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT003",
+                EventDate = DateTime.Now.AddDays(60)
+            };
+
+            event1.Save(web);
+            event2.Save(web);
+            event3.Save(web);
         }
     }
 }

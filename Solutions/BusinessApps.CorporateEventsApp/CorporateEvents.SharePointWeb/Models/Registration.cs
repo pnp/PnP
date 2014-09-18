@@ -12,7 +12,6 @@ namespace CorporateEvents.SharePointWeb.Models {
         internal const string FIELD_LAST_NAME = "RegistrationLastName";
         internal const string FIELD_USER_ID = "RegistrationUserId";
         internal const string FIELD_USER_EMAIL = "RegistrationUserEmail";
-        internal const string FIELD_EVENT_ID = "RegistrationEventId";
 
         public Registration() : base() { }
         public Registration(ListItem item) : base(item) {
@@ -23,8 +22,6 @@ namespace CorporateEvents.SharePointWeb.Models {
         [Display(Name = "Event Id")]
         public string EventId { get; set; }
 
-        [Required]
-        [DataType(DataType.DateTime)]
         public DateTime Date { get; set; }
 
         [Required]
@@ -59,28 +56,36 @@ namespace CorporateEvents.SharePointWeb.Models {
                     FIELD_FIRST_NAME,
                     FIELD_LAST_NAME,
                     FIELD_USER_EMAIL,
-                    FIELD_USER_ID
+                    FIELD_USER_ID,
+                    Event.FIELD_REGISTERED_EVENT_ID
                 };
             }
         }
 
         protected override void SetProperties(Microsoft.SharePoint.Client.ListItem item) {
             Title = string.Format("{0}: {1} {2}", EventId, FirstName, LastName);
-            BaseSet(item, FIELD_EVENT_ID, EventId);
-            BaseSet(item, FIELD_DATE, Date);
+            BaseSet(item, Event.FIELD_REGISTERED_EVENT_ID, EventId);
             BaseSet(item, FIELD_FIRST_NAME, FirstName);
             BaseSet(item, FIELD_LAST_NAME, LastName);
             BaseSet(item, FIELD_USER_ID, UserId);
             BaseSet(item, FIELD_USER_EMAIL, Email);
+
+            if (IsNew)
+                Date = DateTime.Now;
+
+            BaseSet(item, FIELD_DATE, Date);
         }
 
         protected override void ReadProperties(Microsoft.SharePoint.Client.ListItem item) {
-            EventId = BaseGet<string>(item, FIELD_EVENT_ID);
-            Date = BaseGet<DateTime>(item, FIELD_DATE);
+            EventId = BaseGet<string>(item, Event.FIELD_REGISTERED_EVENT_ID);
             FirstName = BaseGet<string>(item, FIELD_FIRST_NAME);
             LastName = BaseGet<string>(item, FIELD_LAST_NAME);
             UserId = BaseGet<string>(item, FIELD_USER_ID);
             Email = BaseGet<string>(item, FIELD_USER_EMAIL);
+
+            var date = BaseGet<DateTime?>(item, FIELD_DATE);
+            if (date.HasValue)
+                Date = date.Value;
         }
     }
 }

@@ -13,8 +13,8 @@ namespace CorporateEvents.SharePointWeb.Models {
         internal const string TITLE = "Title";
         internal const string CREATED = "Created";
         internal const string MODIFIED = "Modified";
-        static bool _fieldsRetrieved = false;
-        static Dictionary<string, Field> _fields = new Dictionary<string, Field>();
+        bool _fieldsRetrieved = false;
+        Dictionary<string, Field> _fields = new Dictionary<string, Field>();
 
         public BaseListItem() { IsNew = true; }
         public BaseListItem(ListItem item) : this() {
@@ -26,7 +26,6 @@ namespace CorporateEvents.SharePointWeb.Models {
         // properties
         [Key]
         public int Id { get; set; }
-        [Required]
         public string Title { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
@@ -46,49 +45,56 @@ namespace CorporateEvents.SharePointWeb.Models {
         /// </summary>
         /// <param name="context">ClientContext object to enable saving a new list item.</param>
         /// <param name="executeQuery">Calls ExecuteQuery if true. Enables batching many items if false.</param>
-        public void Save(ClientContext context, bool executeQuery = true) {
-            var list = context.Web.GetListByTitle(ListTitle);
-            if (!IsNew && Id > 0){
+        public void Save(Web web) {
+            var context = web.Context;
+            var list = web.GetListByTitle(ListTitle);
+            if (!IsNew && Id > 0) {
                 ListItem = list.GetItemById(Id);
             }
-            else{
+            else {
                 var listItemCreationInfo = new ListItemCreationInformation();
                 ListItem = list.AddItem(listItemCreationInfo);
             }
-            context.Load(ListItem);
-            context.ExecuteQuery();
 
-            // ensure that the fields have been added to the list
+            // ensure that the fields have been loaded
             EnsureFieldsRetrieved(ListItem);
 
+            // set the properties on the list item
+            SetProperties(ListItem);
             BaseSet(ListItem, TITLE, Title);
+
             // use if you want to override the created/modified date
             //BaseSet(ListItem, CREATED, Created);
             //BaseSet(ListItem, MODIFIED, Modified);
 
-            if (!string.IsNullOrEmpty(ContentTypeName) && list.ContentTypeExistsById(ContentTypeName)) {
-                var contentType = list.GetContentTypeByName(ContentTypeName);
-                BaseSet(ListItem, "ContentTypeId", contentType.Id.StringValue);
-            }
+            ListItem.Update();
 
-            // set the properties on the list item
-            SetProperties(ListItem);
+            if (!string.IsNullOrEmpty(ContentTypeName)) {
+                var contentType = list.GetContentTypeByName(ContentTypeName);
+                if (contentType != null)
+                    BaseSet(ListItem, "ContentTypeId", contentType.Id.StringValue);
+            }
 
             ListItem.Update();
 
-            if (executeQuery) {
-                context.ExecuteQuery();
-                ListItem.RefreshLoad();
-                UpdateBaseProperties(ListItem);
-                ReadProperties(ListItem);
-            }
+            // Execute the batch
+            context.ExecuteQuery();
+
+            // reload the properties
+            ListItem.RefreshLoad();
+            UpdateBaseProperties(ListItem);
+            ReadProperties(ListItem);
         }
 
         private void UpdateBaseProperties(ListItem item) {
             Id = item.Id;
             Title = (string)item[TITLE];
-            Created = (DateTime)item[CREATED];
-            Modified = (DateTime)item[MODIFIED];
+
+            if (item.FieldValues.ContainsKey(CREATED))
+                Created = (DateTime)item[CREATED];
+
+            if (item.FieldValues.ContainsKey(MODIFIED))
+                Modified = (DateTime)item[MODIFIED];
         }
 
         /// <summary>
@@ -126,7 +132,16 @@ namespace CorporateEvents.SharePointWeb.Models {
         /// <param name="internalName"></param>
         /// <param name="value"></param>
         protected void BaseSet(ListItem item, string internalName, object value) {
-            //var field = _fields[internalName.ToLowerInvariant()];
+            if (_fields.ContainsKey(internalName)) {
+                var field = _fields[internalName.ToLowerInvariant()];
+
+                if (field is FieldUrl && value is string) {
+                    var urlValue = new FieldUrlValue() {
+                        Url = value.ToString()
+                    };
+                    value = urlValue;
+                }
+            }
             item[internalName] = value;
         }
 

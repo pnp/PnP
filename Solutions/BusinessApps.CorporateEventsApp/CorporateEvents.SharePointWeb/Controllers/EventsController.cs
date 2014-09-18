@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace CorporateEvents.SharePointWeb.Controllers {
     public class EventsController : Controller {
         #region [ Index ]
+        [SharePointContextFilter]
         public ActionResult Index(int offset = 0) {
             using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {
                 var list = clientContext.Web.GetListByTitle(ListDetails.EventsListName);
@@ -17,6 +18,7 @@ namespace CorporateEvents.SharePointWeb.Controllers {
                     ViewXml = CAML.ViewQuery()
                 };
                 var events = list.GetItems(caml);
+                clientContext.ExecuteQuery();
                 var eventsList = events.Cast<ListItem>().Select(item => new Event(item)).ToList();
                 return View(eventsList);
             }
@@ -88,18 +90,20 @@ namespace CorporateEvents.SharePointWeb.Controllers {
         #endregion
 
         #region [ Register ]
+        [SharePointContextFilter]
         public ActionResult Register(string eventId) {
             ViewBag.EventId = eventId;
             return View();
         }
         [HttpPost]
+        [SharePointContextFilter]
         public ActionResult Register(Registration registration) {
             if (!ModelState.IsValid)
                 View(registration);
 
             try {
                 using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {
-                    registration.Save(clientContext);
+                    registration.Save(clientContext.Web);
                 }
                 return RedirectToAction("Index", "Registration");
             }
