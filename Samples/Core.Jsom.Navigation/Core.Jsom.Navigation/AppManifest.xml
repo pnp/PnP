@@ -7,13 +7,14 @@
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
-    <Title>Core.Jsom.Navigation</Title>
+    <Title>Office 365 Developer PnP JSOM Navigation Sample</Title>
     <StartPage>~appWebUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
   </Properties>
 
   <AppPrincipal>
     <Internal />
   </AppPrincipal>
-
-
+  <AppPermissionRequests>
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="Manage" />
+  </AppPermissionRequests>
 </App>

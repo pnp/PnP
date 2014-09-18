@@ -1,26 +1,128 @@
 ﻿'use strict';
 
-var context = SP.ClientContext.get_current();
-var user = context.get_web().get_currentUser();
+var OfficeDevPnP = OfficeDevPnP || {};
+OfficeDevPnP.Core = OfficeDevPnP.Core || {};
 
-// This code runs when the DOM is ready and creates a context object which is needed to use the SharePoint object model
-$(document).ready(function () {
-    getUserName();
+OfficeDevPnP.Core.NavApp = function() {
+    var coreNavigation = new OfficeDevPnP.Core.Navigation();
+
+    return {
+        initialize:
+            function() {
+                var hostWebUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
+                var appWebUrl = decodeURIComponent(getQueryStringParameter('SPAppWebUrl'));
+
+                coreNavigation.initialize(appWebUrl, hostWebUrl);
+            },
+
+        addTopNavNode:
+            function() {
+                coreNavigation.addNavigationNode("Test", "http://www.microsoft.com", null, false)
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Added top nav node \'Test\'');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to add top nav node \'Test\': ' + message);
+                        });
+
+            },
+
+        deleteTopNavNode:
+            function() {
+                coreNavigation.deleteNavigationNode("Test", null, false)
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Removed top nav node \'Test\'');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to remove top nav node \'Test\': ' + message);
+                        });
+
+            },
+
+        addQuickLaunchNodes:
+            function() {
+                coreNavigation.addNavigationNode("Parent", "#", null, true)
+                    .then(
+                        function() {
+                            return coreNavigation.addNavigationNode("Child", "http://www.microsoft.com", 'Parent', true);
+                        })
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Added quick launch nodes \'Parent\' and \'Child\'');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to add quick launch nodes \'Parent\' and \'Child\': ' + message);
+                        });
+            },
+
+        deleteQuickLaunchNodes:
+            function() {
+                coreNavigation.deleteNavigationNode("Child", "Parent", true)
+                    .then(
+                        function() {
+                            return coreNavigation.deleteNavigationNode("Parent", null, true);
+                        })
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Deleted quick launch nodes \'Parent\' and \'Child\'');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to delete quick launch nodes \'Parent\' and \'Child\': ' + message);
+                        });
+            },
+
+        deleteAllQuickLaunchNodes:
+            function() {
+                coreNavigation.deleteAllQuickLaunchNodes()
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Deleted all quick launch nodes');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to delete all quick launch nodes: ' + message);
+                        });
+            },
+
+        updateNavigationInheritanceTrue:
+            function() {
+                coreNavigation.updateNavigationInheritance(true)
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Navigation inheritance set to true');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to set navigation inheritance to true: ' + message);
+                        });
+            },
+
+        updateNavigationInheritanceFalse:
+            function() {
+                coreNavigation.updateNavigationInheritance(false)
+                    .done(
+                        function() {
+                            $("#statusMessage").html('Navigation inheritance set to false');
+                        })
+                    .fail(
+                        function(message) {
+                            $("#statusMessage").html('Failed to set navigation inheritance to false: ' + message);
+                        });
+            }
+    };
+};
+var navApp;
+
+$(document).ready(function() {
+    navApp = new OfficeDevPnP.Core.NavApp();
+    navApp.initialize();
+
+    $("#statusMessage").html('Ready');
+    $('#aspnetForm').attr('onsubmit', 'javascript: return false;');
 });
-
-// This function prepares, loads, and then executes a SharePoint query to get the current users information
-function getUserName() {
-    context.load(user);
-    context.executeQueryAsync(onGetUserNameSuccess, onGetUserNameFail);
-}
-
-// This function is executed if the above call is successful
-// It replaces the contents of the 'message' element with the user name
-function onGetUserNameSuccess() {
-    $('#message').text('Hello ' + user.get_title());
-}
-
-// This function is executed if the above call fails
-function onGetUserNameFail(sender, args) {
-    alert('Failed to get user name. Error:' + args.get_message());
-}

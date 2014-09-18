@@ -93,6 +93,8 @@ OfficeDevPnP.Core.Navigation = function () {
         deleteNavigationNode: function (nodeTitle, parentNodeTitle, isQuickLaunch) {
             var d = $.Deferred();
 
+            var nodeDeleted = false;
+
             var context = new SP.ClientContext(this.appWebUrl);
             var factory = new SP.ProxyWebRequestExecutorFactory(this.appWebUrl);
             context.set_webRequestExecutorFactory(factory);
@@ -108,10 +110,9 @@ OfficeDevPnP.Core.Navigation = function () {
                 context.executeQueryAsync(
                     function () {
                         var quickLaunchEnumerator = quickLaunchNodeCollection.getEnumerator();
-                        var quickLaunchEntry = undefined;
+                        var quickLaunchEntry;
                         var parentNodeFound = false;
-                        var nodeDeleted = false;
-
+                        
                         if (parentNodeTitle) {
 
                             while (quickLaunchEnumerator.moveNext()) {
@@ -141,13 +142,39 @@ OfficeDevPnP.Core.Navigation = function () {
                                                 break;
                                             }
                                         }
+
+                                        if (nodeDeleted) {
+                                            context.executeQueryAsync(
+                                                function() {
+                                                    d.resolve();
+                                                },
+                                                function(sender, args) {
+                                                    console.log('Failed to delete quick launch entry: ' + args.get_message());
+                                                    d.reject(args.get_message());
+                                                });
+                                        } else {
+                                            if (parentNodeTitle) {
+                                                console.log('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                                d.reject('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                            } else {
+                                                console.log('Node not found.  Node title: ' + nodeTitle);
+                                                d.reject('Node not found.  Node title: ' + nodeTitle);
+                                            }
+                                        }
                                     },
                                     function(sender, args) {
                                         console.log('Failed to get child nodes for quick launch entry ' + parentNodeTitle + ': ' + args.get_message());
                                         d.reject(args.get_message());
                                     });
+                            } else {
+                                if (parentNodeTitle) {
+                                    console.log('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                    d.reject('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                } else {
+                                    console.log('Node not found.  Node title: ' + nodeTitle);
+                                    d.reject('Node not found.  Node title: ' + nodeTitle);
+                                }
                             }
-
                         } else {
                             while (quickLaunchEnumerator.moveNext()) {
                                 quickLaunchEntry = quickLaunchEnumerator.get_current();
@@ -158,26 +185,26 @@ OfficeDevPnP.Core.Navigation = function () {
                                     break;
                                 }
                             }
-                        }
 
-                        if (nodeDeleted) {
-                            context.executeQueryAsync(
-                                function() {
-                                    d.resolve();
-                                },
-                                function(sender, args) {
-                                    console.log('Failed to delete quick launch entry: ' + args.get_message());
-                                    d.reject(args.get_message());
-                                });
-                        } else {
-                            if (parentNodeTitle) {
-                                console.log('Node not found.  Parent node title: ' + parentNodeTitle + ' Child node title: ' + nodeTitle);
+                            if (nodeDeleted) {
+                                context.executeQueryAsync(
+                                    function () {
+                                        d.resolve();
+                                    },
+                                    function (sender, args) {
+                                        console.log('Failed to delete quick launch entry: ' + args.get_message());
+                                        d.reject(args.get_message());
+                                    });
                             } else {
-                                console.log('Node not found.  Node title: ' + nodeTitle);
+                                if (parentNodeTitle) {
+                                    console.log('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                    d.reject('Node not found.  Parent node title: ' + parentNodeTitle + ', Child node title: ' + nodeTitle);
+                                } else {
+                                    console.log('Node not found.  Node title: ' + nodeTitle);
+                                    d.reject('Node not found.  Node title: ' + nodeTitle);
+                                }
                             }
-                            
                         }
-                        
                     },
                     function (sender, args) {
                         console.log('Failed to get quick launch entries: ' + args.get_message());
@@ -190,25 +217,31 @@ OfficeDevPnP.Core.Navigation = function () {
 
                 context.executeQueryAsync(
                     function () {
-                        var topNavEnumerator = quickLaunchNodeCollection.getEnumerator();
+                        var topNavEnumerator = topNavigationBarNodeCollection.getEnumerator();
 
                         while (topNavEnumerator.moveNext()) {
                             var navEntry = topNavEnumerator.get_current();
 
                             if (navEntry.get_title() === nodeTitle) {
                                 navEntry.deleteObject();
+                                nodeDeleted = true;
                                 break;
                             }
                         }
 
-                        context.executeQueryAsync(
-                            function () {
-                                d.resolve();
-                            },
-                            function (sender, args) {
-                                console.log('Failed to delete top navigation bar entry: ' + args.get_message());
-                                d.reject(args.get_message());
-                            });
+                        if (nodeDeleted) {
+                            context.executeQueryAsync(
+                                function() {
+                                    d.resolve();
+                                },
+                                function(sender, args) {
+                                    console.log('Failed to delete top navigation bar entry: ' + args.get_message());
+                                    d.reject(args.get_message());
+                                });
+                        } else {
+                            console.log('Node not found.  Node title: ' + nodeTitle);
+                            d.reject('Node not found.  Node title: ' + nodeTitle);
+                        }
                     },
                     function (sender, args) {
                         console.log('Failed to get top navigation bar entries: ' + args.get_message());
@@ -235,8 +268,10 @@ OfficeDevPnP.Core.Navigation = function () {
 
             context.executeQueryAsync(
                 function () {
+                    var oneOrMoreNodesDeleted = false;
                     var nodeCollection = [];
                     var nodeEnumerator = quickLaunchNodeCollection.getEnumerator();
+
                     while (nodeEnumerator.moveNext()) {
                         nodeCollection.push(nodeEnumerator.get_current());
                     }
@@ -244,16 +279,22 @@ OfficeDevPnP.Core.Navigation = function () {
                     for (var collectionIndex = 0; collectionIndex < nodeCollection.length; collectionIndex++) {
                         var node = nodeCollection[collectionIndex];
                         node.deleteObject();
+                        oneOrMoreNodesDeleted = true;
                     }
 
-                    context.executeQueryAsync(
-                        function () {
-                            d.resolve();
-                        },
-                        function (sender, args) {
-                            console.log('Failed to delete all quick launch entries: ' + args.get_message());
-                            d.reject(args.get_message());
-                        });
+                    if (oneOrMoreNodesDeleted) {
+                        context.executeQueryAsync(
+                            function() {
+                                d.resolve();
+                            },
+                            function(sender, args) {
+                                console.log('Failed to delete all quick launch entries: ' + args.get_message());
+                                d.reject(args.get_message());
+                            });
+                    } else {
+                        console.log('No nodes were found for deletion');
+                        d.reject('No nodes were found for deletion');
+                    }
                 },
                 function (sender, args) {
                     console.log('Failed to get quick launch entries: ' + args.get_message());
@@ -274,7 +315,7 @@ OfficeDevPnP.Core.Navigation = function () {
             var web = appContextSite.get_web();
 
             web.get_navigation().set_useShared(inheritNavigation);
-            web.Update();
+            web.update();
 
             context.executeQueryAsync(
                 function () {
