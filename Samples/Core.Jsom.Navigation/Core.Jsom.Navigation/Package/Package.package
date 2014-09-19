@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="f07c41e7-ff4e-404f-909c-f486253c5104" 
+        solutionId="f07c41e7-ff4e-404f-909c-f486253c5104" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Core.Jsom.Navigation"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="ad2a80ac-f0e0-44b9-8a21-4d616a555cd4" />
+  </features>
+</package>
