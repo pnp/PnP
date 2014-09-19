@@ -163,6 +163,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\company-events1.jpg" />
     <Content Include="Images\company-events2.jpg" />
     <Content Include="Images\company-events3.jpg" />
@@ -206,6 +207,7 @@
     <Content Include="Views\Registration\Index.cshtml" />
     <Content Include="Views\Events\Register.cshtml" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Views\Events\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
