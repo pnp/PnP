@@ -14,12 +14,12 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.Jsom.Navigation | Pete Filicetti
+Core.Jsom.Navigation | Pete Filicetti (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | September 17, 2014 | Initial release
+1.0  | September 17th 2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -38,10 +38,12 @@ The following code shows how to initialize the URLs needed for operation.
 
 Code snippet:
 
-    var hostWebUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
-    var appWebUrl = decodeURIComponent(getQueryStringParameter('SPAppWebUrl'));
+```JavaScript
+var hostWebUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
+var appWebUrl = decodeURIComponent(getQueryStringParameter('SPAppWebUrl'));
 
-    coreNavigation.initialize(appWebUrl, hostWebUrl);
+coreNavigation.initialize(appWebUrl, hostWebUrl);
+```
 
 ## Add a node to top navigation ##
 Description:
@@ -49,15 +51,17 @@ The following code shows how to call the function to add a node to the top level
 
 Code snippet:
 
-    coreNavigation.addNavigationNode("Test", "http://www.microsoft.com", null, false)
-        .done(
-            function() {
-                $("#statusMessage").html('Added top nav node \'Test\'');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to add top nav node \'Test\': ' + message);
-        });
+```JavaScript
+coreNavigation.addNavigationNode("Test", "http://www.microsoft.com", null, false)
+    .done(
+        function() {
+            $("#statusMessage").html('Added top nav node \'Test\'');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to add top nav node \'Test\': ' + message);
+    });
+```
 
 ## Delete a node from top navigation ##
 Description:
@@ -65,15 +69,17 @@ The following code shows how to call the function to delete a node from the top 
 
 Code snippet:
 
-    coreNavigation.deleteNavigationNode("Test", null, false)
-        .done(
-            function() {
-                $("#statusMessage").html('Removed top nav node \'Test\'');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to remove top nav node \'Test\': ' + message);
-            });
+```JavaScript
+coreNavigation.deleteNavigationNode("Test", null, false)
+    .done(
+        function() {
+            $("#statusMessage").html('Removed top nav node \'Test\'');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to remove top nav node \'Test\': ' + message);
+        });
+```
 
 ## Add parent and child nodes to quick launch ##
 Description:
@@ -81,19 +87,21 @@ The following code shows how to call the function to add parent and child nodes 
 
 Code snippet:
 
-    coreNavigation.addNavigationNode("Parent", "#", null, true)
-        .then(
-            function() {
-                return coreNavigation.addNavigationNode("Child", "http://www.microsoft.com", 'Parent', true);
-            })
-        .done(
-            function() {
-                $("#statusMessage").html('Added quick launch nodes \'Parent\' and \'Child\'');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to add quick launch nodes \'Parent\' and \'Child\': ' + message);
-            });
+```JavaScript
+coreNavigation.addNavigationNode("Parent", "#", null, true)
+    .then(
+        function() {
+            return coreNavigation.addNavigationNode("Child", "http://www.microsoft.com", 'Parent', true);
+        })
+    .done(
+        function() {
+            $("#statusMessage").html('Added quick launch nodes \'Parent\' and \'Child\'');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to add quick launch nodes \'Parent\' and \'Child\': ' + message);
+        });
+```
 
 ## Delete parent and child nodes from quick launch ##
 Description:
@@ -101,19 +109,21 @@ The following code shows how to call the function to delete parent and child nod
 
 Code snippet:
 
-    coreNavigation.deleteNavigationNode("Child", "Parent", true)
-        .then(
-            function() {
-                return coreNavigation.deleteNavigationNode("Parent", null, true);
-            })
-        .done(
-            function() {
-                $("#statusMessage").html('Deleted quick launch nodes \'Parent\' and \'Child\'');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to delete quick launch nodes \'Parent\' and \'Child\': ' + message);
-            });
+```JavaScript
+coreNavigation.deleteNavigationNode("Child", "Parent", true)
+    .then(
+        function() {
+            return coreNavigation.deleteNavigationNode("Parent", null, true);
+        })
+    .done(
+        function() {
+            $("#statusMessage").html('Deleted quick launch nodes \'Parent\' and \'Child\'');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to delete quick launch nodes \'Parent\' and \'Child\': ' + message);
+        });
+```
 
 ## Delete all quick launch nodes ##
 Description:
@@ -121,15 +131,17 @@ The following code shows how to call the function to delete all quick launch nod
 
 Code snippet:
 
-    coreNavigation.deleteAllQuickLaunchNodes()
-        .done(
-            function() {
-                $("#statusMessage").html('Deleted all quick launch nodes');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to delete all quick launch nodes: ' + message);
-            });
+```JavaScript
+coreNavigation.deleteAllQuickLaunchNodes()
+    .done(
+        function() {
+            $("#statusMessage").html('Deleted all quick launch nodes');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to delete all quick launch nodes: ' + message);
+        });
+```
 
 ## Update navigation inheritance ##
 Description:
@@ -137,12 +149,14 @@ The following code shows how to call the function to update navigation inheritan
 
 Code snippet:
 
-    coreNavigation.updateNavigationInheritance(true)
-        .done(
-            function() {
-                $("#statusMessage").html('Navigation inheritance set to true');
-            })
-        .fail(
-            function(message) {
-                $("#statusMessage").html('Failed to set navigation inheritance to true: ' + message);
-            });
+```JavaScript
+coreNavigation.updateNavigationInheritance(true)
+    .done(
+        function() {
+            $("#statusMessage").html('Navigation inheritance set to true');
+        })
+    .fail(
+        function(message) {
+            $("#statusMessage").html('Failed to set navigation inheritance to true: ' + message);
+        });
+```
