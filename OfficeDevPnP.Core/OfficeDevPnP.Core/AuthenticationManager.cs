@@ -1,8 +1,10 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -20,6 +22,7 @@ namespace OfficeDevPnP.Core
         private SharePointOnlineCredentials sharepointOnlineCredentials;
         private string appOnlyAccessToken;
         private object tokenLock = new object();
+        private CookieContainer fedAuth = null;
 
         /// <summary>
         /// Returns a SharePointOnline ClientContext object 
@@ -75,6 +78,33 @@ namespace OfficeDevPnP.Core
             return clientContext;
         }
 
+        /// <summary>
+        /// Returns a SharePoint on-premises ClientContext for sites secured via ADFS
+        /// </summary>
+        /// <param name="siteUrl">Url of the SharePoint site that's secured via ADFS</param>
+        /// <param name="user">Name of the user (e.g. administrator) </param>
+        /// <param name="password">Password of the user</param>
+        /// <param name="domain">Windows domain of the user</param>
+        /// <param name="sts">Hostname of the ADFS server (e.g. sts.company.com)</param>
+        /// <param name="idpId">Identifier of the ADFS relying party that we're hitting</param>
+        /// <returns>ClientContext to be used by CSOM code</returns>
+        public ClientContext GetADFSUserNameMixedAuthenticatedContext(string siteUrl, string user, string password, string domain, string sts, string idpId)
+        {
+            fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId);
+            if (fedAuth == null)
+            {
+                throw new Exception("No fedAuth cookie acquired");
+            }
+
+            ClientContext clientContext = new ClientContext(siteUrl);
+            clientContext.ExecutingWebRequest += clientContext_ExecutingWebRequest;
+            return clientContext;
+        }
+
+        private void clientContext_ExecutingWebRequest(object sender, WebRequestEventArgs e)
+        {
+            e.WebRequestExecutor.WebRequest.CookieContainer = fedAuth;
+        }
 
         /// <summary>
         /// Ensure that AppAccessToken is filled with a valid string representation of the OAuth AccessToken. This method will launch handle with token cleanup after the token expires
