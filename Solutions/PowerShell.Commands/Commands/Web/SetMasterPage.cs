@@ -16,7 +16,8 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             if(!string.IsNullOrEmpty(MasterPageUrl))
-                this.SelectedWeb.SetMasterPageForSiteByUrl(MasterPageUrl);
+
+                this.SelectedWeb.SetMasterPageByUrl(MasterPageUrl);
 
             if (!string.IsNullOrEmpty(CustomMasterPageUrl))
                 this.SelectedWeb.SetCustomMasterPageForSiteByUrl(CustomMasterPageUrl);
