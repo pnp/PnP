@@ -8,10 +8,13 @@ This solution shows how you can build a library of PowerShell commands that act 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
+### Prerequisites ###
+In order to build the setup project the Wix toolset needs to be installed. You can obtain this from http://wix.codeplex.com.
+
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-OfficeDevPnP.PowerShell | Erwin van Hunen (Knowit Reaktor Stockholm AB)
+OfficeDevPnP.PowerShell | Erwin van Hunen (**Knowit Reaktor Stockholm AB**)
 
 ### Version history ###
 Version  | Date | Comments
