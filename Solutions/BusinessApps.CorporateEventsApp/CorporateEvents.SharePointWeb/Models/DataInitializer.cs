@@ -5,76 +5,95 @@ using System.Web;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using System.Diagnostics;
+using OfficeDevPnP.Core.Entities;
 
 namespace CorporateEvents.SharePointWeb.Models {
     class DataInitializer {
+        // used to ensure that the initializer doesn't run while already in process
+        static bool _isInitializing = false;
         SharePointContext _spContext { get; set; }
 
         public DataInitializer(SharePointContext context) {
             _spContext = context;
         }
 
-        public void Initialize() {
+        public void Initialize(bool createDefaultData) {
             if (_spContext == null)
                 throw new InvalidOperationException("HttpContext is not initialized.");
 
-            // ** Events setup process **
-            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
-                var web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                // Create events list
-                var listId = CreateList(web, ListDetails.EventsListName, ListDetails.EventsListDesc, ListDetails.EventsUrl);
-                // Create content type for events list
-                var contentTypeId = CreateContentType(web, ContentTypes.CorporateEvent, ContentTypes.CorporateEventContentTypeDesc, ContentTypes.CorporateEventContentTypeGroup, ContentTypes.CorporateEventContentTypeId);
-                // Create fields for events list
-                ApplyListSchema(web, contentTypeId, ListDetails.EventsListName);
-            }
+            if (_isInitializing)
+                return;
 
-            // ** Registration setup process **
-            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
-                var web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                // Create registration list
-                var listId = CreateList(web, ListDetails.RegistrationListName, ListDetails.RegistrationListDesc, ListDetails.RegistrationUrl);
-                // Create content type for registration list
-                var contentTypeId = CreateContentType(web, ContentTypes.EventRegistration, ContentTypes.EventRegistrationContentTypeDesc, ContentTypes.EventRegistrationContentTypeGroup, ContentTypes.EventRegistrationContentTypeId);
-                // Create fields for registration list
-                ApplyListSchema(web, contentTypeId, ListDetails.RegistrationListName);
-            }
+            try {
+                _isInitializing = true;
 
-            // ** Sessions setup process **
-            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
-                var web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                // Create sessions list
-                var listId = CreateList(web, ListDetails.SessionsListName, ListDetails.SessionsListDesc, ListDetails.SessionsUrl);
-                // Create content type for sessions list
-                var contentTypeId = CreateContentType(web, ContentTypes.EventSession, ContentTypes.EventSessionContentTypeDesc, ContentTypes.EventSessionContentTypeGroup, ContentTypes.EventSessionContentTypeId);
-                // Create fields for sessions list
-                ApplyListSchema(web, contentTypeId, ListDetails.SessionsListName);
-            }
+                // ** Events setup process **
+                using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                    var web = clientContext.Web;
+                    clientContext.Load(web);
+                    clientContext.ExecuteQuery();
+                    // Create events list
+                    var listId = CreateList(web, ListDetails.EventsListName, ListDetails.EventsListDesc, ListDetails.EventsUrl);
+                    // Create content type for events list
+                    var contentTypeId = CreateContentType(web, ContentTypes.CorporateEvent, ContentTypes.CorporateEventContentTypeDesc, ContentTypes.CorporateEventContentTypeGroup, ContentTypes.CorporateEventContentTypeId);
+                    // Create fields for events list
+                    ApplyListSchema(web, contentTypeId, ListDetails.EventsListName);
+                }
 
-            // ** Speakers setup process **
-            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
-                var web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                // Create speakers list
-                var listId = CreateList(web, ListDetails.SpeakersListName, ListDetails.SpeakersListDesc, ListDetails.SpeakersUrl);
-                // Create content type for speakers list
-                var contentTypeId = CreateContentType(web, ContentTypes.EventSpeaker, ContentTypes.EventSpeakerContentTypeDesc, ContentTypes.EventSpeakerContentTypeGroup, ContentTypes.EventSpeakerContentTypeId);
-                // Create fields for speakers list
-                ApplyListSchema(web, contentTypeId, ListDetails.SpeakersListName);
-            }
+                // ** Registration setup process **
+                using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                    var web = clientContext.Web;
+                    clientContext.Load(web);
+                    clientContext.ExecuteQuery();
+                    // Create registration list
+                    var listId = CreateList(web, ListDetails.RegistrationListName, ListDetails.RegistrationListDesc, ListDetails.RegistrationUrl);
+                    // Create content type for registration list
+                    var contentTypeId = CreateContentType(web, ContentTypes.EventRegistration, ContentTypes.EventRegistrationContentTypeDesc, ContentTypes.EventRegistrationContentTypeGroup, ContentTypes.EventRegistrationContentTypeId);
+                    // Create fields for registration list
+                    ApplyListSchema(web, contentTypeId, ListDetails.RegistrationListName);
+                }
 
-            using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
-                var web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                CreateSampleData(web);
+                // ** Sessions setup process **
+                using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                    var web = clientContext.Web;
+                    clientContext.Load(web);
+                    clientContext.ExecuteQuery();
+                    // Create sessions list
+                    var listId = CreateList(web, ListDetails.SessionsListName, ListDetails.SessionsListDesc, ListDetails.SessionsUrl);
+                    // Create content type for sessions list
+                    var contentTypeId = CreateContentType(web, ContentTypes.EventSession, ContentTypes.EventSessionContentTypeDesc, ContentTypes.EventSessionContentTypeGroup, ContentTypes.EventSessionContentTypeId);
+                    // Create fields for sessions list
+                    ApplyListSchema(web, contentTypeId, ListDetails.SessionsListName);
+                }
+
+                // ** Speakers setup process **
+                using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                    var web = clientContext.Web;
+                    clientContext.Load(web);
+                    clientContext.ExecuteQuery();
+                    // Create speakers list
+                    var listId = CreateList(web, ListDetails.SpeakersListName, ListDetails.SpeakersListDesc, ListDetails.SpeakersUrl);
+                    // Create content type for speakers list
+                    var contentTypeId = CreateContentType(web, ContentTypes.EventSpeaker, ContentTypes.EventSpeakerContentTypeDesc, ContentTypes.EventSpeakerContentTypeGroup, ContentTypes.EventSpeakerContentTypeId);
+                    // Create fields for speakers list
+                    ApplyListSchema(web, contentTypeId, ListDetails.SpeakersListName);
+                }
+
+                if (createDefaultData) {
+                    using (var clientContext = _spContext.CreateUserClientContextForSPHost()) {
+                        var web = clientContext.Web;
+                        clientContext.Load(web);
+                        clientContext.ExecuteQuery();
+                        CreateSampleData(web);
+                    }
+                }
+
+                _isInitializing = false;
+            }
+            catch {
+                // enable the configuration to run again if the initializer fails
+                _isInitializing = false;
+                throw;
             }
         }
 
@@ -118,7 +137,7 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.DateTime,
                 "Registration Date",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                "ReadOnly='TRUE' Customization=''"));
 
             fieldsXml.Add(Registration.FIELD_FIRST_NAME,
                 FormatField(
@@ -127,7 +146,7 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "First Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Customization=''"));
+                "MaxLength='50' Required='TRUE' Customization=''"));
 
             fieldsXml.Add(Registration.FIELD_LAST_NAME,
                 FormatField(
@@ -136,7 +155,7 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Last Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Customization=''"));
+                "MaxLength='50' Required='TRUE' Customization=''"));
 
             fieldsXml.Add(Registration.FIELD_USER_ID,
                 FormatField(
@@ -156,9 +175,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 ListDetails.CorporateEventsSiteColumnsGroup,
                 "Required='TRUE' Customization=''"));
 
-            fields.Add(web.GetFieldById<Field>(new Guid("{E10F8222-BCC3-4348-9463-4963D0AD4900}")));
-
             TryCreateFields(web, fields, fieldsXml);
+
+            var eventIdField = web.GetFieldById<Field>(Event.RegisteredEventFieldId);
+            eventIdField.Required = true;
+            eventIdField.Update();
+            fields.Add(eventIdField);
             #endregion
 
             return fields;
@@ -182,7 +204,7 @@ namespace CorporateEvents.SharePointWeb.Models {
 
             fieldsXml.Add(Event.FIELD_REGISTERED_EVENT_ID,
                 FormatField(
-                new Guid("{E10F8222-BCC3-4348-9463-4963D0AD4900}"),
+                Event.RegisteredEventFieldId,
                 Event.FIELD_REGISTERED_EVENT_ID,
                 FieldType.Text,
                 "Event ID",
@@ -387,6 +409,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 }
                 fields.Add(field);
             }
+            web.Context.ExecuteQuery();
+
+            foreach (var field in fields) {
+                web.Context.Load(field);
+            }
+            web.Context.ExecuteQuery();
         }
        
         protected string CreateList(Web web, string listName, string listDescription, string listUrl) {
@@ -518,7 +546,7 @@ namespace CorporateEvents.SharePointWeb.Models {
                 Location = "Pittsburgh, PA",
                 Status = EventStatus.Active,
                 RegisteredEventId = "EVT001",
-                EventDate = DateTime.Now.AddDays(25)
+                EventDate = DateTime.Today.AddDays(25)
             };
 
             var event2 = new Event() {
@@ -530,7 +558,7 @@ namespace CorporateEvents.SharePointWeb.Models {
                 Location = "Helsinki, Finland",
                 Status = EventStatus.Active,
                 RegisteredEventId = "EVT002",
-                EventDate = DateTime.Now.AddDays(45)
+                EventDate = DateTime.Today.AddDays(45)
             };
 
             var event3 = new Event() {
@@ -542,12 +570,141 @@ namespace CorporateEvents.SharePointWeb.Models {
                 Location = "Chicago, IL",
                 Status = EventStatus.Active,
                 RegisteredEventId = "EVT003",
-                EventDate = DateTime.Now.AddDays(60)
+                EventDate = DateTime.Today.AddDays(60)
+            };
+
+            var event4 = new Event() {
+                Title = "Corporate Event 4",
+                Category = "General",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Vivamus scelerisque lectus et sapien mollis, ut vestibulum nunc vulputate. Nullam sed quam felis. Praesent sit amet egestas nunc, nec aliquam eros. Maecenas et nisl dapibus, varius metus ac, luctus quam. Donec vitae justo vitae nisi placerat ultrices nec sed ante.",
+                ImageUrl = host + "/Images/company-events1.jpg",
+                Location = "Chicago, IL",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT004",
+                EventDate = DateTime.Today.AddDays(20)
+            };
+
+            var event5 = new Event() {
+                Title = "Corporate Event 5",
+                Category = "General",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Vestibulum ex mauris, feugiat in vehicula id, congue eleifend elit. Morbi orci quam, mattis sit amet nisl sed, dictum fermentum velit. Quisque rhoncus, arcu vitae dignissim tempus, nisl felis volutpat ipsum, non lobortis tellus lectus at mauris. Fusce porta, lectus feugiat egestas fringilla, dui velit tincidunt est, nec congue ligula urna a felis. Nam vitae ullamcorper lectus. Sed vitae justo felis.",
+                ImageUrl = host + "/Images/company-events2.jpg",
+                Location = "Helsinki, Finland",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT005",
+                EventDate = DateTime.Today.AddDays(45)
+            };
+
+            var event6 = new Event() {
+                Title = "Corporate Event 6",
+                Category = "General",
+                ContactEmail = "eventadmin@domain.com",
+                Description = "Vivamus scelerisque lectus et sapien mollis, ut vestibulum nunc vulputate. Nullam sed quam felis. Praesent sit amet egestas nunc, nec aliquam eros. Maecenas et nisl dapibus, varius metus ac, luctus quam. Donec vitae justo vitae nisi placerat ultrices nec sed ante.",
+                ImageUrl = host + "/Images/company-events3.jpg",
+                Location = "Chicago, IL",
+                Status = EventStatus.Active,
+                RegisteredEventId = "EVT006",
+                EventDate = DateTime.Today.AddDays(60)
             };
 
             event1.Save(web);
             event2.Save(web);
             event3.Save(web);
+            event4.Save(web);
+            event5.Save(web);
+            event6.Save(web);
+
+            // create default wiki page
+            web.AddWikiPage("Site Pages", "EventsHome.aspx");
+
+            # region web parts
+            var webPart1 = new WebPartEntity(){
+                WebPartXml = @"<webParts>
+  <webPart xmlns='http://schemas.microsoft.com/WebPart/v3'>
+    <metaData>
+      <type name='Microsoft.SharePoint.WebPartPages.ClientWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c' />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name='Description' type='string'>Displays featured events</property>
+        <property name='FeatureId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>3a6d7f41-2de8-4e69-b4b4-0325bd56b32c</property>
+        <property name='Title' type='string'>Featured Events</property>
+        <property name='ProductWebId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>12ae648f-27db-4a97-9c63-37155d3ace1e</property>
+        <property name='WebPartName' type='string'>FeaturedEvents</property>
+        <property name='ProductId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>3a6d7f41-2de8-4e69-b4b4-0325bd56b32b</property>
+        <property name='ChromeState' type='chromestate'>Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>",
+                WebPartIndex = 0,
+                WebPartTitle = "Featured Events",
+                WebPartZone = "Rich Content"
+            };
+
+            var webPart2 = new WebPartEntity() {
+                WebPartXml = @"<webParts>
+  <webPart xmlns='http://schemas.microsoft.com/WebPart/v3'>
+    <metaData>
+      <type name='Microsoft.SharePoint.WebPartPages.ClientWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c' />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name='Description' type='string'>Events displayed by specific category</property>
+        <property name='FeatureId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>3a6d7f41-2de8-4e69-b4b4-0325bd56b32c</property>
+        <property name='Title' type='string'>Events</property>
+        <property name='ProductWebId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>12ae648f-27db-4a97-9c63-37155d3ace1e</property>
+        <property name='WebPartName' type='string'>Events</property>
+        <property name='ProductId' type='System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089'>3a6d7f41-2de8-4e69-b4b4-0325bd56b32b</property>
+        <property name='ChromeState' type='chromestate'>Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>",
+                WebPartIndex = 1,
+                WebPartTitle = "Events",
+                WebPartZone = "Rich Content"
+            };
+            #endregion
+
+            var welcomePage = "SitePages/EventsHome.aspx";
+            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, welcomePage);
+
+            File webPartPage = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            if (webPartPage == null) {
+                return;
+            }
+
+            web.Context.Load(webPartPage);
+            web.Context.Load(webPartPage.ListItemAllFields);
+            web.Context.Load(web.RootFolder);
+            web.Context.ExecuteQuery();
+
+            web.RootFolder.WelcomePage = welcomePage;
+            web.RootFolder.Update();
+            web.Context.ExecuteQuery();
+
+            var limitedWebPartManager = webPartPage.GetLimitedWebPartManager(Microsoft.SharePoint.Client.WebParts.PersonalizationScope.Shared);
+            web.Context.Load(limitedWebPartManager.WebParts);
+            web.Context.ExecuteQuery();
+
+            for (var i = 0; i < limitedWebPartManager.WebParts.Count; i++) {
+                limitedWebPartManager.WebParts[i].DeleteWebPart();
+            }
+            web.Context.ExecuteQuery();
+
+            var oWebPartDefinition1 = limitedWebPartManager.ImportWebPart(webPart1.WebPartXml);
+            var oWebPartDefinition2 = limitedWebPartManager.ImportWebPart(webPart2.WebPartXml);
+            var wpdNew1 = limitedWebPartManager.AddWebPart(oWebPartDefinition1.WebPart, webPart1.WebPartZone, webPart1.WebPartIndex);
+            var wpdNew2 = limitedWebPartManager.AddWebPart(oWebPartDefinition2.WebPart, webPart2.WebPartZone, webPart2.WebPartIndex);
+            web.Context.Load(wpdNew1);
+            web.Context.Load(wpdNew2);
+            web.Context.ExecuteQuery();
         }
     }
 }

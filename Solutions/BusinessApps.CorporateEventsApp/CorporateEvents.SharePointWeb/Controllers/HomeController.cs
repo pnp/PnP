@@ -44,11 +44,12 @@ namespace CorporateEvents.SharePointWeb.Controllers {
         [HttpPost()]
         public ActionResult Config(System.Web.Mvc.FormCollection form) {
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            var createDefaultData = true; //form["CreateDefaultData"].ToBoolean();
 
             string status;
             try {
                 var initializer = new DataInitializer(spContext);
-                initializer.Initialize();
+                initializer.Initialize(createDefaultData);
                 
                 status = "Complete";
                 using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {

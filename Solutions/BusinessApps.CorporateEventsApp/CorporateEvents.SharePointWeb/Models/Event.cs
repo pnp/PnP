@@ -7,6 +7,7 @@ using System.Web;
 
 namespace CorporateEvents.SharePointWeb.Models {
     public class Event : BaseListItem {
+        internal static readonly Guid RegisteredEventFieldId = new Guid("{E10F8222-BCC3-4348-9463-4963D0AD4900}");
         internal const string FIELD_REGISTERED_EVENT_ID = "RegisteredEventID";
         internal const string FIELD_DESCRIPTION = "EventDescription";
         internal const string FIELD_CATEGORY = "EventCategory";
