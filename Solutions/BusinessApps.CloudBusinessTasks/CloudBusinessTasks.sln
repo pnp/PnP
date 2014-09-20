@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{581633EB-B896-402F-8E60-36F3DA191C85}") = "CloudBusinessTasks", "CloudBusinessTasks\CloudBusinessTasks.lsxtproj", "{7B3D3568-A752-4329-A3EA-AC8DD285C453}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBusinessTasks.Server", "CloudBusinessTasks\CloudBusinessTasks.Server\CloudBusinessTasks.Server.csproj", "{6AAF67F5-92EC-470E-BF1E-7257DDA02379}"
+EndProject
+Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "CloudBusinessTasks.HTMLClient", "CloudBusinessTasks\CloudBusinessTasks.HTMLClient\CloudBusinessTasks.HTMLClient.jsproj", "{BBD932FD-1B3B-4844-A84E-18E4B9595AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBusinessTasks.SharePoint", "CloudBusinessTasks\CloudBusinessTasks.SharePoint\CloudBusinessTasks.SharePoint.csproj", "{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B3D3568-A752-4329-A3EA-AC8DD285C453}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3D3568-A752-4329-A3EA-AC8DD285C453}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3D3568-A752-4329-A3EA-AC8DD285C453}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3D3568-A752-4329-A3EA-AC8DD285C453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAF67F5-92EC-470E-BF1E-7257DDA02379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAF67F5-92EC-470E-BF1E-7257DDA02379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAF67F5-92EC-470E-BF1E-7257DDA02379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAF67F5-92EC-470E-BF1E-7257DDA02379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD932FD-1B3B-4844-A84E-18E4B9595AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD932FD-1B3B-4844-A84E-18E4B9595AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD932FD-1B3B-4844-A84E-18E4B9595AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD932FD-1B3B-4844-A84E-18E4B9595AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD7133D7-8889-4533-AA3B-9CDEB2A172CA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

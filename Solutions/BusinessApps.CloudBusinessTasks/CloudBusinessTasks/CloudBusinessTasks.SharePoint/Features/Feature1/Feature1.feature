@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feature deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" title="CloudBusinessTasks.SharePoint Feature1" dslVersion="1.0.0.0" Id="d587b4b2-b9af-471e-bbb1-9dd79e0413a9" featureId="d587b4b2-b9af-471e-bbb1-9dd79e0413a9" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+</feature>

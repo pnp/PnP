@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ModelDocumentManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Documents>
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Properties\ApplicationData\Tasks.lsml" Checksum="0BE197D8047CB9627864493852429A5B358800A7073B8DBB5CAF83B8E3039F6F" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Properties\Client.lsml" Checksum="3BD42AFF2A6C41612C8F0D4398273B51D0A83A289CE97CC834D839D088D4465B" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Properties\Proxies.lsml" Checksum="D7825F36002685A0E996B4159B38FA4210E89D863764C0DABCE126552F7E387F" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Screens\Tasks\AddEditTask.lsml" Checksum="2D23D83B7D5A9302958E334E47A13067398E4F92B1AC1984A812F49F9A1DFB50" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Screens\Tasks\BrowseTasks.lsml" Checksum="9C348E610B9772895FFECFB6414F7A2A73BF1C6A48C75DCC054070E6CEADCC16" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.HTMLClient\Screens\Tasks\ViewTask.lsml" Checksum="5A8C1A8BC497BFC9C32D4A6158B90B631A05E79B978A5E235E33B75762D2FB49" />
+  </Documents>
+</ModelDocumentManifest>

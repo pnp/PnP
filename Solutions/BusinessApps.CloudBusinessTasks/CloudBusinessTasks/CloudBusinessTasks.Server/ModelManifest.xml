@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<ModelDocumentManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Documents>
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.Server\DataSources\ApplicationData\Tasks.lsml" Checksum="6BF84D1F440F5F54E3724501AAF93816C653292547B79828EE31B282162F7874" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.Server\Properties\DataSources\ApplicationData.lsml" Checksum="986A4E2C3BC71E61B26C49DBB7451F9203AA85AB5825740AC6E35E7095E0722C" />
+    <Document FullPath="C:\TEMP\LSSPDeploy\CloudBusinessTasks\CloudBusinessTasks\CloudBusinessTasks.Server\Properties\Service.lsml" Checksum="1C747D27DE9B569497BA8516A5D0D121EF2407086AFC32F761C0B2B7C8571AC9" />
+  </Documents>
+</ModelDocumentManifest>
