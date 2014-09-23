@@ -31,32 +31,32 @@ Version  | Date | Comments
 The code basically has two main parts. First we need to intercept the client side calls that the calendar view does in SharePoint 2013. Thanks to this post for showing how to do that.
 
 ```JavaScript
-Contoso.WeekNumber.InterceptCalendarEvent = function () {
-    ExecuteOrDelayUntilScriptLoaded(function () {
-        var onItemsSucceed = SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed;
-        SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed = function ($p0, $p1) {
-            onItemsSucceed.call(this, $p0, $p1);
-            Contoso.WeekNumber.AddWeekNumbers();
-        };
-    }, "SP.UI.ApplicationPages.Calendar.js");
-}
+    Core.JavaScriptInjection.WeekNumbers.InterceptCalendarEvent = function () {
+        ExecuteOrDelayUntilScriptLoaded(function () {
+            var onItemsSucceed = SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed;
+            SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed = function ($p0, $p1) {
+                onItemsSucceed.call(this, $p0, $p1);
+                Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers();
+            };
+        }, "SP.UI.ApplicationPages.Calendar.js");
+    }
 ```
 
 Secondly using JQuery we can find all TH elements and add week numbers.
 
 ```JavaScript
-Contoso.WeekNumber.AddWeekNumbers = function () {
-    $(".ms-acal-month > TBODY > TR > TH[evtid='week']").each(function () {
-        var firstDay = new Date($(this).attr("date"));
-        if (firstDay.toString() != "NaN" && firstDay.toString() != "Invalid Date") {
-            var week = firstDay.getWeek(firstDay.getDay());
-            week = (week.toString().length == 1) ? '0' + week.toString() : week.toString();
-            $(this).html("<div class='ms-picker-weekbox'><acronym title='Week number " + week + "'>" + week + "</acronym></div>");
-            $(this).attr("class", "ms-picker-week");
-            $(this).css("vertical-align", "middle");
-        }
-    });
-}
+    Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers = function () {
+        $(".ms-acal-month > TBODY > TR > TH[evtid='week']").each(function () {
+            var firstDay = new Date($(this).attr("date"));
+            if (firstDay.toString() != "NaN" && firstDay.toString() != "Invalid Date") {
+                var week = firstDay.getWeek(firstDay.getDay());
+                week = (week.toString().length == 1) ? '0' + week.toString() : week.toString();
+                $(this).html("<div class='ms-picker-weekbox'><acronym title='Week number " + week + "'>" + week + "</acronym></div>");
+                $(this).attr("class", "ms-picker-week");
+                $(this).css("vertical-align", "middle");
+            }
+        });
+    }
 ```
 
 Result should look something like the image below.
