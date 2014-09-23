@@ -27,6 +27,35 @@ namespace Core.JavaScriptInjection.WeekNumbersWeb
             }
         }
 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            RegisterChromeControlScript();
+        }
+
+        private void RegisterChromeControlScript()
+        {
+            string script = @"
+            function chromeLoaded() {
+                $('body').show();
+            }
+
+            //function callback to render chrome after SP.UI.Controls.js loads
+            function renderSPChrome() {
+                //Set the chrome options for launching Help, Account, and Contact pages
+                var options = {
+                    'appTitle': document.title,
+                    'onCssLoaded': 'chromeLoaded()'
+                };
+
+                //Load the Chrome Control in the divSPChrome element of the page
+                var chromeNavigation = new SP.UI.Controls.Navigation('divSPChrome', options);
+                chromeNavigation.setVisible(true);
+            }";
+
+            Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);
+        }
+
+
         protected void AddScripts_Click(object sender, EventArgs e)
         {
             var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);

@@ -19,10 +19,9 @@
 
 ExecuteOrDelayUntilScriptLoaded(function () {
 
-    Type.registerNamespace('Contoso');
-    Contoso.WeekNumber = Contoso.WeekNumber || {};
+    Type.registerNamespace('Core.JavaScriptInjection.WeekNumbers');
 
-    Contoso.WeekNumber.AddWeekNumbers = function () {
+    Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers = function () {
         $(".ms-acal-month > TBODY > TR > TH[evtid='week']").each(function () {
             var firstDay = new Date($(this).attr("date"));
             if (firstDay.toString() != "NaN" && firstDay.toString() != "Invalid Date") {
@@ -35,20 +34,20 @@ ExecuteOrDelayUntilScriptLoaded(function () {
         });
     }
 
-    Contoso.WeekNumber.InterceptCalendarEvent = function () {
+    Core.JavaScriptInjection.WeekNumbers.InterceptCalendarEvent = function () {
         ExecuteOrDelayUntilScriptLoaded(function () {
             var onItemsSucceed = SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed;
             SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed = function ($p0, $p1) {
                 onItemsSucceed.call(this, $p0, $p1);
-                Contoso.WeekNumber.AddWeekNumbers();
+                Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers();
             };
         }, "SP.UI.ApplicationPages.Calendar.js");
     }
 
     if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
         var url = _spPageContextInfo.siteServerRelativeUrl + "/SiteAssets/weeknumbers.js";
-        RegisterModuleInit(url, Contoso.WeekNumber.InterceptCalendarEvent);
+        RegisterModuleInit(url, Core.JavaScriptInjection.WeekNumbers.InterceptCalendarEvent);
     }
 
-    Contoso.WeekNumber.InterceptCalendarEvent();
+    Core.JavaScriptInjection.WeekNumbers.InterceptCalendarEvent();
 }, "SP.js");

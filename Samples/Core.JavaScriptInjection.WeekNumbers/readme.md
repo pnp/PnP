@@ -1,22 +1,20 @@
 # Core.JavaScriptInjection.WeekNumbers #
 
 ### Summary ###
-Short summary.
+In some parts of the world it's important to have week numbers on calendar views. In SharePoint week numbers can be activated on the date picker. There is however no built in function for displaying week numbers in a calendar's monthly view. This sample injects some JavaScript code that adds week numbers. The code works both with minimum download strategy turned on and off.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
--> Remove platforms if needed
-
 ### Prerequisites ###
-Any special pre-requisites?
+A calendar on the host web.
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.JavaScriptInjection.WeekNumbers | Johan Skårman (Microsoft)
+Core.JavaScriptInjection.WeekNumbers | Johan SkÃ¥rman (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -29,30 +27,41 @@ Version  | Date | Comments
 
 ----------
 
-# Doc scenario 1 #
-Description
-Image
+# General comments #
+The code basically has two main parts. First we need to intercept the client side calls that the calendar view does in SharePoint 2013. Thanks to this post for showing how to do that.
 
-
-## Sub level 1.1 ##
-Description:
-Code snippet:
-```C#
-string scenario1Page = String.Format("scenario1-{0}.aspx", DateTime.Now.Ticks);
-string scenario1PageUrl = csomService.AddWikiPage("Site Pages", scenario1Page);
+```JavaScript
+Contoso.WeekNumber.InterceptCalendarEvent = function () {
+    ExecuteOrDelayUntilScriptLoaded(function () {
+        var onItemsSucceed = SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed;
+        SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed = function ($p0, $p1) {
+            onItemsSucceed.call(this, $p0, $p1);
+            Contoso.WeekNumber.AddWeekNumbers();
+        };
+    }, "SP.UI.ApplicationPages.Calendar.js");
+}
 ```
 
-## Sub level 1.2 ##
+Secondly using JQuery we can find all TH elements and add week numbers.
 
-# Doc scenario 2 #
+```JavaScript
+Contoso.WeekNumber.AddWeekNumbers = function () {
+    $(".ms-acal-month > TBODY > TR > TH[evtid='week']").each(function () {
+        var firstDay = new Date($(this).attr("date"));
+        if (firstDay.toString() != "NaN" && firstDay.toString() != "Invalid Date") {
+            var week = firstDay.getWeek(firstDay.getDay());
+            week = (week.toString().length == 1) ? '0' + week.toString() : week.toString();
+            $(this).html("<div class='ms-picker-weekbox'><acronym title='Week number " + week + "'>" + week + "</acronym></div>");
+            $(this).attr("class", "ms-picker-week");
+            $(this).css("vertical-align", "middle");
+        }
+    });
+}
+```
 
-## Sub level 2.1 ##
+Result should look something like the image below.
 
-## Sub level 2.2 ##
+![](http://i.imgur.com/tJNFtYL.png)
 
-### Note: ###
-
-## Sub level 2.3 ##
-
-# Doc scenario 3#
-
+#NOTE#
+A function that returns the week numbers according to the Gregorian calendar is used but that could be replaced by any other calculation. Also this example takes some dependencies on both how the HTML in a SharePoint calendar is structured and also on the calendar scripts. So updates to how SharePoint renders a calendar can affect this sample.
