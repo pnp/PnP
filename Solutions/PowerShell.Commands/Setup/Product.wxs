@@ -34,8 +34,8 @@
       <![CDATA[Installed OR (POWERSHELLCOMPATIBLE >< "3.0")]]>
     </Condition>
 
-    <UI Id="CheckStudio">
-      <Dialog Id="StudioDlg" Width="260" Height="100" Title="Microsoft Client SDK" NoMinimize="yes" >
+    <UI Id="CheckClientSDK">
+      <Dialog Id="CheckClientSDKDlg" Width="260" Height="100" Title="Microsoft Client SDK" NoMinimize="yes" >
 
         <Control Id="Message" Type="Text" X="10" Y="10" Width="240" Height="30" Text="Microsoft Client SDK version 16 or newer is required. Please download and install, then run this installer again." />
 
@@ -52,7 +52,7 @@
       </Dialog>
 
       <InstallUISequence>
-        <Show Dialog="StudioDlg" Before="WelcomeEulaDlg" >
+        <Show Dialog="CheckClientSDKDlg" Before="WelcomeEulaDlg" >
           <![CDATA[NOT (Installed OR CLIENTASSEMBLIES)]]>
         </Show>
       </InstallUISequence>
