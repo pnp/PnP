@@ -35,23 +35,32 @@ namespace OfficeDevPnP.Core.Utilities
 
         CreateField = 1701,
 
+        MailCancelled = 2101,
+
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
+        
         SetTheme = 2601,
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
 
         ClosedContextWarning = 4201,
+        
         ProblemDeterminingTokenLease = 4301,
+
         ThemeNotOverwritten = 4601,
+
+        MailSendException = 5101,
+        MailSendFailed = 5102,
+
+        SiteSearchUnhandledException = 5401,
 
         LibraryMissing = 5501,
         FolderMissing = 5502,
+        FeatureActivationProblem = 5503,
 
         ThemeMissing = 5601,
 
-        SiteSearchUnhandledException = 5401,
-        FeatureActivationProblem = 5501,
         UnknownExceptionAccessingSite = 5901,
 
         DeleteWeb = 8501,
