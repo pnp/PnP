@@ -907,7 +907,7 @@
         //adds a new term to the end of this._selectedTerms
         pushSelectedTerm: function (term) {
             if (!this.existingTerm(term)) {
-            //clone the term so we don't messup the original
+                //clone the term so we don't messup the original
                 var clonedTerm = term.clone();
 
                 //clear the RawTerm so it can be serialized
@@ -917,8 +917,7 @@
                 if (!this._isMulti)
                     this.popSelectedTerm();
 
-                //add the term to the selected terms array
-            
+                //add the term to the selected terms array            
                 this._selectedTerms.push(clonedTerm);
                 this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
             }
