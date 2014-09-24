@@ -82,7 +82,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             return CreateField<TField>(web, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
         }
 
@@ -99,7 +100,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             if (string.IsNullOrEmpty(internalName))
                 throw new ArgumentNullException("internalName");
 
@@ -112,7 +114,7 @@ namespace Microsoft.SharePoint.Client
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQuery();
-            
+
             var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
             return field;
         }
@@ -234,7 +236,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="fieldId">Guid for the field ID</param>
         /// <returns>Field of type TField</returns>
-        public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field {
+        public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field
+        {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldId));
             web.Context.ExecuteQuery();
 
@@ -252,14 +255,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="fieldId">Guid for the field ID</param>
         /// <returns>Field of type TField</returns>
-        public static TField GetFieldByName<TField>(this FieldCollection fields, string internalName) where TField : Field {
+        public static TField GetFieldByName<TField>(this FieldCollection fields, string internalName) where TField : Field
+        {
             if (!fields.ServerObjectIsNull.HasValue ||
-                fields.ServerObjectIsNull.Value) {
-                    fields.Context.Load(fields);
-                    fields.Context.ExecuteQuery();
+                fields.ServerObjectIsNull.Value)
+            {
+                fields.Context.Load(fields);
+                fields.Context.ExecuteQuery();
             }
 
-            var field = fields.FirstOrDefault(f=>f.StaticName == internalName);
+            var field = fields.FirstOrDefault(f => f.StaticName == internalName);
             if (field == null)
                 return null;
             else
@@ -489,7 +494,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns></returns>
-        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName) as TField;
 
             if (field != null)
@@ -512,7 +518,8 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
-        public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes) {
+        public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
+        {
             string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
             return newFieldCAML;
         }
@@ -600,13 +607,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="list">The target list containing the fields.</param>
         /// <param name="fieldInternalNames">List of field names to retreieve.</param>
         /// <returns>List of fields requested.</returns>
-        public static IEnumerable<Field> GetFields(this List list, params string[] fieldInternalNames) {
+        public static IEnumerable<Field> GetFields(this List list, params string[] fieldInternalNames)
+        {
             var fields = new List<Field>();
 
             if (fieldInternalNames == null || fieldInternalNames.Length == 0)
                 return fields;
 
-            foreach (var fieldName in fieldInternalNames) {
+            foreach (var fieldName in fieldInternalNames)
+            {
                 var field = list.Fields.GetByInternalNameOrTitle(fieldName);
                 list.Context.Load(field);
                 fields.Add(field);
@@ -1261,6 +1270,7 @@ namespace Microsoft.SharePoint.Client
 
         #endregion
 
+#if !CLIENTSDKV15
         #region Localization
         /// <summary>
         /// Set localized labels for content type
@@ -1427,7 +1437,8 @@ namespace Microsoft.SharePoint.Client
             field.UpdateAndPushChanges(true);
             field.Context.ExecuteQuery();
         }
-        #endregion
 
+        #endregion
+#endif
     }
 }
