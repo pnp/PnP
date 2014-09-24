@@ -26,7 +26,7 @@
 
     <Property Id="CLIENTASSEMBLIES">
       <DirectorySearch Id="Client" Path="[WindowsFolder]Microsoft.NET\assembly\GAC_MSIL" Depth="2">
-        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="17.0.0.0"/>
+        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="16.0.0.0"/>
       </DirectorySearch>
     </Property>
     
