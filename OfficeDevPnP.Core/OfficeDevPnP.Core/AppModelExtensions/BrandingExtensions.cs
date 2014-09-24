@@ -337,8 +337,8 @@ namespace Microsoft.SharePoint.Client
                     {
                         var masterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
 
-                        web.SetMasterPageForSiteByUrl(masterUrl);
-                        web.SetCustomMasterPageForSiteByUrl(masterUrl);
+                        web.SetMasterPageByUrl(masterUrl);
+                        web.SetCustomMasterPageByUrl(masterUrl);
                     }
                 }
                 else
@@ -640,8 +640,8 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
-            web.SetMasterPageForSiteByUrl(masterPageUrl);
-            web.SetCustomMasterPageForSiteByUrl(customMasterPageUrl);
+            web.SetMasterPageByUrl(masterPageUrl);
+            web.SetCustomMasterPageByUrl(customMasterPageUrl);
         }
 
         /// <summary>
@@ -675,7 +675,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetMasterPageForSiteByUrl(web, masterPageUrl);
+                SetMasterPageByUrl(web, masterPageUrl);
             }
 
         }
@@ -712,7 +712,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetCustomMasterPageForSiteByUrl(web, masterPageUrl);
+                SetCustomMasterPageByUrl(web, masterPageUrl);
             }
         }
 

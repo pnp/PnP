@@ -192,6 +192,12 @@
   <data name="LoggingUtility_MessageWithException" xml:space="preserve">
     <value>{0}; EXCEPTION: {{{1}}}</value>
   </data>
+  <data name="MailUtility_MailMessageCountNotBeSent" xml:space="preserve">
+    <value>Mail message could not be sent.</value>
+  </data>
+  <data name="MailUtility_MailMessageWasCancelled" xml:space="preserve">
+    <value>Mail message was canceled.</value>
+  </data>
   <data name="TenantExtensions_ClosedContextWarning" xml:space="preserve">
     <value>ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.</value>
   </data>
