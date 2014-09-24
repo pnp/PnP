@@ -317,6 +317,10 @@ namespace Microsoft.SharePoint.Client
                 //Set the property that dictates custom list record settings to true
                 list.SetPropertyBagValue(ECM_IPR_LIST_USE_LIST_SPECIFIC, true.ToString());
             }
+            else
+            {
+                throw new ArgumentOutOfRangeException("settings");
+            }
         }
 
         /// <summary>
