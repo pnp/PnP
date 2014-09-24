@@ -1077,6 +1077,7 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region Localization
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -1098,6 +1099,7 @@ namespace Microsoft.SharePoint.Client
             web.Update();
             web.Context.ExecuteQuery();
         }
+#endif
         #endregion
 
     }
