@@ -15,10 +15,7 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
         [Parameter(Mandatory = true, HelpMessage = "The local file path.")]
         public string Path = string.Empty;
 
-        [Parameter(Mandatory = false, HelpMessage = "The full server relative url, including the filename, of the destination location.", ParameterSetName = "Relative")]
-        public string Url = string.Empty;
-
-        [Parameter(Mandatory = false, HelpMessage = "The destination folder in the site", ParameterSetName = "Folder")]
+        [Parameter(Mandatory = true, HelpMessage = "The destination folder in the site")]
         public string Folder = string.Empty;
 
         [Parameter(Mandatory = false, HelpMessage = "If versioning is enabled, this will check out the file first if it exists, upload the file, then check it in again.")]
@@ -41,50 +38,45 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
-            if (ParameterSetName == "Relative")
+            if (!this.SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                if (!Url.ToLower().EndsWith(System.IO.Path.GetFileName(Path).ToLower()))
-                {
-                    Url = UrlUtility.Combine(Url, System.IO.Path.GetFileName(Path));
-                }
+                ClientContext.Load(this.SelectedWeb, w => w.ServerRelativeUrl);
+                ClientContext.ExecuteQuery();
             }
-            else
-            {
-                Url = UrlUtility.Combine(Folder, System.IO.Path.GetFileName(Path));
-            }
+
+            Folder folder = this.SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(this.SelectedWeb.ServerRelativeUrl, Folder));
+            ClientContext.Load(folder, f => f.ServerRelativeUrl);
+            ClientContext.ExecuteQuery();
+
+            var fileUrl = UrlUtility.Combine(folder.ServerRelativeUrl, System.IO.Path.GetFileName(Path));
+
 
             // Check if the file exists
             if (Checkout)
             {
                 try
                 {
-                    var existingFile = this.SelectedWeb.GetFileByServerRelativeUrl(Url);
+                    var existingFile = this.SelectedWeb.GetFileByServerRelativeUrl(fileUrl);
                     if (existingFile.Exists)
                     {
-                        this.SelectedWeb.CheckOutFile(Url);
+                        this.SelectedWeb.CheckOutFile(fileUrl);
                     }
                 }
                 catch
                 { // Swallow exception, file does not exist 
                 }
             }
-            if (ParameterSetName == "Folder")
-            {
-                this.SelectedWeb.UploadDocumentToFolder(Path, Folder);
-            }
-            else
-            {
-                this.SelectedWeb.UploadFileToServerRelativeUrl(Path, Url, UseWebDav);
-            }
+
+            folder.UploadFile(Path, useWebDav: UseWebDav);
 
             if (Checkout)
-                this.SelectedWeb.CheckInFile(Url, CheckinType.MajorCheckIn, "");
+                this.SelectedWeb.CheckInFile(fileUrl, CheckinType.MajorCheckIn, "");
 
             if (Publish)
-                this.SelectedWeb.PublishFile(Url, PublishComment);
+                this.SelectedWeb.PublishFile(fileUrl, PublishComment);
 
             if (Approve)
-                this.SelectedWeb.ApproveFile(Url, PublishComment);
+                this.SelectedWeb.ApproveFile(fileUrl, PublishComment);
         }
     }
 }
