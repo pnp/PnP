@@ -53,6 +53,8 @@ namespace OfficeDevPnP.Core.Utilities
         SiteSearchUnhandledException = 5401,
         FeatureActivationProblem = 5501,
         UnknownExceptionAccessingSite = 5901,
+        SendMailCancelled = 5902,
+        MailNotSend = 5903,
 
         DeleteWeb = 8501,
         DeleteSiteCollection = 8502,

@@ -286,6 +286,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail message could not be sent..
+        /// </summary>
+        internal static string MailUtility_MailMessageCountNotBeSent {
+            get {
+                return ResourceManager.GetString("MailUtility_MailMessageCountNotBeSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail message was canceled..
+        /// </summary>
+        internal static string MailUtility_MailMessageWasCancelled {
+            get {
+                return ResourceManager.GetString("MailUtility_MailMessageWasCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object..
         /// </summary>
         internal static string TenantExtensions_ClosedContextWarning {
