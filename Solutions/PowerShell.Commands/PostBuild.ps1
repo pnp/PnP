@@ -1,6 +1,6 @@
 param($ProjectDir, $ConfigurationName, $TargetDir, $TargetFileName, $SolutionDir)
 
-if($ConfigurationName -eq "Debug")
+if($ConfigurationName -like "Debug*")
 {
 	$documentsFolder = [environment]::getfolderpath("mydocuments");
 
@@ -16,12 +16,12 @@ if($ConfigurationName -eq "Debug")
 		New-Item -Path $PSModuleHome -ItemType Directory -Force >$null # Suppress output
 	}
 
-	Write-Host "Copying files from $target to $PSModuleHome"
+	Write-Host "Copying files from $TargetDir to $PSModuleHome"
 	Copy-Item "$TargetDir\*.dll" -Destination "$PSModuleHome"
 	Copy-Item "$TargetDir\*help.xml" -Destination "$PSModuleHome"
 	Copy-Item "$TargetDir\ModuleFiles\*.psd1" -Destination  "$PSModuleHome"
 	Copy-Item "$TargetDir\ModuleFiles\*.ps1xml" -Destination "$PSModuleHome"
-} elseif ($ConfigurationName -eq "Release")
+} elseif ($ConfigurationName -like "Release*")
 {
 	$distDir = "$SolutionDir\dist";
 
