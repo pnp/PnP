@@ -15,5 +15,10 @@ namespace OfficeDevPnP.Core
         /// Contains the content identifier (ID) for the DocumentSet content type. To get content type from a list, use BestMatchContentTypeId().
         /// </summary>
         public const string DocumentSet = "0x0120D520";
+
+        /// <summary>
+        /// Contains the content identifier (ID) for the Item content type.
+        /// </summary>
+        public const string Item = "0x01";
     }
 }

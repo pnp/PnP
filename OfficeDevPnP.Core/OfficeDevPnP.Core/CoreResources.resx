@@ -174,11 +174,26 @@
   <data name="FeatureExtensions_FeatureActivationProblem" xml:space="preserve">
     <value>Problem with activation for feature id {0}.</value>
   </data>
+  <data name="FieldAndContentTypeExtensions_AddField0ToContentType1" xml:space="preserve">
+    <value>Adding field ({0}) to content type ({1}).</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_ContentType01AlreadyExists" xml:space="preserve">
+    <value>Content type '{0}' ({1}) already exists; no changes made.</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_CreateContentType01" xml:space="preserve">
+    <value>Creating content type '{0}' ({1}).</value>
+  </data>
   <data name="FieldAndContentTypeExtensions_CreateDocumentSet" xml:space="preserve">
     <value>Creating document set '{0}'.</value>
   </data>
+  <data name="FieldAndContentTypeExtensions_CreateField01" xml:space="preserve">
+    <value>Creating field '{0}' ({1}).</value>
+  </data>
   <data name="FieldAndContentTypeExtensions_CreateFieldBase" xml:space="preserve">
     <value>New Field as XML: {0}</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_Field01AlreadyExists" xml:space="preserve">
+    <value>Field '{0}' ({1}) already exists; no changes made.</value>
   </data>
   <data name="FileFolderExtensions_FolderMissing" xml:space="preserve">
     <value>Target folder does not exist in the web. Web: {0}, Folder: {1}</value>

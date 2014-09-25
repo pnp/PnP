@@ -232,6 +232,33 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding field ({0}) to content type ({1})..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_AddField0ToContentType1 {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_AddField0ToContentType1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content type &apos;{0}&apos; ({1}) already exists; no changes made..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_ContentType01AlreadyExists {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_ContentType01AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating content type &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_CreateContentType01 {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_CreateContentType01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating document set &apos;{0}&apos;..
         /// </summary>
         internal static string FieldAndContentTypeExtensions_CreateDocumentSet {
@@ -241,11 +268,29 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating field &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_CreateField01 {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_CreateField01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Field as XML: {0}.
         /// </summary>
         internal static string FieldAndContentTypeExtensions_CreateFieldBase {
             get {
                 return ResourceManager.GetString("FieldAndContentTypeExtensions_CreateFieldBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field &apos;{0}&apos; ({1}) already exists; no changes made..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_Field01AlreadyExists {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_Field01AlreadyExists", resourceCulture);
             }
         }
         
