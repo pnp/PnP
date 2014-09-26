@@ -323,7 +323,6 @@ namespace Microsoft.SharePoint.Client
         /// Returns the integer ID for a given group name
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">Site to operate on</param>
         /// <param name="groupName">SharePoint group name</param>
         /// <returns>Integer group ID</returns>
         public static int GetGroupID(this Web web, string groupName)
