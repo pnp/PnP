@@ -28,6 +28,7 @@ namespace OfficeDevPnP.Core.Utilities
         CreateField = 1506,
         CreateContentType = 1507,
         CreateListField = 1508,
+        CreateTermGroup = 1509,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -51,6 +52,8 @@ namespace OfficeDevPnP.Core.Utilities
 
         FieldAlreadyExists = 4501,
         ContentTypeAlreadyExists = 4502,
+        ProvisionTaxonomyUpdateException = 4503,
+        ProvisionTaxonomyIdMismatch = 4504,
 
         ThemeNotOverwritten = 4601,
 

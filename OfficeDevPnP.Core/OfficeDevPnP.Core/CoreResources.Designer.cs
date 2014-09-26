@@ -367,6 +367,42 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating term group &apos;{0}&apos; in term store &apos;{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTermGroup0InStore1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTermGroup0InStore1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string TaxonomyExtension_ExceptionUpdateDescriptionGroup01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateDescriptionGroup01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error setting name for term group &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string TaxonomyExtension_ExceptionUpdateNameGroup01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateNameGroup01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Term group &apos;{0}&apos; ID ({1}) does not match specified ID ({2})..
+        /// </summary>
+        internal static string TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object..
         /// </summary>
         internal static string TenantExtensions_ClosedContextWarning {
@@ -430,7 +466,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing sandbox solution &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Removing sandbox solution &apos;{0}&apos;..
         /// </summary>
         internal static string WebExtensions_UninstallSolution {
             get {

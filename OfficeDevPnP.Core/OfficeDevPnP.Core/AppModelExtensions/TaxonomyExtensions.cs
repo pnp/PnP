@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace Microsoft.SharePoint.Client
     public static class TaxonomyExtensions
     {
         #region Taxonomy Management
+        private static Regex invalidDescriptionRegex = new Regex("[\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static Regex invalidNameRegex = new Regex("[;\"<>|&\\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 
@@ -88,6 +93,91 @@ namespace Microsoft.SharePoint.Client
                 return (string)null;
             else
                 return TrimSpacesRegex.Replace(name, " ").Replace('＆', '&').Replace('＂', '"');
+        }
+
+        /// <summary>
+        /// Ensures the named group exists, returning a reference to the group, and creating or updating as necessary.
+        /// </summary>
+        /// <param name="site">Site connected to the term store to use</param>
+        /// <param name="groupName">Name of the term group</param>
+        /// <param name="groupDescription">Description of the term group; if null or not provided the parameter is ignored, otherwise the groups is updated as necessary to match the description</param>
+        /// <param name="groupId">ID of the group; if not provided the parameter is ignored, a random GUID is used if necessary to create the group, otherwise if the ID differs a warning is logged</param>
+        /// <returns></returns>
+        public static TermGroup EnsureTermGroup(this Site site, string groupName, string groupDescription = null, Guid groupId = default(Guid))
+        {
+            if (string.IsNullOrEmpty(groupName)) { throw new ArgumentNullException("groupName"); }
+
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            var termStore = session.GetDefaultSiteCollectionTermStore();
+            site.Context.Load(termStore, s => s.Name, s => s.Id);
+
+            bool changed = false;
+            TermGroup termGroup = null;
+            groupName = NormalizeName(groupName);
+            ValidateName(groupName, "groupName");
+
+            // Find or create group
+            IEnumerable<TermGroup> groups = site.Context.LoadQuery(termStore.Groups.Include(g => g.Name, g => g.Id, g => g.Description));
+            site.Context.ExecuteQuery();
+            if (groupId != Guid.Empty)
+            {
+                termGroup = groups.FirstOrDefault(g => g.Id == groupId);
+            }
+            if (termGroup == null)
+            {
+                termGroup = groups.FirstOrDefault(g => string.Equals(g.Name, groupName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (termGroup == null)
+            {
+                if (groupId == Guid.Empty)
+                {
+                    groupId = Guid.NewGuid();
+                }
+                LoggingUtility.Internal.TraceInformation((int)EventId.CreateTermGroup, CoreResources.TaxonomyExtension_CreateTermGroup0InStore1, groupName, termStore.Name);
+                termGroup = termStore.CreateGroup(groupName, groupId);
+                site.Context.Load(termGroup, g => g.Name, g => g.Id, g => g.Description);
+                site.Context.ExecuteQuery();
+            }
+            // Check ID (if retrieved by name and ID is different)
+            if (groupId != Guid.Empty && termGroup.Id != groupId)
+            {
+                LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2, termGroup.Name, termGroup.Id, groupId);
+            }
+            // Apply name (if retrieved by ID and name has changed)
+            if (groupDescription != null && !string.Equals(termGroup.Description, groupDescription))
+            {
+                try
+                {
+                    ValidateDescription(groupDescription, "groupDescription");
+                    termGroup.Description = groupDescription;
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionGroup01, termGroup.Name, termGroup.Id);
+                    //errorMessage = string.Format("Error setting description for taxonomy group '{0}': {1}", termGroup.Name, ex);
+                }
+            }
+            // Apply description
+            if (!string.Equals(termGroup.Name, groupName))
+            {
+                try
+                {
+                    termGroup.Name = groupName;
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateNameGroup01, termGroup.Name, termGroup.Id);
+                }
+            }
+            if (changed)
+            {
+                site.Context.ExecuteQuery();
+                //termStore.CommitAll();
+            }
+            return termGroup;
         }
 
         /// <summary>
@@ -536,6 +626,41 @@ namespace Microsoft.SharePoint.Client
 
             }
             return items;
+        }
+
+        private static void ValidateDescription(string description, string parameterName)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                return;
+            }
+            if (invalidDescriptionRegex.IsMatch(description))
+            {
+                throw new ArgumentException(string.Format("Invalid characters in description '{0}'.", new object[]
+		        {
+			        description
+		        }), parameterName);
+            }
+            if (description.Length > 1000)
+            {
+                throw new ArgumentException(string.Format("Description exceeds maximum length (1000): '{0}'.", new object[]
+		        {
+			        description
+		        }), parameterName);
+            }
+        }
+
+        private static void ValidateName(string name, string parameterName)
+        {
+            if (string.IsNullOrEmpty(name)) { throw new ArgumentNullException(parameterName); }
+
+            if (name.Length > 255 || invalidNameRegex.IsMatch(name))
+            {
+                throw new ArgumentException(string.Format("Invalid taxonomy name '{0}'.", new object[]
+				{
+					name
+				}), parameterName);
+            }
         }
 
         #endregion
