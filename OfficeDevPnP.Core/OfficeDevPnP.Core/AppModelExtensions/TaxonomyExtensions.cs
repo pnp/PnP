@@ -100,10 +100,10 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="site">Site connected to the term store to use</param>
         /// <param name="groupName">Name of the term group</param>
-        /// <param name="groupDescription">Description of the term group; if null or not provided the parameter is ignored, otherwise the groups is updated as necessary to match the description</param>
-        /// <param name="groupId">ID of the group; if not provided the parameter is ignored, a random GUID is used if necessary to create the group, otherwise if the ID differs a warning is logged</param>
-        /// <returns></returns>
-        public static TermGroup EnsureTermGroup(this Site site, string groupName, string groupDescription = null, Guid groupId = default(Guid))
+        /// <param name="groupId">(Optional) ID of the group; if not provided the parameter is ignored, a random GUID is used if necessary to create the group, otherwise if the ID differs a warning is logged</param>
+        /// <param name="groupDescription">(Optional) Description of the term group; if null or not provided the parameter is ignored, otherwise the group is updated as necessary to match the description; passing an empty string will clear the description</param>
+        /// <returns>The required term group</returns>
+        public static TermGroup EnsureTermGroup(this Site site, string groupName, Guid groupId = default(Guid), string groupDescription = null)
         {
             if (string.IsNullOrEmpty(groupName)) { throw new ArgumentNullException("groupName"); }
 
@@ -139,12 +139,21 @@ namespace Microsoft.SharePoint.Client
                 site.Context.Load(termGroup, g => g.Name, g => g.Id, g => g.Description);
                 site.Context.ExecuteQuery();
             }
-            // Check ID (if retrieved by name and ID is different)
-            if (groupId != Guid.Empty && termGroup.Id != groupId)
+            else
             {
-                LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2, termGroup.Name, termGroup.Id, groupId);
+                // Check ID (if retrieved by name and ID is different)
+                if (groupId != Guid.Empty && termGroup.Id != groupId)
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2, termGroup.Name, termGroup.Id, groupId);
+                }
             }
             // Apply name (if retrieved by ID and name has changed)
+            if (!string.Equals(termGroup.Name, groupName))
+            {
+                termGroup.Name = groupName;
+                changed = true;
+            }
+            // Apply description
             if (groupDescription != null && !string.Equals(termGroup.Description, groupDescription))
             {
                 try
@@ -159,26 +168,116 @@ namespace Microsoft.SharePoint.Client
                     //errorMessage = string.Format("Error setting description for taxonomy group '{0}': {1}", termGroup.Name, ex);
                 }
             }
-            // Apply description
-            if (!string.Equals(termGroup.Name, groupName))
-            {
-                try
-                {
-                    termGroup.Name = groupName;
-                    changed = true;
-                }
-                catch (Exception ex)
-                {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateNameGroup01, termGroup.Name, termGroup.Id);
-                }
-            }
             if (changed)
             {
+                LoggingUtility.Internal.TraceVerbose("Updating term group");
                 site.Context.ExecuteQuery();
                 //termStore.CommitAll();
             }
             return termGroup;
         }
+
+        /// <summary>
+        /// Ensures the named term set exists, returning a reference to the set, and creating or updating as necessary.
+        /// </summary>
+        /// <param name="parentGroup">Group to check or create the term set in</param>
+        /// <param name="termSetName">Name of the term set</param>
+        /// <param name="termSetId">(Optional) ID of the term set; if not provided the parameter is ignored, a random GUID is used if necessary to create the term set, otherwise if the ID differs a warning is logged</param>
+        /// <param name="lcid">(Optional) Default language of the term set; if not provided the default of the associate term store is used</param>
+        /// <param name="description">(Optional) Description of the term set; if null or not provided the parameter is ignored, otherwise the term set is updated as necessary to match the description; passing an empty string will clear the description</param>
+        /// <param name="isOpen">(Optiona) Whether the term store is open for new term creation or not</param>
+        /// <returns>The required term set</returns>
+        public static TermSet EnsureTermSet(this TermGroup parentGroup, string termSetName, Guid termSetId = default(Guid), int? lcid = null, string description = null, bool? isOpen = null)
+        {
+            bool changed = false;
+            TermSet termSet = null;
+            termSetName = NormalizeName(termSetName);
+            ValidateName(termSetName, "termSetName");
+
+            // Find or create term set
+            parentGroup.Context.Load(parentGroup, g => g.Name, g => g.Id);
+            IEnumerable<TermSet> termSets = parentGroup.Context.LoadQuery(parentGroup.TermSets.Include(g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation));
+            parentGroup.Context.ExecuteQuery();
+            if (termSetId != Guid.Empty)
+            {
+                termSet = termSets.FirstOrDefault(s => s.Id == termSetId);
+            }
+            if (termSet == null)
+            {
+                termSet = termSets.FirstOrDefault(s => string.Equals(s.Name, termSetName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            if (termSet == null)
+            {
+                if (termSetId == Guid.Empty)
+                {
+                    termSetId = Guid.NewGuid();
+                }
+                if (lcid.HasValue)
+                {
+                    var termStore = parentGroup.TermStore;
+                    parentGroup.Context.Load(termStore, ts => ts.Languages);
+                    parentGroup.Context.ExecuteQuery();
+                    if (!termStore.Languages.Contains(lcid.Value))
+                    {
+                        termStore.AddLanguage(lcid.Value);
+                    }
+                }
+                else
+                {
+                    var termStore = parentGroup.TermStore;
+                    parentGroup.Context.Load(termStore, ts => ts.DefaultLanguage);
+                    parentGroup.Context.ExecuteQuery();
+                    lcid = termStore.DefaultLanguage;
+                }
+                LoggingUtility.Internal.TraceInformation((int)EventId.CreateTermSet, CoreResources.TaxonomyExtension_CreateTermSet0InGroup1, termSetName, parentGroup.Name);
+                termSet = parentGroup.CreateTermSet(termSetName, termSetId, lcid.Value);
+                parentGroup.Context.Load(termSet, g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation);
+                parentGroup.Context.ExecuteQuery();
+            }
+            else
+            {
+                if (termSetId != Guid.Empty && termSet.Id != termSetId)
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2, termSet.Name, termSet.Id, termSetId);
+                }
+            }
+            // Apply name (if retrieved by ID and name has changed)
+            if (!string.Equals(termSet.Name, termSetName))
+            {
+                termSet.Name = termSetName;
+                changed = true;
+            }
+            // Apply description
+            if (description != null && (termSet.Description != description))
+            {
+                try
+                {
+                    ValidateDescription(description, "termSetDescription");
+                    termSet.Description = description;
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionSet01, termSet.Name, termSet.Id);
+                }
+            }
+            // Other settings
+            if (isOpen.HasValue && (termSet.IsOpenForTermCreation != isOpen.Value))
+            {
+                termSet.IsOpenForTermCreation = isOpen.Value;
+                changed = true;
+            }
+            // Update (if changed)
+            if (changed)
+            {
+                //Diagnostics.TraceVerbose("Committing term set creation");
+                LoggingUtility.Internal.TraceVerbose("Updating term set");
+                parentGroup.Context.ExecuteQuery();
+            }
+            return termSet;
+        }
+
 
         /// <summary>
         /// Exports the full list of terms from all termsets in all termstores.

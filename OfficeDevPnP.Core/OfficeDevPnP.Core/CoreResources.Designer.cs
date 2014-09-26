@@ -376,6 +376,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating term set &apos;{0}&apos; in term group &apos;{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTermSet0InGroup1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTermSet0InGroup1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1})..
         /// </summary>
         internal static string TaxonomyExtension_ExceptionUpdateDescriptionGroup01 {
@@ -385,20 +394,29 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error setting name for term group &apos;{0}&apos; ({1})..
+        ///   Looks up a localized string similar to Error setting description for term set &apos;{0}&apos; ({1})..
         /// </summary>
-        internal static string TaxonomyExtension_ExceptionUpdateNameGroup01 {
+        internal static string TaxonomyExtension_ExceptionUpdateDescriptionSet01 {
             get {
-                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateNameGroup01", resourceCulture);
+                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateDescriptionSet01", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Term group &apos;{0}&apos; ID ({1}) does not match specified ID ({2})..
         /// </summary>
-        internal static string TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2 {
+        internal static string TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2 {
             get {
-                return ResourceManager.GetString("TaxonomyExtension_TermGroup01DoesNotMatchSpecifiedId2", resourceCulture);
+                return ResourceManager.GetString("TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Term set &apos;{0}&apos; ID ({1}) does not match specified ID ({2})..
+        /// </summary>
+        internal static string TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2", resourceCulture);
             }
         }
         
