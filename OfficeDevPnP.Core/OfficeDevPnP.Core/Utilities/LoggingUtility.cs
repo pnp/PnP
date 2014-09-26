@@ -35,7 +35,7 @@ namespace OfficeDevPnP.Core.Utilities
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
-        MailCancelled = 2101,
+        SendMailCancelled = 2201,
 
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
@@ -54,8 +54,8 @@ namespace OfficeDevPnP.Core.Utilities
 
         ThemeNotOverwritten = 4601,
 
-        MailSendException = 5101,
-        MailSendFailed = 5102,
+        MailSendException = 5201,
+        MailSendFailed = 5202,
 
         SiteSearchUnhandledException = 5401,
 

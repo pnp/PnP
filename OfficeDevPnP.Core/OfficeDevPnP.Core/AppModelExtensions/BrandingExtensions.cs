@@ -337,8 +337,8 @@ namespace Microsoft.SharePoint.Client
                     {
                         var masterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
 
-                        web.SetMasterPageForSiteByUrl(masterUrl);
-                        web.SetCustomMasterPageForSiteByUrl(masterUrl);
+                        web.SetMasterPageByUrl(masterUrl);
+                        web.SetCustomMasterPageByUrl(masterUrl);
                     }
                 }
                 else
@@ -603,7 +603,7 @@ namespace Microsoft.SharePoint.Client
             web.SetCustomMasterPageByName(customMasterPageName);
         }
 
-           /// <summary>
+        /// <summary>
         /// Can be used to set master page and custom master page in single command
         /// </summary>
         /// <param name="web"></param>
@@ -640,11 +640,11 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
-            web.SetMasterPageForSiteByUrl(masterPageUrl);
-            web.SetCustomMasterPageForSiteByUrl(customMasterPageUrl);
+            web.SetMasterPageByUrl(masterPageUrl);
+            web.SetCustomMasterPageByUrl(customMasterPageUrl);
         }
 
-          /// <summary>
+        /// <summary>
         /// Master page is set by using master page name. Master page is set from the current web.
         /// </summary>
         /// <param name="web">Current web</param>
@@ -675,7 +675,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetMasterPageForSiteByUrl(web, masterPageUrl);
+                SetMasterPageByUrl(web, masterPageUrl);
             }
 
         }
@@ -712,7 +712,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetCustomMasterPageForSiteByUrl(web, masterPageUrl);
+                SetCustomMasterPageByUrl(web, masterPageUrl);
             }
         }
 
@@ -764,7 +764,7 @@ namespace Microsoft.SharePoint.Client
             return null;
         }
 
-         /// <summary>
+        /// <summary>
         /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
@@ -792,12 +792,18 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
+        [Obsolete("Use Web.SetCustomMasterPageByUrl()")]
+        public static void SetCustomMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        {
+            web.SetCustomMasterPageByUrl(masterPageUrl);
+        }
+
         /// <summary>
         /// Set Custom master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
         /// <param name="masterPageName">URL to the master page.</param>
-        public static void SetCustomMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        public static void SetCustomMasterPageByUrl(this Web web, string masterPageUrl)
         {
             if (string.IsNullOrEmpty(masterPageUrl))
                 throw new ArgumentNullException("masterPageUrl");

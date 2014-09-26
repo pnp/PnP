@@ -11,7 +11,7 @@ Additional information related on the different site provisioning options can be
 
 Visit the video on Channel 9 [http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
-![http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](/Samples/Provisioning.SubSiteCreationApp/images/ch9scrnsht.png)
+![http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://i.imgur.com/TAXx5IZ.png)
 
 ### Applies to ###
 - Office 365 Multi-Tenant (MT)

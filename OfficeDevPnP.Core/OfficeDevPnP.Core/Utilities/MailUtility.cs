@@ -57,11 +57,11 @@ namespace OfficeDevPnP.Core.Utilities
                     {
                         if (args.Error != null)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.MailSendFailed, args.Error, CoreResources.MailUtility_CompletedError);
+                            LoggingUtility.Internal.TraceError((int)EventId.MailSendFailed, args.Error, CoreResources.MailUtility_SendFailed);
                         }
                         else if (args.Cancelled)
                         {
-                            LoggingUtility.Internal.TraceInformation((int)EventId.MailCancelled, CoreResources.MailUtility_CompletedCancelled);
+                            LoggingUtility.Internal.TraceInformation((int)EventId.SendMailCancelled, CoreResources.MailUtility_SendMailCancelled);
                         }
                     };
                     server.SendAsync(mail, asyncUserToken);

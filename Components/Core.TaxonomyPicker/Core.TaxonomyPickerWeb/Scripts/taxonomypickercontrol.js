@@ -906,19 +906,30 @@
         },
         //adds a new term to the end of this._selectedTerms
         pushSelectedTerm: function (term) {
-            //clone the term so we don't messup the original
-            var clonedTerm = term.clone();
+            if (!this.existingTerm(term)) {
+                //clone the term so we don't messup the original
+                var clonedTerm = term.clone();
 
-            //clear the RawTerm so it can be serialized
-            clonedTerm.RawTerm = null;
+                //clear the RawTerm so it can be serialized
+                clonedTerm.RawTerm = null;
 
-            //pop the existing term if this isn't a multi-select
-            if (!this._isMulti)
-                this.popSelectedTerm();
+                //pop the existing term if this isn't a multi-select
+                if (!this._isMulti)
+                    this.popSelectedTerm();
 
-            //add the term to the selected terms array
-            this._selectedTerms.push(clonedTerm);
-            this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+                //add the term to the selected terms array            
+                this._selectedTerms.push(clonedTerm);
+                this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+            }
+        },
+        //if the term already exists in the selected terms then don't add it
+        existingTerm: function (term) {
+            for (var j = 0; j < this._selectedTerms.length; j++) {
+                if (this._selectedTerms[j].Id == term.Id) {
+                    return true;
+                }
+            }
+            return false;
         },
         //removes the last term from this._selectedTerms
         popSelectedTerm: function () {

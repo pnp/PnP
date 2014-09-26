@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Workflow4App" SupportedTrustLevels="All" SupportedDeploymentScopes="AppPackage" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="WorkflowTask.xaml" Target="TaskWorkflow\" Type="AppPackage" />
+  </Files>
+  <ExtensionData>
+    <ExtensionDataItem Key="WorkflowDefinition.Description" Value="My 'TaskWorkflow' Workflow" />
+    <ExtensionDataItem Key="WorkflowDefinition.DisplayName" Value="TaskWorkflow" />
+    <ExtensionDataItem Key="WorkflowDefinition.Id" Value="bee7e2b6-221c-4d0c-a28b-bb0cd8c1c05a" />
+    <ExtensionDataItem Key="WorkflowDefinition.RestrictAssociationToType" Value="List" />
+  </ExtensionData>
+</ProjectItem>

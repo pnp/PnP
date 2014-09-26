@@ -584,7 +584,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
-
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -626,7 +626,9 @@ namespace Microsoft.SharePoint.Client
             List list = web.GetList(listTitle);
             SetLocalizationLabelsForList(list, cultureName, titleResource, descriptionResource);
         }
+#endif
 
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -646,6 +648,7 @@ namespace Microsoft.SharePoint.Client
             list.Update();
             list.Context.ExecuteQuery();
         }
+#endif
 
         /// <summary>
         /// Returns the GUID id of a list

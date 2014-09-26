@@ -207,17 +207,17 @@
   <data name="LoggingUtility_MessageWithException" xml:space="preserve">
     <value>{0}; EXCEPTION: {{{1}}}</value>
   </data>
-  <data name="MailUtility_CompletedCancelled" xml:space="preserve">
-    <value>Send email cancelled.</value>
+  <data name="MailUtility_SendMailCancelled" xml:space="preserve">
+    <value>Mail message was canceled.</value>
   </data>
-  <data name="MailUtility_CompletedError" xml:space="preserve">
-    <value>Send email completed with error.</value>
+  <data name="MailUtility_SendFailed" xml:space="preserve">
+    <value>Mail message could not be sent. Send completed with error.</value>
   </data>
   <data name="MailUtility_SendException" xml:space="preserve">
-    <value>SMTP exception attempting to send email.</value>
+    <value>Mail message could not be sent. SMTP exception attempting to send.</value>
   </data>
   <data name="MailUtility_SendExceptionRethrow0" xml:space="preserve">
-    <value>Exception attempting to send email, rethrowing. Exception: {0}</value>
+    <value>Mail message could not be sent. Exception attempting to send email, rethrowing. Exception: {0}</value>
   </data>
   <data name="TenantExtensions_ClosedContextWarning" xml:space="preserve">
     <value>ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.</value>

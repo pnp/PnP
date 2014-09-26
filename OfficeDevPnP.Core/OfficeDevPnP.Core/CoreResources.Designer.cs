@@ -331,25 +331,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send email cancelled..
-        /// </summary>
-        internal static string MailUtility_CompletedCancelled {
-            get {
-                return ResourceManager.GetString("MailUtility_CompletedCancelled", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send email completed with error..
-        /// </summary>
-        internal static string MailUtility_CompletedError {
-            get {
-                return ResourceManager.GetString("MailUtility_CompletedError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SMTP exception attempting to send email..
+        ///   Looks up a localized string similar to Mail message could not be sent. SMTP exception attempting to send..
         /// </summary>
         internal static string MailUtility_SendException {
             get {
@@ -358,11 +340,29 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exception attempting to send email, rethrowing. Exception: {0}.
+        ///   Looks up a localized string similar to Mail message could not be sent. Exception attempting to send email, rethrowing. Exception: {0}.
         /// </summary>
         internal static string MailUtility_SendExceptionRethrow0 {
             get {
                 return ResourceManager.GetString("MailUtility_SendExceptionRethrow0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail message could not be sent. Send completed with error..
+        /// </summary>
+        internal static string MailUtility_SendFailed {
+            get {
+                return ResourceManager.GetString("MailUtility_SendFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail message was canceled..
+        /// </summary>
+        internal static string MailUtility_SendMailCancelled {
+            get {
+                return ResourceManager.GetString("MailUtility_SendMailCancelled", resourceCulture);
             }
         }
         
