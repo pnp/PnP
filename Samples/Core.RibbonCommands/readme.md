@@ -8,11 +8,6 @@ Demonstrates how to add/remove a ribbon to a SharePoint host web.
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
--> Remove platforms if needed
-
-### Prerequisites ###
-Any special pre-requisites?
-
 ### Solution ###
 Solution | Author(s)
 ---------|----------
