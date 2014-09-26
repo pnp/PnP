@@ -15,6 +15,208 @@ namespace Microsoft.SharePoint.Client
         #region Taxonomy Management
         private static Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+
+        private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
+        {
+            var clientContext = term.Context;
+            if (term.ServerObjectIsNull == true)
+            {
+                clientContext.Load(term);
+                clientContext.ExecuteQuery();
+            }
+            Term subTerm = null;
+            if (termId != Guid.Empty)
+            {
+                subTerm = term.Terms.GetById(termId);
+            }
+            else
+            {
+                subTerm = term.Terms.GetByName(NormalizeName(termLabel));
+            }
+            clientContext.Load(term);
+            try
+            {
+                clientContext.ExecuteQuery();
+            }
+            catch { }
+
+            clientContext.Load(subTerm);
+            try
+            {
+                clientContext.ExecuteQuery();
+            }
+            catch { }
+            if (subTerm.ServerObjectIsNull == null)
+            {
+                if (termId == Guid.Empty) termId = Guid.NewGuid();
+                subTerm = term.CreateTerm(NormalizeName(termLabel), lcid, termId);
+                clientContext.Load(subTerm);
+                clientContext.ExecuteQuery();
+            }
+            return subTerm;
+        }
+
+        public static Term AddTermToTermset(this Site site, Guid termSetId, string term)
+        {
+            return AddTermToTermset(site, termSetId, term, Guid.NewGuid());
+        }
+
+        public static Term AddTermToTermset(this Site site, Guid termSetId, string term, Guid termId)
+        {
+            if (string.IsNullOrEmpty(term))
+                throw new ArgumentNullException("term");
+
+            Term t = null;
+            TaxonomySession tSession = TaxonomySession.GetTaxonomySession(site.Context);
+            TermStore ts = tSession.GetDefaultSiteCollectionTermStore();
+            TermSet tset = ts.GetTermSet(termSetId);
+
+            t = tset.CreateTerm(term, 1033, termId);
+            //site.Context.Load(tSession);
+            //site.Context.Load(ts);
+            //site.Context.Load(tset);
+            site.Context.Load(t);
+
+            site.Context.ExecuteQuery();
+
+            return t;
+        }
+
+        private static string DenormalizeName(string name)
+        {
+            if (name == null)
+                return (string)null;
+            else
+                return TrimSpacesRegex.Replace(name, " ").Replace('＆', '&').Replace('＂', '"');
+        }
+
+        /// <summary>
+        /// Exports the full list of terms from all termsets in all termstores.
+        /// </summary>
+        /// <param name="includeId">if true, Ids of the the taxonomy items will be included</param>
+        /// <param name="clientContext"></param>
+        /// <param name="delimiter">if specified, this delimiter will be used. Notice that IDs will be delimited with ;# from the label</param>
+        /// <returns></returns>
+        public static List<string> ExportAllTerms(this Site site, bool includeId, string delimiter = "|")
+        {
+            var clientContext = site.Context;
+
+            List<string> termsString = new List<string>();
+
+            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+
+            clientContext.ExecuteQuery();
+
+            TermStoreCollection termStores = taxonomySession.TermStores;
+            clientContext.Load(termStores, t => t.IncludeWithDefaultProperties(s => s.Groups));
+            clientContext.ExecuteQuery();
+            foreach (TermStore termStore in termStores)
+            {
+                foreach (TermGroup termGroup in termStore.Groups)
+                {
+                    TermSetCollection termSets = termGroup.TermSets;
+                    clientContext.Load(termSets, t => t.IncludeWithDefaultProperties(s => s.Terms));
+                    clientContext.ExecuteQuery();
+                    string termGroupName = DenormalizeName(termGroup.Name);
+                    string groupPath = string.Format("{0}{1}", termGroupName, (includeId) ? string.Format(";#{0}", termGroup.Id.ToString()) : "");
+                    foreach (TermSet set in termSets)
+                    {
+                        string setName = DenormalizeName(set.Name);
+                        string termsetPath = string.Format("{0}{3}{1}{2}", groupPath, setName, (includeId) ? string.Format(";#{0}", set.Id.ToString()) : "", delimiter);
+                        foreach (Term term in set.Terms)
+                        {
+                            string termName = DenormalizeName(term.Name);
+                            string termPath = string.Format("{0}{3}{1}{2}", termsetPath, termName, (includeId) ? string.Format(";#{0}", term.Id.ToString()) : "", delimiter);
+                            termsString.Add(termPath);
+
+                            if (term.TermsCount > 0)
+                            {
+                                string subTermPath = string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termName, delimiter);
+
+                                termsString.AddRange(ParseSubTerms(subTermPath, term, includeId, delimiter, clientContext));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return termsString.Distinct().ToList<string>();
+        }
+
+        /// <summary>
+        /// Exports the full list of terms from all termsets in all termstores.
+        /// </summary>
+        /// <param name="termSetId">The ID of the termset to export</param>
+        /// <param name="includeId">if true, Ids of the the taxonomy items will be included</param>
+        /// <param name="clientContext"></param>
+        /// <param name="delimiter">if specified, this delimiter will be used. Notice that IDs will be delimited with ;# from the label</param>
+        /// <returns></returns>
+        public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, string delimiter = "|")
+        {
+            var clientContext = site.Context;
+            List<string> termsString = new List<string>();
+            TermCollection terms = null;
+            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+
+            if (termSetId != Guid.Empty)
+            {
+                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+
+                TermSet termSet = termStore.GetTermSet(termSetId);
+                terms = termSet.Terms;
+                clientContext.Load(terms, t => t.IncludeWithDefaultProperties(s => s.TermSet));
+                clientContext.Load(terms, t => t.IncludeWithDefaultProperties(s => s.TermSet.Group));
+            }
+
+            clientContext.ExecuteQuery();
+
+            if (terms != null)
+            {
+                foreach (Term term in terms)
+                {
+                    string groupName = DenormalizeName(term.TermSet.Group.Name);
+                    string termsetName = DenormalizeName(term.TermSet.Name);
+                    string termName = DenormalizeName(term.Name);
+                    clientContext.ExecuteQuery();
+                    string groupPath = string.Format("{0}{1}", groupName, (includeId) ? string.Format(";#{0}", term.TermSet.Group.Id.ToString()) : "");
+                    string termsetPath = string.Format("{0}{1}", termsetName, (includeId) ? string.Format(";#{0}", term.TermSet.Id.ToString()) : "");
+                    string termPath = string.Format("{0}{1}", termName, (includeId) ? string.Format(";#{0}", term.Id.ToString()) : "");
+                    termsString.Add(string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termPath, delimiter));
+
+                    if (term.TermsCount > 0)
+                    {
+                        string subTermPath = string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termName, delimiter);
+
+                        termsString.AddRange(ParseSubTerms(subTermPath, term, includeId, delimiter, clientContext));
+                    }
+
+                    termsString.Add(string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termPath, delimiter));
+                }
+            }
+
+            return termsString.Distinct().ToList<string>();
+        }
+
+        public static TermStore GetDefaultKeywordsTermStore(this Site site)
+        {
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            var termStore = session.GetDefaultKeywordsTermStore();
+            site.Context.Load(termStore);
+            site.Context.ExecuteQuery();
+
+            return termStore;
+        }
+
+        public static TermStore GetDefaultSiteCollectionTermStore(this Site site)
+        {
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            var termStore = session.GetDefaultSiteCollectionTermStore();
+            site.Context.Load(termStore);
+            site.Context.ExecuteQuery();
+
+            return termStore;
+        }
+
         /// <summary>
         /// Private method used for resolving taxonomy term set for taxonomy field
         /// </summary>
@@ -41,59 +243,51 @@ namespace Microsoft.SharePoint.Client
             return termStore;
         }
 
+        public static TaxonomyItem GetTaxonomyItemByPath(this Site site, string path, string delimiter = "|")
+        {
+            var context = site.Context;
+
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
+
+            var pathSplit = path.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
+
+            TaxonomySession tSession = TaxonomySession.GetTaxonomySession(context);
+            TermStore ts = tSession.GetDefaultKeywordsTermStore();
+
+            var groups = context.LoadQuery(ts.Groups);
+            context.ExecuteQuery();
+
+            var group = groups.FirstOrDefault(l => l.Name.Equals(pathSplit[0], StringComparison.CurrentCultureIgnoreCase));
+            if (group == null) return null;
+            if (pathSplit.Length == 1) return group;
+
+            var termSets = context.LoadQuery(group.TermSets);
+            context.ExecuteQuery();
+
+            var termSet = termSets.FirstOrDefault(l => l.Name.Equals(pathSplit[1], StringComparison.CurrentCultureIgnoreCase));
+            if (termSet == null) return null;
+            if (pathSplit.Length == 2) return termSet;
+
+            Term term = null;
+            for (int i = 2; i < pathSplit.Length; i++)
+            {
+                IEnumerable<Term> termColl = context.LoadQuery(i == 2 ? termSet.Terms : term.Terms);
+                context.ExecuteQuery();
+
+                term = termColl.FirstOrDefault(l => l.Name.Equals(pathSplit[i], StringComparison.OrdinalIgnoreCase));
+
+                if (term == null) return null;
+            }
+
+            return term;
+        }
+
         public static TaxonomySession GetTaxonomySession(this Site site)
         {
             TaxonomySession tSession = TaxonomySession.GetTaxonomySession(site.Context);
             site.Context.Load(tSession);
             site.Context.ExecuteQuery();
             return tSession;
-        }
-
-        public static TermStore GetDefaultKeywordsTermStore(this Site site)
-        {
-            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
-            var termStore = session.GetDefaultKeywordsTermStore();
-            site.Context.Load(termStore);
-            site.Context.ExecuteQuery();
-
-            return termStore;
-        }
-
-        public static TermStore GetDefaultSiteCollectionTermStore(this Site site)
-        {
-            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
-            var termStore = session.GetDefaultSiteCollectionTermStore();
-            site.Context.Load(termStore);
-            site.Context.ExecuteQuery();
-
-            return termStore;
-        }
-
-
-        public static TermSetCollection GetTermSetsByName(this Site site, string name, int lcid = 1033)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
-            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
-            TermStore store = session.GetDefaultSiteCollectionTermStore();
-            var termsets = store.GetTermSetsByName(name, lcid);
-            site.Context.Load(termsets);
-            site.Context.ExecuteQuery();
-            return termsets;
-        }
-
-
-        public static TermGroup GetTermGroupByName(this Site site, string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-
-            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
-            var store = session.GetDefaultSiteCollectionTermStore();
-            IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Name == name);
-            site.Context.ExecuteQuery();
-            return groups.FirstOrDefault();
         }
 
         /// <summary>
@@ -140,30 +334,29 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        public static Term AddTermToTermset(this Site site, Guid termSetId, string term)
+        public static TermGroup GetTermGroupByName(this Site site, string name)
         {
-            return AddTermToTermset(site, termSetId, term, Guid.NewGuid());
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            var store = session.GetDefaultSiteCollectionTermStore();
+            IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Name == name);
+            site.Context.ExecuteQuery();
+            return groups.FirstOrDefault();
         }
 
-        public static Term AddTermToTermset(this Site site, Guid termSetId, string term, Guid termId)
+        public static TermSetCollection GetTermSetsByName(this Site site, string name, int lcid = 1033)
         {
-            if (string.IsNullOrEmpty(term))
-                throw new ArgumentNullException("term");
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
 
-            Term t = null;
-            TaxonomySession tSession = TaxonomySession.GetTaxonomySession(site.Context);
-            TermStore ts = tSession.GetDefaultSiteCollectionTermStore();
-            TermSet tset = ts.GetTermSet(termSetId);
-
-            t = tset.CreateTerm(term, 1033, termId);
-            //site.Context.Load(tSession);
-            //site.Context.Load(ts);
-            //site.Context.Load(tset);
-            site.Context.Load(t);
-
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            TermStore store = session.GetDefaultSiteCollectionTermStore();
+            var termsets = store.GetTermSetsByName(name, lcid);
+            site.Context.Load(termsets);
             site.Context.ExecuteQuery();
-
-            return t;
+            return termsets;
         }
 
         public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter)
@@ -310,151 +503,12 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
+        private static string NormalizeName(string name)
         {
-            var clientContext = term.Context;
-            if (term.ServerObjectIsNull == true)
-            {
-                clientContext.Load(term);
-                clientContext.ExecuteQuery();
-            }
-            Term subTerm = null;
-            if (termId != Guid.Empty)
-            {
-                subTerm = term.Terms.GetById(termId);
-            }
+            if (name == null)
+                return (string)null;
             else
-            {
-                subTerm = term.Terms.GetByName(NormalizeName(termLabel));
-            }
-            clientContext.Load(term);
-            try
-            {
-                clientContext.ExecuteQuery();
-            }
-            catch { }
-
-            clientContext.Load(subTerm);
-            try
-            {
-                clientContext.ExecuteQuery();
-            }
-            catch { }
-            if (subTerm.ServerObjectIsNull == null)
-            {
-                if (termId == Guid.Empty) termId = Guid.NewGuid();
-                subTerm = term.CreateTerm(NormalizeName(termLabel), lcid, termId);
-                clientContext.Load(subTerm);
-                clientContext.ExecuteQuery();
-            }
-            return subTerm;
-        }
-
-        /// <summary>
-        /// Exports the full list of terms from all termsets in all termstores.
-        /// </summary>
-        /// <param name="termSetId">The ID of the termset to export</param>
-        /// <param name="includeId">if true, Ids of the the taxonomy items will be included</param>
-        /// <param name="clientContext"></param>
-        /// <param name="delimiter">if specified, this delimiter will be used. Notice that IDs will be delimited with ;# from the label</param>
-        /// <returns></returns>
-        public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, string delimiter = "|")
-        {
-            var clientContext = site.Context;
-            List<string> termsString = new List<string>();
-            TermCollection terms = null;
-            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
-
-            if (termSetId != Guid.Empty)
-            {
-                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
-
-                TermSet termSet = termStore.GetTermSet(termSetId);
-                terms = termSet.Terms;
-                clientContext.Load(terms, t => t.IncludeWithDefaultProperties(s => s.TermSet));
-                clientContext.Load(terms, t => t.IncludeWithDefaultProperties(s => s.TermSet.Group));
-            }
-
-            clientContext.ExecuteQuery();
-
-            if (terms != null)
-            {
-                foreach (Term term in terms)
-                {
-                    string groupName = DenormalizeName(term.TermSet.Group.Name);
-                    string termsetName = DenormalizeName(term.TermSet.Name);
-                    string termName = DenormalizeName(term.Name);
-                    clientContext.ExecuteQuery();
-                    string groupPath = string.Format("{0}{1}", groupName, (includeId) ? string.Format(";#{0}", term.TermSet.Group.Id.ToString()) : "");
-                    string termsetPath = string.Format("{0}{1}", termsetName, (includeId) ? string.Format(";#{0}", term.TermSet.Id.ToString()) : "");
-                    string termPath = string.Format("{0}{1}", termName, (includeId) ? string.Format(";#{0}", term.Id.ToString()) : "");
-                    termsString.Add(string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termPath, delimiter));
-
-                    if (term.TermsCount > 0)
-                    {
-                        string subTermPath = string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termName, delimiter);
-
-                        termsString.AddRange(ParseSubTerms(subTermPath, term, includeId, delimiter, clientContext));
-                    }
-
-                    termsString.Add(string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termPath, delimiter));
-                }
-            }
-
-            return termsString.Distinct().ToList<string>();
-        }
-
-        /// <summary>
-        /// Exports the full list of terms from all termsets in all termstores.
-        /// </summary>
-        /// <param name="includeId">if true, Ids of the the taxonomy items will be included</param>
-        /// <param name="clientContext"></param>
-        /// <param name="delimiter">if specified, this delimiter will be used. Notice that IDs will be delimited with ;# from the label</param>
-        /// <returns></returns>
-        public static List<string> ExportAllTerms(this Site site, bool includeId, string delimiter = "|")
-        {
-            var clientContext = site.Context;
-
-            List<string> termsString = new List<string>();
-
-            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
-
-            clientContext.ExecuteQuery();
-
-            TermStoreCollection termStores = taxonomySession.TermStores;
-            clientContext.Load(termStores, t => t.IncludeWithDefaultProperties(s => s.Groups));
-            clientContext.ExecuteQuery();
-            foreach (TermStore termStore in termStores)
-            {
-                foreach (TermGroup termGroup in termStore.Groups)
-                {
-                    TermSetCollection termSets = termGroup.TermSets;
-                    clientContext.Load(termSets, t => t.IncludeWithDefaultProperties(s => s.Terms));
-                    clientContext.ExecuteQuery();
-                    string termGroupName = DenormalizeName(termGroup.Name);
-                    string groupPath = string.Format("{0}{1}", termGroupName, (includeId) ? string.Format(";#{0}", termGroup.Id.ToString()) : "");
-                    foreach (TermSet set in termSets)
-                    {
-                        string setName = DenormalizeName(set.Name);
-                        string termsetPath = string.Format("{0}{3}{1}{2}", groupPath, setName, (includeId) ? string.Format(";#{0}", set.Id.ToString()) : "", delimiter);
-                        foreach (Term term in set.Terms)
-                        {
-                            string termName = DenormalizeName(term.Name);
-                            string termPath = string.Format("{0}{3}{1}{2}", termsetPath, termName, (includeId) ? string.Format(";#{0}", term.Id.ToString()) : "", delimiter);
-                            termsString.Add(termPath);
-
-                            if (term.TermsCount > 0)
-                            {
-                                string subTermPath = string.Format("{0}{3}{1}{3}{2}", groupPath, termsetPath, termName, delimiter);
-
-                                termsString.AddRange(ParseSubTerms(subTermPath, term, includeId, delimiter, clientContext));
-                            }
-                        }
-                    }
-                }
-            }
-
-            return termsString.Distinct().ToList<string>();
+                return TrimSpacesRegex.Replace(name, " ").Replace('&', '＆').Replace('"', '＂');
         }
 
         private static List<string> ParseSubTerms(string subTermPath, Term term, bool includeId, string delimiter, ClientRuntimeContext clientContext)
@@ -483,62 +537,6 @@ namespace Microsoft.SharePoint.Client
             }
             return items;
         }
-
-        private static string NormalizeName(string name)
-        {
-            if (name == null)
-                return (string)null;
-            else
-                return TrimSpacesRegex.Replace(name, " ").Replace('&', '＆').Replace('"', '＂');
-        }
-
-        private static string DenormalizeName(string name)
-        {
-            if (name == null)
-                return (string)null;
-            else
-                return TrimSpacesRegex.Replace(name, " ").Replace('＆', '&').Replace('＂', '"');
-        }
-
-        public static TaxonomyItem GetTaxonomyItemByPath(this Site site, string path, string delimiter = "|")
-        {
-            var context = site.Context;
-
-            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
-
-            var pathSplit = path.Split(new string[] { delimiter }, StringSplitOptions.RemoveEmptyEntries);
-
-            TaxonomySession tSession = TaxonomySession.GetTaxonomySession(context);
-            TermStore ts = tSession.GetDefaultKeywordsTermStore();
-
-            var groups = context.LoadQuery(ts.Groups);
-            context.ExecuteQuery();
-
-            var group = groups.FirstOrDefault(l => l.Name.Equals(pathSplit[0], StringComparison.CurrentCultureIgnoreCase));
-            if (group == null) return null;
-            if (pathSplit.Length == 1) return group;
-
-            var termSets = context.LoadQuery(group.TermSets);
-            context.ExecuteQuery();
-
-            var termSet = termSets.FirstOrDefault(l => l.Name.Equals(pathSplit[1], StringComparison.CurrentCultureIgnoreCase));
-            if (termSet == null) return null;
-            if (pathSplit.Length == 2) return termSet;
-
-            Term term = null;
-            for (int i = 2; i < pathSplit.Length; i++)
-            {
-                IEnumerable<Term> termColl = context.LoadQuery(i == 2 ? termSet.Terms : term.Terms);
-                context.ExecuteQuery();
-
-                term = termColl.FirstOrDefault(l => l.Name.Equals(pathSplit[i], StringComparison.OrdinalIgnoreCase));
-
-                if (term == null) return null;
-            }
-
-            return term;
-        }
-
 
         #endregion
 
