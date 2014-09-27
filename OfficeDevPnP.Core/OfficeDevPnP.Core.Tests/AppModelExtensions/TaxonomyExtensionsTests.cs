@@ -333,12 +333,59 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void ImportTermsTest2()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+
+                var termName1 = "Test_Term_1" + DateTime.Now.ToFileTime();
+                var termName2 = "Test_Term_2" + DateTime.Now.ToFileTime();
+
+                List<string> termLines = new List<string>();
+                termLines.Add(_termGroupName + "|" + _termSetName + "|" + termName1);
+                termLines.Add(_termGroupName + "|" + _termSetName + "|" + termName2);
+
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = session.GetDefaultSiteCollectionTermStore();
+                site.ImportTerms(termLines.ToArray(), 1033, termStore, "|");
+
+                var taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termGroup = termStore.Groups.GetByName(_termGroupName);
+                var termSet = termGroup.TermSets.GetByName(_termSetName);
+                var term1 = termSet.Terms.GetByName(termName1);
+                var term2 = termSet.Terms.GetByName(termName2);
+                clientContext.Load(term1);
+                clientContext.Load(term2);
+                clientContext.ExecuteQuery();
+
+                Assert.IsNotNull(term1);
+                Assert.IsNotNull(term2);
+            }
+        }
+
+
+        [TestMethod()]
         public void ExportTermSetTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 var site = clientContext.Site;
                 var lines = site.ExportTermSet(_termSetId, false);
+                Assert.IsTrue(lines.Any(), "No lines returned");
+            }
+        }
+
+        [TestMethod()]
+        public void ExportTermSetTest2()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = session.GetDefaultSiteCollectionTermStore();
+
+                var lines = site.ExportTermSet(_termSetId, false, termStore);
                 Assert.IsTrue(lines.Any(), "No lines returned");
             }
         }
