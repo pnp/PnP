@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Publishing;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
@@ -103,16 +104,31 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void CanCreatePublishingPage()
         {
-            var web = Setup("CMSPUBLISHING#0",true);            
+            var web = Setup("CMSPUBLISHING#0",true);
+            web.Context.Load(web);
             web.AddPublishingPage(publishingPageName, publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
 
-            var page = web.GetPublishingPage(string.Format(UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl),"Pages", string.Format("{0}.aspx",publishingPageName))));
+            var page = web.GetPublishingPage(string.Format("{0}.aspx",publishingPageName));
             web.Context.Load(page.ListItem, i => i["Title"]);
             web.Context.ExecuteQuery();
             
             Assert.AreEqual(page.ListItem["Title"], publishingPageName);
+
+            Teardown(web);
+        }
+        [TestMethod]
+        public void PublishingPageWithInvalidCharsIsCorrectlyCreated()
+        {
+            var web = Setup("CMSPUBLISHING#0", true);
+            web.Context.Load(web);
+            web.AddPublishingPage("Happy?is&good", publishingPageTemplate);
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+
+            var page = web.GetPublishingPage(string.Format("{0}.aspx", "Happy-is-good"));
+            Assert.IsNotNull(page);
 
             Teardown(web);
         }

@@ -912,6 +912,7 @@ namespace Microsoft.SharePoint.Client
             {
                 title = pageName;
             }
+            pageName = pageName.ReplaceInvalidUrlChars("-");
             ClientContext context = web.Context as ClientContext;
             Site site = context.Site;
             context.Load(site, s => s.ServerRelativeUrl);
@@ -924,6 +925,7 @@ namespace Microsoft.SharePoint.Client
             context.ExecuteQuery();
 
             PublishingWeb publishingWeb = PublishingWeb.GetPublishingWeb(context, web);
+            context.Load(publishingWeb);
             PublishingPage page = publishingWeb.AddPublishingPage(new PublishingPageInformation
             {
                 Name = string.Format("{0}.aspx", pageName),
@@ -941,14 +943,14 @@ namespace Microsoft.SharePoint.Client
         /// Gets a publishing page.
         /// </summary>
         /// <param name="web">The web.</param>
-        /// <param name="pageUrl">The page URL.</param>
+        /// <param name="fileLeafRef">The page URL.</param>
         /// <exception cref="System.ArgumentNullException">pageUrl</exception>
         /// <exception cref="System.ArgumentException">pageUrl</exception>
-        public static PublishingPage GetPublishingPage(this Web web, string pageUrl)
+        public static PublishingPage GetPublishingPage(this Web web, string fileLeafRef)
         {
-            if (string.IsNullOrEmpty(pageUrl))
+            if (string.IsNullOrEmpty(fileLeafRef))
             {
-                throw (pageUrl == null)
+                throw (fileLeafRef == null)
                   ? new ArgumentNullException("pageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageUrl");
             }
@@ -963,14 +965,14 @@ namespace Microsoft.SharePoint.Client
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
                 camlQuery.ViewXml = string.Format(@"<View>  
                         <Query> 
-                           <Where><Eq><FieldRef Name='FileRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
                         </Query> 
-                  </View>", pageUrl);
+                  </View>", fileLeafRef);
 
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
                 context.ExecuteQuery();
-                if (listItems[0] != null)
+                if (listItems.Count > 0)
                 {
                     PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
                     context.Load(page);
