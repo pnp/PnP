@@ -100,7 +100,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("page")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
-            
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -214,7 +214,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("serverRelativePageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
-            
+
             if (webPart == null)
             {
                 throw new ArgumentNullException("webPart");
@@ -702,15 +702,15 @@ namespace Microsoft.SharePoint.Client
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
-            } 
-            
+            }
+
             if (string.IsNullOrEmpty(title))
             {
                 throw (title == null)
                   ? new ArgumentNullException("title")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
             }
-            
+
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
@@ -766,7 +766,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             string wikiPageUrl = "";
-            
+
             var pageLibrary = web.Lists.GetByTitle(wikiPageLibraryName);
 
             web.Context.Load(pageLibrary.RootFolder, f => f.ServerRelativeUrl);
@@ -879,7 +879,7 @@ namespace Microsoft.SharePoint.Client
                         break;
                     }
             }
-         
+
             def.SaveWebPartChanges();
 
             context.ExecuteQuery();
@@ -908,7 +908,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("pageTemplateName")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageTemplateName");
             }
-            if(string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(title))
             {
                 title = pageName;
             }
@@ -916,10 +916,10 @@ namespace Microsoft.SharePoint.Client
             Site site = context.Site;
             context.Load(site, s => s.ServerRelativeUrl);
             context.ExecuteQuery();
-            File pageFromDocLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
-                UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl), 
+            File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
+                UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
                 pageTemplateName));
-            Microsoft.SharePoint.Client.ListItem pageLayoutItem = pageFromDocLayout.ListItemAllFields;
+            Microsoft.SharePoint.Client.ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
             context.Load(pageLayoutItem);
             context.ExecuteQuery();
 
@@ -938,30 +938,30 @@ namespace Microsoft.SharePoint.Client
             context.ExecuteQuery();
         }
         /// <summary>
-        /// Gets the publishing page.
+        /// Gets a publishing page.
         /// </summary>
         /// <param name="web">The web.</param>
         /// <param name="pageUrl">The page URL.</param>
         /// <exception cref="System.ArgumentNullException">pageUrl</exception>
         /// <exception cref="System.ArgumentException">pageUrl</exception>
-        public static ListItem GetPublishingPage(this Web web, string pageUrl)
+        public static PublishingPage GetPublishingPage(this Web web, string pageUrl)
         {
-            //TODO: Refactor, currently only used for test, should return PublishingPage
             if (string.IsNullOrEmpty(pageUrl))
             {
                 throw (pageUrl == null)
                   ? new ArgumentNullException("pageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageUrl");
             }
-            
+
             ClientContext context = web.Context as ClientContext;
             List spList = web.Lists.GetByTitle("Pages");
             context.Load(spList);
             context.ExecuteQuery();
             if (spList != null && spList.ItemCount > 0)
             {
+
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
-                            camlQuery.ViewXml = string.Format(@"<View>  
+                camlQuery.ViewXml = string.Format(@"<View>  
                         <Query> 
                            <Where><Eq><FieldRef Name='FileRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
                         </Query> 
@@ -970,7 +970,13 @@ namespace Microsoft.SharePoint.Client
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
                 context.ExecuteQuery();
-                return listItems[0];
+                if (listItems[0] != null)
+                {
+                    PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
+                    context.Load(page);
+                    context.ExecuteQuery();
+                    return page;
+                }
             }
             return null;
         }

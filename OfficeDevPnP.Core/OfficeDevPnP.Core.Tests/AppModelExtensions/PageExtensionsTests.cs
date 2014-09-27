@@ -13,7 +13,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string publishingPageTemplate = "BlankWebPartPage";
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         bool deactivatePublishingOnTearDown = false;
-        public Web Setup(string webTemplate = "STS#0", bool enablePublishing = false)
+        public Web Setup(string webTemplate = "STS#0", bool enablePublishingInfrastructure = false)
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
@@ -24,8 +24,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
                 Web web;
                 Site site;
-                using (scope.StartScope())
+                site = ctx.Site;
+                if (enablePublishingInfrastructure && !site.IsFeatureActive(publishingSiteFeatureId))
                 {
+                    site.ActivateFeature(publishingSiteFeatureId);
+                    deactivatePublishingOnTearDown = true;
+                }
+                using (scope.StartScope())
+                {                    
                     using (scope.StartTry())
                     {
                         web = ctx.Site.OpenWeb(name);
@@ -33,21 +39,16 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     }
                     using (scope.StartCatch())
                     {
-                        site = ctx.Site;
+                        
                         web = ctx.Web.Webs.Add(new WebCreationInformation
                         {
                             Title = name,
                             WebTemplate = webTemplate,
                             Url = name
-                        });
-                        if (enablePublishing)
-                        {
-                           //activate feature
-                            deactivatePublishingOnTearDown = true;
-                        }
+                        });                        
                     }
                     using (scope.StartFinally())
-                    {
+                    {                        
                         return web;
                     }
                 }
@@ -56,12 +57,15 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         public void Teardown(Web web)
         {
             web.DeleteObject();
-            if (deactivatePublishingOnTearDown)
+            if(deactivatePublishingOnTearDown)
             {
-                //disable
+                using (var ctx = TestCommon.CreateClientContext())
+                {
+                    ctx.Site.DeactivateFeature(publishingSiteFeatureId);
+                }
             }
         }
-	[TestMethod]
+	    [TestMethod]
         public void CanAddLayoutToWikiPage()
         {
             var web = Setup();
@@ -99,15 +103,18 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void CanCreatePublishingPage()
         {
-            var web = Setup("CMSPUBLISHING#0",true);
-            
+            var web = Setup("CMSPUBLISHING#0",true);            
             web.AddPublishingPage(publishingPageName, publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
-            ListItem item = web.GetPublishingPage(string.Format(UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl),"Pages", string.Format("{0}.aspx",publishingPageName))));
-            Assert.IsTrue(item != null);
-            Teardown(web);
 
+            var page = web.GetPublishingPage(string.Format(UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl),"Pages", string.Format("{0}.aspx",publishingPageName))));
+            web.Context.Load(page.ListItem, i => i["Title"]);
+            web.Context.ExecuteQuery();
+            
+            Assert.AreEqual(page.ListItem["Title"], publishingPageName);
+
+            Teardown(web);
         }
     }
 }
