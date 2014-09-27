@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using System;
 using System.Collections.Generic;
 using System.Management.Automation;
@@ -19,6 +20,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public string Path;
 
+        [Parameter(Mandatory = false, ParameterSetName="TermSet")]
+        public string TermStoreName;
+
         [Parameter(Mandatory = false)]
         public SwitchParameter Force;
 
@@ -35,7 +39,16 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     throw new Exception("Restricted delimiter specified");
                 }
-                exportedTerms = ClientContext.Site.ExportTermSet(TermSetId.Id, IncludeID, Delimiter);
+                if (!string.IsNullOrEmpty(TermStoreName))
+                {
+                    var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
+                    var termStore = taxSession.TermStores.GetByName(TermStoreName);
+                    exportedTerms = ClientContext.Site.ExportTermSet(TermSetId.Id, IncludeID, termStore, Delimiter);
+                }
+                else
+                {
+                    exportedTerms = ClientContext.Site.ExportTermSet(TermSetId.Id, IncludeID, Delimiter);
+                }
             }
             else
             {
