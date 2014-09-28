@@ -939,20 +939,22 @@ namespace Microsoft.SharePoint.Client
             pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
             context.ExecuteQuery();
         }
+
         /// <summary>
         /// Gets a publishing page.
         /// </summary>
         /// <param name="web">The web.</param>
-        /// <param name="fileLeafRef">The page URL.</param>
-        /// <exception cref="System.ArgumentNullException">pageUrl</exception>
-        /// <exception cref="System.ArgumentException">pageUrl</exception>
+        /// <param name="fileLeafRef">The file leaf reference.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">fileLeafRef</exception>
+        /// <exception cref="System.ArgumentException">fileLeafRef</exception>
         public static PublishingPage GetPublishingPage(this Web web, string fileLeafRef)
         {
             if (string.IsNullOrEmpty(fileLeafRef))
             {
                 throw (fileLeafRef == null)
-                  ? new ArgumentNullException("pageUrl")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageUrl");
+                  ? new ArgumentNullException("fileLeafRef")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "fileLeafRef");
             }
 
             ClientContext context = web.Context as ClientContext;
