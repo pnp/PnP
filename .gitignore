@@ -173,4 +173,3 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 OfficeDevPnP.Core/OfficeDevPnP.Core.Tests/App.config
-Solutions.zip
