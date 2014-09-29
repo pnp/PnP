@@ -4,6 +4,8 @@ using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,13 +15,15 @@ namespace Microsoft.SharePoint.Client
 {
     public static class TaxonomyExtensions
     {
-        #region Taxonomy Management
         private static Regex invalidDescriptionRegex = new Regex("[\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static Regex invalidNameRegex = new Regex("[;\"<>|&\\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        public const string TaxonomyGuidLabelDelimiter = "|";
+
         private static Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        #region Taxonomy Management
 
         private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
         {
@@ -185,9 +189,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="termSetId">(Optional) ID of the term set; if not provided the parameter is ignored, a random GUID is used if necessary to create the term set, otherwise if the ID differs a warning is logged</param>
         /// <param name="lcid">(Optional) Default language of the term set; if not provided the default of the associate term store is used</param>
         /// <param name="description">(Optional) Description of the term set; if null or not provided the parameter is ignored, otherwise the term set is updated as necessary to match the description; passing an empty string will clear the description</param>
-        /// <param name="isOpen">(Optiona) Whether the term store is open for new term creation or not</param>
+        /// <param name="isOpen">(Optional) Whether the term store is open for new term creation or not</param>
+        /// <param name="contact">(Optional)</param>
+        /// <param name="owner">(Optional)</param>
         /// <returns>The required term set</returns>
-        public static TermSet EnsureTermSet(this TermGroup parentGroup, string termSetName, Guid termSetId = default(Guid), int? lcid = null, string description = null, bool? isOpen = null)
+        public static TermSet EnsureTermSet(this TermGroup parentGroup, string termSetName, Guid termSetId = default(Guid), int? lcid = null, string description = null, bool? isOpen = null, string termSetContact = null, string termSetOwner = null)
         {
             bool changed = false;
             TermSet termSet = null;
@@ -196,7 +202,7 @@ namespace Microsoft.SharePoint.Client
 
             // Find or create term set
             parentGroup.Context.Load(parentGroup, g => g.Name, g => g.Id);
-            IEnumerable<TermSet> termSets = parentGroup.Context.LoadQuery(parentGroup.TermSets.Include(g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation));
+            IEnumerable<TermSet> termSets = parentGroup.Context.LoadQuery(parentGroup.TermSets.Include(g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation, g => g.Contact, g => g.Owner));
             parentGroup.Context.ExecuteQuery();
             if (termSetId != Guid.Empty)
             {
@@ -232,7 +238,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 LoggingUtility.Internal.TraceInformation((int)EventId.CreateTermSet, CoreResources.TaxonomyExtension_CreateTermSet0InGroup1, termSetName, parentGroup.Name);
                 termSet = parentGroup.CreateTermSet(termSetName, termSetId, lcid.Value);
-                parentGroup.Context.Load(termSet, g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation);
+                parentGroup.Context.Load(termSet, g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation, g => g.Contact, g => g.Owner);
                 parentGroup.Context.ExecuteQuery();
             }
             else
@@ -268,6 +274,25 @@ namespace Microsoft.SharePoint.Client
                 termSet.IsOpenForTermCreation = isOpen.Value;
                 changed = true;
             }
+            if (termSetContact != null && termSet.Contact != termSetContact)
+            {
+                termSet.Contact = termSetContact;
+                changed = true;
+            }
+            if (termSetOwner != null && termSet.Owner != termSetOwner)
+            {
+                termSet.Owner = termSetOwner;
+                changed = true;
+            }
+
+            // TODO: Add Stakeholders
+            //if (settings.EnvironmentSettings.TermSetStakeholder) {
+            //    foreach (user in settings.EnvironmentSettings.TermSetStakeholder) {
+            //        Write-Host "Adding term set stakeholder 'user'."
+            //        termSet.AddStakeholder(user)
+            //    }
+            //}
+
             // Update (if changed)
             if (changed)
             {
@@ -689,6 +714,490 @@ namespace Microsoft.SharePoint.Client
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Imports terms from a term set file, updating with any new terms, in the same format at that used by the web interface import ability.
+        /// </summary>
+        /// <param name="termGroup">Group to create the term set within</param>
+        /// <param name="filePath">Local path to the file to import</param>
+        /// <param name="termSetId">GUID to use for the term set; if Guid.Empty is passed then a random GUID is generated and used</param>
+        /// <param name="synchroniseDeletions">(Optional) Whether to also synchronise deletions; that is, remove any terms not in the import file; default is no (false)</param>
+        /// <param name="termSetIsOpen">(Optional) Whether the term set should be marked open; if not passed, then the existing setting is not changed</param>
+        /// <param name="termSetContact">(Optional) Contact for the term set; if not provided, the existing setting is retained</param>
+        /// <param name="termSetOwner">(Optional) Owner for the term set; if not provided, the existing setting is retained</param>
+        /// <returns>The created, or updated, term set</returns>
+        /// <remarks>
+        /// <para>
+        /// The format of the file is the same as that used by the import function in the 
+        /// web interface. A sample file can be obtained from the web interface.
+        /// </para>
+        /// <para>
+        /// This is a CSV file, with the following headings:
+        /// </para>
+        /// <para>
+        /// <code>Term Set Name,Term Set Description,LCID,Available for Tagging,Term Description,Level 1 Term,Level 2 Term,Level 3 Term,Level 4 Term,Level 5 Term,Level 6 Term,Level 7 Term</code>
+        /// </para>
+        /// <para>
+        /// The first data row must contain the Term Set Name, Term Set Description, and LCID, and should also contain the first term. 
+        /// </para>
+        /// <para>
+        /// It is recommended that a fixed GUID be used as the termSetId, to allow the term set to be easily updated (so do not pass Guid.Empty).
+        /// </para>
+        /// <para>
+        /// In contrast to the web interface import, this is not a one-off import but runs synchronisation logic allowing updating of an existing Term Set.
+        /// When synchronising, any existing terms are matched (with Term Description and Available for Tagging updated as necessary),
+        /// any new terms are added in the correct place in the hierarchy, and (if synchroniseDeletions is set) any terms not in the imported file 
+        /// are removed.
+        /// </para>
+        /// <para>
+        /// The import file also supports an expanded syntax for the Term Set Name and term names (Level 1 Term, Level 2 Term, etc).
+        /// These columns support values with the format "Name|GUID", with the name and GUID separated by a pipe character (note that the pipe character is invalid to use within a taxomony item name).
+        /// This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.
+        /// </para>
+        /// </remarks>
+        public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId, bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
+        {
+            if (filePath == null) { throw new ArgumentNullException("filePath"); }
+            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
+
+            using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+            {
+                return ImportTermSet(termGroup, fs, termSetId, synchroniseDeletions, termSetIsOpen, termSetContact, termSetOwner);
+            }
+        }
+
+        /// <summary>
+        /// Imports terms from a term set stream, updating with any new terms, in the same format at that used by the web interface import ability.
+        /// </summary>
+        /// <param name="termGroup">Group to create the term set within</param>
+        /// <param name="termSetData">Stream containing the data to import</param>
+        /// <param name="termSetId">GUID to use for the term set; if Guid.Empty is passed then a random GUID is generated and used</param>
+        /// <param name="synchroniseDeletions">(Optional) Whether to also synchronise deletions; that is, remove any terms not in the import file; default is no (false)</param>
+        /// <param name="termSetIsOpen">(Optional) Whether the term set should be marked open; if not passed, then the existing setting is not changed</param>
+        /// <param name="termSetContact">(Optional) Contact for the term set; if not provided, the existing setting is retained</param>
+        /// <param name="termSetOwner">(Optional) Owner for the term set; if not provided, the existing setting is retained</param>
+        /// <returns>The created, or updated, term set</returns>
+        /// <remarks>
+        /// <para>
+        /// The format of the file is the same as that used by the import function in the 
+        /// web interface. A sample file can be obtained from the web interface.
+        /// </para>
+        /// <para>
+        /// This is a CSV file, with the following headings:
+        /// </para>
+        /// <para>
+        /// <code>Term Set Name,Term Set Description,LCID,Available for Tagging,Term Description,Level 1 Term,Level 2 Term,Level 3 Term,Level 4 Term,Level 5 Term,Level 6 Term,Level 7 Term</code>
+        /// </para>
+        /// <para>
+        /// The first data row must contain the Term Set Name, Term Set Description, and LCID, and should also contain the first term. 
+        /// </para>
+        /// <para>
+        /// It is recommended that a fixed GUID be used as the termSetId, to allow the term set to be easily updated (so do not pass Guid.Empty).
+        /// </para>
+        /// <para>
+        /// In contrast to the web interface import, this is not a one-off import but runs synchronisation logic allowing updating of an existing Term Set.
+        /// When synchronising, any existing terms are matched (with Term Description and Available for Tagging updated as necessary),
+        /// any new terms are added in the correct place in the hierarchy, and (if synchroniseDeletions is set) any terms not in the imported file 
+        /// are removed.
+        /// </para>
+        /// <para>
+        /// The import file also supports an expanded syntax for the Term Set Name and term names (Level 1 Term, Level 2 Term, etc).
+        /// These columns support values with the format "Name|GUID", with the name and GUID separated by a pipe character (note that the pipe character is invalid to use within a taxomony item name).
+        /// This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.
+        /// </para>
+        /// </remarks>
+        public static TermSet ImportTermSet(this TermGroup termGroup, Stream termSetData, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
+        {
+            if (termSetData == null) { throw new ArgumentNullException("termSetData"); }
+
+            LoggingUtility.Internal.TraceInformation((int)EventId.ImportTermSet, CoreResources.TaxonomyExtension_ImportTermSet);
+
+            TermSet termSet = null;
+            bool allTermsAdded;
+            var importedTermIds = new Dictionary<Guid, object>();
+            using (var reader = new StreamReader(termSetData))
+            {
+                termSet = ImportTermSetImplementation(termGroup, reader, termSetId, importedTermIds, termSetIsOpen, termSetContact, termSetOwner, out allTermsAdded);
+                //if (!string.IsNullOrEmpty(errorMessage))
+                //{
+                //    //Diagnostics.ErrorEvent(EventId.ProvisionErrorImportingTermSet, "Error adding term set '{0}': {1}", TermSetName, errorMessage);
+                //}
+            }
+
+            if (synchroniseDeletions)
+            {
+                throw new NotImplementedException("synchronise deletions not implemented yet");
+                //ImportTermSetRemoveExtraTerms(termSet, importedTermIds);
+            }
+
+            //termStore.CommitAll();
+            //TaxonomySession.SyncHiddenList(site);
+            return termSet;
+        }
+
+        private static TermSet ImportTermSetImplementation(this TermGroup parentGroup, TextReader reader, Guid termSetId, IDictionary<Guid, object> importedTermIds, bool? termSetIsOpen, string termSetContact, string termSetOwner, out bool allTermsAdded)
+        {
+            if (parentGroup == null)
+            {
+                throw new ArgumentNullException("parentGroup");
+            }
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+
+            LoggingUtility.Internal.TraceVerbose("Begin import term set");
+
+            TermSet termSet = null;
+
+            int lcid = 0;
+
+            int lineIndex = -1;
+            allTermsAdded = true;
+            checked
+            {
+                //try
+                {
+                    string rowText;
+                    while ((rowText = reader.ReadLine()) != null)
+                    {
+                        lineIndex++;
+                        if (lineIndex == 0)
+                        {
+                            // Check file look vaguely like a CSV -- ensure the first line (headers) has some commas:
+                            if (!rowText.Contains(","))
+                            {
+                                throw new ArgumentException("Invalid CSV format; was expecting a comma in the first (header) line.", "reader");
+                            }
+                        }
+                        else
+                        {
+                            // Process the second line (index=1), and then all non-blank lines
+                            if (lineIndex <= 1 || !string.IsNullOrEmpty(rowText.Trim()))
+                            {
+                                var entries = ImportTermSetLineParse(rowText);
+                                //lcid = this.GetImportLcid(termStore, lcid, lineIndex, entries);
+                                if (termSet == null)
+                                {
+                                    if (lineIndex != 1)
+                                    {
+                                        throw new InvalidOperationException("Term set not created on first line.");
+                                    }
+                                    if (entries.Count > 0)
+                                    {
+                                        string termSetName = entries[0];
+                                        // Accept extended format of "Name|Guid", noting that | is not an allowed character in the term name
+                                        if (termSetName.Contains(TaxonomyGuidLabelDelimiter))
+                                        {
+                                            var split = termSetName.Split(new string[] { TaxonomyGuidLabelDelimiter }, StringSplitOptions.None);
+                                            termSetName = split[0];
+                                            termSetId = new Guid(split[1]);
+                                        }
+                                        string description = null;
+                                        if (entries.Count > 1)
+                                        {
+                                            description = entries[1];
+                                        }
+                                        if (entries.Count > 2)
+                                        {
+                                            if (!Int32.TryParse(entries[2], NumberStyles.Integer | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite,
+                                                NumberFormatInfo.InvariantInfo, out lcid))
+                                            {
+                                                var termStore = parentGroup.TermStore;
+                                                parentGroup.Context.Load(termStore, ts => ts.DefaultLanguage);
+                                                parentGroup.Context.ExecuteQuery();
+                                                lcid = termStore.DefaultLanguage;
+                                            }
+                                        }
+                                        termSet = parentGroup.EnsureTermSet(termSetName, termSetId, lcid, description, termSetIsOpen, termSetContact, termSetOwner);
+                                        //termStore.CommitAll();
+                                    }
+                                }
+                                var termAdded = ImportTermSetLineImport(entries, termSet, lcid, lineIndex + 1, importedTermIds);
+                                if (!termAdded)
+                                {
+                                    allTermsAdded = false;
+                                }
+                            }
+                        }
+                    }
+                }
+                LoggingUtility.Internal.TraceVerbose("End ImportTermSet");
+                return termSet;
+            }
+        }
+
+        private static bool ImportTermSetLineImport(IList<string> entries, TermSet importTermSet, int lcid, int lineNumber, IDictionary<Guid, object> importedTermIds)
+        {
+            TermSetItem termSetItem = null;
+            Term term = null;
+            int num = 0;
+            bool success = true;
+            bool result = false;
+            bool termCreated = false;
+            bool changed = false;
+            if (entries == null || entries.Count <= 5)
+            {
+                return false;
+            }
+            num = 0;
+            checked
+            {
+                while (num < entries.Count - 5 && success)
+                {
+                    string termName = entries[5 + num];
+                    Guid termId = Guid.Empty;
+                    // Accept extended format of "Name|Guid", noting that | is not an allowed character in the term name
+                    if (termName.Contains(TaxonomyGuidLabelDelimiter))
+                    {
+                        var split = termName.Split(new string[] { TaxonomyGuidLabelDelimiter }, StringSplitOptions.None);
+                        termName = split[0];
+                        termId = new Guid(split[1]);
+                    }
+                    if (string.IsNullOrEmpty(termName))
+                    {
+                        if (termCreated)
+                        {
+                            result = true;
+                            break;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        if (termName.Length > 255)
+                        {
+                            termName = termName.Substring(0, 255);
+                        }
+                        termName = NormalizeName(termName);
+                        try
+                        {
+                            ValidateName(termName, "name");
+                        }
+                        catch (ArgumentNullException)
+                        {
+                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                            {
+                                termName,
+                                lineNumber
+                            });
+                            success = false;
+                            break;
+                        }
+                        catch (ArgumentException)
+                        {
+                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                            {
+                                termName,
+                                lineNumber
+                            });
+                            success = false;
+                            break;
+                        }
+                        if (term == null)
+                        {
+                            termSetItem = importTermSet;
+                        }
+                        else
+                        {
+                            termSetItem = term;
+                        }
+                        term = null;
+                        if (!termSetItem.IsObjectPropertyInstantiated("Terms"))
+                        {
+                            termSetItem.Context.Load(termSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                            termSetItem.Context.ExecuteQuery();
+                        }
+                        foreach (Term current in termSetItem.Terms)
+                        {
+                            if (termId != Guid.Empty && current.Id == termId)
+                            {
+                                term = current;
+                                break;
+                            }
+                            if (current.Name == termName)
+                            {
+                                term = current;
+                                break;
+                            }
+                        }
+                        if (term == null && termSetItem != null)
+                        {
+                            if (termId == Guid.Empty)
+                            {
+                                termId = Guid.NewGuid();
+                            }
+                            LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, termSetItem.Name);
+                            term = termSetItem.CreateTerm(termName, lcid, termId);
+                            termSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
+                            termSetItem.Context.ExecuteQuery();
+                            termCreated = true;
+                            if (num == entries.Count - 5 - 1)
+                            {
+                                result = true;
+                            }
+                        }
+                        if (term != null)
+                        {
+                            importedTermIds[term.Id] = null;
+                        }
+                        num++;
+                    }
+                }
+                if (success && term != null)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(entries[3]))
+                        {
+                            var isAvailableForTagging = bool.Parse(entries[3]);
+                            if (term.IsAvailableForTagging != isAvailableForTagging)
+                            {
+                                //Diagnostics.TraceVerbose("Setting IsAvailableForTagging = {1} for term '{0}'.", term.Name, isAvailableForTagging);
+                                term.IsAvailableForTagging = isAvailableForTagging;
+                                changed = true;
+                            }
+                        }
+                        else
+                        {
+                            LoggingUtility.Internal.TraceVerbose("The available for tagging entry on line {0} is null or empty.", new object[]
+                            {
+                                lineNumber
+                            });
+                        }
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorTagging, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
+                        {
+                            lineNumber
+                        });
+                        success = false;
+                    }
+                    catch (FormatException)
+                    {
+                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorTagging, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
+                        {
+                            lineNumber
+                        });
+                        success = false;
+                    }
+                    string description = entries[4];
+                    if (description.Length > 1000)
+                    {
+                        description = description.Substring(0, 1000);
+                    }
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        try
+                        {
+                            ValidateDescription(description, "description");
+                            if (!term.GetDescription(lcid).Equals(description))
+                            {
+                                //Diagnostics.TraceVerbose("Updating description for term '{0}'.", term.Name);
+                                term.SetDescription(description, lcid);
+                                changed = true;
+                            }
+                        }
+                        catch (ArgumentException)
+                        {
+                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorDescription, CoreResources.TaxonomyExtension_ImportErrorDescription0Line1, new object[]
+                            {
+                                description,
+                                lineNumber
+                            });
+                            success = false;
+                        }
+                    }
+                    if (!success)
+                    {
+                        result = false;
+                        Guid id = term.Id;
+                        try
+                        {
+                            LoggingUtility.Internal.TraceVerbose("Was an issue; deleting");
+                            term.DeleteObject();
+                            changed = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorDelete, ex, CoreResources.TaxonomyExtension_ImportErrorDeleteId0Line1, new object[]
+                            {
+                                id,
+                                lineNumber
+                            });
+                        }
+                    }
+                    if (changed)
+                    {
+                        termSetItem.Context.ExecuteQuery();
+                    }
+                }
+                return result || changed;
+            }
+        }
+
+        private static IList<string> ImportTermSetLineParse(string line)
+        {
+            List<string> entries = new List<string>();
+            char[] lineChars = line.ToCharArray();
+            string entry = string.Empty;
+            bool flagInsideQuotes = false;
+            int charIndex = 0;
+            checked
+            {
+                while (charIndex < line.Length)
+                {
+                    if (flagInsideQuotes || !string.IsNullOrEmpty(entry)
+                        || (!char.IsWhiteSpace(lineChars[charIndex]) && lineChars[charIndex] != '"'))
+                    {
+                        if (flagInsideQuotes && lineChars[charIndex] == '"'
+                            && (charIndex + 1 >= line.Length || lineChars[charIndex + 1] == ','))
+                        {
+                            // End of quotes (and either end of line or next char is comma)
+                            flagInsideQuotes = false;
+                        }
+                        else
+                        {
+
+                            if (flagInsideQuotes && lineChars[charIndex] == '"')
+                            {
+                                if (lineChars[charIndex + 1] != '"')
+                                {
+                                    // End of quotes  and next char is not a comma!
+                                    return null;
+                                }
+                                // Doubled (escaped) quotes
+                                charIndex++;
+                            }
+                            if (flagInsideQuotes || lineChars[charIndex] != ',')
+                            {
+                                entry += lineChars[charIndex];
+                            }
+                            else
+                            {
+                                entry = entry.Trim();
+                                entries.Add(entry);
+                                entry = string.Empty;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (lineChars[charIndex] == '"')
+                        {
+                            flagInsideQuotes = true;
+                        }
+                    }
+
+                    charIndex++;
+                }
+                entry = entry.Trim();
+                entries.Add(entry);
+
+                return entries;
             }
         }
 

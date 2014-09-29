@@ -367,6 +367,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating term &apos;{0}|{1}&apos; under parent &apos;{2}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTerm01UnderParent2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTerm01UnderParent2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating term group &apos;{0}&apos; in term store &apos;{1}&apos;..
         /// </summary>
         internal static string TaxonomyExtension_CreateTermGroup0InStore1 {
@@ -399,6 +408,51 @@ namespace OfficeDevPnP.Core {
         internal static string TaxonomyExtension_ExceptionUpdateDescriptionSet01 {
             get {
                 return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateDescriptionSet01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import when attempting to delete invalid term with id {0} on line {1}..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorDeleteId0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorDeleteId0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import. The description &apos;{0}&apos; on line {1} is not valid..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorDescription0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorDescription0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import.  The name &apos;{0}&apos; is not valid on line {1}..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorName0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorName0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import. The available for tagging entry on line {0} is not valid..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorTaggingLine0 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorTaggingLine0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Importing term set from file stream..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportTermSet {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportTermSet", resourceCulture);
             }
         }
         

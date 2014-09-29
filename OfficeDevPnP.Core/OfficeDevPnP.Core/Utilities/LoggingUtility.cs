@@ -30,6 +30,7 @@ namespace OfficeDevPnP.Core.Utilities
         CreateListField = 1508,
         CreateTermGroup = 1509,
         CreateTermSet = 1510,
+        ImportTermSet = 1511,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -42,6 +43,7 @@ namespace OfficeDevPnP.Core.Utilities
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
         AddFieldToContentType = 2503,
+        CreateTerm = 2504,
         
         SetTheme = 2601,
         SetMasterUrl = 2602,
@@ -66,6 +68,10 @@ namespace OfficeDevPnP.Core.Utilities
         LibraryMissing = 5501,
         FolderMissing = 5502,
         FeatureActivationProblem = 5503,
+        ProvisionTaxonomyImportErrorName = 5504,
+        ProvisionTaxonomyImportErrorTagging = 5505,
+        ProvisionTaxonomyImportErrorDescription = 5506,
+        ProvisionTaxonomyImportErrorDelete = 5507,
 
         ThemeMissing = 5601,
 
