@@ -279,4 +279,7 @@
   <data name="TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2" xml:space="preserve">
     <value>Term set '{0}' ID ({1}) does not match specified ID ({2}).</value>
   </data>
+  <data name="TaxonomyExtension_DeleteTerm01" xml:space="preserve">
+    <value>Deleting term '{0}|{1}'.</value>
+  </data>
 </root>

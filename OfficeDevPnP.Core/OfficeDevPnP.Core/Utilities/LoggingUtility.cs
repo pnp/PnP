@@ -83,7 +83,7 @@ namespace OfficeDevPnP.Core.Utilities
         DeactivateWebFeature = 8504,
         DeactivateSiteCollectionFeature = 8505,
         UninstallSolution = 8506,
-
+        DeleteTerm = 8507,
     }
 
     /// <summary>

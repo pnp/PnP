@@ -394,6 +394,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting term &apos;{0}|{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_DeleteTerm01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_DeleteTerm01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1})..
         /// </summary>
         internal static string TaxonomyExtension_ExceptionUpdateDescriptionGroup01 {

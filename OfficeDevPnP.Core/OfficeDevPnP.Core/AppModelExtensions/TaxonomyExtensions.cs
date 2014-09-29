@@ -828,8 +828,7 @@ namespace Microsoft.SharePoint.Client
 
             if (synchroniseDeletions)
             {
-                throw new NotImplementedException("synchronise deletions not implemented yet");
-                //ImportTermSetRemoveExtraTerms(termSet, importedTermIds);
+                ImportTermSetRemoveExtraTerms(termSet, importedTermIds);
             }
 
             //termStore.CommitAll();
@@ -931,7 +930,7 @@ namespace Microsoft.SharePoint.Client
 
         private static bool ImportTermSetLineImport(IList<string> entries, TermSet importTermSet, int lcid, int lineNumber, IDictionary<Guid, object> importedTermIds)
         {
-            TermSetItem termSetItem = null;
+            TermSetItem parentTermSetItem = null;
             Term term = null;
             int num = 0;
             bool success = true;
@@ -945,106 +944,110 @@ namespace Microsoft.SharePoint.Client
             num = 0;
             checked
             {
+                string termName = null;
+                Guid termId = Guid.Empty;
                 while (num < entries.Count - 5 && success)
                 {
-                    string termName = entries[5 + num];
-                    Guid termId = Guid.Empty;
-                    // Accept extended format of "Name|Guid", noting that | is not an allowed character in the term name
-                    if (termName.Contains(TaxonomyGuidLabelDelimiter))
-                    {
-                        var split = termName.Split(new string[] { TaxonomyGuidLabelDelimiter }, StringSplitOptions.None);
-                        termName = split[0];
-                        termId = new Guid(split[1]);
-                    }
-                    if (string.IsNullOrEmpty(termName))
+                    string termNameEntry = entries[5 + num];
+                    if (string.IsNullOrEmpty(termNameEntry))
                     {
                         if (termCreated)
                         {
                             result = true;
-                            break;
                         }
                         break;
                     }
+                    termName = null;
+                    termId = Guid.Empty;
+                    // Accept extended format of "Name|Guid", noting that | is not an allowed character in the term name
+                    if (termNameEntry.Contains(TaxonomyGuidLabelDelimiter))
+                    {
+                        var split = termNameEntry.Split(new string[] { TaxonomyGuidLabelDelimiter }, StringSplitOptions.None);
+                        termName = split[0];
+                        termId = new Guid(split[1]);
+                    }
                     else
                     {
-                        if (termName.Length > 255)
-                        {
-                            termName = termName.Substring(0, 255);
-                        }
-                        termName = NormalizeName(termName);
-                        try
-                        {
-                            ValidateName(termName, "name");
-                        }
-                        catch (ArgumentNullException)
-                        {
-                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
-                            {
-                                termName,
-                                lineNumber
-                            });
-                            success = false;
-                            break;
-                        }
-                        catch (ArgumentException)
-                        {
-                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
-                            {
-                                termName,
-                                lineNumber
-                            });
-                            success = false;
-                            break;
-                        }
-                        if (term == null)
-                        {
-                            termSetItem = importTermSet;
-                        }
-                        else
-                        {
-                            termSetItem = term;
-                        }
-                        term = null;
-                        if (!termSetItem.IsObjectPropertyInstantiated("Terms"))
-                        {
-                            termSetItem.Context.Load(termSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                            termSetItem.Context.ExecuteQuery();
-                        }
-                        foreach (Term current in termSetItem.Terms)
-                        {
-                            if (termId != Guid.Empty && current.Id == termId)
-                            {
-                                term = current;
-                                break;
-                            }
-                            if (current.Name == termName)
-                            {
-                                term = current;
-                                break;
-                            }
-                        }
-                        if (term == null && termSetItem != null)
-                        {
-                            if (termId == Guid.Empty)
-                            {
-                                termId = Guid.NewGuid();
-                            }
-                            LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, termSetItem.Name);
-                            term = termSetItem.CreateTerm(termName, lcid, termId);
-                            termSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
-                            termSetItem.Context.ExecuteQuery();
-                            termCreated = true;
-                            if (num == entries.Count - 5 - 1)
-                            {
-                                result = true;
-                            }
-                        }
-                        if (term != null)
-                        {
-                            importedTermIds[term.Id] = null;
-                        }
-                        num++;
+                        termName = termNameEntry;
                     }
+                    // Process the entry
+                    if (termName.Length > 255)
+                    {
+                        termName = termName.Substring(0, 255);
+                    }
+                    termName = NormalizeName(termName);
+                    try
+                    {
+                        ValidateName(termName, "name");
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                        {
+                            termName,
+                            lineNumber
+                        });
+                        success = false;
+                        break;
+                    }
+                    catch (ArgumentException)
+                    {
+                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                        {
+                            termName,
+                            lineNumber
+                        });
+                        success = false;
+                        break;
+                    }
+                    if (term == null)
+                    {
+                        parentTermSetItem = importTermSet;
+                    }
+                    else
+                    {
+                        parentTermSetItem = term;
+                    }
+                    term = null;
+                    if (!parentTermSetItem.IsObjectPropertyInstantiated("Terms"))
+                    {
+                        parentTermSetItem.Context.Load(parentTermSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                        parentTermSetItem.Context.ExecuteQuery();
+                    }
+                    foreach (Term current in parentTermSetItem.Terms)
+                    {
+                        if (termId != Guid.Empty && current.Id == termId)
+                        {
+                            term = current;
+                            break;
+                        }
+                        if (current.Name == termName)
+                        {
+                            term = current;
+                            break;
+                        }
+                    }
+                    if (term == null && parentTermSetItem != null)
+                    {
+                        if (termId == Guid.Empty)
+                        {
+                            termId = Guid.NewGuid();
+                        }
+                        LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, parentTermSetItem.Name);
+                        term = parentTermSetItem.CreateTerm(termName, lcid, termId);
+                        parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
+                        parentTermSetItem.Context.ExecuteQuery();
+                        termCreated = true;
+                        if (num == entries.Count - 5 - 1)
+                        {
+                            result = true;
+                        }
+                    }
+                    if (term != null)
+                    {
+                        importedTermIds[term.Id] = null;
+                    }
+                    num++;
                 }
                 if (success && term != null)
                 {
@@ -1055,7 +1058,7 @@ namespace Microsoft.SharePoint.Client
                             var isAvailableForTagging = bool.Parse(entries[3]);
                             if (term.IsAvailableForTagging != isAvailableForTagging)
                             {
-                                //Diagnostics.TraceVerbose("Setting IsAvailableForTagging = {1} for term '{0}'.", term.Name, isAvailableForTagging);
+                                LoggingUtility.Internal.TraceVerbose("Setting IsAvailableForTagging = {1} for term '{0}'.", term.Name, isAvailableForTagging);
                                 term.IsAvailableForTagging = isAvailableForTagging;
                                 changed = true;
                             }
@@ -1094,9 +1097,9 @@ namespace Microsoft.SharePoint.Client
                         try
                         {
                             ValidateDescription(description, "description");
-                            if (!term.GetDescription(lcid).Equals(description))
+                            if (!(term.Description == description))
                             {
-                                //Diagnostics.TraceVerbose("Updating description for term '{0}'.", term.Name);
+                                LoggingUtility.Internal.TraceVerbose("Updating description for term '{0}'.", term.Name);
                                 term.SetDescription(description, lcid);
                                 changed = true;
                             }
@@ -1110,6 +1113,12 @@ namespace Microsoft.SharePoint.Client
                             });
                             success = false;
                         }
+                    }
+                    if (!(term.Name == termName))
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Updating name for term '{0}'.", term.Name);
+                        term.Name = termName;
+                        changed = true;
                     }
                     if (!success)
                     {
@@ -1132,7 +1141,8 @@ namespace Microsoft.SharePoint.Client
                     }
                     if (changed)
                     {
-                        termSetItem.Context.ExecuteQuery();
+                        LoggingUtility.Internal.TraceVerbose("Updating term {0}", term.Id);
+                        parentTermSetItem.Context.ExecuteQuery();
                     }
                 }
                 return result || changed;
@@ -1198,6 +1208,36 @@ namespace Microsoft.SharePoint.Client
                 entries.Add(entry);
 
                 return entries;
+            }
+        }
+
+        private static void ImportTermSetRemoveExtraTerms(TermSet termSet, IDictionary<Guid, object> importedTermIds)
+        {
+            LoggingUtility.Internal.TraceVerbose("Removing extra terms");
+            var termsToDelete = new List<Term>();
+            var allTerms = termSet.GetAllTerms();
+            termSet.Context.Load(allTerms, at => at.Include(t => t.Id, t => t.Name));
+            termSet.Context.ExecuteQuery();
+            foreach (var term in allTerms)
+            {
+                if (!importedTermIds.ContainsKey(term.Id))
+                {
+                    termsToDelete.Add(term);
+                }
+            }
+            foreach (var termToDelete in termsToDelete)
+            {
+                try
+                {
+                    LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
+                    termToDelete.DeleteObject();
+                    termSet.Context.ExecuteQuery();
+                }
+                catch (KeyNotFoundException knfex)
+                {
+                    // This is a sucky way to check if the term was already deleted
+                    LoggingUtility.Internal.TraceVerbose("Term id {0} alrady deleted.", termToDelete.Id);
+                }
             }
         }
 
