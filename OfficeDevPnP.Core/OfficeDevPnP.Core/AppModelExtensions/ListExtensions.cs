@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -445,6 +446,8 @@ namespace Microsoft.SharePoint.Client
 
         private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateList, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
             lci.Title = listName;

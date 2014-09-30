@@ -322,6 +322,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating list &apos;{0}&apos; from template {1}{2}..
+        /// </summary>
+        internal static string ListExtensions_CreateList0Template12 {
+            get {
+                return ResourceManager.GetString("ListExtensions_CreateList0Template12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}; EXCEPTION: {{{1}}}.
         /// </summary>
         internal static string LoggingUtility_MessageWithException {

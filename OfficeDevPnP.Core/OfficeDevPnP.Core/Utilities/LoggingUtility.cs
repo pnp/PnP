@@ -31,6 +31,7 @@ namespace OfficeDevPnP.Core.Utilities
         CreateTermGroup = 1509,
         CreateTermSet = 1510,
         ImportTermSet = 1511,
+        CreateList = 1512,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,

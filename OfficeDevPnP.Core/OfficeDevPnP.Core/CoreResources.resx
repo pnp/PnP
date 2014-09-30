@@ -282,4 +282,7 @@
   <data name="TaxonomyExtension_DeleteTerm01" xml:space="preserve">
     <value>Deleting term '{0}|{1}'.</value>
   </data>
+  <data name="ListExtensions_CreateList0Template12" xml:space="preserve">
+    <value>Creating list '{0}' from template {1}{2}.</value>
+  </data>
 </root>
