@@ -25,7 +25,7 @@ namespace OfficeDevPnP.Core.Entities
         /// <summary>
         /// Taxonomy paths in the shape of "TermGroup|TermSet|Term"
         /// </summary>
-        public List<Term> Terms { get; set; }
+        public IList<Term> Terms { get; private set; }
 
         public DefaultColumnTermValue()
         {

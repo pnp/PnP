@@ -53,6 +53,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
         /// </summary>
         /// <param name="stsResponse">SAML token obtained via active authentication to ADFS</param>
         /// <returns>RequestSecurityTokenResponse soap message</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)", Justification="XML literal")]
         private string WrapInSoapMessage(string stsResponse)
         {
             XmlDocument samlAssertion = new XmlDocument();

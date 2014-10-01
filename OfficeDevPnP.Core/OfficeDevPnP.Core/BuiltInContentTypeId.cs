@@ -38,6 +38,9 @@ namespace OfficeDevPnP.Core
         public const string Holiday = "0x01009BE2AB5291BF4C1A986910BD278E4F18";
         public const string IMEDictionaryItem = "0x010018F21907ED4E401CB4F14422ABC65304";
         public const string Issue = "0x0103";
+        /// <summary>
+        /// Contains the content identifier (ID) for the Item content type.
+        /// </summary>
         public const string Item = "0x01";
         public const string Link = "0x0105";
         public const string LinkToDocument = "0x01010A";

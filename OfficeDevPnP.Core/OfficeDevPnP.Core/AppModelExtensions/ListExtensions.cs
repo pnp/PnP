@@ -1150,8 +1150,8 @@ namespace Microsoft.SharePoint.Client
                                 {
                                     FieldInternalName = fieldName,
                                     FolderRelativePath = href,
-                                    Terms = existingTerms
                                 };
+                                existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
 
                                 existingValues.Add(defaultColumnTermValue);
                             }

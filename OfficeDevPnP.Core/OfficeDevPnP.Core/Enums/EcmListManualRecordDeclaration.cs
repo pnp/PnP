@@ -13,6 +13,7 @@ namespace OfficeDevPnP.Core
     /// </summary>
     public enum EcmListManualRecordDeclaration
     {
+        Unknown = 0,
         /// <summary>
         /// Use the site collection defaults
         /// </summary>
