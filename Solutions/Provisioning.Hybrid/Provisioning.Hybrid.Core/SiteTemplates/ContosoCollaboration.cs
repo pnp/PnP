@@ -114,17 +114,17 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 this.CreatedSiteContext.Web.AddLayoutToWikiPage("SitePages", WikiPageLayout.TwoColumns, siteMembersPage);
                 //Add site members web parts
                 WebPartEntity wpSiteUsers = new WebPartEntity();
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site owners", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Owners")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site owners", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Owners")));
                 wpSiteUsers.WebPartIndex = 0;
                 wpSiteUsers.WebPartTitle = "Site owners";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 1, false);
 
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site visitors", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Visitors")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site visitors", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Visitors")));
                 wpSiteUsers.WebPartIndex = 1;
                 wpSiteUsers.WebPartTitle = "Site visitors";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 1, true);
 
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site members", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Members")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site members", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Members")));
                 wpSiteUsers.WebPartIndex = 0;
                 wpSiteUsers.WebPartTitle = "Site members";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 2, false);
