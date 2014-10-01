@@ -1,16 +1,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.Themes", "Branding.Themes\Branding.Themes.csproj", "{648C42AC-0A69-4CAF-AB82-00301AD47E5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.ThemesWeb", "Branding.ThemesWeb\Branding.ThemesWeb.csproj", "{534E6E84-18C2-4CEE-8DDE-55051071A89B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{2BFF05B9-C145-4E5A-8879-E2ACE39388B5}"
-	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		Theme managent.docx = Theme managent.docx
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{311EA438-C313-4994-AFB1-F71D9380F645}"
 EndProject
