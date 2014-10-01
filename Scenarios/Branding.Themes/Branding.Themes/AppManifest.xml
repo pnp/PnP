@@ -2,7 +2,7 @@
 <!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="BrandingThemes"
-     ProductID="{399f7897-0a08-4143-a803-7ecefcf0ea6b}"
+     ProductID="{399f7897-0a08-4143-a803-7ecefcf0ea6a}"
      Version="1.0.0.0"
      SharePointMinVersion="15.0.0.0"
 >
