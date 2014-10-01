@@ -166,11 +166,53 @@ namespace Microsoft.SharePoint.Client
             return t;
         }
 
-        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter)
+        /// <summary>
+        ///  Imports an array of | delimited strings into the deafult site collection termstore. Specify strings in this format:
+        ///  TermGroup|TermSet|Term
+        ///  
+        ///  E.g. "Locations|Nordics|Sweden"
+        ///  
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="termLines"></param>
+        /// <param name="lcid"></param>
+        /// <param name="delimiter"></param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter = "|")
         {
+            termLines.ValidateNotNullOrEmpty("termLines");
+
             var clientContext = site.Context;
+
             TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
             TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+
+            ImportTerms(site, termLines,  lcid, termStore, delimiter);
+        }
+
+        /// <summary>
+        ///  Imports an array of | delimited strings into the deafult site collection termstore. Specify strings in this format:
+        ///  TermGroup|TermSet|Term
+        ///  
+        ///  E.g. "Locations|Nordics|Sweden"
+        ///  
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="termLines"></param>
+        /// <param name="lcid"></param>
+        /// <param name="termStore">The termstore to import the terms into</param>
+        /// <param name="delimiter"></param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, TermStore termStore, string delimiter = "|")
+        {
+            termLines.ValidateNotNullOrEmpty("termLines");
+            termStore.ValidateNotNullOrEmpty("termStore");
+
+            var clientContext = site.Context;
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+            if(termStore.ServerObjectIsNull == true)
+            {
+                clientContext.Load(termStore);
+                clientContext.ExecuteQuery();
+            }
             clientContext.Load(termStore);
             clientContext.ExecuteQuery();
             foreach (string line in termLines)
@@ -361,14 +403,31 @@ namespace Microsoft.SharePoint.Client
         public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, string delimiter = "|")
         {
             var clientContext = site.Context;
+            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+
+            var termStore = site.GetDefaultSiteCollectionTermStore();
+
+            return ExportTermSet(site, termSetId, includeId, termStore, delimiter);
+        }
+
+        /// <summary>
+        /// Exports the full list of terms from all termsets in all termstores.
+        /// </summary>
+        /// <param name="termSetId">The ID of the termset to export</param>
+        /// <param name="includeId">if true, Ids of the the taxonomy items will be included</param>
+        /// <param name="clientContext"></param>
+        /// <param name="termStore">The term store to export the termset from</param>
+        /// <param name="delimiter">if specified, this delimiter will be used. Notice that IDs will be delimited with ;# from the label</param>
+        /// <returns></returns>
+        public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, TermStore termStore, string delimiter = "|")
+        {
+            var clientContext = site.Context;
             List<string> termsString = new List<string>();
             TermCollection terms = null;
             TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
 
             if (termSetId != Guid.Empty)
             {
-                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
-
                 TermSet termSet = termStore.GetTermSet(termSetId);
                 terms = termSet.Terms;
                 clientContext.Load(terms, t => t.IncludeWithDefaultProperties(s => s.TermSet));
@@ -377,7 +436,7 @@ namespace Microsoft.SharePoint.Client
 
             clientContext.ExecuteQuery();
 
-            if (terms != null)
+            if (terms.Any())
             {
                 foreach (Term term in terms)
                 {
