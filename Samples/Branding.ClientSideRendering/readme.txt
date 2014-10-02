@@ -16,7 +16,8 @@
 *			 Tyler Lu, Canviz Consulting LLC
 *			 Cindy Yan, Canviz Consulting LLC
 *			 Todd Baginski, Canviz Consulting LLC
-*	Date - 20.06.2014
-*	Version - 1.0
+*                        Andrei Markeev
+*	Date - 03.10.2014
+*	Version - 1.1
 *
 ***************************************************************
