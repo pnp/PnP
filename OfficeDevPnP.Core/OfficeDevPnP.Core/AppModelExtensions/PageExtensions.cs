@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.SharePoint.Client.Publishing;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -99,7 +100,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("page")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
             }
-            
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -213,7 +214,7 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("serverRelativePageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
-            
+
             if (webPart == null)
             {
                 throw new ArgumentNullException("webPart");
@@ -701,15 +702,15 @@ namespace Microsoft.SharePoint.Client
                 throw (serverRelativePageUrl == null)
                   ? new ArgumentNullException("serverRelativePageUrl")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
-            } 
-            
+            }
+
             if (string.IsNullOrEmpty(title))
             {
                 throw (title == null)
                   ? new ArgumentNullException("title")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
             }
-            
+
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
@@ -765,7 +766,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             string wikiPageUrl = "";
-            
+
             var pageLibrary = web.Lists.GetByTitle(wikiPageLibraryName);
 
             web.Context.Load(pageLibrary.RootFolder, f => f.ServerRelativeUrl);
@@ -878,10 +879,110 @@ namespace Microsoft.SharePoint.Client
                         break;
                     }
             }
-         
+
             def.SaveWebPartChanges();
 
             context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Adds the publishing page.
+        /// </summary>
+        /// <param name="web">The web.</param>
+        /// <param name="pageName">Name of the page.</param>
+        /// <param name="pageTemplateName">Name of the page template.</param>
+        /// <param name="title">The title.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or pageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentException">Thrown when key or pageName is null</exception>
+        public static void AddPublishingPage(this Web web, string pageName, string pageTemplateName, string title = null)
+        {
+            if (string.IsNullOrEmpty(pageName))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("pageName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageName");
+            }
+            if (string.IsNullOrEmpty(pageTemplateName))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("pageTemplateName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageTemplateName");
+            }
+            if (string.IsNullOrEmpty(title))
+            {
+                title = pageName;
+            }
+            pageName = pageName.ReplaceInvalidUrlChars("-");
+            ClientContext context = web.Context as ClientContext;
+            Site site = context.Site;
+            context.Load(site, s => s.ServerRelativeUrl);
+            context.ExecuteQuery();
+            File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
+                UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
+                pageTemplateName));
+            Microsoft.SharePoint.Client.ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
+            context.Load(pageLayoutItem);
+            context.ExecuteQuery();
+
+            PublishingWeb publishingWeb = PublishingWeb.GetPublishingWeb(context, web);
+            context.Load(publishingWeb);
+            PublishingPage page = publishingWeb.AddPublishingPage(new PublishingPageInformation
+            {
+                Name = string.Format("{0}.aspx", pageName),
+                PageLayoutListItem = pageLayoutItem
+            });
+            context.ExecuteQuery();
+
+            Microsoft.SharePoint.Client.ListItem pageItem = page.ListItem;
+            pageItem["Title"] = pageName;
+            pageItem.Update();
+            pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+            context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Gets a publishing page.
+        /// </summary>
+        /// <param name="web">The web.</param>
+        /// <param name="fileLeafRef">The file leaf reference.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">fileLeafRef</exception>
+        /// <exception cref="System.ArgumentException">fileLeafRef</exception>
+        public static PublishingPage GetPublishingPage(this Web web, string fileLeafRef)
+        {
+            if (string.IsNullOrEmpty(fileLeafRef))
+            {
+                throw (fileLeafRef == null)
+                  ? new ArgumentNullException("fileLeafRef")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "fileLeafRef");
+            }
+
+            ClientContext context = web.Context as ClientContext;
+            List spList = web.Lists.GetByTitle("Pages");
+            context.Load(spList);
+            context.ExecuteQuery();
+            if (spList != null && spList.ItemCount > 0)
+            {
+
+                Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
+                camlQuery.ViewXml = string.Format(@"<View>  
+                        <Query> 
+                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                        </Query> 
+                  </View>", fileLeafRef);
+
+                ListItemCollection listItems = spList.GetItems(camlQuery);
+                context.Load(listItems);
+                context.ExecuteQuery();
+                if (listItems.Count > 0)
+                {
+                    PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
+                    context.Load(page);
+                    context.ExecuteQuery();
+                    return page;
+                }
+            }
+            return null;
         }
     }
 }
