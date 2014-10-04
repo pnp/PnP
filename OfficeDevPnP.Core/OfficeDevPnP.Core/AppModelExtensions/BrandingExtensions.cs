@@ -11,8 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using LanguageTemplateHash = System.Collections.Generic.Dictionary<string,
-                                                                    System.Collections.Generic.List<string>>;
+using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -443,9 +442,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="title">Title for the page layout</param>
         /// <param name="description">Description for the page layout</param>
         /// <param name="associatedContentTypeID">Associated content type ID</param>
-        /// <param name="webPartEntities">Default web parts on page layout</param>
         /// <param name="folderPath">Folder where the page layouts will be stored</param>
-        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, List<WebPartEntity> webPartEntities, string folderPath = string.empty)
+        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
@@ -465,7 +463,11 @@ namespace Microsoft.SharePoint.Client
             
             // Create folder structure inside master page gallery, if does not exists
             // For e.g.: _catalogs/masterpage/contoso/
-            web.EnsureFolder(rootFolder, folderPath);
+            // Create folder if does not exists
+            if (!String.IsNullOrEmpty(folderPath))
+            {
+                web.EnsureFolder(rootFolder, folderPath);
+            }
 
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
 
@@ -488,17 +490,6 @@ namespace Microsoft.SharePoint.Client
                 }
             }
             
-            // Add default web parts
-            if ((webPartEntities != null) && (webPartEntities.Count > 0))
-            {
-                LimitedWebPartManager limitedWebPartManager = uploadFile.GetLimitedWebPartManager(PersonalizationScope.Shared);
-                foreach (WebPartEntity webPart in webPartEntities)
-                {
-                    WebPartDefinition webPartDefinition = limitedWebPartManager.ImportWebPart(webPart.WebPartXml);
-                    limitedWebPartManager.AddWebPart(webPartDefinition.WebPart, webPart.WebPartZone, webPart.WebPartIndex);
-                }
-            }
-
             // Get content type for ID to assign associated content type information
             ContentType associatedCt = web.GetContentTypeById(associatedContentTypeID);
 
@@ -541,7 +532,10 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
             
             // Create folder if does not exists
-            web.EnsureFolder(rootFolder, folderPath);
+            if (!String.IsNullOrEmpty(folderPath))
+            {
+                web.EnsureFolder(rootFolder, folderPath);
+            }
 
             // Get the file name from the provided path
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);

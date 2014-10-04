@@ -307,7 +307,7 @@ namespace Microsoft.SharePoint.Client
             folderCollection.Context.ExecuteQuery();
             foreach (Folder existingFolder in folderCollection)
             {
-                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(existingFolder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     folder = existingFolder;
                     break;
