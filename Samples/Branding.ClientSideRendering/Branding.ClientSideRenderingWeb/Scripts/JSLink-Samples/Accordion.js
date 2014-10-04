@@ -1,7 +1,22 @@
 ﻿// List View – Accordion Sample
 // Muawiyah Shannak , @MuShannak
-// Modified by Canviz LLC for inclusion in Office AMS
-(function () {
+// Modified by Canviz LLC for inclusion in Office PnP
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterAccordionContext();
+}
+
+function RegisterInMDS() {
+    // RegisterAccordionContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/Accordion.js", RegisterAccordionContext);
+    //RegisterAccordionContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterAccordionContext();
+}
+
+function RegisterAccordionContext() {
 
     // jQuery library is required in this sample
     // Fallback to loading jQuery from a CDN path if the local is unavailable
@@ -23,7 +38,7 @@
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(accordionContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function accordionTemplate(ctx) {

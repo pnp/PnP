@@ -1,7 +1,22 @@
 ﻿// List add and edit – ReadOnly SP Controls Sample
 // Muawiyah Shannak , @MuShannak
-// Modified by Canviz LLC for inclusion in Office AMS
-(function () {
+// Modified by Canviz LLC for inclusion in Office PnP
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterReadonlyFiledContext();
+}
+
+function RegisterInMDS() {
+    // RegisterReadonlyFiledContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/ReadOnlySPControl.js", RegisterReadonlyFiledContext);
+    //RegisterReadonlyFiledContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterReadonlyFiledContext();
+}
+
+function RegisterReadonlyFiledContext () {
 
     // Create object that has the context information about the field that we want to render differently
     var readonlyFiledContext = {};
@@ -21,7 +36,7 @@
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(readonlyFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function readonlyFieldTemplate(ctx) {
