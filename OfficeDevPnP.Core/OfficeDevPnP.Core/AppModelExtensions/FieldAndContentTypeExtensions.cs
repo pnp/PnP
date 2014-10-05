@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             return CreateField<TField>(web, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
         }
 
@@ -98,7 +100,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             if (string.IsNullOrEmpty(internalName))
                 throw new ArgumentNullException("internalName");
 
@@ -126,6 +129,16 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(fieldAsXml))
                 throw new ArgumentNullException("fieldAsXml");
+
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(fieldAsXml);
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
+            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
+            string id = fieldNode.Attributes["ID"].Value;
+            string name = fieldNode.Attributes["Name"].Value;
+
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields);
@@ -191,22 +204,22 @@ namespace Microsoft.SharePoint.Client
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
             nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
 
-            XmlDocument xdocField = null;
             XmlNodeList fields = xmlDoc.SelectNodes("//namespace:Field", nsmgr);
             int count = fields.Count;
             foreach (XmlNode field in fields)
             {
-                xdocField = new XmlDocument();
-                xdocField.LoadXml(field.OuterXml);
-                string fieldName = xdocField.SelectSingleNode("//namespace:Field", nsmgr).Attributes["Name"].Value;
+                string id = field.Attributes["ID"].Value;
+                string name = field.Attributes["Name"].Value;
 
                 // IF field already existed, let's move on
-                if (web.FieldExistsByName(fieldName))
+                if (web.FieldExistsByName(name))
                 {
-                    continue;
+                    LoggingUtility.Internal.TraceWarning((int)EventId.FieldAlreadyExists, CoreResources.FieldAndContentTypeExtensions_Field01AlreadyExists, name, id);
                 }
-
-                web.CreateField(field.OuterXml);
+                else
+                {
+                    web.CreateField(field.OuterXml);
+                }
             }
         }
 
@@ -218,17 +231,54 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True or false depending on the field existence</returns>
         public static bool FieldExistsById(this Web web, Guid fieldId)
         {
-            FieldCollection fields = web.Fields;
-            web.Context.Load(fields);
-            web.Context.ExecuteQuery();
-            foreach (var item in fields)
-            {
-                if (item.Id == fieldId)
-                {
-                    return true;
-                }
-            }
+            var field = web.GetFieldById<Field>(fieldId);
+
+            if (field != null)
+                return true;
+
             return false;
+        }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <param name="TField">Field type to be returned</param>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field
+        {
+            var fields = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldId));
+            web.Context.ExecuteQuery();
+
+            var field = fields.FirstOrDefault();
+            if (field == null)
+                return null;
+            else
+                return web.Context.CastTo<TField>(field);
+        }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <param name="TField">Field type to be returned</param>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldByName<TField>(this FieldCollection fields, string internalName) where TField : Field
+        {
+            if (!fields.ServerObjectIsNull.HasValue ||
+                fields.ServerObjectIsNull.Value)
+            {
+                fields.Context.Load(fields);
+                fields.Context.ExecuteQuery();
+            }
+
+            var field = fields.FirstOrDefault(f => f.StaticName == internalName);
+            if (field == null)
+                return null;
+            else
+                return fields.Context.CastTo<TField>(field);
         }
 
         /// <summary>
@@ -454,14 +504,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns></returns>
-        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field {
+        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
             Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName) as TField;
 
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
-            LoggingUtility.LogInformation("New Field as XML: " + newFieldCAML, EventCategory.FieldsAndContentTypes);
+            string newFieldCAML = FormatFieldXml(id, internalName, fieldType, displayName, group, additionalXmlAttributes);
+
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, internalName, id);
             field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
             fields.Context.ExecuteQuery();
@@ -477,6 +529,12 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
+        public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
+        {
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            return newFieldCAML;
+        }
+
         /// <summary>
         /// Adds a field to a list
         /// </summary>
@@ -489,6 +547,15 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(fields);
             list.Context.ExecuteQuery();
 
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(fieldAsXml);
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
+            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
+            string id = fieldNode.Attributes["ID"].Value;
+            string name = fieldNode.Attributes["Name"].Value;
+
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateListField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
@@ -536,7 +603,7 @@ namespace Microsoft.SharePoint.Client
         /// Field exists in list by name
         /// </summary>
         /// <param name="list">List to process</param>
-        /// <param name="fieldName">Name of the field</param>
+        /// <param name="fieldName">Internal name of the field</param>
         /// <returns>True if the fields exists, false otherwise</returns>
         public static bool FieldExistsByName(this List list, string fieldName)
         {
@@ -552,6 +619,29 @@ namespace Microsoft.SharePoint.Client
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets a list of fields from a list by names.
+        /// </summary>
+        /// <param name="list">The target list containing the fields.</param>
+        /// <param name="fieldInternalNames">List of field names to retreieve.</param>
+        /// <returns>List of fields requested.</returns>
+        public static IEnumerable<Field> GetFields(this List list, params string[] fieldInternalNames)
+        {
+            var fields = new List<Field>();
+
+            if (fieldInternalNames == null || fieldInternalNames.Length == 0)
+                return fields;
+
+            foreach (var fieldName in fieldInternalNames)
+            {
+                var field = list.Fields.GetByInternalNameOrTitle(fieldName);
+                list.Context.Load(field);
+                fields.Add(field);
+            }
+            list.Context.ExecuteQuery();
+            return fields;
         }
         #endregion
 
@@ -707,6 +797,18 @@ namespace Microsoft.SharePoint.Client
         /// <param name="hidden">Optionally make this a hidden field</param>
         public static void AddFieldToContentType(this Web web, ContentType contentType, Field field, bool required = false, bool hidden = false)
         {
+            if (!contentType.IsPropertyAvailable("Id"))
+            {
+                web.Context.Load(contentType, ct => ct.Id);
+                web.Context.ExecuteQuery();
+            }
+            if (!field.IsPropertyAvailable("Id"))
+            {
+                web.Context.Load(field, f => f.Id);
+                web.Context.ExecuteQuery();
+            }
+            LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
+
             FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
             fldInfo.Field = field;
             contentType.FieldLinks.Add(fldInfo);
@@ -947,41 +1049,54 @@ namespace Microsoft.SharePoint.Client
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
             nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
 
-            XmlNodeList fields = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
-            int count = fields.Count;
-            foreach (XmlNode ct in fields)
+            XmlNodeList contentTypes = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
+            int count = contentTypes.Count;
+            foreach (XmlNode ct in contentTypes)
             {
                 string ctid = ct.Attributes["ID"].Value;
                 string name = ct.Attributes["Name"].Value;
-                string description = ct.Attributes["Description"].Value;
-                string group = ct.Attributes["Group"].Value;
-
                 if (web.ContentTypeExistsByName(name))
-                    continue;
-
-                //Create CT
-                web.CreateContentType(name, description, ctid, group);
-
-                //Add fields to content type 
-                XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
-                XmlAttribute attr = null;
-                foreach (XmlNode fr in fieldRefs)
                 {
-                    bool required = false;
-                    bool hidden = false;
-                    string frid = fr.Attributes["ID"].Value;
-                    string frName = fr.Attributes["Name"].Value;
-                    attr = fr.Attributes["Required"];
-                    if (attr != null)
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ContentTypeAlreadyExists, CoreResources.FieldAndContentTypeExtensions_ContentType01AlreadyExists, name, ctid);
+                    // Skip
+                }
+                else
+                {
+                    var description = "";
+                    if (((XmlElement)ct).HasAttribute("Description"))
                     {
-                        required = attr.Value.ToBoolean();
+                        description = ((XmlElement)ct).GetAttribute("Description");
                     }
-                    attr = fr.Attributes["Hidden"];
-                    if (attr != null)
+                    var group = "";
+                    if (((XmlElement)ct).HasAttribute("Group"))
                     {
-                        hidden = attr.Value.ToBoolean();
+                        group = ((XmlElement)ct).GetAttribute("Group");
                     }
-                    web.AddFieldToContentTypeById(ctid, frid, required, hidden);
+
+                    //Create CT
+                    web.CreateContentType(name, description, ctid, group);
+
+                    //Add fields to content type 
+                    XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
+                    XmlAttribute attr = null;
+                    foreach (XmlNode fr in fieldRefs)
+                    {
+                        bool required = false;
+                        bool hidden = false;
+                        string frid = fr.Attributes["ID"].Value;
+                        string frName = fr.Attributes["Name"].Value;
+                        attr = fr.Attributes["Required"];
+                        if (attr != null)
+                        {
+                            required = attr.Value.ToBoolean();
+                        }
+                        attr = fr.Attributes["Hidden"];
+                        if (attr != null)
+                        {
+                            hidden = attr.Value.ToBoolean();
+                        }
+                        web.AddFieldToContentTypeById(ctid, frid, required, hidden);
+                    }
                 }
             }
         }
@@ -1012,6 +1127,8 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The created content type</returns>
         public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
         {
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateContentType, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
+
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;
             web.Context.Load(contentTypes);
@@ -1200,6 +1317,7 @@ namespace Microsoft.SharePoint.Client
 
         #endregion
 
+#if !CLIENTSDKV15
         #region Localization
         /// <summary>
         /// Set localized labels for content type
@@ -1366,7 +1484,8 @@ namespace Microsoft.SharePoint.Client
             field.UpdateAndPushChanges(true);
             field.Context.ExecuteQuery();
         }
-        #endregion
 
+        #endregion
+#endif
     }
 }

@@ -1,0 +1,12 @@
+﻿button { width: 200px; }
+
+.div-status { margin-top: 50px; }
+
+.label-status { font-weight: bold }
+
+.message-status { font-style: italic; }
+
+.td-warning {
+    color: red;
+    font-weight: bold;
+}

@@ -216,6 +216,7 @@
         this.Language = (options.language) ? options.language : 'en-us'; //the language code for the control (default is en-us)
         this.MarkerMarkup = '<span id="caretmarker"></span>'; //the marketup const
         this._isMulti = options.isMulti; //specifies if the user can select multiple terms
+        this._isReadOnly = options.isReadOnly; //specifies whether the control is used for display purposes 
         this._allowFillIn = options.allowFillIn; //specifies if the user can add new terms (only applies to Open Termsets)
         this._termSetId = options.termSetId; //the termset id to bind the control to
         this._useHashtags = options.useHashtags; //indicates that the hashtags termset should be used tp bind the control
@@ -275,13 +276,21 @@
             var parent = this._hiddenValidated.parent();
             this._hiddenValidated = this._hiddenValidated.detach();
             parent.append(this._control);
-
-            //add additional controls such as the editor area, suggestions container, dialog button
-            this._editor = $('<div class="cam-taxpicker-editor" contenteditable="true"></div>');
             this._suggestionContainer = $('<div class="cam-taxpicker-suggestion-container"></div>');
             this._dlgButton = $('<div class="cam-taxpicker-button"></div>');
-            this._control.empty().append(this._editor).append(this._dlgButton).append(this._hiddenValidated);
-            this._control.after(this._suggestionContainer);
+            if (!this._isReadOnly) {
+                this._editor = $('<div class="cam-taxpicker-editor" contenteditable="true"></div>');
+                this._control.empty().append(this._editor).append(this._dlgButton).append(this._hiddenValidated);
+                this._control.after(this._suggestionContainer);
+            }
+            else {
+
+                this._editor = $('<div class="cam-taxpicker-editor-readonly" contenteditable="false"></div>');
+                this._control.empty().append(this._editor).append(this._hiddenValidated);
+            }
+
+
+
 
             //initialize value if it exists
             if (this._initialValue != undefined && this._initialValue.length > 0) {
@@ -310,6 +319,8 @@
         },
         //handle keydown event in editor control
         keydown: function (event, args) {
+            // if the control is readonly then ignore all keystrokes
+            if (this._isReadOnly) { return false; }
             //get the keynum
             var keynum = event.which;
 
@@ -895,19 +906,30 @@
         },
         //adds a new term to the end of this._selectedTerms
         pushSelectedTerm: function (term) {
-            //clone the term so we don't messup the original
-            var clonedTerm = term.clone();
+            if (!this.existingTerm(term)) {
+                //clone the term so we don't messup the original
+                var clonedTerm = term.clone();
 
-            //clear the RawTerm so it can be serialized
-            clonedTerm.RawTerm = null;
+                //clear the RawTerm so it can be serialized
+                clonedTerm.RawTerm = null;
 
-            //pop the existing term if this isn't a multi-select
-            if (!this._isMulti)
-                this.popSelectedTerm();
+                //pop the existing term if this isn't a multi-select
+                if (!this._isMulti)
+                    this.popSelectedTerm();
 
-            //add the term to the selected terms array
-            this._selectedTerms.push(clonedTerm);
-            this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+                //add the term to the selected terms array            
+                this._selectedTerms.push(clonedTerm);
+                this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+            }
+        },
+        //if the term already exists in the selected terms then don't add it
+        existingTerm: function (term) {
+            for (var j = 0; j < this._selectedTerms.length; j++) {
+                if (this._selectedTerms[j].Id == term.Id) {
+                    return true;
+                }
+            }
+            return false;
         },
         //removes the last term from this._selectedTerms
         popSelectedTerm: function () {

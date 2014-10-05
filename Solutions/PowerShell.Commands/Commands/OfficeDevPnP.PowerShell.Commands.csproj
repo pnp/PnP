@@ -37,25 +37,71 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug15|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug15\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLIENTSDKV15</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release15|AnyCPU'">
+    <OutputPath>bin\Release15\</OutputPath>
+    <DefineConstants>TRACE;CLIENTSDKV15</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
+      <ItemGroup>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+          <HintPath>..\..\..\Assemblies\15\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
-    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
-      <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -128,6 +174,7 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
+    <Compile Include="PublishingPage\AddPublishingPage.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Site\NewSite.cs" />
@@ -227,7 +274,7 @@
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
 
-"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -file "$(SolutionDir)\PostBuild.ps1" "$(ConfigurationName)" "$(TargetDir)</PostBuildEvent>
+C:\windows\system32\windowspowershell\v1.0\powershell.exe -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Text;
 using System.Security;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace System
 {
@@ -135,6 +137,61 @@ namespace System
                 secureString.AppendChar(c);
 
             return secureString;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DescriptionAttribute"/> placed on an Enum as a string.
+        /// </summary>
+        /// <param name="value">Enum object</param>
+        /// <returns>String attribute for the enum.</returns>
+        public static string ToEnumDescription(this Enum value) {
+            string description = string.Empty;
+
+            if (value == null)
+                return description;
+
+            description = value.ToString();
+            var fieldInfo = value.GetType().GetField(description);
+
+            var attribute = fieldInfo.GetCustomAttributes<DescriptionAttribute>(false).ToArray();
+
+            if (attribute != null && attribute.Length > 0) {
+                description = attribute[0].Description;
+            }
+
+            return description;
+        }
+
+        /// <summary>
+        /// Gets an Enum from the string description.
+        /// </summary>
+        /// <typeparam name="T">Enum type.</typeparam>
+        /// <param name="inputStringValue">String description used in the Enum.</param>
+        /// <returns>Enum that corresponds to the given input.</returns>
+        public static T FromEnumFromDescription<T>(this string inputStringValue) where T : struct {
+            try {
+                var type = typeof(T);
+
+                if (!type.IsEnum)
+                    return default(T);
+
+                foreach (var field in type.GetFields()) {
+                    var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+                    if (attribute != null) {
+                        if (attribute.Description == inputStringValue)
+                            return (T)field.GetValue(null);
+                    }
+                    else {
+                        if (field.Name == inputStringValue)
+                            return (T)field.GetValue(null);
+                    }
+                }
+
+                return default(T);
+            }
+            catch {
+                return default(T);
+            }
         }
     }
 }

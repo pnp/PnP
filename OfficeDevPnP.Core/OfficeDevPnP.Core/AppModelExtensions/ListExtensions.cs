@@ -271,7 +271,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (contentTypeName == null)
                   ? new ArgumentNullException("contentTypeName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "contentTypeName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "contentTypeName");
             }
 
             ContentTypeCollection _cts = list.ContentTypes;
@@ -305,7 +305,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listName == null)
                   ? new ArgumentNullException("listName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
 
             // Call actual implementation
@@ -327,7 +327,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listName == null)
                   ? new ArgumentNullException("listName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
@@ -347,7 +347,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listName == null)
                   ? new ArgumentNullException("listName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
             CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
@@ -368,7 +368,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listTitle == null)
                   ? new ArgumentNullException("listTitle")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listTitle");
             }
 
             ListCollection lists = web.Lists;
@@ -498,7 +498,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listName == null)
                   ? new ArgumentNullException("listName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
 
             List listToUpdate = web.Lists.GetByTitle(listName);
@@ -584,7 +584,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
-
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -602,31 +602,33 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listTitle == null)
                   ? new ArgumentNullException("listTitle")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listTitle");
             }
             if (string.IsNullOrEmpty(cultureName))
             {
                 throw (cultureName == null)
                   ? new ArgumentNullException("cultureName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "cultureName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "cultureName");
             }
             if (string.IsNullOrEmpty(titleResource))
             {
                 throw (titleResource == null)
                   ? new ArgumentNullException("titleResource")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "titleResource");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "titleResource");
             }
             if (string.IsNullOrEmpty(descriptionResource))
             {
                 throw (descriptionResource == null)
                   ? new ArgumentNullException("descriptionResource")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "descriptionResource");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "descriptionResource");
             }
 
             List list = web.GetList(listTitle);
             SetLocalizationLabelsForList(list, cultureName, titleResource, descriptionResource);
         }
+#endif
 
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -646,6 +648,7 @@ namespace Microsoft.SharePoint.Client
             list.Update();
             list.Context.ExecuteQuery();
         }
+#endif
 
         /// <summary>
         /// Returns the GUID id of a list
@@ -660,7 +663,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listName == null)
                   ? new ArgumentNullException("listName")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listName");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
 
             List listToQuery = web.Lists.GetByTitle(listName);
@@ -684,7 +687,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw (listTitle == null)
                   ? new ArgumentNullException("listTitle")
-                  : new ArgumentException(Constants.EXCEPTION_MSG_EMPTYSTRING_ARG, "listTitle");
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listTitle");
             }
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
@@ -1147,8 +1150,8 @@ namespace Microsoft.SharePoint.Client
                                 {
                                     FieldInternalName = fieldName,
                                     FolderRelativePath = href,
-                                    Terms = existingTerms
                                 };
+                                existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
 
                                 existingValues.Add(defaultColumnTermValue);
                             }

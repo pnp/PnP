@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core
     /// </summary>
     public enum EcmSiteRecordRestrictions
     {
+        Unknown = 0,
         /// <summary>
         /// Records are no more restricted than non-records
         /// </summary>

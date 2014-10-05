@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -26,6 +27,9 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         public int LCID = 1033;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
+        public string TermStoreName;
+
+        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string Delimiter = "|";
 
         protected override void ExecuteCmdlet()
@@ -39,7 +43,16 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 lines = Terms;
             }
-            ClientContext.Site.ImportTerms(lines, LCID, Delimiter);
+            if (!string.IsNullOrEmpty(TermStoreName))
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
+                var termStore = taxSession.TermStores.GetByName(TermStoreName);
+                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter);
+            }
+            else
+            {
+                ClientContext.Site.ImportTerms(lines, LCID, Delimiter);
+            }
         }
 
     }

@@ -459,8 +459,7 @@ namespace Microsoft.SharePoint.Client
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
-            //rootWeb.UploadDocumentToFolder(sourceFilePath, solutionGallery.RootFolder);
-            rootWeb.UploadDocumentToFolder(sourceFilePath, rootWeb.RootFolder);
+            rootWeb.RootFolder.UploadFile(sourceFilePath);
             var packageInfo = new DesignPackageInfo()
             {
                 PackageName = fileName,
@@ -488,7 +487,6 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            //var packageServerRelativeUrl = UrlUtility.Combine(solutionGallery.RootFolder.ServerRelativeUrl, fileName);
             var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
@@ -496,8 +494,6 @@ namespace Microsoft.SharePoint.Client
             // Remove package from rootfolder
             var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
             uploadedSolutionFile.DeleteObject();
-            site.Context.ExecuteQuery();
-
             site.Context.ExecuteQuery();
         }
 
@@ -1081,6 +1077,7 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region Localization
+#if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
         /// </summary>
@@ -1102,6 +1099,7 @@ namespace Microsoft.SharePoint.Client
             web.Update();
             web.Context.ExecuteQuery();
         }
+#endif
         #endregion
 
     }

@@ -1,7 +1,23 @@
 ﻿// List add and edit – Email Regex Validator Sample
 // Muawiyah Shannak , @MuShannak
-// Modified by Canviz LLC for inclusion in Office AMS
-(function () {
+// Modified by Canviz LLC for inclusion in Office PnP
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterEmailFiledContext();
+}
+
+function RegisterInMDS() {
+    // RegisterEmailFiledContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/RegexValidator.js", RegisterEmailFiledContext);
+    //RegisterEmailFiledContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterEmailFiledContext();
+}
+
+
+function RegisterEmailFiledContext() {
 
     // Create object that has the context information about the field that we want to render differently
     var emailFiledContext = {};
@@ -10,13 +26,13 @@
         // Apply the new rendering for Email field on New and Edit Forms
         "Email": {
             "NewForm": emailFiledTemplate,
-            "EditForm":  emailFiledTemplate
+            "EditForm": emailFiledTemplate
         }
     };
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(emailFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function emailFiledTemplate(ctx) {
@@ -47,10 +63,7 @@ emailValidator = function () {
         var isError = false;
         var errorMessage = "";
 
-        //Email format Regex expression
-        var emailRejex = /\S+@\S+\.\S+/;
-        
-        if (!emailRejex.test(value) && value.trim()) {
+        if (!validateEmail(value)) {
             isError = true;
             errorMessage = "Invalid email address";
         }
@@ -60,6 +73,10 @@ emailValidator = function () {
     };
 };
 
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 // Add error message to spnError element under the input field element
 function emailOnError(error) {
     document.getElementById("spnError").innerHTML = "<span role='alert'>" + error.errorMessage + "</span>";

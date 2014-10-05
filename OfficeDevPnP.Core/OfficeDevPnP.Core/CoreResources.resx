@@ -156,6 +156,9 @@
   <data name="BrandingExtension_ThemeNotOverwritten" xml:space="preserve">
     <value>Theme '{0}' already exists (and was not overwritten). No changes made.</value>
   </data>
+  <data name="Exception_Message_EmptyString_Arg" xml:space="preserve">
+    <value>The passed argument is a zero-length string or contains only whitespace.</value>
+  </data>
   <data name="FeatureExtensions_ActivateSiteCollectionFeature" xml:space="preserve">
     <value>Activating feature {0} in site collection.</value>
   </data>
@@ -171,6 +174,27 @@
   <data name="FeatureExtensions_FeatureActivationProblem" xml:space="preserve">
     <value>Problem with activation for feature id {0}.</value>
   </data>
+  <data name="FieldAndContentTypeExtensions_AddField0ToContentType1" xml:space="preserve">
+    <value>Adding field ({0}) to content type ({1}).</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_ContentType01AlreadyExists" xml:space="preserve">
+    <value>Content type '{0}' ({1}) already exists; no changes made.</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_CreateContentType01" xml:space="preserve">
+    <value>Creating content type '{0}' ({1}).</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_CreateDocumentSet" xml:space="preserve">
+    <value>Creating document set '{0}'.</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_CreateField01" xml:space="preserve">
+    <value>Creating field '{0}' ({1}).</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_CreateFieldBase" xml:space="preserve">
+    <value>New Field as XML: {0}</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_Field01AlreadyExists" xml:space="preserve">
+    <value>Field '{0}' ({1}) already exists; no changes made.</value>
+  </data>
   <data name="FileFolderExtensions_FolderMissing" xml:space="preserve">
     <value>Target folder does not exist in the web. Web: {0}, Folder: {1}</value>
   </data>
@@ -182,6 +206,18 @@
   </data>
   <data name="LoggingUtility_MessageWithException" xml:space="preserve">
     <value>{0}; EXCEPTION: {{{1}}}</value>
+  </data>
+  <data name="MailUtility_SendMailCancelled" xml:space="preserve">
+    <value>Mail message was canceled.</value>
+  </data>
+  <data name="MailUtility_SendFailed" xml:space="preserve">
+    <value>Mail message could not be sent. Send completed with error.</value>
+  </data>
+  <data name="MailUtility_SendException" xml:space="preserve">
+    <value>Mail message could not be sent. SMTP exception attempting to send.</value>
+  </data>
+  <data name="MailUtility_SendExceptionRethrow0" xml:space="preserve">
+    <value>Mail message could not be sent. Exception attempting to send email, rethrowing. Exception: {0}</value>
   </data>
   <data name="TenantExtensions_ClosedContextWarning" xml:space="preserve">
     <value>ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.</value>
