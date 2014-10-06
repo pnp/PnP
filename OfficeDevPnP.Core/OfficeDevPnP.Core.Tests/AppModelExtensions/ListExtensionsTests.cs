@@ -16,15 +16,18 @@ namespace Microsoft.SharePoint.Client.Tests
         private string _termGroupName; // For easy reference. Set in the Initialize method
         private string _termSetName; // For easy reference. Set in the Initialize method
         private string _termName; // For easy reference. Set in the Initialize method
+        private string _textFieldName; // For easy reference. Set in the Initialize method
+
         private Guid _termGroupId = new Guid("e879befa-2356-49fd-b43e-ba446be72d6c"); // Hardcoded for easier reference in tests
         private Guid _termSetId = new Guid("59ad0849-97b9-4755-a431-2bb9ebc8b66b"); // Hardcoded for easier reference in tests
-        private Guid _termId = new Guid("51af0e21-ef8c-4e1f-b897-f677d0938f48");
+        private Guid _termId = new Guid("51af0e21-ef8c-4e1f-b897-f677d0938f48"); // Hardcoded for easier reference in tests
+        private Guid _textFieldId = new Guid("5f04fb4a-7a8a-4f11-8dbb-1dd98825509c"); // Hardcoded for easier reference in tests
 
         private Guid _listId; // For easy reference
 
         [TestInitialize()]
         public void Initialize()
-        {   
+        {
             /*** Make sure that the user defined in the App.config has permissions to Manage Terms ***/
 
             // Create some taxonomy groups and terms
@@ -33,6 +36,8 @@ namespace Microsoft.SharePoint.Client.Tests
                 _termGroupName = "Test_Group_" + DateTime.Now.ToFileTime();
                 _termSetName = "Test_Termset_" + DateTime.Now.ToFileTime();
                 _termName = "Test_Term_" + DateTime.Now.ToFileTime();
+                _textFieldName = "Test_Text_Field_" + DateTime.Now.ToFileTime();
+
                 // Termgroup
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
@@ -50,11 +55,15 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.ExecuteQuery();
 
                 // List
+
+                var textfield = clientContext.Web.CreateField(_textFieldId, _textFieldName, FieldType.Text, "Test Text Field", "Test Group");
+
                 var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
 
                 var field = clientContext.Web.Fields.GetByInternalNameOrTitle("TaxKeyword"); // Enterprise Metadata
 
                 list.Fields.Add(field);
+                list.Fields.Add(textfield);
 
                 list.Update();
                 clientContext.Load(list);
@@ -83,6 +92,11 @@ namespace Microsoft.SharePoint.Client.Tests
                 termGroup.DeleteObject(); // Will delete underlying termset
                 clientContext.ExecuteQuery();
 
+                // Clean up list
+                var list = clientContext.Web.Lists.GetById(_listId);
+                list.DeleteObject();
+                clientContext.ExecuteQuery();
+
                 // Clean up fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
                 clientContext.ExecuteQuery();
@@ -91,11 +105,6 @@ namespace Microsoft.SharePoint.Client.Tests
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
-
-                // Clean up list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                list.DeleteObject();
                 clientContext.ExecuteQuery();
             }
         }
@@ -117,7 +126,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 Assert.IsNotNull(list);
                 Assert.AreEqual(listName, list.Title);
-                    
+
                 //Delete List
                 list.DeleteObject();
                 clientContext.ExecuteQuery();
@@ -154,7 +163,7 @@ namespace Microsoft.SharePoint.Client.Tests
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
-                List<DefaultColumnTermValue> defaultValues = new List<DefaultColumnTermValue>();
+                List<IDefaultColumnValue> defaultValues = new List<IDefaultColumnValue>();
 
                 var defaultColumnValue = new DefaultColumnTermValue();
 
@@ -163,12 +172,18 @@ namespace Microsoft.SharePoint.Client.Tests
                 defaultColumnValue.FolderRelativePath = "/"; // Root Folder
 
                 var term = taxSession.GetTerm(_termId);
-                //clientContext.Load(term, t => t.Id, t => t.Name);
-                //clientContext.ExecuteQuery();
 
                 defaultColumnValue.Terms.Add(term);
 
                 defaultValues.Add(defaultColumnValue);
+
+                var testDefaultValue = new DefaultColumnTextValue();
+                testDefaultValue.Text = "Bla";
+                testDefaultValue.FieldInternalName = _textFieldName;
+                testDefaultValue.FolderRelativePath = "/"; // Root folder
+
+                defaultValues.Add(testDefaultValue);
+
 
                 var list = clientContext.Web.Lists.GetById(_listId);
 
@@ -177,6 +192,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        
+
     }
 }

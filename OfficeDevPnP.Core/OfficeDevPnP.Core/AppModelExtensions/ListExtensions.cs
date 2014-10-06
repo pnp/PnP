@@ -980,13 +980,13 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
+        private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
             using (var clientContext = list.Context as ClientContext)
             {
                 try
                 {
-                    List<DefaultColumnTermValue> values = columnValues.ToList();
+                    var values = columnValues.ToList<IDefaultColumnValue>();
 
                     clientContext.Load(list.RootFolder);
                     clientContext.Load(list.RootFolder.Folders);
@@ -1000,6 +1000,11 @@ namespace Microsoft.SharePoint.Client
                         // Get the first entry 
                         var defaultColumnValue = values.First();
                         var path = defaultColumnValue.FolderRelativePath;
+                        if(string.IsNullOrEmpty(path))
+                        {
+                            // Assume root folder
+                            path = "/";
+                        }
                         if (path.Equals("/"))
                         {
                             path = list.RootFolder.ServerRelativeUrl;
@@ -1018,26 +1023,32 @@ namespace Microsoft.SharePoint.Client
                         {
                             var fieldName = defaultColumnValueInSamePath.FieldInternalName;
                             var fieldStringBuilder = new StringBuilder();
-
-                            foreach (var term in defaultColumnValueInSamePath.Terms)
+                            if (defaultColumnValueInSamePath.GetType() == typeof(DefaultColumnTermValue))
                             {
-                                if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
+                                // Term value
+                                foreach (var term in ((DefaultColumnTermValue)defaultColumnValueInSamePath).Terms)
                                 {
-                                    clientContext.Load(term, t => t.Id, t => t.Name);
-                                    clientContext.ExecuteQuery();
+                                    if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
+                                    {
+                                        clientContext.Load(term, t => t.Id, t => t.Name);
+                                        clientContext.ExecuteQuery();
+                                    }
+                                    var wssId = list.ParentWeb.GetWssIdForTerm(term);
+                                    fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
                                 }
-                                var wssId = list.ParentWeb.GetWssIdForTerm(term);
-                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
+
+                                var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
+                                metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
                             }
-
-                            var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
-                            metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
-
+                            else
+                            {
+                                // Text value
+                                var fieldString = fieldStringBuilder.Append(((DefaultColumnTextValue)defaultColumnValueInSamePath).Text);
+                                metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+                            }
                             values.Remove(defaultColumnValueInSamePath);
                         }
-
                         metadataString.AppendFormat("</a>");
-
                     }
                     metadataString.AppendFormat("</MetadataDefaults>");
 
@@ -1088,7 +1099,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="columnValues"></param>
-        public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
+        public static void SetDefaultColumnValues(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
 
             using (var clientContext = list.Context as ClientContext)
@@ -1099,7 +1110,7 @@ namespace Microsoft.SharePoint.Client
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 // Check if default values file is present
                 var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
-                List<DefaultColumnTermValue> existingValues = new List<DefaultColumnTermValue>();
+                List<IDefaultColumnValue> existingValues = new List<IDefaultColumnValue>();
 
                 if (formsFolder != null)
                 {
@@ -1158,18 +1169,17 @@ namespace Microsoft.SharePoint.Client
 
                         }
                     }
-
-
                 }
-                List<DefaultColumnTermValue> termsList = columnValues.Union(existingValues, new DefaultColumnTermValueComparer()).ToList();
+
+                List<IDefaultColumnValue> termsList = columnValues.Union(existingValues, new DefaultColumnTermValueComparer()).ToList();
 
                 list.SetDefaultColumnValuesImplementation(termsList);
             }
         }
 
-        private class DefaultColumnTermValueComparer : IEqualityComparer<DefaultColumnTermValue>
+        private class DefaultColumnTermValueComparer : IEqualityComparer<IDefaultColumnValue>
         {
-            public bool Equals(DefaultColumnTermValue x, DefaultColumnTermValue y)
+            public bool Equals(IDefaultColumnValue x, IDefaultColumnValue y)
             {
                 if (Object.ReferenceEquals(x, y)) return true;
 
@@ -1179,7 +1189,7 @@ namespace Microsoft.SharePoint.Client
                 return x.FieldInternalName == y.FieldInternalName && x.FolderRelativePath == y.FolderRelativePath;
             }
 
-            public int GetHashCode(DefaultColumnTermValue defaultValue)
+            public int GetHashCode(IDefaultColumnValue defaultValue)
             {
                 if (Object.ReferenceEquals(defaultValue, null)) return 0;
 
