@@ -1122,10 +1122,10 @@ namespace Microsoft.SharePoint.Client
                     termToDelete.DeleteObject();
                     termSet.Context.ExecuteQuery();
                 }
-                catch (KeyNotFoundException knfex)
+                catch (KeyNotFoundException)
                 {
                     // This is a sucky way to check if the term was already deleted
-                    LoggingUtility.Internal.TraceVerbose("Term id {0} alrady deleted.", termToDelete.Id);
+                    LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
                 }
             }
         }
