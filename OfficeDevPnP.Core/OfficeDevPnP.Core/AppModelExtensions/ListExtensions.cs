@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -289,16 +290,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        /// <summary>
-        /// Adds a list to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="listName">Name of the list</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
-        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
-        /// <exception cref="System.ArgumentNullException">listName is null</exception>
+        [Obsolete("Prefer CreateList()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -309,18 +302,11 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Call actual implementation
-            CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
+            CreateListInternal(web, null, (int)listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
         }
 
-        /// <summary>
-        /// Adds a document library to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listName">Name of the library</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
-        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         [Obsolete("Please use the CreateDocumentLibrary method")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -330,7 +316,7 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
-            CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
+            CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
 
         /// <summary>
@@ -341,7 +327,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="enableVersioning">Enable versioning on the list</param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
-        public static void CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
+        public static List CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
             {
@@ -350,9 +336,8 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
-            CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
+            return CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath:urlPath);
         }
-
 
         /// <summary>
         /// Checks if list exists on the particular site based on the list Title property.
@@ -384,16 +369,8 @@ namespace Microsoft.SharePoint.Client
             return false;
         }
 
-        /// <summary>
-        /// Adds a list to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="featureID">Feature guid that brings this list type</param>
-        /// <param name="listName">Name of the list</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         [Obsolete("Prefer CreateList()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool AddList(this Web web, int listType, Guid featureID, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             bool created = false;
@@ -435,27 +412,50 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Adds a list to a site
+        /// Adds a default list to a site
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="featureID">Feature guid that brings this list type</param>
+        /// <param name="listType">Built in list template type</param>
         /// <param name="listName">Name of the list</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        /// <param name="updateAndExecuteQuery">(Optional) Perform list update and executequery, defaults to true</param>
+        /// <param name="urlPath">(Optional) URL to use for the list</param>
+        /// <param name="enableContentTypes">(Optional) Enable content type management</param>
+        /// <returns>The newly created list</returns>
         public static List CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
-            // Call actual implementation
-            return CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
+            return CreateListInternal(web, null, (int)listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
         }
 
-        private static List CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enabledContentTypes = false)
+        /// <summary>
+        /// Adds a custom list to a site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="featureId">Feature that contains the list template</param>
+        /// <param name="listType">Type ID of the list, within the feature</param>
+        /// <param name="listName">Name of the list</param>
+        /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <param name="updateAndExecuteQuery">(Optional) Perform list update and executequery, defaults to true</param>
+        /// <param name="urlPath">(Optional) URL to use for the list</param>
+        /// <param name="enableContentTypes">(Optional) Enable content type management</param>
+        /// <returns>The newly created list</returns>
+        public static List CreateList(this Web web, Guid featureId, int listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
+            return CreateListInternal(web, featureId, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
+        }
+
+        private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
+        {
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateList, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
             lci.Title = listName;
-            lci.TemplateType = (int)listType;
-
+            lci.TemplateType = templateType;
+            if (templateFeatureId.HasValue)
+            {
+                lci.TemplateFeatureId = templateFeatureId.Value;
+            }
             if (!string.IsNullOrEmpty(urlPath))
             {
                 lci.Url = urlPath;
@@ -468,7 +468,7 @@ namespace Microsoft.SharePoint.Client
                 newList.EnableVersioning = true;
                 newList.EnableMinorVersions = true;
             }
-            if (enabledContentTypes)
+            if (enableContentTypes)
             {
                 newList.ContentTypesEnabled = true;
             }

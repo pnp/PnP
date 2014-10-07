@@ -322,6 +322,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating list &apos;{0}&apos; from template {1}{2}..
+        /// </summary>
+        internal static string ListExtensions_CreateList0Template12 {
+            get {
+                return ResourceManager.GetString("ListExtensions_CreateList0Template12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}; EXCEPTION: {{{1}}}.
         /// </summary>
         internal static string LoggingUtility_MessageWithException {
@@ -363,6 +372,123 @@ namespace OfficeDevPnP.Core {
         internal static string MailUtility_SendMailCancelled {
             get {
                 return ResourceManager.GetString("MailUtility_SendMailCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating term &apos;{0}|{1}&apos; under parent &apos;{2}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTerm01UnderParent2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTerm01UnderParent2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating term group &apos;{0}&apos; in term store &apos;{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTermGroup0InStore1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTermGroup0InStore1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating term set &apos;{0}&apos; in term group &apos;{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_CreateTermSet0InGroup1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_CreateTermSet0InGroup1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting term &apos;{0}|{1}&apos;..
+        /// </summary>
+        internal static string TaxonomyExtension_DeleteTerm01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_DeleteTerm01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string TaxonomyExtension_ExceptionUpdateDescriptionGroup01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateDescriptionGroup01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error setting description for term set &apos;{0}&apos; ({1})..
+        /// </summary>
+        internal static string TaxonomyExtension_ExceptionUpdateDescriptionSet01 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ExceptionUpdateDescriptionSet01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import when attempting to delete invalid term with id {0} on line {1}..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorDeleteId0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorDeleteId0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import. The description &apos;{0}&apos; on line {1} is not valid..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorDescription0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorDescription0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import.  The name &apos;{0}&apos; is not valid on line {1}..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorName0Line1 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorName0Line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error encountered during import. The available for tagging entry on line {0} is not valid..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportErrorTaggingLine0 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportErrorTaggingLine0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Importing term set from file stream..
+        /// </summary>
+        internal static string TaxonomyExtension_ImportTermSet {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_ImportTermSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Term group &apos;{0}&apos; ID ({1}) does not match specified ID ({2})..
+        /// </summary>
+        internal static string TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Term set &apos;{0}&apos; ID ({1}) does not match specified ID ({2})..
+        /// </summary>
+        internal static string TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2 {
+            get {
+                return ResourceManager.GetString("TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2", resourceCulture);
             }
         }
         
@@ -430,7 +556,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removing sandbox solution &apos;{0}&apos;.
+        ///   Looks up a localized string similar to Removing sandbox solution &apos;{0}&apos;..
         /// </summary>
         internal static string WebExtensions_UninstallSolution {
             get {
