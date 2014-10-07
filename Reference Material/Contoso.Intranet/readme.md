@@ -1,59 +1,19 @@
-# title of the PnP sample #
+# Contoso Intranet #
+Real life full trust solution mock-up for FTC to app model transition testing and verification. Based on the guidance from MCM/MCSM related on the FTC implementation. Mimics typical set of functionalities.
 
-### Summary ###
-Short summary.
+- Content Types and site column
+- Web templates (team site and publishing site)
+- Custom master page
+- Custom page layout
+- Web controls in page layouts and master pages
+- Custom list template
+- Custom web parts
 
-### Applies to ###
--  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
+### Creation of site collections ###
 
--> Remove platforms if needed
-
-### Prerequisites ###
-Any special pre-requisites?
-
-### Solution ###
-Solution | Author(s)
----------|----------
-solution name | Author
-
-### Version history ###
-Version  | Date | Comments
----------| -----| --------
-2.0  | March 21st 2014 (to update/remove)| comment
-1.0  | November 6th 2013 (to update) | Initial release
-
-### Disclaimer ###
-**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
-
-
-----------
-
-# Doc scenario 1 #
-Description
-Image
-
-
-## Sub level 1.1 ##
-Description:
-Code snippet:
 ```C#
-string scenario1Page = String.Format("scenario1-{0}.aspx", DateTime.Now.Ticks);
-string scenario1PageUrl = csomService.AddWikiPage("Site Pages", scenario1Page);
+New-SPSite -url http://dev.contoso.com/sites/test011 -owneralias contoso\administrator -template "{53a719c7-6766-4bba-bf89-a5789ea2360a}#WTContoso" -name Test
+
+New-SPSite -url http://dev.contoso.com/sites/test017 -owneralias contoso\administrator -template "{53a719c7-6766-4bba-bf89-a5789ea2360a}#WTContosoPublishing" -name Test
+
 ```
-
-## Sub level 1.2 ##
-
-# Doc scenario 2 #
-
-## Sub level 2.1 ##
-
-## Sub level 2.2 ##
-
-### Note: ###
-
-## Sub level 2.3 ##
-
-# Doc scenario 3#
-
