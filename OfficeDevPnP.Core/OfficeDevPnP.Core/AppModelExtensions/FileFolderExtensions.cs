@@ -210,6 +210,45 @@ namespace Microsoft.SharePoint.Client
 
             return exists;
         }
+        
+        /// <summary>
+        /// Ensure that the folder structure is created. This also ensures hierarchy of folders.
+        /// </summary>
+        /// <param name="web">Web to be processed - can be root web or sub site</param>
+        /// <param name="parentFolder">Parent folder</param>
+        /// <param name="folderPath">Folder path</param>
+        /// <returns>The folder structure</returns>
+        public static Folder EnsureFolder(this Web web, Folder parentFolder, string folderPath)
+        {
+            // Split up the incoming path so we have the first element as the a new sub-folder name 
+            // and add it to ParentFolder folders collection
+            string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string head = pathElements[0];
+
+            Folder newFolder = parentFolder.Folders.Add(head);
+            web.Context.Load(newFolder);
+            web.Context.ExecuteQuery();
+
+            // If we have subfolders to create then the length of PathElements will be greater than 1
+            if (pathElements.Length > 1)
+            {
+                // If we have more nested folders to create then reassemble the folder path using what we have left i.e. the tail
+                string Tail = string.Empty;
+
+                for (int i = 1; i < pathElements.Length; i++)
+                {
+                    Tail = Tail + "/" + pathElements[i];
+                }
+
+                // Then make a recursive call to create the next subfolder
+                return web.EnsureFolder(newFolder, Tail);
+            }
+            else
+            {
+                // This ensures that the folder at the end of the chain gets returned
+                return newFolder;
+            }
+        }
 
         /// <summary>
         /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
@@ -268,7 +307,7 @@ namespace Microsoft.SharePoint.Client
             folderCollection.Context.ExecuteQuery();
             foreach (Folder existingFolder in folderCollection)
             {
-                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(existingFolder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     folder = existingFolder;
                     break;

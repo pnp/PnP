@@ -14,11 +14,12 @@ Any special pre-requisites?
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Branding.ClientSideRendering | Leo Qian, Tyler Lu, Cindy Yan, Todd Baginski (**Canviz LLC**)
+Branding.ClientSideRendering | Leo Qian, Tyler Lu, Cindy Yan, Todd Baginski (**Canviz LLC**), Andrei Markeev
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1 | October 4th 2014 | Made samples MDS compliant
 1.0  | June 20th 2014 | Initial release
 
 ### Disclaimer ###
@@ -201,6 +202,25 @@ void ProvisionSample5(Web web)
 # CLIENT SIDE RENDERING JAVASCRIPT DETAILS #
 The following section describes the Client Side Rendering samples and the JavaScript code used to implement them.
 
+## Minimal Download Strategy (MDS) ##
+The below JavaScript templates will alter the on screen rendering. Given that SharePoint uses MDS to cache rendered HTML fragments it's important that the MDS engine is aware of the custom rendering we're about to use. To let SharePoint know the custom JavaScript files have to be registered with the MDS engine as is shown below:
+
+```JavaScript
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterFilenameFiledContext();
+}
+
+function RegisterInMDS() {
+    // RegisterFilenameFiledContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/ConfidentialDocuments.js", RegisterFilenameFiledContext);
+    //RegisterFilenameFiledContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterFilenameFiledContext();
+}
+```
+
 ## SAMPLE 1 – TASK PRIORITY COLOR ##
 This sample demonstrates how to apply formatting to a list column based on the column value.  In this sample, list items which have a Priority column value of (1) High are indicated in red, items which have a Priority column value of (2) Normal are indicated in orange, and items which have a Priority column value of (3) Low are indicated in yellow.
 
@@ -209,7 +229,7 @@ This sample demonstrates how to apply formatting to a list column based on the c
 The following code illustrates how the Priority column is formatted based on the column’s value.
 
 ```JavaScript
-(function () {
+function RegisterPriorityFiledContext () {
 
     // Create object that has the context information about the field that we want to render differently
     var priorityFiledContext = {};
@@ -221,7 +241,7 @@ The following code illustrates how the Priority column is formatted based on the
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(priorityFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic for list view
 function priorityFiledTemplate(ctx) {
@@ -250,9 +270,9 @@ This sample demonstrates how to make the Announcements list’s Body column text
 The following code illustrates how the Body column is truncated and how the tooltip is added via the title attribute.
 
 ```JavaScript
-(function () {
+function RegisterBodyFiledContext() {
 
-    // Create object that has the context information about the field that we want to render differently
+    // Create object that has the context information about the field that we want to render differently 
     var bodyFiledContext = {};
     bodyFiledContext.Templates = {};
     bodyFiledContext.Templates.Fields = {
@@ -262,7 +282,7 @@ The following code illustrates how the Body column is truncated and how the tool
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(bodyFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function bodyFiledTemplate(ctx) {
@@ -294,7 +314,7 @@ This sample demonstrates how to display an image next to a document’s Name in 
 The following code illustrates how the Confidential column is evaluated to see if the document is marked as confidential.  It also demonstrates how the Title column is modified to display the red badge image accordingly.
 
 ```JavaScript
-(function () {
+function RegisterFilenameFiledContext() {
 
     // Create object that has the context information about the field that we want to render differently
     var linkFilenameFiledContext = {};
@@ -305,8 +325,7 @@ The following code illustrates how the Confidential column is evaluated to see i
     };
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(linkFilenameFiledContext);
-
-})();
+}
 
 // This function provides the rendering logic
 function linkFilenameFiledTemplate(ctx) {
@@ -351,7 +370,7 @@ This is how the column appears when creating a new list item. (NewForm)  The red
 The following code illustrates how the bar charts are created in the % Complete column and registered with the View and DisplayForms.  It also demonstrates how the input controls for the % Complete column and created and registered with the New and Edit forms.
 
 ```JavaScript
-(function () {
+function RegisterPercentCompleteFiledContext () {
 
     // Create object that has the context information about the field that we want to render differently
     var percentCompleteFiledContext = {};
@@ -368,7 +387,7 @@ The following code illustrates how the bar charts are created in the % Complete 
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(percentCompleteFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic for View and Display forms
 function percentCompleteViewFiledTemplate(ctx) {
@@ -404,13 +423,13 @@ This sample demonstrates how to change the rendering template for an entire list
 The following code illustrates how the accordion functionality is implemented and registered with the list Template.  The header, footer, and item properties are set to define the overall layout of the items in the list.  The onPostRender property registers the JavaScript function to execute when the list is rendered.  This function hooks up the click events and the CSS code necessary to implement the expand and collapse functionality.
 
 ```JavaScript
-(function () {
+function RegisterAccordionContext() {
 
     // jQuery library is required in this sample
     // Fallback to loading jQuery from a CDN path if the local is unavailable
     (window.jQuery || document.write('<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-1.10.0.min.js"><\/script>'));
 
-    // Create object that has the context information about the field that we want to render differently
+    // Create object that has the context information about the field that we want to render differently 
     var accordionContext = {};
     accordionContext.Templates = {};
 
@@ -426,7 +445,7 @@ The following code illustrates how the accordion functionality is implemented an
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(accordionContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function accordionTemplate(ctx) {
@@ -459,7 +478,7 @@ The following code illustrates how the email validation for the Email column is 
 
 
 ```JavaScript
-(function () {
+function RegisterEmailFiledContext() {
 
     // Create object that has the context information about the field that we want to render differently
     var emailFiledContext = {};
@@ -468,13 +487,13 @@ The following code illustrates how the email validation for the Email column is 
         // Apply the new rendering for Email field on New and Edit Forms
         "Email": {
             "NewForm": emailFiledTemplate,
-            "EditForm":  emailFiledTemplate
+            "EditForm": emailFiledTemplate
         }
     };
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(emailFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function emailFiledTemplate(ctx) {
@@ -505,10 +524,7 @@ emailValidator = function () {
         var isError = false;
         var errorMessage = "";
 
-        //Email format Regex expression
-        var emailRejex = /\S+@\S+\.\S+/;
-        
-        if (!emailRejex.test(value) && value.trim()) {
+        if (!validateEmail(value)) {
             isError = true;
             errorMessage = "Invalid email address";
         }
@@ -518,6 +534,10 @@ emailValidator = function () {
     };
 };
 
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
 // Add error message to spnError element under the input field element
 function emailOnError(error) {
     document.getElementById("spnError").innerHTML = "<span role='alert'>" + error.errorMessage + "</span>";
@@ -534,7 +554,7 @@ This is how the form appears when editing a list item (EditForm).  The red arrow
 The following code illustrates how the Title, AssignedTo, and Priority columns have their field templates modified to display just the field value instead of the out of the box input controls.  Notice how different types of parsing must occur to extract a field’s value and display it depending on what type of field it is.
 
 ```JavaScript
-function () {
+function RegisterReadonlyFiledContext () {
 
     // Create object that has the context information about the field that we want to render differently
     var readonlyFiledContext = {};
@@ -554,7 +574,7 @@ function () {
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(readonlyFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function readonlyFieldTemplate(ctx) {
@@ -695,7 +715,7 @@ This client side method does not remove the column from the HTML.  If you inspec
 ![](http://i.imgur.com/c8FF9zv.png)
 
 ```JavaScript
-(function () {
+function RegisterHiddenFiledContext () {
 
     // jQuery library is required in this sample
     // Fallback to loading jQuery from a CDN path if the local is unavailable
@@ -715,8 +735,7 @@ This client side method does not remove the column from the HTML.  If you inspec
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(hiddenFiledContext);
 
-})();
-
+}
 
 // This function provides the rendering logic
 function hiddenFiledTemplate() {
@@ -726,5 +745,78 @@ function hiddenFiledTemplate() {
 // This function provides the rendering logic
 function hiddenFiledOnPreRender(ctx) {
     jQuery(".csrHiddenField").closest("tr").hide();
+}
+```
+
+## SAMPLE 9 – DEPENDENT FIELDS ##
+This sample demonstrates how to make some fields dependent from each other in SharePoint list item New and Edit forms. So e.g. if you change a value in one field, another field changes it's appearance or number of variants, etc.
+
+Screenshot below indicates, that edit control for Color field is initially empty:
+
+![](http://i.imgur.com/LpcTcDX.png)
+
+However, if we select a Car, then we will see that now Color field provides some variants:
+
+![](http://i.imgur.com/uEICdMV.png)
+
+Better yet, if we select a different car, available Color variants will be different:
+
+![](http://i.imgur.com/DWKHn0V.png)
+
+So as you can see, it is possible to create a dependency between fields based on a custom logic. This custom logic might even include asynchronous ajax calls.
+
+Here is the code with explanations:
+
+```JavaScript
+function RegisterDependentFieldsContext() {
+
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides({
+
+        Templates: {
+            OnPostRender: function (ctx) {
+                var colorField = window[ctx.FormUniqueId + "FormCtx"].ListSchema["Color"];
+                var colorFieldControlId = colorField.Name + "_" + colorField.Id + "_$RadioButton" + colorField.FieldType + "Field";
+
+                var f = ctx.ListSchema.Field[0];
+                if (f.Name == "Car") {
+                    var fieldControl = $get(f.Name + "_" + f.Id + "_$" + f.FieldType + "Field");
+
+                    $addHandler(fieldControl, "change", function (e) {
+                        // first, let's hide all the colors - while the information is loading
+                        for (var i = 0; i < 5; i++)
+                            $get(colorFieldControlId + i).parentNode.style.display = "none";
+
+                        var newValue = fieldControl.value;
+                        var newText = fieldControl[fieldControl.selectedIndex].text;
+
+                        var context = SP.ClientContext.get_current();
+                        // here add logic for fetching information from an external list
+                        // based on newText and newValue
+                        context.executeQueryAsync(function () {
+                            // fill this array according to the results of the async request
+                            var showColors = [];
+                            if (newText == "Kia Soul") showColors = [0, 2, 3];
+                            if (newText == "Fiat 500L") showColors = [1, 4];
+                            if (newText == "BMW X5") showColors = [0, 1, 2, 3, 4];
+
+                            // now, display the relevant ones
+                            for (var i = 0; i < showColors.length; i++)
+                                $get(colorFieldControlId + showColors[i]).parentNode.style.display = "";
+                        },
+                        function (sender, args) {
+                            alert("Error! " + args.get_message());
+                        });
+
+                    });
+                } else if (f.Name == "Color") {
+                    // initialization: hiding all the choices. first user must select a car
+                    for (var i = 0; i < 5; i++)
+                        $get(colorFieldControlId + i).parentNode.style.display = "none";
+
+                }
+            }
+        }
+
+    });
 }
 ```
