@@ -957,6 +957,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="columnValues"></param>
+        [Obsolete("Use SetDefaultColumnValues(IEnumerable<IDefaultColumnValue> columnValues) instead")]
         public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermPathValue> columnValues)
         {
             using (var clientContext = list.Context as ClientContext)
@@ -992,11 +993,10 @@ namespace Microsoft.SharePoint.Client
                     clientContext.Load(list.RootFolder.Folders);
                     clientContext.ExecuteQuery();
 
-                    var metadataString = new StringBuilder("<MetadataDefaults>");
+                    var xMetadataDefaults = new XElement("MetadataDefaults");
 
                     while (values.Any())
                     {
-
                         // Get the first entry 
                         var defaultColumnValue = values.First();
                         var path = defaultColumnValue.FolderRelativePath;
@@ -1017,7 +1017,7 @@ namespace Microsoft.SharePoint.Client
                         var defaultColumnValuesInSamePath = columnValues.Where(x => x.FolderRelativePath == defaultColumnValue.FolderRelativePath);
                         path = Uri.EscapeUriString(path);
 
-                        metadataString.AppendFormat("<a href=\"{0}\">", path);
+                        var xATag = new XElement("a", new XAttribute("href", path));
 
                         foreach (var defaultColumnValueInSamePath in defaultColumnValuesInSamePath)
                         {
@@ -1036,28 +1036,42 @@ namespace Microsoft.SharePoint.Client
                                     var wssId = list.ParentWeb.GetWssIdForTerm(term);
                                     fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
                                 }
-
+                                var xDefaultValue = new XElement("DefaultValue", new XAttribute("FieldName", fieldName));
                                 var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
-                                metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+                                xDefaultValue.SetValue(fieldString);
+                                xATag.Add(xDefaultValue);
                             }
                             else
                             {
                                 // Text value
                                 var fieldString = fieldStringBuilder.Append(((DefaultColumnTextValue)defaultColumnValueInSamePath).Text);
-                                metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
+                                var xDefaultValue = new XElement("DefaultValue", new XAttribute("FieldName", fieldName));
+                                xDefaultValue.SetValue(fieldString);
+                                xATag.Add(xDefaultValue);
                             }
+                            xMetadataDefaults.Add(xATag);
                             values.Remove(defaultColumnValueInSamePath);
                         }
-                        metadataString.AppendFormat("</a>");
                     }
-                    metadataString.AppendFormat("</MetadataDefaults>");
 
                     var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
                     if (formsFolder != null)
                     {
+                        var xmlSB = new StringBuilder();
+                        XmlWriterSettings xmlSettings = new XmlWriterSettings();
+                        xmlSettings.OmitXmlDeclaration = true;
+                        xmlSettings.NewLineHandling = NewLineHandling.None;
+                        xmlSettings.Indent = false;
+
+                        using (var xmlWriter = XmlWriter.Create(xmlSB, xmlSettings))
+                        {
+                            xMetadataDefaults.Save(xmlWriter);
+                        }
+
                         var objFileInfo = new FileCreationInformation();
                         objFileInfo.Url = "client_LocationBasedDefaults.html";
-                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(metadataString.ToString()));
+                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlSB.ToString()));
+                        
                         objFileInfo.Overwrite = true;
                         formsFolder.Files.Add(objFileInfo);
                         clientContext.ExecuteQuery();
@@ -1142,29 +1156,47 @@ namespace Microsoft.SharePoint.Client
                             foreach (var defaultValue in defaultValues)
                             {
                                 var fieldName = defaultValue.Attribute("FieldName").Value;
-                                var termsIdentifier = defaultValue.Value;
 
-                                var terms = termsIdentifier.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-                                List<Term> existingTerms = new List<Term>();
-                                for (int q = 1; q < terms.Length; q++)
+                                var field = list.Fields.GetByInternalNameOrTitle(fieldName);
+                                clientContext.Load(field);
+                                clientContext.ExecuteQuery();
+                                if (field.FieldTypeKind == FieldType.Text)
                                 {
-                                    var termIdString = terms[q].Split(new char[] { '|' })[1];
-                                    var term = taxSession.GetTerm(new Guid(termIdString));
-                                    clientContext.Load(term, t => t.Id, t => t.Name);
-                                    clientContext.ExecuteQuery();
-                                    existingTerms.Add(term);
-                                    q++; // Skip one
+                                    var textValue = defaultValue.Value;
+                                    DefaultColumnTextValue defaultColumnTextValue = new DefaultColumnTextValue()
+                                    {
+                                        FieldInternalName = fieldName,
+                                        FolderRelativePath = href,
+                                        Text = textValue
+                                    };
+                                    existingValues.Add(defaultColumnTextValue);
                                 }
-
-                                DefaultColumnTermValue defaultColumnTermValue = new DefaultColumnTermValue()
+                                else
                                 {
-                                    FieldInternalName = fieldName,
-                                    FolderRelativePath = href,
-                                };
-                                existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
+                                    var termsIdentifier = defaultValue.Value;
 
-                                existingValues.Add(defaultColumnTermValue);
+                                    var terms = termsIdentifier.Split(new string[] { ";#" }, StringSplitOptions.None);
+
+                                    List<Term> existingTerms = new List<Term>();
+                                    for (int q = 1; q < terms.Length; q++)
+                                    {
+                                        var termIdString = terms[q].Split(new char[] { '|' })[1];
+                                        var term = taxSession.GetTerm(new Guid(termIdString));
+                                        clientContext.Load(term, t => t.Id, t => t.Name);
+                                        clientContext.ExecuteQuery();
+                                        existingTerms.Add(term);
+                                        q++; // Skip one
+                                    }
+
+                                    DefaultColumnTermValue defaultColumnTermValue = new DefaultColumnTermValue()
+                                    {
+                                        FieldInternalName = fieldName,
+                                        FolderRelativePath = href,
+                                    };
+                                    existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
+
+                                    existingValues.Add(defaultColumnTermValue);
+                                }
                             }
 
                         }
