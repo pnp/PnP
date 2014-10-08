@@ -157,7 +157,8 @@ namespace Microsoft.SharePoint.Client
 
         #region Custom actions
         /// <summary>
-        /// Adds or removes a custom action from a site
+        /// Adds custom action to a web. If the CustomAction exists the item will be updated.
+        /// Setting CustomActionEntity.Remove == true will delete the CustomAction.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="customAction">Information about the custom action be added or deleted</param>
@@ -176,50 +177,50 @@ namespace Microsoft.SharePoint.Client
         /// editAction.Rights.Set(PermissionKind.ManageWeb);
         /// AddCustomAction(editAction, new Uri(site.Properties.Url));
         /// </example>
-        /// <returns>True if action was ok</returns>
+        /// <returns>True if action was successfull</returns>
         public static bool AddCustomAction(this Web web, CustomActionEntity customAction)
         {
             var existingActions = web.UserCustomActions;
             web.Context.Load(existingActions);
             web.Context.ExecuteQuery();
 
-            // first delete the action with the same name (if it exists)
-            var actions = existingActions.ToArray();
-            foreach (var action in actions)
-            {
-                if (action.Description == customAction.Description &&
-                    action.Location == customAction.Location)
-                {
-                    action.DeleteObject();
-                    web.Context.ExecuteQuery();
-                }
+            var targetAction = web.UserCustomActions.FirstOrDefault(_uca => _uca.Name == customAction.Name);
+
+            if (targetAction == null) {
+                targetAction = existingActions.Add();
+            }
+            else if (customAction.Remove) {
+                targetAction.DeleteObject();
+                web.Context.ExecuteQuery();
+                return true;
             }
 
-            // leave as we're just removing the custom action
-            if (customAction.Remove)
-                return false;
-
-            // add a new custom action
-            var newAction = existingActions.Add();
-            newAction.Description = customAction.Description;
-            newAction.Location = customAction.Location;
+            targetAction.Name = customAction.Name;
+            targetAction.Description = customAction.Description;
+            targetAction.Location = customAction.Location;
+            
             if (customAction.Location == JavaScriptExtensions.SCRIPT_LOCATION)
             {
-                newAction.ScriptBlock = customAction.ScriptBlock;
+                targetAction.ScriptBlock = customAction.ScriptBlock;
             }
             else
             {
-                newAction.Sequence = customAction.Sequence;
-                newAction.Url = customAction.Url;
-                newAction.Group = customAction.Group;
-                newAction.Title = customAction.Title;
-                newAction.ImageUrl = customAction.ImageUrl;
+                targetAction.Sequence = customAction.Sequence;
+                targetAction.Url = customAction.Url;
+                targetAction.Group = customAction.Group;
+                targetAction.Title = customAction.Title;
+                targetAction.ImageUrl = customAction.ImageUrl;
+                targetAction.RegistrationId = customAction.RegistrationId;
+                targetAction.CommandUIExtension = customAction.CommandUIExtension;
+
                 if (customAction.Rights != null)
-                {
-                    newAction.Rights = customAction.Rights;
-                }
+                    targetAction.Rights = customAction.Rights;
+
+                if (customAction.RegistrationType.HasValue)
+                    targetAction.RegistrationType = customAction.RegistrationType.Value;
+               
             }
-            newAction.Update();
+            targetAction.Update();
             web.Context.Load(web, w => w.UserCustomActions);
             web.Context.ExecuteQuery();
             

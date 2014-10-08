@@ -13,6 +13,30 @@ namespace OfficeDevPnP.Core.Entities
     public class CustomActionEntity
     {
         /// <summary>
+        /// Gets or sets a value that specifies an implementation specific XML fragment that determines user interface properties of the custom action
+        /// </summary>
+        public string CommandUIExtension { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value that specifies the identifier of the object associated with the custom action.
+        /// </summary>
+        public string RegistrationId { get; set; }
+
+        /// <summary>
+        /// Specifies the type of object associated with the custom action. A Nullable Type
+        /// </summary>
+        public UserCustomActionRegistrationType? RegistrationType { get; set; }
+       
+        /// <summary>
+        /// Gets or sets the name of the custom action.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
         /// Description of the custom action
         /// </summary>
         public string Description
