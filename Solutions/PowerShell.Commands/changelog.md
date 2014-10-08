@@ -1,5 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-10-08**
+* Added Set-SPODefaultColumnValue 
 **2014-09-19**
 * Removed Url Parameters on Add-SPOFile and made Folder parameter mandatory.
 
