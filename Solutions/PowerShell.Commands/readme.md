@@ -137,6 +137,7 @@ Command | Description
 **New-SPOList** | Creates a new list
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
+**Set-SPODefaultColumnValues** | Sets default column values for a document library
 
 #### User and Group Cmdlets ####
 Command | Description

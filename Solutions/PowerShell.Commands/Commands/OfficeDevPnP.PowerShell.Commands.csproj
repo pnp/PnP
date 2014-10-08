@@ -164,6 +164,7 @@
     <Compile Include="Fields\GetField.cs" />
     <Compile Include="Fields\AddField.cs" />
     <Compile Include="Lists\AddView.cs" />
+    <Compile Include="Lists\SetDefaultColumnValues.cs" />
     <Compile Include="Lists\GetView.cs" />
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
