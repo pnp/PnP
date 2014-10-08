@@ -11,21 +11,21 @@ using System.Linq;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPODefaultColumnValues")]
-    [CmdletHelp("Sets default column values for a list of type document library")]
+    [CmdletHelp("Sets default column values for a document library", DetailedDescription="Sets default column values for a document library, per folder, or for the root folder if the folder parameter has not been specified. Supports both text and taxonomy fields.")]
     [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field TaxKeyword -Value \"Company|Locations|Stockholm\"", SortOrder = 1, Remarks = "Sets a default value for the enterprise keywords field on a library to a term called \"Stockholm\", located in the \"Locations\" term set, which is part of the \"Company\" term group")]
     [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field MyTextField -Value \"DefaultValue\"", SortOrder = 2, Remarks = "Sets a default value for the MyTextField text field on a library to a value of \"DefaultValue\"")]
     public class SetDefaultColumnValues : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Url of the list.")]
+        [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID, Name or Url of the list.")]
         public ListPipeBind List;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage="The internal name, id or a reference to a field")]
         public FieldPipeBind Field;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage="A list of values. In case of a text field the values will be concatenated, separated by a semi-column. In case of a taxonomy field multiple values will added")]
         public string[] Value;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, HelpMessage="A library relative folder path, if not specified it will set the default column values on the root folder of the library ('/')")]
         public string Folder = "/";
 
         protected override void ExecuteCmdlet()
