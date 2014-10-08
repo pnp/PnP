@@ -201,7 +201,7 @@
   <data name="FileFolderExtensions_LibraryMissing" xml:space="preserve">
     <value>Target library does not exist in the web. Web: {0}, List: {1}</value>
   </data>
-  <data name="FileFolderExtensions_UploadFile" xml:space="preserve">
+  <data name="FileFolderExtensions_UploadFile0ToFolder1" xml:space="preserve">
     <value>Uploading file '{0}' to folder '{1}'.</value>
   </data>
   <data name="LoggingUtility_MessageWithException" xml:space="preserve">
