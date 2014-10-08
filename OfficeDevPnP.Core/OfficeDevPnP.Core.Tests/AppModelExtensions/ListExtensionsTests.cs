@@ -18,10 +18,10 @@ namespace Microsoft.SharePoint.Client.Tests
         private string _termName; // For easy reference. Set in the Initialize method
         private string _textFieldName; // For easy reference. Set in the Initialize method
 
-        private Guid _termGroupId = new Guid("e879befa-2356-49fd-b43e-ba446be72d6c"); // Hardcoded for easier reference in tests
-        private Guid _termSetId = new Guid("59ad0849-97b9-4755-a431-2bb9ebc8b66b"); // Hardcoded for easier reference in tests
-        private Guid _termId = new Guid("51af0e21-ef8c-4e1f-b897-f677d0938f48"); // Hardcoded for easier reference in tests
-        private Guid _textFieldId = new Guid("5f04fb4a-7a8a-4f11-8dbb-1dd98825509c"); // Hardcoded for easier reference in tests
+        private Guid _termGroupId;
+        private Guid _termSetId;
+        private Guid _termId;
+        private Guid _textFieldId;
 
         private Guid _listId; // For easy reference
 
@@ -38,10 +38,14 @@ namespace Microsoft.SharePoint.Client.Tests
                 _termName = "Test_Term_" + DateTime.Now.ToFileTime();
                 _textFieldName = "Test_Text_Field_" + DateTime.Now.ToFileTime();
 
+                _termGroupId = Guid.NewGuid();
+                _termSetId = Guid.NewGuid();
+                _termId = Guid.NewGuid();
+
                 // Termgroup
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
-                var termGroup = termStore.CreateGroup(_termGroupName, _termGroupId);
+                var termGroup = termStore.CreateGroup(_termGroupName,_termGroupId);
                 clientContext.Load(termGroup);
                 clientContext.ExecuteQuery();
 
@@ -56,6 +60,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 // List
 
+                _textFieldId = Guid.NewGuid();
                 var textfield = clientContext.Web.CreateField(_textFieldId, _textFieldName, FieldType.Text, "Test Text Field", "Test Group");
 
                 var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
@@ -134,30 +139,6 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void AddDefaultColumnValuesTest()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                List<DefaultColumnTermPathValue> defaultValues = new List<DefaultColumnTermPathValue>();
-
-                var defaultColumnValue = new DefaultColumnTermPathValue();
-
-                defaultColumnValue.FieldInternalName = "TaxKeyword"; // Enterprise metadata field, should be present on the list
-
-                defaultColumnValue.FolderRelativePath = "/"; // Root Folder
-
-                defaultColumnValue.TermPaths.Add(_termGroupName + "|" + _termSetName + "|" + _termName);
-
-                defaultValues.Add(defaultColumnValue);
-
-                var list = clientContext.Web.Lists.GetById(_listId);
-
-                list.SetDefaultColumnValues(defaultValues);
-
-            }
-        }
-
-        [TestMethod()]
         public void SetDefaultColumnValuesTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -168,13 +149,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 var defaultColumnValue = new DefaultColumnTermValue();
 
                 defaultColumnValue.FieldInternalName = "TaxKeyword"; // Enterprise metadata field, should be present on the list
-
                 defaultColumnValue.FolderRelativePath = "/"; // Root Folder
-
                 var term = taxSession.GetTerm(_termId);
-
                 defaultColumnValue.Terms.Add(term);
-
                 defaultValues.Add(defaultColumnValue);
 
                 var testDefaultValue = new DefaultColumnTextValue();
@@ -184,11 +161,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 defaultValues.Add(testDefaultValue);
 
-
                 var list = clientContext.Web.Lists.GetById(_listId);
 
                 list.SetDefaultColumnValues(defaultValues);
-
             }
         }
 
