@@ -30,7 +30,7 @@ namespace OfficeDevPnP.Core.Entities
         /// <summary>
         /// Gets or sets the name of the custom action.
         /// </summary>
-        public string Name
+        public string Name 
         {
             get;
             set;
@@ -125,5 +125,10 @@ namespace OfficeDevPnP.Core.Entities
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets a value that specifies the URI of a file which contains the ECMAScript to execute on the page
+        /// </summary>
+        public string ScriptSrc { get; set; }
     }
 }

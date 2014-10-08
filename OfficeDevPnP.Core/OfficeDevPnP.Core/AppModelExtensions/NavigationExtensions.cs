@@ -202,7 +202,9 @@ namespace Microsoft.SharePoint.Client
             if (customAction.Location == JavaScriptExtensions.SCRIPT_LOCATION)
             {
                 targetAction.ScriptBlock = customAction.ScriptBlock;
+                targetAction.ScriptSrc = customAction.ScriptSrc;
             }
+             
             else
             {
                 targetAction.Sequence = customAction.Sequence;
