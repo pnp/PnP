@@ -698,39 +698,40 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Get list by using Url
         /// </summary>
-        /// <param name="web">Site to be processed</param>
-        /// <param name="siteRelativeUrl">Site relative Url of list, e.g. /lists/testlist</param>
+        /// <param name="web">Web (site) to be processed</param>
+        /// <param name="webRelativeUrl">Url of list relative to the web (site), e.g. lists/testlist</param>
         /// <returns></returns>
-        public static List GetListByUrl(this Web web, string siteRelativeUrl)
+        public static List GetListByUrl(this Web web, string webRelativeUrl)
         {
-            if (string.IsNullOrEmpty(siteRelativeUrl))
-                throw new ArgumentNullException("siteRelativeUrl");
+            if (string.IsNullOrEmpty(webRelativeUrl))
+                throw new ArgumentNullException("webRelativeUrl");
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
-            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, siteRelativeUrl);
+            var listServerRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, webRelativeUrl);
 
-            IEnumerable<List> lists = web.Context.LoadQuery(
-                web.Lists
-                    .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
-
-            web.Context.ExecuteQuery();
-
-            List foundList = lists.FirstOrDefault(l =>
-                l.RootFolder.ServerRelativeUrl.StartsWith(serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
-
-            if (foundList != null)
+            var foundList = web.GetList(listServerRelativeUrl);
+            web.Context.Load(foundList, l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder);
+            try
             {
-                return foundList;
+                web.Context.ExecuteQuery();
             }
-            else
+            catch (ServerException se)
             {
-                return null;
+                if (se.ServerErrorTypeName == "System.IO.FileNotFoundException")
+                {
+                    foundList = null;
+                }
+                else
+                {
+                    throw;
+                }
             }
 
+            return foundList;
         }
 
         /// <summary>

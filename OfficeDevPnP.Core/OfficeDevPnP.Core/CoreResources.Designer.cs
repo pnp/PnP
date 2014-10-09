@@ -315,9 +315,9 @@ namespace OfficeDevPnP.Core {
         /// <summary>
         ///   Looks up a localized string similar to Uploading file &apos;{0}&apos; to folder &apos;{1}&apos;..
         /// </summary>
-        internal static string FileFolderExtensions_UploadFile {
+        internal static string FileFolderExtensions_UploadFile0ToFolder1 {
             get {
-                return ResourceManager.GetString("FileFolderExtensions_UploadFile", resourceCulture);
+                return ResourceManager.GetString("FileFolderExtensions_UploadFile0ToFolder1", resourceCulture);
             }
         }
         
