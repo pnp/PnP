@@ -713,14 +713,23 @@ namespace Microsoft.SharePoint.Client
             }
             var listServerRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, webRelativeUrl);
 
-            IEnumerable<List> lists = web.Context.LoadQuery(
-                web.Lists
-                    .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
-
-            web.Context.ExecuteQuery();
-
-            List foundList = lists.FirstOrDefault(l =>
-                l.RootFolder.ServerRelativeUrl.StartsWith(listServerRelativeUrl, StringComparison.OrdinalIgnoreCase));
+            var foundList = web.GetList(listServerRelativeUrl);
+            web.Context.Load(foundList, l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder);
+            try
+            {
+                web.Context.ExecuteQuery();
+            }
+            catch (ServerException se)
+            {
+                if (se.ServerErrorTypeName == "System.IO.FileNotFoundException")
+                {
+                    foundList = null;
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return foundList;
         }
