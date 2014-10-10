@@ -36,7 +36,7 @@ namespace Microsoft.SharePoint.Client
         public static Guid AddSiteCollectionTenant(this Web web, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
             Tenant tenant = new Tenant(web.Context);
-            return tenant.AddSiteCollection(properties, removeFromRecycleBin, wait);
+            return tenant.CreateSiteCollection(properties, removeFromRecycleBin, wait);
         }
 
         [Obsolete("Use Tenant.CheckIfSiteExists()")]

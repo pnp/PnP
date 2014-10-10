@@ -11,7 +11,7 @@ This sample demonstrates how to Synchronize Terms across multiple term stores.
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.MMSSync | Kimmo Forss, Frank Marasco (Microsoft)
+Core.MMSSync | Kimmo Forss, Frank Marasco (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments

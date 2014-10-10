@@ -201,7 +201,7 @@
   <data name="FileFolderExtensions_LibraryMissing" xml:space="preserve">
     <value>Target library does not exist in the web. Web: {0}, List: {1}</value>
   </data>
-  <data name="FileFolderExtensions_UploadFile" xml:space="preserve">
+  <data name="FileFolderExtensions_UploadFile0ToFolder1" xml:space="preserve">
     <value>Uploading file '{0}' to folder '{1}'.</value>
   </data>
   <data name="LoggingUtility_MessageWithException" xml:space="preserve">
@@ -241,6 +241,48 @@
     <value>Site search error.</value>
   </data>
   <data name="WebExtensions_UninstallSolution" xml:space="preserve">
-    <value>Removing sandbox solution '{0}'</value>
+    <value>Removing sandbox solution '{0}'.</value>
+  </data>
+  <data name="TaxonomyExtension_CreateTerm01UnderParent2" xml:space="preserve">
+    <value>Creating term '{0}|{1}' under parent '{2}'.</value>
+  </data>
+  <data name="TaxonomyExtension_CreateTermGroup0InStore1" xml:space="preserve">
+    <value>Creating term group '{0}' in term store '{1}'.</value>
+  </data>
+  <data name="TaxonomyExtension_CreateTermSet0InGroup1" xml:space="preserve">
+    <value>Creating term set '{0}' in term group '{1}'.</value>
+  </data>
+  <data name="TaxonomyExtension_ExceptionUpdateDescriptionGroup01" xml:space="preserve">
+    <value>Error setting description for term group '{0}' ({1}).</value>
+  </data>
+  <data name="TaxonomyExtension_ExceptionUpdateDescriptionSet01" xml:space="preserve">
+    <value>Error setting description for term set '{0}' ({1}).</value>
+  </data>
+  <data name="TaxonomyExtension_ImportErrorDeleteId0Line1" xml:space="preserve">
+    <value>Error encountered during import when attempting to delete invalid term with id {0} on line {1}.</value>
+  </data>
+  <data name="TaxonomyExtension_ImportErrorDescription0Line1" xml:space="preserve">
+    <value>Error encountered during import. The description '{0}' on line {1} is not valid.</value>
+  </data>
+  <data name="TaxonomyExtension_ImportErrorName0Line1" xml:space="preserve">
+    <value>Error encountered during import.  The name '{0}' is not valid on line {1}.</value>
+  </data>
+  <data name="TaxonomyExtension_ImportErrorTaggingLine0" xml:space="preserve">
+    <value>Error encountered during import. The available for tagging entry on line {0} is not valid.</value>
+  </data>
+  <data name="TaxonomyExtension_ImportTermSet" xml:space="preserve">
+    <value>Importing term set from file stream.</value>
+  </data>
+  <data name="TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2" xml:space="preserve">
+    <value>Term group '{0}' ID ({1}) does not match specified ID ({2}).</value>
+  </data>
+  <data name="TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2" xml:space="preserve">
+    <value>Term set '{0}' ID ({1}) does not match specified ID ({2}).</value>
+  </data>
+  <data name="TaxonomyExtension_DeleteTerm01" xml:space="preserve">
+    <value>Deleting term '{0}|{1}'.</value>
+  </data>
+  <data name="ListExtensions_CreateList0Template12" xml:space="preserve">
+    <value>Creating list '{0}' from template {1}{2}.</value>
   </data>
 </root>

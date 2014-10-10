@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -289,16 +290,8 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        /// <summary>
-        /// Adds a list to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="listName">Name of the list</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
-        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
-        /// <exception cref="System.ArgumentNullException">listName is null</exception>
+        [Obsolete("Prefer CreateList()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -309,18 +302,11 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Call actual implementation
-            CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
+            CreateListInternal(web, null, (int)listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
         }
 
-        /// <summary>
-        /// Adds a document library to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listName">Name of the library</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
-        /// <exception cref="System.ArgumentNullException">listName is null</exception>
         [Obsolete("Please use the CreateDocumentLibrary method")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -330,7 +316,7 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
-            CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
+            CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
 
         /// <summary>
@@ -341,7 +327,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="enableVersioning">Enable versioning on the list</param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
-        public static void CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
+        public static List CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
             {
@@ -350,9 +336,8 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
-            CreateListInternal(web, ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
+            return CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath:urlPath);
         }
-
 
         /// <summary>
         /// Checks if list exists on the particular site based on the list Title property.
@@ -384,16 +369,8 @@ namespace Microsoft.SharePoint.Client
             return false;
         }
 
-        /// <summary>
-        /// Adds a list to a site
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="featureID">Feature guid that brings this list type</param>
-        /// <param name="listName">Name of the list</param>
-        /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         [Obsolete("Prefer CreateList()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool AddList(this Web web, int listType, Guid featureID, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             bool created = false;
@@ -435,27 +412,50 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Adds a list to a site
+        /// Adds a default list to a site
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listType">Type of the list</param>
-        /// <param name="featureID">Feature guid that brings this list type</param>
+        /// <param name="listType">Built in list template type</param>
         /// <param name="listName">Name of the list</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
-        /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
+        /// <param name="updateAndExecuteQuery">(Optional) Perform list update and executequery, defaults to true</param>
+        /// <param name="urlPath">(Optional) URL to use for the list</param>
+        /// <param name="enableContentTypes">(Optional) Enable content type management</param>
+        /// <returns>The newly created list</returns>
         public static List CreateList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
-            // Call actual implementation
-            return CreateListInternal(web, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
+            return CreateListInternal(web, null, (int)listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
         }
 
-        private static List CreateListInternal(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enabledContentTypes = false)
+        /// <summary>
+        /// Adds a custom list to a site
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="featureId">Feature that contains the list template</param>
+        /// <param name="listType">Type ID of the list, within the feature</param>
+        /// <param name="listName">Name of the list</param>
+        /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <param name="updateAndExecuteQuery">(Optional) Perform list update and executequery, defaults to true</param>
+        /// <param name="urlPath">(Optional) URL to use for the list</param>
+        /// <param name="enableContentTypes">(Optional) Enable content type management</param>
+        /// <returns>The newly created list</returns>
+        public static List CreateList(this Web web, Guid featureId, int listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
+            return CreateListInternal(web, featureId, listType, listName, enableVersioning, updateAndExecuteQuery, urlPath, enableContentTypes);
+        }
+
+        private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
+        {
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateList, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
             lci.Title = listName;
-            lci.TemplateType = (int)listType;
-
+            lci.TemplateType = templateType;
+            if (templateFeatureId.HasValue)
+            {
+                lci.TemplateFeatureId = templateFeatureId.Value;
+            }
             if (!string.IsNullOrEmpty(urlPath))
             {
                 lci.Url = urlPath;
@@ -468,7 +468,7 @@ namespace Microsoft.SharePoint.Client
                 newList.EnableVersioning = true;
                 newList.EnableMinorVersions = true;
             }
-            if (enabledContentTypes)
+            if (enableContentTypes)
             {
                 newList.ContentTypesEnabled = true;
             }
@@ -698,39 +698,40 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Get list by using Url
         /// </summary>
-        /// <param name="web">Site to be processed</param>
-        /// <param name="siteRelativeUrl">Site relative Url of list, e.g. /lists/testlist</param>
+        /// <param name="web">Web (site) to be processed</param>
+        /// <param name="webRelativeUrl">Url of list relative to the web (site), e.g. lists/testlist</param>
         /// <returns></returns>
-        public static List GetListByUrl(this Web web, string siteRelativeUrl)
+        public static List GetListByUrl(this Web web, string webRelativeUrl)
         {
-            if (string.IsNullOrEmpty(siteRelativeUrl))
-                throw new ArgumentNullException("siteRelativeUrl");
+            if (string.IsNullOrEmpty(webRelativeUrl))
+                throw new ArgumentNullException("webRelativeUrl");
 
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
-            var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, siteRelativeUrl);
+            var listServerRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, webRelativeUrl);
 
-            IEnumerable<List> lists = web.Context.LoadQuery(
-                web.Lists
-                    .Include(l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder));
-
-            web.Context.ExecuteQuery();
-
-            List foundList = lists.FirstOrDefault(l =>
-                l.RootFolder.ServerRelativeUrl.StartsWith(serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
-
-            if (foundList != null)
+            var foundList = web.GetList(listServerRelativeUrl);
+            web.Context.Load(foundList, l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder);
+            try
             {
-                return foundList;
+                web.Context.ExecuteQuery();
             }
-            else
+            catch (ServerException se)
             {
-                return null;
+                if (se.ServerErrorTypeName == "System.IO.FileNotFoundException")
+                {
+                    foundList = null;
+                }
+                else
+                {
+                    throw;
+                }
             }
 
+            return foundList;
         }
 
         /// <summary>
@@ -957,6 +958,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="columnValues"></param>
+        [Obsolete("Use SetDefaultColumnValues(IEnumerable<IDefaultColumnValue> columnValues) instead")]
         public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermPathValue> columnValues)
         {
             using (var clientContext = list.Context as ClientContext)
@@ -980,26 +982,30 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
+        private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
             using (var clientContext = list.Context as ClientContext)
             {
                 try
                 {
-                    List<DefaultColumnTermValue> values = columnValues.ToList();
+                    var values = columnValues.ToList<IDefaultColumnValue>();
 
                     clientContext.Load(list.RootFolder);
                     clientContext.Load(list.RootFolder.Folders);
                     clientContext.ExecuteQuery();
 
-                    var metadataString = new StringBuilder("<MetadataDefaults>");
+                    var xMetadataDefaults = new XElement("MetadataDefaults");
 
                     while (values.Any())
                     {
-
                         // Get the first entry 
                         var defaultColumnValue = values.First();
                         var path = defaultColumnValue.FolderRelativePath;
+                        if(string.IsNullOrEmpty(path))
+                        {
+                            // Assume root folder
+                            path = "/";
+                        }
                         if (path.Equals("/"))
                         {
                             path = list.RootFolder.ServerRelativeUrl;
@@ -1012,41 +1018,61 @@ namespace Microsoft.SharePoint.Client
                         var defaultColumnValuesInSamePath = columnValues.Where(x => x.FolderRelativePath == defaultColumnValue.FolderRelativePath);
                         path = Uri.EscapeUriString(path);
 
-                        metadataString.AppendFormat("<a href=\"{0}\">", path);
+                        var xATag = new XElement("a", new XAttribute("href", path));
 
                         foreach (var defaultColumnValueInSamePath in defaultColumnValuesInSamePath)
                         {
                             var fieldName = defaultColumnValueInSamePath.FieldInternalName;
                             var fieldStringBuilder = new StringBuilder();
-
-                            foreach (var term in defaultColumnValueInSamePath.Terms)
+                            if (defaultColumnValueInSamePath.GetType() == typeof(DefaultColumnTermValue))
                             {
-                                if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
+                                // Term value
+                                foreach (var term in ((DefaultColumnTermValue)defaultColumnValueInSamePath).Terms)
                                 {
-                                    clientContext.Load(term, t => t.Id, t => t.Name);
-                                    clientContext.ExecuteQuery();
+                                    if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
+                                    {
+                                        clientContext.Load(term, t => t.Id, t => t.Name);
+                                        clientContext.ExecuteQuery();
+                                    }
+                                    var wssId = list.ParentWeb.GetWssIdForTerm(term);
+                                    fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
                                 }
-                                var wssId = list.ParentWeb.GetWssIdForTerm(term);
-                                fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
+                                var xDefaultValue = new XElement("DefaultValue", new XAttribute("FieldName", fieldName));
+                                var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
+                                xDefaultValue.SetValue(fieldString);
+                                xATag.Add(xDefaultValue);
                             }
-
-                            var fieldString = fieldStringBuilder.ToString().TrimEnd(new char[] { ';', '#' });
-                            metadataString.AppendFormat("<DefaultValue FieldName=\"{0}\">{1}</DefaultValue>", fieldName, fieldString);
-
+                            else
+                            {
+                                // Text value
+                                var fieldString = fieldStringBuilder.Append(((DefaultColumnTextValue)defaultColumnValueInSamePath).Text);
+                                var xDefaultValue = new XElement("DefaultValue", new XAttribute("FieldName", fieldName));
+                                xDefaultValue.SetValue(fieldString);
+                                xATag.Add(xDefaultValue);
+                            }
+                            xMetadataDefaults.Add(xATag);
                             values.Remove(defaultColumnValueInSamePath);
                         }
-
-                        metadataString.AppendFormat("</a>");
-
                     }
-                    metadataString.AppendFormat("</MetadataDefaults>");
 
                     var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
                     if (formsFolder != null)
                     {
+                        var xmlSB = new StringBuilder();
+                        XmlWriterSettings xmlSettings = new XmlWriterSettings();
+                        xmlSettings.OmitXmlDeclaration = true;
+                        xmlSettings.NewLineHandling = NewLineHandling.None;
+                        xmlSettings.Indent = false;
+
+                        using (var xmlWriter = XmlWriter.Create(xmlSB, xmlSettings))
+                        {
+                            xMetadataDefaults.Save(xmlWriter);
+                        }
+
                         var objFileInfo = new FileCreationInformation();
                         objFileInfo.Url = "client_LocationBasedDefaults.html";
-                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(metadataString.ToString()));
+                        objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlSB.ToString()));
+                        
                         objFileInfo.Overwrite = true;
                         formsFolder.Files.Add(objFileInfo);
                         clientContext.ExecuteQuery();
@@ -1088,7 +1114,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list"></param>
         /// <param name="columnValues"></param>
-        public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermValue> columnValues)
+        public static void SetDefaultColumnValues(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
 
             using (var clientContext = list.Context as ClientContext)
@@ -1099,7 +1125,7 @@ namespace Microsoft.SharePoint.Client
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 // Check if default values file is present
                 var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
-                List<DefaultColumnTermValue> existingValues = new List<DefaultColumnTermValue>();
+                List<IDefaultColumnValue> existingValues = new List<IDefaultColumnValue>();
 
                 if (formsFolder != null)
                 {
@@ -1131,45 +1157,62 @@ namespace Microsoft.SharePoint.Client
                             foreach (var defaultValue in defaultValues)
                             {
                                 var fieldName = defaultValue.Attribute("FieldName").Value;
-                                var termsIdentifier = defaultValue.Value;
 
-                                var terms = termsIdentifier.Split(new string[] { ";#" }, StringSplitOptions.None);
-
-                                List<Term> existingTerms = new List<Term>();
-                                for (int q = 1; q < terms.Length; q++)
+                                var field = list.Fields.GetByInternalNameOrTitle(fieldName);
+                                clientContext.Load(field);
+                                clientContext.ExecuteQuery();
+                                if (field.FieldTypeKind == FieldType.Text)
                                 {
-                                    var termIdString = terms[q].Split(new char[] { '|' })[1];
-                                    var term = taxSession.GetTerm(new Guid(termIdString));
-                                    clientContext.Load(term, t => t.Id, t => t.Name);
-                                    clientContext.ExecuteQuery();
-                                    existingTerms.Add(term);
-                                    q++; // Skip one
+                                    var textValue = defaultValue.Value;
+                                    DefaultColumnTextValue defaultColumnTextValue = new DefaultColumnTextValue()
+                                    {
+                                        FieldInternalName = fieldName,
+                                        FolderRelativePath = href,
+                                        Text = textValue
+                                    };
+                                    existingValues.Add(defaultColumnTextValue);
                                 }
-
-                                DefaultColumnTermValue defaultColumnTermValue = new DefaultColumnTermValue()
+                                else
                                 {
-                                    FieldInternalName = fieldName,
-                                    FolderRelativePath = href,
-                                };
-                                existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
+                                    var termsIdentifier = defaultValue.Value;
 
-                                existingValues.Add(defaultColumnTermValue);
+                                    var terms = termsIdentifier.Split(new string[] { ";#" }, StringSplitOptions.None);
+
+                                    List<Term> existingTerms = new List<Term>();
+                                    for (int q = 1; q < terms.Length; q++)
+                                    {
+                                        var termIdString = terms[q].Split(new char[] { '|' })[1];
+                                        var term = taxSession.GetTerm(new Guid(termIdString));
+                                        clientContext.Load(term, t => t.Id, t => t.Name);
+                                        clientContext.ExecuteQuery();
+                                        existingTerms.Add(term);
+                                        q++; // Skip one
+                                    }
+
+                                    DefaultColumnTermValue defaultColumnTermValue = new DefaultColumnTermValue()
+                                    {
+                                        FieldInternalName = fieldName,
+                                        FolderRelativePath = href,
+                                    };
+                                    existingTerms.ForEach(t => defaultColumnTermValue.Terms.Add(t));
+
+                                    existingValues.Add(defaultColumnTermValue);
+                                }
                             }
 
                         }
                     }
-
-
                 }
-                List<DefaultColumnTermValue> termsList = columnValues.Union(existingValues, new DefaultColumnTermValueComparer()).ToList();
+
+                List<IDefaultColumnValue> termsList = columnValues.Union(existingValues, new DefaultColumnTermValueComparer()).ToList();
 
                 list.SetDefaultColumnValuesImplementation(termsList);
             }
         }
 
-        private class DefaultColumnTermValueComparer : IEqualityComparer<DefaultColumnTermValue>
+        private class DefaultColumnTermValueComparer : IEqualityComparer<IDefaultColumnValue>
         {
-            public bool Equals(DefaultColumnTermValue x, DefaultColumnTermValue y)
+            public bool Equals(IDefaultColumnValue x, IDefaultColumnValue y)
             {
                 if (Object.ReferenceEquals(x, y)) return true;
 
@@ -1179,7 +1222,7 @@ namespace Microsoft.SharePoint.Client
                 return x.FieldInternalName == y.FieldInternalName && x.FolderRelativePath == y.FolderRelativePath;
             }
 
-            public int GetHashCode(DefaultColumnTermValue defaultValue)
+            public int GetHashCode(IDefaultColumnValue defaultValue)
             {
                 if (Object.ReferenceEquals(defaultValue, null)) return 0;
 
