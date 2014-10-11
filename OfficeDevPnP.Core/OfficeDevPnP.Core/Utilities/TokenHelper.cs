@@ -660,34 +660,105 @@ namespace OfficeDevPnP.Core.Utilities
         //
         // Hosted app configuration
         //
+        private static string clientId = string.Empty;
+        private static string issuerId = string.Empty;
+        private static string realm = string.Empty;
+        private static string serviceNamespace = string.Empty;
+        private static string clientSecret = string.Empty;
+
         public static string ClientId
         {
-            get;
-            set;
+            get
+            {
+                if (String.IsNullOrEmpty(clientId))
+                {
+                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
+                }
+                else
+                {
+                    return clientId;
+                }
+            }
+            set
+            {
+                clientId = value;
+            }
         }
 
         public static string IssuerId
         {
-            get;
-            set;
+            get
+            {
+                if (String.IsNullOrEmpty(issuerId))
+                {
+                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("IssuerId")) ? ClientId : WebConfigurationManager.AppSettings.Get("IssuerId");
+                }
+                else
+                {
+                    return issuerId;
+                }
+            }
+            set
+            {
+                issuerId = value;
+            }
         }
 
         public static string Realm
         {
-            get;
-            set;
+            get
+            {
+                if (String.IsNullOrEmpty(realm))
+                {
+                    return WebConfigurationManager.AppSettings.Get("Realm");
+                }
+                else
+                {
+                    return realm;
+                }
+            }
+            set
+            {
+                realm = value;
+            }
         }
 
         public static string ServiceNamespace
         {
-            get;
-            set;
+            get
+            {
+                if (String.IsNullOrEmpty(serviceNamespace))
+                {
+                    return WebConfigurationManager.AppSettings.Get("Realm");
+                }
+                else
+                {
+                    return serviceNamespace;
+                }
+            }
+            set
+            {
+                serviceNamespace = value;
+            }
         }
 
         public static string ClientSecret
         {
-            get;
-            set;
+            get
+            {
+                if (String.IsNullOrEmpty(clientSecret))
+                {
+                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
+                }
+                else
+                {
+                    return clientSecret;
+                }
+            }
+            set
+            {
+                clientSecret = value;
+            }
         }
 
         //private static readonly string ClientId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
