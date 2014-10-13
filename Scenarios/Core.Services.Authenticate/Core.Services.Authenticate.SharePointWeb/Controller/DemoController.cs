@@ -20,7 +20,7 @@ namespace Core.Services.Authenticate.SharePointWeb.Controller
         };
 
         [HttpPut]
-        [Route("api/demo/register")]
+        //[Route("api/demo/register")]
         public void Register(SharePointServiceContext sharePointServiceContext)
         {
             SharePointServiceHelper.AddToCache(sharePointServiceContext);
