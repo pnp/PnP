@@ -660,11 +660,14 @@ namespace OfficeDevPnP.Core.Utilities
         //
         // Hosted app configuration
         //
-        private static string clientId = string.Empty;
-        private static string issuerId = string.Empty;
-        private static string realm = string.Empty;
-        private static string serviceNamespace = string.Empty;
-        private static string clientSecret = string.Empty;
+        private static string clientId = null;
+        private static string issuerId = null;
+        private static string hostedAppHostNameOverride = null;
+        private static string hostedAppHostName = null;
+        private static string clientSecret = null;
+        private static string secondaryClientSecret = null;
+        private static string realm = null;
+        private static string serviceNamespace = null;
 
         public static string ClientId
         {
@@ -701,6 +704,82 @@ namespace OfficeDevPnP.Core.Utilities
             set
             {
                 issuerId = value;
+            }
+        }
+
+        public static string HostedAppHostNameOverride
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(hostedAppHostNameOverride))
+                {
+                    return WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
+                }
+                else
+                {
+                    return hostedAppHostNameOverride;
+                }
+            }
+            set
+            {
+                hostedAppHostNameOverride = value;
+            }
+        }
+
+        public static string HostedAppHostName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(hostedAppHostName))
+                {
+                    return WebConfigurationManager.AppSettings.Get("HostedAppHostName");
+                }
+                else
+                {
+                    return hostedAppHostName;
+                }
+            }
+            set
+            {
+                hostedAppHostName = value;
+            }
+        }
+
+        public static string ClientSecret
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(clientSecret))
+                {
+                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
+                }
+                else
+                {
+                    return clientSecret;
+                }
+            }
+            set
+            {
+                clientSecret = value;
+            }
+        }
+
+        public static string SecondaryClientSecret
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(secondaryClientSecret))
+                {
+                    return WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
+                }
+                else
+                {
+                    return secondaryClientSecret;
+                }
+            }
+            set
+            {
+                secondaryClientSecret = value;
             }
         }
 
@@ -742,31 +821,13 @@ namespace OfficeDevPnP.Core.Utilities
             }
         }
 
-        public static string ClientSecret
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(clientSecret))
-                {
-                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
-                }
-                else
-                {
-                    return clientSecret;
-                }
-            }
-            set
-            {
-                clientSecret = value;
-            }
-        }
 
         //private static readonly string ClientId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
         //private static readonly string IssuerId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("IssuerId")) ? ClientId : WebConfigurationManager.AppSettings.Get("IssuerId");
-        private static readonly string HostedAppHostNameOverride = WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
-        private static readonly string HostedAppHostName = WebConfigurationManager.AppSettings.Get("HostedAppHostName");
+        //private static readonly string HostedAppHostNameOverride = WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
+        //private static readonly string HostedAppHostName = WebConfigurationManager.AppSettings.Get("HostedAppHostName");
         //private static readonly string ClientSecret = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
-        private static readonly string SecondaryClientSecret = WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
+        //private static readonly string SecondaryClientSecret = WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
         //private static readonly string Realm = WebConfigurationManager.AppSettings.Get("Realm");
         //private static readonly string ServiceNamespace = WebConfigurationManager.AppSettings.Get("Realm");
 
