@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Services
             }
             else
             {
-                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.MethodNotAllowed, "Service requestor is not registered: access denied");
+                actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.MethodNotAllowed, CoreResources.Services_AccessDenied);
                 return;
             }
         }

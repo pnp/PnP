@@ -16,12 +16,27 @@ using System.Web.UI;
 
 namespace OfficeDevPnP.Core.Services
 {
+    /// <summary>
+    /// This class provides helper methods that can be used to protect WebAPI services and to provide a 
+    /// way to reinstantiate a contextobject in the service call.
+    /// </summary>
     public class SharePointServiceHelper
     {
+        /// <summary>
+        /// This is the name of the cookie that will hold the cachekey.
+        /// </summary>
         public const string SERVICES_TOKEN = "servicesToken";
 
+        /// <summary>
+        /// Checks if this request has a servicesToken cookie. To be used from inside the WebAPI.
+        /// </summary>
+        /// <param name="httpControllerContext">Information about the HTTP request that reached the WebAPI controller</param>
+        /// <returns>True if cookie is available and not empty, false otherwise</returns>
         public static bool HasCacheEntry(HttpControllerContext httpControllerContext)
         {
+            if (httpControllerContext == null)
+                throw new ArgumentNullException("httpControllerContext");
+
             CookieHeaderValue cookie = httpControllerContext.Request.Headers.GetCookies(SERVICES_TOKEN).FirstOrDefault();
             if (cookie != null && !String.IsNullOrEmpty(cookie[SERVICES_TOKEN].Value))
             {
@@ -33,12 +48,24 @@ namespace OfficeDevPnP.Core.Services
             }
         }
 
+        /// <summary>
+        /// Creates a ClientContext token for the incoming WebAPI request. This is done by 
+        /// - looking up the servicesToken
+        /// - extracting the cacheKey 
+        /// - get the AccessToken from cache. If the AccessToken is expired a new one is requested using the refresh token
+        /// - creation of a ClientContext object based on the AccessToken
+        /// </summary>
+        /// <param name="httpControllerContext">Information about the HTTP request that reached the WebAPI controller</param>
+        /// <returns>A valid ClientContext object</returns>
         public static ClientContext GetClientContext(HttpControllerContext httpControllerContext)
         {
+            if (httpControllerContext == null)
+                throw new ArgumentNullException("httpControllerContext");
+
             CookieHeaderValue cookie = httpControllerContext.Request.Headers.GetCookies(SERVICES_TOKEN).FirstOrDefault();
             if (cookie != null)
             {
-                String cacheKey = cookie[SERVICES_TOKEN].Value;
+                string cacheKey = cookie[SERVICES_TOKEN].Value;
                 SharePointServiceContexCacheItem cacheItem = SharePointServiceContextCache.Instance.Get(cacheKey);
 
                 //request a new access token from ACS whenever our current access token will expire in less than 1 hour
@@ -47,49 +74,73 @@ namespace OfficeDevPnP.Core.Services
                     Uri targetUri = new Uri(cacheItem.SharePointServiceContext.HostWebUrl);
                     OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(cacheItem.RefreshToken, TokenHelper.SharePointPrincipal, targetUri.Authority, TokenHelper.GetRealmFromTargetUrl(targetUri));
                     cacheItem.AccessToken = accessToken;
+                    //update the cache
+                    SharePointServiceContextCache.Instance.Put(cacheKey, cacheItem);
+                    LoggingUtility.Internal.TraceInformation((int)EventId.ServicesTokenRefreshed, CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
                 }
                  
                 return TokenHelper.GetClientContextWithAccessToken(cacheItem.SharePointServiceContext.HostWebUrl, cacheItem.AccessToken.AccessToken);
             }
             else
             {
-                return null;
+                LoggingUtility.Internal.TraceWarning((int)EventId.ServicesNoCachedItem, CoreResources.Services_CookieWithCachKeyNotFound);
+                throw new Exception("The cookie with the cachekey was not found...nothing can be retrieved from cache, so no clientcontext can be created.");
             }            
         }
 
+        /// <summary>
+        /// Uses the information regarding the requesting app to obtain an access token and caches that using the cachekey.
+        /// This method is called from the Register WebAPI service api.
+        /// </summary>
+        /// <param name="sharePointServiceContext">Object holding information about the requesting SharePoint app</param>
         public static void AddToCache(SharePointServiceContext sharePointServiceContext)
         {
-            try
+            if (sharePointServiceContext == null)
+                throw new ArgumentNullException("sharePointServiceContext");
+
+            TokenHelper.ClientId = sharePointServiceContext.ClientId;
+            TokenHelper.HostedAppHostName = sharePointServiceContext.HostedAppHostName;
+            SharePointContextToken sharePointContextToken = TokenHelper.ReadAndValidateContextToken(sharePointServiceContext.Token);
+            OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(sharePointContextToken, new Uri(sharePointServiceContext.HostWebUrl).Authority);
+            SharePointServiceContexCacheItem cacheItem = new SharePointServiceContexCacheItem()
             {
-                TokenHelper.ClientId = sharePointServiceContext.ClientId;
-                TokenHelper.HostedAppHostName = sharePointServiceContext.HostedAppHostName;
-                SharePointContextToken sharePointContextToken = TokenHelper.ReadAndValidateContextToken(sharePointServiceContext.Token);
-                OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(sharePointContextToken, new Uri(sharePointServiceContext.HostWebUrl).Authority);
-                SharePointServiceContexCacheItem cacheItem = new SharePointServiceContexCacheItem()
-                {
-                    RefreshToken = sharePointContextToken.RefreshToken,
-                    AccessToken = accessToken,
-                    SharePointServiceContext = sharePointServiceContext
-                };
-                SharePointServiceContextCache.Instance.Add(sharePointServiceContext.CacheKey, cacheItem);
-            }
-            catch (Exception ex)
-            {
-                return;
-            }
+                RefreshToken = sharePointContextToken.RefreshToken,
+                AccessToken = accessToken,
+                SharePointServiceContext = sharePointServiceContext
+            };
+            SharePointServiceContextCache.Instance.Put(sharePointServiceContext.CacheKey, cacheItem);
         }
 
-        public static async void RegisterService(Page page, Uri serviceEndPoint, string apiRequest, String cacheKey)
+        /// <summary>
+        /// This method needs to be called from a code behind of the SharePoint app startup page (default.aspx). It registers the calling
+        /// SharePoint app by calling a specific "Register" api in your WebAPI service.
+        /// 
+        /// Note:
+        /// Given that method is async you'll need to add the  Async="true" page directive to the page that uses this method.
+        /// </summary>
+        /// <param name="page">The page object, needed to insert the services token cookie and read the querystring</param>
+        /// <param name="serviceEndPoint">Uri to the WebAPI service endpoint</param>
+        /// <param name="apiRequest">Route to the "Register" API</param>
+        /// <param name="cacheKey">Key used to cache the SharePoint app instantiation</param>
+        public static async void RegisterService(Page page, Uri serviceEndPoint, string apiRequest, string cacheKey)
         {
+            if (page == null)
+                throw new ArgumentNullException("page");
+
+            if (string.IsNullOrEmpty(apiRequest))
+                throw new ArgumentNullException("apiRequest");
+
+            if (string.IsNullOrEmpty(cacheKey))
+                throw new ArgumentNullException("cacheKey");
+
             if (!page.IsPostBack)
             {
                 if (page.Request.QueryString.AsString(SERVICES_TOKEN, string.Empty).Equals(string.Empty))
                 {
-                    //Remove the = in the cacheKey
-                    cacheKey = cacheKey.Replace("=", "");
+                    cacheKey = RemoveSpecialCharacters(cacheKey + DateTime.Now.Ticks.ToString());
 
                     // Write the cachekey in a cookie
-                    System.Web.HttpCookie cookie = new HttpCookie(SERVICES_TOKEN)
+                    HttpCookie cookie = new HttpCookie(SERVICES_TOKEN)
                     {
                         Value = cacheKey,
                         Secure = true,
@@ -123,11 +174,28 @@ namespace OfficeDevPnP.Core.Services
 
                         if (!response.IsSuccessStatusCode)
                         {
+                            LoggingUtility.Internal.TraceError((int)EventId.ServicesRegistrationFailed, CoreResources.Service_RegistrationFailed, apiRequest, serviceEndPoint.ToString(), cacheKey);
                             throw new Exception(String.Format("Service registration failed: {0}", response.StatusCode));
                         }
+
+                        LoggingUtility.Internal.TraceInformation((int)EventId.ServicesRegistered, CoreResources.Services_Registered, apiRequest, serviceEndPoint.ToString(), cacheKey);
+
                     }
                 }
             }
+        }
+
+        private static string RemoveSpecialCharacters(string str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in str)
+            {
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_')
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
         }
 
     }

@@ -19,7 +19,9 @@ namespace OfficeDevPnP.Core.Utilities
         // XX: sequential ids
         Unknown = 0,
 
+
         AuthenticationContext = 1301,
+        ServicesTokenRefreshed = 1302,
         
         UploadFile = 1501,
         InstallSolution = 1502,
@@ -40,6 +42,8 @@ namespace OfficeDevPnP.Core.Utilities
         DeployPageLayout = 1605,
 
         SendMailCancelled = 2201,
+
+        ServicesRegistered =2301,
 
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
@@ -63,6 +67,10 @@ namespace OfficeDevPnP.Core.Utilities
 
         MailSendException = 5201,
         MailSendFailed = 5202,
+
+        ServicesRegistrationFailed = 5301,
+
+        ServicesNoCachedItem = 5301,
 
         SiteSearchUnhandledException = 5401,
 
