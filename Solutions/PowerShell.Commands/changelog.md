@@ -1,5 +1,10 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-10-14**
+* Added Get-SPOUserProfileProperty cmdlet
+* Added New-SPOPersonalSite cmdlet
+* Fixed Get-SPOView cmdlet
+
 **2014-10-08**
 * Added Set-SPODefaultColumnValue 
 **2014-09-19**

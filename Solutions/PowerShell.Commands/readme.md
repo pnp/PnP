@@ -214,6 +214,10 @@ Command | Description
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
 
-
+#### User Profile / OD4B Cmdlets ####
+Command | Description
+:--------|:------------
+**Get-SPOUserProfileProperty** | Returns the user profile properties for one or more users
+**New-SPOPersonalSite** | Provisions a profile site. Only works towards Office365
 
 
