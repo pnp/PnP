@@ -320,7 +320,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Adds a document library to a site
+        /// Adds a document library to a web. Execute Query is called during this implementation
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
