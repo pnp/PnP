@@ -54,13 +54,13 @@ namespace Microsoft.SharePoint.Client
                      in list.EventReceivers
                         where receiver.ReceiverName == name
                         select receiver;
-            list.Context.LoadQuery(query);
+            var receivers = list.Context.LoadQuery(query);
             list.Context.ExecuteQuery();
 
-            var receiverExists = query.Any();
+            var receiverExists = receivers.Any();
             if (receiverExists && force)
             {
-                var receiver = query.FirstOrDefault();
+                var receiver = receivers.FirstOrDefault();
                 receiver.DeleteObject();
                 list.Context.ExecuteQuery();
                 receiverExists = false;
