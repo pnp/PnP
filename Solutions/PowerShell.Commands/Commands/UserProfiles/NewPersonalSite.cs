@@ -8,8 +8,10 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 
+#if !CLIENTSDKV15
 namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
 {
+
     [Cmdlet(VerbsCommon.New, "SPOPersonalSite")]
     public class NewPersonalSite : SPOAdminCmdlet
     {
@@ -24,3 +26,4 @@ namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
         }
     }
 }
+#endif
