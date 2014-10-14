@@ -880,7 +880,7 @@ namespace OfficeDevPnP.Core.Utilities
             return String.Format(CultureInfo.InvariantCulture, "https://{0}.{1}/", GlobalEndPointPrefix, AcsHostUrl);
         }
 
-        private static JsonWebSecurityTokenHandler CreateJsonWebSecurityTokenHandler()
+        public static JsonWebSecurityTokenHandler CreateJsonWebSecurityTokenHandler()
         {
             JsonWebSecurityTokenHandler handler = new JsonWebSecurityTokenHandler();
             handler.Configuration = new SecurityTokenHandlerConfiguration();

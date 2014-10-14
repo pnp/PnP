@@ -1,9 +1,11 @@
 ﻿using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+using Microsoft.IdentityModel.S2S.Tokens;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -119,10 +121,9 @@ namespace OfficeDevPnP.Core.Services
         /// Given that method is async you'll need to add the  Async="true" page directive to the page that uses this method.
         /// </summary>
         /// <param name="page">The page object, needed to insert the services token cookie and read the querystring</param>
-        /// <param name="serviceEndPoint">Uri to the WebAPI service endpoint</param>
         /// <param name="apiRequest">Route to the "Register" API</param>
-        /// <param name="cacheKey">Key used to cache the SharePoint app instantiation</param>
-        public static async void RegisterService(Page page, Uri serviceEndPoint, string apiRequest, string cacheKey)
+        /// <param name="serviceEndPoint">Optional Uri to the WebAPI service endpoint. If null then the assumption is taken that the WebAPI is hosted together with the page making this call</param>
+        public static async void RegisterService(Page page, string apiRequest, Uri serviceEndPoint = null)
         {
             if (page == null)
                 throw new ArgumentNullException("page");
@@ -130,14 +131,27 @@ namespace OfficeDevPnP.Core.Services
             if (string.IsNullOrEmpty(apiRequest))
                 throw new ArgumentNullException("apiRequest");
 
-            if (string.IsNullOrEmpty(cacheKey))
-                throw new ArgumentNullException("cacheKey");
-
             if (!page.IsPostBack)
             {
                 if (page.Request.QueryString.AsString(SERVICES_TOKEN, string.Empty).Equals(string.Empty))
                 {
-                    cacheKey = RemoveSpecialCharacters(cacheKey + DateTime.Now.Ticks.ToString());
+                    // Construct a JsonWebSecurityToken so we can fetch the cachekey...implementation is copied from tokenhelper approach
+                    string cacheKey = string.Empty;
+                    string contextToken = TokenHelper.GetContextTokenFromRequest(page.Request);
+                    JsonWebSecurityTokenHandler tokenHandler = TokenHelper.CreateJsonWebSecurityTokenHandler();
+                    SecurityToken securityToken = tokenHandler.ReadToken(contextToken);
+                    JsonWebSecurityToken jsonToken = securityToken as JsonWebSecurityToken;
+                    string appctx = GetClaimValue(jsonToken, "appctx");
+                    if (appctx != null)
+                    {
+                        ClientContext ctx = new ClientContext("http://tempuri.org");
+                        Dictionary<string, object> dict = (Dictionary<string, object>)ctx.ParseObjectFromJsonString(appctx);
+                        cacheKey = (string)dict["CacheKey"];
+                    }
+
+                    // Remove special chars (=, +, /, {}) from cachekey as there's a flaw in CookieHeaderValue when the 
+                    // cookie is read. This flaw replaces special chars with a space.
+                    cacheKey = RemoveSpecialCharacters(cacheKey);
 
                     // Write the cachekey in a cookie
                     HttpCookie cookie = new HttpCookie(SERVICES_TOKEN)
@@ -153,7 +167,7 @@ namespace OfficeDevPnP.Core.Services
                     {
                         CacheKey = cacheKey,
                         ClientId = TokenHelper.ClientId,
-                        Token = TokenHelper.GetContextTokenFromRequest(page.Request),
+                        Token = contextToken,
                         HostWebUrl = page.Request.QueryString.AsString("SPHostUrl", null),
                         AppWebUrl = page.Request.QueryString.AsString("SPAppWebUrl", null),
                         HostedAppHostName = String.Format("{0}:{1}", page.Request.Url.Host, page.Request.Url.Port),
@@ -183,6 +197,24 @@ namespace OfficeDevPnP.Core.Services
                     }
                 }
             }
+        }
+
+        private static string GetClaimValue(JsonWebSecurityToken token, string claimType)
+        {
+            if (token == null)
+            {
+                throw new ArgumentNullException("token");
+            }
+
+            foreach (JsonWebTokenClaim claim in token.Claims)
+            {
+                if (StringComparer.Ordinal.Equals(claim.ClaimType, claimType))
+                {
+                    return claim.Value;
+                }
+            }
+
+            return null;
         }
 
         private static string RemoveSpecialCharacters(string str)
