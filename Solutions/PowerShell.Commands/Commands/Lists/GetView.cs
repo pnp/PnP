@@ -44,7 +44,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                         ClientContext.ExecuteQuery();
                         
                     }
-                    if (views.Any())
+                    if (views != null && views.Any())
                     {
                         WriteObject(views,true);
                     }
