@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-10-15**
+* Added Add-SPOWorkflowSubscription, Get-SPOWorkflowDefinition, Get-SPOWorkflowSubscription, Remove-SPOWorkflowDefinition, Remove-SPOWorkflowSubscription, Resume-SPOWorkflowInstance, Stop-SPOWorkflowInstance
+
 **2014-10-14**
 * Added Get-SPOUserProfileProperty cmdlet
 * Added New-SPOPersonalSite cmdlet
