@@ -15,7 +15,7 @@
         <div style="padding-left: 20px; padding-right: 20px;">
             <h2>Introduction</h2>
             <br />
-            <p>The Client Side Rendering JS files in this sample were taken from an <a href="http://code.msdn.microsoft.com/office/Client-side-rendering-JS-2ed3538a">MSDN code sample by Muawiyah Shannak</a>.  They have been included in this code sample to demonstrate how the remote provisioning pattern may be used to deploy Client Side Rendering components and associate them with views and forms in a SharePoint list.</p>
+            <p>The Client Side Rendering JS files in this sample were taken from an <a href="http://code.msdn.microsoft.com/office/Client-side-rendering-JS-2ed3538a">MSDN code sample by Muawiyah Shannak</a> and from a <a href="http://www.codeproject.com/Articles/610259/SharePoint-Client-Side-Rendering-List-Forms">CodeProject article by Andrei Markeev</a>.  They have been included in this code sample to demonstrate how the remote provisioning pattern may be used to deploy Client Side Rendering components and associate them with views and forms in a SharePoint list.</p>
             <br />
             <h2>Instructions</h2>
             <br />
@@ -56,6 +56,9 @@
             </div>
             <div>
                 <asp:HyperLink ID="link8" runat="server"> Sample 8 (Hidden Field)</asp:HyperLink>
+            </div>
+            <div>
+                <asp:HyperLink ID="link9" runat="server"> Sample 9 (Dependent Fields)</asp:HyperLink>
             </div>
         </div>
     </form>

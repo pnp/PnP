@@ -70,7 +70,7 @@ headID.appendChild(newScript);", link);
         {
             var jsAction = new CustomActionEntity()
             {
-                Description = key,
+                Name = key,
                 Location = SCRIPT_LOCATION,
                 Remove = true
             };
@@ -89,7 +89,7 @@ headID.appendChild(newScript);", link);
         {
             var jsAction = new CustomActionEntity()
             {
-                Description = key,
+                Name = key,
                 Location = SCRIPT_LOCATION,
                 ScriptBlock = scriptBlock,
             };

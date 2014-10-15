@@ -15,3 +15,30 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Styles for events */
+.event { display: table; }
+.event-row { display: table-row; }
+.event-column1, .event-column2 { display: table-cell; padding: 10px; }
+.event-date {
+    border: 1px solid #0072c6;
+    font-weight: bold;
+    text-align: center;
+    width: 80px;
+}
+.event-month {
+    background-color: #0072c6;
+    color: #fff;
+    text-transform: uppercase;
+}
+.event-day {
+    font-size: 20px;
+    font-weight: normal;
+}
+.event-details-title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.event-details-location {
+    font-style: italic;
+}

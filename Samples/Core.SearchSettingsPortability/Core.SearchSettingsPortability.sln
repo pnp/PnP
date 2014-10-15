@@ -7,8 +7,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{5A63B5D7-FA8D-4AC9-B237-1224026499A0}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
-		Readme.txt = Readme.txt
-		SearchSettings.docx = SearchSettings.docx
 	EndProjectSection
 EndProject
 Global

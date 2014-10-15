@@ -330,24 +330,6 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(groupName))
                 throw new ArgumentNullException("groupName");
 
-            return web.GetGroupID(null, groupName);
-        }
-
-        /// <summary>
-        /// Returns the integer ID for a given group name
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">Site to operate on</param>
-        /// <param name="groupName">SharePoint group name</param>
-        /// <returns>Integer group ID</returns>
-        public static int GetGroupID(this Web web, Uri siteUrl, string groupName)
-        {
-            if (siteUrl == null)
-                throw new ArgumentNullException("siteUrl");
-
-            if (string.IsNullOrEmpty(groupName))
-                throw new ArgumentNullException("groupName");
-
             int groupID = 0;
 
             var manageMessageGroup = web.SiteGroups.GetByName(groupName);
@@ -841,53 +823,18 @@ namespace Microsoft.SharePoint.Client
 
         public static Guid GetAuthenticationRealm(this Web web)
         {
+            
             Guid returnGuid = Guid.Empty;
             if (!web.IsPropertyAvailable("Url"))
             {
                 web.Context.Load(web, w => w.Url);
                 web.Context.ExecuteQuery();
             }
-            WebRequest request = WebRequest.Create(new Uri(web.Url) + "/_vti_bin/client.svc");
-            request.Headers.Add("Authorization: Bearer ");
 
-            try
-            {
-                using (request.GetResponse())
-                {
-                }
-            }
-            catch (WebException e)
-            {
-                if (e.Response == null)
-                {
-                }
+            returnGuid = new Guid(OfficeDevPnP.Core.Utilities.TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));
 
-                string bearerResponseHeader = e.Response.Headers["WWW-Authenticate"];
-                if (string.IsNullOrEmpty(bearerResponseHeader))
-                {
-                }
-
-                const string bearer = "Bearer realm=\"";
-                int bearerIndex = bearerResponseHeader.IndexOf(bearer, StringComparison.Ordinal);
-                if (bearerIndex < 0)
-                {
-                }
-
-                int realmIndex = bearerIndex + bearer.Length;
-
-                if (bearerResponseHeader.Length >= realmIndex + 36)
-                {
-                    string targetRealm = bearerResponseHeader.Substring(realmIndex, 36);
-
-                    Guid realmGuid;
-
-                    if (Guid.TryParse(targetRealm, out realmGuid))
-                    {
-                        returnGuid = realmGuid;
-                    }
-                }
-            }
             return returnGuid;
+
         }
     }
 }

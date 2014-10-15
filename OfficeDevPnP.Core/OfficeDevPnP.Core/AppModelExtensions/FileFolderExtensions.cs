@@ -210,6 +210,45 @@ namespace Microsoft.SharePoint.Client
 
             return exists;
         }
+        
+        /// <summary>
+        /// Ensure that the folder structure is created. This also ensures hierarchy of folders.
+        /// </summary>
+        /// <param name="web">Web to be processed - can be root web or sub site</param>
+        /// <param name="parentFolder">Parent folder</param>
+        /// <param name="folderPath">Folder path</param>
+        /// <returns>The folder structure</returns>
+        public static Folder EnsureFolder(this Web web, Folder parentFolder, string folderPath)
+        {
+            // Split up the incoming path so we have the first element as the a new sub-folder name 
+            // and add it to ParentFolder folders collection
+            string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string head = pathElements[0];
+
+            Folder newFolder = parentFolder.Folders.Add(head);
+            web.Context.Load(newFolder);
+            web.Context.ExecuteQuery();
+
+            // If we have subfolders to create then the length of PathElements will be greater than 1
+            if (pathElements.Length > 1)
+            {
+                // If we have more nested folders to create then reassemble the folder path using what we have left i.e. the tail
+                string Tail = string.Empty;
+
+                for (int i = 1; i < pathElements.Length; i++)
+                {
+                    Tail = Tail + "/" + pathElements[i];
+                }
+
+                // Then make a recursive call to create the next subfolder
+                return web.EnsureFolder(newFolder, Tail);
+            }
+            else
+            {
+                // This ensures that the folder at the end of the chain gets returned
+                return newFolder;
+            }
+        }
 
         /// <summary>
         /// Checks if the folder exists at the top level of the web site, and if it does not exist creates it.
@@ -268,7 +307,7 @@ namespace Microsoft.SharePoint.Client
             folderCollection.Context.ExecuteQuery();
             foreach (Folder existingFolder in folderCollection)
             {
-                if (string.Equals(folder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                if (string.Equals(existingFolder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     folder = existingFolder;
                     break;
@@ -499,14 +538,8 @@ namespace Microsoft.SharePoint.Client
             return folder.FolderExists(folderName);
         }
 
-        /// <summary>
-        /// Upload document to library
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="filePath">Path to source location like c:\fuu.txt</param>
-        /// <param name="libraryName">Name of the document library</param>
-        /// <param name="createLibrary">Should library be created if it's not present</param>
         [Obsolete("Prefer list.RootFolder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this Web web, string filePath, string libraryName, bool createLibrary = false)
         {
 
@@ -543,18 +576,12 @@ namespace Microsoft.SharePoint.Client
             var file = list.RootFolder.UploadFile(filePath);
         }
 
-        /// <summary>
-        /// Upload document to folder within a Web
-        /// </summary>
-        /// <param name="web">Web to be processed - can be root web or sub site</param>
-        /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
-        /// <param name="folderName">Folder Name in the site</param>
-        /// <param name="createFolder">Should folder be created, if it does not exist</param>
         [Obsolete("Prefer web.RootFolder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createFolder = false)
         {
             var filename = Path.GetFileName(filePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile, filename, folderName);
+            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile0ToFolder1, filename, folderName);
 
             Folder folder;
             if (!DoesFolderExists(web, folderName))
@@ -599,41 +626,61 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
 
             var fileName = System.IO.Path.GetFileName(filePath);
+            using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+            {
+                return UploadFile(folder, fileName, fs, contentTypeId, overwriteIfExists, useWebDav);
+            }
+        }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile, fileName, filePath);
+        /// <summary>
+        /// Uploads a file to the specified folder, with an optional content type.
+        /// </summary>
+        /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="fileName">Name of the file to upload</param>
+        /// <param name="stream">Stream containing the contents of the file</param>
+        /// <param name="contentTypeId">Optional content type; if null (default) the default content type will be used.</param>
+        /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
+        /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFile(this Folder folder, string fileName, Stream stream, ContentTypeId contentTypeId = null, bool overwriteIfExists = true, bool useWebDav = true)
+        {
+            if (fileName == null) { throw new ArgumentNullException("fileName"); }
+            if (stream == null) { throw new ArgumentNullException("stream"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("File name is required.", "fileName"); }
+            // TODO: Check for any other illegal characters in SharePoint
+            if (fileName.Contains('/') || fileName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+            }
+
+            if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+            {
+                folder.Context.Load(folder, f => f.ServerRelativeUrl);
+                folder.Context.ExecuteQuery();
+            }
+            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile0ToFolder1, fileName, folder.ServerRelativeUrl);
 
             File file = null;
             if (useWebDav)
             {
-                if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
-                {
-                    folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                    folder.Context.ExecuteQuery();
-                }
                 var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
                 using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
                 {
-                    using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
-                    {
-                        LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
-                        File.SaveBinaryDirect(uploadContext, serverRelativeUrl, fs, overwriteIfExists);
-                        folder.Context.ExecuteQuery();
-                    }
+                    LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
+                    File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
+                    folder.Context.ExecuteQuery();
                 }
                 file = folder.Files.GetByUrl(serverRelativeUrl);
             }
             else
             {
-                using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
-                {
-                    FileCreationInformation fileCreation = new FileCreationInformation();
-                    fileCreation.ContentStream = fs;
-                    fileCreation.Url = fileName;
-                    fileCreation.Overwrite = overwriteIfExists;
-                    LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
-                    file = folder.Files.Add(fileCreation);
-                    folder.Context.ExecuteQuery();
-                }
+                FileCreationInformation fileCreation = new FileCreationInformation();
+                fileCreation.ContentStream = stream;
+                fileCreation.Url = fileName;
+                fileCreation.Overwrite = overwriteIfExists;
+                LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
+                file = folder.Files.Add(fileCreation);
+                folder.Context.ExecuteQuery();
             }
 
             if (contentTypeId != null)
@@ -646,14 +693,8 @@ namespace Microsoft.SharePoint.Client
             return file;
         }
 
-        /// <summary>
-        /// Uploads a file to a server relative url
-        /// </summary>
-        /// <param name="web">The web to process</param>
-        /// <param name="filePath">Full path to the file like c:\temp\fuu.txt</param>
-        /// <param name="serverRelativeUrl">Full server relative destination url of the file on the server</param>
-        /// <param name="useWebDav">Use webdav uploads, better suitable for larger files.</param>
         [Obsolete("Prefer folder.UploadFile() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void UploadFileToServerRelativeUrl(this Web web, string filePath, string serverRelativeUrl, bool useWebDav = false)
         {
             if (!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))

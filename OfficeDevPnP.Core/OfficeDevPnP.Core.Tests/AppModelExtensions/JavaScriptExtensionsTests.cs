@@ -22,7 +22,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.AddJsLink(KEY, "/jquery-2.1.1.min.js"); // Dummy link
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Description == KEY).FirstOrDefault();
+                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 
                 // Teardown
@@ -42,7 +42,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.AddJsLink(KEY, new List<string> { "/jquery-2.1.1.min.js", "/anotherjslink.js" }); // Dummy link
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Description == KEY).FirstOrDefault();
+                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
 
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 
@@ -67,7 +67,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.DeleteJsLink(KEY);
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Description == KEY).FirstOrDefault();
+                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
                 Assert.IsNull(existingAction, "Existing Action not found");
             }
         }
@@ -81,7 +81,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.AddJsBlock(KEY, "<script>alert('Testing')</script>");
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Description == KEY).FirstOrDefault();
+                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
 
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 

@@ -25,7 +25,13 @@ namespace OfficeDevPnP.Core.Utilities
         InstallSolution = 1502,
         CreateWeb = 1503,
         CreateSiteCollection = 1504,
-        UninstallSolution = 1505,
+        CreateField = 1506,
+        CreateContentType = 1507,
+        CreateListField = 1508,
+        CreateTermGroup = 1509,
+        CreateTermSet = 1510,
+        ImportTermSet = 1511,
+        CreateList = 1512,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -33,25 +39,43 @@ namespace OfficeDevPnP.Core.Utilities
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
-        CreateField = 1701,
+        SendMailCancelled = 2201,
 
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
+        AddFieldToContentType = 2503,
+        CreateTerm = 2504,
+        
         SetTheme = 2601,
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
 
         ClosedContextWarning = 4201,
+        
         ProblemDeterminingTokenLease = 4301,
+
+        FieldAlreadyExists = 4501,
+        ContentTypeAlreadyExists = 4502,
+        ProvisionTaxonomyUpdateException = 4503,
+        ProvisionTaxonomyIdMismatch = 4504,
+
         ThemeNotOverwritten = 4601,
+
+        MailSendException = 5201,
+        MailSendFailed = 5202,
+
+        SiteSearchUnhandledException = 5401,
 
         LibraryMissing = 5501,
         FolderMissing = 5502,
+        FeatureActivationProblem = 5503,
+        ProvisionTaxonomyImportErrorName = 5504,
+        ProvisionTaxonomyImportErrorTagging = 5505,
+        ProvisionTaxonomyImportErrorDescription = 5506,
+        ProvisionTaxonomyImportErrorDelete = 5507,
 
         ThemeMissing = 5601,
 
-        SiteSearchUnhandledException = 5401,
-        FeatureActivationProblem = 5501,
         UnknownExceptionAccessingSite = 5901,
 
         DeleteWeb = 8501,
@@ -59,7 +83,8 @@ namespace OfficeDevPnP.Core.Utilities
         RemoveAppInstance = 8503,
         DeactivateWebFeature = 8504,
         DeactivateSiteCollectionFeature = 8505,
-
+        UninstallSolution = 8506,
+        DeleteTerm = 8507,
     }
 
     /// <summary>

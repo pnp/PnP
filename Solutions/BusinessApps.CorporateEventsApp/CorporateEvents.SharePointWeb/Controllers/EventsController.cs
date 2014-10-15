@@ -10,13 +10,28 @@ using System.Web.Mvc;
 namespace CorporateEvents.SharePointWeb.Controllers {
     public class EventsController : Controller {
         #region [ Index ]
-        public ActionResult Index(int offset = 0) {
+        [SharePointContextFilter]
+        public ActionResult Index(string category = "") {
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+
             using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {
+                ViewBag.SPHostUrl = spContext.SPHostUrl;
+                ViewBag.Category = category;
+
                 var list = clientContext.Web.GetListByTitle(ListDetails.EventsListName);
+                var categoryQuery = string.Empty;
+                if (!string.IsNullOrEmpty(category)) {
+                    categoryQuery = CAML.Where(CAML.Eq(CAML.FieldValue(Event.FIELD_CATEGORY, "Text", category)));
+                }
+                var orderByQuery = CAML.OrderBy(new OrderByField("Title"));
+
                 var caml = new CamlQuery() {
-                    ViewXml = CAML.ViewQuery()
+                    ViewXml = CAML.ViewQuery(categoryQuery, orderByQuery, rowLimit: 50)
                 };
                 var events = list.GetItems(caml);
+                clientContext.Load(events);
+                clientContext.ExecuteQuery();
+
                 var eventsList = events.Cast<ListItem>().Select(item => new Event(item)).ToList();
                 return View(eventsList);
             }
@@ -53,7 +68,7 @@ namespace CorporateEvents.SharePointWeb.Controllers {
         /// <param name="maxCount">Maximum number of items to return.</param>
         /// <returns></returns>
         [SharePointContextFilter]
-        public ActionResult Featured(int maxCount = 5) {
+        public ActionResult Featured(int maxCount = 3) {
             using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {
                 ViewBag.SPHostUrl = HttpContext.Request.QueryString["SPHostUrl"];
 
@@ -69,7 +84,8 @@ namespace CorporateEvents.SharePointWeb.Controllers {
                                 )
                             )
                         ),
-                        CAML.OrderBy(new OrderByField(Event.FIELD_DATE)))
+                        CAML.OrderBy(new OrderByField(Event.FIELD_DATE)),
+                        rowLimit: maxCount)
                 };
 
                 var list = clientContext.Web.Lists.GetByTitle(ListDetails.EventsListName);
@@ -88,18 +104,20 @@ namespace CorporateEvents.SharePointWeb.Controllers {
         #endregion
 
         #region [ Register ]
+        [SharePointContextFilter]
         public ActionResult Register(string eventId) {
             ViewBag.EventId = eventId;
             return View();
         }
         [HttpPost]
+        [SharePointContextFilter]
         public ActionResult Register(Registration registration) {
             if (!ModelState.IsValid)
                 View(registration);
 
             try {
                 using (var clientContext = HttpContext.GetUserClientContextForSPHost()) {
-                    registration.Save(clientContext);
+                    registration.Save(clientContext.Web);
                 }
                 return RedirectToAction("Index", "Registration");
             }

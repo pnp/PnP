@@ -8,10 +8,13 @@ This solution shows how you can build a library of PowerShell commands that act 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
+### Prerequisites ###
+In order to build the setup project the Wix toolset needs to be installed. You can obtain this from http://wix.codeplex.com.
+
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-OfficeDevPnP.PowerShell | Erwin van Hunen (Knowit Reaktor Stockholm AB)
+OfficeDevPnP.PowerShell | Erwin van Hunen (**Knowit Reaktor Stockholm AB**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -134,6 +137,7 @@ Command | Description
 **New-SPOList** | Creates a new list
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
+**Set-SPODefaultColumnValues** | Sets default column values for a document library
 
 #### User and Group Cmdlets ####
 Command | Description
@@ -210,6 +214,10 @@ Command | Description
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
 
-
+#### User Profile / OD4B Cmdlets ####
+Command | Description
+:--------|:------------
+**Get-SPOUserProfileProperty** | Returns the user profile properties for one or more users
+**New-SPOPersonalSite** | Provisions a profile site. Only works towards Office365
 
 

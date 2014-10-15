@@ -1,7 +1,23 @@
 ﻿// List View - Substring Long String Sample
 // Muawiyah Shannak , @MuShannak
-// Modified by Canviz LLC for inclusion in Office AMS
-(function () {
+// Modified by Canviz LLC for inclusion in Office PnP
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterBodyFiledContext();
+}
+
+function RegisterInMDS() {
+    // RegisterBodyFiledContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/SubstringLongText.js", RegisterBodyFiledContext);
+    //RegisterBodyFiledContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterBodyFiledContext();
+}
+
+
+function RegisterBodyFiledContext() {
 
     // Create object that has the context information about the field that we want to render differently 
     var bodyFiledContext = {};
@@ -13,7 +29,7 @@
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(bodyFiledContext);
 
-})();
+}
 
 // This function provides the rendering logic
 function bodyFiledTemplate(ctx) {

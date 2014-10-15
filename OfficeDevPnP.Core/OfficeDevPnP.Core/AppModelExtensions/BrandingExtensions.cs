@@ -11,8 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using LanguageTemplateHash = System.Collections.Generic.Dictionary<string,
-                                                                    System.Collections.Generic.List<string>>;
+using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -337,8 +336,8 @@ namespace Microsoft.SharePoint.Client
                     {
                         var masterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
 
-                        web.SetMasterPageForSiteByUrl(masterUrl);
-                        web.SetCustomMasterPageForSiteByUrl(masterUrl);
+                        web.SetMasterPageByUrl(masterUrl);
+                        web.SetCustomMasterPageByUrl(masterUrl);
                     }
                 }
                 else
@@ -443,7 +442,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="title">Title for the page layout</param>
         /// <param name="description">Description for the page layout</param>
         /// <param name="associatedContentTypeID">Associated content type ID</param>
-        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
+        /// <param name="folderPath">Folder where the page layouts will be stored</param>
+        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
@@ -460,13 +460,21 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
             web.Context.ExecuteQuery();
+            
+            // Create folder structure inside master page gallery, if does not exists
+            // For e.g.: _catalogs/masterpage/contoso/
+            // Create folder if does not exists
+            if (!String.IsNullOrEmpty(folderPath))
+            {
+                web.EnsureFolder(rootFolder, folderPath);
+            }
 
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
 
             // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = fileBytes;
-            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, fileName);
+            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderPath, fileName);
             newFile.Overwrite = true;
 
             Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
@@ -481,7 +489,7 @@ namespace Microsoft.SharePoint.Client
                     uploadFile.CheckOut();
                 }
             }
-
+            
             // Get content type for ID to assign associated content type information
             ContentType associatedCt = web.GetContentTypeById(associatedContentTypeID);
 
@@ -505,14 +513,14 @@ namespace Microsoft.SharePoint.Client
 
         }
 
-        public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "")
+        public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "", string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
 
             if (!System.IO.File.Exists(sourceFilePath))
                 throw new FileNotFoundException("File for param sourceFilePath not found.", sourceFilePath);
-
+                
             string fileName = Path.GetFileName(sourceFilePath);
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, CoreResources.BrandingExtension_DeployMasterPage, fileName, web.Context.Url);
 
@@ -522,6 +530,12 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
             web.Context.ExecuteQuery();
+            
+            // Create folder if does not exists
+            if (!String.IsNullOrEmpty(folderPath))
+            {
+                web.EnsureFolder(rootFolder, folderPath);
+            }
 
             // Get the file name from the provided path
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
@@ -529,7 +543,7 @@ namespace Microsoft.SharePoint.Client
             // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = fileBytes;
-            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, fileName);
+            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderPath, fileName);
             newFile.Overwrite = true;
 
             Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
@@ -603,7 +617,7 @@ namespace Microsoft.SharePoint.Client
             web.SetCustomMasterPageByName(customMasterPageName);
         }
 
-           /// <summary>
+        /// <summary>
         /// Can be used to set master page and custom master page in single command
         /// </summary>
         /// <param name="web"></param>
@@ -640,11 +654,11 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
             }
 
-            web.SetMasterPageForSiteByUrl(masterPageUrl);
-            web.SetCustomMasterPageForSiteByUrl(customMasterPageUrl);
+            web.SetMasterPageByUrl(masterPageUrl);
+            web.SetCustomMasterPageByUrl(customMasterPageUrl);
         }
 
-          /// <summary>
+        /// <summary>
         /// Master page is set by using master page name. Master page is set from the current web.
         /// </summary>
         /// <param name="web">Current web</param>
@@ -675,7 +689,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetMasterPageForSiteByUrl(web, masterPageUrl);
+                SetMasterPageByUrl(web, masterPageUrl);
             }
 
         }
@@ -712,7 +726,7 @@ namespace Microsoft.SharePoint.Client
             string masterPageUrl = GetRelativeUrlForMasterByName(web, masterPageName);
             if (!string.IsNullOrEmpty(masterPageUrl))
             {
-                SetCustomMasterPageForSiteByUrl(web, masterPageUrl);
+                SetCustomMasterPageByUrl(web, masterPageUrl);
             }
         }
 
@@ -764,7 +778,7 @@ namespace Microsoft.SharePoint.Client
             return null;
         }
 
-         /// <summary>
+        /// <summary>
         /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
@@ -792,12 +806,18 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
+        [Obsolete("Use Web.SetCustomMasterPageByUrl()")]
+        public static void SetCustomMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        {
+            web.SetCustomMasterPageByUrl(masterPageUrl);
+        }
+
         /// <summary>
         /// Set Custom master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
         /// <param name="masterPageName">URL to the master page.</param>
-        public static void SetCustomMasterPageForSiteByUrl(this Web web, string masterPageUrl)
+        public static void SetCustomMasterPageByUrl(this Web web, string masterPageUrl)
         {
             if (string.IsNullOrEmpty(masterPageUrl))
                 throw new ArgumentNullException("masterPageUrl");

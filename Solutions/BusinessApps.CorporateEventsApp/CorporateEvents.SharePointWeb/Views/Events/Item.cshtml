@@ -11,7 +11,7 @@
 
     <hr />
 
-    <div>@Html.ActionLink("Register for this event", "Register")</div>
+    <h4>@Html.ActionLink("Register for this event", "Register", new { EventId = Model.RegisteredEventId })</h4>
 
     <dl class="dl-horizontal">
 
@@ -72,6 +72,3 @@
         </dd>
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -2,6 +2,16 @@
 @{
     ViewBag.Title = "Configuration";
 }
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            $('#initializeButton').click(function () {
+                $('#loading').show();
+                $(this).attr('disabled', 'disabled');
+            });
+        });
+    </script>
+}
 
 <h2>Configure your events application</h2>
 @using (Html.BeginForm()) {
@@ -9,7 +19,10 @@
 
 <div>
     @if (string.IsNullOrEmpty(ViewBag.Status)) {
-        <button>Initialize the data store</button>
+        <button id="initializeButton">Initialize the data store</button>
+        <div style="display:inline;padding-left:10px;">
+            <span id="loading" style="display:none"><img src="~/Images/ajax-loader.gif" style="padding-right: 10px;" /> Creating lists and adding default data...</span>
+        </div>
     }
     else {
         <text>Configuration status: </text> @ViewBag.Status

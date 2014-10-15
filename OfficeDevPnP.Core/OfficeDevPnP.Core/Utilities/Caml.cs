@@ -31,10 +31,7 @@ namespace OfficeDevPnP.Core.Utilities {
             return string.Format(FIELD_VALUE, fieldName, fieldValueType, value);
         }
 
-        public static string OrderBy(params OrderByField[] fieldNames) {
-            return OrderBy(true, fieldNames);
-        }
-        public static string OrderBy(bool ascending, params OrderByField[] fieldRefs) {
+        public static string OrderBy(params OrderByField[] fieldRefs) {
             var sb = new StringBuilder();
             foreach (var field in fieldRefs){
                 sb.Append(field.ToString());

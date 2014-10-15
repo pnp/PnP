@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <ClientWebPart Name="FeaturedEvents" Title="Featured Events"
                  Description="Displays featured events"
-                 DefaultWidth="580" DefaultHeight="240">
+                 DefaultWidth="700" DefaultHeight="240">
 
     <!-- Content element identifies the location of the page that will render inside the client web part
          Properties are referenced on the query string using the pattern _propertyName_

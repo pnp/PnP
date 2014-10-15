@@ -1,7 +1,22 @@
 ﻿// List New and Edit Forms – Hidden Field Sample
 // Muawiyah Shannak , @MuShannak
-// Modified by Canviz LLC for inclusion in Office AMS
-(function () {
+// Modified by Canviz LLC for inclusion in Office PnP
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    RegisterInMDS();
+}
+else {
+    RegisterHiddenFiledContext();
+}
+
+function RegisterInMDS() {
+    // RegisterHiddenFiledContext-override for MDS enabled site
+    RegisterModuleInit(_spPageContextInfo.siteServerRelativeUrl + "/Style%20Library/JSLink-Samples/HiddenField.js", RegisterHiddenFiledContext);
+    //RegisterHiddenFiledContext-override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
+    RegisterHiddenFiledContext();
+}
+
+function RegisterHiddenFiledContext () {
 
     // jQuery library is required in this sample
     // Fallback to loading jQuery from a CDN path if the local is unavailable
@@ -21,7 +36,7 @@
 
     SPClientTemplates.TemplateManager.RegisterTemplateOverrides(hiddenFiledContext);
 
-})();
+}
 
 
 // This function provides the rendering logic

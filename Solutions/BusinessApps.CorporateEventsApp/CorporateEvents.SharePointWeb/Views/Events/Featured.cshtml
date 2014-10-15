@@ -30,16 +30,18 @@
             }
         })();
     </script>
+    <style type="text/css">
+        .featured-event-item { width:200px; float:left; padding:10px; }
+    </style>
 </head>
 <body>
-    <h2>Featured Events</h2>
     <div>
         @foreach (var item in Model) {
-            <div style="width:200px;">
+            <div class="featured-event-item">
                 <div><img src="@item.ImageUrl" alt="@item.Title" style="width:180px;height:85px" /></div>
                 <h3>@item.Title</h3>
                 <div>@item.ShortDescription</div>
-                <div>@Html.ActionLink("more info", "Item", new { id = item.Id, SPHostUrl = ViewBag.SPHostUrl })</div>
+                <div>@Html.ActionLink("more info", "Item", new { id = item.Id, SPHostUrl = ViewBag.SPHostUrl }, new { target = "_top"})</div>
             </div>
         }
     </div>

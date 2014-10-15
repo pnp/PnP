@@ -82,7 +82,7 @@ namespace Contoso.Branding.ThemesWeb
                     web.DeployThemeToWeb("SPC",
                                     HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")),
                                     null,
-                                    HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.png")),
+                                    HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")),
                                     string.Empty);
 
                     // Setting the Contoos theme to host web

@@ -50,6 +50,9 @@
     <Content Include="AppIcon.png">
       <OpcRelationship>manifest-icon</OpcRelationship>
     </Content>
+    <Content Include="Events\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
     <Content Include="Featured Events\Elements.xml">
       <OpcRelationship>feature-elementmanifest</OpcRelationship>
     </Content>
@@ -72,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Events\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2cd62ea9-61bf-4ff3-a5cd-952ec5ba284a}</SharePointProjectItemId>
+    </None>
     <None Include="Featured Events\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ee8bdffd-d79a-44b8-8b07-32f7d1eb673b}</SharePointProjectItemId>
     </None>
