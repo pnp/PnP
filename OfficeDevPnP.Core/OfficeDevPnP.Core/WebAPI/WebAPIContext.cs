@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Services
+namespace OfficeDevPnP.Core.WebAPI
 {
     /// <summary>
     /// This class holds the information that's passed from the SharePoint app to the "Register" WebAPI service call
     /// </summary>
-    public class SharePointServiceContext
+    public class WebAPIContext
     {
         /// <summary>
         /// The cacheKey that will be used. The cache key is unique for each combination of user name, user name issuer, application, and farm. 

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Services
+namespace OfficeDevPnP.Core.WebAPI
 {
     /// <summary>
     /// This class holds the information that's being cached as part of the WebAPI service implementation
     /// </summary>
-    public class SharePointServiceContexCacheItem
+    public class WebAPIContexCacheItem
     {
         /// <summary>
         /// The SharePoint Access token
@@ -23,6 +23,6 @@ namespace OfficeDevPnP.Core.Services
         /// <summary>
         /// The information initially used to register the SharePoint app to the WebAPI service
         /// </summary>
-        public SharePointServiceContext SharePointServiceContext { get; set; }
+        public WebAPIContext SharePointServiceContext { get; set; }
     }
 }

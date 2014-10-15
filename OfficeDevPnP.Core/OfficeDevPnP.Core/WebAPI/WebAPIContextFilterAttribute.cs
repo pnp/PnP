@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace OfficeDevPnP.Core.Services
+namespace OfficeDevPnP.Core.WebAPI
 {
-    public class SharePointServiceContextFilterAttribute : ActionFilterAttribute
+    public class WebAPIContextFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
@@ -15,7 +15,7 @@ namespace OfficeDevPnP.Core.Services
                 throw new ArgumentNullException("actionContext");
             }
 
-            if (SharePointServiceHelper.HasCacheEntry(actionContext.ControllerContext))
+            if (WebAPIHelper.HasCacheEntry(actionContext.ControllerContext))
             {
                 return;
             }

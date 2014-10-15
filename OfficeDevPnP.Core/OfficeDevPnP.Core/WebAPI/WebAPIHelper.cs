@@ -16,13 +16,13 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.UI;
 
-namespace OfficeDevPnP.Core.Services
+namespace OfficeDevPnP.Core.WebAPI
 {
     /// <summary>
     /// This class provides helper methods that can be used to protect WebAPI services and to provide a 
     /// way to reinstantiate a contextobject in the service call.
     /// </summary>
-    public class SharePointServiceHelper
+    public class WebAPIHelper
     {
         /// <summary>
         /// This is the name of the cookie that will hold the cachekey.
@@ -68,7 +68,7 @@ namespace OfficeDevPnP.Core.Services
             if (cookie != null)
             {
                 string cacheKey = cookie[SERVICES_TOKEN].Value;
-                SharePointServiceContexCacheItem cacheItem = SharePointServiceContextCache.Instance.Get(cacheKey);
+                WebAPIContexCacheItem cacheItem = WebAPIContextCache.Instance.Get(cacheKey);
 
                 //request a new access token from ACS whenever our current access token will expire in less than 1 hour
                 if (cacheItem.AccessToken.ExpiresOn < (DateTime.Now.AddHours(-1)))
@@ -77,7 +77,7 @@ namespace OfficeDevPnP.Core.Services
                     OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(cacheItem.RefreshToken, TokenHelper.SharePointPrincipal, targetUri.Authority, TokenHelper.GetRealmFromTargetUrl(targetUri));
                     cacheItem.AccessToken = accessToken;
                     //update the cache
-                    SharePointServiceContextCache.Instance.Put(cacheKey, cacheItem);
+                    WebAPIContextCache.Instance.Put(cacheKey, cacheItem);
                     LoggingUtility.Internal.TraceInformation((int)EventId.ServicesTokenRefreshed, CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
                 }
                  
@@ -95,7 +95,7 @@ namespace OfficeDevPnP.Core.Services
         /// This method is called from the Register WebAPI service api.
         /// </summary>
         /// <param name="sharePointServiceContext">Object holding information about the requesting SharePoint app</param>
-        public static void AddToCache(SharePointServiceContext sharePointServiceContext)
+        public static void AddToCache(WebAPIContext sharePointServiceContext)
         {
             if (sharePointServiceContext == null)
                 throw new ArgumentNullException("sharePointServiceContext");
@@ -104,13 +104,13 @@ namespace OfficeDevPnP.Core.Services
             TokenHelper.HostedAppHostName = sharePointServiceContext.HostedAppHostName;
             SharePointContextToken sharePointContextToken = TokenHelper.ReadAndValidateContextToken(sharePointServiceContext.Token);
             OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(sharePointContextToken, new Uri(sharePointServiceContext.HostWebUrl).Authority);
-            SharePointServiceContexCacheItem cacheItem = new SharePointServiceContexCacheItem()
+            WebAPIContexCacheItem cacheItem = new WebAPIContexCacheItem()
             {
                 RefreshToken = sharePointContextToken.RefreshToken,
                 AccessToken = accessToken,
                 SharePointServiceContext = sharePointServiceContext
             };
-            SharePointServiceContextCache.Instance.Put(sharePointServiceContext.CacheKey, cacheItem);
+            WebAPIContextCache.Instance.Put(sharePointServiceContext.CacheKey, cacheItem);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace OfficeDevPnP.Core.Services
                     page.Response.AppendCookie(cookie);
 
                     //Register the ClientContext
-                    SharePointServiceContext sharePointServiceContext = new SharePointServiceContext()
+                    WebAPIContext sharePointServiceContext = new WebAPIContext()
                     {
                         CacheKey = cacheKey,
                         ClientId = TokenHelper.ClientId,

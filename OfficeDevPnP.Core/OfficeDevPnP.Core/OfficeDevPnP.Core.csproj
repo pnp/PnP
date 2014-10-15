@@ -244,11 +244,11 @@
     <Compile Include="IdentityModel\TokenProviders\ADFS\UsernameMixed.cs" />
     <Compile Include="IdentityModel\WSTrustBindings\UserNameWSTrustBinding.cs" />
     <Compile Include="IdentityModel\WSTrustBindings\WSTrustBindingBase.cs" />
-    <Compile Include="Services\SharePointServiceContexCacheItem.cs" />
-    <Compile Include="Services\SharePointServiceContext.cs" />
-    <Compile Include="Services\SharePointServiceContextCache.cs" />
-    <Compile Include="Services\SharePointServiceContextFilterAttribute.cs" />
-    <Compile Include="Services\SharePointServiceHelper.cs" />
+    <Compile Include="WebAPI\WebAPIContexCacheItem.cs" />
+    <Compile Include="WebAPI\WebAPIContext.cs" />
+    <Compile Include="WebAPI\WebAPIContextCache.cs" />
+    <Compile Include="WebAPI\WebAPIContextFilterAttribute.cs" />
+    <Compile Include="WebAPI\WebAPIHelper.cs" />
     <Compile Include="Utilities\Caml.cs" />
     <Compile Include="Utilities\LoggingUtility.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
