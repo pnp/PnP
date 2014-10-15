@@ -53,19 +53,12 @@ namespace Core.Services.Authenticate.SharePointWeb
             //register script in page
             Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);
 
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-            //SharePointServiceHelper.RegisterService(Page, new Uri("https://localhost:44349/"), "api/demo/register", (spContext as SharePointAcsContext).CacheKey);
-            SharePointServiceHelper.RegisterService(Page, null, "api/demo/register", (spContext as SharePointAcsContext).CacheKey);
-
-            // The following code gets the client context and Title property by using TokenHelper.
-            // To access other properties, the app may need to request permissions on the host web.
-            //var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-            //using (var clientContext = spContext.CreateUserClientContextForSPHost())
-            //{
-            //    clientContext.Load(clientContext.Web, web => web.Title);
-            //    clientContext.ExecuteQuery();
-            //    Response.Write(clientContext.Web.Title);
-            //}
+            SharePointServiceHelper.RegisterService(Page, "api/demo/register");
+            
+            //Optionally the url to the web api service can be specified. If not specified we assume the WebAPI lives in
+            //the same project as this page does
+            //SharePointServiceHelper.RegisterService(Page, "api/demo/register", new Uri("https://localhost:44349/"));
+            
         }
     }
 }
