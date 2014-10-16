@@ -321,7 +321,7 @@ namespace Microsoft.SharePoint.Client
                                     userIdentity = "Tất cả mọi người trừ người dùng bên ngoài";
                                     break;
                             }
-                            if (string.IsNullOrEmpty(userIdentity))
+                            if (!string.IsNullOrEmpty(userIdentity))
                             {
                                 spReader = web.EnsureUser(userIdentity);
                                 web.Context.Load(spReader);
