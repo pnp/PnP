@@ -1,2 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="50b30ff4-7284-456a-88a6-a01a62762fcf" solutionId="50b30ff4-7284-456a-88a6-a01a62762fcf" resetWebServer="false" sharePointProductVersion="16.0" name="Workflow.AssociateToList" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" />
