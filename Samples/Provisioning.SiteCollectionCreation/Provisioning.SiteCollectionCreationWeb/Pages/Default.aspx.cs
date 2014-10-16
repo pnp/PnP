@@ -58,7 +58,7 @@ namespace Contoso.Provisioning.SiteCollectionCreationWeb
             listSites.Items.Add(new System.Web.UI.WebControls.ListItem("Über Team", "STS#0"));
             listSites.SelectedIndex = 0;
 
-            lblBasePath.Text = Request["SPHostUrl"].Substring(0, 8 + Request["SPHostUrl"].Substring(8).IndexOf("/")) + "/sites/";
+            lblBasePath.Text = Request["SPHostUrl"].Substring(0, 8 + Request["SPHostUrl"].Substring(8).IndexOf("/")) + "/";
         }
 
 
