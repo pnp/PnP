@@ -28,7 +28,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
             }
 
             //register the script for this control
-            string clientID = "hyB2pTvrL36Y50py8EWj6A";
+            string clientID = "ps0NsGfpxVdOhMYht2PeQ";
             string yamScript = @"
                 var yamAuth = false;
                 var auth = false;
@@ -80,7 +80,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                                     auth = true;
                                     if (resp.authResponse) {
                                         $('.yamLogin').hide();
-                                        $('#" + this.hdnYammerAccessToken.ClientID + @"').val(response.access_token.token);
+                                        $('#" + this.hdnYammerAccessToken.ClientID + @"').val(resp.access_token.token);
                                         $('#divGroupType').show();
                                     }
                                 }
@@ -113,8 +113,8 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                 }
 
                 function groupSearch(txt, callback) {
-                    yam.request({
-                        url: 'https://www.yammer.com/api/v1/autocomplete/ranked?prefix=' + txt + '&models=group:5',
+                    yam.platform.request({
+                        url: 'autocomplete/ranked?prefix=' + txt + '&models=group:5',
                         method: 'GET',
                         headers: { 'Accept': 'application/json' },
                         success: function (results) {
@@ -126,7 +126,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                     });
                 }";
             ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamChanged", yamScript, true);
-            ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamScript", "<script id='yamScript' type='text/javascript' data-app-id='" + clientID + "' src='https://assets.yammer.com/platform/yam.js'></script>", false);
+            ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamScript", "<script id='yamScript' type='text/javascript' data-app-id='" + clientID + "' src='https://c64.assets-yammer.com/assets/platform_js_sdk.js'></script>", false);
         }
 
         public override void Provision(ClientContext context, Web web)
@@ -171,7 +171,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
 <property name='Content' type='string'>
 <![CDATA[
 <div id='embedded-feed' style='height: 500px;'></div>
-<script type='text/javascript' src='https://assets.yammer.com/assets/platform_embed.js'></script>
+<script type='text/javascript' src='https://c64.assets-yammer.com/assets/platform_embed.js'></script>
 <script type='text/javascript'>  yam.connect.embedFeed({ container: '#embedded-feed', network: '" + network + @"', feedType: 'group', feedId: '" + groupId + @"'}); </script>
 
 ]]>
