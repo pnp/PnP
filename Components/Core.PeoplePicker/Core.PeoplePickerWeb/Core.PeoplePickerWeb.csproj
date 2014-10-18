@@ -88,6 +88,10 @@
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Pages\Default.aspx" />
     <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\csompeoplepickercontrol.js" />
+    <Content Include="Scripts\csompeoplepickercontrol_resources.en.js" />
+    <Content Include="Scripts\csompeoplepickercontrol_resources.fi.js" />
+    <Content Include="Scripts\csompeoplepickercontrol_resources.nl.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -112,6 +116,7 @@
     <Compile Include="Pages\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PeoplePickerHelper.cs" />
     <Compile Include="PeoplePickerUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharePointContext.cs" />

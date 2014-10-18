@@ -9,6 +9,7 @@
     <script src="../Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="../Scripts/app.js?rev=1" type="text/javascript"></script>
     <script src="../Scripts/peoplepickercontrol.js?rev=1" type="text/javascript"></script>
+    <script src="../Scripts/csompeoplepickercontrol.js?rev=1" type="text/javascript"></script>
 </head>
 <body style="display: none;">
     <form id="form1" runat="server">
@@ -16,6 +17,7 @@
         <div id="divSPChrome"></div>
         <div style="left: 50%; width: 500px; margin-left: -250px; position: absolute;">
 
+            <h2>Peoplepicker using JSOM</h2>
             <div id="divFieldOwners">
                 <h3 class="ms-core-form-line" style="margin-top: 15px !important;">Select a user:</h3>
                 <div class="ms-core-form-line">
@@ -39,7 +41,34 @@
             <div id="divButtons" style="float: right;">
                 <asp:Button ID="btnCreate" runat="server" Text="Submit" CssClass="ms-ButtonHeightWidth" OnClick="btnCreate_Click" />
             </div>
+            
+            <br />
+            <br />
+            <br />
+
+            <h2>Peoplepicker using serverside webmethod (CSOM)</h2>
+            <div id="divTestCsomPeoplePicker">
+                <h3 class="ms-core-form-line" style="margin-top: 15px !important;">Select a user:</h3>
+                <div class="ms-core-form-line">
+                    <div id="divCsomAdministrators" class="cam-peoplepicker-userlookup ms-fullWidth">
+                        <span id="spanCsomAdministrators"></span>
+                        <asp:TextBox ID="inputCsomAdministrators" runat="server" CssClass="cam-peoplepicker-edit" Width="70"></asp:TextBox>
+                    </div>
+                    <div id="divCsomAdministratorsSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+                    <asp:HiddenField ID="hdnCsomAdministrators" runat="server" />
+                </div>
+            </div>
+
+            <div class="ms-core-form-line">
+                <asp:Label ID="lblCsomEnteredData" runat="server" CssClass="ms-fullWidth"></asp:Label>
+            </div>
+            <div id="divCsomButtons" style="float: right;">
+                <asp:Button ID="btnGetValueByServer" runat="server" Text="Get values by server" CssClass="ms-ButtonHeightWidth" OnClick="btnGetValueByServer_Click" />
+                <button id="GetValuesByJavascript">Get values by javascript</button>
+            </div>        
+
         </div>
+       
     </form>
 </body>
 </html>
