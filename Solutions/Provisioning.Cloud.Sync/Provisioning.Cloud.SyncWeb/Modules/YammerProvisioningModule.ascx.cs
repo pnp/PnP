@@ -80,7 +80,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                                     auth = true;
                                     if (resp.authResponse) {
                                         $('.yamLogin').hide();
-                                        $('#" + this.hdnYammerAccessToken.ClientID + @"').val(response.access_token.token);
+                                        $('#" + this.hdnYammerAccessToken.ClientID + @"').val(resp.access_token.token);
                                         $('#divGroupType').show();
                                     }
                                 }
@@ -113,7 +113,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                 }
 
                 function groupSearch(txt, callback) {
-                    yam.request({
+                    yam.platform.request({
                         url: 'https://www.yammer.com/api/v1/autocomplete/ranked?prefix=' + txt + '&models=group:5',
                         method: 'GET',
                         headers: { 'Accept': 'application/json' },
@@ -126,7 +126,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
                     });
                 }";
             ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamChanged", yamScript, true);
-            ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamScript", "<script id='yamScript' type='text/javascript' data-app-id='" + clientID + "' src='https://assets.yammer.com/platform/yam.js'></script>", false);
+            ScriptManager.RegisterClientScriptBlock(this, typeof(YammerProvisioningModule), "yamScript", "<script id='yamScript' type='text/javascript' data-app-id='" + clientID + "' src='https://c64.assets-yammer.com/assets/platform_js_sdk.js'></script>", false);
         }
 
         public override void Provision(ClientContext context, Web web)
@@ -171,7 +171,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.Modules
 <property name='Content' type='string'>
 <![CDATA[
 <div id='embedded-feed' style='height: 500px;'></div>
-<script type='text/javascript' src='https://assets.yammer.com/assets/platform_embed.js'></script>
+<script type='text/javascript' src='https://c64.assets-yammer.com/assets/platform_embed.js'></script>
 <script type='text/javascript'>  yam.connect.embedFeed({ container: '#embedded-feed', network: '" + network + @"', feedType: 'group', feedId: '" + groupId + @"'}); </script>
 
 ]]>

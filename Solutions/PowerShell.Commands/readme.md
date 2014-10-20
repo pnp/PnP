@@ -220,4 +220,13 @@ Command | Description
 **Get-SPOUserProfileProperty** | Returns the user profile properties for one or more users
 **New-SPOPersonalSite** | Provisions a profile site. Only works towards Office365
 
-
+#### Workflow Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOWorkflowSubscription** | Adds a new subscription (association) to a list or web
+**Get-SPOWorkflowDefinition** | Returns all or a specific workflow definition (reusable workflow)
+**Get-SPOWorkflowSubscription** | Returns all or a specific workflow subscription
+**Remove-SPOWorkflowDefinition** | Removes a workflow definition (reusable workflow)
+**Remove-SPOWorkflowSubscription** | Removes a workflow subscription
+**Resume-SPOWorkflowInstance** | Resumes a workflow instance
+**Stop-SPOWorkflowInstance** | Stops (cancels) a workflow instance
