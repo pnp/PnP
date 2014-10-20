@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.WebAPI
     /// This class provides helper methods that can be used to protect WebAPI services and to provide a 
     /// way to reinstantiate a contextobject in the service call.
     /// </summary>
-    public class WebAPIHelper
+    public static class WebAPIHelper
     {
         /// <summary>
         /// This is the name of the cookie that will hold the cachekey.
@@ -101,6 +101,7 @@ namespace OfficeDevPnP.Core.WebAPI
                 throw new ArgumentNullException("sharePointServiceContext");
 
             TokenHelper.ClientId = sharePointServiceContext.ClientId;
+            TokenHelper.ClientSecret = sharePointServiceContext.ClientSecret;
             TokenHelper.HostedAppHostName = sharePointServiceContext.HostedAppHostName;
             SharePointContextToken sharePointContextToken = TokenHelper.ReadAndValidateContextToken(sharePointServiceContext.Token);
             OAuth2AccessTokenResponse accessToken = TokenHelper.GetAccessToken(sharePointContextToken, new Uri(sharePointServiceContext.HostWebUrl).Authority);
@@ -123,7 +124,7 @@ namespace OfficeDevPnP.Core.WebAPI
         /// <param name="page">The page object, needed to insert the services token cookie and read the querystring</param>
         /// <param name="apiRequest">Route to the "Register" API</param>
         /// <param name="serviceEndPoint">Optional Uri to the WebAPI service endpoint. If null then the assumption is taken that the WebAPI is hosted together with the page making this call</param>
-        public static async void RegisterService(Page page, string apiRequest, Uri serviceEndPoint = null)
+        public static async void RegisterWebAPIService(this Page page, string apiRequest, Uri serviceEndPoint = null)
         {
             if (page == null)
                 throw new ArgumentNullException("page");
@@ -167,6 +168,7 @@ namespace OfficeDevPnP.Core.WebAPI
                     {
                         CacheKey = cacheKey,
                         ClientId = TokenHelper.ClientId,
+                        ClientSecret = TokenHelper.ClientSecret,
                         Token = contextToken,
                         HostWebUrl = page.Request.QueryString.AsString("SPHostUrl", null),
                         AppWebUrl = page.Request.QueryString.AsString("SPAppWebUrl", null),

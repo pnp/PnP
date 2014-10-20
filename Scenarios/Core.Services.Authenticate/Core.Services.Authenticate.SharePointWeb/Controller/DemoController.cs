@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using OfficeDevPnP.Core.Services;
 using Core.Services.Authenticate.SharePointWeb.Models;
+using OfficeDevPnP.Core.WebAPI;
 
 namespace Core.Services.Authenticate.SharePointWeb.Controller
 {
@@ -21,17 +21,17 @@ namespace Core.Services.Authenticate.SharePointWeb.Controller
 
         [HttpPut]
         //[Route("api/demo/register")]
-        public void Register(SharePointServiceContext sharePointServiceContext)
+        public void Register(WebAPIContext sharePointServiceContext)
         {
-            SharePointServiceHelper.AddToCache(sharePointServiceContext);
+            WebAPIHelper.AddToCache(sharePointServiceContext);
         }
 
-        [SharePointServiceContextFilter]
+        [WebAPIContextFilter]
         [HttpGet]
         public IEnumerable<Product> GetAllProducts()
         {
             Microsoft.SharePoint.Client.User spUser = null;
-            using (var clientContext = SharePointServiceHelper.GetClientContext(ControllerContext))
+            using (var clientContext = WebAPIHelper.GetClientContext(ControllerContext))
             { 
                 if (clientContext != null)
                 {

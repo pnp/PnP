@@ -32,6 +32,10 @@ namespace OfficeDevPnP.Core.WebAPI
         /// </summary>
         public string ClientId { get; set; }
         /// <summary>
+        /// ClientSecret of the SharePoint app that's being registered. Needed to obtain an access token
+        /// </summary>
+        public string ClientSecret { get; set; }
+        /// <summary>
         /// If the AppWebUrl is null then this value will be used. Needed to obtain an access token
         /// </summary>
         public string HostedAppHostName { get; set; }

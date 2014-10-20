@@ -1,4 +1,4 @@
-﻿using OfficeDevPnP.Core.Services;
+﻿using OfficeDevPnP.Core.WebAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,12 +53,10 @@ namespace Core.Services.Authenticate.SharePointWeb
             //register script in page
             Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);
 
-            SharePointServiceHelper.RegisterService(Page, "api/demo/register");
-            
-            //Optionally the url to the web api service can be specified. If not specified we assume the WebAPI lives in
-            //the same project as this page does
-            //SharePointServiceHelper.RegisterService(Page, "api/demo/register", new Uri("https://localhost:44349/"));
-            
+            //register the web API service in this SharePoint app
+            Page.RegisterWebAPIService("api/demo/register");
+            //register an other web API service (hosted in a different domain)
+            Page.RegisterWebAPIService("api/demo/register", new Uri("https://localhost:44350/"));            
         }
     }
 }
