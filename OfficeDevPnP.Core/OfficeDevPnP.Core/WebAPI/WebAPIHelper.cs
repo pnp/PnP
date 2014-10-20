@@ -5,6 +5,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net;
@@ -39,14 +40,29 @@ namespace OfficeDevPnP.Core.WebAPI
             if (httpControllerContext == null)
                 throw new ArgumentNullException("httpControllerContext");
 
-            CookieHeaderValue cookie = httpControllerContext.Request.Headers.GetCookies(SERVICES_TOKEN).FirstOrDefault();
-            if (cookie != null && !String.IsNullOrEmpty(cookie[SERVICES_TOKEN].Value))
+            string cacheKey = GetCacheKeyValue(httpControllerContext);
+
+            if (!String.IsNullOrEmpty(cacheKey))
             {
                 return true;
             }
             else
             {
                 return false;
+            }
+        }
+
+        private static string GetCacheKeyValue(HttpControllerContext httpControllerContext)
+        {
+            CookieHeaderValue cookie = httpControllerContext.Request.Headers.GetCookies(SERVICES_TOKEN).FirstOrDefault();
+            if (cookie != null)
+            {
+                return cookie[SERVICES_TOKEN].Value;
+            }
+            else
+            {
+                NameValueCollection queryParams = httpControllerContext.Request.RequestUri.ParseQueryString();
+                return queryParams.Get(SERVICES_TOKEN);
             }
         }
 
@@ -64,10 +80,10 @@ namespace OfficeDevPnP.Core.WebAPI
             if (httpControllerContext == null)
                 throw new ArgumentNullException("httpControllerContext");
 
-            CookieHeaderValue cookie = httpControllerContext.Request.Headers.GetCookies(SERVICES_TOKEN).FirstOrDefault();
-            if (cookie != null)
+            string cacheKey = GetCacheKeyValue(httpControllerContext);
+
+            if (!String.IsNullOrEmpty(cacheKey))
             {
-                string cacheKey = cookie[SERVICES_TOKEN].Value;
                 WebAPIContexCacheItem cacheItem = WebAPIContextCache.Instance.Get(cacheKey);
 
                 //request a new access token from ACS whenever our current access token will expire in less than 1 hour
@@ -154,12 +170,21 @@ namespace OfficeDevPnP.Core.WebAPI
                     // cookie is read. This flaw replaces special chars with a space.
                     cacheKey = RemoveSpecialCharacters(cacheKey);
 
+                    bool httpOnly = true;
+                    if (serviceEndPoint != null)
+                    {
+                        if (!serviceEndPoint.Host.Equals(page.Request.Url.Host, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            httpOnly = false;
+                        }
+                    }
+
                     // Write the cachekey in a cookie
                     HttpCookie cookie = new HttpCookie(SERVICES_TOKEN)
                     {
                         Value = cacheKey,
                         Secure = true,
-                        HttpOnly = true,                        
+                        HttpOnly = httpOnly,                        
                     };
                     page.Response.AppendCookie(cookie);
 

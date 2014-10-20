@@ -5,11 +5,9 @@ using System.Web;
 
 namespace Core.Services.Authenticate.SharePointWeb.Models
 {
-    public class Product
+    public class Item
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Category { get; set; }
-        public decimal Price { get; set; }
+        public string Title { get; set; }
     }
 }

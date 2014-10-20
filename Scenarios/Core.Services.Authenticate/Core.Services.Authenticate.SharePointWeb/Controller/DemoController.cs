@@ -6,18 +6,12 @@ using System.Net.Http;
 using System.Web.Http;
 using Core.Services.Authenticate.SharePointWeb.Models;
 using OfficeDevPnP.Core.WebAPI;
+using Microsoft.SharePoint.Client;
 
 namespace Core.Services.Authenticate.SharePointWeb.Controller
 {
     public class DemoController : ApiController
     {
-
-        Product[] products = new Product[] 
-        { 
-            new Product { Id = 1, Name = "Tomato Soup", Category = "Groceries", Price = 1 }, 
-            new Product { Id = 2, Name = "Yo-yo", Category = "Toys", Price = 3.75M }, 
-            new Product { Id = 3, Name = "Hammer", Category = "Hardware", Price = 16.99M } 
-        };
 
         [HttpPut]
         //[Route("api/demo/register")]
@@ -28,32 +22,36 @@ namespace Core.Services.Authenticate.SharePointWeb.Controller
 
         [WebAPIContextFilter]
         [HttpGet]
-        public IEnumerable<Product> GetAllProducts()
+        public IEnumerable<Item> GetItems()
         {
-            Microsoft.SharePoint.Client.User spUser = null;
             using (var clientContext = WebAPIHelper.GetClientContext(ControllerContext))
             { 
                 if (clientContext != null)
                 {
-                    spUser = clientContext.Web.CurrentUser;
-                    clientContext.Load(spUser, user => user.Title);
-                    clientContext.ExecuteQuery();                    
+                    List demoList = clientContext.Web.Lists.GetByTitle("WebAPIDemo");
+                    CamlQuery camlQuery = new CamlQuery();
+                    camlQuery.ViewXml = "<View><Query></Query></View>";
+                    ListItemCollection demoItems = demoList.GetItems(camlQuery);
+                    clientContext.Load(demoItems);
+                    clientContext.ExecuteQuery();  
+                    
+                    Item[] items = new Item[demoItems.Count];
+
+                    int i=0;
+                    foreach (ListItem item in demoItems)
+                    {
+                        items[i] = new Item() { Id = item.Id, Title = item["Title"].ToString() };
+                        i++;
+                    }
+
+                    return items;
+                }
+                else
+                {
+                    return new Item[0];
                 }
             }
-
-            return products;
         }
-
-        public IHttpActionResult GetProduct(int id)
-        {
-            var product = products.FirstOrDefault((p) => p.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return Ok(product);
-        }
-
 
     }
 }

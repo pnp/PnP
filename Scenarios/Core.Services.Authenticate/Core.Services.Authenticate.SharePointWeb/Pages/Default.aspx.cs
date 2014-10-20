@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.Core.WebAPI;
+﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.WebAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Core.Services.Authenticate.SharePointWeb
 {
     public partial class Default : System.Web.UI.Page
     {
-        public const string SERVICES_TOKEN = "servicesToken";
+        private ClientContext cc;
 
         protected void Page_PreInit(object sender, EventArgs e)
         {
@@ -53,10 +54,50 @@ namespace Core.Services.Authenticate.SharePointWeb
             //register script in page
             Page.ClientScript.RegisterClientScriptBlock(typeof(Default), "BasePageScript", script, true);
 
+            if (Page.IsPostBack)
+            {
+                var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+                cc = spContext.CreateUserClientContextForSPHost();
+            }
+
             //register the web API service in this SharePoint app
             Page.RegisterWebAPIService("api/demo/register");
             //register an other web API service (hosted in a different domain)
-            Page.RegisterWebAPIService("api/demo/register", new Uri("https://localhost:44350/"));            
+            //Page.RegisterWebAPIService("api/demo/register", new Uri("https://localhost:44350/"));
+            Page.RegisterWebAPIService("api/demo/register", new Uri("https://bjansencorswebapi.azurewebsites.net/"));
+        }
+
+        protected void btnCreateTestData_Click(object sender, EventArgs e)
+        {
+            List demoList = null;
+            if (!cc.Web.ListExists("WebAPIDemo"))
+            {
+                demoList = cc.Web.CreateList(ListTemplateType.GenericList, "WebAPIDemo", false);
+                AddDemoItem(demoList, "Item 1");
+                AddDemoItem(demoList, "Item 2");
+                AddDemoItem(demoList, "Item 3");
+                AddDemoItem(demoList, "Item 4");
+                AddDemoItem(demoList, "Item 5");
+                cc.ExecuteQuery();
+            }
+        }
+
+        private void AddDemoItem(List demoList, string title)
+        {
+            Microsoft.SharePoint.Client.ListItem item = demoList.AddItem(new ListItemCreationInformation());
+            item["Title"] = title;
+            item.Update();
+        }
+
+
+        protected void btnCleanupTestData_Click(object sender, EventArgs e)
+        {
+            if (cc.Web.ListExists("WebAPIDemo"))
+            {
+                List demoList = cc.Web.GetListByTitle("WebAPIDemo");
+                demoList.DeleteObject();
+                cc.ExecuteQuery();
+            }
         }
     }
 }
