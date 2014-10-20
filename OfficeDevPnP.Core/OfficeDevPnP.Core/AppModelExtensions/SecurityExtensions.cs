@@ -140,9 +140,9 @@ namespace Microsoft.SharePoint.Client
         /// Add read access to the group "Everyone except external users".
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        public static void AddReaderAccess(this Web web)
+        public static User AddReaderAccess(this Web web)
         {
-            AddReaderAccessImplementation(web, BuiltInIdentity.EveryoneButExternalUsers);
+            return AddReaderAccessImplementation(web, BuiltInIdentity.EveryoneButExternalUsers);
         }
 
         /// <summary>
@@ -150,26 +150,26 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="user">Built in user to add to the visitors group</param>
-        public static void AddReaderAccess(this Web web, BuiltInIdentity user)
+        public static User AddReaderAccess(this Web web, BuiltInIdentity user)
         {
-            AddReaderAccessImplementation(web, user);
+            return AddReaderAccessImplementation(web, user);
         }
 
-        private static void AddReaderAccessImplementation(Web web, BuiltInIdentity user)
+        private static User AddReaderAccessImplementation(Web web, BuiltInIdentity user)
         {
             switch (user)
             {
                 case BuiltInIdentity.Everyone:
                     {
                         string userIdentity = "c:0(.s|true";
-                        var spReader = web.EnsureUser(userIdentity);
+                        User spReader = web.EnsureUser(userIdentity);
                         web.Context.Load(spReader);
                         web.Context.ExecuteQuery();
 
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
                         web.Context.ExecuteQuery();
-                        break;
+                        return spReader;
                     }
                 case BuiltInIdentity.EveryoneButExternalUsers:
                     {
@@ -186,6 +186,10 @@ namespace Microsoft.SharePoint.Client
                         {
                             // old tenant?
                             string userIdentity = string.Empty;
+
+                            web.Context.Load(web, w => w.Language);
+                            web.Context.ExecuteQuery();
+
                             switch (web.Language)
                             {
                                 case 1025: // Arabic
@@ -335,9 +339,11 @@ namespace Microsoft.SharePoint.Client
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
                         web.Context.ExecuteQuery();
-                        break;
+                        return spReader;
                     }
             }
+
+            return null;
         }
 
         #endregion
