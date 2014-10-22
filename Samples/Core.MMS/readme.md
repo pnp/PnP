@@ -1,4 +1,4 @@
-# OFFICE AMS: TAXONOMY OPERATIONS #
+# OFFICE PnP: TAXONOMY OPERATIONS #
 
 ### Summary ###
 This sample demonstrates how to perform taxonomy related operations.
