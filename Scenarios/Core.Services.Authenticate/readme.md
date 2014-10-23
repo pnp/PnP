@@ -62,6 +62,7 @@ protected void Page_Load(object sender, EventArgs e)
 ```
 
 What will happen when the "register" service is called is the following:
+
 1. The cacheKey will be fetched. The cache key is an opaque string that is unique to the combination of user, user name issuer, app, and SharePoint farm or SharePoint Online tenant.
 2. A cookie with name "servicesToken" and value = cacheKey will be added to the page response
 3. The context token, client ID, client Secret, host web url and app web url will be fetched and used as input to call the "register" Web API service
@@ -103,6 +104,7 @@ public IEnumerable<Item> GetItems()
 ```
 
 What will happen in the GetClientContext method is the following:
+
 1. The cacheKey will be retrieved from the servicesToken cookie
 2. The cached access token will be retrieved using the cacheKey
 3. If the access token has expired then the refresh token is used to obtain a new access token
