@@ -1,7 +1,7 @@
 # Setting a SharePoint Theme in an App for SharePoint #
 
 ### Summary ###
-This scenario uses the Office AMS core library to set an existing theme to a site and for uploading and setting a custom theme. To learn more about the Office AMS core library please refer to its documentation.
+This scenario uses the Office PnP core library to set an existing theme to a site and for uploading and setting a custom theme. To learn more about the Office PnP core library please refer to its documentation.
 
 ### Walkthrough Video ###
 
