@@ -50,17 +50,33 @@ namespace Microsoft.SharePoint.Client
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
         public static EventReceiverDefinition AddRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
         {
+            return list.AddRemoteEventReceiver(name, url, eventReceiverType, synchronization, 1000, force);
+        }
+
+        /// <summary>
+        /// Registers a remote event receiver
+        /// </summary>
+        /// <param name="list">The list to process</param>
+        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
+        /// <param name="url">The URL of the remote WCF service that handles the event</param>
+        /// <param name="eventReceiverType"></param>
+        /// <param name="synchronization"></param>
+        /// <param name "sequenceNumber"></param>
+        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
+        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
+        public static EventReceiverDefinition AddRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, int sequenceNumber, bool force)
+        {
             var query = from receiver
                      in list.EventReceivers
                         where receiver.ReceiverName == name
                         select receiver;
-            list.Context.LoadQuery(query);
+            var receivers = list.Context.LoadQuery(query);
             list.Context.ExecuteQuery();
 
-            var receiverExists = query.Any();
+            var receiverExists = receivers.Any();
             if (receiverExists && force)
             {
-                var receiver = query.FirstOrDefault();
+                var receiver = receivers.FirstOrDefault();
                 receiver.DeleteObject();
                 list.Context.ExecuteQuery();
                 receiverExists = false;
@@ -73,6 +89,7 @@ namespace Microsoft.SharePoint.Client
                 receiver.EventType = eventReceiverType;
                 receiver.ReceiverUrl = url;
                 receiver.ReceiverName = name;
+                receiver.SequenceNumber = sequenceNumber;
                 receiver.Synchronization = synchronization;
                 def = list.EventReceivers.Add(receiver);
                 list.Context.Load(def);
@@ -320,7 +337,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Adds a document library to a site
+        /// Adds a document library to a web. Execute Query is called during this implementation
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
@@ -336,7 +353,7 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
             }
             // Call actual implementation
-            return CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath:urlPath);
+            return CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
 
         /// <summary>
@@ -907,17 +924,17 @@ namespace Microsoft.SharePoint.Client
         /// <returns>returns null if not found</returns>
         public static View GetViewById(this List list, Guid id)
         {
-            if (id == Guid.Empty)
-                throw new ArgumentNullException("id");
+            id.ValidateNotNullOrEmpty("id");
 
-            var q = from v in list.Views where v.Id == id select v;
-            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
-            list.Context.ExecuteQuery();
-            if (q.Any())
+            try
             {
-                return (q.FirstOrDefault());
-            }
-            else
+                var view = list.Views.GetById(id);
+
+                list.Context.Load(view);
+                list.Context.ExecuteQuery();
+
+                return view;
+            } catch (ServerException)
             {
                 return null;
             }
@@ -931,20 +948,22 @@ namespace Microsoft.SharePoint.Client
         /// <returns>returns null if not found</returns>
         public static View GetViewByName(this List list, string name)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+            name.ValidateNotNullOrEmpty("name");
 
-            var q = from v in list.Views where v.Title == name select v;
-            list.Context.LoadQuery(q.IncludeWithDefaultProperties(v => v.ViewFields));
-            list.Context.ExecuteQuery();
-            if (q.Any())
+            try
             {
-                return (q.FirstOrDefault());
+                var view = list.Views.GetByTitle(name);
+
+                list.Context.Load(view);
+                list.Context.ExecuteQuery();
+
+                return view;
             }
-            else
+            catch (ServerException)
             {
                 return null;
             }
+
         }
 
         /// <summary>
@@ -1001,7 +1020,7 @@ namespace Microsoft.SharePoint.Client
                         // Get the first entry 
                         var defaultColumnValue = values.First();
                         var path = defaultColumnValue.FolderRelativePath;
-                        if(string.IsNullOrEmpty(path))
+                        if (string.IsNullOrEmpty(path))
                         {
                             // Assume root folder
                             path = "/";
@@ -1072,7 +1091,7 @@ namespace Microsoft.SharePoint.Client
                         var objFileInfo = new FileCreationInformation();
                         objFileInfo.Url = "client_LocationBasedDefaults.html";
                         objFileInfo.ContentStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlSB.ToString()));
-                        
+
                         objFileInfo.Overwrite = true;
                         formsFolder.Files.Add(objFileInfo);
                         clientContext.ExecuteQuery();

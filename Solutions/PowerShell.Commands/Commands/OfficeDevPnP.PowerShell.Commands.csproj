@@ -76,6 +76,14 @@
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
           <Private>False</Private>
         </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+        </Reference>
       </ItemGroup>
     </When>
     <Otherwise>
@@ -97,6 +105,14 @@
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
           <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
         </Reference>
       </ItemGroup>
     </Otherwise>
@@ -125,6 +141,9 @@
     <Compile Include="Base\Configuration.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
+    <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
+    <Compile Include="Base\PipeBinds\WorkflowDefinitionPipeBind.cs" />
+    <Compile Include="Base\PipeBinds\WorkflowSubscriptionPipeBind.cs" />
     <Compile Include="Base\SetConfiguration.cs" />
     <Compile Include="Base\GetConfiguration.cs" />
     <Compile Include="Base\GetSPOContext.cs" />
@@ -169,6 +188,13 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
+    <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
+    <Compile Include="Workflows\StopWorkflowInstance.cs" />
+    <Compile Include="Workflows\RemoveWorkflowDefinition.cs" />
+    <Compile Include="Workflows\RemoveWorkflowSubscription.cs" />
+    <Compile Include="Workflows\AddWorkflowSubscription.cs" />
+    <Compile Include="Workflows\GetWorkflowDefinition.cs" />
+    <Compile Include="Workflows\GetWorkflowSubscription.cs" />
     <None Include="ModuleFiles\OfficeDevPnP.PowerShell.Commands.Format.ps1xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -199,6 +225,8 @@
     <Compile Include="Taxonomy\ImportTaxonomy.cs" />
     <Compile Include="Taxonomy\ExportTaxonomy.cs" />
     <Compile Include="Taxonomy\GetTaxonomySession.cs" />
+    <Compile Include="UserProfiles\GetUserProfileProperty.cs" />
+    <Compile Include="UserProfiles\NewPersonalSite.cs" />
     <Compile Include="Utilities\CredentialManager.cs" />
     <Compile Include="Utilities\SendMail.cs" />
     <Compile Include="WebParts\AddWebPartToWebPartPage.cs" />

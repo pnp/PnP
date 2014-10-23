@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -56,16 +57,21 @@ namespace Contoso.Core.PeoplePickerWeb
 
             if (!Page.IsPostBack)
             {
-                // prefil people picker with current user
+                // prefil people pickers with current user
                 var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
                 using (var clientContext = spContext.CreateUserClientContextForSPHost())
                 {
                     clientContext.Load(clientContext.Web, web => web.Title, user => user.CurrentUser);
                     clientContext.ExecuteQuery();
                     Microsoft.SharePoint.Client.User currentUser = clientContext.Web.CurrentUser;
+                    
+                    //fill json meoplepicker
                     List<PeoplePickerUser> peoplePickerUsers = new List<PeoplePickerUser>(1);
                     peoplePickerUsers.Add(new PeoplePickerUser() {  Name=currentUser.Title, Email=currentUser.Email, Login=currentUser.LoginName});
-                    hdnAdministrators.Value = JsonHelper.Serialize<List<PeoplePickerUser>>(peoplePickerUsers);                    
+                    hdnAdministrators.Value = JsonHelper.Serialize<List<PeoplePickerUser>>(peoplePickerUsers);   
+                 
+                    //fill csom peoplepicker
+                    PeoplePickerHelper.FillPeoplePickerValue(hdnCsomAdministrators, currentUser);
                 }
             }
         }
@@ -88,6 +94,36 @@ namespace Contoso.Core.PeoplePickerWeb
             }
 
             this.lblEnteredData.Text = parsedResult;
+        }
+
+        //This webmethod is called by the csom peoplepicker to retrieve search data
+        //In a MVC application you can use a Json Action method
+        [WebMethod]
+        public static string GetPeoplePickerData()
+        {
+            //peoplepickerhelper will get the needed values from the querrystring, get data from sharepoint, and return a result in Json format
+            return PeoplePickerHelper.GetPeoplePickerSearchData();
+        }
+
+        protected void btnGetValueByServer_Click(object sender, EventArgs e)
+        {
+            //get values from csom peoplepicker
+            List<PeoplePickerUser> users = PeoplePickerHelper.GetValuesFromPeoplePicker(hdnCsomAdministrators);
+
+            string parsedResult = "";
+            foreach (var user in users)
+            {
+                if (parsedResult.Length > 0)
+                {
+                    parsedResult = parsedResult + "," + user.Name;
+                }
+                else
+                {
+                    parsedResult = user.Name;
+                }
+            }
+
+            this.lblCsomEnteredData.Text = parsedResult;
         }
     }
 }

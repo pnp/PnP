@@ -130,25 +130,24 @@ namespace Microsoft.SharePoint.Client.Tests
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Setup
-                var userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", clientContext.Web.GetAuthenticationRealm());
-
+                User userIdentity = null;
 
                 // Test
-                clientContext.Web.AddReaderAccess();
+                userIdentity = clientContext.Web.AddReaderAccess();
 
-                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity);
+                Assert.IsNotNull(userIdentity, "No user added");
+                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity.LoginName);
+                
                 Assert.IsNotNull(existingUser, "No user returned");
                 Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
 
                 // Cleanup
-
                 if (existingUser != null)
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
                     clientContext.ExecuteQuery();
                 }
-
             }
         }
 
@@ -168,14 +167,12 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
 
                 // Cleanup
-
                 if (existingUser != null)
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
                     clientContext.ExecuteQuery();
                 }
-
             }
         }
 
