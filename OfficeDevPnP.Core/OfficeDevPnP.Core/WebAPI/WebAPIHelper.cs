@@ -178,6 +178,10 @@ namespace OfficeDevPnP.Core.WebAPI
                             httpOnly = false;
                         }
                     }
+                    else
+                    {
+                        serviceEndPoint = new Uri(String.Format("{0}://{1}:{2}", page.Request.Url.Scheme, page.Request.Url.Host, page.Request.Url.Port));
+                    }
 
                     // Write the cachekey in a cookie
                     HttpCookie cookie = new HttpCookie(SERVICES_TOKEN)
@@ -186,6 +190,7 @@ namespace OfficeDevPnP.Core.WebAPI
                         Secure = true,
                         HttpOnly = httpOnly,                        
                     };
+
                     page.Response.AppendCookie(cookie);
 
                     //Register the ClientContext
@@ -199,11 +204,6 @@ namespace OfficeDevPnP.Core.WebAPI
                         AppWebUrl = page.Request.QueryString.AsString("SPAppWebUrl", null),
                         HostedAppHostName = String.Format("{0}:{1}", page.Request.Url.Host, page.Request.Url.Port),
                     };
-
-                    if (serviceEndPoint == null)
-                    {
-                        serviceEndPoint = new Uri(String.Format("{0}://{1}:{2}", page.Request.Url.Scheme, page.Request.Url.Host, page.Request.Url.Port));
-                    }
 
                     using (var client = new HttpClient())
                     {

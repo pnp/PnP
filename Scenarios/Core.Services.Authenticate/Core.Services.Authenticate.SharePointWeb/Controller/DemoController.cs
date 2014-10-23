@@ -17,7 +17,7 @@ namespace Core.Services.Authenticate.SharePointWeb.Controller
         //[Route("api/demo/register")]
         public void Register(WebAPIContext sharePointServiceContext)
         {
-            WebAPIHelper.AddToCache(sharePointServiceContext);
+            WebAPIHelper.AddToCache(sharePointServiceContext);            
         }
 
         [WebAPIContextFilter]

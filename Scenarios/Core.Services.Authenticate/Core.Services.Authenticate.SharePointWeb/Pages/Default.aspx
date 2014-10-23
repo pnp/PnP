@@ -17,12 +17,12 @@
 
             function callWebAPIService() {
                 var uri = '/api/demo';
+
                 $.get(uri)
                     .done(function (data) {
                         var resultingHTML = "";
-                        // On success, 'data' contains a list of products.
+                        // On success, 'data' contains a list of items.
                         $.each(data, function (key, item) {
-                            // Add a list item for the product.
                             resultingHTML = resultingHTML + item.Title + " | ";
                         });
 
@@ -36,12 +36,12 @@
 
             function callWebAPIServiceCORS() {
                 var uri = 'https://bjansencorswebapi.azurewebsites.net/api/demo?servicestoken=' + getCookie("servicesToken");
+
                 $.get(uri)
                     .done(function (data) {
                         var resultingHTML = "";
-                        // On success, 'data' contains a list of products.
+                        // On success, 'data' contains a list of items.
                         $.each(data, function (key, item) {
-                            // Add a list item for the product.
                             resultingHTML = resultingHTML + item.Title + " | ";
                         });
                         $('#items2').html(resultingHTML);
@@ -67,7 +67,7 @@
             <h1>Demo preparation</h1>
             Before you can use this demo you'll need to create a test list with data. Click on below button to create this test list.
             <br />
-            <asp:Button ID="btnCreateTestData" runat="server" Text="Create test data" onclick="btnCreateTestData_Click"/>
+            <asp:Button ID="btnCreateTestData" runat="server" Text="Create test data" OnClick="btnCreateTestData_Click" />
             <br />
             <br />
             <h1>Call a WebAPI service running in the same host</h1>

@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{1A814F99-E076-4C80-9D0C-B20E7FEEB148}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{960D825B-5465-4641-B13B-667237AF0925}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
 EndProject
