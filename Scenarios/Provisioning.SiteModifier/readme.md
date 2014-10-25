@@ -1,8 +1,13 @@
 # Provisioning.SiteModifier #
 
 ### Summary ###
-This scenario demonstrates a pattern that allows users to add functionality to their sites without understanding the concept of features or any other technical information.
-The moment additional information needs to be provided, it is only needed to update the remotely hosted app site with additional code instead of redeploying a solution. 
+This scenario demonstrates a pattern that allows users to add functionality to their sites without understanding the concept of 
+features or any other technical information.
+
+The idea behind the pattern is to provide users with an out of the box teamsite, and when in the future they need additional functionality
+they can go to the 'Modify Site' menu and add additional features to the site. The app will then add the required functionality. 
+That way sites can grow exactly to the level of functionality that the user requires without needed to use things like site definitions, 
+web templates or even the SharePoint feature framework.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
