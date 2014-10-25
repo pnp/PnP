@@ -4,7 +4,6 @@
 This scenario demonstrates a pattern that allows users to add functionality to their sites without understanding the concept of features or any other technical information.
 The moment additional information needs to be provided, it is only needed to update the remotely hosted app site with additional code instead of redeploying a solution. 
 
-
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
@@ -40,6 +39,9 @@ This scenario demonstrates the following:
 - How to show a dialog in a custom action (see Services\AppEventReceiver.svc)
 - How to hide a dialog that hosts a page from a remote app web (see Pages\Modify.aspx)
 - How to create artefacts like lists and set the theme of a web (see Pages\Modify.aspx)
+
+The app adds a menu option to the site settings pop up menu ("Modify Site"), which after clicking on it will show a dialogbox. In that dialogbox users can make selections to add certain artifacts to a site.
+In this example 3 options are presented: a projects list (which is a generic/custom list), a contacts list, and the option to change the default theme.
 
 ## Permissions ##
 Permissions used in this solution
@@ -77,7 +79,7 @@ Launching an app like this will show the page in a dialogbox and it will allow t
  clientContext.ExecuteQuery();
 ```
 
-## Closing the dialog box from backend code hosted in an app web ##
+## Closing the dialog box from backend code hosted in a remote site ##
 
 In order to close a dialogbox from a page hosted outside of the SharePoint site, the following code is used:
 
