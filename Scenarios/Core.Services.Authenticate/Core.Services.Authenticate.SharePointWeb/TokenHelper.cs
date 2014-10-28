@@ -24,9 +24,9 @@ using AudienceUriValidationFailedException = Microsoft.IdentityModel.Tokens.Audi
 using SecurityTokenHandlerConfiguration = Microsoft.IdentityModel.Tokens.SecurityTokenHandlerConfiguration;
 using X509SigningCredentials = Microsoft.IdentityModel.SecurityTokenService.X509SigningCredentials;
 
-namespace OfficeDevPnP.Core.Utilities
+namespace Core.Services.Authenticate.SharePointWeb
 {
-    internal static class TokenHelper
+    public static class TokenHelper
     {
         #region public fields
 
@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="targetPrincipalName">Name of the target principal to retrieve an access token for</param>
         /// <param name="targetHost">Url authority of the target principal</param>
         /// <param name="targetRealm">Realm to use for the access token's nameid and audience</param>
-        /// <param name="redirectUri">Redirect URI registered for this app</param>
+        /// <param name="redirectUri">Redirect URI registerd for this app</param>
         /// <returns>An access token with an audience of the target principal</returns>
         public static OAuth2AccessTokenResponse GetAccessToken(
             string authorizationCode,
@@ -379,7 +379,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="targetUrl">Url of the target SharePoint site</param>
         /// <param name="authorizationCode">Authorization code to use when retrieving the access token from ACS</param>
-        /// <param name="redirectUri">Redirect URI registered for this app</param>
+        /// <param name="redirectUri">Redirect URI registerd for this app</param>
         /// <returns>A ClientContext ready to call targetUrl with a valid access token</returns>
         public static ClientContext GetClientContextWithAuthorizationCode(
             string targetUrl,
@@ -397,7 +397,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="targetPrincipalName">Name of the target SharePoint principal</param>
         /// <param name="authorizationCode">Authorization code to use when retrieving the access token from ACS</param>
         /// <param name="targetRealm">Realm to use for the access token's nameid and audience</param>
-        /// <param name="redirectUri">Redirect URI registered for this app</param>
+        /// <param name="redirectUri">Redirect URI registerd for this app</param>
         /// <returns>A ClientContext ready to call targetUrl with a valid access token</returns>
         public static ClientContext GetClientContextWithAuthorizationCode(
             string targetUrl,
@@ -660,176 +660,14 @@ namespace OfficeDevPnP.Core.Utilities
         //
         // Hosted app configuration
         //
-        private static string clientId = null;
-        private static string issuerId = null;
-        private static string hostedAppHostNameOverride = null;
-        private static string hostedAppHostName = null;
-        private static string clientSecret = null;
-        private static string secondaryClientSecret = null;
-        private static string realm = null;
-        private static string serviceNamespace = null;
-
-        public static string ClientId
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(clientId))
-                {
-                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
-                }
-                else
-                {
-                    return clientId;
-                }
-            }
-            set
-            {
-                clientId = value;
-            }
-        }
-
-        public static string IssuerId
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(issuerId))
-                {
-                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("IssuerId")) ? ClientId : WebConfigurationManager.AppSettings.Get("IssuerId");
-                }
-                else
-                {
-                    return issuerId;
-                }
-            }
-            set
-            {
-                issuerId = value;
-            }
-        }
-
-        public static string HostedAppHostNameOverride
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(hostedAppHostNameOverride))
-                {
-                    return WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
-                }
-                else
-                {
-                    return hostedAppHostNameOverride;
-                }
-            }
-            set
-            {
-                hostedAppHostNameOverride = value;
-            }
-        }
-
-        public static string HostedAppHostName
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(hostedAppHostName))
-                {
-                    return WebConfigurationManager.AppSettings.Get("HostedAppHostName");
-                }
-                else
-                {
-                    return hostedAppHostName;
-                }
-            }
-            set
-            {
-                hostedAppHostName = value;
-            }
-        }
-
-        public static string ClientSecret
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(clientSecret))
-                {
-                    return string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
-                }
-                else
-                {
-                    return clientSecret;
-                }
-            }
-            set
-            {
-                clientSecret = value;
-            }
-        }
-
-        public static string SecondaryClientSecret
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(secondaryClientSecret))
-                {
-                    return WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
-                }
-                else
-                {
-                    return secondaryClientSecret;
-                }
-            }
-            set
-            {
-                secondaryClientSecret = value;
-            }
-        }
-
-        public static string Realm
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(realm))
-                {
-                    return WebConfigurationManager.AppSettings.Get("Realm");
-                }
-                else
-                {
-                    return realm;
-                }
-            }
-            set
-            {
-                realm = value;
-            }
-        }
-
-        public static string ServiceNamespace
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(serviceNamespace))
-                {
-                    return WebConfigurationManager.AppSettings.Get("Realm");
-                }
-                else
-                {
-                    return serviceNamespace;
-                }
-            }
-            set
-            {
-                serviceNamespace = value;
-            }
-        }
-
-
-        //private static readonly string ClientId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
-        //private static readonly string IssuerId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("IssuerId")) ? ClientId : WebConfigurationManager.AppSettings.Get("IssuerId");
-        //private static readonly string HostedAppHostNameOverride = WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
-        //private static readonly string HostedAppHostName = WebConfigurationManager.AppSettings.Get("HostedAppHostName");
-        //private static readonly string ClientSecret = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
-        //private static readonly string SecondaryClientSecret = WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
-        //private static readonly string Realm = WebConfigurationManager.AppSettings.Get("Realm");
-        //private static readonly string ServiceNamespace = WebConfigurationManager.AppSettings.Get("Realm");
+        private static readonly string ClientId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientId")) ? WebConfigurationManager.AppSettings.Get("HostedAppName") : WebConfigurationManager.AppSettings.Get("ClientId");
+        private static readonly string IssuerId = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("IssuerId")) ? ClientId : WebConfigurationManager.AppSettings.Get("IssuerId");
+        private static readonly string HostedAppHostNameOverride = WebConfigurationManager.AppSettings.Get("HostedAppHostNameOverride");
+        private static readonly string HostedAppHostName = WebConfigurationManager.AppSettings.Get("HostedAppHostName");
+        private static readonly string ClientSecret = string.IsNullOrEmpty(WebConfigurationManager.AppSettings.Get("ClientSecret")) ? WebConfigurationManager.AppSettings.Get("HostedAppSigningKey") : WebConfigurationManager.AppSettings.Get("ClientSecret");
+        private static readonly string SecondaryClientSecret = WebConfigurationManager.AppSettings.Get("SecondaryClientSecret");
+        private static readonly string Realm = WebConfigurationManager.AppSettings.Get("Realm");
+        private static readonly string ServiceNamespace = WebConfigurationManager.AppSettings.Get("Realm");
 
         private static readonly string ClientSigningCertificatePath = WebConfigurationManager.AppSettings.Get("ClientSigningCertificatePath");
         private static readonly string ClientSigningCertificatePassword = WebConfigurationManager.AppSettings.Get("ClientSigningCertificatePassword");
@@ -880,7 +718,7 @@ namespace OfficeDevPnP.Core.Utilities
             return String.Format(CultureInfo.InvariantCulture, "https://{0}.{1}/", GlobalEndPointPrefix, AcsHostUrl);
         }
 
-        public static JsonWebSecurityTokenHandler CreateJsonWebSecurityTokenHandler()
+        private static JsonWebSecurityTokenHandler CreateJsonWebSecurityTokenHandler()
         {
             JsonWebSecurityTokenHandler handler = new JsonWebSecurityTokenHandler();
             handler.Configuration = new SecurityTokenHandlerConfiguration();

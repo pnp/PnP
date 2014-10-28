@@ -285,4 +285,19 @@
   <data name="ListExtensions_CreateList0Template12" xml:space="preserve">
     <value>Creating list '{0}' from template {1}{2}.</value>
   </data>
+  <data name="Services_AccessDenied" xml:space="preserve">
+    <value>Service requestor is not registered: access denied</value>
+  </data>
+  <data name="Services_CookieWithCachKeyNotFound" xml:space="preserve">
+    <value>The cookie with the cachekey was not found...nothing can be retrieved from cache, so no clientcontext can be created.</value>
+  </data>
+  <data name="Services_Registered" xml:space="preserve">
+    <value>Service {0} has been registered for endpoint {1} using cachekey {2}.</value>
+  </data>
+  <data name="Services_TokenRefreshed" xml:space="preserve">
+    <value>Token for cachekey {0} and hostweburl {1} has been refreshed.</value>
+  </data>
+  <data name="Service_RegistrationFailed" xml:space="preserve">
+    <value>Service registration for {0} using endpoint {1} and cachekey {2} failed.</value>
+  </data>
 </root>

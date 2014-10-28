@@ -5,10 +5,10 @@ This sample demonstrates a technique to show how to associate an app deployed in
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
 
-**NOTE:** This is only an interim solution
+**NOTES:** 
+-  This is only an interim solution
+-  This will work for Office 365 MT
 
 
 ### Solution ###
