@@ -20,10 +20,6 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ParameterSetName = "WebPara")]
         public string InternalName;
 
-        [Parameter(Mandatory = false, ParameterSetName = "ListPara", DontShow = true)]
-        [Parameter(Mandatory = false, ParameterSetName = "WebPara", DontShow = true)]
-        public string StaticName;
-
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = true, ParameterSetName = "WebPara")]
         public FieldType Type;
@@ -66,9 +62,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
 
-            if (string.IsNullOrEmpty(StaticName))
+            if (Id.Id == Guid.Empty)
             {
-                StaticName = InternalName;
+                Id = new GuidPipeBind(Guid.NewGuid());
             }
 
             if (List != null)
@@ -84,14 +80,25 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                     {
-                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                        f = list.CreateField(fieldXml);
+                        string choicesCAML = GetChoicesCAML(context.Choices);
+
+                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                        f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
+
+                        //f = list.CreateField(fieldXml);
                     }
                     else
                     {
-                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                        f = list.CreateField(fieldXml);
+                        f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
+
+                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                        //f = list.CreateField(fieldXml);
                     }
+                }
+                if (Required)
+                {
+                    f.Required = true;
+                    f.Update();
                 }
                 WriteObject(f);
             }
@@ -106,15 +113,25 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                     {
-                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                        f = this.SelectedWeb.CreateField(fieldXml);
+                        var choicesCAML = GetChoicesCAML(context.Choices);
+
+                        f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
+                       
+                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                        //f = this.SelectedWeb.CreateField(fieldXml);
                     }
                     else
                     {
-                        var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                        f = this.SelectedWeb.CreateField(fieldXml);
+                        f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
+                      //  var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                      //  f = this.SelectedWeb.CreateField(fieldXml);
                     }
 
+                }
+                if(Required)
+                {
+                    f.Required = true;
+                    f.Update();
                 }
                 ClientContext.Load(f);
                 ClientContext.ExecuteQuery();
@@ -133,32 +150,15 @@ namespace OfficeDevPnP.PowerShell.Commands
             private string[] choices;
         }
 
-        private static string GetFieldCAML(string displayName, string internalName, string staticName, FieldType fieldType, Guid Id, bool required, string[] choices = null, string group = null)
+        private static string GetChoicesCAML(string[] choices)
         {
-            string fieldTypeString = Enum.GetName(typeof(FieldType), fieldType);
-            string fieldXml = "<Field DisplayName='{0}' Name='{1}' StaticName='{2}' Type='{3}' ID='{{{4}}}' Required='{5}'{6}>";
-
-            if (choices != null)
+            var fieldXml = "<CHOICES>";
+            foreach (var choice in choices)
             {
-                fieldXml += "<CHOICES>";
-                foreach (var choice in choices)
-                {
-                    fieldXml += string.Format("<CHOICE>{0}</CHOICE>", choice);
-                }
-                fieldXml += "</CHOICES>";
+                fieldXml += string.Format("<CHOICE>{0}</CHOICE>", choice);
             }
-            fieldXml += "</Field>";
-
-            string fieldString = string.Format(fieldXml,
-                displayName,
-                internalName,
-                staticName,
-                fieldTypeString,
-                Id == Guid.Empty ? Guid.NewGuid() : Id,
-                required ? "TRUE" : "FALSE",
-                !string.IsNullOrEmpty(group) ? string.Format(" Group='{0}'", group) : ""
-                );
-            return fieldString;
+            fieldXml += "</CHOICES>";
+            return fieldXml;
         }
 
     }
