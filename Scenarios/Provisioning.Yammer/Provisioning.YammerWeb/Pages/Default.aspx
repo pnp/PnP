@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Sub Site Creation</title>
+    <title>Branded sites with Yammer</title>
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="../Scripts/app.js"></script>
 </head>
@@ -24,7 +24,15 @@
         </asp:UpdateProgress>
         <asp:UpdatePanel ID="update" runat="server" ChildrenAsTriggers="true">
             <ContentTemplate>
-                <div style="width: 450px; margin-left: 50px;">
+                <div style="display:block;position:absolute;left:600px; top:250px; width:250px">
+                    <i><lu><li>By default OpenGraph object is used and assocated is assocated to All Company group. </li>
+                        <li>If group is selected, Feed is associated to that group. </li>
+                        <li>If you create new group, a name has to be given.  </li>
+                        <li>We recommend usage of OpenGraph for this scenario to avoid "group" pollution.</li>
+                        </lu>
+                    </i>
+                </div>
+                <div style="width: 500px; margin-left: 50px;">
                     <div id="divFieldTemplate" style="display: table; width: 100%;">
                         <h3 class="ms-core-form-line">Pick a template</h3>
                         <div class="ms-core-form-line">
@@ -60,7 +68,6 @@
                                 <asp:ListItem Text="Group" Value="Group" />
                             </asp:RadioButtonList>
                             <br />
-                            <i>By default OpenGraph object is used. If group type is selected, name has to be given. We recommend usage of OpenGraph for this scenario to avoid "group" pollution.</i>
                         </div>
                     </div>
                     <div id="divFieldYammerGroup">
@@ -77,7 +84,7 @@
                     <div id="divFieldYammerExistingGroup">
                         <h3 class="ms-core-form-line">Choose the group to associate feed to</h3>
                         <div class="ms-core-form-line">
-                            <asp:DropDownList ID="YammerExistingGroups" runat="server" Enabled="false"></asp:DropDownList>
+                            <asp:DropDownList ID="YammerExistingGroups" runat="server" Enabled="true"></asp:DropDownList>
                         </div>
                     </div>
                     <div id="divFieldYammerGroup">
