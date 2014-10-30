@@ -1,6 +1,5 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client.UserProfiles;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
-using System.Web.Profile;
 using System.Linq;
 
 namespace Microsoft.SharePoint.Client
