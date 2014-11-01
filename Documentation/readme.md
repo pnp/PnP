@@ -2,7 +2,7 @@
 
 These are random documentation and presentation files for your consumption. Feel free to use the material in anyway you need while talking about the app model transition.
 
-* note. If you are looking for documentation on how to contribute and use the Patterns and Practices guidance, check our project wiki at https://github.com/OfficeDev/PnP/wiki
+*note. If you are looking for documentation on how to contribute and use the Patterns and Practices guidance, check our project wiki at https://github.com/OfficeDev/PnP/wiki
 
 We will be updating these gradually based on the work the PnP core team members do with customers, but also feel free to extend and update the decks by yourself as well. 
 
