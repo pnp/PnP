@@ -300,4 +300,13 @@
   <data name="Service_RegistrationFailed" xml:space="preserve">
     <value>Service registration for {0} using endpoint {1} and cachekey {2} failed.</value>
   </data>
+  <data name="FileFolderExtensions_CreateFolder0Under12" xml:space="preserve">
+    <value>Creating folder '{0}' under {1} '{2}'.</value>
+  </data>
+  <data name="ProvisioningExtensions_ErrorProvisioningModule0File1" xml:space="preserve">
+    <value>Error provisioning module '{0}' file '{1}'.</value>
+  </data>
+  <data name="ProvisioningExtensions_ProvisionElementFile0" xml:space="preserve">
+    <value>Provisioning Elements file '{0}'.</value>
+  </data>
 </root>
