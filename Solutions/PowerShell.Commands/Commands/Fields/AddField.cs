@@ -9,7 +9,6 @@ namespace OfficeDevPnP.PowerShell.Commands
     public class AddField : SPOWebCmdlet, IDynamicParameters
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListPara")]
-        [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListXML")]
         public ListPipeBind List;
 
         [Parameter(Mandatory = true, ParameterSetName = "ListPara")]
@@ -27,10 +26,6 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = false, ParameterSetName = "WebPara")]
         public GuidPipeBind Id = new GuidPipeBind();
-
-        [Parameter(Mandatory = false, ParameterSetName = "ListXML", HelpMessage = "CAML snippet containing the field definition. See http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx")]
-        [Parameter(Mandatory = false, ParameterSetName = "WebXML", HelpMessage = "CAML snippet containing the field definition. See http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx")]
-        public string FieldXml;
 
         [Parameter(Mandatory = false, ParameterSetName = "ListPara")]
         [Parameter(Mandatory = false, ParameterSetName = "ListXML")]
@@ -72,69 +67,58 @@ namespace OfficeDevPnP.PowerShell.Commands
                 List list = this.SelectedWeb.GetList(List);
 
                 Field f = null;
-                if (!string.IsNullOrEmpty(FieldXml))
+                if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    f = list.CreateField(FieldXml);
+                    string choicesCAML = GetChoicesCAML(context.Choices);
+
+                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                    f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
+
+                    //f = list.CreateField(fieldXml);
                 }
                 else
                 {
-                    if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
-                    {
-                        string choicesCAML = GetChoicesCAML(context.Choices);
+                    f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
 
-                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                        f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
-
-                        //f = list.CreateField(fieldXml);
-                    }
-                    else
-                    {
-                        f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
-
-                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                        //f = list.CreateField(fieldXml);
-                    }
+                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                    //f = list.CreateField(fieldXml);
                 }
                 if (Required)
                 {
                     f.Required = true;
                     f.Update();
+                    ClientContext.Load(f);
+                    ClientContext.ExecuteQuery();
                 }
                 WriteObject(f);
             }
             else
             {
                 Field f = null;
-                if (!string.IsNullOrEmpty(FieldXml))
+                if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    f = this.SelectedWeb.CreateField(FieldXml);
+                    var choicesCAML = GetChoicesCAML(context.Choices);
+
+                    f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
+
+                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
+                    //f = this.SelectedWeb.CreateField(fieldXml);
                 }
                 else
                 {
-                    if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
-                    {
-                        var choicesCAML = GetChoicesCAML(context.Choices);
-
-                        f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
-                       
-                        //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                        //f = this.SelectedWeb.CreateField(fieldXml);
-                    }
-                    else
-                    {
-                        f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
-                      //  var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                      //  f = this.SelectedWeb.CreateField(fieldXml);
-                    }
-
+                    f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
+                    //  var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
+                    //  f = this.SelectedWeb.CreateField(fieldXml);
                 }
-                if(Required)
+
+                if (Required)
                 {
                     f.Required = true;
                     f.Update();
+                    ClientContext.Load(f);
+                    ClientContext.ExecuteQuery();
                 }
-                ClientContext.Load(f);
-                ClientContext.ExecuteQuery();
+               
                 WriteObject(f);
             }
         }
