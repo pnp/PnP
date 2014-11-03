@@ -34,6 +34,8 @@ namespace OfficeDevPnP.Core.Utilities
         CreateTermSet = 1510,
         ImportTermSet = 1511,
         CreateList = 1512,
+        ProvisionElementFile = 1513,
+        CreateFolder = 1514,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -43,7 +45,7 @@ namespace OfficeDevPnP.Core.Utilities
 
         SendMailCancelled = 2201,
 
-        ServicesRegistered =2301,
+        ServicesRegistered = 2301,
 
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
@@ -81,6 +83,7 @@ namespace OfficeDevPnP.Core.Utilities
         ProvisionTaxonomyImportErrorTagging = 5505,
         ProvisionTaxonomyImportErrorDescription = 5506,
         ProvisionTaxonomyImportErrorDelete = 5507,
+        ProvisionModuleFileError = 5508,
 
         ThemeMissing = 5601,
 
