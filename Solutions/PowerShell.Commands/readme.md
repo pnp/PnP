@@ -124,6 +124,7 @@ Command | Description
 Command | Description
 :--------|:------------
 **Add-SPOField** | Adds a new field
+**Add-SPOFieldFromXml** | Adds a new field based on a CAML xml snippet, see http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx
 **Add-SPOTaxonomyField** | Creates a new Taxonomy field
 **Get-SPOField** | Returns a field
 **Remove-SPOField** | Removes a field
