@@ -178,6 +178,7 @@
     <Compile Include="Events\RemoveEventReceiver.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="Features\GetFeature.cs" />
+    <Compile Include="Fields\AddFieldFromXml.cs" />
     <Compile Include="Fields\AddTaxonomyField.cs" />
     <Compile Include="Fields\RemoveField.cs" />
     <Compile Include="Fields\GetField.cs" />

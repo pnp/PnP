@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
+using System.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -571,6 +572,86 @@ namespace Microsoft.SharePoint.Client
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns all site collections in the current Tenant
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns></returns>
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant)
+        {
+            var sites = new List<SiteEntity>();
+
+            var props = tenant.GetSiteProperties(0, true);
+            tenant.Context.Load(props);
+            tenant.Context.ExecuteQuery();
+
+            foreach(var prop in props)
+            {
+                var siteEntity = new SiteEntity();
+                siteEntity.Lcid = prop.Lcid;
+                siteEntity.SiteOwnerLogin = prop.Owner;
+                siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
+                siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
+                siteEntity.Template = prop.Template;
+                siteEntity.TimeZoneId = prop.TimeZoneId;
+                siteEntity.Title = prop.Title;
+                siteEntity.Url = prop.Url;
+                siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
+                siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                sites.Add(siteEntity);
+            }
+            return sites;
+        }
+
+        public static IList<SiteEntity> GetOneDriveSiteCollections(this Tenant tenant)
+        {
+            var creds = (Microsoft.SharePoint.Client.SharePointOnlineCredentials)tenant.Context.Credentials;
+
+            var sites = new List<SiteEntity>();
+
+            OfficeDevPnP.Core.UPAWebService.UserProfileService svc = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+            
+            svc.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
+            svc.UseDefaultCredentials = false;
+            svc.Credentials = tenant.Context.Credentials;
+
+            var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
+            var cookieContainer = new CookieContainer();
+            
+            cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
+            svc.CookieContainer = cookieContainer;
+
+
+            var userProfileResult = svc.GetUserProfileByIndex(-1);
+
+            var profileCount = svc.GetUserProfileCount();
+
+            while(int.Parse(userProfileResult.NextValue) != -1)
+            {
+                var personalSpaceProperty = userProfileResult.UserProfile.Where(p => p.Name == "PersonalSpace").FirstOrDefault();
+
+                if (personalSpaceProperty != null)
+                {
+                    if (personalSpaceProperty.Values.Any())
+                    {
+                        var usernameProperty = userProfileResult.UserProfile.Where(p => p.Name == "UserName").FirstOrDefault();
+                        var nameProperty = userProfileResult.UserProfile.Where(p => p.Name == "PreferredName").FirstOrDefault();
+                        var url = personalSpaceProperty.Values[0].Value as string;
+                        var name = nameProperty.Values[0].Value as string;
+                        SiteEntity siteEntity = new SiteEntity();
+                        siteEntity.Url = url;
+                        siteEntity.Title = name;
+                        siteEntity.SiteOwnerLogin = usernameProperty.Values[0].Value as string;
+                        sites.Add(siteEntity);
+                    }
+                }
+                
+                userProfileResult = svc.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
+            }
+
+            return sites;
         }
     }
 }
