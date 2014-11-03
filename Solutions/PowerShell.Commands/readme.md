@@ -209,6 +209,11 @@ Command | Description
 **Remove-SPOWikiPage**| Removes a wiki page
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
+#### Publishing Page Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOPublishingPage** | Adds a new wikipages to a site
+
 
 
 
