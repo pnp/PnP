@@ -212,7 +212,7 @@ Command | Description
 #### Publishing Page Cmdlets ####
 Command | Description
 :--------|:------------
-**Add-SPOPublishingPage** | Adds a new wikipages to a site
+**Add-SPOPublishingPage** | Adds a new publishing page to a site
 
 
 
