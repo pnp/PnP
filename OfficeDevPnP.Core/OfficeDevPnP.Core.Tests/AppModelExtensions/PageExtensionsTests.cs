@@ -132,5 +132,50 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+
+        [TestMethod]
+        public void CanCreatePublishedPublishingPageWhenModerationIsEnabled()
+        {
+            var web = Setup("CMSPUBLISHING#0", true);
+            web.Context.Load(web);
+            //Ensure that moderation is enabled
+            var pagesLibrary = web.Lists.GetByTitle("Pages");
+            pagesLibrary.EnableModeration = true;
+            pagesLibrary.Update();
+            web.Context.ExecuteQuery();
+            web.AddPublishingPage(publishingPageName, publishingPageTemplate,publish:true);
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
+            web.Context.Load(page.ListItem, i => i["_ModerationStatus"]);
+            web.Context.Load(page.ListItem, i => i.File.MajorVersion);
+            web.Context.ExecuteQuery();
+
+            Assert.AreEqual(0, page.ListItem["_ModerationStatus"]);
+            Assert.AreEqual(1, page.ListItem.File.MajorVersion);
+
+            Teardown(web);
+        }
+        [TestMethod]
+        public void CanCreatePublishedPublishingPageWhenModerationIsDisabled()
+        {
+            var web = Setup("CMSPUBLISHING#0", true);
+            web.Context.Load(web);
+            //Ensure that moderation is disabled
+            var pagesLibrary = web.Lists.GetByTitle("Pages");
+            pagesLibrary.EnableModeration = false;
+            pagesLibrary.Update();
+            web.Context.ExecuteQuery();
+            web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
+            web.Context.Load(page.ListItem, i => i.File.MajorVersion);
+            web.Context.ExecuteQuery();
+
+            Assert.AreEqual(1, page.ListItem.File.MajorVersion);
+
+            Teardown(web);
+        }
     }
 }
