@@ -19,18 +19,21 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, ParameterSetName = "WithTitle")]
         public string Title;
 
+        [Parameter(Mandatory = false)]
+        public bool Publish = false;
+
         protected override void ExecuteCmdlet()
         {
             switch (ParameterSetName)
             {
                 case "WithTitle":
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title);
+                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title, publish: Publish);
                         break;
                     }
                 default:
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName);
+                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, publish: Publish);
                         break;
                     }
             }
