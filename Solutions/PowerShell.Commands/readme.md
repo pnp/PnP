@@ -215,7 +215,7 @@ Command | Description
 **Add-SPOPublishingPage** | Adds a new publishing page to a site
 Example
 ```powershell
-Add-SPOPublishingPage -PageName "happy-is-good" -PageTemplateName "BlankWebPartPage" -Title "Happy" -Publish
+Add-SPOPublishingPage -PageName "your-page-name" -PageTemplateName "BlankWebPartPage" -Title "Your Page Title" -Publish
 ```
 
 
