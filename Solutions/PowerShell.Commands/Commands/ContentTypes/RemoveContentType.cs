@@ -7,14 +7,18 @@ using System.Linq;
 using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPOContentType")]
+    [CmdletHelp("Removes a content type")]
+    [CmdletExample(
+     Code = @"PS:> Remove-SPOContentType -Identity ""Project Document""")]
     public class RemoveContentType : SPOWebCmdlet
     {
 
-        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
+        [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true, HelpMessage="The name or ID of the content type to remove")]
         public ContentTypePipeBind Identity;
 
         [Parameter(Mandatory = false)]
