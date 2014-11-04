@@ -204,6 +204,7 @@
     <Compile Include="Entities\ExternalUserEntity.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
+    <Compile Include="Entities\ThemeEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Entities\WebPartEntity.cs" />
     <Compile Include="Entities\WebTemplateEntity.cs" />
