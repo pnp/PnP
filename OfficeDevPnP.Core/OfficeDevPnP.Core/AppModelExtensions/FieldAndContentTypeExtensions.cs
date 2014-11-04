@@ -1291,15 +1291,10 @@ namespace Microsoft.SharePoint.Client
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
             list.Context.ExecuteQuery();
-            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
-            foreach (ContentType ct in ctCol)
-            {
-                if (ct.StringId.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
-                {
-                    newOrder.Add(ct.Id);
-                }
-            }
-            list.RootFolder.UniqueContentTypeOrder = newOrder;
+
+            var newOrder = ctCol.Select(ct => ct.Id).ToList();
+            list.RootFolder.UniqueContentTypeOrder = newOrder.Except(newOrder.Where(id => id.StringValue.StartsWith("0x012000"))).OrderBy(x => !x.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase)).ToArray();
+
             list.RootFolder.Update();
             list.Update();
             list.Context.ExecuteQuery();
