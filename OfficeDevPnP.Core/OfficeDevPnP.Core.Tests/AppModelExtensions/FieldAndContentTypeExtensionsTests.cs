@@ -99,10 +99,10 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-	//FIXME: Tests does not revert target to a clean slate after running.
-	//FIXME: Tests are tighthly coupled to eachother
+        //FIXME: Tests does not revert target to a clean slate after running.
+        //FIXME: Tests are tighthly coupled to eachother
 
-	[TestMethod]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
         {
@@ -119,6 +119,22 @@ namespace Microsoft.SharePoint.Client.Tests
                     Assert.AreEqual(ex.Message, "Could not find field with internalName FieldThatDoesNotExistEver");
                     throw;
                 }
+            }
+        }
+
+        [TestMethod]
+        public void CreateFieldFromXmlTest()
+        {
+            using(var clientContext = TestCommon.CreateClientContext())
+            {
+                var fieldId = Guid.NewGuid();
+                var fieldXml = string.Format("<Field xmlns='http://schemas.microsoft.com/sharepoint/' ID='{0}' Name='Test_FieldFromXML' StaticName='Test_FieldFromXML' DisplayName='Test Field From XML' Group='Test_Group' Type='Text' Required='TRUE' DisplaceOnUpgrade='TRUE' />", fieldId.ToString("B").ToUpper());
+
+                var field = clientContext.Web.CreateField(fieldXml);
+
+                Assert.IsNotNull(field);
+                Assert.IsInstanceOfType(field, typeof(Field));
+
             }
         }
         #endregion
