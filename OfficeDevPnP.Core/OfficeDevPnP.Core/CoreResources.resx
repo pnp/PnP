@@ -309,4 +309,7 @@
   <data name="ProvisioningExtensions_ProvisionElementFile0" xml:space="preserve">
     <value>Provisioning Elements file '{0}'.</value>
   </data>
+  <data name="FileFolderExtensions_UpdateFile0Properties1" xml:space="preserve">
+    <value>Update file '{0}', change properties: {1}.</value>
+  </data>
 </root>

@@ -741,7 +741,6 @@ namespace Microsoft.SharePoint.Client
                     additionalProperties["ContentTypeId"] = contentTypeId.StringValue;
                 }
                 return UploadFile(folder, fileName, fs, additionalProperties: additionalProperties, replaceContent: overwriteIfExists, checkHashBeforeUpload: true, level: FileLevel.Published, useWebDav: useWebDav);
-                //return UploadFile(folder, fileName, fs, contentTypeId, overwriteIfExists, useWebDav);
             }
         }
 
@@ -763,54 +762,6 @@ namespace Microsoft.SharePoint.Client
                 additionalProperties["ContentTypeId"] = contentTypeId.StringValue;
             }
             return UploadFile(folder, fileName, stream, additionalProperties: additionalProperties, replaceContent: overwriteIfExists, checkHashBeforeUpload: true, level: FileLevel.Published, useWebDav: useWebDav);
-
-            //if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            //if (stream == null) { throw new ArgumentNullException("stream"); }
-            //if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("File name is required.", "fileName"); }
-            //// TODO: Check for any other illegal characters in SharePoint
-            //if (fileName.Contains('/') || fileName.Contains('\\'))
-            //{
-            //    throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
-            //}
-
-            //if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
-            //{
-            //    folder.Context.Load(folder, f => f.ServerRelativeUrl);
-            //    folder.Context.ExecuteQuery();
-            //}
-            //LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile0ToFolder1, fileName, folder.ServerRelativeUrl);
-
-            //File file = null;
-            //if (useWebDav)
-            //{
-            //    var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-            //    using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
-            //    {
-            //        LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
-            //        File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
-            //        folder.Context.ExecuteQuery();
-            //    }
-            //    file = folder.Files.GetByUrl(serverRelativeUrl);
-            //}
-            //else
-            //{
-            //    FileCreationInformation fileCreation = new FileCreationInformation();
-            //    fileCreation.ContentStream = stream;
-            //    fileCreation.Url = fileName;
-            //    fileCreation.Overwrite = overwriteIfExists;
-            //    LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
-            //    file = folder.Files.Add(fileCreation);
-            //    folder.Context.ExecuteQuery();
-            //}
-
-            //if (contentTypeId != null)
-            //{
-            //    LoggingUtility.Internal.TraceVerbose("Setting content type to '{0}'", contentTypeId.StringValue);
-            //    file.ListItemAllFields["ContentTypeId"] = contentTypeId.StringValue;
-            //    file.ListItemAllFields.Update();
-            //}
-
-            //return file;
         }
 
         /// <summary>
@@ -894,8 +845,9 @@ namespace Microsoft.SharePoint.Client
             }
             var serverRelativeUrl = folder.ServerRelativeUrl + (folder.ServerRelativeUrl.EndsWith("/") ? "" : "/") + fileName;
 
-            var checkOutRequired = false;
-            var approvalRequired = false;
+            bool checkOutRequired = false;
+            bool publishingRequired = false;
+            bool approvalRequired = false;
 
             // Check for existing file
             var fileCollection = folder.Files;
@@ -973,6 +925,7 @@ namespace Microsoft.SharePoint.Client
 
                 if (existingFile != null)
                 {
+                    // Existing file (upload required) -- determine if checkout required
                     var parentList = existingFile.ListItemAllFields.ParentList;
                     folder.Context.Load(parentList, l => l.ForceCheckout);
                     try
@@ -987,9 +940,9 @@ namespace Microsoft.SharePoint.Client
                             throw;
                         }
                     }
-                    //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout {0}", checkOutRequired, approvalRequired);
+                    //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout {0}", checkOutRequired);
 
-                    if (checkOutRequired)
+                    if (checkOutRequired && existingFile.CheckOutType == CheckOutType.None)
                     {
                         LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
                         existingFile.CheckOut();
@@ -1006,23 +959,15 @@ namespace Microsoft.SharePoint.Client
                         uploadContext.ExecuteQuery();
                     }
                     file = folder.Files.GetByUrl(serverRelativeUrl);
-                    //folder.Context.Load(file);
-                    //folder.Context.Load(file.ListItemAllFields);
-                    //folder.Context.ExecuteQuery();
                 }
                 else
                 {
-                    //var fileName = System.IO.Path.GetFileName(serverRelativeUrl);
-                    //var folderServerRelativeUrl = serverRelativeUrl.Substring(0, serverRelativeUrl.Length - fileName.Length);
-                    //var folder = web.GetFolderByServerRelativeUrl(folderServerRelativeUrl);
                     FileCreationInformation fileCreation = new FileCreationInformation();
                     fileCreation.ContentStream = localStream;
                     fileCreation.Url = fileName;
                     fileCreation.Overwrite = true;
                     LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
                     file = folder.Files.Add(fileCreation);
-                    //folder.Context.Load(file);
-                    //folder.Context.Load(file.ListItemAllFields);
                     folder.Context.ExecuteQuery();
                 }
             }
@@ -1030,11 +975,7 @@ namespace Microsoft.SharePoint.Client
             {
                 //LoggingUtility.Internal.TraceVerbose("Not uploading; existing file '{0}' in folder '{1}' is identical (hash {2})", fileName, folder.ServerRelativeUrl, BitConverter.ToString(serverHash));
                 LoggingUtility.Internal.TraceVerbose("Not uploading; existing file '{0}' is identical", fileName);
-                //file = folder.Files.GetFileByServerRelativeUrl(serverRelativeUrl);
                 file = existingFile;
-                //folder.Context.Load(file);
-                //folder.Context.Load(file.ListItemAllFields);
-                //folder.Context.ExecuteQuery();
             }
 
             // Set file properties (child elements <Property>)
@@ -1042,12 +983,12 @@ namespace Microsoft.SharePoint.Client
             folder.Context.Load(file.ListItemAllFields);
             folder.Context.Load(file.ListItemAllFields.FieldValuesAsText);
             folder.Context.ExecuteQuery();
+            var changedProperties = new Dictionary<string,string>();
+            var changedPropertiesString = new StringBuilder();
             var propertyChanged = false;
-            var changedProperties = new StringBuilder();
             if (additionalProperties != null)
             {
-                // TODO: Loop through and detect changes first, then, check out if required and apply
-
+                // Loop through and detect changes first, then, check out if required and apply
                 foreach (var kvp in additionalProperties)
                 {
                     var propertyName = kvp.Key;
@@ -1059,70 +1000,147 @@ namespace Microsoft.SharePoint.Client
                     {
                         currentValue = file.ListItemAllFields.FieldValuesAsText[propertyName];
                     }
-                    //Console.WriteLine("Comparing property '{0}' to current '{1}', new '{2}'", propertyName, currentValue, propertyValue);
-                    var sameValue = false;
-                    if (string.Equals(propertyName, "ContentTypeId", StringComparison.OrdinalIgnoreCase))
+                    //LoggingUtility.Internal.TraceVerbose("*** Comparing property '{0}' to current '{1}', new '{2}'", propertyName, currentValue, propertyValue);
+                    switch (propertyName.ToUpperInvariant())
                     {
-                        var currentBase = currentValue.Substring(0, currentValue.Length - 34);
-                        sameValue = (currentBase == propertyValue);
-                        if (!sameValue && propertyValue.Length >= 32 + 6 && propertyValue.Substring(propertyValue.Length - 34, 2) == "00")
+                        case "CONTENTTYPE":
+                            {
+                                // TODO: Add support for named ContentType (need to lookup ID and check if it needs changing)
+                                throw new NotSupportedException("ContentType property not yet supported; use ContentTypeId instead.");
+                                //break;
+                            }
+                        case "CONTENTTYPEID":
+                            {
+                                var currentBase = currentValue.Substring(0, currentValue.Length - 34);
+                                var sameValue = (currentBase == propertyValue);
+                                if (!sameValue && propertyValue.Length >= 32 + 6 && propertyValue.Substring(propertyValue.Length - 34, 2) == "00")
+                                {
+                                    var propertyBase = propertyValue.Substring(0, propertyValue.Length - 34);
+                                    sameValue = (currentBase == propertyBase);
+                                }
+                                if (!sameValue)
+                                {
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                        case "PUBLISHINGASSOCIATEDCONTENTTYPE":
+                            {
+                                var testValue = ";#" + currentValue.Replace(", ", ";#") + ";#";
+                                if (testValue != propertyValue)
+                                {
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                if (currentValue != propertyValue)
+                                {
+                                    //Console.WriteLine("Setting property '{0}' to '{1}'", propertyName, propertyValue);
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                    }
+                }
+
+                if (changedProperties.Count > 0)
+                {
+                    if (!uploadRequired)
+                    {
+                        LoggingUtility.Internal.TraceInformation((int)EventId.UpdateFileProperties, CoreResources.FileFolderExtensions_UpdateFile0Properties1, fileName, changedPropertiesString);
+                        if (existingFile != null)
                         {
-                            var propertyBase = propertyValue.Substring(0, propertyValue.Length - 34);
-                            sameValue = (currentBase == propertyBase);
+                            // Existing file (no upload required, but properties were changed) -- determine if checkout required
+                            var parentList = file.ListItemAllFields.ParentList;
+                            folder.Context.Load(parentList, l => l.ForceCheckout);
+                            try
+                            {
+                                folder.Context.ExecuteQuery();
+                                checkOutRequired = parentList.ForceCheckout;
+                            }
+                            catch (ServerException ex)
+                            {
+                                if (ex.Message != "The object specified does not belong to a list.")
+                                {
+                                    throw;
+                                }
+                            }
+                            //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout2 {0}", checkOutRequired, approvalRequired);
+
+                            if (checkOutRequired && file.CheckOutType == CheckOutType.None)
+                            {
+                                LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
+                                file.CheckOut();
+                                folder.Context.ExecuteQuery();
+                            }
                         }
                     }
                     else
                     {
-                        sameValue = (currentValue == propertyValue);
+                        LoggingUtility.Internal.TraceVerbose("Updating properties of file '{0}' after upload: {1}", fileName, changedPropertiesString);
                     }
-                    if (sameValue)
+
+                    foreach (var kvp in changedProperties) 
                     {
-                        //Console.WriteLine("Skipping property as value is the same.");
-                    }
-                    else
-                    {
-                        //Console.WriteLine("Setting property '{0}' to '{1}'", propertyName, propertyValue);
+                        var propertyName = kvp.Key;
+                        var propertyValue = kvp.Value;
+
                         file.ListItemAllFields[propertyName] = propertyValue;
-                        propertyChanged = true;
-                        changedProperties.AppendFormat("{0}='{1}';", propertyName, propertyValue);
                     }
-                }
-                if (propertyChanged)
-                {
-                    LoggingUtility.Internal.TraceVerbose("Updating file '{0}' changed properties: {1}", fileName, changedProperties);
                     file.ListItemAllFields.Update();
                     folder.Context.ExecuteQuery();
+                    propertyChanged = true;
                 }
             }
 
-            if ((uploadRequired || propertyChanged) && file.CheckOutType != CheckOutType.None && (level == FileLevel.Draft || level == FileLevel.Published))
-            {
-                LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", fileName);
-                file.CheckIn("Checked in by provisioning", level == FileLevel.Published ? CheckinType.MajorCheckIn : CheckinType.MinorCheckIn);
-                folder.Context.ExecuteQuery();
-            }
+            //LoggingUtility.Internal.TraceVerbose("*** Up {0}, Prop {1}, COT {2}, level", uploadRequired, propertyChanged, file.CheckOutType, level);
 
-            var parentList2 = file.ListItemAllFields.ParentList;
-            folder.Context.Load(parentList2, l => l.EnableModeration);
-            try
+            if (uploadRequired || propertyChanged && (level == FileLevel.Draft || level == FileLevel.Published))
             {
-                folder.Context.ExecuteQuery();
-                approvalRequired = parentList2.EnableModeration;
-            }
-            catch (ServerException ex)
-            {
-                if (ex.Message != "The object specified does not belong to a list.")
+                var parentList2 = file.ListItemAllFields.ParentList;
+                folder.Context.Load(parentList2, l => l.EnableMinorVersions, l => l.EnableModeration);
+                try
                 {
-                    throw;
+                    folder.Context.ExecuteQuery();
+                    publishingRequired = parentList2.EnableMinorVersions;
+                    approvalRequired = parentList2.EnableModeration;
                 }
-            }
-            //LoggingUtility.Internal.TraceVerbose("*** EnableModeration {0}", approvalRequired);
+                catch (ServerException ex)
+                {
+                    if (ex.Message != "The object specified does not belong to a list.")
+                    {
+                        throw;
+                    }
+                }
+                //LoggingUtility.Internal.TraceVerbose("*** EnableMinorVerions {0}. EnableModeration {1}", publishingRequired, approvalRequired);
 
-            if (approvalRequired && (level == FileLevel.Published))
-            {
-                LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", fileName);
-                file.Approve("Approved by provisioning");
-                folder.Context.ExecuteQuery();
+                if (file.CheckOutType != CheckOutType.None || checkOutRequired)
+                {
+                    LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", fileName);
+                    file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
+                    folder.Context.ExecuteQuery();
+                }
+
+                if (level == FileLevel.Published)
+                {
+                    if (publishingRequired)
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", fileName);
+                        file.Publish("Published by provisioning");
+                        folder.Context.ExecuteQuery();
+                    }
+                    if (approvalRequired)
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", fileName);
+                        file.Approve("Approved by provisioning");
+                        folder.Context.ExecuteQuery();
+                    }
+                }
             }
 
             return file;

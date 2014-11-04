@@ -51,6 +51,7 @@ namespace OfficeDevPnP.Core.Utilities
         ActivateSiteCollectionFeature = 2502,
         AddFieldToContentType = 2503,
         CreateTerm = 2504,
+        UpdateFileProperties = 2505,
         
         SetTheme = 2601,
         SetMasterUrl = 2602,
