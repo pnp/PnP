@@ -214,6 +214,14 @@ Command | Description
 **Remove-SPOWikiPage**| Removes a wiki page
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
+#### Publishing Page Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOPublishingPage** | Adds a new publishing page to a site
+Example
+```powershell
+Add-SPOPublishingPage -PageName "your-page-name" -PageTemplateName "BlankWebPartPage" -Title "Your Page Title" -Publish
+```
 
 #### User Profile / OD4B Cmdlets ####
 Command | Description
