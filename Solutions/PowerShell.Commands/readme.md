@@ -183,6 +183,7 @@ Command | Description
 **Get-SPOPropertyBag** | Returns the propertybag
 **Get-SPOSubWebs** | Returns the subwebs
 **Get-SPOWeb** | Returns the current web
+**Get-SPOIndexedPropertyKeys** | Returns all keys in the property bag set for indexing
 **New-SPOWeb** | Creates a new web
 **Remove-SPOCustomAction** | Removes a custom action from a web
 **Remove-SPONavigationNode** | Removes a link from the quicklaunch or top navigation
