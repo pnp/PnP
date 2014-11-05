@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="1aae8ab5-1bce-40cc-a763-3133ca10c20c" solutionId="1aae8ab5-1bce-40cc-a763-3133ca10c20c" resetWebServer="false" sharePointProductVersion="16.0" name="Core.DocumentPicker" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="b1b89393-1b44-4c96-9f84-7893c9f9487e" />
+  </features>
+</package>
