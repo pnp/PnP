@@ -10,6 +10,8 @@ namespace Contoso.Core.PeoplePickerWeb
     class PeoplePickerUser
     {
         [DataMember]
+        internal int LookupId;
+        [DataMember]
         internal string Login;
         [DataMember]
         internal string Name;

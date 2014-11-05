@@ -134,23 +134,25 @@
         }
 
         // Generates the html for a resolved user
-        PeoplePicker.prototype.ConstructResolvedUserSpan = function (login, name) {
-
+        PeoplePicker.prototype.ConstructResolvedUserSpan = function (login, name, lookupId) {
+ 
             resultDisplay = 'Remove person or group {0}';
             if (typeof deleteUser != 'undefined') {
                 resultDisplay = deleteUser;
             }
+            lookupValue = (login) ? login.replace("\\", "\\\\") : lookupId;
+            }
             resultDisplay = this.Format(resultDisplay, name);
-
-            var userDisplaySpanTemplate = '<span class="cam-peoplepicker-userSpan"><span class="cam-entity-resolved">{0}</span><a title="{3}" class="cam-peoplepicker-delImage" onclick="{1}.DeleteProcessedUser({2}); return false;" href="#">x</a></span>';
-            return this.Format(userDisplaySpanTemplate, name, this.InstanceName, "'" + login + "'", resultDisplay);
+    
+            userDisplaySpanTemplate = '<span class="cam-peoplepicker-userSpan"><span class="cam-entity-resolved">{0}</span><a title="{3}" class="cam-peoplepicker-delImage" onclick="{1}.DeleteProcessedUser({2}); return false;" href="#">x</a></span>';
+            return this.Format(userDisplaySpanTemplate, name, this.InstanceName, "'" + lookupValue + "'", resultDisplay);
         }
 
         // Create a html representation of the resolved user array
         PeoplePicker.prototype.ResolvedUsersToHtml = function () {
             var userHtml = '';
             for (var i = 0; i < this._ResolvedUsers.length; i++) {
-                userHtml += this.ConstructResolvedUserSpan(this._ResolvedUsers[i].Login, this._ResolvedUsers[i].Name);
+                userHtml += this.ConstructResolvedUserSpan(this._ResolvedUsers[i].Login, this._ResolvedUsers[i].Name, this._ResolvedUsers[i].LookupId);
             }
             return userHtml;
         }
@@ -192,10 +194,11 @@
         }
 
         // Remove resolved user from the array and updates the hidden field control with a JSON string
-        PeoplePicker.prototype.RemoveResolvedUser = function (login) {
+        PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
             var newResolvedUsers = [];
             for (var i = 0; i < this._ResolvedUsers.length; i++) {
-                if (this._ResolvedUsers[i].Login != login) {
+                var resolvedLookupValue = this._ResolvedUsers[i].Login ? this._ResolvedUsers[i].Login : this._ResolvedUsers[i].LookupId;
+                if (resolvedLookupValue != lookupValue) {
                     newResolvedUsers.push(this._ResolvedUsers[i]);
                 }
             }
@@ -216,14 +219,14 @@
         }
 
         // Delete a resolved user
-        PeoplePicker.prototype.DeleteProcessedUser = function (login) {
-            this.RemoveResolvedUser(login);
+        PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
+            this.RemoveResolvedUser(lookupValue);
             this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
             this.PeoplePickerEdit.focus();
         }
 
         // Function called when something went wrong with the user query (clientPeoplePickerSearchUser)
-        PeoplePicker.prototype.QueryFailure = function(queryNumber) {
+        PeoplePicker.prototype.QueryFailure = function (queryNumber) {
             alert('Error performing user search');
         }
 
@@ -261,7 +264,14 @@
                         var displayName = item['DisplayText'];
                         var title = item['EntityData']['Title'];
                         var email = item['EntityData']['Email'];
-                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName, this.HtmlEncode(displayName), email, displayName, loginName.split('|')[2], title);
+
+                        var loginNameDisplay = email;
+                        if (loginName && loginName.indexOf('|') > -1) {
+                            var segs = loginName.split('|');
+                            loginNameDisplay = loginNameDisplay + " " + segs[segs.length - 1];
+                            loginNameDisplay = loginNameDisplay.trim();
+                        }
+                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName.replace("\\", "\\\\"), this.HtmlEncode(displayName), email, displayName, loginNameDisplay, title);
                     }
                     var resultDisplay = '';
                     txtResults += '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>';
@@ -304,7 +314,7 @@
 
         // Initialize
         PeoplePicker.prototype.Initialize = function () {
-
+         
             var scriptUrl = "";
             var scriptRevision = "";
             $('script').each(function (i, el) {
@@ -431,6 +441,6 @@
         return PeoplePicker;
     })();
     CAMControl.PeoplePicker = PeoplePicker;
-})(CAMControl || (CAMControl = {}));
+    })(CAMControl || (CAMControl = {}));
 
 
