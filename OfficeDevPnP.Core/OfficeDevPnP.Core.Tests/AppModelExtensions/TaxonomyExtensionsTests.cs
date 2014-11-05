@@ -20,11 +20,12 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private Guid _listId; // For easy reference
 
-
+        private string SampleTermSetPath = "../../Resources/ImportTermSet.csv";
 
         [TestInitialize]
         public void Initialize()
         {
+            Console.WriteLine("TaxonomyExtensionsTests.Initialise");
             // Create some taxonomy groups and terms
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -61,6 +62,7 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestCleanup]
         public void Cleanup()
         {
+            Console.WriteLine("TaxonomyExtensionsTests.Cleanup");
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Clean up Taxonomy
@@ -364,6 +366,38 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestMethod()]
+        public void ImportTermSetSampleShouldCreateSet()
+        {
+            var importSetId = Guid.NewGuid();
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleTermSetPath, importSetId);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(importSetId);
+                var allTerms = createdSet.GetAllTerms();
+                clientContext.Load(createdSet);
+                clientContext.Load(allTerms);
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Political Geography", createdSet.Name);
+                Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
+                Assert.AreEqual(12, allTerms.Count);
+                //Assert.AreEqual("Continent", allTerms[0].Name);
+                //Assert.AreEqual("One of the seven main land masses (Europe, Asia, Africa, North America, South America, Australia, and Antarctica)", allTerms[0].Description);
+                //Assert.IsTrue(allTerms[0].IsAvailableForTagging);
+            }
+        }
 
         [TestMethod()]
         public void ExportTermSetTest()
