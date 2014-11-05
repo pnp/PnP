@@ -192,6 +192,7 @@
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
     <Compile Include="Extensions\HttpVariablesExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
