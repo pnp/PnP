@@ -36,14 +36,14 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
                     var list = this.Tenant.GetSitePropertiesByUrl(Url, Detailed);
                     list.Context.Load(list);
                     list.Context.ExecuteQuery();
-                    WriteObject(list);
+                    WriteObject(list,true);
                 }
                 else
                 {
                     var list = this.Tenant.GetSiteProperties(0, Detailed);
                     list.Context.Load(list);
                     list.Context.ExecuteQuery();
-                    WriteObject(list);
+                    WriteObject(list, true);
                 }
             }
         }

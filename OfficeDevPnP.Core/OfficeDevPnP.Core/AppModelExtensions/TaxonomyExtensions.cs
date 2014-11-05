@@ -746,7 +746,7 @@ namespace Microsoft.SharePoint.Client
 			allTermsAdded = true;
 			checked
 			{
-				//try
+				try
 				{
 					string rowText;
 					while ((rowText = reader.ReadLine()) != null)
@@ -812,6 +812,12 @@ namespace Microsoft.SharePoint.Client
 						}
 					}
 				}
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(
+                        string.Format("Exception on line {0}: {1}",lineIndex + 1, ex.Message), 
+                        ex);
+                }
 				LoggingUtility.Internal.TraceVerbose("End ImportTermSet");
 				return termSet;
 			}
@@ -835,6 +841,7 @@ namespace Microsoft.SharePoint.Client
 			{
 				string termName = null;
 				Guid termId = Guid.Empty;
+                // Find matching existing terms
 				while (num < entries.Count - 5 && success)
 				{
 					string termNameEntry = entries[5 + num];
@@ -924,7 +931,8 @@ namespace Microsoft.SharePoint.Client
 						}
 						LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, parentTermSetItem.Name);
 						term = parentTermSetItem.CreateTerm(termName, lcid, termId);
-						parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
+                        parentTermSetItem.Context.Load(parentTermSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                        parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
 						parentTermSetItem.Context.ExecuteQuery();
 						termCreated = true;
 						if (num == entries.Count - 5 - 1)

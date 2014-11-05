@@ -174,6 +174,7 @@ Command | Description
 :--------|:------------
 **Add-SPOCustomAction** | Adds a custom action to a site
 **Add-SPOFile** | Uploads a file to a site
+**Add-SPOFolder** | Creates a folder in a site
 **Add-SPONavigationNode** | Adds a new link to the quicklaunch or top navigation
 **Find-SPOFile** | Finds a file in the current site
 **Get-SPOCustomAction** | Returns an existing custom action
@@ -183,6 +184,7 @@ Command | Description
 **Get-SPOPropertyBag** | Returns the propertybag
 **Get-SPOSubWebs** | Returns the subwebs
 **Get-SPOWeb** | Returns the current web
+**Get-SPOIndexedPropertyKeys** | Returns all keys in the property bag set for indexing
 **New-SPOWeb** | Creates a new web
 **Remove-SPOCustomAction** | Removes a custom action from a web
 **Remove-SPONavigationNode** | Removes a link from the quicklaunch or top navigation
@@ -214,6 +216,14 @@ Command | Description
 **Remove-SPOWikiPage**| Removes a wiki page
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
+#### Publishing Page Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOPublishingPage** | Adds a new publishing page to a site
+Example
+```powershell
+Add-SPOPublishingPage -PageName "your-page-name" -PageTemplateName "BlankWebPartPage" -Title "Your Page Title" -Publish
+```
 
 #### User Profile / OD4B Cmdlets ####
 Command | Description

@@ -99,10 +99,10 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-	//FIXME: Tests does not revert target to a clean slate after running.
-	//FIXME: Tests are tighthly coupled to eachother
+        //FIXME: Tests does not revert target to a clean slate after running.
+        //FIXME: Tests are tighthly coupled to eachother
 
-	[TestMethod]
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
         {
@@ -121,7 +121,56 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void CreateFieldFromXmlTest()
+        {
+            using(var clientContext = TestCommon.CreateClientContext())
+            {
+                var fieldId = Guid.NewGuid();
+                var fieldXml = string.Format("<Field xmlns='http://schemas.microsoft.com/sharepoint/' ID='{0}' Name='Test_FieldFromXML' StaticName='Test_FieldFromXML' DisplayName='Test Field From XML' Group='Test_Group' Type='Text' Required='TRUE' DisplaceOnUpgrade='TRUE' />", fieldId.ToString("B").ToUpper());
+
+                var field = clientContext.Web.CreateField(fieldXml);
+
+                Assert.IsNotNull(field);
+                Assert.IsInstanceOfType(field, typeof(Field));
+
+            }
+        }
         #endregion
+        [TestMethod]
+        public void SetDefaultContentTypeToListTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                var testList = web.CreateList(ListTemplateType.DocumentLibrary, "Test_SetDefaultContentTypeToListTestList", true, true, "", true);
+
+                var parentCt = web.GetContentTypeById("0x0101");
+                var ct = web.CreateContentType("Test_SetDefaultContentTypeToListCt", "Desc", "", "Test_Group", parentCt);
+                clientContext.Load(ct);
+                clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
+                clientContext.ExecuteQuery();
+
+                var prevUniqueContentTypeOrder = testList.RootFolder.ContentTypeOrder;
+
+                Assert.AreEqual(1, prevUniqueContentTypeOrder.Count());
+
+                testList.AddContentTypeToList(ct);
+
+                testList.SetDefaultContentTypeToList(ct);
+                clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual(2, testList.RootFolder.ContentTypeOrder.Count());
+                Assert.IsTrue(testList.RootFolder.ContentTypeOrder.First().StringValue.StartsWith(ct.Id.StringValue, StringComparison.OrdinalIgnoreCase));
+
+                testList.DeleteObject();
+                ct.DeleteObject();
+                clientContext.ExecuteQuery();
+            }
+        }
 
     }
 }

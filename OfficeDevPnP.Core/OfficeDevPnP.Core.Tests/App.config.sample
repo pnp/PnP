@@ -12,4 +12,21 @@
     <add key="SPOUserName" value="user@[tenant].onmicrosoft.com" />
     <add key="SPOPassword" value="" />
   </appSettings>
+  <system.diagnostics>
+    <sharedListeners>
+      <add name="console" type="System.Diagnostics.ConsoleTraceListener" />
+    </sharedListeners>
+    <sources>
+      <source name="OfficeDevPnP.Core" switchValue="Verbose" >
+        <listeners>
+          <add name="console" />
+        </listeners>
+      </source>
+    </sources>
+    <trace indentsize="0" autoflush="true">
+      <listeners>
+        <add name="console" />
+      </listeners>
+    </trace>
+  </system.diagnostics>
 </configuration>

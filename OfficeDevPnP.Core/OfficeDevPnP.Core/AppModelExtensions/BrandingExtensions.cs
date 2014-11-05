@@ -304,6 +304,20 @@ namespace Microsoft.SharePoint.Client
                 {
                     ListItem themeEntry = found[0];
 
+                    // Make a new copy of the theme entry, similar to what happens when applying a theme
+                    // Check first if there is a theme with the name 'Current'
+                    camlString = string.Format(CAML_QUERY_FIND_BY_FILENAME, "Current");
+                    query = new CamlQuery();
+                    query.ViewXml = camlString;
+                    found = themeList.GetItems(query);
+                    rootWeb.Context.Load(found);
+                    rootWeb.Context.ExecuteQuery();
+                    if(found.Count > 0 )
+                    {
+                        found[0].DeleteObject();
+                        rootWeb.Context.ExecuteQuery();
+                    }
+
                     //Set the properties for applying custom theme which was just uploaded
                     string spColorURL = null;
                     if (themeEntry["ThemeUrl"] != null && themeEntry["ThemeUrl"].ToString().Length > 0)
@@ -320,9 +334,37 @@ namespace Microsoft.SharePoint.Client
                     {
                         backGroundImage = UrlUtility.MakeRelativeUrl((themeEntry["ImageUrl"] as FieldUrlValue).Url);
                     }
+                    string masterPageUrl = null;
+                    if(themeEntry["MasterPageUrl"]  != null && themeEntry["MasterPageUrl"].ToString().Length > 0)
+                    {
+                        masterPageUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
+                    }
+
+                    // Create a new theme entry called Current
+                    ListItemCreationInformation themeCreationInformation = new ListItemCreationInformation();
+                    var currentTheme = themeList.AddItem(themeCreationInformation);
+                    if(!string.IsNullOrEmpty(spColorURL))
+                    {
+                        currentTheme["ThemeUrl"] = spColorURL;
+                    }
+                    if (!string.IsNullOrEmpty(spFontURL))
+                    {
+                        currentTheme["FontSchemeUrl"] = spFontURL;
+                    }
+                    if (!string.IsNullOrEmpty(backGroundImage))
+                    {
+                        currentTheme["ImageUrl"] = backGroundImage;
+                    }
+                    if (!string.IsNullOrEmpty(masterPageUrl))
+                    {
+                        currentTheme["MasterPageUrl"] = masterPageUrl;
+                    }
+                    currentTheme["Name"] = "Current";
+                    currentTheme["DisplayOrder"] = 0;
+                    currentTheme.Update();
 
                     LoggingUtility.Internal.TraceVerbose("Apply theme '{0}', '{1}', '{2}'.", spColorURL, spFontURL, backGroundImage);
-                    // Set theme for demonstration
+
                     // TODO: Why is shareGenerated false? If deploying to root an inheriting, then maybe use shareGenerated = true.
                     web.ApplyTheme(spColorURL,
                                         spFontURL,
@@ -332,12 +374,10 @@ namespace Microsoft.SharePoint.Client
                     LoggingUtility.Internal.TraceVerbose("Theme applied");
 
                     // Let's also update master page, if needed
-                    if (themeEntry["MasterPageUrl"] != null && themeEntry["MasterPageUrl"].ToString().Length > 0)
+                    if (!string.IsNullOrEmpty(masterPageUrl))
                     {
-                        var masterUrl = UrlUtility.MakeRelativeUrl((themeEntry["MasterPageUrl"] as FieldUrlValue).Url);
-
-                        web.SetMasterPageByUrl(masterUrl);
-                        web.SetCustomMasterPageByUrl(masterUrl);
+                        web.SetMasterPageByUrl(masterPageUrl);
+                        web.SetCustomMasterPageByUrl(masterPageUrl);
                     }
                 }
                 else
@@ -753,6 +793,63 @@ namespace Microsoft.SharePoint.Client
                 }
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Returns the current theme of a web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
+        public static ThemeEntity GetCurrentTheme(this Web web)
+        {
+            ThemeEntity theme = null;
+
+            List designCatalog = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+            string camlString = @"
+            <View>  
+                <Query> 
+                    <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>Current</Value></Eq></Where> 
+                </Query> 
+                <ViewFields>
+                    <FieldRef Name='ImageUrl' />
+                    <FieldRef Name='MasterPageUrl' />
+                    <FieldRef Name='FontSchemeUrl' />
+                    <FieldRef Name='ThemeUrl' />
+                </ViewFields> 
+            </View>"; 
+
+            CamlQuery camlQuery = new CamlQuery();
+            camlQuery.ViewXml = camlString;
+            
+            ListItemCollection themes = designCatalog.GetItems(camlQuery);
+            web.Context.Load(themes);
+            web.Context.ExecuteQuery();
+            if(themes.Count > 0)
+            {
+                var themeItem = themes[0];
+                theme = new ThemeEntity();
+                theme.MasterPage = web.MasterUrl;
+                theme.CustomMasterPage = web.CustomMasterUrl;
+                if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                {
+                    theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                }
+                if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                {
+                    theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                }
+                if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                {
+                    theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                }
+                if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                {
+                    theme.Font = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                }
+            }
+
+            return theme;
+
         }
 
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
