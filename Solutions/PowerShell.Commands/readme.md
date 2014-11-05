@@ -174,6 +174,7 @@ Command | Description
 :--------|:------------
 **Add-SPOCustomAction** | Adds a custom action to a site
 **Add-SPOFile** | Uploads a file to a site
+**Add-SPOFolder** | Creates a folder in a site
 **Add-SPONavigationNode** | Adds a new link to the quicklaunch or top navigation
 **Find-SPOFile** | Finds a file in the current site
 **Get-SPOCustomAction** | Returns an existing custom action

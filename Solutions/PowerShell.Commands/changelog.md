@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-11-05**
+* Added Add-SPOFolder cmdlet
+
 **2014-11-04**
 * Added Get-SPOIndexedPropertyBagKeys cmdlet
 * Updated Set-SPOPropertyBagValue to not remove a property from the indexed properties if it was already in the indexed properties.
