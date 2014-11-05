@@ -138,6 +138,39 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
         #endregion
+        [TestMethod]
+        public void SetDefaultContentTypeToListTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+
+                var testList = web.CreateList(ListTemplateType.DocumentLibrary, "Test_SetDefaultContentTypeToListTestList", true, true, "", true);
+
+                var parentCt = web.GetContentTypeById("0x0101");
+                var ct = web.CreateContentType("Test_SetDefaultContentTypeToListCt", "Desc", "", "Test_Group", parentCt);
+                clientContext.Load(ct);
+                clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
+                clientContext.ExecuteQuery();
+
+                var prevUniqueContentTypeOrder = testList.RootFolder.ContentTypeOrder;
+
+                Assert.AreEqual(1, prevUniqueContentTypeOrder.Count());
+
+                testList.AddContentTypeToList(ct);
+
+                testList.SetDefaultContentTypeToList(ct);
+                clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual(2, testList.RootFolder.ContentTypeOrder.Count());
+                Assert.IsTrue(testList.RootFolder.ContentTypeOrder.First().StringValue.StartsWith(ct.Id.StringValue, StringComparison.OrdinalIgnoreCase));
+
+                testList.DeleteObject();
+                ct.DeleteObject();
+                clientContext.ExecuteQuery();
+            }
+        }
 
     }
 }
