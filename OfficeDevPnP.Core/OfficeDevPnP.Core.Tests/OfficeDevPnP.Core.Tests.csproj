@@ -220,6 +220,7 @@
     <None Include="App.config.sample" />
     <None Include="Resources\custom.spcolor" />
     <None Include="Resources\HelloWorldApp.app" />
+    <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\TestSolution.wsp" />
   </ItemGroup>
   <ItemGroup>
