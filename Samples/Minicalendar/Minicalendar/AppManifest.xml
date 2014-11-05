@@ -7,7 +7,7 @@
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
-    <Title>Minicalendar</Title>
+    <Title>Core.JSOM.Minicalendar</Title>
     <StartPage>~appWebUrl/Pages/Minicalendar.aspx?{StandardTokens}</StartPage>
   </Properties>
 
