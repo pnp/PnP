@@ -8,6 +8,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Set, "SPODefaultContentTypeToList")]
     [CmdletHelp("Sets the default content type for a list")]
+    [CmdletExample(
+     Code = @"PS:> Set-SPODefaultContentTypeToList -List ""Project Documents"" -ContentType ""Project""",
+     Remarks = @"This will set the Project content type (which has already been added to a list) as the default content type", SortOrder = 1)]
     public class SetDefaultContentTypeToList : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -15,9 +18,6 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         [Parameter(Mandatory = true)]
         public ContentTypePipeBind ContentType;
-
-        [Parameter(Mandatory = false)]
-        public SwitchParameter DefaultContentType;
 
         protected override void ExecuteCmdlet()
         {
