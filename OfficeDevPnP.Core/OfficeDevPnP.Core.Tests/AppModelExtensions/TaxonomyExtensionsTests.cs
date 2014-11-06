@@ -388,22 +388,26 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var createdSet = termStore.GetTermSet(importSetId);
                 var allTerms = createdSet.GetAllTerms();
+                var rootCollection = createdSet.Terms;
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
+                clientContext.Load(rootCollection, ts => ts.Include(t=> t.Name, t => t.Description, t => t.IsAvailableForTagging));
                 clientContext.ExecuteQuery();
 
                 Assert.AreEqual("Political Geography", createdSet.Name);
                 Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
                 Assert.IsFalse(createdSet.IsOpenForTermCreation);
                 Assert.AreEqual(12, allTerms.Count);
-                //Assert.AreEqual("Continent", allTerms[0].Name);
-                //Assert.AreEqual("One of the seven main land masses (Europe, Asia, Africa, North America, South America, Australia, and Antarctica)", allTerms[0].Description);
-                //Assert.IsTrue(allTerms[0].IsAvailableForTagging);
+
+                Assert.AreEqual(1, rootCollection.Count);
+                Assert.AreEqual("Continent", rootCollection[0].Name);
+                Assert.AreEqual("One of the seven main land masses (Europe, Asia, Africa, North America, South America, Australia, and Antarctica)", rootCollection[0].Description);
+                Assert.IsTrue(rootCollection[0].IsAvailableForTagging);
             }
         }
 
         [TestMethod()]
-        public void ImportTermSetSampleShouldUpdateSet()
+        public void ImportTermSetShouldUpdateSet()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -445,13 +449,25 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var createdSet = termStore.GetTermSet(UpdateTermSetId);
                 var allTerms = createdSet.GetAllTerms();
+                var rootCollection = createdSet.Terms;
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
+                clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
                 clientContext.ExecuteQuery();
 
                 Assert.AreEqual("Updated term set description", createdSet.Description);
                 Assert.IsTrue(createdSet.IsOpenForTermCreation);
                 Assert.AreEqual(6, allTerms.Count);
+                Assert.AreEqual(2, rootCollection.Count);
+
+                var retain1Collection = rootCollection.First(t => t.Name == "Retain1").Terms;
+                clientContext.Load(retain1Collection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                clientContext.ExecuteQuery();
+
+                Assert.IsTrue(retain1Collection.Any(t => t.Name == "New2"));
+                Assert.IsFalse(retain1Collection.Any(t => t.Name == "Delete2"));
+                Assert.AreEqual("Changed description", retain1Collection.First(t => t.Name == "Update2").Description);
+                Assert.IsFalse(retain1Collection.First(t => t.Name == "Update2").IsAvailableForTagging);
             }
         }
 
