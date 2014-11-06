@@ -97,8 +97,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 web.AddPermissionLevelToUser(_userLogin, roleType);
 
                 //Get User
-                User user = web.SiteUsers.GetByEmail(_userLogin);
-                clientContext.Load(user);
+                User user = web.EnsureUser(_userLogin);
                 clientContext.ExecuteQuery();
 
                 //Get Roles for the User
