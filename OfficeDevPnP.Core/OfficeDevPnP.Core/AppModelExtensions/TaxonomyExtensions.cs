@@ -646,7 +646,7 @@ namespace Microsoft.SharePoint.Client
 		/// This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.
 		/// </para>
 		/// </remarks>
-		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId, bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
+		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
 		{
 			if (filePath == null) { throw new ArgumentNullException("filePath"); }
 			if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
