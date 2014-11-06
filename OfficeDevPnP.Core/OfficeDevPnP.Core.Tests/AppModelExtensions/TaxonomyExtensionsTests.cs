@@ -22,7 +22,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private string SampleTermSetPath = "../../Resources/ImportTermSet.csv";
         private string SampleUpdateTermSetPath = "../../Resources/UpdateTermSet.csv";
+        private string SampleGuidTermSetPath = "../../Resources/GuidTermSet.csv";
         private Guid UpdateTermSetId = new Guid("{35585956-83E4-4A44-8FC5-AC50942E3187}");
+        private Guid GuidTermSetId = new Guid("{90FD4208-8281-40CC-872E-DD85F33B50AB}");
 
         [TestInitialize]
         public void Initialize()
@@ -468,6 +470,61 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.IsFalse(retain1Collection.Any(t => t.Name == "Delete2"));
                 Assert.AreEqual("Changed description", retain1Collection.First(t => t.Name == "Update2").Description);
                 Assert.IsFalse(retain1Collection.First(t => t.Name == "Update2").IsAvailableForTagging);
+            }
+        }
+
+        [TestMethod()]
+        public void ImportTermSetShouldUpdateByGuid()
+        {
+            var addedTermId = new Guid("{B564BD6F-21FF-4B60-9474-5E33F726DC6C}");
+            var changedTermId = new Guid("{73DF85EE-313C-4485-A7B3-0FC3C17A7454}");
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                clientContext.Load(termStore, s => s.DefaultLanguage);
+                clientContext.ExecuteQuery();
+                var lcid = termStore.DefaultLanguage;
+
+                var termGroup = termStore.GetGroup(_termGroupId);
+                var termSet = termGroup.CreateTermSet("Test Guids", GuidTermSetId, lcid);
+                termSet.Description = "Initial term set description";
+                var retain1 = termSet.CreateTerm("Retain1", lcid, Guid.NewGuid());
+                retain1.SetDescription("Retained term description", lcid);
+                var toUpdate1 = termSet.CreateTerm("ToUpdate1", lcid, changedTermId);
+                toUpdate1.SetDescription("Inital term description", lcid);
+                clientContext.ExecuteQuery();
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleGuidTermSetPath, Guid.Empty);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(GuidTermSetId);
+                var rootCollection = createdSet.Terms;
+                clientContext.Load(createdSet);
+                clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Id));
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Updated Guids", createdSet.Name);
+                Assert.AreEqual("Updated Test Guid term set description", createdSet.Description);
+                Assert.AreEqual(3, rootCollection.Count);
+
+                Assert.AreEqual(addedTermId, rootCollection.First(t => t.Name == "Added1").Id);
+                Assert.IsTrue(rootCollection.Any(t => t.Name == "Retain1"));
+                Assert.IsFalse(rootCollection.Any(t => t.Name == "ToUpdate1"));
+                Assert.AreEqual("Changed1", rootCollection.First(t => t.Id == changedTermId).Name);
             }
         }
 
