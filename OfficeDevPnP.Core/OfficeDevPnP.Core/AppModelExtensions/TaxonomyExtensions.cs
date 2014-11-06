@@ -1124,17 +1124,24 @@ namespace Microsoft.SharePoint.Client
 			}
 			foreach (var termToDelete in termsToDelete)
 			{
-				try
-				{
-					LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
-					termToDelete.DeleteObject();
-					termSet.Context.ExecuteQuery();
-				}
-				catch (KeyNotFoundException)
-				{
-					// This is a sucky way to check if the term was already deleted
-					LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
-				}
+                try
+                {
+                    LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
+                    termToDelete.DeleteObject();
+                    termSet.Context.ExecuteQuery();
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message.StartsWith("Taxonomy item instantiation failed."))
+                    {
+                        // This is a sucky way to check if the term was already deleted
+                        LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 			}
 		}
 

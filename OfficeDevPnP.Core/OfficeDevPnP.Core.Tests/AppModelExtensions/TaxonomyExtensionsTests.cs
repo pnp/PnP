@@ -21,6 +21,8 @@ namespace Microsoft.SharePoint.Client.Tests
         private Guid _listId; // For easy reference
 
         private string SampleTermSetPath = "../../Resources/ImportTermSet.csv";
+        private string SampleUpdateTermSetPath = "../../Resources/UpdateTermSet.csv";
+        private Guid UpdateTermSetId = new Guid("{35585956-83E4-4A44-8FC5-AC50942E3187}");
 
         [TestInitialize]
         public void Initialize()
@@ -392,10 +394,64 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 Assert.AreEqual("Political Geography", createdSet.Name);
                 Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
+                Assert.IsFalse(createdSet.IsOpenForTermCreation);
                 Assert.AreEqual(12, allTerms.Count);
                 //Assert.AreEqual("Continent", allTerms[0].Name);
                 //Assert.AreEqual("One of the seven main land masses (Europe, Asia, Africa, North America, South America, Australia, and Antarctica)", allTerms[0].Description);
                 //Assert.IsTrue(allTerms[0].IsAvailableForTagging);
+            }
+        }
+
+        [TestMethod()]
+        public void ImportTermSetSampleShouldUpdateSet()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                clientContext.Load(termStore, s => s.DefaultLanguage);
+                clientContext.ExecuteQuery();
+                var lcid = termStore.DefaultLanguage;
+
+                var termGroup = termStore.GetGroup(_termGroupId);
+                var termSet = termGroup.CreateTermSet("Test Changes", UpdateTermSetId, lcid);
+                termSet.Description = "Initial term set description";
+                var retain1 = termSet.CreateTerm("Retain1", lcid, Guid.NewGuid());
+                retain1.SetDescription("Test of deletes, adds and update", lcid);
+                var update2 = retain1.CreateTerm("Update2", lcid, Guid.NewGuid());
+                update2.SetDescription("Initial update2 description", lcid);
+                var retain3 = update2.CreateTerm("Retain3", lcid, Guid.NewGuid());
+                retain3.SetDescription("Test retaining same term", lcid);
+                var delete2 = retain1.CreateTerm("Delete2", lcid, Guid.NewGuid());
+                delete2.SetDescription("Term to delete", lcid);
+                var delete3 = delete2.CreateTerm("Delete3", lcid, Guid.NewGuid());
+                delete3.SetDescription("Child term to delete", lcid);
+                clientContext.ExecuteQuery();
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleUpdateTermSetPath, UpdateTermSetId, synchroniseDeletions:true, termSetIsOpen:true);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(UpdateTermSetId);
+                var allTerms = createdSet.GetAllTerms();
+                clientContext.Load(createdSet);
+                clientContext.Load(allTerms);
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Updated term set description", createdSet.Description);
+                Assert.IsTrue(createdSet.IsOpenForTermCreation);
+                Assert.AreEqual(6, allTerms.Count);
             }
         }
 

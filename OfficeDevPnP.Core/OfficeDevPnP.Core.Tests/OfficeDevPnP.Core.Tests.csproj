@@ -222,6 +222,7 @@
     <None Include="Resources\HelloWorldApp.app" />
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
