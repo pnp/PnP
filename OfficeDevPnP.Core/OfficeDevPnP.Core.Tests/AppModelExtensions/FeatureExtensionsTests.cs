@@ -12,7 +12,7 @@ namespace Microsoft.SharePoint.Client.Tests
     public class FeatureExtensionsTests
     {
         private ClientContext clientContext;
-        private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
+        private Guid sp2007WorkflowSiteFeatureId = new Guid("c845ed8d-9ce5-448c-bd3e-ea71350ce45b");
         private Guid contentOrganizerWebFeatureId = new Guid("7ad5272a-2694-4349-953e-ea5ef290e97c");
 
         [TestInitialize()]
@@ -31,12 +31,12 @@ namespace Microsoft.SharePoint.Client.Tests
         public void ActivateFeatureTest()
         {
             // Test
-            clientContext.Site.ActivateFeature(publishingSiteFeatureId);
+            clientContext.Site.ActivateFeature(sp2007WorkflowSiteFeatureId);
 
-            Assert.IsTrue(clientContext.Site.IsFeatureActive(publishingSiteFeatureId));
+            Assert.IsTrue(clientContext.Site.IsFeatureActive(sp2007WorkflowSiteFeatureId));
 
             // Teardown
-            clientContext.Site.DeactivateFeature(publishingSiteFeatureId);
+            clientContext.Site.DeactivateFeature(sp2007WorkflowSiteFeatureId);
             
         }
 
@@ -56,13 +56,11 @@ namespace Microsoft.SharePoint.Client.Tests
         public void DeactivateFeatureTest()
         {
             // Setup
-            clientContext.Site.ActivateFeature(publishingSiteFeatureId);
-
+            clientContext.Site.ActivateFeature(sp2007WorkflowSiteFeatureId);
 
             // Test
-            clientContext.Site.DeactivateFeature(publishingSiteFeatureId);
-            Assert.IsFalse(clientContext.Site.IsFeatureActive(publishingSiteFeatureId));
-
+            clientContext.Site.DeactivateFeature(sp2007WorkflowSiteFeatureId);
+            Assert.IsFalse(clientContext.Site.IsFeatureActive(sp2007WorkflowSiteFeatureId));
         }
 
         [TestMethod()]
@@ -79,12 +77,34 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestMethod()]
         public void IsFeatureActiveTest()
         {
-            Assert.IsFalse(clientContext.Site.IsFeatureActive(publishingSiteFeatureId));
+            // Setup
+            try
+            {
+                clientContext.Site.DeactivateFeature(sp2007WorkflowSiteFeatureId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ignoring exception: {0}", ex.Message);
+            }
+
+            // Test
+            Assert.IsFalse(clientContext.Site.IsFeatureActive(sp2007WorkflowSiteFeatureId));
         }
 
         [TestMethod()]
         public void IsFeatureActiveTest1()
         {
+            // Setup
+            try
+            { 
+                clientContext.Web.DeactivateFeature(contentOrganizerWebFeatureId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ignoring exception: {0}", ex.Message);
+            }
+
+            // Test
             Assert.IsFalse(clientContext.Web.IsFeatureActive(contentOrganizerWebFeatureId));
         }
     }
