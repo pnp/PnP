@@ -844,7 +844,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
                 {
-                    theme.Font = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
                 }
             }
 
