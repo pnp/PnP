@@ -3,7 +3,7 @@ using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands.PublishingPage
 {
- [Cmdlet(VerbsCommon.Add, "SPOHtmlPublishingPageLayoutt")]
+ [Cmdlet(VerbsCommon.Add, "SPOHtmlPublishingPageLayout")]
     public class AddHtmlPublishingPageLayout : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "Full path to the file which will be uploaded")]
