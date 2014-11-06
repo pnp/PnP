@@ -214,7 +214,7 @@ Command | Description
 :--------|:------------
 **Add-SPOPublishingPage** | Adds a new publishing page to a site
 **Add-SPOPublishingPageLayout** | Adds a new .aspx publishing page layout to a site
-**Add-SPOHtmlPublishingPageLayoutt** | Adds a new .html publishing page layout to a site
+**Add-SPOHtmlPublishingPageLayout** | Adds a new .html publishing page layout to a site
 
 Examples (Note: The associated content type in the example is the "Welcome Page" built in content type)
 
