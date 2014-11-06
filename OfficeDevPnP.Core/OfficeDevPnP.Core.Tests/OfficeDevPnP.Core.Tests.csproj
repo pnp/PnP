@@ -78,6 +78,7 @@
     <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\BrandingExtensionsTest.cs" />
     <Compile Include="Extensions\HttpVariablesExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
@@ -115,6 +116,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\office365.png" />
+    <Content Include="Resources\TestHtmlPublishingPageLayout.html" />
+    <Content Include="Resources\TestPublishingPageLayout.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

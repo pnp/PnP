@@ -445,6 +445,34 @@ namespace Microsoft.SharePoint.Client
         /// <param name="associatedContentTypeID">Associated content type ID</param>
         public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
         {
+            web.DeployMasterPageGalleryItem(sourceFilePath,title,description,associatedContentTypeID,Constants.PAGE_LAYOUT_CONTENT_TYPE);
+        }
+
+        /// <summary>
+        /// Can be used to deploy html page layouts to master page gallery. 
+        /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
+        /// </summary>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
+        /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
+        /// <param name="title">Title for the page layout</param>
+        /// <param name="description">Description for the page layout</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
+        public static void DeployHtmlPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
+        {
+            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.HTMLPAGE_LAYOUT_CONTENT_TYPE);
+        }
+
+        /// <summary>
+        /// Private method to support all kinds of file uploads to the master page gallery
+        /// </summary>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
+        /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
+        /// <param name="title">Title for the page layout</param>
+        /// <param name="description">Description for the page layout</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
+        /// <param name="itemContentTypeId">Content type id for the item.</param>
+        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId)
+        {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
 
@@ -489,7 +517,7 @@ namespace Microsoft.SharePoint.Client
             listItem["Title"] = title;
             listItem["MasterPageDescription"] = description;
             // set the item as page layout
-            listItem["ContentTypeId"] = Constants.PAGE_LAYOUT_CONTENT_TYPE;
+            listItem["ContentTypeId"] = itemContentTypeId;
             // Set the associated content type ID property
             listItem["PublishingAssociatedContentType"] = string.Format(";#{0};#{1};#", associatedCt.Name, associatedCt.Id);
             listItem["UIVersion"] = Convert.ToString(15);
@@ -504,6 +532,8 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
 
         }
+
+
 
         public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "")
         {
