@@ -776,22 +776,16 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(pageLayoutName))
                 throw new ArgumentNullException("pageLayoutName");
 
-            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
-            CamlQuery query = new CamlQuery();
-            query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.aspx</Value></Contains></Where></Query></View>";
-            ListItemCollection galleryItems = masterPageGallery.GetItems(query);
+            var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+            var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName,
+                ".aspx");
+            var query = new CamlQuery();
+            query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
+            var galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
             web.Context.ExecuteQuery();
-            foreach (var item in galleryItems)
-            {
-                var fileRef = item["FileRef"].ToString().ToUpperInvariant();
-                if (fileRef.Contains(pageLayoutName.ToUpperInvariant()))
-                {
-                    return item;
-                }
-            }
-            return null;
+            return galleryItems.Count > 0 ? galleryItems[0] : null;
         }
 
          /// <summary>
