@@ -22,6 +22,15 @@ Version  | Date | Comments
 
 ----------
 
+# HOW DOES THE DOCUMENT PICKER WORK? #
+The document picker control makes it possible to browse one or more document libraries and select documents. An examle would be a provider hosted application in which create PDF's from existing documents: you could then use this document picker control to select the needed documents. Below picture shows the control on the page:
+
+![](http://i.imgur.com/OmGyuNE.png)
+
+One you click on the *document* icon right to the control a dialog opens in which you select documents:
+
+![](http://i.imgur.com/gvVLyJj.png)
+
 # HOW TO USE THE DOCUMENT PICKER IN YOUR PROVIDER HOSTED SP APP? #
 Below you can find the steps needed to get the control working
 
