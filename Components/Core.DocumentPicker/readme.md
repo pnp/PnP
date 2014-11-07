@@ -1,7 +1,7 @@
 # Document picker for provider hosted apps #
 
 ### Summary ###
-This control is used to browse documents that are stores in document libaries in Sharepoint. It can show multiple document libraries in 1 tree structure. If you click on one of the selected documents, it will open. It is possible to configure filters on document extensions and specify the number of selected files. There is support for a custom datasource that you can implement yourself to get data from sources that the control itself does not support.
+This control is used to browse documents that are stored in document libaries in SharePoint. It can show multiple document libraries in 1 tree structure. If you click on one of the selected documents, it will open. It is possible to configure filters on document extensions and specify the number of selected files. There is support for a custom datasource that you can implement yourself to get data from sources that the control itself does not support.
 
 ### Prerequisites ###
 none
@@ -34,19 +34,19 @@ When you build a provider hosted app it does not necessarily have an app web ass
 Add refences to javascript and css files to make the control work. The app.js file will be used to write our app specific code.
 
 ```ASPX
-    <link href="../Styles/documentpicker/documentpickercontrol.css" rel="stylesheet" />
-    <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="../Scripts/MyCustomDocumentPickerDataSource.js"></script>
-    <script type="text/javascript" src="../Scripts/documentpickerdatasource.js"></script>
-    <script type="text/javascript" src="../Scripts/documentpickercontrol.js"></script>
-    <script type="text/javascript" src="../Scripts/app.js"></script>
+<link href="../Styles/documentpicker/documentpickercontrol.css" rel="stylesheet" />
+<script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../Scripts/MyCustomDocumentPickerDataSource.js"></script>
+<script type="text/javascript" src="../Scripts/documentpickerdatasource.js"></script>
+<script type="text/javascript" src="../Scripts/documentpickercontrol.js"></script>
+<script type="text/javascript" src="../Scripts/app.js"></script>
 ```
 
 We also need to add html on the page where we want the control to render. The control will be rendered inside the div. The heigth and width styling on the div determines the size of the control. The hiddenfield is used to get or set selected documents from the server. 
 
 ```ASPX
-    <div id="BasicDocumentPicker" style="width:350px;height:100px;float:right"></div>  
-    <asp:HiddenField runat="server" ID="BasicDocumentPickerValue" />
+<div id="BasicDocumentPicker" style="width:350px;height:100px;float:right"></div>  
+<asp:HiddenField runat="server" ID="BasicDocumentPickerValue" />
 ```
 
 ## CREATE THE CLIENTCONTEXT OBJECT ##
@@ -88,16 +88,16 @@ $(document).ready(function () {
 The final step is to transform the HTML inserted in the previous step into a document picker control. This is done by creating an instance of the documentpicker JavaScript class and providing it a reference to the HTML elements. The control gets data using a datasource. With the default datasource you can get data using a array of list titles or list id's.
 
 ```JavaScript
-    //param1: context of the site to get lists (host or app web)
-    //param2: array of library titles or ID's, to use in the control
-    //param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
-    var basicDocumentPickerDatasource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib"],"TITLE"); //pass list titles to find lists
+//param1: context of the site to get lists (host or app web)
+//param2: array of library titles or ID's, to use in the control
+//param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
+var basicDocumentPickerDatasource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib"],"TITLE"); //pass list titles to find lists
 
-    basicDocumentPicker = new CAMControl.DocumentPicker();
-    //param1: id of div hosting this control
-    //param2: id of hiddenfield to store values
-    //param3: datasource to get the data (created above)
-    basicDocumentPicker.Initialize("BasicDocumentPicker", "BasicDocumentPickerValue", basicDocumentPickerDatasource);
+basicDocumentPicker = new CAMControl.DocumentPicker();
+//param1: id of div hosting this control
+//param2: id of hiddenfield to store values
+//param3: datasource to get the data (created above)
+basicDocumentPicker.Initialize("BasicDocumentPicker", "BasicDocumentPickerValue", basicDocumentPickerDatasource);
 ```
 
 # DOCUMENTPICKER CONFIGURATION OPTIONS #
@@ -125,10 +125,10 @@ The control is able to show multiple document libraries in the same treeview. Ju
 
 ```JavaScript
 
-    //param1: context of the site to get lists (host or app web)
-    //param2: array of library titles or ID's, to use in the control
-    //param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
-    var documentPickerWithOptionsDataSource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib", "DocumentPickerDocLibExtra"], "TITLE"); //pass id's instead of titles
+//param1: context of the site to get lists (host or app web)
+//param2: array of library titles or ID's, to use in the control
+//param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
+var documentPickerWithOptionsDataSource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib", "DocumentPickerDocLibExtra"], "TITLE"); //pass id's instead of titles
 ```
 
 ## MAXIMUM NUMBER OF FILES ##

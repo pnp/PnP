@@ -12,7 +12,7 @@
     <script type="text/javascript" src="../Scripts/documentpickercontrol.js"></script>
     <script type="text/javascript" src="../Scripts/app.js"></script>
 </head>
-<body style="overflow:auto !important;">
+<body style="overflow:auto !important; display: none;">
 
     <form id="form1" runat="server">
         <asp:HiddenField ID="defaultDocumentUrl" runat="server" />

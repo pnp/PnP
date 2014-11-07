@@ -98,11 +98,13 @@ namespace Core.DocumentPickerWeb
             creationInfo.Title = name;
             creationInfo.TemplateType = (int)ListTemplateType.DocumentLibrary;
             List list = clientContext.Web.Lists.Add(creationInfo);
+            clientContext.ExecuteQuery();
+
             list.Description = name;
             list.Update();
+
             clientContext.Load(list);
-            clientContext.ExecuteQuery();
-           
+            clientContext.ExecuteQuery();           
             return list;
         }
 
