@@ -4,7 +4,7 @@
 This sample shows how to create a workflow that supports custom events.
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT)
+- Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
 None
@@ -12,7 +12,7 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Workflow.CustomEvents | Paolo Pialorsi (PiaSys.com)
+Workflow.CustomEvents | Paolo Pialorsi (**PiaSys.com**)
 
 ### Version history ###
 Version  | Date | Comments
