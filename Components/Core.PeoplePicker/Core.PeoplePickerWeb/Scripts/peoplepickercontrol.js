@@ -140,8 +140,9 @@
             if (typeof deleteUser != 'undefined') {
                 resultDisplay = deleteUser;
             }
+
             lookupValue = (login) ? login.replace("\\", "\\\\") : lookupId;
-            }
+            
             resultDisplay = this.Format(resultDisplay, name);
     
             userDisplaySpanTemplate = '<span class="cam-peoplepicker-userSpan"><span class="cam-entity-resolved">{0}</span><a title="{3}" class="cam-peoplepicker-delImage" onclick="{1}.DeleteProcessedUser({2}); return false;" href="#">x</a></span>';
