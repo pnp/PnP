@@ -116,9 +116,12 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            // Get site guid and return
-            var siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
-
+            // Get site guid and return. If we create the site asynchronously, return an empty guid as we cannot retrieve the site by URL yet.
+            Guid siteGuid = Guid.Empty;
+            if (wait)
+            {
+                siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
+            }
             return siteGuid;
         }
 
