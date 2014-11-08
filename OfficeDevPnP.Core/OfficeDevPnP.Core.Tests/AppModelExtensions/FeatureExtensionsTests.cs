@@ -11,6 +11,7 @@ namespace Microsoft.SharePoint.Client.Tests
     [TestClass()]
     public class FeatureExtensionsTests
     {
+        const string TEST_CATEGORY = "Feature Extensions";
         private ClientContext clientContext;
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         private Guid contentOrganizerWebFeatureId = new Guid("7ad5272a-2694-4349-953e-ea5ef290e97c");
@@ -26,7 +27,8 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             clientContext.Dispose();
         }
-        
+
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ActivateFeatureTest()
         {
@@ -40,6 +42,7 @@ namespace Microsoft.SharePoint.Client.Tests
             
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ActivateFeatureTest1()
         {
@@ -52,6 +55,7 @@ namespace Microsoft.SharePoint.Client.Tests
             clientContext.Web.DeactivateFeature(contentOrganizerWebFeatureId);
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void DeactivateFeatureTest()
         {
@@ -65,6 +69,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void DeactivateFeatureTest1()
         {
@@ -76,6 +81,7 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsFalse(clientContext.Web.IsFeatureActive(contentOrganizerWebFeatureId));
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void IsFeatureActiveTest()
         {

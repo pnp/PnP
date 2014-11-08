@@ -13,17 +13,23 @@ namespace Microsoft.SharePoint.Client.Tests
     [TestClass()]
     public class FieldAndContentTypeExtensionsTests
     {
+        const string DOC_LIB_TITLE = "Test_Library";
+        const string TEST_CATEGORY = "Fields and Content Types";
         // **** IMPORTANT ****
         // In order to succesfully clean up after testing, create all artifacts that end up in the test site with a name starting with "Test_"
         // **** IMPORTANT ****
-
 
         #region [ CreateField ]
         [TestCleanup]
         public void Cleanup()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
+            using (var clientContext = TestCommon.CreateClientContext()) {
+                var web = clientContext.Web;
+                clientContext.Load(web);
+                clientContext.ExecuteQuery();
+
+                EmptyRecycleBin(clientContext);
+
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
                 clientContext.ExecuteQuery();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
@@ -41,10 +47,21 @@ namespace Microsoft.SharePoint.Client.Tests
                     list.DeleteObject();
                 }
                 clientContext.ExecuteQuery();
+
+                var contentTypes = clientContext.LoadQuery(clientContext.Web.ContentTypes);
+                clientContext.ExecuteQuery();
+                var testContentTypes = contentTypes.Where(l => l.Name.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var ctype in testContentTypes) {
+                    ctype.DeleteObject();
+                clientContext.ExecuteQuery();
+                }
+
+                EmptyRecycleBin(clientContext);
             }
         }
 
         [TestMethod()]
+        [TestCategory(TEST_CATEGORY)]
         public void CreateFieldTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -69,6 +86,7 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Field was able to be created twice without exception.")]
         public void CreateExistingFieldTest()
@@ -102,6 +120,7 @@ namespace Microsoft.SharePoint.Client.Tests
         //FIXME: Tests does not revert target to a clean slate after running.
         //FIXME: Tests are tighthly coupled to eachother
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
@@ -122,6 +141,7 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         public void CreateFieldFromXmlTest()
         {
@@ -138,6 +158,8 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
         #endregion
+
+        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         public void SetDefaultContentTypeToListTest()
         {
@@ -172,5 +194,89 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestCategory(TEST_CATEGORY)]
+        [TestMethod()]
+        public void ReorderContentTypesTest() {
+            using (var clientContext = TestCommon.CreateClientContext()) {
+                var web = clientContext.Web;
+                clientContext.Load(web, w=>w.ContentTypes);
+                clientContext.ExecuteQuery();
+
+                // create content types
+                var documentCtype = web.ContentTypes.FirstOrDefault(ct=>ct.Name == "Document");
+                var newCtypeInfo1 = new ContentTypeCreationInformation() {
+                    Name = "Test_ContentType1",
+                    ParentContentType = documentCtype,
+                    Group = "Test content types",
+                    Description = "This is a test content type"
+                };
+                var newCtypeInfo2 = new ContentTypeCreationInformation() {
+                    Name = "Test_ContentType2",
+                    ParentContentType = documentCtype,
+                    Group = "Test content types",
+                    Description = "This is a test content type"
+                };
+                var newCtypeInfo3 = new ContentTypeCreationInformation() {
+                    Name = "Test_ContentType3",
+                    ParentContentType = documentCtype,
+                    Group = "Test content types",
+                    Description = "This is a test content type"
+                };
+
+                var newCtype1 = web.ContentTypes.Add(newCtypeInfo1);
+                var newCtype2 = web.ContentTypes.Add(newCtypeInfo2);
+                var newCtype3 = web.ContentTypes.Add(newCtypeInfo3);
+                clientContext.Load(newCtype1);
+                clientContext.Load(newCtype2);
+                clientContext.Load(newCtype3);
+                clientContext.ExecuteQuery();
+
+                var newList = new ListCreationInformation() {
+                    TemplateType = (int)ListTemplateType.DocumentLibrary,
+                    Title = DOC_LIB_TITLE,
+                    Url = "TestLibrary"
+                };
+
+                var doclib = clientContext.Web.Lists.Add(newList);
+                doclib.ContentTypesEnabled = true;
+                doclib.ContentTypes.AddExistingContentType(newCtype1);
+                doclib.ContentTypes.AddExistingContentType(newCtype2);
+                doclib.ContentTypes.AddExistingContentType(newCtype3);
+                doclib.Update();
+                clientContext.Load(doclib.ContentTypes);
+                clientContext.ExecuteQuery();
+
+                var expectedIds = new string[]{
+                    newCtype3.Name,
+                    newCtype1.Name,
+                    newCtype2.Name,
+                    documentCtype.Name
+                };
+
+                doclib.ReorderContentTypes(expectedIds);
+                var reorderedCtypes = clientContext.LoadQuery(doclib.ContentTypes);
+                clientContext.ExecuteQuery();
+
+                var actualIds = reorderedCtypes.Except(
+                                        // remove the folder content type
+                                        reorderedCtypes.Where(ct => ct.Id.StringValue.StartsWith("0x012000"))
+                                    ).Select(ct => ct.Name).ToArray();
+
+                CollectionAssert.AreEqual(expectedIds, actualIds);
+            }
+        }
+
+        void EmptyRecycleBin(ClientContext clientContext) {
+            var recycleBin = clientContext.Web.RecycleBin;
+            clientContext.Load(recycleBin);
+            clientContext.ExecuteQuery();
+
+            var items = recycleBin.ToArray();
+
+            for (var i = 0; i < items.Length; i++)
+                items[i].DeleteObject();
+
+            clientContext.ExecuteQuery();
+        }
     }
 }
