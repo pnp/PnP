@@ -54,7 +54,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="properties">Describes the site collection to be created</param>
         /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
         /// <param name="wait">If true, processing will halt until the site collection has been created</param>
-        /// <returns>Guid of the created site collection</returns>
+        /// <returns>Guid of the created site collection and Guid.Empty is the wait parameter is specified as false</returns>
         public static Guid CreateSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
             if (removeFromRecycleBin)
@@ -116,9 +116,12 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            // Get site guid and return
-            var siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
-
+            // Get site guid and return. If we create the site asynchronously, return an empty guid as we cannot retrieve the site by URL yet.
+            Guid siteGuid = Guid.Empty;
+            if (wait)
+            {
+                siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
+            }
             return siteGuid;
         }
 
