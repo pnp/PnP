@@ -220,8 +220,10 @@
     <None Include="App.config.sample" />
     <None Include="Resources\custom.spcolor" />
     <None Include="Resources\HelloWorldApp.app" />
+    <Content Include="Resources\GuidTermSet.csv" />
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -233,6 +235,10 @@
   <ItemGroup>
     <None Include="Resources\custombg.jpg" />
     <Content Include="Resources\office365.png" />
+    <Content Include="Resources\TestHtmlPublishingPageLayout.html" />
+    <Content Include="Resources\TestPublishingPageLayout.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

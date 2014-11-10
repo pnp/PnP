@@ -220,9 +220,19 @@ Command | Description
 Command | Description
 :--------|:------------
 **Add-SPOPublishingPage** | Adds a new publishing page to a site
-Example
+**Add-SPOPublishingPageLayout** | Adds a new .aspx publishing page layout to a site
+**Add-SPOHtmlPublishingPageLayout** | Adds a new .html publishing page layout to a site
+
+Examples (Note: The associated content type in the example is the "Welcome Page" built in content type)
+
 ```powershell
 Add-SPOPublishingPage -PageName "your-page-name" -PageTemplateName "BlankWebPartPage" -Title "Your Page Title" -Publish
+
+Add-SPOPublishingPageLayout -SourceFilePath "Path-To-Your-Page-Layout" -Title "Your Title" -Description "Your Description" -AssociatedContentTypeID "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB06458
+4E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4"
+
+Add-SPOHtmlPublishingPageLayout -SourceFilePath "Path-To-Your-Page-Layout" -Title "Your Title" -Description "Your Description" -AssociatedContentTypeID "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB06458
+4E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4"
 ```
 
 #### User Profile / OD4B Cmdlets ####
