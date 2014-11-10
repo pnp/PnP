@@ -646,7 +646,7 @@ namespace Microsoft.SharePoint.Client
 		/// This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.
 		/// </para>
 		/// </remarks>
-		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId, bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
+		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
 		{
 			if (filePath == null) { throw new ArgumentNullException("filePath"); }
 			if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
@@ -1124,17 +1124,24 @@ namespace Microsoft.SharePoint.Client
 			}
 			foreach (var termToDelete in termsToDelete)
 			{
-				try
-				{
-					LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
-					termToDelete.DeleteObject();
-					termSet.Context.ExecuteQuery();
-				}
-				catch (KeyNotFoundException)
-				{
-					// This is a sucky way to check if the term was already deleted
-					LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
-				}
+                try
+                {
+                    LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
+                    termToDelete.DeleteObject();
+                    termSet.Context.ExecuteQuery();
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message.StartsWith("Taxonomy item instantiation failed."))
+                    {
+                        // This is a sucky way to check if the term was already deleted
+                        LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 			}
 		}
 
