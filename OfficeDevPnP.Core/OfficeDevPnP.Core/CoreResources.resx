@@ -139,16 +139,16 @@
     <value>Deploying theme '{0}' to '{1}'</value>
   </data>
   <data name="BrandingExtension_SetCustomMasterUrl" xml:space="preserve">
-    <value>Setting custom master URL '{0}' to '{1}'.</value>
+    <value>Setting custom master URL '{0}' in '{1}'.</value>
   </data>
   <data name="BrandingExtension_SetMasterUrl" xml:space="preserve">
-    <value>Setting master URL '{0}' to '{1}'.</value>
+    <value>Setting master URL '{0}' in '{1}'.</value>
   </data>
-  <data name="BrandingExtension_SetTheme" xml:space="preserve">
-    <value>Setting theme '{0}' for '{1}'</value>
+  <data name="BrandingExtension_ApplyTheme" xml:space="preserve">
+    <value>Applying theme '{0}' in '{1}'</value>
   </data>
-  <data name="BrandingExtension_ThemeMissing" xml:space="preserve">
-    <value>Theme '{0}' not found.</value>
+  <data name="BrandingExtension_ComposedLookMissing" xml:space="preserve">
+    <value>Composed look '{0}' not found.</value>
   </data>
   <data name="Exception_Message_EmptyString_Arg" xml:space="preserve">
     <value>The passed argument is a zero-length string or contains only whitespace.</value>

@@ -88,6 +88,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applying theme &apos;{0}&apos; in &apos;{1}&apos;.
+        /// </summary>
+        internal static string BrandingExtension_ApplyTheme {
+            get {
+                return ResourceManager.GetString("BrandingExtension_ApplyTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composed look &apos;{0}&apos; not found..
+        /// </summary>
+        internal static string BrandingExtension_ComposedLookMissing {
+            get {
+                return ResourceManager.GetString("BrandingExtension_ComposedLookMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating composed look &apos;{0}&apos; in &apos;{1}&apos;.
         /// </summary>
         internal static string BrandingExtension_CreateComposedLook {
@@ -124,7 +142,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setting custom master URL &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Setting custom master URL &apos;{0}&apos; in &apos;{1}&apos;..
         /// </summary>
         internal static string BrandingExtension_SetCustomMasterUrl {
             get {
@@ -133,29 +151,11 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setting master URL &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Setting master URL &apos;{0}&apos; in &apos;{1}&apos;..
         /// </summary>
         internal static string BrandingExtension_SetMasterUrl {
             get {
                 return ResourceManager.GetString("BrandingExtension_SetMasterUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Setting theme &apos;{0}&apos; for &apos;{1}&apos;.
-        /// </summary>
-        internal static string BrandingExtension_SetTheme {
-            get {
-                return ResourceManager.GetString("BrandingExtension_SetTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme &apos;{0}&apos; not found..
-        /// </summary>
-        internal static string BrandingExtension_ThemeMissing {
-            get {
-                return ResourceManager.GetString("BrandingExtension_ThemeMissing", resourceCulture);
             }
         }
         
