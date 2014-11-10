@@ -233,6 +233,10 @@
   <ItemGroup>
     <None Include="Resources\custombg.jpg" />
     <Content Include="Resources\office365.png" />
+    <Content Include="Resources\TestHtmlPublishingPageLayout.html" />
+    <Content Include="Resources\TestPublishingPageLayout.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

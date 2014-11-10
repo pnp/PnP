@@ -89,7 +89,8 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Checks to see if the theme already exists.
+        /// Checks to see if the theme already exists. 
+        /// Note: this method will not work to check for the OOB themes, only custom teams are retrievable
         /// </summary>
         /// <param name="web">Site to be processed</param>
         /// <param name="themeName">Name for the new theme</param>
@@ -485,6 +486,34 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folderPath">Folder where the page layouts will be stored</param>
         public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderPath = "")
         {
+            web.DeployMasterPageGalleryItem(sourceFilePath,title,description,associatedContentTypeID,Constants.PAGE_LAYOUT_CONTENT_TYPE);
+        }
+
+        /// <summary>
+        /// Can be used to deploy html page layouts to master page gallery. 
+        /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
+        /// </summary>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
+        /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
+        /// <param name="title">Title for the page layout</param>
+        /// <param name="description">Description for the page layout</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
+        public static void DeployHtmlPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
+        {
+            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.HTMLPAGE_LAYOUT_CONTENT_TYPE);
+        }
+
+        /// <summary>
+        /// Private method to support all kinds of file uploads to the master page gallery
+        /// </summary>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
+        /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
+        /// <param name="title">Title for the page layout</param>
+        /// <param name="description">Description for the page layout</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
+        /// <param name="itemContentTypeId">Content type id for the item.</param>
+        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId)
+        {
             if (string.IsNullOrEmpty(sourceFilePath))
                 throw new ArgumentNullException("sourceFilePath");
 
@@ -499,22 +528,14 @@ namespace Microsoft.SharePoint.Client
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
-            web.Context.ExecuteQuery();
-            
-            // Create folder structure inside master page gallery, if does not exists
-            // For e.g.: _catalogs/masterpage/contoso/
-            // Create folder if does not exists
-            if (!String.IsNullOrEmpty(folderPath))
-            {
-                web.EnsureFolder(rootFolder, folderPath);
-            }
+            web.Context.ExecuteQuery();            
 
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
 
             // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = fileBytes;
-            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderPath, fileName);
+            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, fileName);
             newFile.Overwrite = true;
 
             Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
@@ -537,7 +558,7 @@ namespace Microsoft.SharePoint.Client
             listItem["Title"] = title;
             listItem["MasterPageDescription"] = description;
             // set the item as page layout
-            listItem["ContentTypeId"] = Constants.PAGE_LAYOUT_CONTENT_TYPE;
+            listItem["ContentTypeId"] = itemContentTypeId;
             // Set the associated content type ID property
             listItem["PublishingAssociatedContentType"] = string.Format(";#{0};#{1};#", associatedCt.Name, associatedCt.Id);
             listItem["UIVersion"] = Convert.ToString(15);
@@ -844,7 +865,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
                 {
-                    theme.Font = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
                 }
             }
 
@@ -857,22 +878,16 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(pageLayoutName))
                 throw new ArgumentNullException("pageLayoutName");
 
-            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
-            CamlQuery query = new CamlQuery();
-            query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.aspx</Value></Contains></Where></Query></View>";
-            ListItemCollection galleryItems = masterPageGallery.GetItems(query);
+            var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+            var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName,
+                ".aspx");
+            var query = new CamlQuery();
+            query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
+            var galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
             web.Context.ExecuteQuery();
-            foreach (var item in galleryItems)
-            {
-                var fileRef = item["FileRef"].ToString().ToUpperInvariant();
-                if (fileRef.Contains(pageLayoutName.ToUpperInvariant()))
-                {
-                    return item;
-                }
-            }
-            return null;
+            return galleryItems.Count > 0 ? galleryItems[0] : null;
         }
 
         /// <summary>
