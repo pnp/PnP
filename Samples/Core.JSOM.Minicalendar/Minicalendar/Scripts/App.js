@@ -23,9 +23,46 @@ $(document).ready(function () {
     // we can easily identify if the script has been loaded
     $.getScript(SPHostUrl + "/_Layouts/15/SP.RequestExecutor.js", function (data) {
         ready = true;
-        getItems();
+        // Create a SharePoint list with the name that the user specifies.
+        createList("Events", "events");
+       
     });
+
+
 });
+
+function createList(listToCreate, typeOfList) {
+    // Create a SharePoint list with the name that the user specifies.
+    var currentcontext = new SP.ClientContext.get_current();
+    var hostUrl = decodeURIComponent(SPHostUrl);
+    var hostContext = new SP.AppContextSite(currentcontext, hostUrl);
+    var hostweb = hostContext.get_web();
+    var listCreationInfo = new SP.ListCreationInformation();
+
+    listCreationInfo.set_title(listToCreate);
+
+    if (typeOfList === "events") {
+        listCreationInfo.set_templateType(SP.ListTemplateType.events);
+    }
+    else if (typeOfList === "contacts") {
+        listCreationInfo.set_templateType(SP.ListTemplateType.contacts);
+    }
+    var lists = hostweb.get_lists();
+    var newList = lists.add(listCreationInfo);
+    currentcontext.load(newList);
+    currentcontext.executeQueryAsync(onListCreationSuccess, onListCreationFail);
+}
+
+
+function onListCreationSuccess() {
+    getItems();
+}
+
+function onListCreationFail(sender, args) {
+    console.log("List already exists");
+    getItems();
+}
+
 
 function getListItemFormUrl(listName, listItemId, formTypeId, complete, failure) {
     var url = SPAppWebUrl + "/_api/SP.AppContextSite(@target)" +
