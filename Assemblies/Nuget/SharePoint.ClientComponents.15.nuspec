@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SharePoint.ClientComponents</id>
+    <version>15.0.4641.1011</version>
+    <authors>OfficeDev PnP</authors>
+    <owners>OfficeDev PnP</owners>
+    <projectUrl>https://github.com/OfficeDev/PnP</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The SharePoint Server 2013 Client Components SDK can be used to enable remote and local development with SharePoint Server 2013</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SharePoint Client CSOM</tags>
+  </metadata>
+  <files>
+    <file src="..\15\*.txt" target="lib" />
+    <file src="..\15\*.dll" target="lib" />
+  </files>
+</package>

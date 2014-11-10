@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SharePoint.ClientComponents</id>
+    <version>16.0.3104.1200</version>
+    <authors>OfficeDev PnP</authors>
+    <owners>OfficeDev PnP</owners>
+    <projectUrl>https://github.com/OfficeDev/PnP</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The SharePoint Online Client Components SDK can be used to enable development with SharePoint Online
+(and SharePoint Server 2013)</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SharePoint Client CSOM</tags>
+  </metadata>
+  <files>
+    <file src="..\16\*.txt" target="lib" />
+    <file src="..\16\*.dll" target="lib" />
+  </files>
+</package>
