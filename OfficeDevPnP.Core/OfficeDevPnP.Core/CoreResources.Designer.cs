@@ -88,11 +88,11 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding theme option &apos;{0}&apos; to &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Creating composed look &apos;{0}&apos; in &apos;{1}&apos;.
         /// </summary>
-        internal static string BrandingExtension_AddThemeOption {
+        internal static string BrandingExtension_CreateComposedLook {
             get {
-                return ResourceManager.GetString("BrandingExtension_AddThemeOption", resourceCulture);
+                return ResourceManager.GetString("BrandingExtension_CreateComposedLook", resourceCulture);
             }
         }
         
@@ -120,15 +120,6 @@ namespace OfficeDevPnP.Core {
         internal static string BrandingExtension_DeployTheme {
             get {
                 return ResourceManager.GetString("BrandingExtension_DeployTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deploying file &apos;{0}&apos; to &apos;{1}&apos; folder &apos;{2}&apos;..
-        /// </summary>
-        internal static string BrandingExtension_DeployThemeFile {
-            get {
-                return ResourceManager.GetString("BrandingExtension_DeployThemeFile", resourceCulture);
             }
         }
         
@@ -169,11 +160,11 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Theme &apos;{0}&apos; already exists (and was not overwritten). No changes made..
+        ///   Looks up a localized string similar to Updating composed look &apos;{0}&apos; in &apos;{1}&apos;.
         /// </summary>
-        internal static string BrandingExtension_ThemeNotOverwritten {
+        internal static string BrandingExtension_UpdateComposedLook {
             get {
-                return ResourceManager.GetString("BrandingExtension_ThemeNotOverwritten", resourceCulture);
+                return ResourceManager.GetString("BrandingExtension_UpdateComposedLook", resourceCulture);
             }
         }
         

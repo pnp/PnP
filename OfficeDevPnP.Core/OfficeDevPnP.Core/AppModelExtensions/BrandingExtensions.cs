@@ -38,29 +38,15 @@ namespace Microsoft.SharePoint.Client
                      </Query>
                 </View>";
 
-        /// <summary>
-        /// Deploy new theme to site collection. To be used with root web in site collection
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file location to deploy for the theme</param>
-        /// <param name="fontFilePath">Font file location to deploy for the theme</param>
-        /// <param name="backgroundImagePath">Background image location to deploy for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Note the master page is not uploaded, only referenced in the theme definition.</param>
+        [Obsolete("Use site.UploadThemeFile and web.CreateComposedLook separately")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployThemeToWeb(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
             DeployThemeToWebImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
-        /// <summary>
-        /// Deploy new theme to specific site and ensure that theme exists in the site collection. Should be used if theme is deployed to sub site in site collection.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFilePath">Color file location to deploy for the theme</param>
-        /// <param name="fontFilePath">Font file location to deploy for the theme</param>
-        /// <param name="backgroundImagePath">Background image location to deploy for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Note the master page is not uploaded, only referenced in the theme definition.</param>
+        [Obsolete("Use site.UploadThemeFile and web.CreateComposedLook separately")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployThemeToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
             DeployThemeToWebImplementation(web, rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
@@ -85,7 +71,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
-            web.AddNewThemeOptionToWebImplementation(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
+            web.AddNewThemeOptionToSubWeb(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
         /// <summary>
@@ -138,100 +124,156 @@ namespace Microsoft.SharePoint.Client
             return false;
         }
 
-        /// <summary>
-        /// Add new theme option to the sub site.
-        /// </summary>
-        /// <param name="web">Actual site where theme is applied.</param>
-        /// <param name="rootWeb">Root site of the site collection. Needed for resolving the right relative path for the files</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFileName">Color file for the theme</param>
-        /// <param name="fontFileName">Font file for the theme</param>
-        /// <param name="backgroundImageName">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
+        [Obsolete("Use web.CreateComposedLook")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddNewThemeOptionToSubWeb(this Web web, Web rootWeb, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            AddNewThemeOptionToWebImplementation(web, rootWeb, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
+            CreateComposedLook(web, themeName, colorFileName, fontFileName, backgroundName, masterPageName, displayOrder: 11);
         }
 
-        /// <summary>
-        /// Add new theme option to the site.
-        /// </summary>
-        /// <param name="web">Actual site where theme is applied.</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFileName">Color file for the theme</param>
-        /// <param name="fontFileName">Font file for the theme</param>
-        /// <param name="backgroundImageName">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme. Only name of the master page needed, no full path to catalog</param>
+        [Obsolete("Use web.CreateComposedLook")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void AddNewThemeOptionToWeb(this Web web, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
         {
-            AddNewThemeOptionToWebImplementation(web, web, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
+            CreateComposedLook(web, themeName, colorFileName, fontFileName, backgroundName, masterPageName, displayOrder: 11);
+        }
+
+        [Obsolete("Use web.CreateComposedLook")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static void AddNewThemeOptionToSite(this Web web, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
+        {
+            CreateComposedLook(web, themeName, colorFileName, fontFileName, backgroundName, masterPageName, displayOrder:11);
         }
 
         /// <summary>
-        /// Add new theme option to the site.
+        /// Creates (or updates) a composed look in the web site; usually this is done in the root site of the collection.
         /// </summary>
-        /// <param name="web">Actual site where theme is applied.</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="colorFileName">Color file for the theme</param>
-        /// <param name="fontFileName">Font file for the theme</param>
-        /// <param name="backgroundImageName">Background image for the team</param>
-        /// <param name="masterPageName">Master page name for the theme</param>
-        [Obsolete("Please use the AddNewThemeOptionToWeb method")]
-        public static void AddNewThemeOptionToSite(this Web web, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
+        /// <param name="web">Web to create the composed look in</param>
+        /// <param name="themeName">Name of the theme</param>
+        /// <param name="paletteFileName">File name of the palette file in the theme catalog of the site collection; path component ignored.</param>
+        /// <param name="fontFileName">File name of the font file in the theme catalog of the site collection; path component ignored.</param>
+        /// <param name="backgroundFileName">File name of the background image file in the theme catalog of the site collection; path component ignored.</param>
+        /// <param name="masterFileName">File name of the master page in the mastepage catalog of the web site; path component ignored.</param>
+        /// <param name="displayOrder">Display order of the composed look</param>
+        /// <param name="replaceContent">Replace composed look if it already exists (default true)</param>
+        public static void CreateComposedLook(this Web web, string themeName, string paletteFileName, string fontFileName, string backgroundFileName, string masterFileName, int displayOrder = 1, bool replaceContent = true)
         {
-            AddNewThemeOptionToWebImplementation(web, web, themeName, colorFileName, fontFileName, backgroundName, masterPageName);
-        }
-
-        private static void AddNewThemeOptionToWebImplementation(this Web web, Web rootWeb, string themeName, string colorFileName, string fontFileName, string backgroundName, string masterPageName)
-        {
-            LoggingUtility.Internal.TraceInformation((int)EventId.AddThemeOption, CoreResources.BrandingExtension_AddThemeOption, themeName, web.Context.Url);
-
-            // Let's get instance to the composite look gallery of specific site
-            List themesOverviewList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-            web.Context.Load(themesOverviewList);
-            web.Context.ExecuteQuery();
-            // Is the item already in the list?
-            if (!web.ThemeEntryExists(themeName, themesOverviewList))
+            var paletteUrl = default(string);
+            var fontUrl = default(string);
+            var backgroundUrl = default(string);
+            var masterUrl = default(string);
+            using (var clientContext = new ClientContext(web.Context.Url) { Credentials = web.Context.Credentials })
             {
-                // Let's ensure that we have root site loaded for setting URLs properly
-                Utility.EnsureWeb(rootWeb.Context, rootWeb, "ServerRelativeUrl");
-                Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
+                var rootWeb = clientContext.Site.RootWeb;
+                Utility.EnsureWeb(web.Context, rootWeb, "ServerRelativeUrl");
 
-                // Let's create new theme entry. Notice that theme selection is not available from UI in personal sites, so this is just for consistency sake
-                ListItemCreationInformation itemInfo = new ListItemCreationInformation();
-                Microsoft.SharePoint.Client.ListItem item = themesOverviewList.AddItem(itemInfo);
-                item["Name"] = themeName;
-                item["Title"] = themeName;
-                if (!string.IsNullOrEmpty(colorFileName))
+                if (!string.IsNullOrEmpty(paletteFileName))
                 {
-                    item["ThemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(colorFileName)));
+                    paletteUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(paletteFileName)));
                 }
                 if (!string.IsNullOrEmpty(fontFileName))
                 {
-                    item["FontSchemeUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
+                    fontUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
                 }
-                if (!string.IsNullOrEmpty(backgroundName))
+                if (!string.IsNullOrEmpty(backgroundFileName))
                 {
-                    item["ImageUrl"] = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundName)));
+                    backgroundUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
                 }
-                // we use seattle master if anything else is not set
-                if (string.IsNullOrEmpty(masterPageName))
-                {
-                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, Constants.MASTERPAGE_SEATTLE);
-                }
-                else
-                {
-                    item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterPageName)));
-                }
+            }
+            if (!string.IsNullOrEmpty(masterFileName))
+            {
+                masterUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterFileName)));
+            }
 
-                item["DisplayOrder"] = 11;
-                item.Update();
-                web.Context.ExecuteQuery();
+            CreateComposedLookByUrl(web, themeName, paletteUrl, fontUrl, backgroundUrl, masterUrl, displayOrder, replaceContent);
+        }
+
+        /// <summary>
+        /// Creates (or updates) a composed look in the web site; usually this is done in the root site of the collection.
+        /// </summary>
+        /// <param name="web">Web to create the composed look in</param>
+        /// <param name="themeName">Name of the theme</param>
+        /// <param name="paletteUrl">URL of the palette file, usually in the theme catalog of the site collection</param>
+        /// <param name="fontUrl">URL of the font file, usually in the theme catalog of the site collection</param>
+        /// <param name="backgroundUrl">URL of the background image file, usually in /_layouts/15/images</param>
+        /// <param name="masterUrl">URL of the master page, usually in the masterpage catalog of the web site</param>
+        /// <param name="displayOrder">Display order of the composed look</param>
+        /// <param name="replaceContent">Replace composed look if it already exists (default true)</param>
+        public static void CreateComposedLookByUrl(this Web web, string themeName, string paletteUrl, string fontUrl, string backgroundUrl, string masterUrl, int displayOrder = 1, bool replaceContent = true)
+        {
+            Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
+            var composedLooksList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+
+            // Check for existing, by name
+            CamlQuery query = new CamlQuery();
+            string camlString = @"
+                <View>
+                    <Query>                
+                        <Where>
+                            <Eq>
+                                <FieldRef Name='Name' />
+                                <Value Type='Text'>{0}</Value>
+                            </Eq>
+                        </Where>
+                     </Query>
+                </View>";
+            camlString = string.Format(camlString, themeName);
+            query.ViewXml = camlString;
+            var existingCollection = composedLooksList.GetItems(query);
+            web.Context.Load(existingCollection);
+            web.Context.ExecuteQuery();
+            ListItem item = existingCollection.FirstOrDefault();
+
+            if (item == null)
+            {
+                LoggingUtility.Internal.TraceInformation((int)EventId.CreateComposedLook, CoreResources.BrandingExtension_CreateComposedLook, themeName, web.ServerRelativeUrl);
+                ListItemCreationInformation itemInfo = new ListItemCreationInformation();
+                item = composedLooksList.AddItem(itemInfo);
+                item["Name"] = themeName;
+                item["Title"] = themeName;
             }
             else
             {
-                LoggingUtility.Internal.TraceWarning((int)EventId.ThemeNotOverwritten, CoreResources.BrandingExtension_ThemeNotOverwritten, themeName);
+                if (!replaceContent)
+                {
+                    throw new Exception("Composed look already exists, replace contents needs to be specified.");
+                }
+                LoggingUtility.Internal.TraceInformation((int)EventId.UpdateComposedLook, CoreResources.BrandingExtension_UpdateComposedLook, themeName, web.ServerRelativeUrl);
             }
+
+            if (!string.IsNullOrEmpty(paletteUrl))
+            {
+                item["ThemeUrl"] = paletteUrl;
+            }
+            if (!string.IsNullOrEmpty(fontUrl))
+            {
+                item["FontSchemeUrl"] = fontUrl;
+            }
+            if (!string.IsNullOrEmpty(backgroundUrl))
+            {
+                item["ImageUrl"] = backgroundUrl;
+            }
+            // we use seattle master if anything else is not set
+            if (string.IsNullOrEmpty(masterUrl))
+            {
+                item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, Constants.MASTERPAGE_SEATTLE);
+            }
+            else
+            {
+                item["MasterPageUrl"] = masterUrl;
+            }
+
+            item["DisplayOrder"] = displayOrder;
+            item.Update();
+            web.Context.ExecuteQuery();
+        }
+
+        public static void SetComposedLookByUrl(this Web web, string themeName, string paletteUrl = null, string fontUrl = null, string backgroundUrl = null, string masterUrl = null, bool resetSubsitesToInherit = false)
+        {
+        }
+
+        public static void SetComposedLookInheritFromParent(this Web web, bool resetSubsitesToInherit = false)
+        {
         }
 
         /// <summary>
@@ -417,61 +459,93 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQuery();
         }
 
+        [Obsolete("Use site.UploadThemeFile")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployFileToThemeFolderSite(this Web web, string sourceFileAddress, string themeFolderVersion = "15")
         {
-            if (string.IsNullOrEmpty(sourceFileAddress))
-                throw new ArgumentNullException("sourceFileAddress");
-
-            if (string.IsNullOrEmpty(themeFolderVersion))
-                throw new ArgumentNullException("themeFolderVersion");
-
-            // Get the path to the file which we are about to deploy
-            var fileBytes = System.IO.File.ReadAllBytes(sourceFileAddress);
-            var fileName = Path.GetFileName(sourceFileAddress);
-
-            DeployFileToThemeFolderSite(web, fileBytes, fileName, themeFolderVersion);
+            var themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
+            var themesFolder = themesList.RootFolder.EnsureFolder(themeFolderVersion);
+            themesFolder.UploadFile(sourceFileAddress);
         }
 
+        [Obsolete("Use site.UploadThemeFile")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployFileToThemeFolderSite(this Web web, byte[] fileBytes, string fileName, string themeFolderVersion = "15")
         {
-            if (fileBytes == null || fileBytes.Length == 0)
-                throw new ArgumentNullException("fileBytes");
+            if (fileBytes == null || fileBytes.Length == 0) { throw new ArgumentNullException("fileBytes"); }
 
-            if (string.IsNullOrEmpty(fileName))
-                throw new ArgumentNullException("fileName");
-
-            if (string.IsNullOrEmpty(themeFolderVersion))
-                throw new ArgumentNullException("themeFolderVersion");
-
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployThemeFile, CoreResources.BrandingExtension_DeployThemeFile, fileName, web.Context.Url, themeFolderVersion);
-
-            // Get the path to the file which we are about to deploy
-            List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
-
-            // get the theme list
-            web.Context.Load(themesList);
-            web.Context.ExecuteQuery();
-
-            Folder rootFolder = themesList.RootFolder;
-            FolderCollection rootFolders = rootFolder.Folders;
-            web.Context.Load(rootFolder);
-            web.Context.Load(rootFolders, f => f.Where(folder => folder.Name == themeFolderVersion));
-            web.Context.ExecuteQuery();
-
-            Folder folder15 = rootFolders.FirstOrDefault();
-
-            // Use CSOM to upload the file in
-            FileCreationInformation newFile = new FileCreationInformation();
-            newFile.Content = fileBytes;
-            newFile.Url = UrlUtility.Combine(folder15.ServerRelativeUrl, fileName);
-            newFile.Overwrite = true;
-
-            Microsoft.SharePoint.Client.File uploadFile = folder15.Files.Add(newFile);
-            web.Context.Load(uploadFile);
-            web.Context.ExecuteQuery();
+            var themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
+            var themesFolder = themesList.RootFolder.EnsureFolder(themeFolderVersion);
+            using (var ms = new MemoryStream(fileBytes))
+            {
+                themesFolder.UploadFile(fileName, ms);
+            }
         }
 
+        /// <summary>
+        /// Uploads the specified file (usually an spcolor or spfont file) to the site collection themes gallery.
+        /// </summary>
+        /// <param name="site">Site collection to upload to</param>
+        /// <param name="localFilePath">Location of the file to be uploaded</param>
+        /// <param name="themeFolderVersion">Leaf folder name to upload to; default is "15"</param>
+        /// <returns></returns>
+        public static File UploadThemeFile(this Site site, string localFilePath, string themeFolderVersion = "15")
+        {
+            if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
+            var fileName = System.IO.Path.GetFileName(localFilePath);
+            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            {
+                return UploadThemeFile(site, fileName, localStream, themeFolderVersion);
+            }
+        }
+
+        /// <summary>
+        /// Uploads the specified file (usually an spcolor or spfont file) to the site collection themes gallery.
+        /// </summary>
+        /// <param name="site">Site collection to upload to</param>
+        /// <param name="fileName">Name of the file to upload</param>
+        /// <param name="localFilePath">Location of the file to be uploaded</param>
+        /// <param name="themeFolderVersion">Leaf folder name to upload to; default is "15"</param>
+        /// <returns></returns>
+        public static File UploadThemeFile(this Site site, string fileName, string localFilePath, string themeFolderVersion = "15")
+        {
+            if (fileName == null) { throw new ArgumentNullException("fileName"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+
+            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            {
+                return UploadThemeFile(site, fileName, localStream, themeFolderVersion);
+            }
+        }
+
+        /// <summary>
+        /// Uploads the specified file (usually an spcolor or spfont file) to the site collection themes gallery.
+        /// </summary>
+        /// <param name="site">Site collection to upload to</param>
+        /// <param name="fileName">Name of the file to upload</param>
+        /// <param name="localStream">Stream containing the contents of the file</param>
+        /// <param name="themeFolderVersion">Leaf folder name to upload to; default is "15"</param>
+        /// <returns></returns>
+        public static File UploadThemeFile(this Site site, string fileName, System.IO.Stream localStream, string themeFolderVersion = "15")
+        {
+            if (fileName == null) { throw new ArgumentNullException("fileName"); }
+            if (localStream == null) { throw new ArgumentNullException("localStream"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            // TODO: Check for any other illegal characters in SharePoint
+            if (fileName.Contains('/') || fileName.Contains('\\'))
+            {
+                throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+            }
+
+            // Theme catalog only exists at site collection root
+            var themesList = site.RootWeb.GetCatalog((int)ListTemplateType.ThemeCatalog);
+            var themesFolder = themesList.RootFolder.EnsureFolder(themeFolderVersion);
+            return themesFolder.UploadFile(fileName, localStream);
+        }
 
         /// <summary>
         /// Can be used to deploy page layouts to master page gallery. 

@@ -126,8 +126,8 @@
   <data name="AuthenticationManger_ProblemDeterminingTokenLease" xml:space="preserve">
     <value>Could not determine lease for appOnlyAccessToken.</value>
   </data>
-  <data name="BrandingExtension_AddThemeOption" xml:space="preserve">
-    <value>Adding theme option '{0}' to '{1}'</value>
+  <data name="BrandingExtension_CreateComposedLook" xml:space="preserve">
+    <value>Creating composed look '{0}' in '{1}'</value>
   </data>
   <data name="BrandingExtension_DeployMasterPage" xml:space="preserve">
     <value>Deploying masterpage '{0}' to '{1}'.</value>
@@ -137,9 +137,6 @@
   </data>
   <data name="BrandingExtension_DeployTheme" xml:space="preserve">
     <value>Deploying theme '{0}' to '{1}'</value>
-  </data>
-  <data name="BrandingExtension_DeployThemeFile" xml:space="preserve">
-    <value>Deploying file '{0}' to '{1}' folder '{2}'.</value>
   </data>
   <data name="BrandingExtension_SetCustomMasterUrl" xml:space="preserve">
     <value>Setting custom master URL '{0}' to '{1}'.</value>
@@ -152,9 +149,6 @@
   </data>
   <data name="BrandingExtension_ThemeMissing" xml:space="preserve">
     <value>Theme '{0}' not found.</value>
-  </data>
-  <data name="BrandingExtension_ThemeNotOverwritten" xml:space="preserve">
-    <value>Theme '{0}' already exists (and was not overwritten). No changes made.</value>
   </data>
   <data name="Exception_Message_EmptyString_Arg" xml:space="preserve">
     <value>The passed argument is a zero-length string or contains only whitespace.</value>
@@ -311,5 +305,8 @@
   </data>
   <data name="FileFolderExtensions_UpdateFile0Properties1" xml:space="preserve">
     <value>Update file '{0}', change properties: {1}.</value>
+  </data>
+  <data name="BrandingExtension_UpdateComposedLook" xml:space="preserve">
+    <value>Updating composed look '{0}' in '{1}'</value>
   </data>
 </root>
