@@ -1,10 +1,10 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 
-namespace OfficeDevPnP.PowerShell.Commands.PublishingPage
+namespace OfficeDevPnP.PowerShell.Commands.PageLayout
 {
- [Cmdlet(VerbsCommon.Add, "SPOHtmlPublishingPageLayout")]
-    public class AddHtmlPublishingPageLayout : SPOWebCmdlet
+ [Cmdlet(VerbsCommon.Add, "SPOPublishingPageLayout")]
+    public class AddPublishingPageLayout : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "Full path to the file which will be uploaded")]
          public string SourceFilePath = string.Empty;
@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands.PublishingPage
      
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeployHtmlPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
+            this.SelectedWeb.DeployPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
         }
     }
 }

@@ -129,8 +129,8 @@
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
     <Compile Include="PublishingPage\AddPublishingPage.cs" />
-    <Compile Include="PublishingPage\AddHtmlPublishingPageLayout.cs" />
-    <Compile Include="PublishingPage\AddPublishingPageLayout.cs" />
+    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Site\NewSite.cs" />
