@@ -12,12 +12,33 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     [TestClass()]
     public class BrandingExtensionsTests
     {
+        private string builtInLook1 = "Sea Monster"; // oslo, palette005, image_bg005, fontscheme003
+        private string builtInLook2 = "Blossom"; // seattle, palette002,image_bg002
+        private string builtInMaster1 = "oslo.master";
+        private string builtInPalette1 = "palette003.spcolor";
+        private string builtInFont1 = "fontscheme002.spfont";
+
         private string customColorFilePath = string.Empty;
         private string customBackgroundFilePath = string.Empty;
-        private const string THEME_NAME = "Test Theme";
+        private const string THEME_NAME = "Test_Theme";
+
+        const string CAML_QUERY_FIND_BY_FILENAME = @"
+                <View>
+                    <Query>                
+                        <Where>
+                            <Eq>
+                                <FieldRef Name='Name' />
+                                <Value Type='Text'>{0}</Value>
+                            </Eq>
+                        </Where>
+                     </Query>
+                </View>";
+
+
         [TestInitialize()]
         public void Initialize()
         {
+            Console.WriteLine("BrandingExtensionsTests.Initialise");
             customColorFilePath = Path.Combine(Path.GetTempPath(), "custom.spcolor");
             System.IO.File.WriteAllBytes(customColorFilePath, OfficeDevPnP.Core.Tests.Properties.Resources.custom);
             customBackgroundFilePath = Path.Combine(Path.GetTempPath(), "custombg.jpg");
@@ -27,6 +48,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestCleanup()]
         public void CleanUp()
         {
+            Console.WriteLine("BrandingExtensionsTests.CleanUp");
             if (System.IO.File.Exists(customColorFilePath))
             {
                 System.IO.File.Delete(customColorFilePath);
@@ -44,29 +66,25 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
                     // Remove theme from server
                     List themeGallery = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-
                     CamlQuery query = new CamlQuery();
                     string camlString = @"
                         <View>
                             <Query>                
                                 <Where>
-                                    <Eq>
+                                    <Contains>
                                         <FieldRef Name='Name' />
-                                        <Value Type='Text'>{0}</Value>
-                                    </Eq>
+                                        <Value Type='Text'>Test_</Value>
+                                    </Contains>
                                 </Where>
                              </Query>
                         </View>";
-                    // Let's update the theme name accordingly
-                    camlString = string.Format(camlString, THEME_NAME);
                     query.ViewXml = camlString;
                     var found = themeGallery.GetItems(query);
                     web.Context.Load(found);
                     web.Context.ExecuteQuery();
-                    if (found.Count > 0)
+                    foreach (var item in found)
                     {
-                        var themeItem = found[0];
-                        themeItem.DeleteObject();
+                        item.DeleteObject();
                         context.ExecuteQuery();
                     }
 
@@ -134,5 +152,38 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsTrue(theme.BackgroundImage.EndsWith("custombg.jpg"));
             }
         }
+
+        [TestMethod()]
+        public void CreateComposedLookShouldWork()
+        {
+            var testLookName = string.Format("Test_{0:s}", DateTimeOffset.Now);
+
+            using (var context = TestCommon.CreateClientContext())
+            {
+                context.Load(context.Web, w => w.ServerRelativeUrl);
+                context.ExecuteQuery();
+                var paletteServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/theme/15" + builtInPalette1;
+                var masterServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/masterpage" + builtInMaster1;
+                
+                context.Web.CreateComposedLookByUrl(testLookName, paletteServerRelativeUrl, null, null, masterServerRelativeUrl, 5);
+            }
+
+            using (var context = TestCommon.CreateClientContext())
+            {
+                var composedLooksList = context.Web.GetCatalog((int)ListTemplateType.DesignCatalog);
+                CamlQuery query = new CamlQuery();
+                query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, testLookName);
+                var existingCollection = composedLooksList.GetItems(query);
+                context.Load(existingCollection);
+                context.ExecuteQuery();
+                var item = existingCollection.FirstOrDefault();
+
+                var lookPaletteUrl = item["ThemeUrl"] as FieldUrlValue;
+                Assert.IsTrue(lookPaletteUrl.Url.Contains(builtInPalette1));
+                var lookMasterUrl = item["MasterPageUrl"] as FieldUrlValue;
+                Assert.IsTrue(lookMasterUrl.Url.Contains(builtInMaster1));
+            }
+        }
+
     }
 }
