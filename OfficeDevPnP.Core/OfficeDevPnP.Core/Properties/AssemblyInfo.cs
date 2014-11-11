@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("OfficeDevPnP.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Office 365 Developer PnP Core Component is extension component which encapsulates commonly used remote CSOM/REST operations as reusable extension methods towards out of the box CSOM objects.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("OfficeDev PnP")]
 [assembly: AssemblyProduct("OfficeDevPnP.Core")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyTrademark("")]

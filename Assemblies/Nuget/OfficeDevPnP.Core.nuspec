@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>OfficeDevPnp.Core</id>
+    <version>0.5.1110.0</version>
+    <authors>OfficeDev PnP</authors>
+    <owners>OfficeDev PnP</owners>
+    <licenseUrl>https://github.com/OfficeDev/PnP/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/OfficeDev/PnP</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Office 365 Developer PnP Core Component is extension component which encapsulates commonly used remote CSOM/REST operations as reusable extension methods towards out of the box CSOM objects.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SharePoint Client CSOM OfficeDev.PnP OfficeDevPnP OfficeDev PnP</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.2" />
+      <dependency id="SharePoint.ClientComponents" version="16.0.3104.1200" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\OfficeDevPnp.Core\OfficeDevPnp.Core\bin\Release\OfficeDevPnp.Core.dll" target="lib" />
+  </files>
+</package>
