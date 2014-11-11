@@ -37,5 +37,23 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             }
         }
+
+        [TestMethod()]
+        public void CheckIfSiteExistsTest() {
+            using (var tenantContext = TestCommon.CreateTenantClientContext()) {
+                var tenant = new Tenant(tenantContext);
+                var siteCollections = tenant.GetSiteCollections();
+
+                var site = siteCollections.First();
+                var siteExists1 = tenant.CheckIfSiteExists(site.Url, "Active");
+                Assert.IsTrue(siteExists1);
+
+                try {
+                    var siteExists2 = tenant.CheckIfSiteExists(site.Url + "aaabbbccc", "Active");
+                    Assert.IsFalse(siteExists2, "Invalid site returned as valid.");
+                }
+                catch (ServerException) { }
+            }
+        }
     }
 }

@@ -174,14 +174,14 @@ namespace Microsoft.SharePoint.Client
             bool ret = false;
             //Get the site name
             var url = new Uri(siteFullUrl);
-            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var UrlPath = url.PathAndQuery.Substring(0, idx);
-            var Name = url.PathAndQuery.Substring(idx);
-            var index = Name.IndexOf('/');
+            var siteDomainUrl = url.GetLeftPart(UriPartial.Scheme | UriPartial.Authority);
+            int siteNameIndex = url.AbsolutePath.IndexOf('/', 1) + 1;
+            var managedPath = url.AbsolutePath.Substring(0, siteNameIndex);
+            var siteRelativePath = url.AbsolutePath.Substring(siteNameIndex);
+            var isSiteCollection = siteRelativePath.IndexOf('/') == -1;
 
             //Judge whether this site collection is existing or not
-            if (index == -1)
+            if (isSiteCollection)
             {
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
@@ -191,8 +191,11 @@ namespace Microsoft.SharePoint.Client
             //Judge whether this sub web site is existing or not
             else
             {
-                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
-                var subweb = site.OpenWeb(Name.Substring(index + 1));
+                var subsiteUrl = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                            "{0}{1}{2}", siteDomainUrl, managedPath, siteRelativePath.Split('/')[0]);
+                var subsiteRelativeUrl = siteRelativePath.Substring(siteRelativePath.IndexOf('/') + 1);
+                var site = tenant.GetSiteByUrl(subsiteUrl);
+                var subweb = site.OpenWeb(subsiteRelativeUrl);
                 tenant.Context.Load(subweb, w => w.Title);
                 tenant.Context.ExecuteQuery();
                 ret = true;
