@@ -90,51 +90,49 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             using (var context = TestCommon.CreateClientContext())
             {
                 var web = context.Web;
-                if (web.ThemeEntryExists(THEME_NAME))
+
+                // Remove composed looks from server
+                List themeGallery = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+                CamlQuery query = new CamlQuery();
+                string camlString = @"
+                    <View>
+                        <Query>                
+                            <Where>
+                                <Contains>
+                                    <FieldRef Name='Name' />
+                                    <Value Type='Text'>Test_</Value>
+                                </Contains>
+                            </Where>
+                            </Query>
+                    </View>";
+                query.ViewXml = camlString;
+                var found = themeGallery.GetItems(query);
+                web.Context.Load(found);
+                web.Context.ExecuteQuery();
+                Console.WriteLine("{0} matching looks found to delete", found.Count);
+                foreach (var item in found)
                 {
-
-                    // Remove theme from server
-                    List themeGallery = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-                    CamlQuery query = new CamlQuery();
-                    string camlString = @"
-                        <View>
-                            <Query>                
-                                <Where>
-                                    <Contains>
-                                        <FieldRef Name='Name' />
-                                        <Value Type='Text'>Test_</Value>
-                                    </Contains>
-                                </Where>
-                             </Query>
-                        </View>";
-                    query.ViewXml = camlString;
-                    var found = themeGallery.GetItems(query);
-                    web.Context.Load(found);
-                    web.Context.ExecuteQuery();
-                    foreach (var item in found)
-                    {
-                        Console.WriteLine("Delete look item '{0}'", item.DisplayName);
-                        item.DeleteObject();
-                        context.ExecuteQuery();
-                    }
-
-                    // Remove Theme Files
-                    List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
-                    Folder rootFolder = themesList.RootFolder;
-                    FolderCollection rootFolders = rootFolder.Folders;
-                    web.Context.Load(rootFolder);
-                    web.Context.Load(rootFolders, f => f.Where(folder => folder.Name == "15"));
-                    web.Context.ExecuteQuery();
-
-                    Folder folder15 = rootFolders.FirstOrDefault();
-
-                    Microsoft.SharePoint.Client.File customColorFile = folder15.Files.GetByUrl("custom.spcolor");
-                    Microsoft.SharePoint.Client.File customBackgroundFile = folder15.Files.GetByUrl("custombg.jpg");
-
-                    customColorFile.DeleteObject();
-                    customBackgroundFile.DeleteObject();
+                    Console.WriteLine("Delete look item '{0}'", item.DisplayName);
+                    item.DeleteObject();
                     context.ExecuteQuery();
                 }
+
+                // Remove Theme Files
+                List themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
+                Folder rootFolder = themesList.RootFolder;
+                FolderCollection rootFolders = rootFolder.Folders;
+                web.Context.Load(rootFolder);
+                web.Context.Load(rootFolders, f => f.Where(folder => folder.Name == "15"));
+                web.Context.ExecuteQuery();
+
+                Folder folder15 = rootFolders.FirstOrDefault();
+
+                Microsoft.SharePoint.Client.File customColorFile = folder15.Files.GetByUrl("custom.spcolor");
+                Microsoft.SharePoint.Client.File customBackgroundFile = folder15.Files.GetByUrl("custombg.jpg");
+
+                customColorFile.DeleteObject();
+                customBackgroundFile.DeleteObject();
+                context.ExecuteQuery();
 
                 var webCollection1 = web.Webs;
                 context.Load(webCollection1, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));

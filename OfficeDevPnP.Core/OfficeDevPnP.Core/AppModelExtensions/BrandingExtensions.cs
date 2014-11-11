@@ -171,6 +171,11 @@ namespace Microsoft.SharePoint.Client
                     backgroundUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
                 }
             }
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
             if (!string.IsNullOrEmpty(masterFileName))
             {
                 masterUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterFileName)));
