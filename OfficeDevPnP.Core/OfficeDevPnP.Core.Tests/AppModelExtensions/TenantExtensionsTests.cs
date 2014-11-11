@@ -39,6 +39,20 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
+        public void GetUserProfileServiceClient() {
+            using (var tenantContext = TestCommon.CreateTenantClientContext()) {
+                var tenant = new Tenant(tenantContext);
+                var serviceClient = tenant.GetUserProfileServiceClient();
+                tenantContext.Load(tenantContext.Web, w => w.CurrentUser);
+                tenantContext.ExecuteQuery();
+
+                var profile = serviceClient.GetUserProfileByName(tenantContext.Web.CurrentUser.LoginName);
+
+                Assert.IsNotNull(profile);
+            }
+        }
+
+        [TestMethod()]
         public void CheckIfSiteExistsTest() {
             using (var tenantContext = TestCommon.CreateTenantClientContext()) {
                 var tenant = new Tenant(tenantContext);

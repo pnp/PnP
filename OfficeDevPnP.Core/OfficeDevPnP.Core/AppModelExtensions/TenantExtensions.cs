@@ -611,28 +611,19 @@ namespace Microsoft.SharePoint.Client
             return sites;
         }
 
+        /// <summary>
+        /// Get OneDrive site collections by iterating through all user profiles.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>List of <see cref="SiteEntity"/> objects containing site collection info.</returns>
         public static IList<SiteEntity> GetOneDriveSiteCollections(this Tenant tenant)
         {
-            var creds = (Microsoft.SharePoint.Client.SharePointOnlineCredentials)tenant.Context.Credentials;
-
             var sites = new List<SiteEntity>();
+            var svcClient = GetUserProfileServiceClient(tenant);
 
-            OfficeDevPnP.Core.UPAWebService.UserProfileService svc = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
-            
-            svc.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
-            svc.UseDefaultCredentials = false;
-            svc.Credentials = tenant.Context.Credentials;
-
-            var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
-            var cookieContainer = new CookieContainer();
-            
-            cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
-            svc.CookieContainer = cookieContainer;
-
-
-            var userProfileResult = svc.GetUserProfileByIndex(-1);
-
-            var profileCount = svc.GetUserProfileCount();
+            // get all user profiles
+            var userProfileResult = svcClient.GetUserProfileByIndex(-1);
+            var profileCount = svcClient.GetUserProfileCount();
 
             while(int.Parse(userProfileResult.NextValue) != -1)
             {
@@ -654,10 +645,33 @@ namespace Microsoft.SharePoint.Client
                     }
                 }
                 
-                userProfileResult = svc.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
+                userProfileResult = svcClient.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
             }
 
             return sites;
+        }
+
+        /// <summary>
+        /// Gets the UserProfileService proxy to enable calls to the UPA web service.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>UserProfileService web service client</returns>
+        public static OfficeDevPnP.Core.UPAWebService.UserProfileService GetUserProfileServiceClient(this Tenant tenant) {
+            var client = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+
+            client.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
+            client.UseDefaultCredentials = false;
+            client.Credentials = tenant.Context.Credentials;
+
+            if (tenant.Context.Credentials is SharePointOnlineCredentials) {
+                var creds = (SharePointOnlineCredentials)tenant.Context.Credentials;
+                var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
+                var cookieContainer = new CookieContainer();
+
+                cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
+                client.CookieContainer = cookieContainer;
+            }
+            return client;
         }
     }
 }
