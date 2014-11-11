@@ -59,7 +59,11 @@ namespace Contoso.Core.Utilities
                 }
 
                 userdata.CellEntry = entry.ToString();
-
+                
+                //Replaces a line break ("\r\n") with a single space.  Line breaks are typically encountered in the streetAddress field in Active Directory.
+                if (userdata.CellEntry.Contains("\r\n"))
+                    userdata.CellEntry = userdata.CellEntry.Replace("\r\n", " ");
+                
                 // Output string to CSV file
                 WriteLine(userdata.CellEntry);
 
