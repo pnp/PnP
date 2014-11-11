@@ -113,6 +113,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     web.Context.ExecuteQuery();
                     foreach (var item in found)
                     {
+                        Console.WriteLine("Delete look item '{0}'", item.DisplayName);
                         item.DeleteObject();
                         context.ExecuteQuery();
                     }
@@ -247,6 +248,36 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsTrue(lookPaletteUrl.Url.Contains(builtInPalette003));
                 var lookMasterUrl = item["MasterPageUrl"] as FieldUrlValue;
                 Assert.IsTrue(lookMasterUrl.Url.Contains(builtInMasterOslo));
+                var lookDisplayOrder = item["DisplayOrder"].ToString();
+                Assert.AreEqual("5", lookDisplayOrder);
+            }
+        }
+
+        [TestMethod()]
+        public void CreateComposedLookByNameShouldWork()
+        {
+            var testLookName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
+
+            using (var context = TestCommon.CreateClientContext())
+            {
+                // Act
+                context.Web.CreateComposedLookByName(testLookName, builtInPalette003, null, null, builtInMasterOslo, 5);
+            }
+
+            using (var context = TestCommon.CreateClientContext())
+            {
+                var composedLooksList = context.Web.GetCatalog((int)ListTemplateType.DesignCatalog);
+                CamlQuery query = new CamlQuery();
+                query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, testLookName);
+                var existingCollection = composedLooksList.GetItems(query);
+                context.Load(existingCollection);
+                context.ExecuteQuery();
+                var item = existingCollection.FirstOrDefault();
+
+                var lookPaletteUrl = item["ThemeUrl"] as FieldUrlValue;
+                Assert.IsTrue(lookPaletteUrl.Url.Contains(builtInPalette003));
+                var lookMasterUrl = item["MasterPageUrl"] as FieldUrlValue;
+                Assert.IsTrue(lookMasterUrl.Url.Contains(builtInMasterOslo));
             }
         }
 
@@ -265,8 +296,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 context.ExecuteQuery();
                 var webToChangeA = webCollection2.First(w => w.Title == "A");
 
+                // Act
                 webToChangeA.SetComposedLookByUrl(builtInLookBlossom);
-                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster);
+                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: false);
             }
 
             using (var context = TestCommon.CreateClientContext())
@@ -277,35 +309,24 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var webToCheck1 = webCollection.First(w => w.Title == testWebName);
 
                 var webCollection2 = webToCheck1.Webs;
-                //context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl, w => w.ThemeInfo));
                 context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl));
                 context.ExecuteQuery();
 
                 var webToCheckB = webCollection2.First(w => w.Title == "B");
                 var webToCheckA = webCollection2.First(w => w.Title == "A");
+                var accentTextB = webToCheckB.ThemeInfo.GetThemeShadeByName("AccentText");
+                var accentTextA = webToCheckA.ThemeInfo.GetThemeShadeByName("AccentText");
+                context.ExecuteQuery();
+
+                // Assert: B will have new style, A will have Inherit = false and not get the new style
 
                 // Sea Monster oslo, palette005, image_bg005, fontscheme003
                 Assert.IsTrue(webToCheckB.MasterUrl.Contains(builtInMasterOslo));
+                Assert.AreEqual("FFF07200", accentTextB.Value);
+
                 // Blossom seattle, palette002, image_bg002
                 Assert.IsTrue(webToCheckA.MasterUrl.Contains(builtInMasterSeattle));
-                
-                // TODO: A way to check the theme has been applied. web.ThemeInfo isn't working
-
-                //var themeInfoB = webToCheckB.ThemeInfo;
-                //Console.WriteLine("Load themeInfoB");
-                //context.Load(themeInfoB);
-                //context.ExecuteQuery(); // Fails with "The object id "ThemeInfo-..." is invalid"
-                //Console.WriteLine("Use themeInfoB");
-                //var accentTextB = themeInfoB.GetThemeShadeByName("AccentText");
-                //context.ExecuteQuery();
-                //var themeInfoA = webToCheckA.ThemeInfo;
-                //context.Load(themeInfoA);
-                //context.ExecuteQuery();
-                //var accentTextA = themeInfoA.GetThemeShadeByName("AccentText");
-                //context.ExecuteQuery();
-
-                //Assert.AreEqual("F07200", accentTextB.Value);
-                //Assert.AreEqual("D55881", accentTextA.Value);
+                Assert.AreEqual("FFD55881", accentTextA.Value);
             }
         }
 
@@ -324,6 +345,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 context.ExecuteQuery();
                 var webToChangeA = webCollection2.First(w => w.Title == "A");
 
+                // Act
                 webToChangeA.SetComposedLookByUrl(builtInLookBlossom);
                 webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit:true);
             }
@@ -336,16 +358,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var webToCheck1 = webCollection.First(w => w.Title == testWebName);
 
                 var webCollection2 = webToCheck1.Webs;
-                context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl, w => w.ThemeInfo));
+                context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl));
                 context.ExecuteQuery();
                 var webToCheckA = webCollection2.First(w => w.Title == "A");
+                var accentA = webToCheckA.ThemeInfo.GetThemeShadeByName("AccentText");
+                context.ExecuteQuery();
+
+                // Assert: B will have Inherit = false and not get the new style, A will hav new style
 
                 // Sea Monster oslo, palette005, image_bg005, fontscheme003
                 Assert.IsTrue(webToCheckA.MasterUrl.Contains(builtInMasterOslo));
-
-                //var themeInfoA = webToCheckA.ThemeInfo;
-                
-                //Assert.AreEqual("F07200", themeInfoA.GetThemeShadeByName("AccentText"));
+                Assert.AreEqual("FFF07200", accentA.Value);
             }
         }
 

@@ -153,10 +153,10 @@ namespace Microsoft.SharePoint.Client
             var fontUrl = default(string);
             var backgroundUrl = default(string);
             var masterUrl = default(string);
-            using (var clientContext = new ClientContext(web.Context.Url) { Credentials = web.Context.Credentials })
+            using (var innerContext = new ClientContext(web.Context.Url) { Credentials = web.Context.Credentials })
             {
-                var rootWeb = clientContext.Site.RootWeb;
-                Utility.EnsureWeb(web.Context, rootWeb, "ServerRelativeUrl");
+                var rootWeb = innerContext.Site.RootWeb;
+                Utility.EnsureWeb(innerContext, rootWeb, "ServerRelativeUrl");
 
                 if (!string.IsNullOrEmpty(paletteFileName))
                 {
