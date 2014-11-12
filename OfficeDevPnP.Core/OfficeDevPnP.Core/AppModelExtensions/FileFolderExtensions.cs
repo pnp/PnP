@@ -978,16 +978,20 @@ namespace Microsoft.SharePoint.Client
                 file = existingFile;
             }
 
-            // Set file properties (child elements <Property>)
             folder.Context.Load(file);
-            folder.Context.Load(file.ListItemAllFields);
-            folder.Context.Load(file.ListItemAllFields.FieldValuesAsText);
             folder.Context.ExecuteQuery();
+
+            // Set file properties (child elements <Property>)
             var changedProperties = new Dictionary<string,string>();
             var changedPropertiesString = new StringBuilder();
             var propertyChanged = false;
-            if (additionalProperties != null)
+            if (additionalProperties != null && additionalProperties.Count > 0)
             {
+                // If this throws ServerException (does not belong to list), then shouldn't be trying to set properties)
+                folder.Context.Load(file.ListItemAllFields);
+                folder.Context.Load(file.ListItemAllFields.FieldValuesAsText);
+                folder.Context.ExecuteQuery();
+
                 // Loop through and detect changes first, then, check out if required and apply
                 foreach (var kvp in additionalProperties)
                 {

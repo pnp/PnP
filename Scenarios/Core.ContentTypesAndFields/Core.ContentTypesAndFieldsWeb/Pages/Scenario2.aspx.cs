@@ -11,6 +11,9 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
 {
     public partial class Scenario2 : System.Web.UI.Page
     {
+        static readonly Guid SampleGroupId = new Guid("{616ABD6F-2A9E-46AA-AA6B-EE2B67257DCC}");
+        static readonly Guid SampleTermSetId = new Guid("{47CDC099-C0EF-4043-9C4A-D4BAAA9B5482}");
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // define initial script, needed to render the chrome control
@@ -65,6 +68,41 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 }
             }
         }
+
+        protected void btnCreateGroup_Click(object sender, EventArgs e)
+        {
+            // Update Term set drop down for the taxonomy field creation.
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+
+            using (var ctx = spContext.CreateUserClientContextForSPHost())
+            {
+                TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(ctx);
+                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+                termStore.CreateGroup("Samples", SampleGroupId);
+                ctx.ExecuteQuery();
+            }
+            // Update drop downs
+            GenerateTaxonomyDropDowns();
+        }
+
+        protected void btnUploadTermSet_Click(object sender, EventArgs e)
+        {
+            // Update Term set drop down for the taxonomy field creation.
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+
+            using (var ctx = spContext.CreateUserClientContextForSPHost())
+            {
+                TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(ctx);
+                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+                TermGroup group = termStore.GetGroup(new Guid(drpGroups.SelectedValue));
+
+                group.ImportTermSet(Server.MapPath("~/Resources/ImportTermSet.csv"), 
+                    termSetId:SampleTermSetId, synchroniseDeletions:true);
+            }
+            // Update term setup drop down
+            UpdateTermSetsBasedOnSelectedGroup(drpGroups.SelectedValue);
+        }
+
         protected void drpGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateTermSetsBasedOnSelectedGroup(drpGroups.SelectedValue);
@@ -112,6 +150,7 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                         );
                 ctx.ExecuteQuery();
 
+                drpGroups.Items.Clear();
                 foreach (TermGroup group in termStore.Groups)
                 {
                     drpGroups.Items.Add(new System.Web.UI.WebControls.ListItem(group.Name, group.Id.ToString()));

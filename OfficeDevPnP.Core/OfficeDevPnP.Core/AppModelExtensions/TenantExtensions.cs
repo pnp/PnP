@@ -174,14 +174,14 @@ namespace Microsoft.SharePoint.Client
             bool ret = false;
             //Get the site name
             var url = new Uri(siteFullUrl);
-            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var UrlPath = url.PathAndQuery.Substring(0, idx);
-            var Name = url.PathAndQuery.Substring(idx);
-            var index = Name.IndexOf('/');
+            var siteDomainUrl = url.GetLeftPart(UriPartial.Scheme | UriPartial.Authority);
+            int siteNameIndex = url.AbsolutePath.IndexOf('/', 1) + 1;
+            var managedPath = url.AbsolutePath.Substring(0, siteNameIndex);
+            var siteRelativePath = url.AbsolutePath.Substring(siteNameIndex);
+            var isSiteCollection = siteRelativePath.IndexOf('/') == -1;
 
             //Judge whether this site collection is existing or not
-            if (index == -1)
+            if (isSiteCollection)
             {
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
@@ -191,8 +191,11 @@ namespace Microsoft.SharePoint.Client
             //Judge whether this sub web site is existing or not
             else
             {
-                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
-                var subweb = site.OpenWeb(Name.Substring(index + 1));
+                var subsiteUrl = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                            "{0}{1}{2}", siteDomainUrl, managedPath, siteRelativePath.Split('/')[0]);
+                var subsiteRelativeUrl = siteRelativePath.Substring(siteRelativePath.IndexOf('/') + 1);
+                var site = tenant.GetSiteByUrl(subsiteUrl);
+                var subweb = site.OpenWeb(subsiteRelativeUrl);
                 tenant.Context.Load(subweb, w => w.Title);
                 tenant.Context.ExecuteQuery();
                 ret = true;
@@ -608,28 +611,19 @@ namespace Microsoft.SharePoint.Client
             return sites;
         }
 
+        /// <summary>
+        /// Get OneDrive site collections by iterating through all user profiles.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>List of <see cref="SiteEntity"/> objects containing site collection info.</returns>
         public static IList<SiteEntity> GetOneDriveSiteCollections(this Tenant tenant)
         {
-            var creds = (Microsoft.SharePoint.Client.SharePointOnlineCredentials)tenant.Context.Credentials;
-
             var sites = new List<SiteEntity>();
+            var svcClient = GetUserProfileServiceClient(tenant);
 
-            OfficeDevPnP.Core.UPAWebService.UserProfileService svc = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
-            
-            svc.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
-            svc.UseDefaultCredentials = false;
-            svc.Credentials = tenant.Context.Credentials;
-
-            var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
-            var cookieContainer = new CookieContainer();
-            
-            cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
-            svc.CookieContainer = cookieContainer;
-
-
-            var userProfileResult = svc.GetUserProfileByIndex(-1);
-
-            var profileCount = svc.GetUserProfileCount();
+            // get all user profiles
+            var userProfileResult = svcClient.GetUserProfileByIndex(-1);
+            var profileCount = svcClient.GetUserProfileCount();
 
             while(int.Parse(userProfileResult.NextValue) != -1)
             {
@@ -651,10 +645,33 @@ namespace Microsoft.SharePoint.Client
                     }
                 }
                 
-                userProfileResult = svc.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
+                userProfileResult = svcClient.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
             }
 
             return sites;
+        }
+
+        /// <summary>
+        /// Gets the UserProfileService proxy to enable calls to the UPA web service.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>UserProfileService web service client</returns>
+        public static OfficeDevPnP.Core.UPAWebService.UserProfileService GetUserProfileServiceClient(this Tenant tenant) {
+            var client = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+
+            client.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
+            client.UseDefaultCredentials = false;
+            client.Credentials = tenant.Context.Credentials;
+
+            if (tenant.Context.Credentials is SharePointOnlineCredentials) {
+                var creds = (SharePointOnlineCredentials)tenant.Context.Credentials;
+                var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
+                var cookieContainer = new CookieContainer();
+
+                cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
+                client.CookieContainer = cookieContainer;
+            }
+            return client;
         }
     }
 }
