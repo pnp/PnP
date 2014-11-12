@@ -103,16 +103,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                                     <Value Type='Text'>Test_</Value>
                                 </Contains>
                             </Where>
-                            </Query>
+                        </Query>
                     </View>";
                 query.ViewXml = camlString;
                 var found = themeGallery.GetItems(query);
                 web.Context.Load(found);
                 web.Context.ExecuteQuery();
                 Console.WriteLine("{0} matching looks found to delete", found.Count);
-                foreach (var item in found)
+                var looksToDelete = found.ToList();
+                foreach (var item in looksToDelete)
                 {
-                    Console.WriteLine("Delete look item '{0}'", item.DisplayName);
+                    Console.WriteLine("Delete look item '{0}'", item["Name"]);
                     item.DeleteObject();
                     context.ExecuteQuery();
                 }
@@ -127,12 +128,27 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
                 Folder folder15 = rootFolders.FirstOrDefault();
 
-                Microsoft.SharePoint.Client.File customColorFile = folder15.Files.GetByUrl("custom.spcolor");
-                Microsoft.SharePoint.Client.File customBackgroundFile = folder15.Files.GetByUrl("custombg.jpg");
+                try
+                {
+                    Microsoft.SharePoint.Client.File customColorFile = folder15.Files.GetByUrl("custom.spcolor");
+                    customColorFile.DeleteObject();
+                    context.ExecuteQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception cleaning up: {0}", ex);
+                }
 
-                customColorFile.DeleteObject();
-                customBackgroundFile.DeleteObject();
-                context.ExecuteQuery();
+                try
+                {
+                    Microsoft.SharePoint.Client.File customBackgroundFile = folder15.Files.GetByUrl("custombg.jpg");
+                    customBackgroundFile.DeleteObject();
+                    context.ExecuteQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception cleaning up: {0}", ex);
+                }
 
                 var webCollection1 = web.Webs;
                 context.Load(webCollection1, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));
@@ -178,8 +194,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                context.Web.DeployThemeToWeb("Test Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                Assert.IsTrue(context.Web.ThemeEntryExists("Test Theme"));
+                context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
+                Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
             }
         }
 
@@ -198,22 +214,24 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                context.Web.DeployThemeToWeb("Test Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                Assert.IsTrue(context.Web.ThemeEntryExists("Test Theme"));
+                context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
+                Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
             }
         }
 
         [TestMethod()]
-        public void GetCurrentThemeTest()
+        public void GetCurrentLookTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                context.Web.DeployThemeToWeb("Test Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                context.Web.SetThemeToWeb("Test Theme");
+                context.Web.SetComposedLookByUrl(builtInLookSeaMonster);
+            }
 
-                var theme = context.Web.GetCurrentTheme();
+            using (var context = TestCommon.CreateClientContext())
+            {
+                var theme = context.Web.GetCurrentLook();
                 Assert.IsTrue(theme != null);
-                Assert.IsTrue(theme.BackgroundImage.EndsWith("custombg.jpg"));
+                Assert.IsTrue(theme.BackgroundImage.EndsWith("image_bg005.jpg"));
             }
         }
 
@@ -228,7 +246,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 context.ExecuteQuery();
                 var paletteServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/theme/15" + builtInPalette003;
                 var masterServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/masterpage" + builtInMasterOslo;
-                
+
                 context.Web.CreateComposedLookByUrl(testLookName, paletteServerRelativeUrl, null, null, masterServerRelativeUrl, 5);
             }
 
@@ -345,7 +363,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
                 // Act
                 webToChangeA.SetComposedLookByUrl(builtInLookBlossom);
-                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit:true);
+                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: true);
             }
 
             using (var context = TestCommon.CreateClientContext())

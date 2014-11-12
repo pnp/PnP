@@ -42,14 +42,14 @@ namespace Microsoft.SharePoint.Client
                      </Query>
                 </View>";
 
-        [Obsolete("Use site.UploadThemeFile and web.CreateComposedLook separately")]
+        [Obsolete("Use web.UploadThemeFile and web.CreateComposedLook separately")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployThemeToWeb(this Web web, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
             DeployThemeToWebImplementation(web, web, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
-        [Obsolete("Use site.UploadThemeFile and web.CreateComposedLook separately")]
+        [Obsolete("Use web.UploadThemeFile and web.CreateComposedLook separately")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void DeployThemeToSubWeb(this Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
@@ -78,41 +78,30 @@ namespace Microsoft.SharePoint.Client
             web.AddNewThemeOptionToSubWeb(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
-        /// <summary>
-        /// Checks to see if the theme already exists.
-        /// </summary>
-        /// <param name="web">Site to be processed</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <returns>True if theme exists, false otherwise</returns>
+        [Obsolete("Use web.ComposedLookExists")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool ThemeEntryExists(this Web web, string themeName)
         {
-            // Let's get instance to the composite look gallery
-            List themesList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-            web.Context.Load(themesList);
-            web.Context.ExecuteQuery();
+            return ComposedLookExists(web, themeName);
+        }
 
-            return web.ThemeEntryExists(themeName, themesList);
+        [Obsolete("Use web.ComposedLookExists")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static bool ThemeEntryExists(this Web web, string themeName, List themeGalleryList)
+        {
+            return ComposedLookExists(web, themeName);
         }
 
         /// <summary>
-        /// Checks to see if the theme already exists
+        /// Checks if a composed look exists.
         /// </summary>
-        /// <param name="web">Site to be processed</param>
-        /// <param name="themeName">Name for the new theme</param>
-        /// <param name="themeGalleryList">SharePoint theme gallery list</param>
-        /// <returns>True if theme exists, false otherwise</returns>
-        public static bool ThemeEntryExists(this Web web, string themeName, List themeGalleryList)
+        /// <param name="web">Web to check</param>
+        /// <param name="composedLookName">Name of the composed look</param>
+        /// <returns>true if it exists; otherwise false</returns>
+        public static bool ComposedLookExists(this Web web, string composedLookName)
         {
-            CamlQuery query = new CamlQuery();
-            query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, themeName);
-            var found = themeGalleryList.GetItems(query);
-            web.Context.Load(found);
-            web.Context.ExecuteQuery();
-            if (found.Count > 0)
-            {
-                return true;
-            }
-            return false;
+            var found = GetComposedLook(web, composedLookName);
+            return (found != null);
         }
 
         [Obsolete("Use web.CreateComposedLook")]
@@ -307,6 +296,7 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, CoreResources.BrandingExtension_ComposedLookMissing, lookName);
+                    throw new Exception(string.Format("Composed look '{0}' can not be found; pass null or empty to set look directly (not based on an existing entry)", lookName));
                 }
             }
 
@@ -738,6 +728,7 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         [Obsolete("Use SetMasterPagesByName")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetMasterPagesForSiteByName(this Web web, string masterPageName, string customMasterPageName)
         {
             web.SetMasterPagesByName(masterPageName, customMasterPageName);
@@ -779,6 +770,7 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         [Obsolete("Use SetMasterPagesByUrl")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetMasterPagesForSiteByUrl(this Web web, string masterPageUrl, string customMasterPageUrl)
         {
             web.SetMasterPagesByUrl(masterPageUrl, customMasterPageUrl);
@@ -819,6 +811,7 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         [Obsolete("Use SetMasterPageByName")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetMasterPageForSiteByName(this Web web, string masterPageName)
         {
             web.SetMasterPageByName(masterPageName);
@@ -854,6 +847,7 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentException">Thrown when masterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName is null</exception>  
         [Obsolete("Use SetCustomMasterPageByName")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetCustomMasterPageForSiteByName(this Web web, string masterPageName)
         {
             web.SetCustomMasterPageByName(masterPageName);
@@ -907,12 +901,38 @@ namespace Microsoft.SharePoint.Client
             return string.Empty;
         }
 
+        [Obsolete("Use web.GetCurrentLook")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static ThemeEntity GetCurrentTheme(this Web web)
+        {
+            var theme = GetCurrentLook(web);
+            web.Context.Load(web, w => w.MasterUrl, w => w.CustomMasterUrl);
+            web.Context.ExecuteQuery();
+            if (string.IsNullOrEmpty(theme.MasterPage))
+            {
+                theme.MasterPage = web.MasterUrl;
+            }
+            theme.CustomMasterPage = web.CustomMasterUrl;
+            return theme;
+        }
+
         /// <summary>
         /// Returns the current theme of a web
         /// </summary>
-        /// <param name="web"></param>
-        /// <returns></returns>
-        public static ThemeEntity GetCurrentTheme(this Web web)
+        /// <param name="web">Web to check</param>
+        /// <returns>Entity with attributes of current composed look, or null if none</returns>
+        public static ThemeEntity GetCurrentLook(this Web web)
+        {
+            return GetComposedLook(web, CurrentLookName);
+        }
+
+        /// <summary>
+        /// Returns the named composed look from the web gallery
+        /// </summary>
+        /// <param name="web">Web to check</param>
+        /// <param name="composedLookName">Name of the composed look to retrieve</param>
+        /// <returns>Entity with the attributes of the composed look, or null if it does not exist</returns>
+        public static ThemeEntity GetComposedLook(this Web web, string composedLookName)
         {
             ThemeEntity theme = null;
 
@@ -920,7 +940,7 @@ namespace Microsoft.SharePoint.Client
             string camlString = @"
             <View>  
                 <Query> 
-                    <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>Current</Value></Eq></Where> 
+                    <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>{0}</Value></Eq></Where> 
                 </Query> 
                 <ViewFields>
                     <FieldRef Name='ImageUrl' />
@@ -931,7 +951,7 @@ namespace Microsoft.SharePoint.Client
             </View>"; 
 
             CamlQuery camlQuery = new CamlQuery();
-            camlQuery.ViewXml = camlString;
+            camlQuery.ViewXml = string.Format(camlString, composedLookName);
             
             ListItemCollection themes = designCatalog.GetItems(camlQuery);
             web.Context.Load(themes);
@@ -940,8 +960,6 @@ namespace Microsoft.SharePoint.Client
             {
                 var themeItem = themes[0];
                 theme = new ThemeEntity();
-                theme.MasterPage = web.MasterUrl;
-                theme.CustomMasterPage = web.CustomMasterUrl;
                 if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
                 {
                     theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
@@ -956,12 +974,11 @@ namespace Microsoft.SharePoint.Client
                 }
                 if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
                 {
-                    theme.Font = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
                 }
             }
 
             return theme;
-
         }
 
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
@@ -987,12 +1004,8 @@ namespace Microsoft.SharePoint.Client
             return null;
         }
 
-        /// <summary>
-        /// Set master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
-        /// </summary>
-        /// <param name="web">Context web</param>
-        /// <param name="masterPageName">URL to the master page.</param>
         [Obsolete("Use SetMasterPageByUrl")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetMasterPageForSiteByUrl(this Web web, string masterPageUrl)
         {
             web.SetMasterPageByUrl(masterPageUrl, updateRootOnly:true);
@@ -1048,6 +1061,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use Web.SetCustomMasterPageByUrl()")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void SetCustomMasterPageForSiteByUrl(this Web web, string masterPageUrl)
         {
             web.SetCustomMasterPageByUrl(masterPageUrl, updateRootOnly:true);
