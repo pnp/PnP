@@ -19,7 +19,7 @@
             <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
             <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.2" />
             <dependency id="AppForSharePointWebToolkit" version="3.0.1" />
-            <dependency id="SharePoint.ClientComponents" version="15.0.4641.1011" />
+            <dependency id="SharePoint.ClientComponents" version="[15.0.4641.1011,16)" />
         </dependencies>
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System" targetFramework="" />
