@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SharePoint.ClientComponents</id>
+    <version>16.0.3104.1200</version>
+    <authors>Office 365 Developer Patterns &amp; Practices</authors>
+    <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
+    <projectUrl>http://aka.ms/OfficeDevPnP</projectUrl>
+    <iconUrl>http://i.imgur.com/6MWZgWW.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The SharePoint Online Client Components SDK can be used to enable development with SharePoint Online
+(and SharePoint Server 2013)</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>SharePoint CSOM OfficeDev Office365</tags>
+  </metadata>
+  <files>
+    <file src="..\Assemblies\16\*.txt" target="lib\net40" />
+    <file src="..\Assemblies\16\*.dll" target="lib\net40" />
+  </files>
+</package>
