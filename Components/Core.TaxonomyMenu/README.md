@@ -11,7 +11,7 @@ To set up this sample a provider-hosted app using  .NET CSOM creates a term grou
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-None
+It's important that the provider hosted app that's running the taxonomy menu is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)

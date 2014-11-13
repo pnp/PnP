@@ -4,7 +4,7 @@
 This control is used to browse documents that are stored in document libaries in SharePoint. It can show multiple document libraries in 1 tree structure. If you click on one of the selected documents, it will open. It is possible to configure filters on document extensions and specify the number of selected files. There is support for a custom datasource that you can implement yourself to get data from sources that the control itself does not support.
 
 ### Prerequisites ###
-none
+It's important that the provider hosted app that's running the document picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
