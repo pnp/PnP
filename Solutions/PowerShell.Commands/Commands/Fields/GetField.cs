@@ -77,20 +77,9 @@ namespace OfficeDevPnP.PowerShell.Commands
                     {
                         f = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
                     }
-                    try
-                    {
-                        ClientContext.Load(f);
-                        ClientContext.ExecuteQuery();
-                        WriteObject(f);
-                    }
-                    catch (ServerException ex)
-                    {
-                        // Check if the error code indicates that the field does not exists, return null instead of throwing the exception
-                        if (ex.ServerErrorCode == -2147024809)
-                            WriteObject(null);
-                        else
-                            throw ex;
-                    }
+                    ClientContext.Load(f);
+                    ClientContext.ExecuteQuery();
+                    WriteObject(f);
                 }
             }
 
