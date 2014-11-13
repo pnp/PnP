@@ -30,7 +30,12 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
 
             // Construct the cookie expiration date
             TimeSpan lifeTime = SamlTokenlifeTime(token.TokenXml.OuterXml);
-            int cookieLifeTime = Math.Min(lifeTime.Minutes, logonTokenCacheExpirationWindow);
+            if (lifeTime == TimeSpan.Zero)
+            {
+                lifeTime = new TimeSpan(0, 60, 0);
+            }
+
+            int cookieLifeTime = Math.Min((lifeTime.Hours * 60 + lifeTime.Minutes), logonTokenCacheExpirationWindow);
             DateTime expiresOn = DateTime.Now.AddMinutes(cookieLifeTime);
 
             CookieContainer cc = null;

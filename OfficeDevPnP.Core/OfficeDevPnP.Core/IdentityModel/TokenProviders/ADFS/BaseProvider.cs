@@ -50,7 +50,6 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
             using (HttpWebResponse webResponse = (HttpWebResponse)sharepointRequest.GetResponse())
             {
                 fedAuthCookieValue = webResponse.Cookies["FedAuth"].Value;
-                webResponse.Close();
             }
 
             return fedAuthCookieValue;
@@ -62,6 +61,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
         /// <param name="stsResponse">SAML token obtained via active authentication to ADFS</param>
         /// <param name="relyingPartyIdentifier">Identifier of the ADFS relying party that we're hitting</param>
         /// <returns>RequestSecurityTokenResponse soap message</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         private string WrapInSoapMessage(string stsResponse, string relyingPartyIdentifier)
         {
             XmlDocument samlAssertion = new XmlDocument();
