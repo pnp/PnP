@@ -126,8 +126,10 @@ namespace Core.SiteActions.ConsoleSample
             BasePermissions _manageWebPermission = new BasePermissions();
             _manageWebPermission.Set(PermissionKind.ManageWeb);
 
+
             CustomActionEntity _entity = new CustomActionEntity()
             {
+                Name = "CA_SITE_SETTINGS_SITECLASSIFICATION",
                 Group = "SiteTasks",
                 Location = "Microsoft.SharePoint.SiteSettings",
                 Title = "Site Classification",
@@ -138,6 +140,7 @@ namespace Core.SiteActions.ConsoleSample
 
             CustomActionEntity _siteActionSC = new CustomActionEntity()
             {
+                Name = "CA_STDMENU_SITECLASSIFICATION",
                 Group = "SiteActions",
                 Location = "Microsoft.SharePoint.StandardMenu",
                 Title = "Site Classification",
@@ -145,6 +148,8 @@ namespace Core.SiteActions.ConsoleSample
                 Url = string.Format(hostUrl, ctx.Url),
                 Rights = _manageWebPermission
             };
+
+
             _web.AddCustomAction(_entity);
             _web.AddCustomAction(_siteActionSC);
         }

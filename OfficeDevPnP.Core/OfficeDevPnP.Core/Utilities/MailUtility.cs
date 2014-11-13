@@ -51,23 +51,31 @@ namespace OfficeDevPnP.Core.Utilities
 
             try
             {
-                if (sendAsync) {
-                    server.SendCompleted += (sender, args) => {
+                if (sendAsync)
+                {
+                    server.SendCompleted += (sender, args) =>
+                    {
                         if (args.Error != null)
-                            LoggingUtility.LogError("Mail message could not be sent.", args.Error, EventCategory.Mail);
+                        {
+                            LoggingUtility.Internal.TraceError((int)EventId.MailSendFailed, args.Error, CoreResources.MailUtility_SendFailed);
+                        }
                         else if (args.Cancelled)
-                            LoggingUtility.LogInformation("Mail message was canceled.", EventCategory.Mail);
+                        {
+                            LoggingUtility.Internal.TraceInformation((int)EventId.SendMailCancelled, CoreResources.MailUtility_SendMailCancelled);
+                        }
                     };
                     server.SendAsync(mail, asyncUserToken);
                 }
                 else
                     server.Send(mail);
             }
-            catch (SmtpException smtpEx){
-                LoggingUtility.LogError("Unable to send mail message.", smtpEx, EventCategory.Mail);
+            catch (SmtpException smtpEx)
+            {
+                LoggingUtility.Internal.TraceError((int)EventId.MailSendException, smtpEx, CoreResources.MailUtility_SendException);
             }
-            catch (Exception ex) {
-                LoggingUtility.LogError("Mail message could not be sent.", ex, EventCategory.Mail);
+            catch (Exception ex)
+            {
+                LoggingUtility.Internal.TraceVerbose(CoreResources.MailUtility_SendExceptionRethrow0, ex);
                 throw;
             }
         }

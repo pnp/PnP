@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorporateEvents.SharePoint", "CorporateEvents.SharePoint\CorporateEvents.SharePoint.csproj", "{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorporateEvents.SharePointWeb", "CorporateEvents.SharePointWeb\CorporateEvents.SharePointWeb.csproj", "{FFA82A9F-7BDF-444D-830C-F4B66A8770A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F9750193-0157-4BEF-ABCF-8A2A4D6358F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{C4F39457-AE09-4BB1-A211-D9911F9E2CF9}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1374EAE-7655-42BC-9CA0-F0EC2B08663C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FFA82A9F-7BDF-444D-830C-F4B66A8770A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA82A9F-7BDF-444D-830C-F4B66A8770A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA82A9F-7BDF-444D-830C-F4B66A8770A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA82A9F-7BDF-444D-830C-F4B66A8770A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {F9750193-0157-4BEF-ABCF-8A2A4D6358F5}
+	EndGlobalSection
+EndGlobal

@@ -11,6 +11,7 @@ namespace OfficeDevPnP.Core
     /// </summary>
     public enum EcmRecordDeclarationBy
     {
+        Unknown = 0,
         /// <summary>
         /// All list contributors and administrators
         /// </summary>

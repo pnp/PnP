@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Provisioning.Hybrid", "Provisioning.Hybrid\Provisioning.Hybrid.ccproj", "{2A9C3E91-186C-4E7B-8612-3F57A9920FCD}"
 EndProject
@@ -22,8 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B369B9AE-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D891F0D2-CBD4-409C-8CCF-FEF148116989}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		Site provisioning reference implementation.docx = Site provisioning reference implementation.docx
+		readme.md = readme.md
 		sitedirectorytemplate.stp = sitedirectorytemplate.stp
 	EndProjectSection
 EndProject

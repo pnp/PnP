@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CorporateEvents.SharePointWeb.Models.Event>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+        // Set the style of the client web part page to be consistent with the host web.
+        (function () {
+            'use strict';
+
+            var hostUrl = '';
+            if (document.URL.indexOf('?') != -1) {
+                var params = document.URL.split('?')[1].split('&');
+                for (var i = 0; i < params.length; i++) {
+                    var p = decodeURIComponent(params[i]);
+                    if (/^SPHostUrl=/i.test(p)) {
+                        hostUrl = p.split('=')[1];
+                        document.write('<link rel="stylesheet" href="' + hostUrl + '/_layouts/15/defaultcss.ashx" />');
+                        break;
+                    }
+                }
+            }
+            if (hostUrl == '') {
+                document.write('<link rel="stylesheet" href="/_layouts/15/1033/styles/themable/corev15.css" />');
+            }
+        })();
+    </script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">body { overflow: auto; padding: 0; }</style>
+</head>
+<body>
+    <div class="event">
+        @foreach (var item in Model) {
+            var date = item.EventDate;
+
+            <div class="event-row">
+                <div class="event-column1">
+                    <div class="event-date">
+                        <div class="event-month">@date.Value.ToString("MMM") @date.Value.ToString("yyyy")</div>
+                        <div class="event-day">@date.Value.ToString("dd")</div>
+                    </div>
+                </div>
+                <div class="event-column2">
+                    <div class="event-details-title">@Html.ActionLink(Html.DisplayFor(modelItem => item.Title).ToHtmlString(), "Item", new { id = item.Id, SPHostUrl = ViewBag.SPHostUrl }, new { target = "_top" })</div>
+                    <div class="event-details-location">@Html.DisplayFor(modelItem => item.Location)</div>
+                    <div class="event-details-description">@Html.DisplayFor(modelItem => item.ShortDescription)</div>
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

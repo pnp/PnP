@@ -7,7 +7,7 @@ using System.Web;
 namespace Contoso.Core.PeoplePickerWeb
 {
     [DataContract]
-    class PeoplePickerUser
+    public class PeoplePickerUser
     {
         [DataMember]
         internal string Login;

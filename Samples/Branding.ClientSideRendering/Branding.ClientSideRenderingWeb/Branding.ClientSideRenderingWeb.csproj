@@ -91,6 +91,7 @@
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\JSLink-Samples\Accordion.js" />
     <Content Include="Scripts\JSLink-Samples\ConfidentialDocuments.js" />
+    <Content Include="Scripts\JSLink-Samples\DependentFields.js" />
     <Content Include="Scripts\JSLink-Samples\DisableInput.js" />
     <Content Include="Scripts\JSLink-Samples\HiddenField.js" />
     <Content Include="Scripts\JSLink-Samples\imgs\Confidential.png" />

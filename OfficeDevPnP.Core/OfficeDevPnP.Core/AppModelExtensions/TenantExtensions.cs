@@ -1,68 +1,49 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
 {
     public static class TenantExtensions
     {
-        const string MSG_CONTEXT_CLOSED = "ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.";
         const string SITE_STATUS_ACTIVE = "Active";
         const string SITE_STATUS_CREATING = "Creating";
         const string SITE_STATUS_RECYCLED = "Recycled";
 
-        /// <summary>
-        /// Sets tenant site Properties
-        /// </summary>
-        /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
-        /// <param name="siteFullUrl"></param>
-        /// <param name="title"></param>
-        /// <param name="allowSelfServiceUpgrade"></param>
-        /// <param name="sharingCapability"></param>
-        /// <param name="storageMaximumLevel"></param>
-        /// <param name="storageWarningLevel"></param>
-        /// <param name="userCodeMaximumLevel"></param>
-        /// <param name="userCodeWarningLevel"></param>
-        public static void SetSiteProperties(this Tenant tenant, string siteFullUrl,
-            string title = null,
-            Nullable<bool> allowSelfServiceUpgrade = null,
-            Nullable<SharingCapabilities> sharingCapability = null,
-            Nullable<long> storageMaximumLevel = null,
-            Nullable<long> storageWarningLevel = null,
-            Nullable<double> userCodeMaximumLevel = null,
-            Nullable<double> userCodeWarningLevel = null
-            )
+        [Obsolete("Use tenant.CreateSiteCollection() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static Guid AddSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
-            var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
-            tenant.Context.Load(siteProps);
-            tenant.Context.ExecuteQuery();
-            if (siteProps != null)
-            {
-                if (allowSelfServiceUpgrade != null)
-                    siteProps.AllowSelfServiceUpgrade = allowSelfServiceUpgrade.Value;
-                if (sharingCapability != null)
-                    siteProps.SharingCapability = sharingCapability.Value;
-                if (storageMaximumLevel != null)
-                    siteProps.StorageMaximumLevel = storageMaximumLevel.Value;
-                if (storageWarningLevel != null)
-                    siteProps.StorageWarningLevel = storageMaximumLevel.Value;
-                if (userCodeMaximumLevel != null)
-                    siteProps.UserCodeMaximumLevel = userCodeMaximumLevel.Value;
-                if (userCodeWarningLevel != null)
-                    siteProps.UserCodeWarningLevel = userCodeWarningLevel.Value;
-                if (title != null)
-                    siteProps.Title = title;
+            return tenant.CreateSiteCollection(properties, removeFromRecycleBin, wait);
+        }
 
-                siteProps.Update();
-                tenant.Context.ExecuteQuery();
-            }
+        [Obsolete("Use tenant.CreateSiteCollection() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static Guid AddSiteCollection(this Tenant tenant, string siteFullUrl, string title, string siteOwnerLogin,
+                                                string template, int storageMaximumLevel, int storageWarningLevel,
+                                                int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
+                                                uint lcid, bool removeFromRecycleBin = false, bool wait = true)
+        {
+            SiteEntity siteCol = new SiteEntity()
+            {
+                Url = siteFullUrl,
+                Title = title,
+                SiteOwnerLogin = siteOwnerLogin,
+                Template = template,
+                StorageMaximumLevel = storageMaximumLevel,
+                StorageWarningLevel = storageWarningLevel,
+                TimeZoneId = timeZoneId,
+                UserCodeMaximumLevel = userCodeMaximumLevel,
+                UserCodeWarningLevel = userCodeWarningLevel,
+                Lcid = lcid
+            };
+            return tenant.CreateSiteCollection(siteCol, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -73,8 +54,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
         /// <param name="wait">If true, processing will halt until the site collection has been created</param>
         /// <returns>Guid of the created site collection</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
-        public static Guid AddSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
+        public static Guid CreateSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
             if (removeFromRecycleBin)
             {
@@ -120,7 +100,7 @@ namespace Microsoft.SharePoint.Client
                             {
                                 // Context connection gets closed after action completed.
                                 // Calling ExecuteQuery again returns an error which can be ignored
-                                LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                                LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                             }
                         }
                     }
@@ -131,7 +111,7 @@ namespace Microsoft.SharePoint.Client
                 // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
                 if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
@@ -156,7 +136,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userCodeWarningLevel">The user code quota warning level in points</param>
         /// <param name="lcid">The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's</param>
         /// <returns></returns>
-        public static Guid AddSiteCollection(this Tenant tenant, string siteFullUrl, string title, string siteOwnerLogin,
+        public static Guid CreateSiteCollection(this Tenant tenant, string siteFullUrl, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
                                                         int timeZoneId, int userCodeMaximumLevel, int userCodeWarningLevel,
                                                         uint lcid, bool removeFromRecycleBin = false, bool wait = true)
@@ -174,7 +154,7 @@ namespace Microsoft.SharePoint.Client
                 UserCodeWarningLevel = userCodeWarningLevel,
                 Lcid = lcid
             };
-            return tenant.AddSiteCollection(siteCol, removeFromRecycleBin, wait);
+            return tenant.CreateSiteCollection(siteCol, removeFromRecycleBin, wait);
         }
 
         /// <summary>
@@ -246,7 +226,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -275,7 +255,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -311,7 +291,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.LogWarning(MSG_CONTEXT_CLOSED, webEx, EventCategory.Site);
+                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
                     }
                 }
             }
@@ -341,7 +321,9 @@ namespace Microsoft.SharePoint.Client
                     return true;
                 }
                 else
-                    LoggingUtility.LogError("Could not determine if site exists in tenant.", ex, EventCategory.Site);
+                {
+                    LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
+                }
 
                 return false;
             }
@@ -366,7 +348,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
         /// <param name="siteFullUrl">A URL that specifies a site collection to get ID.</param>
-        /// <returns>The Guid of a site collection</returns>
+        /// <returns>The Guid of a site collection or an Guid.Empty if the Site does not exist</returns>
         public static Guid GetSiteGuidByUrl(this Tenant tenant, Uri siteFullUrl)
         {
             Guid siteGuid = Guid.Empty;
@@ -417,8 +399,55 @@ namespace Microsoft.SharePoint.Client
                 {
                     return false;
                 }
-                LoggingUtility.LogError("Error finding if site is active tenant.", ex, EventCategory.Site);
+                LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Sets tenant site Properties
+        /// </summary>
+        /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
+        /// <param name="siteFullUrl"></param>
+        /// <param name="title"></param>
+        /// <param name="allowSelfServiceUpgrade"></param>
+        /// <param name="sharingCapability"></param>
+        /// <param name="storageMaximumLevel"></param>
+        /// <param name="storageWarningLevel"></param>
+        /// <param name="userCodeMaximumLevel"></param>
+        /// <param name="userCodeWarningLevel"></param>
+        public static void SetSiteProperties(this Tenant tenant, string siteFullUrl,
+            string title = null,
+            Nullable<bool> allowSelfServiceUpgrade = null,
+            Nullable<SharingCapabilities> sharingCapability = null,
+            Nullable<long> storageMaximumLevel = null,
+            Nullable<long> storageWarningLevel = null,
+            Nullable<double> userCodeMaximumLevel = null,
+            Nullable<double> userCodeWarningLevel = null
+            )
+        {
+            var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
+            tenant.Context.Load(siteProps);
+            tenant.Context.ExecuteQuery();
+            if (siteProps != null)
+            {
+                if (allowSelfServiceUpgrade != null)
+                    siteProps.AllowSelfServiceUpgrade = allowSelfServiceUpgrade.Value;
+                if (sharingCapability != null)
+                    siteProps.SharingCapability = sharingCapability.Value;
+                if (storageMaximumLevel != null)
+                    siteProps.StorageMaximumLevel = storageMaximumLevel.Value;
+                if (storageWarningLevel != null)
+                    siteProps.StorageWarningLevel = storageMaximumLevel.Value;
+                if (userCodeMaximumLevel != null)
+                    siteProps.UserCodeMaximumLevel = userCodeMaximumLevel.Value;
+                if (userCodeWarningLevel != null)
+                    siteProps.UserCodeWarningLevel = userCodeWarningLevel.Value;
+                if (title != null)
+                    siteProps.Title = title;
+
+                siteProps.Update();
+                tenant.Context.ExecuteQuery();
             }
         }
 
@@ -474,6 +503,72 @@ namespace Microsoft.SharePoint.Client
                 else
                 {
                     return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
+        /// that does not have a dependency on the Tenant administration csom.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="adminLogins">Array of logins for the additional admins</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        public static void AddAdministrators(this Tenant tenant, String[] adminLogins, Uri siteUrl)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (var admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin, true);
+                tenant.Context.ExecuteQuery();
+
+                using (var clientContext = new ClientContext(siteUrl))
+                {
+                    var spAdmin = clientContext.Web.EnsureUser(admin);
+                    clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                    clientContext.Web.AssociatedOwnerGroup.Update();
+                    clientContext.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a site collection administrator to a site collection
+        /// </summary>
+        /// <param name="web">Site to operate on</param>
+        /// <param name="adminLogins">Array of admins loginnames to add</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
+        public static void AddAdministrators(this Tenant tenant, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (UserEntity admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
+                tenant.Context.ExecuteQuery();
+                if (addToOwnersGroup)
+                {
+                    // Create a separate context to the web
+                    using (var clientContext = new ClientContext(siteUrl))
+                    {
+                        clientContext.Credentials = tenant.Context.Credentials;
+                        var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
+                        clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                        clientContext.Web.AssociatedOwnerGroup.Update();
+                        clientContext.ExecuteQuery();
+                    }
                 }
             }
         }

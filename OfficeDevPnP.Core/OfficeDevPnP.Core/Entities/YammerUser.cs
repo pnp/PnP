@@ -32,7 +32,8 @@ namespace OfficeDevPnP.Core.Entities
         public string first_name { get; set; }
         public string last_name { get; set; }
         public string network_name { get; set; }
-        public List<string> network_domains { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<string> network_domains { get; set; }
         public string url { get; set; }
         public string web_url { get; set; }
         public string name { get; set; }
@@ -41,13 +42,16 @@ namespace OfficeDevPnP.Core.Entities
         public object hire_date { get; set; }
         public string birth_date { get; set; }
         public string timezone { get; set; }
-        public List<object> external_urls { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<object> external_urls { get; set; }
         public string admin { get; set; }
         public string verified_admin { get; set; }
         public string can_broadcast { get; set; }
         public string department { get; set; }
-        public List<object> previous_companies { get; set; }
-        public List<object> schools { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<object> previous_companies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<object> schools { get; set; }
         public YammerUserContact contact { get; set; }
         public YammerUserStats stats { get; set; }
         public YammerUserSettings settings { get; set; }
@@ -70,8 +74,10 @@ namespace OfficeDevPnP.Core.Entities
     public class YammerUserContact
     {
         public YammerUserIm im { get; set; }
-        public List<object> phone_numbers { get; set; }
-        public List<YammerUserEmailAddress> email_addresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<object> phone_numbers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<YammerUserEmailAddress> email_addresses { get; set; }
         public bool has_fake_email { get; set; }
     }
 
@@ -120,7 +126,8 @@ namespace OfficeDevPnP.Core.Entities
         public string absolute_timestamps { get; set; }
         public string threaded_mode { get; set; }
         public YammerUserNetworkSettings network_settings { get; set; }
-        public List<YammerUserHomeTab> home_tabs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public IList<YammerUserHomeTab> home_tabs { get; set; }
         public string enter_does_not_submit_message { get; set; }
         public string preferred_my_feed { get; set; }
         public string prescribed_my_feed { get; set; }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -20,11 +21,15 @@ namespace OfficeDevPnP.Core.Utilities
         /// <returns>json string</returns>
         public static string Serialize<T>(T obj)
         {
-            System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
-            MemoryStream ms = new MemoryStream();
-            serializer.WriteObject(ms, obj);
-            string retVal = Encoding.Default.GetString(ms.ToArray());
-            ms.Dispose();
+            //string retVal = null;
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
+            //    serializer.WriteObject(ms, obj);
+            //    retVal = Encoding.Default.GetString(ms.ToArray());
+            //}
+            var s = new JavaScriptSerializer();
+            var retVal = s.Serialize(obj);
             return retVal;
         }
 
@@ -36,11 +41,14 @@ namespace OfficeDevPnP.Core.Utilities
         /// <returns>Object of type T</returns>
         public static T Deserialize<T>(string json)
         {
-            T obj = Activator.CreateInstance<T>();
-            using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json))) {
-                System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
-                obj = (T)serializer.ReadObject(ms);
-            }
+            //var obj = Activator.CreateInstance<T>();
+            //using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            //{
+            //    System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
+            //    obj = (T)serializer.ReadObject(ms);
+            //}
+            var s = new JavaScriptSerializer();
+            var obj = s.Deserialize<T>(json);
             return obj;
         }
 

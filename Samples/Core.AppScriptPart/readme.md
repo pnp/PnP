@@ -41,6 +41,7 @@ Good examples of the pattern usage is for example Yammer embedding mechanism or 
 
 In each of the above scenarios we reference to JavaScript and we use specific div for actually dynamically then contain the actual referenced functionality. Here’s an example of Yammer embed command with JavaScript reference and the div marker to define the location of the capability in the page.
 
+```HTML
     <script type="text/javascript" src="https://assets.yammer.com/assets/platform_embed.js"></script>
     <div id="embedded-feed" style="height:400px;width:500px;"></div> 
     <script>
@@ -49,9 +50,12 @@ In each of the above scenarios we reference to JavaScript and we use specific di
     network: 'veskuonline.com'  // network permalink
     });
     </script>
+```
 
 This provides more seamless and dynamic integration option than using app part which are IFrames. This also means that this is suitable option for example for responsive user interface design. So this could be definitely something to evaluate also from app model perspective. What if we would actually just simply deploy redefined script web parts to the SharePoint sites which would have the reference and needed html for provider hosted app reference. This would give the end users opportunity to add additional functionality to the sites as needed using simply normal SharePoint user experience.
+
 Notice thought that if you would need to provide complex parameterization for each instance on the page, this could be complex to achieve, but not impossible. You could pretty easily recognize when the page is in edit mode and then provide needed parameterization options from embedded JavaScript. Any configuration could be stored for example to the provider hosted app side. It’s good to notice that since we are injecting new web part option to the web part gallery, deployment of the web part definition (.webpart file) requires tenant administration permissions, so this model is not available for apps hosted in the app store.
+
 In production we could be running these scripts easily from Windows Azure or from any other centralized location where they can be referenced from the SharePoint pages. This also gives us easy way to update the script, since it’s not stored in the actual SharePoint page, it’s rather loaded completely from the provider hosted environment. 
 
 
@@ -81,9 +85,10 @@ Liked noted already, usage of the local host is not obviously something which wo
 ##  ADD APP SCRIPT PART TO THE WEB ##
 Adding of the web part to the host web is simply implemented by uploading the web part to web part gallery using the FileCreationInformation object. In this sample implementation this is done on request when button is pressed, but we could automate this as part of the app installation or simply push the web part to web part gallery from remotely location using similar CSOM logic for example during site collection provisioning. In the code we also set the group attribute properly for the item in the web part gallery, so that web parts are grouped under App Script Part group.
 
-    var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
-    using (var clientContext = spContext.CreateUserClientContextForSPHost())
-    {
+```C#
+var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+using (var clientContext = spContext.CreateUserClientContextForSPHost())
+{
     var folder = clientContext.Web.Lists.GetByTitle("Web Part Gallery").RootFolder;
     clientContext.Load(folder);
     clientContext.ExecuteQuery();
@@ -91,12 +96,12 @@ Adding of the web part to the host web is simply implemented by uploading the we
     //upload the "OneDrive for Business Usage Guidelines.docx"
     using (var stream = System.IO.File.OpenRead(Server.MapPath("~/userprofileinformation.webpart")))
     {
-    FileCreationInformation fileInfo = new FileCreationInformation();
-    fileInfo.ContentStream = stream;
-    fileInfo.Overwrite = true;
-    fileInfo.Url = "userprofileinformation.webpart";
-    File file = folder.Files.Add(fileInfo);
-    clientContext.ExecuteQuery();
+        FileCreationInformation fileInfo = new FileCreationInformation();
+        fileInfo.ContentStream = stream;
+        fileInfo.Overwrite = true;
+        fileInfo.Url = "userprofileinformation.webpart";
+        File file = folder.Files.Add(fileInfo);
+        clientContext.ExecuteQuery();
     }
     
     // Let's update the group for just uplaoded web part
@@ -107,17 +112,18 @@ Adding of the web part to the host web is simply implemented by uploading the we
     clientContext.ExecuteQuery();
     foreach (var item in items)
     {
-    // Just random group name to diffentiate it from the rest
-    if (item["FileLeafRef"].ToString().ToLowerInvariant() == "userprofileinformation.webpart")
-    {
-    item["Group"] = "App Script Part";
-    item.Update();
-    clientContext.ExecuteQuery();
-    }
+        // Just random group name to diffentiate it from the rest
+        if (item["FileLeafRef"].ToString().ToLowerInvariant() == "userprofileinformation.webpart")
+        {
+            item["Group"] = "App Script Part";
+            item.Update();
+            clientContext.ExecuteQuery();
+        }
     }
     
     lblStatus.Text = string.Format("App script part has been added to web part gallery. You can find 'User Profile Information' script part under 'App Script Part' group in the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
-    }
-    
+}
+```
+
 ##  ACCESSING USER PROFILE FROM THE JAVASCRIPT ##
 Actual accessing and rendering of the information is happening using JavaScript. We are using user profile CSOM to access current user’s user profile for getting the needed information from specific user profile properties. Sample implementation does not have any caching, but in production usage we would recommend to use either HTML local store or cookie based caching for avoiding to JavaScript accessing the user profile on each request. This would also result much faster rendering times for the browser. Typically we could for example cache the information for one hour and refresh after that.

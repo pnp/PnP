@@ -19,12 +19,21 @@ namespace OfficeDevPnP.Core.Utilities
         // XX: sequential ids
         Unknown = 0,
 
+
         AuthenticationContext = 1301,
+        ServicesTokenRefreshed = 1302,
         
         UploadFile = 1501,
         InstallSolution = 1502,
         CreateWeb = 1503,
         CreateSiteCollection = 1504,
+        CreateField = 1506,
+        CreateContentType = 1507,
+        CreateListField = 1508,
+        CreateTermGroup = 1509,
+        CreateTermSet = 1510,
+        ImportTermSet = 1511,
+        CreateList = 1512,
 
         DeployTheme = 1601,
         AddThemeOption = 1602,
@@ -32,21 +41,58 @@ namespace OfficeDevPnP.Core.Utilities
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
+        SendMailCancelled = 2201,
+
+        ServicesRegistered =2301,
+
+        ActivateWebFeature = 2501,
+        ActivateSiteCollectionFeature = 2502,
+        AddFieldToContentType = 2503,
+        CreateTerm = 2504,
+        
         SetTheme = 2601,
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
 
+        ClosedContextWarning = 4201,
+        
+        ProblemDeterminingTokenLease = 4301,
+
+        FieldAlreadyExists = 4501,
+        ContentTypeAlreadyExists = 4502,
+        ProvisionTaxonomyUpdateException = 4503,
+        ProvisionTaxonomyIdMismatch = 4504,
+
         ThemeNotOverwritten = 4601,
 
-        LibraryMissing = 5501,
-        FolderMissing = 5502,
+        MailSendException = 5201,
+        MailSendFailed = 5202,
 
-        ThemeMissing = 5601,
+        ServicesRegistrationFailed = 5301,
+
+        ServicesNoCachedItem = 5301,
 
         SiteSearchUnhandledException = 5401,
 
+        LibraryMissing = 5501,
+        FolderMissing = 5502,
+        FeatureActivationProblem = 5503,
+        ProvisionTaxonomyImportErrorName = 5504,
+        ProvisionTaxonomyImportErrorTagging = 5505,
+        ProvisionTaxonomyImportErrorDescription = 5506,
+        ProvisionTaxonomyImportErrorDelete = 5507,
+
+        ThemeMissing = 5601,
+
+        UnknownExceptionAccessingSite = 5901,
+
         DeleteWeb = 8501,
         DeleteSiteCollection = 8502,
+        RemoveAppInstance = 8503,
+        DeactivateWebFeature = 8504,
+        DeactivateSiteCollectionFeature = 8505,
+        UninstallSolution = 8506,
+        DeleteTerm = 8507,
     }
 
     /// <summary>
@@ -158,6 +204,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="category">Category to be used for the logged message</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceInformation(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceInformation()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogInformation(string message, EventCategory category)
@@ -172,6 +219,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceWarning(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceWarning()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogWarning(string message, Exception ex, EventCategory category)
@@ -186,6 +234,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceError(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceError()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static void LogError(string message, Exception ex, EventCategory category)
@@ -197,7 +246,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Write a verbose message with specifed args, with id 0, to the trace.
         /// </summary>
-        public void TraceVerbose(string message, params object[] args)
+        public void TraceVerbose([Localizable(false)] string message, params object[] args)
         {
             TraceVerbose(0, message, args);
         }
@@ -205,7 +254,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Write a verbose message with specifed id and args to the trace.
         /// </summary>
-        public void TraceVerbose(int id, string message, params object[] args)
+        public void TraceVerbose(int id, [Localizable(false)] string message, params object[] args)
         {
             Source.TraceEvent(TraceEventType.Verbose, id, message, args);
         }
@@ -223,7 +272,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         public void TraceWarning(int id, Exception ex, string message, params object[] args)
         {
-            var messageWithException = message + "; EXCEPTION: {" + args.Length.ToString() + "}";
+            var messageWithException = string.Format(CoreResources.LoggingUtility_MessageWithException, message, args.Length);
             var argsWithException = args.Concat(new[] { ex }).ToArray();
             TraceWarning(id, messageWithException, argsWithException);
         }
@@ -241,7 +290,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         public void TraceError(int id, Exception ex, string message, params object[] args)
         {
-            var messageWithException = message + "; EXCEPTION: {" + args.Length.ToString() + "}";
+            var messageWithException = string.Format(CoreResources.LoggingUtility_MessageWithException, message, args.Length);
             var argsWithException = args.Concat(new[] { ex }).ToArray();
             TraceError(id, messageWithException, argsWithException);
         }
@@ -259,7 +308,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         public void TraceCritical(int id, Exception ex, string message, params object[] args)
         {
-            var messageWithException = message + "; EXCEPTION: {" + args.Length.ToString() + "}";
+            var messageWithException = string.Format(CoreResources.LoggingUtility_MessageWithException, message, args.Length);
             var argsWithException = args.Concat(new[] { ex }).ToArray();
             TraceCritical(id, messageWithException, argsWithException);
         }
