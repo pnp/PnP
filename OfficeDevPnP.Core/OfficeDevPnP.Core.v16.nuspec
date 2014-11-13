@@ -19,6 +19,7 @@
             <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
             <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.2" />
             <dependency id="AppForSharePointWebToolkit" version="3.0.1" />
+            <dependency id="SharePoint.ClientComponents" version="16.0.3104.1200" />
         </dependencies>
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System" targetFramework="" />
@@ -37,20 +38,9 @@
             <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
             <frameworkAssembly assemblyName="Microsoft.IdentityModel" targetFramework="" />
             <frameworkAssembly assemblyName="Microsoft.IdentityModel.Extensions" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.Office.Client.Policy, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.Office.Client.TranslationServices, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Publishing, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Search, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Search.Applications, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0" targetFramework="" />
         </frameworkAssemblies>
     </metadata>
     <files>
         <file src="OfficeDevPnP.Core\bin\Release\OfficeDevPnP.Core.dll" target="lib\net45" />
-        <file src="install.ps1" target="tools\install.ps1" />
     </files>
 </package>
