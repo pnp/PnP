@@ -51,6 +51,6 @@
     </metadata>
     <files>
         <file src="OfficeDevPnP.Core\bin\Release\OfficeDevPnP.Core.dll" target="lib\net45" />
-        <!-- file src="tools\install.ps1" target="tools\install.ps1" / -->
+        <file src="install.ps1" target="tools\install.ps1" />
     </files>
 </package>
