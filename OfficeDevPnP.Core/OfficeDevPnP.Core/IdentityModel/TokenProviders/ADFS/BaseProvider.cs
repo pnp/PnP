@@ -17,10 +17,11 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
         /// </summary>
         /// <param name="samlToken">SAML token obtained via active authentication to ADFS</param>
         /// <param name="samlSite">Url of the SAML secured SharePoint site</param>
+        /// <param name="relyingPartyIdentifier">Identifier of the ADFS relying party that we're hitting</param>
         /// <returns>The FedAuth cookie value</returns>
-        internal string TransformSamlTokenToFedAuth(string samlToken, string samlSite)
+        internal string TransformSamlTokenToFedAuth(string samlToken, string samlSite, string relyingPartyIdentifier)
         {
-            samlToken = WrapInSoapMessage(samlToken);
+            samlToken = WrapInSoapMessage(samlToken, relyingPartyIdentifier);
 
             string samlServer = samlSite.EndsWith("/") ? samlSite : samlSite + "/";
             Uri samlServerRoot = new Uri(samlServer);
@@ -39,22 +40,29 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
             sharepointRequest.ContentType = "application/x-www-form-urlencoded";
             sharepointRequest.CookieContainer = new CookieContainer();
             sharepointRequest.AllowAutoRedirect = false; // This is important
-            Stream newStream = sharepointRequest.GetRequestStream();
 
+            Stream newStream = sharepointRequest.GetRequestStream();
             byte[] data = Encoding.UTF8.GetBytes(stringData);
             newStream.Write(data, 0, data.Length);
             newStream.Close();
-            HttpWebResponse webResponse = sharepointRequest.GetResponse() as HttpWebResponse;
-            return webResponse.Cookies["FedAuth"].Value;
+
+            string fedAuthCookieValue = "";
+            using (HttpWebResponse webResponse = (HttpWebResponse)sharepointRequest.GetResponse())
+            {
+                fedAuthCookieValue = webResponse.Cookies["FedAuth"].Value;
+                webResponse.Close();
+            }
+
+            return fedAuthCookieValue;
         }
 
         /// <summary>
         /// Wrap SAML token in RequestSecurityTokenResponse soap message
         /// </summary>
         /// <param name="stsResponse">SAML token obtained via active authentication to ADFS</param>
+        /// <param name="relyingPartyIdentifier">Identifier of the ADFS relying party that we're hitting</param>
         /// <returns>RequestSecurityTokenResponse soap message</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)", Justification="XML literal")]
-        private string WrapInSoapMessage(string stsResponse)
+        private string WrapInSoapMessage(string stsResponse, string relyingPartyIdentifier)
         {
             XmlDocument samlAssertion = new XmlDocument();
             samlAssertion.PreserveWhitespace = true;
@@ -82,7 +90,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
             XmlElement endPointReference = soapMessage.CreateElement("wsa", "EndpointReference", "http://www.w3.org/2005/08/addressing");
             appliesTo.AppendChild(endPointReference);
             XmlElement address = soapMessage.CreateElement("wsa", "Address", endPointReference.NamespaceURI);
-            XmlText addressValue = soapMessage.CreateTextNode("urn:sharepoint:saml");
+            XmlText addressValue = soapMessage.CreateTextNode(relyingPartyIdentifier);
             address.AppendChild(addressValue);
             endPointReference.AppendChild(address);
             XmlElement requestedSecurityToken = soapMessage.CreateElement("t", "RequestedSecurityToken", soapMessage.DocumentElement.NamespaceURI);
@@ -103,6 +111,56 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
             soapEnvelope.AppendChild(keyType);
 
             return soapMessage.OuterXml;
+        }
+
+        /// <summary>
+        /// Returns the DateTime when then received saml token will expire
+        /// </summary>
+        /// <param name="stsResponse">saml token</param>
+        /// <returns>DateTime holding the expiration date. Defaults to DateTime.MinValue if there's no valid datetime in the saml token</returns>
+        internal DateTime SamlTokenExpiresOn(string stsResponse)
+        {
+            XmlDocument samlAssertion = new XmlDocument();
+            samlAssertion.PreserveWhitespace = true;
+            samlAssertion.LoadXml(stsResponse);
+
+            String notOnOrAfter = samlAssertion.DocumentElement.FirstChild.Attributes["NotOnOrAfter"].Value;
+            DateTime toDate = DateTime.MinValue;
+            if (DateTime.TryParse(notOnOrAfter, out toDate))
+            {
+                return toDate;
+            }
+            else
+            {
+                return DateTime.MinValue;
+            }
+        }
+
+        /// <summary>
+        /// Returns the SAML token life time
+        /// </summary>
+        /// <param name="stsResponse">saml token</param>
+        /// <returns>TimeSpan holding the token lifetime. Defaults to TimeSpan.Zero is case of problems</returns>
+        internal TimeSpan SamlTokenlifeTime(string stsResponse)
+        {
+            XmlDocument samlAssertion = new XmlDocument();
+            samlAssertion.PreserveWhitespace = true;
+            samlAssertion.LoadXml(stsResponse);
+
+            String notOnOrAfter = samlAssertion.DocumentElement.FirstChild.Attributes["NotOnOrAfter"].Value;
+            String notBefore = samlAssertion.DocumentElement.FirstChild.Attributes["NotBefore"].Value;
+
+            DateTime toDate = DateTime.MinValue;
+            if (DateTime.TryParse(notOnOrAfter, out toDate))
+            {
+                DateTime fromDate = DateTime.MinValue;
+                if (DateTime.TryParse(notBefore, out fromDate))
+                {
+                    return toDate - fromDate;
+                }
+            }
+
+            return TimeSpan.Zero;
         }
 
     }
