@@ -11,12 +11,18 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp("Removes a JavaScript link or block from a web")]
     public class RemoveJavaScriptLink : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, ValueFromPipeline=true,Position=0)]
         public string Key = string.Empty;
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Force;
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeleteJsLink(Key);
+            if (Force || ShouldContinue(Properties.Resources.RemoveJavaScript, Properties.Resources.Confirm))
+            {
+                this.SelectedWeb.DeleteJsLink(Key);
+            }
         }
     }
 }
