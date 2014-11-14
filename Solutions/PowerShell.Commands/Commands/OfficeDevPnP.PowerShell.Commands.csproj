@@ -189,6 +189,8 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
+    <Compile Include="Web\AddJavaScriptLink.cs" />
+    <Compile Include="Web\AddJavaScriptBlock.cs" />
     <Compile Include="Web\AddFolder.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
