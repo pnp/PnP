@@ -368,7 +368,14 @@ namespace Microsoft.SharePoint.Client
                     web.Context.ExecuteQuery();
                     foreach (var childWeb in websCollection)
                     {
-                        if (resetSubsitesToInherit || string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase))
+                        var inheritThemeProperty = childWeb.GetPropertyBagValueString(InheritTheme, "");
+                        bool inheritTheme = false;
+                        if (!string.IsNullOrEmpty(inheritThemeProperty))
+                        {
+                            inheritTheme = string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase);
+                        }
+
+                        if (resetSubsitesToInherit || inheritTheme)
                         {
                             LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritTheme] = "True";
@@ -385,53 +392,6 @@ namespace Microsoft.SharePoint.Client
                 }
             }
         }
-
-        //public static void SetThemeInheritFromParent(this Web web, bool resetSubsitesToInherit = false, bool updateRootOnly = false)
-        //{
-        //    throw new NotImplementedException("Need to get theme folder property from parent");
-        //    // TODO: Need to get theme folder property from parent so that it can be inherited
-        //    // and follow up Inherit chain until can check current property.
-        //    var parentWeb = web.ParentWeb;
-
-        //    var websToUpdate = new List<Web>();
-        //    web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
-        //    web.Context.ExecuteQuery();
-        //    if (!string.Equals(web.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase))
-        //    {
-        //        LoggingUtility.Internal.TraceVerbose("Inheriting theme '{0}' in '{1}'.", paletteServerRelativeUrl, web.ServerRelativeUrl);
-        //        web.AllProperties[InheritTheme] = "True";
-        //        web.Update();
-        //        web.ApplyTheme(paletteServerRelativeUrl, fontServerRelativeUrl, backgroundServerRelativeUrl, shareGenerated: true);
-        //        web.Context.ExecuteQuery();
-        //    }
-        //    websToUpdate.Add(web);
-
-        //    if (!updateRootOnly)
-        //    {
-        //        var index = 0;
-        //        while (index < websToUpdate.Count)
-        //        {
-        //            var currentWeb = websToUpdate[index];
-        //            var websCollection = currentWeb.Webs;
-        //            web.Context.Load(websCollection, wc => wc.Include(w => w.AllProperties, w => w.ServerRelativeUrl));
-        //            web.Context.ExecuteQuery();
-        //            foreach (var childWeb in websCollection)
-        //            {
-        //                if (resetSubsitesToInherit || string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase))
-        //                {
-        //                    LoggingUtility.Internal.TraceVerbose("Inheriting theme '{0}' in '{1}'.", paletteServerRelativeUrl, childWeb.ServerRelativeUrl);
-        //                    childWeb.AllProperties[InheritTheme] = "True";
-        //                    childWeb.Update();
-        //                    childWeb.ApplyTheme(paletteServerRelativeUrl, fontServerRelativeUrl, backgroundServerRelativeUrl, shareGenerated: true);
-        //                    web.Context.ExecuteQuery();
-        //                    websToUpdate.Add(childWeb);
-        //                }
-        //            }
-        //            index++;
-        //        }
-        //    }
-
-        //}
 
         [Obsolete("Use web.SetComposedLook")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -1059,7 +1019,15 @@ namespace Microsoft.SharePoint.Client
                     web.Context.ExecuteQuery();
                     foreach (var childWeb in websCollection)
                     {
-                        if (resetSubsitesToInherit || string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase))
+
+                        var inheritThemeProperty = childWeb.GetPropertyBagValueString(InheritTheme, "");
+                        bool inheritTheme = false;
+                        if (!string.IsNullOrEmpty(inheritThemeProperty))
+                        {
+                            inheritTheme = string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase);
+                        }
+
+                        if (resetSubsitesToInherit || inheritTheme)
                         {
                             //LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
@@ -1115,7 +1083,14 @@ namespace Microsoft.SharePoint.Client
                     web.Context.ExecuteQuery();
                     foreach (var childWeb in websCollection)
                     {
-                        if (resetSubsitesToInherit || string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase))
+                        var inheritThemeProperty = childWeb.GetPropertyBagValueString(InheritTheme, "");
+                        bool inheritTheme = false;
+                        if (!string.IsNullOrEmpty(inheritThemeProperty))
+                        {
+                            inheritTheme = string.Equals(childWeb.AllProperties[InheritTheme].ToString(), "True", StringComparison.InvariantCultureIgnoreCase);
+                        }
+
+                        if (resetSubsitesToInherit || inheritTheme)
                         {
                             LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritMaster] = "True";

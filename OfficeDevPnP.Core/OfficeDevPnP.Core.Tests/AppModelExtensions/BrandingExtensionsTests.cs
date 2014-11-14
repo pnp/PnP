@@ -50,6 +50,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
         bool deactivateSiteFeatureOnTeardown = false;
         bool deactivateWebFeatureOnTeardown = false;
+        private Web pageLayoutTestWeb = null;
 
 
         [TestInitialize()]
@@ -63,6 +64,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             Properties.Resources.custombg.Save(customBackgroundFilePath);
 
             testWebName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
+
+            pageLayoutTestWeb = Setup();
+
             using (var context = TestCommon.CreateClientContext())
             {
                 var wci1 = new WebCreationInformation();
@@ -202,6 +206,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     }
                 }
             }
+
+            Teardown();
         }
 
         private Web Setup()
@@ -247,27 +253,25 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void CanUploadHtmlPageLayoutAndConvertItToAspxVersion()
         {
-            var web = Setup();
+            var web = pageLayoutTestWeb;
             web.Context.Load(web);
             web.DeployHtmlPageLayout(htmlPublishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
             var item = web.GetPageLayoutListItemByName(htmlPublishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
-            Teardown();
         }
 
         [TestMethod]
         public void CanUploadPageLayout()
         {
-            var web = Setup();
+            var web = pageLayoutTestWeb;
             web.Context.Load(web);
             web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
             var item = web.GetPageLayoutListItemByName(publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
-            Teardown();
         }
 
         [TestMethod()]
@@ -275,8 +279,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
+                //context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
+                context.Web.UploadThemeFile(customColorFilePath);
+                context.Web.UploadThemeFile(customBackgroundFilePath);
+                context.Web.CreateComposedLookByName("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
+                Assert.IsTrue(context.Web.ComposedLookExists("Test_Theme"));
             }
         }
 
@@ -287,18 +294,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             {
                 // context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
                 //Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
-                Assert.IsTrue(context.Web.ThemeEntryExists("Office"));
-                Assert.IsFalse(context.Web.ThemeEntryExists("Dummy Test Theme That Should Not Exist"));
-            }
-        }
-
-        [TestMethod()]
-        public void AddNewThemeOptionToSubWebTest()
-        {
-            using (var context = TestCommon.CreateClientContext())
-            {
-                context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
+                Assert.IsTrue(context.Web.ComposedLookExists("Office"));
+                Assert.IsFalse(context.Web.ComposedLookExists("Dummy Test Theme That Should Not Exist"));
             }
         }
 
