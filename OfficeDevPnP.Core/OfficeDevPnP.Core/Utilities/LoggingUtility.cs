@@ -38,8 +38,8 @@ namespace OfficeDevPnP.Core.Utilities
         CreateFolder = 1514,
 
         DeployTheme = 1601,
-        AddThemeOption = 1602,
-        DeployThemeFile = 1603,
+        CreateComposedLook = 1602,
+        //DeployThemeFile = 1603,
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
@@ -56,6 +56,7 @@ namespace OfficeDevPnP.Core.Utilities
         SetTheme = 2601,
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
+        UpdateComposedLook = 2604,
 
         ClosedContextWarning = 4201,
         
@@ -66,7 +67,7 @@ namespace OfficeDevPnP.Core.Utilities
         ProvisionTaxonomyUpdateException = 4503,
         ProvisionTaxonomyIdMismatch = 4504,
 
-        ThemeNotOverwritten = 4601,
+        //ThemeNotOverwritten = 4601,
 
         MailSendException = 5201,
         MailSendFailed = 5202,

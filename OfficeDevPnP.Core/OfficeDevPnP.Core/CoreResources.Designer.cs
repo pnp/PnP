@@ -88,11 +88,29 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding theme option &apos;{0}&apos; to &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Applying theme &apos;{0}&apos; in &apos;{1}&apos;.
         /// </summary>
-        internal static string BrandingExtension_AddThemeOption {
+        internal static string BrandingExtension_ApplyTheme {
             get {
-                return ResourceManager.GetString("BrandingExtension_AddThemeOption", resourceCulture);
+                return ResourceManager.GetString("BrandingExtension_ApplyTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Composed look &apos;{0}&apos; not found..
+        /// </summary>
+        internal static string BrandingExtension_ComposedLookMissing {
+            get {
+                return ResourceManager.GetString("BrandingExtension_ComposedLookMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating composed look &apos;{0}&apos; in &apos;{1}&apos;.
+        /// </summary>
+        internal static string BrandingExtension_CreateComposedLook {
+            get {
+                return ResourceManager.GetString("BrandingExtension_CreateComposedLook", resourceCulture);
             }
         }
         
@@ -124,16 +142,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deploying file &apos;{0}&apos; to &apos;{1}&apos; folder &apos;{2}&apos;..
-        /// </summary>
-        internal static string BrandingExtension_DeployThemeFile {
-            get {
-                return ResourceManager.GetString("BrandingExtension_DeployThemeFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Setting custom master URL &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Setting custom master URL &apos;{0}&apos; in &apos;{1}&apos;..
         /// </summary>
         internal static string BrandingExtension_SetCustomMasterUrl {
             get {
@@ -142,7 +151,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setting master URL &apos;{0}&apos; to &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Setting master URL &apos;{0}&apos; in &apos;{1}&apos;..
         /// </summary>
         internal static string BrandingExtension_SetMasterUrl {
             get {
@@ -151,29 +160,11 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Setting theme &apos;{0}&apos; for &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Updating composed look &apos;{0}&apos; in &apos;{1}&apos;.
         /// </summary>
-        internal static string BrandingExtension_SetTheme {
+        internal static string BrandingExtension_UpdateComposedLook {
             get {
-                return ResourceManager.GetString("BrandingExtension_SetTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme &apos;{0}&apos; not found..
-        /// </summary>
-        internal static string BrandingExtension_ThemeMissing {
-            get {
-                return ResourceManager.GetString("BrandingExtension_ThemeMissing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Theme &apos;{0}&apos; already exists (and was not overwritten). No changes made..
-        /// </summary>
-        internal static string BrandingExtension_ThemeNotOverwritten {
-            get {
-                return ResourceManager.GetString("BrandingExtension_ThemeNotOverwritten", resourceCulture);
+                return ResourceManager.GetString("BrandingExtension_UpdateComposedLook", resourceCulture);
             }
         }
         

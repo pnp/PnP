@@ -489,7 +489,12 @@ namespace Microsoft.SharePoint.Client
 
             var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
             LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+
+            // NOTE: The lines below (in OfficeDev PnP) wipe/clear all items in the composed looks aka design catalog (_catalogs/design, list template 124).
+            // The solution package should be loaded into the solutions catalog (_catalogs/solutions, list template 121).
+
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
+            site.Context.ExecuteQuery();
 
             // Remove package from rootfolder
             var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
