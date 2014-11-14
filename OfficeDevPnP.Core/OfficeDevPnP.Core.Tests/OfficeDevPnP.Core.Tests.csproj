@@ -217,7 +217,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.config.sample" />
     <None Include="Resources\custom.spcolor" />
     <None Include="Resources\HelloWorldApp.app" />
