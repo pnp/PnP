@@ -92,7 +92,7 @@ static void AddCustomAction(ClientContext ctx, string hostUrl)
 
 See [here](http://msdn.microsoft.com/en-us/library/office/bb802730(v=office.15).aspx) for more information on the custom action settings.
 
-# SCENARIO 2: CUSTOM SITE CLASSIFCATION #
+# SCENARIO 2: CUSTOM SITE CLASSIFICATION #
 
 ![](http://i.imgur.com/MKETcx9.png)
 
