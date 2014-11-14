@@ -322,6 +322,8 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.AreEqual(instances.Count, instanceCount);
         }
 
+        // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
+        [Ignore()]
         [TestMethod()]
         public void InstallSolutionTest()
         {
@@ -369,6 +371,8 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
+        [Ignore()]
         [TestMethod()]
         public void UninstallSolutionTest()
         {

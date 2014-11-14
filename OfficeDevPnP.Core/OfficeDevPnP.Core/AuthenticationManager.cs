@@ -87,23 +87,52 @@ namespace OfficeDevPnP.Core
         /// <param name="domain">Windows domain of the user</param>
         /// <param name="sts">Hostname of the ADFS server (e.g. sts.company.com)</param>
         /// <param name="idpId">Identifier of the ADFS relying party that we're hitting</param>
+        /// <param name="logonTokenCacheExpirationWindow">Optioanlly provide the value of the SharePoint STS logonTokenCacheExpirationWindow. Defaults to 10 minutes.</param>
         /// <returns>ClientContext to be used by CSOM code</returns>
-        public ClientContext GetADFSUserNameMixedAuthenticatedContext(string siteUrl, string user, string password, string domain, string sts, string idpId)
+        public ClientContext GetADFSUserNameMixedAuthenticatedContext(string siteUrl, string user, string password, string domain, string sts, string idpId, int logonTokenCacheExpirationWindow = 10)
         {
-            fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId);
-            if (fedAuth == null)
-            {
-                throw new Exception("No fedAuth cookie acquired");
-            }
 
             ClientContext clientContext = new ClientContext(siteUrl);
-            clientContext.ExecutingWebRequest += clientContext_ExecutingWebRequest;
+            clientContext.ExecutingWebRequest += delegate(object oSender, WebRequestEventArgs webRequestEventArgs)
+            {
+                if (fedAuth != null)
+                {
+                    Cookie fedAuthCookie = fedAuth.GetCookies(new Uri(siteUrl))["FedAuth"];
+                    // If cookie is expired a new fedAuth cookie needs to be requested
+                    if (fedAuthCookie == null || fedAuthCookie.Expires < DateTime.Now)
+                    {
+                        fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId, logonTokenCacheExpirationWindow);
+                    }
+                }
+                else
+                {
+                    fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId, logonTokenCacheExpirationWindow);
+                }
+
+                if (fedAuth == null)
+                {
+                    throw new Exception("No fedAuth cookie acquired");
+                }
+
+                webRequestEventArgs.WebRequestExecutor.WebRequest.CookieContainer = fedAuth;
+            };
+
             return clientContext;
         }
 
-        private void clientContext_ExecutingWebRequest(object sender, WebRequestEventArgs e)
+        /// <summary>
+        /// Refreshes the SharePoint FedAuth cookie 
+        /// </summary>
+        /// <param name="siteUrl">Url of the SharePoint site that's secured via ADFS</param>
+        /// <param name="user">Name of the user (e.g. administrator) </param>
+        /// <param name="password">Password of the user</param>
+        /// <param name="domain">Windows domain of the user</param>
+        /// <param name="sts">Hostname of the ADFS server (e.g. sts.company.com)</param>
+        /// <param name="idpId">Identifier of the ADFS relying party that we're hitting</param>
+        /// <param name="logonTokenCacheExpirationWindow">Optioanlly provide the value of the SharePoint STS logonTokenCacheExpirationWindow. Defaults to 10 minutes.</param>
+        public void RefreshADFSUserNameMixedAuthenticatedContext(string siteUrl, string user, string password, string domain, string sts, string idpId, int logonTokenCacheExpirationWindow = 10)
         {
-            e.WebRequestExecutor.WebRequest.CookieContainer = fedAuth;
+            fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId, logonTokenCacheExpirationWindow);
         }
 
         /// <summary>

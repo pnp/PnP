@@ -1291,15 +1291,16 @@ namespace Microsoft.SharePoint.Client
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
             list.Context.ExecuteQuery();
-            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
-            foreach (ContentType ct in ctCol)
-            {
-                if (ct.StringId.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
-                {
-                    newOrder.Add(ct.Id);
-                }
-            }
+
+            var ctIds = ctCol.Select(ct => ct.Id).ToList();
+            var newOrder = ctIds.Except(
+                                    // remove the folder content type
+                                    ctIds.Where(id => id.StringValue.StartsWith("0x012000"))
+                                 )
+                                 .OrderBy(x => !x.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                                 .ToArray();
             list.RootFolder.UniqueContentTypeOrder = newOrder;
+
             list.RootFolder.Update();
             list.Update();
             list.Context.ExecuteQuery();
@@ -1315,6 +1316,30 @@ namespace Microsoft.SharePoint.Client
             SetDefaultContentTypeToList(list, contentType.Id.ToString());
         }
 
+        /// <summary>
+        /// Reorders content types on the list. The first one in the list is the default item.
+        /// Any items left out from the list will still be on the content type, but will not be visible on the new button.
+        /// </summary>
+        /// <param name="list">Target list containing the content types</param>
+        /// <param name="contentTypeNamesOrIds">Content type names or ids to sort.</param>
+        public static void ReorderContentTypes(this List list, IEnumerable<string> contentTypeNamesOrIds) {
+            var listContentTypes = list.ContentTypes;
+            list.Context.Load(listContentTypes);
+            list.Context.ExecuteQuery();
+            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
+            var ctCol = listContentTypes.Cast<ContentType>().ToList();
+
+            foreach (var ctypeName in contentTypeNamesOrIds){
+                var ctype = ctCol.Find(ct => ctypeName.Equals(ct.Name, StringComparison.OrdinalIgnoreCase) || ct.StringId.StartsWith(ctypeName));
+                if (ctype != null)
+                    newOrder.Add(ctype.Id);
+            }
+
+            list.RootFolder.UniqueContentTypeOrder = newOrder;
+            list.RootFolder.Update();
+            list.Update();
+            list.Context.ExecuteQuery();
+        }
         #endregion
 
 #if !CLIENTSDKV15

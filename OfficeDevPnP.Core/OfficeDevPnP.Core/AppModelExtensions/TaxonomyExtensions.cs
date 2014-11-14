@@ -646,7 +646,7 @@ namespace Microsoft.SharePoint.Client
 		/// This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.
 		/// </para>
 		/// </remarks>
-		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId, bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
+		public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
 		{
 			if (filePath == null) { throw new ArgumentNullException("filePath"); }
 			if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
@@ -746,7 +746,7 @@ namespace Microsoft.SharePoint.Client
 			allTermsAdded = true;
 			checked
 			{
-				//try
+				try
 				{
 					string rowText;
 					while ((rowText = reader.ReadLine()) != null)
@@ -812,6 +812,12 @@ namespace Microsoft.SharePoint.Client
 						}
 					}
 				}
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(
+                        string.Format("Exception on line {0}: {1}",lineIndex + 1, ex.Message), 
+                        ex);
+                }
 				LoggingUtility.Internal.TraceVerbose("End ImportTermSet");
 				return termSet;
 			}
@@ -835,6 +841,7 @@ namespace Microsoft.SharePoint.Client
 			{
 				string termName = null;
 				Guid termId = Guid.Empty;
+                // Find matching existing terms
 				while (num < entries.Count - 5 && success)
 				{
 					string termNameEntry = entries[5 + num];
@@ -924,7 +931,8 @@ namespace Microsoft.SharePoint.Client
 						}
 						LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, parentTermSetItem.Name);
 						term = parentTermSetItem.CreateTerm(termName, lcid, termId);
-						parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
+                        parentTermSetItem.Context.Load(parentTermSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                        parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
 						parentTermSetItem.Context.ExecuteQuery();
 						termCreated = true;
 						if (num == entries.Count - 5 - 1)
@@ -1116,17 +1124,24 @@ namespace Microsoft.SharePoint.Client
 			}
 			foreach (var termToDelete in termsToDelete)
 			{
-				try
-				{
-					LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
-					termToDelete.DeleteObject();
-					termSet.Context.ExecuteQuery();
-				}
-				catch (KeyNotFoundException)
-				{
-					// This is a sucky way to check if the term was already deleted
-					LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
-				}
+                try
+                {
+                    LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
+                    termToDelete.DeleteObject();
+                    termSet.Context.ExecuteQuery();
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message.StartsWith("Taxonomy item instantiation failed."))
+                    {
+                        // This is a sucky way to check if the term was already deleted
+                        LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 			}
 		}
 

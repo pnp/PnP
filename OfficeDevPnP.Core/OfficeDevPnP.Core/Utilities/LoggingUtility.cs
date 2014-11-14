@@ -34,25 +34,29 @@ namespace OfficeDevPnP.Core.Utilities
         CreateTermSet = 1510,
         ImportTermSet = 1511,
         CreateList = 1512,
+        ProvisionElementFile = 1513,
+        CreateFolder = 1514,
 
         DeployTheme = 1601,
-        AddThemeOption = 1602,
-        DeployThemeFile = 1603,
+        CreateComposedLook = 1602,
+        //DeployThemeFile = 1603,
         DeployMasterPage = 1604,
         DeployPageLayout = 1605,
 
         SendMailCancelled = 2201,
 
-        ServicesRegistered =2301,
+        ServicesRegistered = 2301,
 
         ActivateWebFeature = 2501,
         ActivateSiteCollectionFeature = 2502,
         AddFieldToContentType = 2503,
         CreateTerm = 2504,
+        UpdateFileProperties = 2505,
         
         SetTheme = 2601,
         SetMasterUrl = 2602,
         SetCustomMasterUrl = 2603,
+        UpdateComposedLook = 2604,
 
         ClosedContextWarning = 4201,
         
@@ -63,7 +67,7 @@ namespace OfficeDevPnP.Core.Utilities
         ProvisionTaxonomyUpdateException = 4503,
         ProvisionTaxonomyIdMismatch = 4504,
 
-        ThemeNotOverwritten = 4601,
+        //ThemeNotOverwritten = 4601,
 
         MailSendException = 5201,
         MailSendFailed = 5202,
@@ -81,6 +85,7 @@ namespace OfficeDevPnP.Core.Utilities
         ProvisionTaxonomyImportErrorTagging = 5505,
         ProvisionTaxonomyImportErrorDescription = 5506,
         ProvisionTaxonomyImportErrorDelete = 5507,
+        ProvisionModuleFileError = 5508,
 
         ThemeMissing = 5601,
 

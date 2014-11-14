@@ -178,6 +178,7 @@
     <Compile Include="Events\RemoveEventReceiver.cs" />
     <Compile Include="Extensions\WebExtensions.cs" />
     <Compile Include="Features\GetFeature.cs" />
+    <Compile Include="Fields\AddFieldFromXml.cs" />
     <Compile Include="Fields\AddTaxonomyField.cs" />
     <Compile Include="Fields\RemoveField.cs" />
     <Compile Include="Fields\GetField.cs" />
@@ -188,6 +189,11 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
+    <Compile Include="Web\RemoveJavaScriptLink.cs" />
+    <Compile Include="Web\AddJavaScriptLink.cs" />
+    <Compile Include="Web\AddJavaScriptBlock.cs" />
+    <Compile Include="Web\AddFolder.cs" />
+    <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
     <Compile Include="Workflows\RemoveWorkflowDefinition.cs" />
@@ -202,6 +208,8 @@
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
     <Compile Include="PublishingPage\AddPublishingPage.cs" />
+    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Site\NewSite.cs" />
@@ -303,7 +311,7 @@
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
 
-C:\windows\system32\windowspowershell\v1.0\powershell.exe -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
+C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

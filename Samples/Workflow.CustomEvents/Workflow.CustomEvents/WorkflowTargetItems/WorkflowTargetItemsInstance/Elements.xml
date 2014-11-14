@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="WorkflowTargetItems" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/WorkflowTargetItems" Description="Workflow Target Items">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="Title">Sample Item 01</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Sample Item 02</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Sample Item 03</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Sample Item 04</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Sample Item 05</Field>
+        </Row>
+      </Rows>
+    </Data>    
+  </ListInstance>
+</Elements>

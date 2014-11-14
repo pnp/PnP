@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -64,6 +65,18 @@ namespace Provisioning.YammerWeb
 
             }
 
+            if (!this.IsPostBack)
+            {
+                // Get existing Yammer groups from the network to associate to them
+                List<YammerGroup> groups = YammerUtility.GetYammerGroups(ConfigurationManager.AppSettings["YammerAccessToken"]);
+                foreach (var item in groups)
+                {
+                    // Add items to the list.
+                    YammerExistingGroups.Items.Add(new System.Web.UI.WebControls.ListItem(item.full_name, item.full_name));
+                }
+                YammerExistingGroups.Items.Add("");
+                YammerExistingGroups.SelectedValue = "";
+            }
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
@@ -117,23 +130,82 @@ namespace Provisioning.YammerWeb
             WebPartEntity wpYammer;
             YammerUser user = YammerUtility.GetYammerUser(ConfigurationManager.AppSettings["YammerAccessToken"]);
 
+            // Created Yammer web part with needed configuration
+            wpYammer = CreateYammerWebPart(feedType, user, yammerGroupName, title);
+
+            // Add Yammer web part to the page
+            newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
+
+            // Add theme to the site and apply that
+            ApplyThemeToSite(hostWeb, newWeb);
+        }
+
+        private WebPartEntity CreateYammerWebPart(string feedType, YammerUser user, string yammerGroupName, string title)
+        {
+
+            YammerGroup group;
+            string groupId;
+
             // Notice that in general we do not recommend of matching Yammer group for each site to avoid "group pollution" in Yammer
             if (feedType == "Group")
             {
                 // Get Yammer Group - Creates if does not exist. Let's create these as public by default.
-                YammerGroup group =
-                    YammerUtility.CreateYammerGroup(yammerGroupName, false, ConfigurationManager.AppSettings["YammerAccessToken"]);
+                group = YammerUtility.CreateYammerGroup(yammerGroupName, false, ConfigurationManager.AppSettings["YammerAccessToken"]);
                 // Get Yammer web part
-                wpYammer = YammerUtility.GetYammerGroupDiscussionPart(user.network_name, group.id, false, false);
+                return YammerUtility.GetYammerGroupDiscussionPart(user.network_name, group.id, false, false);
             }
             else
             {
+
+                if (!string.IsNullOrEmpty(YammerExistingGroups.SelectedValue))
+                {
+                    group = YammerUtility.GetYammerGroupByName(YammerExistingGroups.SelectedValue, ConfigurationManager.AppSettings["YammerAccessToken"]);
+                    groupId = group.id.ToString();
+                }
+                else
+                {
+                    groupId = "";
+                }
+
                 // Get OpenGrap object for using that as the discussion feed
-                wpYammer = YammerUtility.GetYammerOpenGraphDiscussionPart(user.network_name, Request["SPHostUrl"] + "/" + txtUrl.Text,
-                                                                            false, false, "SharePoint Site Feed - " + title);
+                return YammerUtility.GetYammerOpenGraphDiscussionPart(user.network_name, Request["SPHostUrl"] + "/" + txtUrl.Text,
+                                                                            false, false, "SharePoint Site Feed - " + title, "", groupId);
             }
-            // Add Yammer web part to the page
-            newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
+        }
+
+        private void ApplyThemeToSite(Web hostWeb, Web newWeb)
+        {
+            // Let's first upload the contoso theme to host web, if it does not exist there
+            newWeb.DeployThemeToSubWeb(hostWeb, "TechEd",
+                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/teched.spcolor")),
+                            null,
+                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/bg.jpg")),
+                            string.Empty);
+
+            // Setting the Contoos theme to host web
+            newWeb.SetThemeToWeb("TechEd");
+
+            // Instance to site assets. Notice that this is using hard coded list name which only works in 1033 sites
+            List assetLibrary = newWeb.Lists.GetByTitle("Site Assets");
+            newWeb.Context.Load(assetLibrary, l => l.RootFolder);
+
+            // Get the path to the file which we are about to deploy
+            string logoFile = System.Web.Hosting.HostingEnvironment.MapPath(
+                                string.Format("~/{0}", "Resources/Themes/TechEd/logo.png"));
+
+            // Use CSOM to upload the file in
+            FileCreationInformation newFile = new FileCreationInformation();
+            newFile.Content = System.IO.File.ReadAllBytes(logoFile);
+            newFile.Url = "pnp.png";
+            newFile.Overwrite = true;
+            File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
+            newWeb.Context.Load(uploadFile);
+            newWeb.Context.ExecuteQuery();
+
+            newWeb.AlternateCssUrl = newWeb.ServerRelativeUrl + "/SiteAssets/contoso.css";
+            newWeb.SiteLogoUrl = newWeb.ServerRelativeUrl + "/SiteAssets/pnp.png";
+            newWeb.Update();
+            newWeb.Context.ExecuteQuery();
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -146,20 +218,11 @@ namespace Provisioning.YammerWeb
             if (YammerFeedType.SelectedValue == "Group")
             {
                 YammerGroupAssociationType.Enabled = true;
-                // Get existing Yammer groups from the network to associate to them
-                List<YammerGroup> groups = YammerUtility.GetYammerGroups(ConfigurationManager.AppSettings["YammerAccessToken"]);
-                foreach (var item in groups)
-                {
-                    // Add items to the list.
-                    YammerExistingGroups.Items.Add(new System.Web.UI.WebControls.ListItem(item.full_name, item.full_name));
-                }
-                YammerGroupAssociationType.Enabled = true;
                 txtYammerGroup.Enabled = true;
                 YammerExistingGroups.Enabled = true;
             }
             else
             {
-                YammerGroupAssociationType.Enabled = false;
                 txtYammerGroup.Enabled = false;
                 YammerExistingGroups.Enabled = false;
             }

@@ -1,5 +1,16 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-11-05**
+* Added Add-SPOFolder cmdlet
+
+**2014-11-04**
+* Added Get-SPOIndexedPropertyBagKeys cmdlet
+* Updated Set-SPOPropertyBagValue to not remove a property from the indexed properties if it was already in the indexed properties.
+* Updated Get-SPOTenantSite output formatting
+
+**2014-11-03**
+* Split up Add-SPOField into Add-SPOField and Add-SPOFieldFromXml. The latter only accepts XML input while the first takes parameters to create fields
+
 **2014-10-15**
 * Added Add-SPOWorkflowSubscription, Get-SPOWorkflowDefinition, Get-SPOWorkflowSubscription, Remove-SPOWorkflowDefinition, Remove-SPOWorkflowSubscription, Resume-SPOWorkflowInstance, Stop-SPOWorkflowInstance
 

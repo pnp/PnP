@@ -16,6 +16,6 @@
   </AppPrincipal>
   <AppPermissionRequests>
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
-    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
   </AppPermissionRequests>
 </App>

@@ -1,0 +1,306 @@
+﻿
+
+.cam-documentpicker-dialog-overlay {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: #999;
+    opacity: 0.4;
+    z-index: 1500;
+}
+
+.cam-documentpicker-dialog-content {
+    position: absolute;
+    /*width: 820px;*/
+    width: 600px;
+    height: 600px;
+    left: 50%;
+    top: 50%;
+    margin-left: -300px;
+    margin-top: -325px;
+    border: 1px solid #C4D0D7;
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.47);
+    background: #fff;
+    z-index: 1505;
+}
+
+.cam-documentpicker-link {
+    color: #444;
+}
+
+.cam-documentpicker-link:visited {
+    color: #444;
+}
+
+.cam-documentpicker-dialog-content-header {
+    /*padding: 13px 19px 15px;*/
+    padding: 13px 19px 15px;
+    padding-top: 13px;
+    padding-right: 19px;
+    padding-left: 19px;
+    padding-bottom: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.cam-documentpicker-dialog-selected-delete {
+    cursor: pointer;
+    width:12px;
+    height:12px;
+}
+
+.cam-documentpicker-dialog-selected-title {
+    float:right;
+    font-size: 1.20em;
+    font-weight: 200;
+}
+
+.cam-documentpicker-dialog-content-header-title {
+    /*width: 600px;*/
+    font-size: 1.46em;
+    font-weight: 200;
+    float: left;
+}
+
+.cam-documentpicker-dialog-content-close {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background: url(images/Close.png) no-repeat;
+    float: right;
+}
+
+.cam-documentpicker-dialog-content-body {
+}
+
+.cam-documentpicker-dialog-tree-container {
+    width: 555px;
+    height: 300px; /*STIJN*/
+    border: 1px solid #898989;
+    overflow-x: hidden;
+    overflow-x: auto;
+    margin: 20px;
+    float: left;
+}
+
+.cam-documentpicker-dialog-selectbutton {
+    margin-left:0px !important;
+}
+
+.cam-documentpicker-dialog-selection-container {
+    /*width: 545px;*/
+    margin-left: 20px;
+    margin-right: 20px;
+    /*margin-top: 20px;*/
+    margin-bottom: 20px;
+}
+
+.cam-documentpicker-dialog-selection-container button {
+    width: 150px;
+}
+
+.cam-documentpicker-dialog-selection-editor {
+    border: 1px solid #5c7b93;
+    background-color: rgba(255, 255, 255, 0.84);
+    outline: medium none invert;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow:auto; /*STIJN*/
+    width:  300px;
+    height: 100px;  /*STIJN*/
+    float: right;
+    min-height: 1em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.cam-documentpicker-selection-editor-container {
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.cam-documentpicker-selection-editor {
+    border: 1px solid #5c7b93;
+    background-color: rgba(255, 255, 255, 0.84);
+    outline: medium none invert;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow:auto; /*STIJN*/
+    float: left;
+    min-height: 1em;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    position:absolute;
+    margin-right:20px;
+    left:0px;
+    bottom:0px;
+    top:0px;
+    right:0px;
+}
+
+
+.cam-documentpicker-term-selected {
+    text-decoration: underline;
+    padding-left:10px;
+}
+
+.cam-documentpicker-term-invalid {
+    color: red;
+    border-bottom: 1px dotted red;
+}
+
+
+
+
+.cam-documentpicker-treenode-ul {
+    margin: 0px;
+    padding-left: 0px;
+    display: none;
+    margin-left: 15px;
+}
+
+.root.cam-documentpicker-treenode-ul {
+    display: block;
+    margin-left: 0px;
+}
+
+.cam-documentpicker-treenode-li {
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+}
+
+
+.cam-documentpicker-treenode {
+    width: 200px;
+    white-space: nowrap;
+}
+.cam-documentpicker-treenode img {
+    margin: 2px 0px 2px 4px;
+    vertical-align: middle;
+}
+.cam-documentpicker-expander {
+    float: left;
+    width: 15px;
+    height: 20px;
+    background: url(images/MDNNo.png) no-repeat;
+}
+
+.expanded.cam-documentpicker-expander {
+    background: url(images/MDNExpanded.png) no-repeat;
+}
+
+.collapsed.cam-documentpicker-expander {
+    background: url(images/MDNCollapsed.png) no-repeat;
+}
+
+.cam-documentpicker-treenode-title {
+    margin: 0px 0px 0px 4px;
+    display: inline-block;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.cam-documentpicker-treenode-title:hover {
+    border: 1px solid #ff9933;
+}
+
+.cam-documentpicker-dialog-Loading {
+    width:300px;
+    height:50px;
+    padding-top:10px;
+}
+
+.cam-documentpicker-dialog-loading-text {
+    padding-left:5px;
+    font-size: 1.20em;
+    font-weight: 200;
+    width:150px;
+    height:20px;
+    display:inline-block; 
+    vertical-align: middle;
+}
+
+.cam-documentpicker-OpenDocumentDialogButton {
+    padding-left:10px;
+    float:right;
+    cursor:pointer;
+}
+
+.cam-documentpicker-dialog-loadingimage {
+    width:20px;
+    height:20px;
+    padding-left:10px;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+.selected.cam-documentpicker-treenode-title {
+    border: 1px solid #ff9933;
+    background: url(images/menubuttonhover.gif) repeat-x;
+}
+
+.root.cam-documentpicker-treenode-title:hover {
+    cursor: default;
+}
+.root.cam-documentpicker-treenode-title:hover {
+    border: 1px solid transparent;
+}
+
+.cam-documentpicker-treenode-newnode {
+    margin: 0px 0px 0px 4px;
+    display: inline-block;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding-left: 3px;
+    padding-right: 3px;
+    min-width: 100px;
+    border: 1px solid #ff9933;
+    background: url(images/menubuttonhover.gif) repeat-x;
+    min-height: 19px;
+}
+
+.cam-documentpicker-dialog-button-container {
+    /*width: 780px;*/
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 130px; /*STIJN*/
+    margin-bottom: 20px;
+}
+
+.cam-documentpicker-waiting-overlay {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    background-color: #999;
+    opacity: 0.4;
+    z-index: 1500;
+}
+
+.cam-documentpicker-waiting-dlg {
+    position: absolute;
+    width: 368px;
+    height: 146px;
+    left: 50%;
+    top: 50%;
+    margin-left: -184px;
+    margin-top: -73px;
+    border: 1px solid #C4D0D7;
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.47);
+    background: #fff;
+    z-index: 1505;
+}
+
+.cam-documentpicker-waiting-dlg-inner {
+    text-align: center; 
+    margin-top: 40px;
+}

@@ -9,7 +9,7 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-None
+It's important that the provider hosted app that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)

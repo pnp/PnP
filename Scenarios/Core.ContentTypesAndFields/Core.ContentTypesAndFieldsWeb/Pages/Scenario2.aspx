@@ -23,8 +23,16 @@
             <br />
             Choose a group and taxonomy term set to which the field is associated.
             <br />
-            <asp:DropDownList runat="server" ID="drpGroups" OnSelectedIndexChanged="drpGroups_SelectedIndexChanged" AutoPostBack="true" Width="200px" />
-            <asp:DropDownList runat="server" ID="drpTermSets" Width="200px" />
+            Group: <asp:DropDownList runat="server" ID="drpGroups" OnSelectedIndexChanged="drpGroups_SelectedIndexChanged" AutoPostBack="true" Width="200px" /> 
+            &nbsp;
+            Term Set: <asp:DropDownList runat="server" ID="drpTermSets" Width="200px" />
+            <br />
+            <br />
+            If there is no suitable term set, you can create a Samples group, select it and import a sample term set (to the currently selected group).
+            <br />
+            <asp:Button runat="server" ID="btnCreateGroup" Text="Create samples group" OnClick="btnCreateGroup_Click" />
+            &nbsp;
+            <asp:Button runat="server" ID="btnUploadTermSet" Text="Import sample term set" OnClick="btnUploadTermSet_Click" />
             <br />
             <br />
             <asp:Button runat="server" ID="btnScenario2" Text="Run scenario 2" OnClick="btnScenario2_Click" />

@@ -9,7 +9,8 @@ This sample shows an implementation of a SharePoint People Picker control that c
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-none
+It's important that the provider hosted app that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+
 
 ### Solution ###
 Solution | Author(s)
