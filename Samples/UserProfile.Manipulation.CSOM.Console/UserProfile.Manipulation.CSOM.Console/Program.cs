@@ -11,10 +11,10 @@ namespace UserProfile.Manipulation.CSOM.Console
         {
             SetSingleValueProfileProperty();
 
-            SetMultiValuedProfileProperty();
+            SetMultiValueProfileProperty();
         }
 
-        private static void SetMultiValuedProfileProperty()
+        private static void SetSingleValueProfileProperty()
         {
             //Tenant Admin Details
             string tenantAdministrationUrl = "https://yourtenant-admin.sharepoint.com/";
@@ -23,7 +23,36 @@ namespace UserProfile.Manipulation.CSOM.Console
 
             //AccountName of the user whos property you want to update.
             //If you want to update properties of multiple users, you can fetch the accountnames through search.
-            string UserAccountName = "i:0#.f|membership|anotheruser@contentandcodedev.onmicrosoft.com";
+            string UserAccountName = "i:0#.f|membership|anotheruser@yourtenant.onmicrosoft.com";
+
+            using (ClientContext clientContext = new ClientContext(tenantAdministrationUrl))
+            {
+                SecureString passWord = new SecureString();
+
+                foreach (char c in tenantAdminPassword.ToCharArray()) passWord.AppendChar(c);
+
+                clientContext.Credentials = new SharePointOnlineCredentials(tenantAdminLoginName, passWord);
+
+                // Get the people manager instance for tenant context
+                PeopleManager peopleManager = new PeopleManager(clientContext);
+
+                // Update the AboutMe property for the user using account name.
+                peopleManager.SetSingleValueProfileProperty(UserAccountName, "AboutMe", "Value updated from CSOM");
+
+                clientContext.ExecuteQuery();
+            }
+        }
+
+        private static void SetMultiValueProfileProperty()
+        {
+            //Tenant Admin Details
+            string tenantAdministrationUrl = "https://yourtenant-admin.sharepoint.com/";
+            string tenantAdminLoginName = "admin@yourtenant.onmicrosoft.com";
+            string tenantAdminPassword = "Password";
+
+            //AccountName of the user whos property you want to update.
+            //If you want to update properties of multiple users, you can fetch the accountnames through search.
+            string UserAccountName = "i:0#.f|membership|anotheruser@yourtenant.onmicrosoft.com";
 
             using (ClientContext clientContext = new ClientContext(tenantAdministrationUrl))
             {
@@ -41,35 +70,6 @@ namespace UserProfile.Manipulation.CSOM.Console
 
                 // Update the SPS-Skills property for the user using account name from profile.
                 peopleManager.SetMultiValuedProfileProperty(UserAccountName, "SPS-Skills", skills);
-
-                clientContext.ExecuteQuery();
-            }
-        }
-
-        private static void SetSingleValueProfileProperty()
-        {
-            //Tenant Admin Details
-            string tenantAdministrationUrl = "https://yourtenant-admin.sharepoint.com/";
-            string tenantAdminLoginName = "admin@yourtenant.onmicrosoft.com";
-            string tenantAdminPassword = "Password";
-
-            //AccountName of the user whos property you want to update.
-            //If you want to update properties of multiple users, you can fetch the accountnames through search.
-            string UserAccountName = "i:0#.f|membership|anotheruser@contentandcodedev.onmicrosoft.com";
-
-            using (ClientContext clientContext = new ClientContext(tenantAdministrationUrl))
-            {
-                SecureString passWord = new SecureString();
-
-                foreach (char c in tenantAdminPassword.ToCharArray()) passWord.AppendChar(c);
-
-                clientContext.Credentials = new SharePointOnlineCredentials(tenantAdminLoginName, passWord);
-
-                // Get the people manager instance for tenant context
-                PeopleManager peopleManager = new PeopleManager(clientContext);
-
-                // Update the AboutMe property for the user using account name.
-                peopleManager.SetSingleValueProfileProperty(UserAccountName, "AboutMe", "Value updated from CSOM");
 
                 clientContext.ExecuteQuery();
             }
