@@ -76,11 +76,11 @@ namespace UnitTesting.SharePoint.AppsWeb.Tests
             controller.ControllerContext = new ControllerContext(context.Object, new RouteData(), controller);
 
             // Act
-            var result = controller.Index();
+            string result = controller.GetHostWebTitle();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Developer Site", result);
+            Assert.AreEqual("Vardhaman", result);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace UnitTesting.SharePoint.AppsWeb.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Vardhaman Deshpande", result);
+            Assert.AreEqual("Content and Code Dev 3", result);
         }
 
         [TestMethod]

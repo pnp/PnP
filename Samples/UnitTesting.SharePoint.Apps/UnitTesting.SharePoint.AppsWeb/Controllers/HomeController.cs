@@ -12,7 +12,14 @@ namespace UnitTesting.SharePoint.AppsWeb.Controllers
         [SharePointContextFilter]
         public ActionResult Index()
         {
-            User spUser = null;
+            ViewBag.UserName = GetCurrentUserTitle();
+
+            return View();
+        }
+
+        public string GetCurrentUserTitle()
+        {
+            string spUserTitle = string.Empty;
 
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 
@@ -20,17 +27,63 @@ namespace UnitTesting.SharePoint.AppsWeb.Controllers
             {
                 if (clientContext != null)
                 {
-                    spUser = clientContext.Web.CurrentUser;
+                    var spUser = clientContext.Web.CurrentUser;
 
                     clientContext.Load(spUser, user => user.Title);
 
                     clientContext.ExecuteQuery();
 
-                    ViewBag.UserName = spUser.Title;
+                    spUserTitle = spUser.Title;
                 }
             }
 
-            return View();
+            return spUserTitle;
+        }
+
+        public string GetAppOnlyCurrentUserTitle()
+        {
+            string spUserTitle = string.Empty;
+
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+
+            using (var clientContext = spContext.CreateAppOnlyClientContextForSPHost())
+            {
+                if (clientContext != null)
+                {
+                    var spUser = clientContext.Web.CurrentUser;
+
+                    clientContext.Load(spUser, user => user.Title);
+
+                    clientContext.ExecuteQuery();
+
+                    spUserTitle = spUser.Title;
+                }
+            }
+
+            return spUserTitle;
+        }
+
+        public string GetHostWebTitle()
+        {
+            string webTitle = string.Empty;
+
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+
+            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            {
+                if (clientContext != null)
+                {
+                    var web = clientContext.Web;
+
+                    clientContext.Load(web, w => w.Title);
+
+                    clientContext.ExecuteQuery();
+
+                    webTitle = web.Title;
+                }
+            }
+
+            return webTitle;
         }
 
         public ActionResult About()
