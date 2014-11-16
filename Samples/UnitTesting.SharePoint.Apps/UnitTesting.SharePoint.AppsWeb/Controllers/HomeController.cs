@@ -12,7 +12,11 @@ namespace UnitTesting.SharePoint.AppsWeb.Controllers
         [SharePointContextFilter]
         public ActionResult Index()
         {
-            ViewBag.UserName = GetCurrentUserTitle();
+            ViewBag.CurrentUserTitle = GetCurrentUserTitle();
+
+            ViewBag.AppOnlyCurrentUserTitle = GetAppOnlyCurrentUserTitle();
+
+            ViewBag.HostWebTitle = GetHostWebTitle();
 
             return View();
         }
