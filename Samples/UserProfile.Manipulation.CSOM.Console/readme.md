@@ -10,7 +10,7 @@ You can download the latest version of the SharePoint online client SDK from fol
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-Capability will have to be enabled in the used tenant. This will happen gradually for all public tenants.
+This capability was introduced in the CSOM package released on September 2014. All Office 365 tenants should have this now enabled.
 
 ### Solution ###
 Solution | Author(s)
@@ -27,6 +27,22 @@ Version  | Date | Comments
 
 
 ----------
+# Introduction #
+Using CSOM for updating user profile properties was introduced in November 2014. Previously this was only possible with web services. This is scenario which is often needed for personalization purposes and to synchronize for example user profile properties which ware not sync'ed from the Azure AD to SharePoint user profile.
+
+Here's typical process of synchronizing additional attributes from on-premises to the Office 365.
+
+![](http://i.imgur.com/Jt4miQJ.png)
+
+1. You can control what attributes are synchronized from the local AD to the Azure AD
+2. Standardized set of attributes are synchronized from Azure AD to the SharePoint User Profile. You cannot modify this mapping in Office 365
+3. To synchronize additional attributes or information, you can have custom tool which is accessing the AD or any other LOB system and synchronizes the needed attributes directly to the SharePoint user profile
+4. SharePoint User Profile properties are available for different purposes in the SharePoint UI
+
+Check more detailed introduction to the code from following blog post
+
+- [Set another user's profile properties with CSOM](http://www.vrdmn.com/2014/11/set-another-users-profile-properties.html)
+
 
 # Required Details #
 You will need the Tenant Administrator details and the AccountName of the User whose properties you want to modify. Replace the following values with values in your Tenant.
