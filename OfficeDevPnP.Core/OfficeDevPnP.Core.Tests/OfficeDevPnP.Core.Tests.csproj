@@ -161,6 +161,7 @@
     <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Selectors" />
     <Reference Include="System.Runtime.Serialization" />
@@ -168,6 +169,7 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -182,6 +184,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AppModelExtensions\BrandingExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FeatureExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\JavaScriptExtensionsTests.cs" />
@@ -189,6 +192,8 @@
     <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
     <Compile Include="Extensions\HttpVariablesExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
@@ -212,10 +217,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.config.sample" />
+    <None Include="Resources\custom.spcolor" />
     <None Include="Resources\HelloWorldApp.app" />
+    <Content Include="Resources\GuidTermSet.csv" />
+    <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -225,7 +236,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\custombg.jpg" />
     <Content Include="Resources\office365.png" />
+    <Content Include="Resources\TestHtmlPublishingPageLayout.html" />
+    <Content Include="Resources\TestPublishingPageLayout.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

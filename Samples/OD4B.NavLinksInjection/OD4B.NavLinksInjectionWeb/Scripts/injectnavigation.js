@@ -128,8 +128,10 @@ function injectLinks() {
             "</div>";
 
             // Inject secondary navigation bar
-            $s('#mysite-ribbonrow').prepend(insertDiv1);           
-            
+            if ($s('#mysite-ribbonrow').length == 0)
+                $s('#s4-ribbonrow').prepend(insertDiv1);
+            else
+                $s('#mysite-ribbonrow').prepend(insertDiv1);
         }
     });
 }

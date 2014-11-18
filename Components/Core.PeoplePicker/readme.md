@@ -9,12 +9,13 @@ This sample shows an implementation of a SharePoint People Picker control that c
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-none
+It's important that the provider hosted app that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.PeoplePicker | Bert Jansen (**Microsoft**)
+Core.PeoplePicker | Bert Jansen (**Microsoft**) 
 
 ### Version history ###
 Version  | Date | Comments
@@ -380,4 +381,63 @@ The people picker control included with the sample uses a fixed height of 50px, 
     <div id="divbusinessOwnerPrimarySearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
     <asp:HiddenField ID="hdnbusinessOwnerPrimary" runat="server" />
 </div>
+```
+# APPENDIX D: PEOPLEPICKER USING SERVERSIDE WEBMETHOD (CSOM) (BY STIJN NEIRINCKX) #
+The regular peoplepicker uses javascript to get data from Sharepoint. This means that the peoplepicker requires a working cross domain library and an AppWeb. The CSOM Peoplepicker does not need those. The Peoplepicker will call a serverside webmethod to get data. This serverside method will call Sharepoint using c# CSOM. It is also possible to add additional filtering or other logic in this webmethod using C#. 
+
+**STEP 1:** Insert HTML in the aspx page
+
+```ASPX
+<div id="divCsomAdministrators" class="cam-peoplepicker-userlookup ms-fullWidth">
+	<span id="spanCsomAdministrators"></span>
+    <asp:TextBox ID="inputCsomAdministrators" runat="server" CssClass="cam-peoplepicker-edit" Width="70"></asp:TextBox>
+</div>
+<div id="divCsomAdministratorsSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+<asp:HiddenField ID="hdnCsomAdministrators" runat="server" />
+```
+
+**STEP 2:** Add webmethod to aspx page
+
+```JavaScript
+[WebMethod]
+public static string GetPeoplePickerData()
+{
+     //peoplepickerhelper will get the needed values from the querrystring, get data from sharepoint, and return a result in Json format
+     return PeoplePickerHelper.GetPeoplePickerSearchData();
+}
+```
+
+**STEP 3:** Transform HTML into peoplepicker control
+
+```JavaScript
+//Make a Csom people picker control
+//1. data url on the server (webmethod in webforms, controller action in MVC)
+//2. SpHostUrl
+//3. $('#spanCsomAdministrators') = SPAN that will 'host' the people picker control
+//4. $('#inputCsomAdministrators') = INPUT that will be used to capture user input
+//5. $('#divCsomAdministratorsSearch') = DIV that will show the 'dropdown' of the people picker
+//6. $('#hdnCsomAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
+csomPeoplePicker = new CAMControl.CsomPeoplePicker('Default.aspx/GetPeoplePickerData', spHostUrl, $('#spanCsomAdministrators'), $('#inputCsomAdministrators'), $('#divCsomAdministratorsSearch'), $('#hdnCsomAdministrators'));
+// required to pass the variable name here!
+csomPeoplePicker.InstanceName = "csomPeoplePicker";
+// Pass current language, if not set defaults to en-US. Use the SPLanguage query string param or provide a string like "nl-BE"
+// Do not set the Language property if you do not have foreseen javascript resource file for your language
+csomPeoplePicker.Language = spLanguage;
+// optionally show more/less entries in the people picker dropdown, 4 is the default
+csomPeoplePicker.MaxEntriesShown = 5;
+// Can duplicate entries be selected (default = false)
+csomPeoplePicker.AllowDuplicates = false;
+// Show the user loginname
+csomPeoplePicker.ShowLoginName = true;
+// Show the user title
+csomPeoplePicker.ShowTitle = true;
+
+// Set principal type to determine what is shown (default = 1, only users are resolved). 
+// See http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx for more details
+// Set ShowLoginName and ShowTitle to false if you're resolving groups
+csomPeoplePicker.PrincipalType = 1;
+// start user resolving as of 2 entered characters (= default)
+csomPeoplePicker.MinimalCharactersBeforeSearching = 2;
+// Hookup everything
+csomPeoplePicker.Initialize();
 ```

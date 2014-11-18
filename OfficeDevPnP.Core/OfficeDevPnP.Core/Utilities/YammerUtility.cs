@@ -130,10 +130,10 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="showHeader"></param>
         /// <param name="showFooter"></param>
         /// <returns></returns>
-        public static WebPartEntity GetYammerOpenGraphDiscussionPart(string yammerNetworkName, string url, bool showHeader, bool showFooter, string postTitle = "", string postImageUrl = "")
+        public static WebPartEntity GetYammerOpenGraphDiscussionPart(string yammerNetworkName, string url, bool showHeader, bool showFooter, string postTitle = "", string postImageUrl = "", string defaultGroupId = "")
         {
             WebPartEntity wpYammer = new WebPartEntity();
-            wpYammer.WebPartXml = CreateYammerOpenGraphDiscussionPartXml(yammerNetworkName, url, showHeader, showFooter, postTitle, postImageUrl);
+            wpYammer.WebPartXml = CreateYammerOpenGraphDiscussionPartXml(yammerNetworkName, url, showHeader, showFooter, postTitle, postImageUrl, true, defaultGroupId);
             wpYammer.WebPartIndex = 0;
             wpYammer.WebPartTitle = "Yammer";
             return wpYammer;
@@ -200,7 +200,9 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="showFooter"></param>
         /// <param name="useSSO"></param>
         /// <returns></returns>
-        public static string CreateYammerOpenGraphDiscussionPartXml(string yammerNetworkName, string url, bool showHeader, bool showFooter, string postTitle="", string postImageUrl="", bool useSSO = true)
+        public static string CreateYammerOpenGraphDiscussionPartXml(string yammerNetworkName, string url, bool showHeader, 
+                                                                    bool showFooter, string postTitle="", string postImageUrl="", 
+                                                                    bool useSSO = true, string groupId = "")
         {
             StringBuilder wp = new StringBuilder(100);
             wp.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -231,7 +233,11 @@ namespace OfficeDevPnP.Core.Utilities
             wp.Append("				                     , showOpenGraphPreview: false");
             wp.Append("				                     , defaultToCanonical: false");
             wp.Append("				                     , hideNetworkName: false");
-            wp.Append("				                        , promptText: 'Start a conversation'");
+            wp.Append("				                     , promptText: 'Start a conversation'");
+            if (!string.IsNullOrEmpty(groupId))
+            {
+                wp.Append("				                 , defaultGroupId: '" + groupId + "'"); 
+            }
             wp.Append("				                }");
             wp.Append("				                , objectProperties: {"); 
             wp.Append("				                  url: '" + url + "'");

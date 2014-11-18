@@ -22,19 +22,29 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
         /// <param name="userNameMixed">Uri to the ADFS usernamemixed endpoint</param>
         /// <param name="relyingPartyIdentifier">Identifier of the ADFS relying party that we're hitting</param>
         /// <returns>A cookiecontainer holding the FedAuth cookie</returns>
-        public CookieContainer GetFedAuthCookie(string siteUrl, string userName, string password, Uri userNameMixed, string relyingPartyIdentifier)
+        public CookieContainer GetFedAuthCookie(string siteUrl, string userName, string password, Uri userNameMixed, string relyingPartyIdentifier, int logonTokenCacheExpirationWindow)
         {
             UsernameMixed adfsTokenProvider = new UsernameMixed();
             var token = adfsTokenProvider.RequestToken(userName, password, userNameMixed, relyingPartyIdentifier);
-            string samlToken = TransformSamlTokenToFedAuth(token.TokenXml.OuterXml, siteUrl);
+            string fedAuthValue = TransformSamlTokenToFedAuth(token.TokenXml.OuterXml, siteUrl, relyingPartyIdentifier);
+
+            // Construct the cookie expiration date
+            TimeSpan lifeTime = SamlTokenlifeTime(token.TokenXml.OuterXml);
+            if (lifeTime == TimeSpan.Zero)
+            {
+                lifeTime = new TimeSpan(0, 60, 0);
+            }
+
+            int cookieLifeTime = Math.Min((lifeTime.Hours * 60 + lifeTime.Minutes), logonTokenCacheExpirationWindow);
+            DateTime expiresOn = DateTime.Now.AddMinutes(cookieLifeTime);
 
             CookieContainer cc = null;
 
-            if (!string.IsNullOrEmpty(samlToken))
+            if (!string.IsNullOrEmpty(fedAuthValue))
             {
                 cc = new CookieContainer();
-                Cookie samlAuth = new Cookie("FedAuth", samlToken);
-                samlAuth.Expires = DateTime.Now.AddHours(1);
+                Cookie samlAuth = new Cookie("FedAuth", fedAuthValue);
+                samlAuth.Expires = expiresOn;
                 samlAuth.Path = "/";
                 samlAuth.Secure = true;
                 samlAuth.HttpOnly = true;
@@ -48,24 +58,25 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
 
         private GenericXmlSecurityToken RequestToken(string userName, string passWord, Uri userNameMixed, string relyingPartyIdentifier)
         {
-            var factory = new WSTrustChannelFactory(new UserNameWSTrustBinding(SecurityMode.TransportWithMessageCredential),
-                                                    new EndpointAddress(userNameMixed));
-
-            factory.TrustVersion = TrustVersion.WSTrust13;
-            // Hookup the user and password 
-            factory.Credentials.UserName.UserName = userName;
-            factory.Credentials.UserName.Password = passWord;
-
-            var requestSecurityToken = new RequestSecurityToken
+            GenericXmlSecurityToken genericToken = null;
+            using (var factory = new WSTrustChannelFactory(new UserNameWSTrustBinding(SecurityMode.TransportWithMessageCredential), new EndpointAddress(userNameMixed)))
             {
-                RequestType = RequestTypes.Issue,
-                AppliesTo = new EndpointReference(relyingPartyIdentifier),
-                KeyType = KeyTypes.Bearer
-            };
+                factory.TrustVersion = TrustVersion.WSTrust13;
+                // Hookup the user and password 
+                factory.Credentials.UserName.UserName = userName;
+                factory.Credentials.UserName.Password = passWord;
 
-            IWSTrustChannelContract channel = factory.CreateChannel();
-            GenericXmlSecurityToken genericToken = channel.Issue(requestSecurityToken) as GenericXmlSecurityToken;
+                var requestSecurityToken = new RequestSecurityToken
+                {
+                    RequestType = RequestTypes.Issue,
+                    AppliesTo = new EndpointReference(relyingPartyIdentifier),
+                    KeyType = KeyTypes.Bearer
+                };
 
+                IWSTrustChannelContract channel = factory.CreateChannel();
+                genericToken = channel.Issue(requestSecurityToken) as GenericXmlSecurityToken;
+                factory.Close();
+            }
             return genericToken;
         }
 

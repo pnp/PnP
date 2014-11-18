@@ -87,7 +87,6 @@
     <Content Include="Pages\Default.aspx" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\app.js" />
-    <Content Include="Scripts\injectnavigation - Copy.js" />
     <Content Include="Scripts\injectnavigation.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />

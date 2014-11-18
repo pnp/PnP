@@ -168,7 +168,7 @@ namespace System
         /// <typeparam name="T">Enum type.</typeparam>
         /// <param name="inputStringValue">String description used in the Enum.</param>
         /// <returns>Enum that corresponds to the given input.</returns>
-        public static T FromEnumFromDescription<T>(this string inputStringValue) where T : struct {
+        public static T FromEnumDescription<T>(this string inputStringValue) where T : struct {
             try {
                 var type = typeof(T);
 

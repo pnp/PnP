@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client.DocumentSet;
 using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -220,34 +221,45 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The folder structure</returns>
         public static Folder EnsureFolder(this Web web, Folder parentFolder, string folderPath)
         {
-            // Split up the incoming path so we have the first element as the a new sub-folder name 
-            // and add it to ParentFolder folders collection
-            string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            string head = pathElements[0];
-
-            Folder newFolder = parentFolder.Folders.Add(head);
-            web.Context.Load(newFolder);
-            web.Context.ExecuteQuery();
-
-            // If we have subfolders to create then the length of PathElements will be greater than 1
-            if (pathElements.Length > 1)
+            if (!web.IsPropertyAvailable("ServerRelativeUrl") || !parentFolder.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                // If we have more nested folders to create then reassemble the folder path using what we have left i.e. the tail
-                string Tail = string.Empty;
-
-                for (int i = 1; i < pathElements.Length; i++)
-                {
-                    Tail = Tail + "/" + pathElements[i];
-                }
-
-                // Then make a recursive call to create the next subfolder
-                return web.EnsureFolder(newFolder, Tail);
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.Load(parentFolder, f => f.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
             }
-            else
-            {
-                // This ensures that the folder at the end of the chain gets returned
-                return newFolder;
-            }
+            var parentWebRelativeUrl = parentFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length);
+            var webRelativeUrl = parentWebRelativeUrl + (parentWebRelativeUrl.EndsWith("/") ? "" : "/") + folderPath;
+
+            return web.EnsureFolderPath(webRelativeUrl);
+
+            //// Split up the incoming path so we have the first element as the a new sub-folder name 
+            //// and add it to ParentFolder folders collection
+            //string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            //string head = pathElements[0];
+
+            //Folder newFolder = parentFolder.Folders.Add(head);
+            //web.Context.Load(newFolder);
+            //web.Context.ExecuteQuery();
+
+            //// If we have subfolders to create then the length of PathElements will be greater than 1
+            //if (pathElements.Length > 1)
+            //{
+            //    // If we have more nested folders to create then reassemble the folder path using what we have left i.e. the tail
+            //    string Tail = string.Empty;
+
+            //    for (int i = 1; i < pathElements.Length; i++)
+            //    {
+            //        Tail = Tail + "/" + pathElements[i];
+            //    }
+
+            //    // Then make a recursive call to create the next subfolder
+            //    return web.EnsureFolder(newFolder, Tail);
+            //}
+            //else
+            //{
+            //    // This ensures that the folder at the end of the chain gets returned
+            //    return newFolder;
+            //}
         }
 
         /// <summary>
@@ -320,6 +332,102 @@ namespace Microsoft.SharePoint.Client
             }
 
             return folder;
+        }
+
+        /// <summary>
+        /// Check if a folder exists with the specified path (relative to the web), and if not creates it (inside a list if necessary)
+        /// </summary>
+        /// <param name="web">Web to check for the specified folder</param>
+        /// <param name="webRelativeUrl">Path to the folder, relative to the web site</param>
+        /// <returns>The existing or newly created folder</returns>
+        /// <remarks>
+        /// <para>
+        /// If the specified path is inside an existing list, then the folder is created inside that list.
+        /// </para>
+        /// <para>
+        /// Any existing folders are traversed, and then any remaining parts of the path are created as new folders.
+        /// </para>
+        /// </remarks>
+        public static Folder EnsureFolderPath(this Web web, string webRelativeUrl)
+        {
+            if (webRelativeUrl == null) { throw new ArgumentNullException("webRelativeUrl"); }
+            if (string.IsNullOrWhiteSpace(webRelativeUrl)) { throw new ArgumentException("Folder URL is required.", "webRelativeUrl"); }
+
+            // Check if folder exists
+            if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+            var folderServerRelativeUrl = web.ServerRelativeUrl + (web.ServerRelativeUrl.EndsWith("/") ? "" : "/") + webRelativeUrl;
+
+            // Check if folder is inside a list
+            var listCollection = web.Lists;
+            web.Context.Load(listCollection, lc => lc.Include(l => l.RootFolder.ServerRelativeUrl));
+            web.Context.ExecuteQuery();
+            List containingList = null;
+            foreach (var list in listCollection)
+            {
+                if (folderServerRelativeUrl.StartsWith(list.RootFolder.ServerRelativeUrl, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    containingList = list;
+                    break;
+                }
+            }
+
+            // Start either at the root of the list or web
+            string locationType = null;
+            string rootUrl = null;
+            Folder currentFolder = null;
+            if (containingList == null)
+            {
+                locationType = "Web";
+                currentFolder = web.RootFolder;
+                web.Context.Load(currentFolder, f => f.ServerRelativeUrl);
+                web.Context.ExecuteQuery();
+            }
+            else
+            {
+                locationType = "List";
+                currentFolder = containingList.RootFolder;
+            }
+            rootUrl = currentFolder.ServerRelativeUrl;
+            //LoggingUtility.Internal.TraceVerbose("*** Type {0}, root {1}", locationType, rootUrl);
+
+            // Get remaining parts of the path and split
+            var folderRootRelativeUrl = folderServerRelativeUrl.Substring(currentFolder.ServerRelativeUrl.Length);
+            var childFolderNames = folderRootRelativeUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var currentCount = 0;
+            foreach (var folderName in childFolderNames)
+            {
+                currentCount++;
+                // Find next part of the path
+                var folderCollection = currentFolder.Folders;
+                folderCollection.Context.Load(folderCollection);
+                folderCollection.Context.ExecuteQuery();
+                Folder nextFolder = null;
+                foreach (Folder existingFolder in folderCollection)
+                {
+                    if (string.Equals(existingFolder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        nextFolder = existingFolder;
+                        break;
+                    }
+                }
+                // Or create it
+                if (nextFolder == null)
+                {
+                    var createPath = string.Join("/", childFolderNames, 0, currentCount);
+                    LoggingUtility.Internal.TraceInformation((int)EventId.CreateFolder, CoreResources.FileFolderExtensions_CreateFolder0Under12, createPath, locationType, rootUrl);
+
+                    nextFolder = folderCollection.Add(folderName);
+                    folderCollection.Context.Load(nextFolder);
+                    folderCollection.Context.ExecuteQuery();
+                }
+                currentFolder = nextFolder;
+            }
+
+            return currentFolder;
         }
 
         /// <summary>
@@ -616,11 +724,11 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
         /// <param name="filePath">Location of the file to be uploaded.</param>
-        /// <param name="contentTypeId">Optional content type; if null (default) the default content type will be used.</param>
+        /// <param name="contentTypeId">Content type; if null (default) the default content type will be used.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFile(this Folder folder, string filePath, ContentTypeId contentTypeId = null, bool overwriteIfExists = true, bool useWebDav = true)
+        public static File UploadFile(this Folder folder, string filePath, ContentTypeId contentTypeId, bool overwriteIfExists = true, bool useWebDav = true)
         {
             if (filePath == null) { throw new ArgumentNullException("filePath"); }
             if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
@@ -628,7 +736,11 @@ namespace Microsoft.SharePoint.Client
             var fileName = System.IO.Path.GetFileName(filePath);
             using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
             {
-                return UploadFile(folder, fileName, fs, contentTypeId, overwriteIfExists, useWebDav);
+                var additionalProperties = new Dictionary<string, string>();
+                if (contentTypeId != null) {
+                    additionalProperties["ContentTypeId"] = contentTypeId.StringValue;
+                }
+                return UploadFile(folder, fileName, fs, additionalProperties: additionalProperties, replaceContent: overwriteIfExists, checkHashBeforeUpload: true, level: FileLevel.Published, useWebDav: useWebDav);
             }
         }
 
@@ -638,56 +750,401 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder">Folder to upload file to.</param>
         /// <param name="fileName">Name of the file to upload</param>
         /// <param name="stream">Stream containing the contents of the file</param>
-        /// <param name="contentTypeId">Optional content type; if null (default) the default content type will be used.</param>
+        /// <param name="contentTypeId">Content type; if null (default) the default content type will be used.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFile(this Folder folder, string fileName, Stream stream, ContentTypeId contentTypeId = null, bool overwriteIfExists = true, bool useWebDav = true)
+        public static File UploadFile(this Folder folder, string fileName, Stream stream, ContentTypeId contentTypeId, bool overwriteIfExists = true, bool useWebDav = true)
+        {
+            var additionalProperties = new Dictionary<string, string>();
+            if (contentTypeId != null)
+            {
+                additionalProperties["ContentTypeId"] = contentTypeId.StringValue;
+            }
+            return UploadFile(folder, fileName, stream, additionalProperties: additionalProperties, replaceContent: overwriteIfExists, checkHashBeforeUpload: true, level: FileLevel.Published, useWebDav: useWebDav);
+        }
+
+        /// <summary>
+        /// Uploads a file to the specified folder, but only if the contents has changed, with additional properties
+        /// </summary>
+        /// <param name="folder">Folder to upload file to</param>
+        /// <param name="localFilePath">Location of the file to be uploaded</param>
+        /// <param name="additionalProperties">Optional additional properties, e.g. ContentTypeId</param>
+        /// <param name="replaceContent">true (default) to overwite existing files</param>
+        /// <param name="checkHashBeforeUpload">true (default) to retrieve existing file and compare hash value, only uploading if the contents has changed</param>
+        /// <param name="level">state to leave the file in after upload: Published (default), checked in Draft, or Checked Out</param>
+        /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFile(this Folder folder, string localFilePath, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true)
+        {
+            if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+
+            var fileName = System.IO.Path.GetFileName(localFilePath);
+            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            {
+                return UploadFile(folder, fileName, localStream, additionalProperties, replaceContent, checkHashBeforeUpload, level, useWebDav);
+            }
+        }
+
+        /// <summary>
+        /// Uploads a file to the specified folder, but only if the contents has changed, with additional properties
+        /// </summary>
+        /// <param name="folder">Folder to upload file to</param>
+        /// <param name="fileName">Name of the file to upload</param>
+        /// <param name="localFilePath">Location of the file to be uploaded</param>
+        /// <param name="additionalProperties">Optional additional properties, e.g. ContentTypeId</param>
+        /// <param name="replaceContent">true (default) to overwite existing files</param>
+        /// <param name="checkHashBeforeUpload">true (default) to retrieve existing file and compare hash value, only uploading if the contents has changed</param>
+        /// <param name="level">state to leave the file in after upload: Published (default), checked in Draft, or Checked Out</param>
+        /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFile(this Folder folder, string fileName, string localFilePath, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true)
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            if (stream == null) { throw new ArgumentNullException("stream"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("File name is required.", "fileName"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+
+            //Console.WriteLine("Provisioning file '{0}' to '{1}'", localFilePath, fileName);
+
+            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            {
+                return UploadFile(folder, fileName, localStream, additionalProperties, replaceContent, checkHashBeforeUpload, level, useWebDav);
+            }
+        }
+
+        /// <summary>
+        /// Uploads a file to the specified folder, but only if the contents has changed, with additional properties
+        /// </summary>
+        /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="fileName">Name of the file to upload</param>
+        /// <param name="localStream">Stream containing the contents of the file</param>
+        /// <param name="additionalProperties">Optional additional properties, e.g. ContentTypeId</param>
+        /// <param name="replaceContent">true (default) to overwite existing files</param>
+        /// <param name="checkHashBeforeUpload">true (default) to retrieve existing file and compare hash value, only uploading if the contents has changed</param>
+        /// <param name="level">state to leave the file in after upload: Published (default), checked in Draft, or Checked Out</param>
+        /// <param name="useWebDav">true (default) to save the binary directly (via webdav); false to use file creation</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFile(this Folder folder, string fileName, System.IO.Stream localStream, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true)
+        {
+            if (fileName == null) { throw new ArgumentNullException("fileName"); }
+            if (localStream == null) { throw new ArgumentNullException("localStream"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
             // TODO: Check for any other illegal characters in SharePoint
             if (fileName.Contains('/') || fileName.Contains('\\'))
             {
                 throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
             }
 
+            // Check for existing file
             if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 folder.Context.Load(folder, f => f.ServerRelativeUrl);
                 folder.Context.ExecuteQuery();
             }
-            LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile0ToFolder1, fileName, folder.ServerRelativeUrl);
+            var serverRelativeUrl = folder.ServerRelativeUrl + (folder.ServerRelativeUrl.EndsWith("/") ? "" : "/") + fileName;
 
-            File file = null;
-            if (useWebDav)
+            bool checkOutRequired = false;
+            bool publishingRequired = false;
+            bool approvalRequired = false;
+
+            // Check for existing file
+            var fileCollection = folder.Files;
+            File existingFile = null;
+            folder.Context.Load(fileCollection);
+            folder.Context.ExecuteQuery();
+            foreach (var checkFile in fileCollection)
             {
-                var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-                using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
+                if (string.Equals(checkFile.Name, fileName, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
-                    File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
-                    folder.Context.ExecuteQuery();
+                    existingFile = checkFile;
+                    break;
                 }
-                file = folder.Files.GetByUrl(serverRelativeUrl);
+            }
+
+            // Determine if upload required
+            bool uploadRequired = false;
+            byte[] serverHash = null;
+            if (existingFile != null)
+            {
+                if (replaceContent)
+                {
+                    if (checkHashBeforeUpload)
+                    {
+                        var streamResult = existingFile.OpenBinaryStream();
+                        folder.Context.ExecuteQuery();
+                        // Hash contents
+                        HashAlgorithm ha = HashAlgorithm.Create();
+                        using (var serverStream = streamResult.Value)
+                        {
+                            serverHash = ha.ComputeHash(serverStream);
+                            //Console.WriteLine("Server hash: {0}", BitConverter.ToString(serverHash));
+                        }
+
+                        // Check hash (& rewind)
+                        byte[] localHash;
+                        localHash = ha.ComputeHash(localStream);
+                        localStream.Position = 0;
+                        //Console.WriteLine("Local hash: {0}", BitConverter.ToString(localHash));
+
+                        // Compare hash
+                        var contentsMatch = true;
+                        for (var index = 0; index < serverHash.Length; index++)
+                        {
+                            if (serverHash[index] != localHash[index])
+                            {
+                                //Console.WriteLine("Hash does not match");
+                                contentsMatch = false;
+                                break;
+                            }
+                        }
+                        uploadRequired = !contentsMatch;
+                    }
+                    else
+                    {
+                        //Console.WriteLine("Not checking if existing file is the same; force upload");
+                        uploadRequired = true;
+                    }
+                }
+                else
+                {
+                    throw new Exception("File already exists, replace contents needs to be specified.");
+                }
             }
             else
             {
-                FileCreationInformation fileCreation = new FileCreationInformation();
-                fileCreation.ContentStream = stream;
-                fileCreation.Url = fileName;
-                fileCreation.Overwrite = overwriteIfExists;
-                LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
-                file = folder.Files.Add(fileCreation);
-                folder.Context.ExecuteQuery();
+                uploadRequired = true;
             }
 
-            if (contentTypeId != null)
+            File file = null;
+            // If different, upload file
+            if (uploadRequired)
             {
-                LoggingUtility.Internal.TraceVerbose("Setting content type to '{0}'", contentTypeId.StringValue);
-                file.ListItemAllFields["ContentTypeId"] = contentTypeId.StringValue;
-                file.ListItemAllFields.Update();
+                LoggingUtility.Internal.TraceInformation((int)EventId.UploadFile, CoreResources.FileFolderExtensions_UploadFile0ToFolder1, fileName, folder.ServerRelativeUrl);
+
+                if (existingFile != null)
+                {
+                    // Existing file (upload required) -- determine if checkout required
+                    var parentList = existingFile.ListItemAllFields.ParentList;
+                    folder.Context.Load(parentList, l => l.ForceCheckout);
+                    try
+                    {
+                        folder.Context.ExecuteQuery();
+                        checkOutRequired = parentList.ForceCheckout;
+                    }
+                    catch (ServerException ex)
+                    {
+                        if (ex.Message != "The object specified does not belong to a list.")
+                        {
+                            throw;
+                        }
+                    }
+                    //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout {0}", checkOutRequired);
+
+                    if (checkOutRequired && existingFile.CheckOutType == CheckOutType.None)
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
+                        existingFile.CheckOut();
+                        folder.Context.ExecuteQuery();
+                    }
+                }
+
+                if (useWebDav)
+                {
+                    using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
+                        File.SaveBinaryDirect(uploadContext, serverRelativeUrl, localStream, true);
+                        uploadContext.ExecuteQuery();
+                    }
+                    file = folder.Files.GetByUrl(serverRelativeUrl);
+                }
+                else
+                {
+                    FileCreationInformation fileCreation = new FileCreationInformation();
+                    fileCreation.ContentStream = localStream;
+                    fileCreation.Url = fileName;
+                    fileCreation.Overwrite = true;
+                    LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
+                    file = folder.Files.Add(fileCreation);
+                    folder.Context.ExecuteQuery();
+                }
+            }
+            else
+            {
+                //LoggingUtility.Internal.TraceVerbose("Not uploading; existing file '{0}' in folder '{1}' is identical (hash {2})", fileName, folder.ServerRelativeUrl, BitConverter.ToString(serverHash));
+                LoggingUtility.Internal.TraceVerbose("Not uploading; existing file '{0}' is identical", fileName);
+                file = existingFile;
+            }
+
+            folder.Context.Load(file);
+            folder.Context.ExecuteQuery();
+
+            // Set file properties (child elements <Property>)
+            var changedProperties = new Dictionary<string,string>();
+            var changedPropertiesString = new StringBuilder();
+            var propertyChanged = false;
+            if (additionalProperties != null && additionalProperties.Count > 0)
+            {
+                // If this throws ServerException (does not belong to list), then shouldn't be trying to set properties)
+                folder.Context.Load(file.ListItemAllFields);
+                folder.Context.Load(file.ListItemAllFields.FieldValuesAsText);
+                folder.Context.ExecuteQuery();
+
+                // Loop through and detect changes first, then, check out if required and apply
+                foreach (var kvp in additionalProperties)
+                {
+                    var propertyName = kvp.Key;
+                    var propertyValue = kvp.Value;
+
+                    var fieldValues = file.ListItemAllFields.FieldValues;
+                    var currentValue = "";
+                    if (file.ListItemAllFields.FieldValues.ContainsKey(propertyName))
+                    {
+                        currentValue = file.ListItemAllFields.FieldValuesAsText[propertyName];
+                    }
+                    //LoggingUtility.Internal.TraceVerbose("*** Comparing property '{0}' to current '{1}', new '{2}'", propertyName, currentValue, propertyValue);
+                    switch (propertyName.ToUpperInvariant())
+                    {
+                        case "CONTENTTYPE":
+                            {
+                                // TODO: Add support for named ContentType (need to lookup ID and check if it needs changing)
+                                throw new NotSupportedException("ContentType property not yet supported; use ContentTypeId instead.");
+                                //break;
+                            }
+                        case "CONTENTTYPEID":
+                            {
+                                var currentBase = currentValue.Substring(0, currentValue.Length - 34);
+                                var sameValue = (currentBase == propertyValue);
+                                if (!sameValue && propertyValue.Length >= 32 + 6 && propertyValue.Substring(propertyValue.Length - 34, 2) == "00")
+                                {
+                                    var propertyBase = propertyValue.Substring(0, propertyValue.Length - 34);
+                                    sameValue = (currentBase == propertyBase);
+                                }
+                                if (!sameValue)
+                                {
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                        case "PUBLISHINGASSOCIATEDCONTENTTYPE":
+                            {
+                                var testValue = ";#" + currentValue.Replace(", ", ";#") + ";#";
+                                if (testValue != propertyValue)
+                                {
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                if (currentValue != propertyValue)
+                                {
+                                    //Console.WriteLine("Setting property '{0}' to '{1}'", propertyName, propertyValue);
+                                    changedProperties[propertyName] = propertyValue;
+                                    changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
+                                }
+                                break;
+                            }
+                    }
+                }
+
+                if (changedProperties.Count > 0)
+                {
+                    if (!uploadRequired)
+                    {
+                        LoggingUtility.Internal.TraceInformation((int)EventId.UpdateFileProperties, CoreResources.FileFolderExtensions_UpdateFile0Properties1, fileName, changedPropertiesString);
+                        if (existingFile != null)
+                        {
+                            // Existing file (no upload required, but properties were changed) -- determine if checkout required
+                            var parentList = file.ListItemAllFields.ParentList;
+                            folder.Context.Load(parentList, l => l.ForceCheckout);
+                            try
+                            {
+                                folder.Context.ExecuteQuery();
+                                checkOutRequired = parentList.ForceCheckout;
+                            }
+                            catch (ServerException ex)
+                            {
+                                if (ex.Message != "The object specified does not belong to a list.")
+                                {
+                                    throw;
+                                }
+                            }
+                            //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout2 {0}", checkOutRequired, approvalRequired);
+
+                            if (checkOutRequired && file.CheckOutType == CheckOutType.None)
+                            {
+                                LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
+                                file.CheckOut();
+                                folder.Context.ExecuteQuery();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Updating properties of file '{0}' after upload: {1}", fileName, changedPropertiesString);
+                    }
+
+                    foreach (var kvp in changedProperties) 
+                    {
+                        var propertyName = kvp.Key;
+                        var propertyValue = kvp.Value;
+
+                        file.ListItemAllFields[propertyName] = propertyValue;
+                    }
+                    file.ListItemAllFields.Update();
+                    folder.Context.ExecuteQuery();
+                    propertyChanged = true;
+                }
+            }
+
+            //LoggingUtility.Internal.TraceVerbose("*** Up {0}, Prop {1}, COT {2}, level", uploadRequired, propertyChanged, file.CheckOutType, level);
+
+            if (uploadRequired || propertyChanged && (level == FileLevel.Draft || level == FileLevel.Published))
+            {
+                var parentList2 = file.ListItemAllFields.ParentList;
+                folder.Context.Load(parentList2, l => l.EnableMinorVersions, l => l.EnableModeration);
+                try
+                {
+                    folder.Context.ExecuteQuery();
+                    publishingRequired = parentList2.EnableMinorVersions;
+                    approvalRequired = parentList2.EnableModeration;
+                }
+                catch (ServerException ex)
+                {
+                    if (ex.Message != "The object specified does not belong to a list.")
+                    {
+                        throw;
+                    }
+                }
+                //LoggingUtility.Internal.TraceVerbose("*** EnableMinorVerions {0}. EnableModeration {1}", publishingRequired, approvalRequired);
+
+                if (file.CheckOutType != CheckOutType.None || checkOutRequired)
+                {
+                    LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", fileName);
+                    file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
+                    folder.Context.ExecuteQuery();
+                }
+
+                if (level == FileLevel.Published)
+                {
+                    if (publishingRequired)
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", fileName);
+                        file.Publish("Published by provisioning");
+                        folder.Context.ExecuteQuery();
+                    }
+                    if (approvalRequired)
+                    {
+                        LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", fileName);
+                        file.Approve("Approved by provisioning");
+                        folder.Context.ExecuteQuery();
+                    }
+                }
             }
 
             return file;

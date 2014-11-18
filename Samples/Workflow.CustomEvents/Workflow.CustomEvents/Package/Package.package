@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4be8be2f-a205-4f02-b6cf-fb218bc15c2d" solutionId="4be8be2f-a205-4f02-b6cf-fb218bc15c2d" resetWebServer="false" sharePointProductVersion="16.0" name="Workflow.CustomEvents" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="40e80795-74d6-4cb2-8a2f-1f2422a5eb09" />
+    <featureReference itemId="ca626c44-5f86-4ed7-8b52-814d31a34237" />
+  </features>
+</package>

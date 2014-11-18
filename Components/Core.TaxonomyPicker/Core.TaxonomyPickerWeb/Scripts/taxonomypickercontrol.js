@@ -2,7 +2,7 @@
 (function (CAMControl) {
     var spContext; //global sharepoint context used throughout the taxonomy picker control (set in the taxpicker constructor)
     var taxIndex = 0; //keeps index of the taxonomy pickers in use
-    
+
     //********************** START Term Class **********************
     //constructor for Term
     function Term(rawTerm) {
@@ -84,19 +84,30 @@
                 this.FlatTerms.push(term);
             }
 
-            //sort by level so we can convert to a heirarchy
+            var topLevel = 0;
+            //sort by Name that all of the choice will return alphabetically
             this.FlatTerms.sort(function (a, b) {
-                return a.Level - b.Level;
+                if (a.Level > topLevel) { topLevel = a.Level; }
+                a = a.Name.toLowerCase();
+                b = b.Name.toLowerCase();
+                if (a < b) return -1;
+                if (a > b) return 1;
+                return 0;
             });
 
-            //build hierarchical representation of Terms
-            for (var i = 0; i < this.FlatTerms.length; i++) {
-                var term = this.FlatTerms[i];
-                var path = term.PathOfTerm.split(';');
-                if (path.length == 1)
-                    this.Terms.push(term.clone());
-                else
-                    this.getTermParentCollectionByPath(term.PathOfTerm).push(term);
+            //build a hierarchical representation of Terms by iterating through all of the terms for each level
+            for (var currentLevel = 0; currentLevel <= topLevel; currentLevel++) {
+                for (var i = 0; i < this.FlatTerms.length; i++) {
+                    var term = this.FlatTerms[i];
+                    if (term.Level == currentLevel) {
+                        if (currentLevel == 0) {
+                            this.Terms.push(term.clone());
+                        }
+                        else {
+                            this.getTermParentCollectionByPath(term.PathOfTerm).push(term);
+                        }
+                    }
+                }
             }
 
             //mark as terms loaded
@@ -232,7 +243,7 @@
         this._waitingDlg = null; //the waiting dialog
         this._selectedTerms = new Array(); //Array of selected terms
         this._tempSelectedTerms = new Array(); //Snapshot of selected terms for use in the picker dialog (kept to support cancel in the dialog)
-        
+
         this._dialog = null; //the dialog control
         this._dlgCurrTerm = null; //the current term highlighted in the taxonomy picker dialog
         this._dlgCurrTermNode = null; //the current tree node selected
@@ -340,7 +351,7 @@
                     var newText = rawText.substring(0, caret - selection.length) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
-                    
+
                     //set the cursor position at the marker
                     this.setCaret();
 
@@ -358,10 +369,10 @@
                     newText = rawText.substring(0, caret - selection.length) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
-                    
+
                     //set the cursor position at the marker
                     this.setCaret();
-                    
+
                     //show suggestions
                     this.showSuggestions(textValidation, caret - selection.length - 1);
                 }
@@ -372,14 +383,14 @@
                     newText = firstPart + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
-                    
+
                     //set the cursor position at the marker
                     this.setCaret();
 
                     //show suggestions
                     this.showSuggestions(textValidation, caret - 2);
                 }
-                
+
                 //cancel the keypress
                 return false;
             }
@@ -404,7 +415,7 @@
                 //get text validation and set html in editor
                 var textValidation = this.validateText(newText);
                 this._editor.html(textValidation.html);
-                
+
                 //set the cursor position at the marker
                 this.setCaret();
 
@@ -425,7 +436,7 @@
         //get the cursor position in a content editable div
         getCaret: function (target) {
             var isContentEditable = target.contentEditable === 'true';
-            
+
             //HTML5
             if (window.getSelection) {
                 //contenteditable
@@ -786,7 +797,7 @@
             //get the termId from the data-item attribute of the target
             var termId = obj.attr('data-item');
             //get the term from the termset in memory
-            var term = this.TermSet.getTermById(termId); 
+            var term = this.TermSet.getTermById(termId);
             //add the term to selected terms array
             this.pushSelectedTerm(term);
 
@@ -832,7 +843,7 @@
                     var dlg = $('<div class="cam-taxpicker-dialog-content"></div>');
 
                     //build dialog header with button
-                    var dlgHeader = $('<div class="cam-taxpicker-dialog-content-header"><h1 class="cam-taxpicker-dialog-content-header-title">' + TaxonomyPickerConsts.DIALOG_HEADER + this.TermSet.Name +'</h1></div>');
+                    var dlgHeader = $('<div class="cam-taxpicker-dialog-content-header"><h1 class="cam-taxpicker-dialog-content-header-title">' + TaxonomyPickerConsts.DIALOG_HEADER + this.TermSet.Name + '</h1></div>');
                     this._dlgCloseButton = $('<div class="cam-taxpicker-dialog-content-close"></div>');
                     dlgHeader.append(this._dlgCloseButton);
                     dlg.append(dlgHeader);

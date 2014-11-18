@@ -69,7 +69,7 @@ namespace Branding.AlternateCSSAndSiteLogoWeb
                 // Set the properties accordingly
                 // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
                 web.AlternateCssUrl = web.ServerRelativeUrl + "/SiteAssets/contoso.css";
-                web.SiteLogoUrl = web.ServerRelativeUrl + "/SiteAssets/99x.png";
+                web.SiteLogoUrl = web.ServerRelativeUrl + "/SiteAssets/pnp.png";
                 web.Update();
                 web.Context.ExecuteQuery();
 
@@ -102,12 +102,12 @@ namespace Branding.AlternateCSSAndSiteLogoWeb
 
             // Get the path to the file which we are about to deploy
             string logoFile = System.Web.Hosting.HostingEnvironment.MapPath(
-                                string.Format("~/{0}", "resources/99x.png"));
+                                string.Format("~/{0}", "resources/pnp.png"));
 
             // Use CSOM to upload the file in
             newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(logoFile);
-            newFile.Url = "99x.png";
+            newFile.Url = "pnp.png";
             newFile.Overwrite = true;
             uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);

@@ -892,9 +892,10 @@ namespace Microsoft.SharePoint.Client
         /// <param name="pageName">Name of the page.</param>
         /// <param name="pageTemplateName">Name of the page template.</param>
         /// <param name="title">The title.</param>
+        /// <param name="publish">Should the page be published or not?</param>
         /// <exception cref="System.ArgumentNullException">Thrown when key or pageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentException">Thrown when key or pageName is null</exception>
-        public static void AddPublishingPage(this Web web, string pageName, string pageTemplateName, string title = null)
+        public static void AddPublishingPage(this Web web, string pageName, string pageTemplateName, string title = null, bool publish = false)
         {
             if (string.IsNullOrEmpty(pageName))
             {
@@ -920,7 +921,7 @@ namespace Microsoft.SharePoint.Client
             File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
                 UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
                 pageTemplateName));
-            Microsoft.SharePoint.Client.ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
+            ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
             context.Load(pageLayoutItem);
             context.ExecuteQuery();
 
@@ -931,12 +932,22 @@ namespace Microsoft.SharePoint.Client
                 Name = string.Format("{0}.aspx", pageName),
                 PageLayoutListItem = pageLayoutItem
             });
+            //Get parent list of item, this way we can handle all languages
+            List pagesLibrary = page.ListItem.ParentList;
+            context.Load(pagesLibrary);
             context.ExecuteQuery();
-
-            Microsoft.SharePoint.Client.ListItem pageItem = page.ListItem;
+            ListItem pageItem = page.ListItem;
             pageItem["Title"] = pageName;
             pageItem.Update();
             pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+            if (publish)
+            {
+                pageItem.File.Publish(String.Empty);
+                if (pagesLibrary.EnableModeration)
+                {
+                    pageItem.File.Approve(String.Empty);      
+                }
+            }
             context.ExecuteQuery();
         }
 
