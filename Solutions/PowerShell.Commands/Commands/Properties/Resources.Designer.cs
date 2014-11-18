@@ -232,6 +232,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove JavaScript?.
+        /// </summary>
+        internal static string RemoveJavaScript {
+            get {
+                return ResourceManager.GetString("RemoveJavaScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove key and value from property bag?.
         /// </summary>
         internal static string RemoveKeyAndValueFromPropertyBag {

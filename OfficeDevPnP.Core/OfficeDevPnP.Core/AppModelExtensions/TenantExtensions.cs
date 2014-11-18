@@ -4,8 +4,10 @@ using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
+using System.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -52,7 +54,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="properties">Describes the site collection to be created</param>
         /// <param name="removeSiteFromRecycleBin">It true and site is present in recycle bin, it will be removed first from the recycle bin</param>
         /// <param name="wait">If true, processing will halt until the site collection has been created</param>
-        /// <returns>Guid of the created site collection</returns>
+        /// <returns>Guid of the created site collection and Guid.Empty is the wait parameter is specified as false</returns>
         public static Guid CreateSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
         {
             if (removeFromRecycleBin)
@@ -114,9 +116,12 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            // Get site guid and return
-            var siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
-
+            // Get site guid and return. If we create the site asynchronously, return an empty guid as we cannot retrieve the site by URL yet.
+            Guid siteGuid = Guid.Empty;
+            if (wait)
+            {
+                siteGuid = tenant.GetSiteGuidByUrl(new Uri(properties.Url));
+            }
             return siteGuid;
         }
 
@@ -169,14 +174,14 @@ namespace Microsoft.SharePoint.Client
             bool ret = false;
             //Get the site name
             var url = new Uri(siteFullUrl);
-            var UrlDomain = string.Format("{0}://{1}", url.Scheme, url.Host);
-            int idx = url.PathAndQuery.Substring(1).IndexOf("/") + 2;
-            var UrlPath = url.PathAndQuery.Substring(0, idx);
-            var Name = url.PathAndQuery.Substring(idx);
-            var index = Name.IndexOf('/');
+            var siteDomainUrl = url.GetLeftPart(UriPartial.Scheme | UriPartial.Authority);
+            int siteNameIndex = url.AbsolutePath.IndexOf('/', 1) + 1;
+            var managedPath = url.AbsolutePath.Substring(0, siteNameIndex);
+            var siteRelativePath = url.AbsolutePath.Substring(siteNameIndex);
+            var isSiteCollection = siteRelativePath.IndexOf('/') == -1;
 
             //Judge whether this site collection is existing or not
-            if (index == -1)
+            if (isSiteCollection)
             {
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
@@ -186,8 +191,11 @@ namespace Microsoft.SharePoint.Client
             //Judge whether this sub web site is existing or not
             else
             {
-                var site = tenant.GetSiteByUrl(string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0}{1}{2}", UrlDomain, UrlPath, Name.Split("/".ToCharArray())[0]));
-                var subweb = site.OpenWeb(Name.Substring(index + 1));
+                var subsiteUrl = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                            "{0}{1}{2}", siteDomainUrl, managedPath, siteRelativePath.Split('/')[0]);
+                var subsiteRelativeUrl = siteRelativePath.Substring(siteRelativePath.IndexOf('/') + 1);
+                var site = tenant.GetSiteByUrl(subsiteUrl);
+                var subweb = site.OpenWeb(subsiteRelativeUrl);
                 tenant.Context.Load(subweb, w => w.Title);
                 tenant.Context.ExecuteQuery();
                 ret = true;
@@ -305,6 +313,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
         /// <param name="siteFullUrl">URL to the site collection</param>
         /// <returns>True if existing, false if not</returns>
+        [Obsolete("Use tenant.SiteExists() instead.")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static bool DoesSiteExist(this Tenant tenant, string siteFullUrl)
         {
             try
@@ -504,6 +514,166 @@ namespace Microsoft.SharePoint.Client
                     return false;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
+        /// that does not have a dependency on the Tenant administration csom.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="adminLogins">Array of logins for the additional admins</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        public static void AddAdministrators(this Tenant tenant, String[] adminLogins, Uri siteUrl)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (var admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin, true);
+                tenant.Context.ExecuteQuery();
+
+                using (var clientContext = new ClientContext(siteUrl))
+                {
+                    var spAdmin = clientContext.Web.EnsureUser(admin);
+                    clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                    clientContext.Web.AssociatedOwnerGroup.Update();
+                    clientContext.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add a site collection administrator to a site collection
+        /// </summary>
+        /// <param name="web">Site to operate on</param>
+        /// <param name="adminLogins">Array of admins loginnames to add</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
+        public static void AddAdministrators(this Tenant tenant, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (UserEntity admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
+                tenant.Context.ExecuteQuery();
+                if (addToOwnersGroup)
+                {
+                    // Create a separate context to the web
+                    using (var clientContext = new ClientContext(siteUrl))
+                    {
+                        clientContext.Credentials = tenant.Context.Credentials;
+                        var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
+                        clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                        clientContext.Web.AssociatedOwnerGroup.Update();
+                        clientContext.ExecuteQuery();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns all site collections in the current Tenant
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns></returns>
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant)
+        {
+            var sites = new List<SiteEntity>();
+
+            var props = tenant.GetSiteProperties(0, true);
+            tenant.Context.Load(props);
+            tenant.Context.ExecuteQuery();
+
+            foreach(var prop in props)
+            {
+                var siteEntity = new SiteEntity();
+                siteEntity.Lcid = prop.Lcid;
+                siteEntity.SiteOwnerLogin = prop.Owner;
+                siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
+                siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
+                siteEntity.Template = prop.Template;
+                siteEntity.TimeZoneId = prop.TimeZoneId;
+                siteEntity.Title = prop.Title;
+                siteEntity.Url = prop.Url;
+                siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
+                siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                sites.Add(siteEntity);
+            }
+            return sites;
+        }
+
+        /// <summary>
+        /// Get OneDrive site collections by iterating through all user profiles.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>List of <see cref="SiteEntity"/> objects containing site collection info.</returns>
+        public static IList<SiteEntity> GetOneDriveSiteCollections(this Tenant tenant)
+        {
+            var sites = new List<SiteEntity>();
+            var svcClient = GetUserProfileServiceClient(tenant);
+
+            // get all user profiles
+            var userProfileResult = svcClient.GetUserProfileByIndex(-1);
+            var profileCount = svcClient.GetUserProfileCount();
+
+            while(int.Parse(userProfileResult.NextValue) != -1)
+            {
+                var personalSpaceProperty = userProfileResult.UserProfile.Where(p => p.Name == "PersonalSpace").FirstOrDefault();
+
+                if (personalSpaceProperty != null)
+                {
+                    if (personalSpaceProperty.Values.Any())
+                    {
+                        var usernameProperty = userProfileResult.UserProfile.Where(p => p.Name == "UserName").FirstOrDefault();
+                        var nameProperty = userProfileResult.UserProfile.Where(p => p.Name == "PreferredName").FirstOrDefault();
+                        var url = personalSpaceProperty.Values[0].Value as string;
+                        var name = nameProperty.Values[0].Value as string;
+                        SiteEntity siteEntity = new SiteEntity();
+                        siteEntity.Url = url;
+                        siteEntity.Title = name;
+                        siteEntity.SiteOwnerLogin = usernameProperty.Values[0].Value as string;
+                        sites.Add(siteEntity);
+                    }
+                }
+                
+                userProfileResult = svcClient.GetUserProfileByIndex(int.Parse(userProfileResult.NextValue));
+            }
+
+            return sites;
+        }
+
+        /// <summary>
+        /// Gets the UserProfileService proxy to enable calls to the UPA web service.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>UserProfileService web service client</returns>
+        public static OfficeDevPnP.Core.UPAWebService.UserProfileService GetUserProfileServiceClient(this Tenant tenant) {
+            var client = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+
+            client.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
+            client.UseDefaultCredentials = false;
+            client.Credentials = tenant.Context.Credentials;
+
+            if (tenant.Context.Credentials is SharePointOnlineCredentials) {
+                var creds = (SharePointOnlineCredentials)tenant.Context.Credentials;
+                var authCookie = creds.GetAuthenticationCookie(new Uri(tenant.Context.Url));
+                var cookieContainer = new CookieContainer();
+
+                cookieContainer.SetCookies(new Uri(tenant.Context.Url), authCookie);
+                client.CookieContainer = cookieContainer;
+            }
+            return client;
         }
     }
 }

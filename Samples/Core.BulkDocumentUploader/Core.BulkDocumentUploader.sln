@@ -1,14 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.BulkDocumentUploader", "Core.BulkDocumentUploader.csproj", "{C2AE8436-786F-43C7-AEC2-F85F755489B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{CBD58645-7729-440A-A299-0163BE489DE4}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
-		SharePoint Bulk Document Uploader.docx = SharePoint Bulk Document Uploader.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

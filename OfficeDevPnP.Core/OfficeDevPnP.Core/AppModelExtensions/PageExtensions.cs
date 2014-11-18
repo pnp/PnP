@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.SharePoint.Client.Publishing;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -29,10 +30,20 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns the HTML contents of a wiki page
         /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">Server relative url of the page, e.g. /sites/demo/SitePages/Test.aspx</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl is null</exception>
         public static string GetWikiPageContent(this Web web, string serverRelativePageUrl)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
@@ -47,8 +58,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">Server relative url of the page containing the webparts</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl is null</exception>
         public static IEnumerable<WebPartDefinition> GetWebParts(this Web web, string serverRelativePageUrl)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
             Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
             LimitedWebPartManager limitedWebPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
@@ -65,8 +85,22 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="webPart">Information about the web part to insert</param>
         /// <param name="page">Page to add the web part on</param>
+        /// <exception cref="System.ArgumentException">Thrown when page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when webPart or page is null</exception>
         public static void AddWebPartToWebPartPage(this Web web, WebPartEntity webPart, string page)
         {
+            if (webPart == null)
+            {
+                throw new ArgumentNullException("webPart");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -83,8 +117,22 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">Page to add the web part on</param>
         /// <param name="webPart">Information about the web part to insert</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or webPart is null</exception>
         public static void AddWebPartToWebPartPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            if (webPart == null)
+            {
+                throw new ArgumentNullException("webPart");
+            }
+
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
@@ -112,8 +160,29 @@ namespace Microsoft.SharePoint.Client
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
+        /// <exception cref="System.ArgumentException">Thrown when folder or page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, webPart or page is null</exception>
         public static void AddWebPartToWikiPage(this Web web, string folder, WebPartEntity webPart, string page, int row, int col, bool addSpace)
         {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw (folder == null)
+                  ? new ArgumentNullException("folder")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
+            }
+
+            if (webPart == null)
+            {
+                throw new ArgumentNullException("webPart");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -134,8 +203,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or webPart is null</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddWebPartToWikiPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart, int row, int col, bool addSpace)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            if (webPart == null)
+            {
+                throw new ArgumentNullException("webPart");
+            }
+
             File webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             if (webPartPage == null)
@@ -261,8 +345,22 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Applies a layout to a wiki page
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="layout">Wiki page layout to be applied</param>
+        /// <param name="serverRelativePageUrl"></param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl is null</exception>
         public static void AddLayoutToWikiPage(this Web web, WikiPageLayout layout, string serverRelativePageUrl)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
 
             string html = "";
             switch (layout)
@@ -305,8 +403,24 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder">System name of the wiki page library - typically sitepages</param>
         /// <param name="layout">Wiki page layout to be applied</param>
         /// <param name="page">Name of the page that will get a new wiki page layout</param>
+        /// <exception cref="System.ArgumentException">Thrown when folder or page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder or page is null</exception>
         public static void AddLayoutToWikiPage(this Web web, string folder, WikiPageLayout layout, string page)
         {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw (folder == null)
+                  ? new ArgumentNullException("folder")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             string html = "";
             switch (layout)
             {
@@ -346,10 +460,33 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="folder">System name of the wiki page library - typically sitepages</param>
-        /// <param name="webPart">The html to insert</param>
+        /// <param name="html">The html to insert</param>
         /// <param name="page">Page to add the html on</param>
+        /// <exception cref="System.ArgumentException">Thrown when folder, html or page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, html or page is null</exception>
         public static void AddHtmlToWikiPage(this Web web, string folder, string html, string page)
         {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw (folder == null)
+                  ? new ArgumentNullException("folder")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
+            }
+
+            if (string.IsNullOrEmpty(html))
+            {
+                throw (html == null)
+                  ? new ArgumentNullException("html")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -358,7 +495,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html);
         }
@@ -367,10 +504,26 @@ namespace Microsoft.SharePoint.Client
         /// Add HTML to a wiki page
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteRelativePageUrl"></param>
+        /// <param name="serverRelativePageUrl"></param>
         /// <param name="html"></param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl or html is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or html is null</exception>
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            if (string.IsNullOrEmpty(html))
+            {
+                throw (html == null)
+                  ? new ArgumentNullException("html")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
+            }
+
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
@@ -394,8 +547,31 @@ namespace Microsoft.SharePoint.Client
         /// <param name="page">Page to add the web part on</param>
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
+        /// <exception cref="System.ArgumentException">Thrown when folder, html or page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, html or page is null</exception>
         public static void AddHtmlToWikiPage(this Web web, string folder, string html, string page, int row, int col)
         {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw (folder == null)
+                  ? new ArgumentNullException("folder")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
+            }
+
+            if (string.IsNullOrEmpty(html))
+            {
+                throw (html == null)
+                  ? new ArgumentNullException("html")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -404,7 +580,7 @@ namespace Microsoft.SharePoint.Client
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
 
-            var serverRelativeUrl = UrlUtility.Combine(folder, page);
+            var serverRelativeUrl = UrlUtility.Combine(webServerRelativeUrl, folder, page);
 
             AddHtmlToWikiPage(web, serverRelativeUrl, html, row, col);
         }
@@ -415,11 +591,27 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">server relative Url of the page to add the fragment to</param>
         /// <param name="html">html to be inserted</param>
-        /// <param name="page">Page to add the web part on</param>
         /// <param name="row">Row of the wiki table that should hold the inserted web part</param>
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl or html is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or html is null</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html, int row, int col)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            if (string.IsNullOrEmpty(html))
+            {
+                throw (html == null)
+                  ? new ArgumentNullException("html")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "html");
+            }
+
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
@@ -457,8 +649,31 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder">System name of the wiki page library - typically sitepages</param>
         /// <param name="title">Title of the web part that needs to be deleted</param>
         /// <param name="page">Page to remove the web part from</param>
+        /// <exception cref="System.ArgumentException">Thrown when folder, title or page is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when folder, title or page is null</exception>
         public static void DeleteWebPart(this Web web, string folder, string title, string page)
         {
+            if (string.IsNullOrEmpty(folder))
+            {
+                throw (folder == null)
+                  ? new ArgumentNullException("folder")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "folder");
+            }
+
+            if (string.IsNullOrEmpty(title))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("title")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
+            }
+
+            if (string.IsNullOrEmpty(page))
+            {
+                throw (page == null)
+                  ? new ArgumentNullException("page")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "page");
+            }
+
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -478,9 +693,23 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="serverRelativePageUrl">Server relative URL of the page to remove</param>
         /// <param name="title">Title of the web part that needs to be deleted</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl or title is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or title is null</exception>
         public static void DeleteWebPart(this Web web, string serverRelativePageUrl, string title)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
 
+            if (string.IsNullOrEmpty(title))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("title")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "title");
+            }
 
             var webPartPage = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
@@ -518,10 +747,25 @@ namespace Microsoft.SharePoint.Client
         /// <param name="wikiPageLibraryName">Name of the wiki page library</param>
         /// <param name="wikiPageName">Wiki page to operate on</param>
         /// <returns>The relative URL of the added wiki page</returns>
+        /// <exception cref="System.ArgumentException">Thrown when wikiPageLibraryName or wikiPageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when wikiPageLibraryName or wikiPageName is null</exception>
         public static string AddWikiPage(this Web web, string wikiPageLibraryName, string wikiPageName)
         {
-            string wikiPageUrl = "";
+            if (string.IsNullOrEmpty(wikiPageLibraryName))
+            {
+                throw (wikiPageLibraryName == null)
+                  ? new ArgumentNullException("wikiPageLibraryName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "wikiPageLibraryName");
+            }
 
+            if (string.IsNullOrEmpty(wikiPageName))
+            {
+                throw (wikiPageName == null)
+                  ? new ArgumentNullException("wikiPageName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "wikiPageName");
+            }
+
+            string wikiPageUrl = "";
 
             var pageLibrary = web.Lists.GetByTitle(wikiPageLibraryName);
 
@@ -549,8 +793,23 @@ namespace Microsoft.SharePoint.Client
             return wikiPageUrl;
         }
 
+        /// <summary>
+        /// Adds a wiki page by Url
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="serverRelativePageUrl">Server relative URL of the wiki page to process</param>
+        /// <param name="html">HTML to add to wiki page</param>
+        /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl is null</exception>
         public static void AddWikiPageByUrl(this Web web, string serverRelativePageUrl, string html = null)
         {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
             string folderName = serverRelativePageUrl.Substring(0, serverRelativePageUrl.LastIndexOf("/"));
             Folder folder = web.GetFolderByServerRelativeUrl(folderName);
             File file = folder.Files.AddTemplateFile(serverRelativePageUrl, TemplateFileType.WikiPage);
@@ -570,8 +829,24 @@ namespace Microsoft.SharePoint.Client
         /// <param name="value">The value to set</param>
         /// <param name="id">The id of the webpart</param>
         /// <param name="serverRelativePageUrl"></param>
+        /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
         public static void SetWebPartProperty(this Web web, string key, string value, Guid id, string serverRelativePageUrl)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw (key == null)
+                  ? new ArgumentNullException("key")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "key");
+            }
+
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
             ClientContext context = web.Context as ClientContext;
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
@@ -604,10 +879,121 @@ namespace Microsoft.SharePoint.Client
                         break;
                     }
             }
+
             def.SaveWebPartChanges();
 
             context.ExecuteQuery();
+        }
 
+        /// <summary>
+        /// Adds the publishing page.
+        /// </summary>
+        /// <param name="web">The web.</param>
+        /// <param name="pageName">Name of the page.</param>
+        /// <param name="pageTemplateName">Name of the page template.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="publish">Should the page be published or not?</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or pageName is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentException">Thrown when key or pageName is null</exception>
+        public static void AddPublishingPage(this Web web, string pageName, string pageTemplateName, string title = null, bool publish = false)
+        {
+            if (string.IsNullOrEmpty(pageName))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("pageName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageName");
+            }
+            if (string.IsNullOrEmpty(pageTemplateName))
+            {
+                throw (title == null)
+                  ? new ArgumentNullException("pageTemplateName")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageTemplateName");
+            }
+            if (string.IsNullOrEmpty(title))
+            {
+                title = pageName;
+            }
+            pageName = pageName.ReplaceInvalidUrlChars("-");
+            ClientContext context = web.Context as ClientContext;
+            Site site = context.Site;
+            context.Load(site, s => s.ServerRelativeUrl);
+            context.ExecuteQuery();
+            File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
+                UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
+                pageTemplateName));
+            ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
+            context.Load(pageLayoutItem);
+            context.ExecuteQuery();
+
+            PublishingWeb publishingWeb = PublishingWeb.GetPublishingWeb(context, web);
+            context.Load(publishingWeb);
+            PublishingPage page = publishingWeb.AddPublishingPage(new PublishingPageInformation
+            {
+                Name = string.Format("{0}.aspx", pageName),
+                PageLayoutListItem = pageLayoutItem
+            });
+            //Get parent list of item, this way we can handle all languages
+            List pagesLibrary = page.ListItem.ParentList;
+            context.Load(pagesLibrary);
+            context.ExecuteQuery();
+            ListItem pageItem = page.ListItem;
+            pageItem["Title"] = title;
+            pageItem.Update();
+            pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+            if (publish)
+            {
+                pageItem.File.Publish(String.Empty);
+                if (pagesLibrary.EnableModeration)
+                {
+                    pageItem.File.Approve(String.Empty);      
+                }
+            }
+            context.ExecuteQuery();
+        }
+
+        /// <summary>
+        /// Gets a publishing page.
+        /// </summary>
+        /// <param name="web">The web.</param>
+        /// <param name="fileLeafRef">The file leaf reference.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">fileLeafRef</exception>
+        /// <exception cref="System.ArgumentException">fileLeafRef</exception>
+        public static PublishingPage GetPublishingPage(this Web web, string fileLeafRef)
+        {
+            if (string.IsNullOrEmpty(fileLeafRef))
+            {
+                throw (fileLeafRef == null)
+                  ? new ArgumentNullException("fileLeafRef")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "fileLeafRef");
+            }
+
+            ClientContext context = web.Context as ClientContext;
+            List spList = web.Lists.GetByTitle("Pages");
+            context.Load(spList);
+            context.ExecuteQuery();
+            if (spList != null && spList.ItemCount > 0)
+            {
+
+                Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
+                camlQuery.ViewXml = string.Format(@"<View>  
+                        <Query> 
+                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                        </Query> 
+                  </View>", fileLeafRef);
+
+                ListItemCollection listItems = spList.GetItems(camlQuery);
+                context.Load(listItems);
+                context.ExecuteQuery();
+                if (listItems.Count > 0)
+                {
+                    PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
+                    context.Load(page);
+                    context.ExecuteQuery();
+                    return page;
+                }
+            }
+            return null;
         }
     }
 }

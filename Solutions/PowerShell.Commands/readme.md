@@ -1,4 +1,4 @@
-﻿# OfficeDevPnP.PowerShell Commands #
+# OfficeDevPnP.PowerShell Commands #
 
 ### Summary ###
 This solution shows how you can build a library of PowerShell commands that act towards SharePoint Online. The commands use CSOM and can work against both SharePoint Online as SharePoint On-Premises.
@@ -8,10 +8,13 @@ This solution shows how you can build a library of PowerShell commands that act 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
+### Prerequisites ###
+In order to build the setup project the Wix toolset needs to be installed. You can obtain this from http://wix.codeplex.com.
+
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-OfficeDevPnP.PowerShell | Erwin van Hunen (Knowit Reaktor Stockholm AB)
+OfficeDevPnP.PowerShell | Erwin van Hunen (**Knowit Reaktor Stockholm AB**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -39,7 +42,7 @@ In case of an unattended script you might want to add a new entry in your creden
 
 ![](http://i.imgur.com/6NiMaFL.png)
  
-Select Windows Credentials and add a new credential:
+Select Windows Credentials and add a new *generic* credential:
 
 ![](http://i.imgur.com/rhtgL1U.png)
  
@@ -121,6 +124,7 @@ Command | Description
 Command | Description
 :--------|:------------
 **Add-SPOField** | Adds a new field
+**Add-SPOFieldFromXml** | Adds a new field based on a CAML xml snippet, see http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx
 **Add-SPOTaxonomyField** | Creates a new Taxonomy field
 **Get-SPOField** | Returns a field
 **Remove-SPOField** | Removes a field
@@ -134,6 +138,7 @@ Command | Description
 **New-SPOList** | Creates a new list
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
+**Set-SPODefaultColumnValues** | Sets default column values for a document library
 
 #### User and Group Cmdlets ####
 Command | Description
@@ -169,6 +174,7 @@ Command | Description
 :--------|:------------
 **Add-SPOCustomAction** | Adds a custom action to a site
 **Add-SPOFile** | Uploads a file to a site
+**Add-SPOFolder** | Creates a folder in a site
 **Add-SPONavigationNode** | Adds a new link to the quicklaunch or top navigation
 **Find-SPOFile** | Finds a file in the current site
 **Get-SPOCustomAction** | Returns an existing custom action
@@ -178,6 +184,7 @@ Command | Description
 **Get-SPOPropertyBag** | Returns the propertybag
 **Get-SPOSubWebs** | Returns the subwebs
 **Get-SPOWeb** | Returns the current web
+**Get-SPOIndexedPropertyKeys** | Returns all keys in the property bag set for indexing
 **New-SPOWeb** | Creates a new web
 **Remove-SPOCustomAction** | Removes a custom action from a web
 **Remove-SPONavigationNode** | Removes a link from the quicklaunch or top navigation
@@ -209,7 +216,38 @@ Command | Description
 **Remove-SPOWikiPage**| Removes a wiki page
 **Set-SPOWikiPageContent** | Sets the content of a wikipage
 
+#### Publishing Page Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOPublishingPage** | Adds a new publishing page to a site
+**Add-SPOPublishingPageLayout** | Adds a new .aspx publishing page layout to a site
+**Add-SPOHtmlPublishingPageLayout** | Adds a new .html publishing page layout to a site
 
+Examples (Note: The associated content type in the example is the "Welcome Page" built in content type)
 
+```powershell
+Add-SPOPublishingPage -PageName "your-page-name" -PageTemplateName "BlankWebPartPage" -Title "Your Page Title" -Publish
 
+Add-SPOPublishingPageLayout -SourceFilePath "Path-To-Your-Page-Layout" -Title "Your Title" -Description "Your Description" -AssociatedContentTypeID "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB06458
+4E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4"
 
+Add-SPOHtmlPublishingPageLayout -SourceFilePath "Path-To-Your-Page-Layout" -Title "Your Title" -Description "Your Description" -AssociatedContentTypeID "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB06458
+4E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4"
+```
+
+#### User Profile / OD4B Cmdlets ####
+Command | Description
+:--------|:------------
+**Get-SPOUserProfileProperty** | Returns the user profile properties for one or more users
+**New-SPOPersonalSite** | Provisions a profile site. Only works towards Office365
+
+#### Workflow Cmdlets ####
+Command | Description
+:--------|:------------
+**Add-SPOWorkflowSubscription** | Adds a new subscription (association) to a list or web
+**Get-SPOWorkflowDefinition** | Returns all or a specific workflow definition (reusable workflow)
+**Get-SPOWorkflowSubscription** | Returns all or a specific workflow subscription
+**Remove-SPOWorkflowDefinition** | Removes a workflow definition (reusable workflow)
+**Remove-SPOWorkflowSubscription** | Removes a workflow subscription
+**Resume-SPOWorkflowInstance** | Resumes a workflow instance
+**Stop-SPOWorkflowInstance** | Stops (cancels) a workflow instance

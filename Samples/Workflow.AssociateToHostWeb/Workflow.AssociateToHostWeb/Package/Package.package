@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="8ac9c82a-f87e-43fa-93f1-d65f5e6f9500" 
+        solutionId="8ac9c82a-f87e-43fa-93f1-d65f5e6f9500" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Workflow.AssociateToHostWeb"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="b7b490c5-8293-4408-85f9-c7dc1f22fb13" />
+  </features>
+</package>

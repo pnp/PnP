@@ -20,11 +20,16 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private Guid _listId; // For easy reference
 
-
+        private string SampleTermSetPath = "../../Resources/ImportTermSet.csv";
+        private string SampleUpdateTermSetPath = "../../Resources/UpdateTermSet.csv";
+        private string SampleGuidTermSetPath = "../../Resources/GuidTermSet.csv";
+        private Guid UpdateTermSetId = new Guid("{35585956-83E4-4A44-8FC5-AC50942E3187}");
+        private Guid GuidTermSetId = new Guid("{90FD4208-8281-40CC-872E-DD85F33B50AB}");
 
         [TestInitialize]
         public void Initialize()
         {
+            Console.WriteLine("TaxonomyExtensionsTests.Initialise");
             // Create some taxonomy groups and terms
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -61,6 +66,7 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestCleanup]
         public void Cleanup()
         {
+            Console.WriteLine("TaxonomyExtensionsTests.Cleanup");
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Clean up Taxonomy
@@ -333,12 +339,216 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void ImportTermsTest2()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+
+                var termName1 = "Test_Term_1" + DateTime.Now.ToFileTime();
+                var termName2 = "Test_Term_2" + DateTime.Now.ToFileTime();
+
+                List<string> termLines = new List<string>();
+                termLines.Add(_termGroupName + "|" + _termSetName + "|" + termName1);
+                termLines.Add(_termGroupName + "|" + _termSetName + "|" + termName2);
+
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = session.GetDefaultSiteCollectionTermStore();
+                site.ImportTerms(termLines.ToArray(), 1033, termStore, "|");
+
+                var taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termGroup = termStore.Groups.GetByName(_termGroupName);
+                var termSet = termGroup.TermSets.GetByName(_termSetName);
+                var term1 = termSet.Terms.GetByName(termName1);
+                var term2 = termSet.Terms.GetByName(termName2);
+                clientContext.Load(term1);
+                clientContext.Load(term2);
+                clientContext.ExecuteQuery();
+
+                Assert.IsNotNull(term1);
+                Assert.IsNotNull(term2);
+            }
+        }
+
+        [TestMethod()]
+        public void ImportTermSetSampleShouldCreateSet()
+        {
+            var importSetId = Guid.NewGuid();
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleTermSetPath, importSetId);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(importSetId);
+                var allTerms = createdSet.GetAllTerms();
+                var rootCollection = createdSet.Terms;
+                clientContext.Load(createdSet);
+                clientContext.Load(allTerms);
+                clientContext.Load(rootCollection, ts => ts.Include(t=> t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Political Geography", createdSet.Name);
+                Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
+                Assert.IsFalse(createdSet.IsOpenForTermCreation);
+                Assert.AreEqual(12, allTerms.Count);
+
+                Assert.AreEqual(1, rootCollection.Count);
+                Assert.AreEqual("Continent", rootCollection[0].Name);
+                Assert.AreEqual("One of the seven main land masses (Europe, Asia, Africa, North America, South America, Australia, and Antarctica)", rootCollection[0].Description);
+                Assert.IsTrue(rootCollection[0].IsAvailableForTagging);
+            }
+        }
+
+        [TestMethod()]
+        public void ImportTermSetShouldUpdateSet()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                clientContext.Load(termStore, s => s.DefaultLanguage);
+                clientContext.ExecuteQuery();
+                var lcid = termStore.DefaultLanguage;
+
+                var termGroup = termStore.GetGroup(_termGroupId);
+                var termSet = termGroup.CreateTermSet("Test Changes", UpdateTermSetId, lcid);
+                termSet.Description = "Initial term set description";
+                var retain1 = termSet.CreateTerm("Retain1", lcid, Guid.NewGuid());
+                retain1.SetDescription("Test of deletes, adds and update", lcid);
+                var update2 = retain1.CreateTerm("Update2", lcid, Guid.NewGuid());
+                update2.SetDescription("Initial update2 description", lcid);
+                var retain3 = update2.CreateTerm("Retain3", lcid, Guid.NewGuid());
+                retain3.SetDescription("Test retaining same term", lcid);
+                var delete2 = retain1.CreateTerm("Delete2", lcid, Guid.NewGuid());
+                delete2.SetDescription("Term to delete", lcid);
+                var delete3 = delete2.CreateTerm("Delete3", lcid, Guid.NewGuid());
+                delete3.SetDescription("Child term to delete", lcid);
+                clientContext.ExecuteQuery();
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleUpdateTermSetPath, UpdateTermSetId, synchroniseDeletions:true, termSetIsOpen:true);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(UpdateTermSetId);
+                var allTerms = createdSet.GetAllTerms();
+                var rootCollection = createdSet.Terms;
+                clientContext.Load(createdSet);
+                clientContext.Load(allTerms);
+                clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Updated term set description", createdSet.Description);
+                Assert.IsTrue(createdSet.IsOpenForTermCreation);
+                Assert.AreEqual(6, allTerms.Count);
+                Assert.AreEqual(2, rootCollection.Count);
+
+                var retain1Collection = rootCollection.First(t => t.Name == "Retain1").Terms;
+                clientContext.Load(retain1Collection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
+                clientContext.ExecuteQuery();
+
+                Assert.IsTrue(retain1Collection.Any(t => t.Name == "New2"));
+                Assert.IsFalse(retain1Collection.Any(t => t.Name == "Delete2"));
+                Assert.AreEqual("Changed description", retain1Collection.First(t => t.Name == "Update2").Description);
+                Assert.IsFalse(retain1Collection.First(t => t.Name == "Update2").IsAvailableForTagging);
+            }
+        }
+
+        [TestMethod()]
+        public void ImportTermSetShouldUpdateByGuid()
+        {
+            var addedTermId = new Guid("{B564BD6F-21FF-4B60-9474-5E33F726DC6C}");
+            var changedTermId = new Guid("{73DF85EE-313C-4485-A7B3-0FC3C17A7454}");
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                clientContext.Load(termStore, s => s.DefaultLanguage);
+                clientContext.ExecuteQuery();
+                var lcid = termStore.DefaultLanguage;
+
+                var termGroup = termStore.GetGroup(_termGroupId);
+                var termSet = termGroup.CreateTermSet("Test Guids", GuidTermSetId, lcid);
+                termSet.Description = "Initial term set description";
+                var retain1 = termSet.CreateTerm("Retain1", lcid, Guid.NewGuid());
+                retain1.SetDescription("Retained term description", lcid);
+                var toUpdate1 = termSet.CreateTerm("ToUpdate1", lcid, changedTermId);
+                toUpdate1.SetDescription("Inital term description", lcid);
+                clientContext.ExecuteQuery();
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var termGroup = termStore.GetGroup(_termGroupId);
+
+                // Act
+                var termSet = termGroup.ImportTermSet(SampleGuidTermSetPath, Guid.Empty);
+            }
+
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                var createdSet = termStore.GetTermSet(GuidTermSetId);
+                var rootCollection = createdSet.Terms;
+                clientContext.Load(createdSet);
+                clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Id));
+                clientContext.ExecuteQuery();
+
+                Assert.AreEqual("Updated Guids", createdSet.Name);
+                Assert.AreEqual("Updated Test Guid term set description", createdSet.Description);
+                Assert.AreEqual(3, rootCollection.Count);
+
+                Assert.AreEqual(addedTermId, rootCollection.First(t => t.Name == "Added1").Id);
+                Assert.IsTrue(rootCollection.Any(t => t.Name == "Retain1"));
+                Assert.IsFalse(rootCollection.Any(t => t.Name == "ToUpdate1"));
+                Assert.AreEqual("Changed1", rootCollection.First(t => t.Id == changedTermId).Name);
+            }
+        }
+
+        [TestMethod()]
         public void ExportTermSetTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 var site = clientContext.Site;
                 var lines = site.ExportTermSet(_termSetId, false);
+                Assert.IsTrue(lines.Any(), "No lines returned");
+            }
+        }
+
+        [TestMethod()]
+        public void ExportTermSetTest2()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termStore = session.GetDefaultSiteCollectionTermStore();
+
+                var lines = site.ExportTermSet(_termSetId, false, termStore);
                 Assert.IsTrue(lines.Any(), "No lines returned");
             }
         }

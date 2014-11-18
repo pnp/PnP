@@ -34,18 +34,134 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug15|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug15\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;CLIENTSDKV15</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release15|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release15\</OutputPath>
+    <DefineConstants>TRACE;CLIENTSDKV15</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
+      <ItemGroup>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.Office.Client.Policy.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.TranslationServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.Search.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\16\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.Office.Client.Policy.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.TranslationServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.Search.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\Assemblies\15\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.DocumentManagement.Portable, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.SharePoint.Client.UserProfiles.Portable, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Selectors" />
     <Reference Include="System.Runtime.Serialization" />
@@ -53,6 +169,7 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -67,9 +184,24 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AppModelExtensions\BrandingExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\FeatureExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\JavaScriptExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\ListExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
+    <Compile Include="Extensions\HttpVariablesExtensionsTests.cs" />
+    <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Utilities\JsonUtilityTests.cs" />
+    <Compile Include="Utilities\UrlUtilityTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\PageExtensionsTests.cs" />
+    <Compile Include="CredentialManager.cs" />
+    <Compile Include="Extensions\DateTimeExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -85,15 +217,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App.config.sample" />
+    <None Include="Resources\custom.spcolor" />
     <None Include="Resources\HelloWorldApp.app" />
+    <Content Include="Resources\GuidTermSet.csv" />
+    <Content Include="Resources\ImportTermSet.csv" />
+    <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\custombg.jpg" />
+    <Content Include="Resources\office365.png" />
+    <Content Include="Resources\TestHtmlPublishingPageLayout.html" />
+    <Content Include="Resources\TestPublishingPageLayout.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

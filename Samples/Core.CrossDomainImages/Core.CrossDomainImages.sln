@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossDomainImages", "Core.CrossDomainImages\Core.CrossDomainImages.csproj", "{135E5EC4-1907-4F8D-9FED-04501541EF21}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossDomainImagesWeb",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{1B8CD21D-8672-4F41-8CAD-70864FD7E4D2}"
 	ProjectSection(SolutionItems) = preProject
-		Cross Domain Images.docx = Cross Domain Images.docx
-		Readme.txt = Readme.txt
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

@@ -9,7 +9,7 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-None
+It's important that the provider hosted app that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
@@ -127,6 +127,7 @@ The first parameter of the Taxonomy Picker sets the options for the control. The
 | Parameter | Description |
 | ----------|-------------|
 | isMulti | Boolean indicating if taxonomy picker support multiple value |
+| isReadOnly | Boolean indicating if the taxonomy picker is rendered in read only mode |
 | allowFillIn | Boolean indicating if the control allows fill=ins (Open TermSets only) |
 | termSetId | the GUID of the TermSet to bind against (available from Term Mgmt) |
 | useHashtags | Boolean indicating if the default hashtags TermSet should be used |

@@ -30,8 +30,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             {
                 featureCollection = this.SelectedWeb.Features;
             }
-            
-            var query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            IEnumerable<Feature> query = null;
+#if !CLIENTSDKV15
+            if (ClientContext.ServerVersion.Major > 15)
+            {
+                 query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+            }
+            else
+            {
+                query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties());
+            }
+#else
+            query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties());
+#endif
             ClientContext.ExecuteQuery();
             if (Identity == null)
             {
@@ -44,7 +55,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
                     WriteObject(query.Where(f => f.DefinitionId == Identity.Id));
                 } else if (!string.IsNullOrEmpty(Identity.Name))
                 {
+#if !CLIENTSDKV15
                     WriteObject(query.Where(f => f.DisplayName.Equals(Identity.Name, StringComparison.OrdinalIgnoreCase)));
+#else
+                    throw new Exception("Querying by name is not supported in version 15 of the Client Side Object Model");
+#endif
                 }
             }
         }

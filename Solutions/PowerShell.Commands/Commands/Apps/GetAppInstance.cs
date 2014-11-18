@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Get, "SPOAppInstance")]
     [CmdletHelp("Returns a SharePoint App Instance")]
     [CmdletExample(
-        Code = @"PS:> Get-SPOnlineAppInstance",
+        Code = @"PS:> Get-SPOAppInstance",
         Remarks = @"This will return all app instances in the site.
  ", SortOrder = 1)]
     [CmdletExample(

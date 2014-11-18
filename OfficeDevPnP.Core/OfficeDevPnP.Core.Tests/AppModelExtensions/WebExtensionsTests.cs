@@ -321,5 +321,92 @@ namespace Microsoft.SharePoint.Client.Tests
 
             Assert.AreEqual(instances.Count, instanceCount);
         }
+
+        // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
+        [Ignore()]
+        [TestMethod()]
+        public void InstallSolutionTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Set up
+
+                // Write the test solution to a local temporary file
+                string solutionpath = Path.Combine(Path.GetTempPath(), "testsolution.wsp");
+                System.IO.File.WriteAllBytes(solutionpath, OfficeDevPnP.Core.Tests.Properties.Resources.TestSolution);
+
+                clientContext.Site.InstallSolution(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid), solutionpath);
+
+                // Check if the solution file is uploaded
+                var solutionGallery = clientContext.Site.RootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+
+                var camlQuery = new CamlQuery();
+                camlQuery.ViewXml = string.Format(
+      @"<View>  
+            <Query> 
+               <Where><Eq><FieldRef Name='SolutionId' /><Value Type='Guid'>{0}</Value></Eq></Where> 
+            </Query> 
+             <ViewFields><FieldRef Name='ID' /></ViewFields> 
+      </View>", new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid));
+
+                var solutions = solutionGallery.GetItems(camlQuery);
+                clientContext.Load(solutions);
+                clientContext.ExecuteQuery();
+
+                // Test
+
+                Assert.IsTrue(solutions.Any(),"No solution files available");
+
+                // Check if we can activate Test Feature on rootweb
+                clientContext.Load(clientContext.Web);
+                clientContext.ExecuteQuery();
+
+              //  clientContext.Web.ActivateFeature(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid));
+              //  Assert.IsTrue(clientContext.Web.IsFeatureActive(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid)), "Test feature not activated");
+             
+                // Teardown
+                // Done using the local file, remove it
+                System.IO.File.Delete(solutionpath);
+                clientContext.Site.UninstallSolution(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid),"testsolution.wsp");
+            }
+        }
+
+        // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
+        [Ignore()]
+        [TestMethod()]
+        public void UninstallSolutionTest()
+        {
+            // Set up
+            string solutionpath = Path.Combine(Path.GetTempPath(), "testsolution.wsp");
+            System.IO.File.WriteAllBytes(solutionpath, OfficeDevPnP.Core.Tests.Properties.Resources.TestSolution);
+
+            clientContext.Site.InstallSolution(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid), solutionpath);
+
+            // Execute test
+
+            clientContext.Site.UninstallSolution(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid),"testsolution.wsp");
+
+            // Check if the solution file is uploaded
+            var solutionGallery = clientContext.Site.RootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
+
+            var camlQuery = new CamlQuery();
+            camlQuery.ViewXml = string.Format(
+  @"<View>  
+            <Query> 
+               <Where><Eq><FieldRef Name='SolutionId' /><Value Type='Guid'>{0}</Value></Eq></Where> 
+            </Query> 
+             <ViewFields><FieldRef Name='ID' /></ViewFields> 
+      </View>", new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionGuid));
+
+            var solutions = solutionGallery.GetItems(camlQuery);
+            clientContext.Load(solutions);
+            clientContext.ExecuteQuery();
+            Assert.IsFalse(solutions.Any(),"There are still solutions installed");
+
+            Assert.IsFalse(clientContext.Web.IsFeatureActive(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid)));
+      
+            // Teardown
+            System.IO.File.Delete(solutionpath);
+        }
     }
 }

@@ -118,7 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="custom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\custom.spcolor;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="custombg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\custombg.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="HelloWorldApp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HelloWorldApp.app;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TestSolution" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TestSolution.wsp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TestSolutionFeatureGuid" xml:space="preserve">
+    <value>2c388d20-b865-4b32-bc28-32e4e5fa7ff6</value>
+  </data>
+  <data name="TestSolutionGuid" xml:space="preserve">
+    <value>6e7c6522-30d3-44a0-8f7a-62ec92acaed7</value>
   </data>
 </root>

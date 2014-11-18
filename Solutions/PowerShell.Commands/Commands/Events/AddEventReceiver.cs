@@ -25,6 +25,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         public EventReceiverSynchronization Synchronization;
 
         [Parameter(Mandatory = false)]
+        public int SequenceNumber = 1000;
+
+        [Parameter(Mandatory = false)]
         public SwitchParameter Force;
 
         protected override void ExecuteCmdlet()
@@ -32,12 +35,12 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (ParameterSetName == "List")
             {
                 var list = this.SelectedWeb.GetList(List);
-                WriteObject(list.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
+                WriteObject(list.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
             }
             else
             {
                 Microsoft.SharePoint.Client.Web web = SelectedWeb;
-                WriteObject(this.SelectedWeb.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, Force));
+                WriteObject(this.SelectedWeb.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
             }
 
         }

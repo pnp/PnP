@@ -1,14 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.MMSSync", "Core.MMSSync.csproj", "{95CC0CF7-C7F4-4C3A-A6BE-E4BDC340BBB6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{F626D2BF-622D-4A59-8A86-BCC3520FD5F0}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
-		SynchronizeTerms.docx = SynchronizeTerms.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
