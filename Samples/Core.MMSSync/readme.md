@@ -27,6 +27,17 @@ Version  | Date | Comments
 # Taxonomy Synchronization Scenarios #
 Have you ever wanted to move Taxonomy items from one term store to another? With on-premises implementations you can move your MMS database, but this takes some work. What about SharePoint Online? Obviously, we cannot move our database to Office 365. There is already an AMS (Core.MMS) sample that demonstrates how to perform basic operations with the term store. What if, you have use case where you only want to synchronize changes of a specific Term set? This sample takes the Core.MMS sample a step further, by using the ChangeInformation class in the Microsoft.SharePoint.Client.Taxonomy assembly.
 
+Here's the high level process for the MMS synchronization tooling.
+
+![](http://i.imgur.com/CpWRWOL.png)
+
+1. One farm has to act as the primary farm, which is used as the location where changes are applied. 
+2. MMS synchronization tooling will access the primary MMS/taxonomy store and will query changes applied to taxonomy after certain time period. Tool will synchronize or repeate the operations also against the other SharePoint services, like Office 365
+3. MMS is kept on sync between the environments, so that when end users will apply metadata to documents, same terminology is available and if the documents are moved cross environments, metadata is properly stored and kept in the document level
+4. End users can access any environment and they will see same taxonomy terms
+
+See also referenced blog post for some additional context.
+
 [http://blogs.msdn.com/b/frank_marasco/archive/2014/06/29/synchronize-term-sets-with-the-term-store-csom.aspx](http://blogs.msdn.com/b/frank_marasco/archive/2014/06/29/synchronize-term-sets-with-the-term-store-csom.aspx)
 
 ## SCENARIO 1 ##
