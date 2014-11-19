@@ -297,7 +297,6 @@ namespace Microsoft.SharePoint.Client
 			return termsets;
 		}
 
-
 		public static TermGroup GetTermGroupByName(this Site site, string name)
 		{
 			if (string.IsNullOrEmpty(name))
@@ -309,6 +308,15 @@ namespace Microsoft.SharePoint.Client
 			site.Context.ExecuteQuery();
 			return groups.FirstOrDefault();
 		}
+
+        public static TermGroup GetTermGroupById(this Site site, Guid termGroupId)
+        {
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
+            var store = session.GetDefaultSiteCollectionTermStore();
+            IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Id == termGroupId);
+            site.Context.ExecuteQuery();
+            return groups.FirstOrDefault();
+        }
 
 		/// <summary>
 		/// Gets a Taxonomy Term by Name

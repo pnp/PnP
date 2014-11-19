@@ -268,6 +268,18 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void GetTermGroupByIdTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+                var termGroup = site.GetTermGroupById(_termGroupId);
+                Assert.IsInstanceOfType(termGroup, typeof(TermGroup), "Did not return TermGroup object");
+                Assert.AreEqual(_termGroupId, termGroup.Id, "Name does not match");
+            }
+        }
+
+        [TestMethod()]
         public void GetTermByNameTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
