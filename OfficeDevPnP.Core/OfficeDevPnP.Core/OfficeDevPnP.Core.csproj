@@ -215,6 +215,7 @@
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
+    <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs">
