@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security;
 using System.Configuration;
 using OfficeDevPnP.Core.Tests;
+using OfficeDevPnP.Core.Entities;
 namespace Microsoft.SharePoint.Client.Tests
 {
     [TestClass()]
@@ -68,13 +69,16 @@ namespace Microsoft.SharePoint.Client.Tests
             {
                 var fieldName = "Test_" + DateTime.Now.ToFileTime();
                 var fieldId = Guid.NewGuid();
-                var fieldChoice = clientContext.Web.CreateField<FieldChoice>(
-                    fieldId,
-                    fieldName,
-                    FieldType.Choice.ToString(),
-                    true,
-                    fieldName,
-                    "Test fields group");
+
+                var fieldCI = new FieldCreationInformation(FieldType.Choice)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    DisplayName = fieldName,
+                    AddToDefaultView = true,
+                    Group = "Test fields group"
+                };
+                var fieldChoice = clientContext.Web.CreateField<FieldChoice>(fieldCI);
 
                 var field = clientContext.Web.Fields.GetByTitle(fieldName);
                 clientContext.Load(field);
@@ -96,20 +100,16 @@ namespace Microsoft.SharePoint.Client.Tests
                 var fieldName = "Test_ABC123";
                 var fieldId = Guid.NewGuid();
 
-                var fieldChoice1 = clientContext.Web.CreateField<FieldChoice>(
-                    fieldId,
-                    fieldName,
-                    FieldType.Choice.ToString(),
-                    true,
-                    fieldName,
-                    "Test fields group");
-                var fieldChoice2 = clientContext.Web.CreateField<FieldChoice>(
-                    fieldId,
-                    fieldName,
-                    FieldType.Choice.ToString(),
-                    true,
-                    fieldName,
-                    "Test fields group");
+                FieldCreationInformation fieldCI = new FieldCreationInformation(FieldType.Choice)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    AddToDefaultView = true,
+                    DisplayName = fieldName,
+                    Group = "Test fields group"
+                };
+                var fieldChoice1 = clientContext.Web.CreateField<FieldChoice>(fieldCI);
+                var fieldChoice2 = clientContext.Web.CreateField<FieldChoice>(fieldCI);
 
                 var field = clientContext.Web.Fields.GetByTitle(fieldName);
                 clientContext.Load(field);

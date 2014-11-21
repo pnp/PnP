@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -1501,7 +1502,19 @@ namespace Microsoft.SharePoint.Client
 
 			try
 			{
-				var _field = web.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+
+                FieldCreationInformation fieldCI = new FieldCreationInformation(multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType")
+                {
+                    Id = id,
+                    InternalName = internalName,
+                    AddToDefaultView = true,
+                    DisplayName = displayName,
+                    Group = group,
+                    AdditionalAttributes = additionalAttributes
+                };
+				var _field = web.CreateField(fieldCI);
 
 				WireUpTaxonomyField(web, _field, termSet, multiValue);
 				_field.Update();
@@ -1585,7 +1598,19 @@ namespace Microsoft.SharePoint.Client
 
 			try
 			{
-				var _field = list.CreateField(id, internalName, multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType", true, displayName, group, "ShowField=\"Term1033\"");
+                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+
+                FieldCreationInformation fieldCI = new FieldCreationInformation(multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType")
+                {
+                    Id = id,
+                    InternalName = internalName,
+                    AddToDefaultView = true,
+                    DisplayName = displayName,
+                    Group = group,
+                    AdditionalAttributes = additionalAttributes
+                };
+				var _field = list.CreateField(fieldCI);
 
 				WireUpTaxonomyField(list, _field, termSet, multiValue);
 				_field.Update();
