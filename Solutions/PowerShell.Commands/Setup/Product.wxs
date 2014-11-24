@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?if $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Release OR $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Debug ?>
+<?define AssemblyVersion = "16.0.0.0" ?>
+<?define ProductName = "Office 365 Developer PnP PowerShell Commands" ?>
+<?else ?>
+<?define AssemblyVersion = "15.0.0.0" ?>
+<?define ProductName = "Office 365 Developer PnP PowerShell Commands (On-Premises)" ?>
+<?endif ?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      >
-  <Product Id="*" Name="Office 365 Developer PnP PowerShell Commands" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -26,7 +33,7 @@
 
     <Property Id="CLIENTASSEMBLIES">
       <DirectorySearch Id="Client" Path="[WindowsFolder]Microsoft.NET\assembly\GAC_MSIL" Depth="2">
-        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="16.0.0.0"/>
+        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="$(var.AssemblyVersion)"/>
       </DirectorySearch>
     </Property>
     

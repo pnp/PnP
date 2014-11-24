@@ -87,5 +87,28 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             }
         }
 
+        // This works, but is not the best approach to test locking and unlocking sites
+        //[TestMethod()]
+        //public void SetSiteLockStateTest() {
+        //    using (var tenantContext = TestCommon.CreateTenantClientContext()) {
+        //        var tenant = new Tenant(tenantContext);
+        //        var siteUrl = string.Empty;
+
+        //        var siteCollections = tenant.GetSiteCollections();
+        //        siteUrl = siteCollections.Last(s => {
+        //            var path = new Uri(s.Url).AbsolutePath;
+        //            return path.Length > 1;
+        //        }).Url;
+        //        tenant.SetSiteLockState(siteUrl, SiteLockState.NoAccess);
+
+        //        var siteProperties = tenant.GetSitePropertiesByUrl(siteUrl, true);
+        //        tenantContext.Load(siteProperties);
+        //        tenantContext.ExecuteQuery();
+
+        //        Assert.IsTrue(siteProperties.LockState == SiteLockState.NoAccess.ToString());
+        //        // delay starting the Unlock test
+        //        System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1.5));
+        //    }
+        //}
     }
 }

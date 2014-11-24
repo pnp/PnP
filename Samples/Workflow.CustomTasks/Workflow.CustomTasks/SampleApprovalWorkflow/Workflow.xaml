@@ -1,0 +1,178 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.CustomTasks.Sample_Approval_Workflow.Workflow" this:Workflow.dueDays="30"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdad="clr-namespace:Microsoft.SharePoint.DesignTime.Activities.Design;assembly=Microsoft.SharePoint.DesignTime.Activities.16.0.Design"
+ xmlns:p="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:p1="wf://workflow.windows.net/$Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:Workflow.CustomTasks.Sample_Approval_Workflow"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="targetApprover" Type="InArgument(x:String)" />
+    <x:Property Name="dueDays" Type="InArgument(x:Int32)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Workflow.CustomTasks.Sample_Approval_Workflow.Workflow_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.WorkflowServices.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Workflow.CustomTasks</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Int32" Name="approvalTaskOutcome" />
+      <Variable x:TypeArguments="x:String" Name="approvalStatus" />
+    </Sequence.Variables>
+    <p:SetUserStatus Description="Pending Approval" sap2010:WorkflowViewState.IdRef="SetUserStatus_2" />
+    <p1:SetWorkflowStatus Disabled="{x:Null}" Status="Pending Approval" sap2010:WorkflowViewState.IdRef="SetWorkflowStatus_2" />
+    <p1:SingleTask TaskId="{x:Null}" TaskItemId="{x:Null}" AssignmentEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;You have a new task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" AssignmentEmailSubject="Task Assigned" Body="Please approve this task!" CancelationEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;One of your tasks was canceled and deleted. You do not need to take any further action on that task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" CancelationEmailSubject="Task Canceled" CompletedStatus="Completed" ContentTypeId="0x0108003365C4474CAE8C42BCE396314E88E51F00032992A620484EF69483D9D2295556C2" DefaultTaskOutcome="1" sap2010:WorkflowViewState.IdRef="SingleTask_1" OutcomeFieldName="CustomApprovalOutcome" OverdueEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;You have an &lt;/span&gt;&lt;span style='font-size:13.5pt;color:#ff3b3b;'&gt;overdue&lt;/span&gt;&lt;span style='font-size:13.5pt'&gt; task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" OverdueEmailSubject="Task Overdue" OverdueReminderRepeat="1" OverdueRepeatTimes="1" PreserveIncompleteTasks="False" SendReminderEmail="True" Title="Sample Approval Task" WaitForTaskCompletion="True" WaiveAssignmentEmail="False" WaiveCancelationEmail="False">
+      <p1:SingleTask.AssignedTo>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">targetApprover</mca:CSharpValue>
+        </InArgument>
+      </p1:SingleTask.AssignedTo>
+      <p1:SingleTask.DueDate>
+        <InArgument x:TypeArguments="s:DateTime">
+          <mca:CSharpValue x:TypeArguments="s:DateTime">DateTime.UtcNow.AddDays(dueDays)</mca:CSharpValue>
+        </InArgument>
+      </p1:SingleTask.DueDate>
+      <p1:SingleTask.Outcome>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">approvalTaskOutcome</mca:CSharpReference>
+        </OutArgument>
+      </p1:SingleTask.Outcome>
+      <p1:SingleTask.RelatedContentLinkListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p1:GetCurrentListId />
+          </p:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListId>
+      <p1:SingleTask.RelatedContentLinkListItemId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p1:GetCurrentItemGuid />
+          </p:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListItemId>
+      <p1:SingleTask.RelatedContentLinkListItemIntegerId>
+        <InArgument x:TypeArguments="x:Int32">
+          <p:ExpressionContainerValue x:TypeArguments="x:Int32">
+            <p1:GetCurrentItemId />
+          </p:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListItemIntegerId>
+    </p1:SingleTask>
+    <If sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">approvalTaskOutcome == 0</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">
+              <mca:CSharpReference x:TypeArguments="x:String">approvalStatus</mca:CSharpReference>
+            </OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">Approved</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">
+              <mca:CSharpReference x:TypeArguments="x:String">approvalStatus</mca:CSharpReference>
+            </OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">Rejected</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <p1:WriteToHistory DisplayName="Write Approval Status to History" sap2010:WorkflowViewState.IdRef="WriteToHistory_1">
+      <p1:WriteToHistory.Message>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">String.Format("Approval Workflow Outcome: {0}", approvalStatus)</mca:CSharpValue>
+        </InArgument>
+      </p1:WriteToHistory.Message>
+    </p1:WriteToHistory>
+    <p:SetUserStatus sap2010:WorkflowViewState.IdRef="SetUserStatus_1">
+      <p:SetUserStatus.Description>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">approvalStatus</mca:CSharpValue>
+        </InArgument>
+      </p:SetUserStatus.Description>
+    </p:SetUserStatus>
+    <p1:SetWorkflowStatus Disabled="{x:Null}" sap2010:WorkflowViewState.IdRef="SetWorkflowStatus_1">
+      <p1:SetWorkflowStatus.Status>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">approvalStatus</mca:CSharpValue>
+        </InArgument>
+      </p1:SetWorkflowStatus.Status>
+    </p1:SetWorkflowStatus>
+    <sads:DebugSymbol.Symbol>d2lDOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5DdXN0b21UYXNrc1xXb3JrZmxvdy5DdXN0b21UYXNrc1xTYW1wbGVBcHByb3ZhbFdvcmtmbG93XFdvcmtmbG93LnhhbWwxAYIBAYUBAQIyA5QBDgIBATcFN2kCAVA4BTiBAQIBTjkFXhUCAShfBX0KAgEUfgWEARkCAQ6FAQWLARcCAQiMAQWSARwCAQI3Ijc0AgFRODY4SAIBTzlQOa0CAgFNOa8HOcYHAgFMOf4KOYELAgFLOYsDObgFAgFKOYoMOZEMAgFJSwtNKAIBSDnrBjnuBgIBRzmoDDmvDAIBRjmaCzmhCwIBRTnaAjn1AgIBREYLRmMCAT858QU5/AUCAT45tAs5ugsCAT1SC1QoAgE8QQtBawIBNznCCjnQCgIBNlkLWygCATU5wQs51wsCATQ52Ac5rQoCATM5iwY51wYCATI8CzxXAgEtOe4LOfQLAgEsOcUCOdQCAgErOdEFOeAFAgEqOecKOeoKAgEpYgtiYgIBFWYJbxICASFyCXsSAgEagQELgQGIAQIBD4gBC4gBVwIBCY8BC48BVwIBA0wNTCQDAUgBUw1TJgMBPAFaDVokAwE1AW00bTwCASdpD2ljAgEieTR5PAIBIHUPdWMCARs=</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="SetUserStatus_2" sap:VirtualizedContainerService.HintSize="509,22" />
+      <sap2010:ViewStateData Id="SetWorkflowStatus_2" sap:VirtualizedContainerService.HintSize="509,22" />
+      <sap2010:ViewStateData Id="SingleTask_1" sap:VirtualizedContainerService.HintSize="509,89">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="ContentTypeId" DisplayName="CustomApprovalTask" Value="0x0108003365C4474CAE8C42BCE396314E88E51F00032992A620484EF69483D9D2295556C2" />
+            </scg:Dictionary>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="509,212" />
+      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="509,68" />
+      <sap2010:ViewStateData Id="SetUserStatus_1" sap:VirtualizedContainerService.HintSize="509,22" />
+      <sap2010:ViewStateData Id="SetWorkflowStatus_1" sap:VirtualizedContainerService.HintSize="509,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="531,821">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.CustomTasks.Sample_Approval_Workflow.Workflow_1" sap:VirtualizedContainerService.HintSize="571,901" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
