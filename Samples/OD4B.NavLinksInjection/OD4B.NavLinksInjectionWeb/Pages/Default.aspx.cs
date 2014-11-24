@@ -60,6 +60,7 @@ namespace OD4B.NavLinksInjectionWeb
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
                 AddJsLink(ctx, ctx.Web);
+                lblStatus.Text = string.Format("Second level navigation injection has been applied to the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
 
@@ -70,6 +71,7 @@ namespace OD4B.NavLinksInjectionWeb
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
                 DeleteJsLink(ctx, ctx.Web);
+                lblStatus.Text = string.Format("Second level navigation injection has been removed from the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
 
