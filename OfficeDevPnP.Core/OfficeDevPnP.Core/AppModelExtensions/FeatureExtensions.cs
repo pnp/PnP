@@ -97,10 +97,10 @@ namespace Microsoft.SharePoint.Client
             features.Context.ExecuteQuery();
 
             Feature iprFeature = features.GetById(featureID);
-            features.Context.Load(iprFeature);
+            features.Context.Load(iprFeature, f => f.DefinitionId);
             features.Context.ExecuteQuery();
 
-            if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && iprFeature.DefinitionId.Equals(featureID))
+            if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && !iprFeature.ServerObjectIsNull.Value && iprFeature.DefinitionId.Equals(featureID))
             {
                 featureIsActive = true;
             }

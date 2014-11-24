@@ -80,29 +80,36 @@ namespace ECM.RecordsManagementWeb
             rdDeclarationBy.Enabled = enabled;
             rdRestrictions.Enabled = enabled;
             rdUndeclarationBy.Enabled = enabled;
-            btnSaveSiteScopedIPRSettings.Enabled = enabled;
-            rdRestrictions.SelectedValue = Convert.ToString((int)cc.Site.GetRecordRestrictions());
-            rdAvailability.SelectedValue = cc.Site.GetManualRecordDeclarationInAllLocations().ToString();
-            rdDeclarationBy.SelectedValue = Convert.ToString((int)cc.Site.GetRecordDeclarationBy());
-            rdUndeclarationBy.SelectedValue = Convert.ToString((int)cc.Site.GetRecordUnDeclarationBy());
-
-            // Scenario 2
             rdListAvailability.Enabled = enabled;
             chbAutoDeclare.Enabled = enabled;
+            btnSaveSiteScopedIPRSettings.Enabled = enabled;
             btnSaveListScopedIPRSettings.Enabled = enabled;
 
-            if (!cc.Web.ListExists(IPR_LIBRARY))
+            if (cc.Site.IsInPlaceRecordsManagementActive())
             {
-                cc.Web.CreateDocumentLibrary(IPR_LIBRARY);
-            }
+                rdRestrictions.SelectedValue = Convert.ToString((int)cc.Site.GetRecordRestrictions());
+                rdAvailability.SelectedValue = cc.Site.GetManualRecordDeclarationInAllLocations().ToString();
+                rdDeclarationBy.SelectedValue = Convert.ToString((int)cc.Site.GetRecordDeclarationBy());
+                rdUndeclarationBy.SelectedValue = Convert.ToString((int)cc.Site.GetRecordUnDeclarationBy());
 
-            List ipr = cc.Web.GetListByTitle(IPR_LIBRARY);
-            if (ipr.IsListRecordSettingDefined())
-            {
-                rdListAvailability.SelectedValue = Convert.ToString((int)ipr.GetListManualRecordDeclaration());
-                chbAutoDeclare.Checked = ipr.GetListAutoRecordDeclaration();
-                //Refresh the settings as AutoDeclare changes the manual settings
-                rdListAvailability.Enabled = !chbAutoDeclare.Checked;
+                // Scenario 2
+                rdListAvailability.Enabled = enabled;
+                chbAutoDeclare.Enabled = enabled;
+                btnSaveListScopedIPRSettings.Enabled = enabled;
+
+                if (!cc.Web.ListExists(IPR_LIBRARY))
+                {
+                    cc.Web.CreateDocumentLibrary(IPR_LIBRARY);
+                }
+
+                List ipr = cc.Web.GetListByTitle(IPR_LIBRARY);
+                if (ipr.IsListRecordSettingDefined())
+                {
+                    rdListAvailability.SelectedValue = Convert.ToString((int)ipr.GetListManualRecordDeclaration());
+                    chbAutoDeclare.Checked = ipr.GetListAutoRecordDeclaration();
+                    //Refresh the settings as AutoDeclare changes the manual settings
+                    rdListAvailability.Enabled = !chbAutoDeclare.Checked;
+                }
             }
         }
 

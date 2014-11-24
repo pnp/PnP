@@ -309,4 +309,7 @@
   <data name="BrandingExtension_UpdateComposedLook" xml:space="preserve">
     <value>Updating composed look '{0}' in '{1}'</value>
   </data>
+  <data name="TenantExtensions_SetLockState" xml:space="preserve">
+    <value>SetSiteLockState: Current: {0} Target: {1}</value>
+  </data>
 </root>
