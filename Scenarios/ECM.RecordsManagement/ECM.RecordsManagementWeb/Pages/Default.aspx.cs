@@ -74,8 +74,8 @@ namespace ECM.RecordsManagementWeb
         private void IPRStatusUpdate(bool enabled)
         {
             // Scenario 1
-            lblIPREnabled.Text = enabled ? "enabled" : "disabled";
-            btnToggleIPRStatus.Text = enabled ? "Disable" : "Enable";
+            lblIPREnabled.Text = enabled ? "activated" : "deactivated";
+            btnToggleIPRStatus.Text = enabled ? "Deactivate" : "Activate";
             rdAvailability.Enabled = enabled;
             rdDeclarationBy.Enabled = enabled;
             rdRestrictions.Enabled = enabled;
