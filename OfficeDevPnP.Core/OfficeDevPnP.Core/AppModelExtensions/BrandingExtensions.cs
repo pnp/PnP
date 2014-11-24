@@ -968,6 +968,9 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("pageLayoutName");
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+            web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            
             var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName,
                 ".aspx");
             var query = new CamlQuery();
