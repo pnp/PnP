@@ -43,7 +43,7 @@ string scenario1PageUrl = csomService.AddWikiPage("Site Pages", scenario1Page);
 ```
 
 ## Add HTML to a Wiki page ##
-This is simply done by using the extension method AddHtmlToWikiPage from Office AMS Core:
+This is simply done by using the extension method AddHtmlToWikiPage from Office 365 PnP Core:
 ```C#
 cc.Web.AddHtmlToWikiPage("SitePages", txtHtml.Text, scenario1Page);
 ```
@@ -80,7 +80,7 @@ Below sample shows how to insert a two columns with header and footer layout int
 ```C#
 cc.Web.AddLayoutToWikiPage("SitePages", WikiPageLayout.TwoColumnsHeaderFooter, scenario2Page);
 ```
-Technically this is nothing more than inserting the correct HTML table structure as HTML content. The HTML table structure for the OOB layouts is included in the Office AMS Core library:
+Technically this is nothing more than inserting the correct HTML table structure as HTML content. The HTML table structure for the OOB layouts is included in the Office 365 PnP Core library:
 ![](http://i.imgur.com/ezwBsPv.png)
 
 ## Inserting a web part ##
