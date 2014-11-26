@@ -37,8 +37,17 @@
 
 
     <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly" ID="full" Title="loc:full">
-        <WebPartPages:XsltListViewWebPart runat="server"
-            ListUrl="Lists/TargetLibrary"
+        <WebPartPages:XsltListViewWebPart runat="server" Title="Source Library" ID="sourceView"
+            ListUrl="SourceLibrary"
+            IsIncluded="True"
+            JsLink="clientTemplate.js"
+            NoDefaultStyle="TRUE"
+            PageType="PAGE_NORMALVIEW"
+            Default="False"
+            ViewContentTypeId="0x">
+        </WebPartPages:XsltListViewWebPart>
+        <WebPartPages:XsltListViewWebPart runat="server" Title="Target Library" ID="targetView"
+            ListUrl="TargetLibrary"
             IsIncluded="True"
             JsLink="clientTemplate.js"
             NoDefaultStyle="TRUE"

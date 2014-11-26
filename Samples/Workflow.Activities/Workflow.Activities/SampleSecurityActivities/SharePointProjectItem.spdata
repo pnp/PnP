@@ -4,26 +4,26 @@
     <ProjectItemFile Source="Workflow.xaml" Target="SampleSecurityActivities\" Type="AppPackage" />
   </Files>
   <ExtensionData>
-    <ExtensionDataItem Key="WorkflowAssociation.EventSourceGUID" Value="Lists/TargetLibrary" />
+    <ExtensionDataItem Key="WorkflowAssociation.EventSourceGUID" Value="TargetLibrary" />
     <ExtensionDataItem Key="WorkflowAssociation.HistoryListId" Value="Lists/WorkflowHistoryList" />
     <ExtensionDataItem Key="WorkflowAssociation.TaskListId" Value="Lists/WorkflowTaskList" />
     <ExtensionDataItem Key="WorkflowAssociationItemAdded.Enabled" Value="false" />
-    <ExtensionDataItem Key="WorkflowAssociationItemAdded.EventSourceGUID" Value="Lists/TargetLibrary" />
+    <ExtensionDataItem Key="WorkflowAssociationItemAdded.EventSourceGUID" Value="TargetLibrary" />
     <ExtensionDataItem Key="WorkflowAssociationItemUpdated.Enabled" Value="false" />
-    <ExtensionDataItem Key="WorkflowAssociationItemUpdated.EventSourceGUID" Value="Lists/TargetLibrary" />
-    <ExtensionDataItem Key="WorkflowAssociationManualStart.Description" Value="SampleSecurityActivities - WorkflowStart" />
-    <ExtensionDataItem Key="WorkflowAssociationManualStart.DisplayName" Value="SampleSecurityActivities - WorkflowStart" />
+    <ExtensionDataItem Key="WorkflowAssociationItemUpdated.EventSourceGUID" Value="TargetLibrary" />
+    <ExtensionDataItem Key="WorkflowAssociationManualStart.Description" Value="Sample Security Activities" />
+    <ExtensionDataItem Key="WorkflowAssociationManualStart.DisplayName" Value="Sample Security Activities" />
     <ExtensionDataItem Key="WorkflowAssociationManualStart.Enabled" Value="true" />
-    <ExtensionDataItem Key="WorkflowAssociationManualStart.EventSourceGUID" Value="Lists/TargetLibrary" />
+    <ExtensionDataItem Key="WorkflowAssociationManualStart.EventSourceGUID" Value="TargetLibrary" />
     <ExtensionDataItem Key="WorkflowAssociationManualStart.EventType" Value="WorkflowStart" />
     <ExtensionDataItem Key="WorkflowAssociationManualStart.HistoryListId" Value="Lists/WorkflowHistoryList" />
     <ExtensionDataItem Key="WorkflowAssociationManualStart.Id" Value="4f85b46c-0ddf-452a-9329-baf4c3634a5a" />
     <ExtensionDataItem Key="WorkflowAssociationManualStart.TaskListId" Value="Lists/WorkflowTaskList" />
-    <ExtensionDataItem Key="WorkflowDefinition.Description" Value="My 'Sample Security Activities' Workflow" />
+    <ExtensionDataItem Key="WorkflowDefinition.Description" Value="Sample Security Activities" />
     <ExtensionDataItem Key="WorkflowDefinition.DisplayName" Value="Sample Security Activities" />
     <ExtensionDataItem Key="WorkflowDefinition.Id" Value="01576c16-fccd-41ad-9210-0f7b9bafe6b1" />
     <ExtensionDataItem Key="WorkflowDefinition.InitiationUrl" Value="Pages/SampleSecurityActivitiesInitForm.aspx" />
-    <ExtensionDataItem Key="WorkflowDefinition.RestrictAssociationToId" Value="Lists/TargetLibrary" />
+    <ExtensionDataItem Key="WorkflowDefinition.RestrictAssociationToId" Value="TargetLibrary" />
     <ExtensionDataItem Key="WorkflowDefinition.RestrictAssociationToType" Value="List" />
   </ExtensionData>
 </ProjectItem>

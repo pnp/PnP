@@ -50,9 +50,6 @@
       <DependentUpon>Feature3.feature</DependentUpon>
     </Content>
     <Content Include="Pages\SampleSecurityActivitiesInitForm.aspx" />
-    <Content Include="SourceContacts\Elements.xml" />
-    <Content Include="SourceContacts\Schema.xml" />
-    <Content Include="SourceContacts\SourceContactsInstance\Elements.xml" />
     <Content Include="SourceLibrary\EditDlg.htm" />
     <Content Include="SourceLibrary\Elements.xml" />
     <Content Include="SourceLibrary\FileDlg.htm" />
@@ -60,9 +57,6 @@
     <Content Include="SourceLibrary\Schema.xml" />
     <Content Include="SourceLibrary\SourceLibraryInstance\Elements.xml" />
     <Content Include="SourceLibrary\Upload.aspx" />
-    <Content Include="TargetContacts\Elements.xml" />
-    <Content Include="TargetContacts\Schema.xml" />
-    <Content Include="TargetContacts\TargetContactsInstance\Elements.xml" />
     <Content Include="TargetLibrary\EditDlg.htm" />
     <Content Include="TargetLibrary\Elements.xml" />
     <Content Include="TargetLibrary\FileDlg.htm" />
@@ -84,9 +78,6 @@
     <None Include="MoveFileActivity\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{6501e9aa-ea54-4b47-a312-0a52b9cb934d}</SharePointProjectItemId>
     </None>
-    <None Include="MoveItemActivity\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{d6486a19-aa3c-4a4b-a8ce-c6df23bcf204}</SharePointProjectItemId>
-    </None>
     <None Include="packages.config" />
     <None Include="Pages\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{10af9aff-899d-4493-9f4b-77cff40b58fb}</SharePointProjectItemId>
@@ -98,6 +89,9 @@
     </None>
     <None Include="RetrieveFormDigestActivity\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{377a2ce5-8c47-4943-9f6a-2953e4c7da29}</SharePointProjectItemId>
+    </None>
+    <None Include="SampleMoveFile\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{972c73e9-178f-4923-bba3-d8173a59ab8d}</SharePointProjectItemId>
     </None>
     <None Include="SampleSecurityActivities\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{fbbf281e-03a3-4191-a144-522e90fde244}</SharePointProjectItemId>
@@ -111,23 +105,11 @@
     <None Include="SetWorkflowGlobalStatusActivity\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{3f9857f6-069b-4400-b996-65a9410b526d}</SharePointProjectItemId>
     </None>
-    <None Include="SourceContacts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{c329381b-3879-4de4-a822-8d7f8bb88dbf}</SharePointProjectItemId>
-    </None>
-    <None Include="SourceContacts\SourceContactsInstance\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{8415578c-5b39-45b8-bbfe-29400304e407}</SharePointProjectItemId>
-    </None>
     <None Include="SourceLibrary\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{cc69d8c0-7faf-42fa-b8be-354459a3a678}</SharePointProjectItemId>
     </None>
     <None Include="SourceLibrary\SourceLibraryInstance\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7c6ec05b-20de-40bf-bbf5-f1f3509915b3}</SharePointProjectItemId>
-    </None>
-    <None Include="TargetContacts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{ae999f28-5340-435d-9af4-2e3af0a552ab}</SharePointProjectItemId>
-    </None>
-    <None Include="TargetContacts\TargetContactsInstance\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{bdb13a64-62c2-45f2-b6fd-2ab19c761de0}</SharePointProjectItemId>
     </None>
     <None Include="TargetLibrary\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{1478e469-50c0-4c45-afdf-4e7922cf3d8b}</SharePointProjectItemId>
@@ -195,6 +177,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.SharePoint.DesignTime.Activities.16.0.Design, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.WorkflowServices.Activities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
@@ -213,12 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="SetItemPermissionsActivity\SetItemPermissionsActivity.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlAppDef>
-  </ItemGroup>
-  <ItemGroup>
-    <XamlAppDef Include="MoveItemActivity\MoveItemActivity.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
@@ -255,6 +232,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="SampleSecurityActivities\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SampleMoveFile\Workflow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>
