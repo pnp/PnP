@@ -181,86 +181,27 @@
         </InArgument>
       </p:HttpSend.Uri>
     </p:HttpSend>
-    <If>
-      <If.Condition>
-        <InArgument x:TypeArguments="x:Boolean">
-          <mca:CSharpValue x:TypeArguments="x:Boolean">httpResponseStatusCode != HttpStatusCode.OK</mca:CSharpValue>
-        </InArgument>
-      </If.Condition>
-      <If.Then>
-        <Sequence DisplayName="Failed Get Role">
-          <Sequence.Variables>
-            <Variable x:TypeArguments="x:String" Name="exceptionMessage" />
-          </Sequence.Variables>
-          <Assign>
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:String">
-                <mca:CSharpReference x:TypeArguments="x:String">exceptionMessage</mca:CSharpReference>
-              </OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:String">Failed to update task predecessors!</InArgument>
-            </Assign.Value>
-            <sap2010:WorkflowViewState.IdRef>Assign_5</sap2010:WorkflowViewState.IdRef>
-          </Assign>
-          <p1:WriteToHistory DisplayName="Write Exception to History">
-            <p1:WriteToHistory.Message>
-              <InArgument x:TypeArguments="x:String">
-                <mca:CSharpValue x:TypeArguments="x:String">exceptionMessage</mca:CSharpValue>
-              </InArgument>
-            </p1:WriteToHistory.Message>
-            <sap2010:WorkflowViewState.IdRef>WriteToHistory_6</sap2010:WorkflowViewState.IdRef>
-          </p1:WriteToHistory>
-          <Throw>
-            <InArgument x:TypeArguments="s:Exception">
-              <mca:CSharpValue x:TypeArguments="s:Exception">new ApplicationException(exceptionMessage)</mca:CSharpValue>
-            </InArgument>
-            <sap2010:WorkflowViewState.IdRef>Throw_1</sap2010:WorkflowViewState.IdRef>
-          </Throw>
-          <sap2010:WorkflowViewState.IdRef>Sequence_2</sap2010:WorkflowViewState.IdRef>
-        </Sequence>
-      </If.Then>
-      <sap2010:WorkflowViewState.IdRef>If_1</sap2010:WorkflowViewState.IdRef>
-    </If>
-    <sads:DebugSymbol.Symbol>d39DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2V0VGFza1ByZWRlY2Vzc29yc0FjdGl2aXR5XFNldFRhc2tQcmVkZWNlc3NvcnNBY3Rpdml0eS54YW1sLDYD4gEOAgEBQAtAOgIBAkUFSxEDAZcCTAVSJQMBigJTBWoPAwHiAWsFdg4DAckBdwWCAQ4DAbABgwEFlQEbAwGHAZYBBaEBDgIBbqIBBbcBEgIBPLgBBeABCgIBA0gLSGEDAZgCTwtPWwMBiwJWC1ZoAwH+AV0JaBIDAeMBcwtzlwEDAdYBbgtuZQMBygF/C3+KAQMBvQF6C3phAwGxAYoBP4oBYAMBrwGMAQuMAVMDAaMBjwFBjwFCAwGiAYYBC4YBaQMBlgGSAQuSAV8DAYoBjgFGjgFLAwGJAZABRZABZgMBiAGeAQueAb8BAgF7mQELmQFfAgFvqgELqgFhAgFipQELpQFZAgFWrwELrwFwAgFKtAELtAFXAgE+ogFFogFLAgE9uwELuwF1AgEEvwEJ3QEUAgEQZQ9ldgMB8QFgD2BpAwHkAcMBC80BFAIBLc4BC9UBHwIBH9YBC9sBEwIBEcoBNsoBWQIBO8YBEcYBZwIBLtEBEdEBXwIBINgBD9gBegIBEg==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d39DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2V0VGFza1ByZWRlY2Vzc29yc0FjdGl2aXR5XFNldFRhc2tQcmVkZWNlc3NvcnNBY3Rpdml0eS54YW1sIjYDuQEOAgEBQAtAOgIBAkUFSxEDAd4BTAVSJQMB0QFTBWoPAwGpAWsFdg4DAZABdwWCAQ4CAXeDAQWVARsCAU6WAQWhAQ4CATWiAQW3ARICAQNIC0hhAwHfAU8LT1sDAdIBVgtWaAMBxQFdCWgSAwGqAXMLc5cBAwGdAW4LbmUDAZEBfwt/igEDAYQBegt6YQIBeIoBP4oBYAIBdowBC4wBUwIBao8BQY8BQgIBaYYBC4YBaQIBXZIBC5IBXwIBUY4BRo4BSwIBUJABRZABZgIBT54BC54BvwECAUKZAQuZAV8CATaqAQuqAWECASmlAQulAVkCAR2vAQuvAXACARG0AQu0AVcCAQWiAUWiAUsCAQRlD2V2AwG4AWAPYGkDAasB</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="WebUri_1" sap:VirtualizedContainerService.HintSize="464,68" />
-      <sap2010:ViewStateData Id="RetrieveFormDigestActivity_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WebUri_1" sap:VirtualizedContainerService.HintSize="287,68" />
+      <sap2010:ViewStateData Id="RetrieveFormDigestActivity_1" sap:VirtualizedContainerService.HintSize="287,22" />
       <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="464,212" />
-      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="464,62" />
-      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="464,62" />
-      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="464,92" />
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="464,62" />
-      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="464,62" />
-      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="WriteToHistory_6" sap:VirtualizedContainerService.HintSize="242,68" />
-      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="242,22" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="264,356">
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,212" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="287,92" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="309,1046">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,506">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,1592">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Workflow.Activities.SetTaskPredecessorsActivity_1" sap:VirtualizedContainerService.HintSize="526,1672" />
+      <sap2010:ViewStateData Id="Workflow.Activities.SetTaskPredecessorsActivity_1" sap:VirtualizedContainerService.HintSize="349,1126" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
