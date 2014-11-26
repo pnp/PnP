@@ -18,7 +18,7 @@
             In place records management is
             <asp:Label runat="server" ID="lblIPREnabled" Font-Bold="true" ForeColor="Red"></asp:Label>
             on this site collection. Click on the button to
-            <asp:Button ID="btnToggleIPRStatus" runat="server" Text="Enable" OnClick="btnToggleIPRStatus_Click" />
+            <asp:Button ID="btnToggleIPRStatus" runat="server" Text="Activate" OnClick="btnToggleIPRStatus_Click" />
             in place records management.
             <br />
             <br />
