@@ -22,7 +22,7 @@
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    Sample App to show Workflow Custom Activities in action
+    Sample App to show Workflow Custom Activities
 </asp:Content>
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>

@@ -33,6 +33,10 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0.Design</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>System.Data</AssemblyReference>
@@ -41,9 +45,6 @@
       <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>System.Xml</AssemblyReference>
       <AssemblyReference>System.Xml.Linq</AssemblyReference>
-      <AssemblyReference>Microsoft.Activities</AssemblyReference>
-      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
-      <AssemblyReference>PresentationFramework</AssemblyReference>
       <AssemblyReference>Microsoft.SharePoint.WorkflowServices.Activities</AssemblyReference>
       <AssemblyReference>System.Core</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -127,13 +128,6 @@
         </InArgument>
       </Assign.Value>
     </Assign>
-    <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_5">
-      <p1:WriteToHistory.Message>
-        <InArgument x:TypeArguments="x:String">
-          <mca:CSharpValue x:TypeArguments="x:String">String.Format("JSON Content: {0}", itemToUpdateJSON)</mca:CSharpValue>
-        </InArgument>
-      </p1:WriteToHistory.Message>
-    </p1:WriteToHistory>
     <p:BuildDynamicValue sap2010:WorkflowViewState.IdRef="BuildDynamicValue_1">
       <p:BuildDynamicValue.Result>
         <InOutArgument x:TypeArguments="p:DynamicValue">
@@ -165,13 +159,6 @@
         </InArgument>
       </Assign.Value>
     </Assign>
-    <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_1">
-      <p1:WriteToHistory.Message>
-        <InArgument x:TypeArguments="x:String">
-          <mca:CSharpValue x:TypeArguments="x:String">String.Format("Updating URL: {0}", httpRequestUrl)</mca:CSharpValue>
-        </InArgument>
-      </p1:WriteToHistory.Message>
-    </p1:WriteToHistory>
     <p:HttpSend sap2010:WorkflowViewState.IdRef="HttpSend_1" Method="POST">
       <p:HttpSend.RequestContent>
         <InArgument x:TypeArguments="x:String">
@@ -194,37 +181,86 @@
         </InArgument>
       </p:HttpSend.Uri>
     </p:HttpSend>
-    <p1:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_3">
-      <p1:WriteToHistory.Message>
-        <InArgument x:TypeArguments="x:String">
-          <mca:CSharpValue x:TypeArguments="x:String">String.Format("Update Response Status Code: {0}", httpResponseStatusCode)</mca:CSharpValue>
+    <If>
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">httpResponseStatusCode != HttpStatusCode.OK</mca:CSharpValue>
         </InArgument>
-      </p1:WriteToHistory.Message>
-    </p1:WriteToHistory>
-    <sads:DebugSymbol.Symbol>d39DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2V0VGFza1ByZWRlY2Vzc29yc0FjdGl2aXR5XFNldFRhc2tQcmVkZWNlc3NvcnNBY3Rpdml0eS54YW1sKDUDzQEOAgEBPws/OgIBAkQFShEDAYUCSwVRJQMB+AFSBWkPAwHQAWoFdQ4DAbcBdgWBAQ4DAZ4BggEFiAEZAwGRAYkBBZsBGwIBaJwBBacBDgIBT6gBBa4BGQIBQq8BBcQBEgIBEMUBBcsBGQIBA0cLR2EDAYYCTgtOWwMB+QFVC1VoAwHsAVwJZxIDAdEBcgtylwEDAcQBbQttZQMBuAF+C36KAQMBqwF5C3lhAwGfAYUBC4UBfQMBkgGQAT+QAWADAZABkgELkgFTAwGEAZUBQZUBQgMBgwGMAQuMAWkCAXeYAQuYAV8CAWuUAUaUAUsCAWqWAUWWAWYCAWmkAQukAb8BAgFcnwELnwFfAgFQqwELqwF7AgFDtwELtwFhAgE2sgELsgFZAgEqvAELvAFwAgEewQELwQFXAgESrwFFrwFLAgERyAELyAGSAQIBBGQPZHYDAd8BXw9faQMB0gE=</sads:DebugSymbol.Symbol>
+      </If.Condition>
+      <If.Then>
+        <Sequence DisplayName="Failed Get Role">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="exceptionMessage" />
+          </Sequence.Variables>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">exceptionMessage</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">Failed to update task predecessors!</InArgument>
+            </Assign.Value>
+            <sap2010:WorkflowViewState.IdRef>Assign_5</sap2010:WorkflowViewState.IdRef>
+          </Assign>
+          <p1:WriteToHistory DisplayName="Write Exception to History">
+            <p1:WriteToHistory.Message>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">exceptionMessage</mca:CSharpValue>
+              </InArgument>
+            </p1:WriteToHistory.Message>
+            <sap2010:WorkflowViewState.IdRef>WriteToHistory_6</sap2010:WorkflowViewState.IdRef>
+          </p1:WriteToHistory>
+          <Throw>
+            <InArgument x:TypeArguments="s:Exception">
+              <mca:CSharpValue x:TypeArguments="s:Exception">new ApplicationException(exceptionMessage)</mca:CSharpValue>
+            </InArgument>
+            <sap2010:WorkflowViewState.IdRef>Throw_1</sap2010:WorkflowViewState.IdRef>
+          </Throw>
+          <sap2010:WorkflowViewState.IdRef>Sequence_2</sap2010:WorkflowViewState.IdRef>
+        </Sequence>
+      </If.Then>
+      <sap2010:WorkflowViewState.IdRef>If_1</sap2010:WorkflowViewState.IdRef>
+    </If>
+    <sads:DebugSymbol.Symbol>d39DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2V0VGFza1ByZWRlY2Vzc29yc0FjdGl2aXR5XFNldFRhc2tQcmVkZWNlc3NvcnNBY3Rpdml0eS54YW1sLDYD4gEOAgEBQAtAOgIBAkUFSxEDAZcCTAVSJQMBigJTBWoPAwHiAWsFdg4DAckBdwWCAQ4DAbABgwEFlQEbAwGHAZYBBaEBDgIBbqIBBbcBEgIBPLgBBeABCgIBA0gLSGEDAZgCTwtPWwMBiwJWC1ZoAwH+AV0JaBIDAeMBcwtzlwEDAdYBbgtuZQMBygF/C3+KAQMBvQF6C3phAwGxAYoBP4oBYAMBrwGMAQuMAVMDAaMBjwFBjwFCAwGiAYYBC4YBaQMBlgGSAQuSAV8DAYoBjgFGjgFLAwGJAZABRZABZgMBiAGeAQueAb8BAgF7mQELmQFfAgFvqgELqgFhAgFipQELpQFZAgFWrwELrwFwAgFKtAELtAFXAgE+ogFFogFLAgE9uwELuwF1AgEEvwEJ3QEUAgEQZQ9ldgMB8QFgD2BpAwHkAcMBC80BFAIBLc4BC9UBHwIBH9YBC9sBEwIBEcoBNsoBWQIBO8YBEcYBZwIBLtEBEdEBXwIBINgBD9gBegIBEg==</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="WebUri_1" sap:VirtualizedContainerService.HintSize="287,68" />
-      <sap2010:ViewStateData Id="RetrieveFormDigestActivity_1" sap:VirtualizedContainerService.HintSize="287,22" />
+      <sap2010:ViewStateData Id="WebUri_1" sap:VirtualizedContainerService.HintSize="464,68" />
+      <sap2010:ViewStateData Id="RetrieveFormDigestActivity_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,212" />
-      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="287,62" />
-      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="287,62" />
-      <sap2010:ViewStateData Id="WriteToHistory_5" sap:VirtualizedContainerService.HintSize="287,68" />
-      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="287,92" />
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="287,62" />
-      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="287,68" />
-      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="287,62" />
-      <sap2010:ViewStateData Id="WriteToHistory_3" sap:VirtualizedContainerService.HintSize="287,68" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="309,1370">
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="464,92" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="WriteToHistory_6" sap:VirtualizedContainerService.HintSize="242,68" />
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="264,356">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Workflow.Activities.SetTaskPredecessorsActivity_1" sap:VirtualizedContainerService.HintSize="349,1450" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,506">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,1592">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.Activities.SetTaskPredecessorsActivity_1" sap:VirtualizedContainerService.HintSize="526,1672" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

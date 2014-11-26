@@ -96,6 +96,9 @@
     <None Include="SampleSecurityActivities\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{fbbf281e-03a3-4191-a144-522e90fde244}</SharePointProjectItemId>
     </None>
+    <None Include="SampleTasksWithPredecessors\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5e6ef40c-deb9-49d5-9bbc-3fd983ff6c1a}</SharePointProjectItemId>
+    </None>
     <None Include="SetItemPermissionsActivity\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{09debb85-d01a-425b-a11f-8f12a3acecce}</SharePointProjectItemId>
     </None>
@@ -238,6 +241,12 @@
   </ItemGroup>
   <ItemGroup>
     <XamlAppDef Include="SampleMoveFile\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SampleTasksWithPredecessors\Workflow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </XamlAppDef>

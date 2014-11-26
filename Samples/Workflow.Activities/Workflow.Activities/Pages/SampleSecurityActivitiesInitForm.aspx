@@ -16,7 +16,7 @@
 --%>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    Page Title
+    Sample Security Activities - Initiation Form
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderId="PlaceHolderMain" runat="server">
