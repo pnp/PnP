@@ -177,5 +177,34 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+        [TestMethod]
+        public void CreatedPublishingPagesSetsTitleCorrectly()
+        {
+            var web = Setup("CMSPUBLISHING#0", true);
+            var customTitle = "Bad robot";
+            var customPublishingPageName = "Good-robot";
+            web.Context.Load(web);
+            //Ensure that moderation is enabled
+            var pagesLibrary = web.Lists.GetByTitle("Pages");
+            pagesLibrary.EnableModeration = true;
+            pagesLibrary.Update();
+            web.Context.ExecuteQuery();
+            web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
+            web.AddPublishingPage(customPublishingPageName, publishingPageTemplate, publish: true, title: customTitle);
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            var pageWithNoTitle = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
+            var pageWithCustomTitle = web.GetPublishingPage(string.Format("{0}.aspx", customPublishingPageName));
+            web.Context.Load(pageWithNoTitle.ListItem, i => i["Title"]);
+            web.Context.Load(pageWithCustomTitle.ListItem, i => i["Title"]);
+            web.Context.ExecuteQuery();
+
+            //Check that title is set to page name
+            Assert.AreEqual(publishingPageName, pageWithNoTitle.ListItem["Title"]);
+            //Check that title is set to title
+            Assert.AreEqual(customTitle, pageWithCustomTitle.ListItem["Title"]);
+
+            Teardown(web);
+        }
     }
 }

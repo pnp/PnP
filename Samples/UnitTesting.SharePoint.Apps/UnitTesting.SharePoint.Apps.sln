@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting.SharePoint.Apps", "UnitTesting.SharePoint.Apps\UnitTesting.SharePoint.Apps.csproj", "{076A7F49-0AD6-421C-9D66-188B9A4A8800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting.SharePoint.AppsWeb", "UnitTesting.SharePoint.AppsWeb\UnitTesting.SharePoint.AppsWeb.csproj", "{6C5169C8-1C4A-43E5-A38D-E0F193E53023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting.SharePoint.Apps.Tests", "UnitTesting.SharePoint.Apps.Tests\UnitTesting.SharePoint.Apps.Tests.csproj", "{531DAA96-8253-4D43-8914-511F0925E8E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A22FAC17-D512-42D8-AD38-F032615E4790}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{076A7F49-0AD6-421C-9D66-188B9A4A8800}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6C5169C8-1C4A-43E5-A38D-E0F193E53023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C5169C8-1C4A-43E5-A38D-E0F193E53023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C5169C8-1C4A-43E5-A38D-E0F193E53023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C5169C8-1C4A-43E5-A38D-E0F193E53023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{531DAA96-8253-4D43-8914-511F0925E8E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{531DAA96-8253-4D43-8914-511F0925E8E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{531DAA96-8253-4D43-8914-511F0925E8E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{531DAA96-8253-4D43-8914-511F0925E8E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

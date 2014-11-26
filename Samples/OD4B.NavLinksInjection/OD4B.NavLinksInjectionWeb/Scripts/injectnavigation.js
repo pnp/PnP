@@ -89,10 +89,10 @@ function injectLinks() {
                                         "<div style='float: left;'>" +
                                         "<div class='o365cs-nav-topItem' style='height: 30px;'>" +
                                             "<div>" +
-                                            "<a tabindex='0' style='padding-right: 20px;padding-left: 20px;height: 30px;' title='Go to some site' class='o365button ms-font-m o365cs-nav-item o365cs-nav-link o365cs-topnavText ms-bgc-td-h' id='O365_MainLink_Link1' " +
+                                            "<a tabindex='0' style='padding-right: 20px;padding-left: 20px;height: 30px;line-height: 20px' title='Go to some site' class='o365button ms-font-m o365cs-nav-item o365cs-nav-link o365cs-topnavText ms-bgc-td-h' id='O365_MainLink_Link1' " +
                                             "role='menuitem' aria-disabled='false' aria-haspopup='false' aria-selected='false' aria-label='Go to some site' " +
                                             "href='http://msdn.microsoft.com'>" +
-                                            "<span style='font-size: 12px;line-height:30px;'>MSDN</span>" +
+                                            "<span style='font-size: 12px;line-height:30px;'>Intranet</span>" +
                                             "<span style='display: none;'>" +
                                                 "<span class='wf wf-o365-x18 wf-family-o365 header-downcarat' role='presentation></span>" +
                                             "</span>" +
@@ -106,10 +106,10 @@ function injectLinks() {
                                         "<div style='float: left;'>" +
                                         "<div class='o365cs-nav-topItem' style='height: 30px;'>" +
                                             "<div>" +
-                                            "<a tabindex='1' style='padding-right: 20px;padding-left: 20px;height: 30px;' title='Go to some site' class='o365button ms-font-m o365cs-nav-item o365cs-nav-link o365cs-topnavText ms-bgc-td-h' id='O365_MainLink_Link2' " +
+                                            "<a tabindex='1' style='padding-right: 20px;padding-left: 20px;height: 30px;;line-height: 20px' title='Go to some site' class='o365button ms-font-m o365cs-nav-item o365cs-nav-link o365cs-topnavText ms-bgc-td-h' id='O365_MainLink_Link2' " +
                                             "role='menuitem' aria-disabled='false' aria-haspopup='false' aria-selected='false' aria-label='Go to some site' " +
                                             "href='http://technet.microsoft.com'>" +
-                                            "<span style='font-size: 12px;line-height:30px;'>TechNet</span>" +
+                                            "<span style='font-size: 12px;line-height:30px;'>Tools</span>" +
                                             "<span style='display: none;'>" +
                                                 "<span class='wf wf-o365-x18 wf-family-o365 header-downcarat' role='presentation></span>" +
                                             "</span>" +

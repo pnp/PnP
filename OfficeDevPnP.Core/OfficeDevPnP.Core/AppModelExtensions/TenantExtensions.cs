@@ -675,5 +675,29 @@ namespace Microsoft.SharePoint.Client
             }
             return client;
         }
+
+#if !CLIENTSDKV15
+        // This is separate from SetSiteProperties because it is not available from the v15 assemblies.
+
+        /// <summary>
+        /// Sets a site to Unlock access or NoAccess. This operation may occur immediately, but the site lock may take a short while before it goes into effect.
+        /// </summary>
+        /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site (i.e. https://[tenant]-admin.sharepoint.com)</param>
+        /// <param name="siteFullUrl">The target site to change the lock state.</param>
+        /// <param name="lockState">The target state the site should be changed to.</param>
+        public static void SetSiteLockState(this Tenant tenant, string siteFullUrl, SiteLockState lockState) {
+            var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
+            tenant.Context.Load(siteProps);
+            tenant.Context.ExecuteQuery();
+
+            LoggingUtility.Internal.TraceInformation(0, CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
+
+            if (siteProps.LockState != lockState.ToString()) {
+                siteProps.LockState = lockState.ToString();
+                siteProps.Update();
+                tenant.Context.ExecuteQuery();
+            }
+        }
+#endif
     }
 }
