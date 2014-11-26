@@ -1,0 +1,30 @@
+﻿<Activity x:Class="Workflow.Activities.MoveFileActivity"
+          xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+          mc:Ignorable="sap2010"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#"
+          xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+          xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <TextExpression.NamespacesForImplementation>
+        <sco:Collection x:TypeArguments="x:String">
+            <x:String>System</x:String>
+            <x:String>System.Collections.Generic</x:String>
+            <x:String>System.Data</x:String>
+            <x:String>System.Text</x:String>
+        </sco:Collection>
+    </TextExpression.NamespacesForImplementation>
+    <TextExpression.ReferencesForImplementation>
+        <sco:Collection x:TypeArguments="AssemblyReference">
+            <AssemblyReference>mscorlib</AssemblyReference>
+            <AssemblyReference>System</AssemblyReference>
+            <AssemblyReference>System.Core</AssemblyReference>
+            <AssemblyReference>System.Data</AssemblyReference>
+            <AssemblyReference>System.ServiceModel</AssemblyReference>
+            <AssemblyReference>System.Xml</AssemblyReference>
+            <AssemblyReference>System.Xml.Linq</AssemblyReference>
+        </sco:Collection>
+    </TextExpression.ReferencesForImplementation>
+  <Sequence>
+  </Sequence>
+</Activity>
