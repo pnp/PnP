@@ -937,7 +937,7 @@ namespace Microsoft.SharePoint.Client
             context.Load(pagesLibrary);
             context.ExecuteQuery();
             ListItem pageItem = page.ListItem;
-            pageItem["Title"] = pageName;
+            pageItem["Title"] = title;
             pageItem.Update();
             pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
             if (publish)

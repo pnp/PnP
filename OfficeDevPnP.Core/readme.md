@@ -36,6 +36,11 @@ Core component solution structure follows the generic structure like all PnP pro
 
 ![](http://i.imgur.com/jjEgRQk.png)
 
+## Additional documentation ##
+Additional PnP Core component documentation.  
+- [SAML support](SAML authentication.md)
+- [PnP Core nuget package](nuget.md)
+
 ## AppModelExtensions ##
 [Extension methods](http://msdn.microsoft.com/en-us/library/bb383977.aspx) are a .Net construct that allow to extend an existing type with additional methods. This approach is extensively used in the core library. Below you'll see a method that extends the SharePoint.Client.Web type with a method named CreateContentType:
 
