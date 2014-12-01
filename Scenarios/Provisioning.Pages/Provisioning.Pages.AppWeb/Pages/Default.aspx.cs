@@ -81,7 +81,7 @@ namespace Contoso.Provisioning.Pages.AppWeb
         {
             if (cc.Web.AddList(170, new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), "Links", false))
             {
-                AddPromotedSiteLink(cc, cc.Web, "Links", "Office AMS on CodePlex", "https://officeams.codeplex.com");
+                AddPromotedSiteLink(cc, cc.Web, "Links", "Office 365 Dev PnP", "http://aka.ms/officedevpnp");
                 AddPromotedSiteLink(cc, cc.Web, "Links", "Bing", "http://www.bing.com");
             }            
             
