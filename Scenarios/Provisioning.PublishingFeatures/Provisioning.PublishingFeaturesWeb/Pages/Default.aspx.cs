@@ -169,7 +169,7 @@ namespace Provisioning.PublishingFeaturesWeb
                                                    "Contoso master page");
 
                 // Assign master page to the host web
-                clientContext.Web.SetMasterPagesForSiteByName("contoso.master", "contoso.master");
+                clientContext.Web.SetMasterPagesByName("contoso.master", "contoso.master");
 
                 lblStatus2.Text = string.Format("Custom master page called 'contoso.master' has been uploaded and applied to the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
@@ -203,7 +203,7 @@ namespace Provisioning.PublishingFeaturesWeb
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 // Set master page as seattle.master
-                clientContext.Web.SetMasterPageForSiteByName("seattle.master");
+                clientContext.Web.SetMasterPageByName("seattle.master");
 
                 // Set theme as Office
                 clientContext.Web.SetThemeToWeb("Office");
