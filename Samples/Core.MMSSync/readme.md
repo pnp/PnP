@@ -17,7 +17,7 @@ Core.MMSSync | Kimmo Forss, Frank Marasco, Bert Jansen (**Microsoft**)
 Version | Date | Comments
 ---------| -----| --------
 1.0 | May 5th 2014 | Initial release
-2.0 | December 2nd 2014 | Major rewrite of the sync manager, now supports all change events + hierarchical termsets + multiple languages
+2.0 | December 2nd 2014 | Major rewrite of the sync manager, now supports all change events for groups, temsets and terms, hierarchical termsets, reused terms, multiple languages, term and termset properties, more robust operations, logging,...
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -183,7 +183,234 @@ foreach (ChangedItem _changeItem in _cic) {
 
 Ensure, that the user has the appropriate permissions to the term store in both the source and target term stores, or you will get an exception.
 
-# DEPENDENCIES #
-- Microsoft.SharePoint.Client.dll
-- Microsoft.SharePoint.Client.Runtime.dll
-- Microsoft.SharePoint.Client.Taxonomy.dll
+
+## Apendix A: So you want to automatically keep termstores in sync? ##
+The MMSSyncManager class of this sample can be used to easiliy build a full fledged managed metadata sync tool. Below steps describe the high level tasks that you would need to deal with:
+* Create a console application
+* Define all configuration data (urls, users, encrypted passwords, settings) in app.config 
+* Use the **CopyNewTermGroups** method to perform the initial sync
+* Use the **ProcessChanges** method to get the changelog between the last sync and now
+* Store the timestamp of the last sync as we're only interested in changes as of that moment
+* Schedule this exe as an Azure Web Job or as a scheduled task on a Windows Server
+
+Below sample code is an implementation of above high level steps that synchronizes managed metadata from a SharePoint Online environment to an on-premises SharePoint web application that's secured via SAML + ADFS. Note that this code uses the OfficeDevPnP.Core library to deal with the authentication needs.
+
+```C#
+using Microsoft.SharePoint.Client;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OfficeDevPnP.Core;
+using System.Threading;
+using System.Configuration;
+using System.Diagnostics;
+
+namespace SharePoint.MMSSync
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool syncWasDone = false;
+            DateTime newGetChangesAsOf;
+
+            try
+            {                
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                //Read the configuration data
+                string thumbPrint = ConfigurationManager.AppSettings["ThumbPrint"];
+                string sourceUrl = ConfigurationManager.AppSettings["Source.Url"];
+                string sourceUser = ConfigurationManager.AppSettings["Source.User"];
+                string sourcePassword = ConfigurationManager.AppSettings["Source.Password"];
+                string targetUrl = ConfigurationManager.AppSettings["Target.Url"];
+                string targetUser = ConfigurationManager.AppSettings["Target.User"];
+                string targetDomain = ConfigurationManager.AppSettings["Target.Domain"];
+                string targetPassword = ConfigurationManager.AppSettings["Target.Password"];
+                string targetADFSServer = ConfigurationManager.AppSettings["Target.ADFS.Server"];
+                string targetADFSUrn = ConfigurationManager.AppSettings["Target.ADFS.Urn"];
+                string termGroupExclusions = ConfigurationManager.AppSettings["TermGroup.Exclusions"];
+                string changelogTimezoneDeltaInMinutes = ConfigurationManager.AppSettings["Changelog.TimezoneDeltaInMinutes"];
+                string changelogSchedule = ConfigurationManager.AppSettings["Changelog.Schedule"];
+                string syncInitializionDone = ConfigurationManager.AppSettings["Sync.InitializionDone"];
+                string syncLastCompleteSyncDateTime = ConfigurationManager.AppSettings["Sync.LastCompleteSyncDateTime"];
+                string loggingLogFile = ConfigurationManager.AppSettings["Logging.LogFile"];
+                string loggingLevel = ConfigurationManager.AppSettings["Logging.Level"];
+
+#if DEBUG
+                if (String.IsNullOrEmpty(sourcePassword))
+                {
+                    sourcePassword = GetPassWord();
+                    targetPassword = sourcePassword;
+                }
+#endif
+
+                if (!String.IsNullOrEmpty(thumbPrint))
+                {
+                    sourcePassword = OfficeDevPnP.Core.Utilities.EncryptionUtility.Decrypt(sourcePassword, thumbPrint);
+                    targetPassword = OfficeDevPnP.Core.Utilities.EncryptionUtility.Decrypt(targetPassword, thumbPrint);
+                }
+
+                AuthenticationManager amSource = new AuthenticationManager();
+                ClientContext sourceContext = amSource.GetSharePointOnlineAuthenticatedContextTenant(sourceUrl, sourceUser, sourcePassword);
+                sourceContext.RequestTimeout = Timeout.Infinite;
+
+                AuthenticationManager amTarget = new AuthenticationManager();
+                ClientContext targetContext = amTarget.GetADFSUserNameMixedAuthenticatedContext(targetUrl, targetUser, targetPassword, targetDomain, targetADFSServer, targetADFSUrn);
+                targetContext.RequestTimeout = Timeout.Infinite;
+
+                if (string.IsNullOrEmpty(loggingLogFile))
+                {
+                    loggingLogFile = "mmssync.log";
+                }
+
+                Log.Internal.Source.Listeners.Clear();
+                Log.Internal.Source.Listeners.Add(new ConsoleTraceListener() { Name = "Console" });
+                Log.Internal.Source.Listeners.Add(new DefaultTraceListener() { Name = "Default" });
+                Log.Internal.Source.Listeners.Add(new TextWriterTraceListener(loggingLogFile) { Name = "File", TraceOutputOptions = TraceOptions.DateTime });
+
+                SourceLevels level = SourceLevels.Information;
+                if (!string.IsNullOrEmpty(loggingLevel))
+                {
+                    Enum.TryParse<SourceLevels>(loggingLevel, out level);
+                }
+                Log.Internal.Source.Switch.Level = level;
+
+                if (!String.IsNullOrEmpty(syncInitializionDone))
+                {
+                    bool.TryParse(syncInitializionDone, out syncWasDone);
+                }
+
+                List<string> termGroupExclusionsList = new List<string>();
+                if (!String.IsNullOrEmpty(termGroupExclusions))
+                {
+                    String[] groupsToExclude = termGroupExclusions.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    termGroupExclusionsList.AddRange(groupsToExclude);
+                }
+
+                int timeZoneAddMinutes = 0;
+                if (!String.IsNullOrEmpty(changelogTimezoneDeltaInMinutes))
+                {
+                    int.TryParse(changelogTimezoneDeltaInMinutes, out timeZoneAddMinutes);
+                }
+
+                MMSSyncManager ms = new MMSSyncManager();
+
+                if (!syncWasDone)
+                {
+                    if (ms.CopyNewTermGroups(sourceContext, targetContext, termGroupExclusionsList))
+                    {
+                        syncWasDone = true;
+
+                        config.AppSettings.Settings["Sync.InitializionDone"].Value = true.ToString();
+                        config.Save(ConfigurationSaveMode.Modified);
+                        Log.Internal.TraceInformation((int)EventId.InitializationDone, "Sync engine initialized");
+                    }
+                }
+
+                DateTime getChangesAsOf = DateTime.Now.AddMinutes(-1 * (timeZoneAddMinutes + 10));
+                if (!String.IsNullOrEmpty(syncLastCompleteSyncDateTime))
+                {
+                    if (!DateTime.TryParse(syncLastCompleteSyncDateTime, out getChangesAsOf))
+                    {
+                        getChangesAsOf = DateTime.Now.AddMinutes(-1 * (timeZoneAddMinutes + 10));
+                    }
+                }
+
+                Log.Internal.TraceInformation((int)EventId.GetChangesFrom, "Process changes as from {0}", getChangesAsOf.ToString());
+                newGetChangesAsOf = DateTime.Now;
+                if (ms.ProcessChanges(sourceContext, targetContext, getChangesAsOf, termGroupExclusionsList))
+                {
+                    config.AppSettings.Settings["Sync.LastCompleteSyncDateTime"].Value = newGetChangesAsOf.ToString();
+                    config.Save(ConfigurationSaveMode.Modified);
+                    Log.Internal.TraceInformation((int)EventId.ChangeProcessingDone, "Processing changes done");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Internal.TraceError((int)EventId.SyncError, ex, "Sync engine error");
+            }
+            finally
+            {
+                Log.Internal.Source.Flush();
+            }
+        }
+
+        #if DEBUG
+        private static string GetPassWord()
+        {
+            Console.Write("SharePoint Password : ");
+
+            string strPwd = "";
+
+            for (ConsoleKeyInfo keyInfo = Console.ReadKey(true); keyInfo.Key != ConsoleKey.Enter; keyInfo = Console.ReadKey(true))
+            {
+                if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (strPwd.Length > 0)
+                    {
+                        strPwd = strPwd.Remove(strPwd.Length - 1);
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        Console.Write(" ");
+                        Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                    }
+                }
+                else if (keyInfo.Key != ConsoleKey.Enter)
+                {
+                    Console.Write("*");
+                    strPwd += keyInfo.KeyChar;
+
+                }
+
+            }
+            Console.WriteLine("");
+
+            return strPwd;
+        }
+        #endif
+
+    }
+}
+```
+
+The configuration file that belongs to this is the following:
+
+```XML
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5" />
+  </startup>
+  <appSettings>
+    <!--Password decryption certificate-->
+    <add key="ThumbPrint" value="xxxxxxxxxxxxxxxxxxxxx"/>
+    <!--Information that describes the source of the managed metadata -->
+    <add key="Source.Url" value="https://tenant.sharepoint.com/sites/dev"/>
+    <add key="Source.User" value="user@tenant.onmicrosoft.com"/>
+    <add key="Source.Password" value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="/>
+    <!--Information that describes the target of the managed metadata. Given
+        this is on-premises secured by ADFS the ADFS info needs to be provided -->
+    <add key="Target.Url" value="https://saml.mydomain.com/Sites/test"/>
+    <add key="Target.User" value="administrator"/>
+    <add key="Target.Domain" value="MyDomain"/>
+    <add key="Target.Password" value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="/>
+    <add key="Target.ADFS.Server" value="sts.mydomain.com"/>
+    <add key="Target.ADFS.Urn" value="urn:sharepoint:saml"/>
+    <!-- Configure logging-->
+    <add key="Logging.LogFile" value="c:\temp\mmssync.log"/>
+    <!--Possible values: Off, Critical, Error, Warning, Information, Verbose-->
+    <add key="Logging.Level" value="Verbose"/>
+    <!-- The below list of termgroups are never synced -->
+    <add key="TermGroup.Exclusions" value="local,People,Search Dictionaries,Taxonomy Navigation"/>
+    <!-- The changelog entries have changedate that's based on the server's timezone. To correctly
+         deal with this you can define the timezone delta in minutes -->
+    <add key="Changelog.TimezoneDeltaInMinutes" value="60"/>
+    <!-- Information about the previous sync run-->
+    <add key="Sync.InitializionDone" value="false"/>
+    <add key="Sync.LastCompleteSyncDateTime" value=""/>
+  </appSettings>
+</configuration>
+```
+
