@@ -311,6 +311,11 @@ namespace Microsoft.SharePoint.Client
 
         public static TermGroup GetTermGroupById(this Site site, Guid termGroupId)
         {
+            if (termGroupId == null || termGroupId.Equals(Guid.Empty))
+            {
+                throw new ArgumentNullException("termGroupId");
+            }
+
             TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
             var store = session.GetDefaultSiteCollectionTermStore();
             IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Id == termGroupId);
