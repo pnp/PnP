@@ -135,6 +135,7 @@ Command | Description
 **Add-SPOView** | Adds a new view to an existing list
 **Get-SPOList** | Returns a list
 **Get-SPOView** | Returns the views of a list
+**Get-SPOListItem** | Retrieve list items by id, unique id, or CAML. Optionally you can define which fields to load.
 **New-SPOList** | Creates a new list
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
