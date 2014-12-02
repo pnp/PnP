@@ -28,6 +28,13 @@ Version  | Date | Comments
 # SCENARIO: WORKFLOW WITH CUSTOM FORMS #
 This SharePoint-hosted sample application for SharePoint demonstrates how to create a workflow that provides custom forms for workflow initiation and approval tasks.
 
+Below screenshot shows the custom initiation form:
+
+![](http://i.imgur.com/nx2jK1V.png)
+
+And this is the custom approval form:
+![](http://i.imgur.com/bQN4qiO.png)
+
 ## WORKFLOW ##
 ### WORKFLOW ARGUMENTS ###
 The workflow expect the target approver and the due days for approval as input arguments.
