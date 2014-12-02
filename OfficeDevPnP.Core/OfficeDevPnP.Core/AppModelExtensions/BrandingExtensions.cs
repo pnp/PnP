@@ -971,8 +971,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
             web.Context.ExecuteQuery();
             
-            var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName,
-                ".aspx");
+            var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName, ".aspx");
             var query = new CamlQuery();
             query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
             var galleryItems = masterPageGallery.GetItems(query);
