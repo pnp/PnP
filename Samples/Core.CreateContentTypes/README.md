@@ -1,7 +1,7 @@
 # Creating Content Types #
 
 ### Summary ###
-This sample shows how you can create site columns, content types and add then add the site columns to the content type. It will also explain the new localization features that have been introduced in the SP1 CSOM API’s. You can download the updated SP2013 SP1 Client Components SDK from following URL. Notice that the version of the Microsoft.SharePoint.Client.dll has been updated and SP1 version has file version set as 15.0.4569.1000.
+This sample shows how you can create site columns, content types and add then add the site columns to the content type. It will also explain the new localization features that have been introduced for Office 365 CSOM APIs.
 
 For more information on this sample, please see Vesa Juvonen's thorough blog post: [http://blogs.msdn.com/b/vesku/archive/2014/02/28/ftc-to-cam-create-content-types-with-specific-ids-using-csom.aspx](http://blogs.msdn.com/b/vesku/archive/2014/02/28/ftc-to-cam-create-content-types-with-specific-ids-using-csom.aspx)
 
@@ -10,8 +10,8 @@ A comprehensive video of the solution can be found at [http://www.youtube.com/wa
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
+-  Office 365 Dedicated (D) - *Multilingual part not supported*
+-  SharePoint 2013 on-premises - *Multilingual part not supported*
 
 ### Solution ###
 Solution | Author(s)
@@ -93,6 +93,8 @@ Finally the fields need to be linked to the content type which is done by using 
     cc.ExecuteQuery();
 
 # Localization of Content Types, Lists, and Site Titles #
+**Notice** *This section is only available in CSOM 16 version assemblies, meaning that it only works in the Office 365 MT and in the Office 365 Dedicated vNext.* 
+
 If needed you can localize the site title and site description using below code sample:
 
     web.TitleResource.SetValueForUICulture("fi-FI", "Kielikäännä minut");
