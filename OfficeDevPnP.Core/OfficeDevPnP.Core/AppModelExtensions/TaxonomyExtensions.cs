@@ -464,6 +464,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     if (termGroup.ServerObjectIsNull == null)
                     {
+                        groupId = Guid.NewGuid();
                         termGroup = termStore.CreateGroup(NormalizeName(groupName), groupId);
                         clientContext.Load(termGroup);
                         clientContext.ExecuteQuery();
@@ -498,6 +499,7 @@ namespace Microsoft.SharePoint.Client
                             catch { }
                             if (termSet.ServerObjectIsNull == null)
                             {
+                                termsetId = Guid.NewGuid();
                                 termSet = termGroup.CreateTermSet(NormalizeName(termsetName), termsetId, lcid);
                                 clientContext.Load(termSet);
                                 clientContext.ExecuteQuery();
@@ -533,6 +535,7 @@ namespace Microsoft.SharePoint.Client
                                     catch { }
                                     if (term.ServerObjectIsNull == null)
                                     {
+                                        termId = Guid.NewGuid();
                                         term = termSet.CreateTerm(NormalizeName(termName), lcid, termId);
                                         clientContext.ExecuteQuery();
                                     }
