@@ -120,9 +120,6 @@ namespace Provisioning.YammerWeb
             // Create new sub site
             Web newWeb = hostWeb.CreateWeb(title, url, description, template, 1033);
 
-            // Set theme for the site
-            newWeb.SetThemeToSubWeb(hostWeb, "Orange");
-
             //Remove the out of the box "NewsFeed" web part
             newWeb.DeleteWebPart("SitePages", "Site feed", "home.aspx");
 
