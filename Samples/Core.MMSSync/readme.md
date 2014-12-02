@@ -33,7 +33,7 @@ Here's the high level process for the MMS synchronization tooling.
 ![](http://i.imgur.com/CpWRWOL.png)
 
 1. One farm has to act as the primary farm, which is used as the location where changes are applied. 
-2. MMS synchronization tooling will access the primary MMS/taxonomy store and will query changes applied to taxonomy after certain time period. Tool will synchronize or repeate the operations also against the other SharePoint services, like Office 365
+2. MMS synchronization tooling will access the primary MMS/taxonomy store and will query changes applied to taxonomy after certain time period. Tool will synchronize or repeat the operations also against the other SharePoint services, like Office 365
 3. MMS is kept on sync between the environments, so that when end users will apply metadata to documents, same terminology is available and if the documents are moved cross environments, metadata is properly stored and kept in the document level
 4. End users can access any environment and they will see same taxonomy terms
 
@@ -184,8 +184,8 @@ foreach (ChangedItem _changeItem in _cic) {
 Ensure, that the user has the appropriate permissions to the term store in both the source and target term stores, or you will get an exception.
 
 
-## Apendix A: So you want to automatically keep termstores in sync? ##
-The MMSSyncManager class of this sample can be used to easiliy build a full fledged managed metadata sync tool. Below steps describe the high level tasks that you would need to deal with:
+## Appendix A: So you want to automatically keep termstores in sync? ##
+The MMSSyncManager class of this sample can be used to easily build a full fledged managed metadata sync tool. Below steps describe the high level tasks that you would need to deal with:
 * Create a console application
 * Define all configuration data (urls, users, encrypted passwords, settings) in app.config 
 * Use the **CopyNewTermGroups** method to perform the initial sync
