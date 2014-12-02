@@ -1292,7 +1292,12 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(ctCol);
             list.Context.ExecuteQuery();
 
-            var ctIds = ctCol.Select(ct => ct.Id).ToList();
+            var ctIds = new List<ContentTypeId>();
+            foreach (ContentType ct in ctCol)
+            {
+                ctIds.Add(ct.Id);
+            }
+            
             var newOrder = ctIds.Except(
                                     // remove the folder content type
                                     ctIds.Where(id => id.StringValue.StartsWith("0x012000"))
