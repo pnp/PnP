@@ -1,42 +1,30 @@
 ﻿var jQuery = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.2.min.js";
+
 // Is MDS enabled?
 if ("undefined" != typeof g_MinimalDownload && g_MinimalDownload && (window.location.pathname.toLowerCase()).endsWith("/_layouts/15/start.aspx") && "undefined" != typeof asyncDeltaManager) {
     // Register script for MDS if possible
-    RegisterModuleInit("scenario1.js", RemoteManager_InjectMDS); //MDS registration
+    RegisterModuleInit("scenario1.js", RemoteManager_Inject); //MDS registration
     RemoteManager_Inject(); //non MDS run
-
-    if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-        Sys.Application.notifyScriptLoaded();
-    }
-
-    if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-        NotifyScriptLoadedAndExecuteWaitingJobs("scenario1.js");
-    }
-
 } else {
-    loadScript(jQuery, function () {
-        $(document).ready(function () {
-            RemoteManager_Inject();
-        });
-    });
-}
-
-function RemoteManager_InjectMDS() {
-    loadScript(jQuery, function () {
-        RemoteManager_Inject();
-    });
+    RemoteManager_Inject();
 }
 
 function RemoteManager_Inject() {
 
-    var message = "<img src='/_Layouts/Images/STS_ListItem_43216.gif' align='absmiddle'> <font color='#AA0000'>JavaScript customization is <i>fun</i>!</font>"
-    SetStatusBar(message);
+    loadScript(jQuery, function () {
+        $(document).ready(function () {
+            var message = "<img src='/_Layouts/Images/STS_ListItem_43216.gif' align='absmiddle'> <font color='#AA0000'>JavaScript customization is <i>fun</i>!</font>"
 
-    // Customize the viewlsts.aspx page
-    if (IsOnPage("viewlsts.aspx")) {
-        //hide the subsites link on the viewlsts.aspx page
-        $("#createnewsite").parent().hide();
-    }
+            // Execute status setter only after SP.JS has been loaded
+            SP.SOD.executeOrDelayUntilScriptLoaded(function () { SetStatusBar(message); }, 'sp.js');
+
+            // Customize the viewlsts.aspx page
+            if (IsOnPage("viewlsts.aspx")) {
+                //hide the subsites link on the viewlsts.aspx page
+                $("#createnewsite").parent().hide();
+            }
+        });
+    });
 }
 
 function SetStatusBar(message) {
