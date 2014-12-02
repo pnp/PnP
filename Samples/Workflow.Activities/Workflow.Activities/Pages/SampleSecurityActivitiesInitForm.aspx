@@ -26,7 +26,7 @@
 --%>
     <table>
         <tr>
-            <td>Target Principal Email:<br />
+            <td>Target Principal UPN:<br />
                 <input type="text" id="targetPrincipalEmail" />
                 <br />
             </td>

@@ -35,9 +35,8 @@
         </p>
     </div>
 
-
-    <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly" ID="full" Title="loc:full">
-        <WebPartPages:XsltListViewWebPart runat="server" Title="Source Library" ID="sourceView"
+    <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly"  ID="full2" Title="loc:full2">
+        <WebPartPages:XsltListViewWebPart runat="server" Title="Source Library" ID="XsltListViewWebPart1"
             ListUrl="SourceLibrary"
             IsIncluded="True"
             JsLink="clientTemplate.js"
@@ -46,6 +45,9 @@
             Default="False"
             ViewContentTypeId="0x">
         </WebPartPages:XsltListViewWebPart>
+    </WebPartPages:WebPartZone>
+
+    <WebPartPages:WebPartZone runat="server" FrameType="TitleBarOnly" ID="full" Title="loc:full">
         <WebPartPages:XsltListViewWebPart runat="server" Title="Target Library" ID="targetView"
             ListUrl="TargetLibrary"
             IsIncluded="True"

@@ -26,8 +26,7 @@ Version  | Date | Comments
 ----------
 
 # SCENARIO: CUSTOM ACTIVITIES #
-This SharePoint-hosted sample application for SharePoint demonstrates how to leverage custom activities for workflow. In particular you can see
-how to leverage the following activities:
+This SharePoint-hosted sample application for SharePoint demonstrates how to leverage custom activities for workflow. In particular you can see how to leverage the following activities:
 
 Activity | Description
 ---------|------------
@@ -42,5 +41,5 @@ SetWorkflowGlobalStatusActivity | Allows to set the workflow user status and the
 # HOW TO TEST THE SAMPLE #
 Using Visual Studio 2013, configure the target SharePoint Online site collection, and simply start (F5) the SharePoint App from within Visual Studio 2013.
 In the home page of the SharePoint-hosted app you can add a file to the *Source Library*. Then, using the ECB menu of the document, you can start a new instance of the workflow named "Sample Move File" in order to test the MoveFileActivity activity.
-Moreover, selecting a document in the *Target Library* you can leverage the ECB menu to start a new instance of the workflow named "Sample Security Activities". That workflow will ask you to provide a "Target Principal Email" address and a "Target Role", which will be used to configure a custom set of permissions on the target item. After that, the workflow will assign you a task, to check the permissions on the target item. After completing the task, the permissions on the target item will be resetted back, in order to inherit them from the parent container .
+Moreover, selecting a document in the *Target Library* you can leverage the ECB menu to start a new instance of the workflow named "Sample Security Activities". That workflow will ask you to provide a "Target Principal UPN" value and a "Target Role", which will be used to configure a custom set of permissions on the target item. After that, the workflow will assign you a task, to check the permissions on the target item. After completing the task, the permissions on the target item will be resetted back, in order to inherit them from the parent container .
 Still on documents in the *Target Library* you can see the SetTaskPredecessorsActivity activity in action, by executing the "SampleTasksWithPredecessors" workflow. Through this workflow you will see three tasks assigned to you, where the third one has the previous two as predecessors.
