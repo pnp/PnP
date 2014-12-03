@@ -75,6 +75,10 @@ public SPRemoteEventResult ProcessEvent(SPRemoteEventProperties properties)
     return result;
 }
 ```
+
+Note:
+*  The **AppUninstalling** event only fires when a user completely removes the app: the app needs to be deleted from the site recycle bins in an end-user scenario. In a development scenario the app needs to be removed from the “Apps in testing” library.
+
 Our code runs the centrally located code to see if a list named “Remote Event Receiver Jobs” exists in the host web and, if it does not, it creates it.  The code then checks to see if that list has a remote event receiver attached to it for the ItemAdded event and, if it does not, it attaches one.
 
 ```C#

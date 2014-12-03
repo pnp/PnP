@@ -210,6 +210,7 @@ public SPRemoteEventResult ProcessEvent(SPRemoteEventProperties properties)
 Notes:
 -  The custom category that is being looked for in an App Part on app pages is: **“Custom Category 1”** in this example. This category it’s searching on needs to be unique across all App Parts.
 -  The specialized custom JavaScript file to load if the custom category is found is: **Contoso.OverrideExample.js**
+-  The **AppUninstalling** event only fires when a user completely removes the app: the app needs to be deleted from the site recycle bins in an end-user scenario. In a development scenario the app needs to be removed from the “Apps in testing” library. 
 
 ### SPECIALIZED CUSTOM JAVASCRIPT FILE ###
 The **Contoso.OverrideExample.js** file is a specially crafted JavaScript file that utilizes jQuery, the **Contoso.AppPartPropertyUIOverride.js** helper library (more on that below) and SP.JS (the SharePoint JavaScript Client Side Object Model (CSOM) to manipulate the App Part property UI at runtime.
