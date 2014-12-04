@@ -1,7 +1,7 @@
 # SharePoint Online Throttling #
 
 ### Summary ###
-This sample shows pattern on how to handle possible SharePoitn online throttling which could be applied for CSOM, REST and web service operations in the SharePoint Online. 
+This sample shows pattern on how to handle possible SharePoint Online throttling which could be applied for CSOM, REST and web service operations in the SharePoint Online. 
 
 *Notice that sample contains code which could cause performance issues for your tenant, so it is not really intended to be executed as such, rather to be used as a reference code.*
 
