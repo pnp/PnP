@@ -19,20 +19,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
     [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -Query \"<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3</Value></Contains></Where></Query></View>\"", Remarks = "Retrieves all list items based on the CAML query specified.", SortOrder = 5)]
     public class GetListItem : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, HelpMessage="The list to query", Position=0)]
+        [Parameter(Mandatory = true, HelpMessage = "The list to query", Position = 0)]
         public ListPipeBind List;
 
-        [Parameter(Mandatory = false, HelpMessage="The ID of the item to retrieve", ParameterSetName="byid", Position=1)]
+        [Parameter(Mandatory = false, HelpMessage = "The ID of the item to retrieve")]
         public int Id = -1;
 
-        [Parameter(Mandatory = false, HelpMessage="The unique id (GUID) of the item to retrieve", ParameterSetName="byguid", Position=1)]
+        [Parameter(Mandatory = false, HelpMessage = "The unique id (GUID) of the item to retrieve")]
         public GuidPipeBind UniqueId;
 
-        [Parameter(Mandatory = false, HelpMessage="The CAML query to execute against the list",ParameterSetName="bycaml", Position=1)]
+        [Parameter(Mandatory = false, HelpMessage = "The CAML query to execute against the list")]
         public string Query;
 
-        [Parameter(Mandatory = false, HelpMessage = "The fields to retrieve. If not specified all fields will be loaded.", ParameterSetName = "byid", Position=3)]
-        [Parameter(Mandatory = false, HelpMessage = "The fields to retrieve. If not specified all fields will be loaded.", ParameterSetName = "byguid", Position=3)]
+        [Parameter(Mandatory = false, HelpMessage = "The fields to retrieve. If not specified all fields will be loaded.")]
         public string[] Fields;
 
         protected override void ExecuteCmdlet()
@@ -69,7 +68,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                     }
                     viewFieldsStringBuilder.Append("</ViewFields>");
                 }
-                query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>{0}</Value></Eq></Where></Query>{1}</View>", UniqueId.Id,viewFieldsStringBuilder);
+                query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>{0}</Value></Eq></Where></Query>{1}</View>", UniqueId.Id, viewFieldsStringBuilder);
                 var listItem = list.GetItems(query);
                 ClientContext.Load(listItem);
                 ClientContext.ExecuteQuery();
