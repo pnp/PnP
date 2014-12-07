@@ -138,7 +138,6 @@
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
     <Compile Include="Authentication\GetAuthenticationRealm.cs" />
-    <Compile Include="Base\Configuration.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
@@ -184,6 +183,7 @@
     <Compile Include="Fields\GetField.cs" />
     <Compile Include="Fields\AddField.cs" />
     <Compile Include="Lists\AddView.cs" />
+    <Compile Include="Lists\GetListItem.cs" />
     <Compile Include="Lists\SetDefaultColumnValues.cs" />
     <Compile Include="Lists\GetView.cs" />
     <Compile Include="Lists\RemoveView.cs" />
@@ -212,7 +212,6 @@
     <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
-    <Compile Include="Site\NewSite.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
     <Compile Include="Taxonomy\SetTaxonomyFieldValue.cs" />
     <Compile Include="Lists\GetList.cs" />

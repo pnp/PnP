@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿﻿using System.Security.Cryptography;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string builtInMasterSeattle = "seattle.master";
         private string builtInPalette003 = "palette003.spcolor";
         private string builtInFont002 = "fontscheme002.spfont";
+        private string knownHashOfSeattle = "EC-46-9D-CE-27-7E-D3-79-72-BE-89-35-01-6E-0B-B2-B1-09-F1-3E";
 
         private string customColorFilePath = string.Empty;
         private string customBackgroundFilePath = string.Empty;
@@ -467,6 +469,34 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.AreEqual("FFF07200", accentA.Value);
             }
         }
+
+        // Manually taken over from Gavin Barron's commit https://github.com/gavinbarron/PnP/blob/17c4d3647f4a509fb1eedb949ef07af7f962929c/OfficeDevPnP.Core/OfficeDevPnP.Core.Tests/AppModelExtensions/BrandingExtensionsTests.cs 
+        [TestMethod]
+        public void SeattleMasterPageIsUnchanged()
+        {
+            using (var context = TestCommon.CreateClientContext())
+            {
+                var web = context.Web;
+                //need to get the server relative url 
+                context.Load(web, w => w.ServerRelativeUrl);
+                context.ExecuteQuery();
+                //Use the existing context to directly get a copy of the seattle master page 
+                string masterpageGalleryServerRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl), "_catalogs/masterpage/");
+                var serverRelativeUrlOfSeattle = UrlUtility.Combine(masterpageGalleryServerRelativeUrl, builtInMasterSeattle);
+                FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
+                Assert.IsNotNull(seattle);
+
+
+                //Compute a hash of the file 
+                var hashAlgorithm = HashAlgorithm.Create();
+                byte[] hash = hashAlgorithm.ComputeHash(seattle.Stream);
+                //Convert to a hex string for human consumption 
+                string hex = BitConverter.ToString(hash);
+                //Check against last known hash 
+                Assert.AreEqual(knownHashOfSeattle, hex);
+            }
+        } 
+
 
     }
 }

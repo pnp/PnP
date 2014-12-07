@@ -202,6 +202,7 @@
     <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
     <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
+    <Compile Include="Entities\FieldCreationInformation.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
     <Compile Include="Entities\ThemeEntity.cs" />

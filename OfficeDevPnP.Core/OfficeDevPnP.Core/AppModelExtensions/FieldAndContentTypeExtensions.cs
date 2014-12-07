@@ -1,12 +1,15 @@
 ﻿using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -17,105 +20,130 @@ namespace Microsoft.SharePoint.Client
     {
 
         #region Site Columns
-        /// <summary>
-        /// Create field to web remotely
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
-        /// <returns>The newly created field or existing field.</returns>
+
+        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField(web, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                DisplayName = displayName,
+                Group = group,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(web, fieldCreationInformation, executeQuery);
+
         }
 
-        /// <summary>
-        /// Create field to web remotely
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
-        /// <returns>The newly created field or existing field.</returns>
+        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField(web, id, internalName, fieldType, false, displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                DisplayName = displayName,
+                Group = group,
+                InternalName = internalName,
+                AddToDefaultView = false,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(web, fieldCreationInformation, executeQuery);
         }
-        /// <summary>
-        /// Create field to web remotely
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
-        /// <returns>The newly created field or existing field.</returns>
+
+        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField<Field>(web, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
-        }
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
 
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                DisplayName = displayName,
+                Group = group,
+                AddToDefaultView = addToDefaultView,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(web, fieldCreationInformation, executeQuery);
+        }
         /// <summary>
-        /// Adds field to a list
+        /// Create field to web remotely
         /// </summary>
-        /// <typeparam name="TField">The selected field type to return.</typeparam>
-        /// <param name="web">Site to be processed</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="fieldCreationInformation">Creation Information for the field.</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)
+        {
+            return CreateField<Field>(web, fieldCreationInformation, executeQuery);
+        }
+
+        [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
-            return CreateField<TField>(web, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+
+            var fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                AddToDefaultView = addToDefaultView,
+                Group = group,
+                DisplayName = displayName,
+                AdditionalAttributes = additionalAttributes
+            };
+
+            return CreateField<TField>(web, fieldCreationInformation, executeQuery);
+        }
+
+        [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+
+            var fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                AddToDefaultView = addToDefaultView,
+                Group = group,
+                DisplayName = displayName,
+                AdditionalAttributes = additionalAttributes
+            };
+
+            return CreateField<TField>(web, fieldCreationInformation, executeQuery);
         }
 
         /// <summary>
         /// Create field to web remotely
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
+        /// <param name="fieldCreationInformation">Field creation information</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        public static TField CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
         {
-            if (string.IsNullOrEmpty(internalName))
-                throw new ArgumentNullException("internalName");
+            if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
+                throw new ArgumentNullException("InternalName");
 
-            if (string.IsNullOrEmpty(fieldType))
-                throw new ArgumentNullException("fieldType");
-
-            if (string.IsNullOrEmpty(displayName))
-                throw new ArgumentNullException("displayName");
+            if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
+                throw new ArgumentNullException("DisplayName");
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQuery();
 
-            var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
         }
 
@@ -388,73 +416,101 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region List Fields
-        /// <summary>
-        /// Adds a field to a list
-        /// </summary>
-        /// <param name="list">List to process</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
-        /// <returns>The newly created field or existing field.</returns>
+        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
         public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField(list, id, internalName, fieldType.ToString(), displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                AddToDefaultView = false,
+                DisplayName = displayName,
+                Group = group,
+                InternalName = internalName,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(list, fieldCreationInformation, executeQuery);
+
         }
 
-        /// <summary>
-        /// Add a field to a list
-        /// </summary>
-        /// <param name="list">List to process</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
-        /// <returns>The newly created field or existing field.</returns>
+        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField(list, id, internalName, fieldType, false, displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                AddToDefaultView = false,
+                DisplayName = displayName,
+                Group = group,
+                InternalName = internalName,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(list, fieldCreationInformation, executeQuery);
         }
 
-        /// <summary>
-        /// Adds field to a list
-        /// </summary>
-        /// <param name="list">List to process</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <returns>The newly created field or existing field.</returns>
+        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
-            return CreateField<Field>(list, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                AddToDefaultView = false,
+                DisplayName = displayName,
+                Group = group,
+                InternalName = internalName,
+                AdditionalAttributes = additionalAttributes
+            };
+            return CreateField(list, fieldCreationInformation, executeQuery);
         }
 
         /// <summary>
         /// Adds field to a list
         /// </summary>
-        /// <typeparam name="TField">The selected field type to return.</typeparam>
         /// <param name="list">List to process</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
-        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
+        /// <param name="fieldCreationInformation">Creation information for the field</param>
         /// <returns>The newly created field or existing field.</returns>
+        public static Field CreateField(this List list, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)
+        {
+            return CreateField<Field>(list, fieldCreationInformation, executeQuery);
+        }
+
+        [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this List list, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
-            return CreateField<TField>(list, id, internalName, fieldType.ToString(), addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                AddToDefaultView = addToDefaultView,
+                Group = group,
+                AdditionalAttributes = additionalAttributes,
+                DisplayName = displayName
+            };
+            return CreateField<TField>(list, fieldCreationInformation, executeQuery);
+        }
+
+        [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                AddToDefaultView = addToDefaultView,
+                Group = group,
+                AdditionalAttributes = additionalAttributes,
+                DisplayName = displayName
+            };
+            return CreateField<TField>(list, fieldCreationInformation, executeQuery);
         }
 
         /// <summary>
@@ -462,32 +518,39 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <typeparam name="TField">The selected field type to return.</typeparam>
         /// <param name="list">List to process</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
+        /// <param name="fieldCreationInformation">Field creation information</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        public static TField CreateField<TField>(this List list, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
         {
-            if (string.IsNullOrEmpty(internalName))
-                throw new ArgumentNullException("internalName");
+            if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
+                throw new ArgumentNullException("InternalName");
 
-            if (string.IsNullOrEmpty(fieldType))
-                throw new ArgumentNullException("fieldType");
-
-            if (string.IsNullOrEmpty(displayName))
-                throw new ArgumentNullException("displayName");
+            if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
+                throw new ArgumentNullException("DisplayName");
 
             FieldCollection fields = list.Fields;
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             list.Context.ExecuteQuery();
 
-            var field = CreateFieldBase<TField>(fields, id, internalName, fieldType, addToDefaultView, displayName, group, additionalXmlAttributes, executeQuery);
+            var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
+        }
+
+        [Obsolete("Use CreateFieldBase<TField>(FieldCollection fields, FieldCreationInformation fieldCreationInformation, bool executeQuery = true")]
+        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        {
+            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
+            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
+            {
+                Id = id,
+                InternalName = internalName,
+                AddToDefaultView = addToDefaultView,
+                Group = group,
+                AdditionalAttributes = additionalAttributes,
+                DisplayName = displayName
+            };
+            return CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
         }
 
         /// <summary>
@@ -501,25 +564,25 @@ namespace Microsoft.SharePoint.Client
         /// <param name="addToDefaultView">Bool to add to the default view</param>
         /// <param name="displayName">The display name of the field</param>
         /// <param name="group">The field group name</param>
-        /// <param name="additionalXmlAttributes">Optionally specify additional XML attributes for the field creation</param>
+        /// <param name="additionalAttributes">Optionally specify additional XML attributes for the field creation</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns></returns>
-        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
+        static TField CreateFieldBase<TField>(FieldCollection fields, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
         {
-            Field field = fields.FirstOrDefault(f => f.Id == id || f.InternalName == internalName) as TField;
+            Field field = fields.FirstOrDefault(f => f.Id == fieldCreationInformation.Id || f.InternalName == fieldCreationInformation.InternalName) as TField;
 
             if (field != null)
                 throw new ArgumentException("id", "Field already exists");
 
-            string newFieldCAML = FormatFieldXml(id, internalName, fieldType, displayName, group, additionalXmlAttributes);
+            string newFieldCAML = FormatFieldXml(fieldCreationInformation);
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, internalName, id);
-            field = fields.AddFieldAsXml(newFieldCAML, addToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
+            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
+            field = fields.AddFieldAsXml(newFieldCAML, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
             fields.Context.ExecuteQuery();
 
             // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
-            field.Title = displayName;
+            field.Title = fieldCreationInformation.DisplayName;
             field.Update();
             fields.Context.Load(field);
 
@@ -529,9 +592,31 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
+        [Obsolete("Use FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, IEnumerable<KeyValuePair<string,string>> additionalAttributes)")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
         {
             string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            return newFieldCAML;
+        }
+
+        public static string FormatFieldXml(FieldCreationInformation fieldCreationInformation)
+        {
+            List<string> additionalAttributesList = new List<string>();
+            if (fieldCreationInformation.AdditionalAttributes != null)
+            {
+                foreach (var keyvaluepair in fieldCreationInformation.AdditionalAttributes)
+                {
+                    additionalAttributesList.Add(string.Format(Constants.FIELD_XML_PARAMETER_FORMAT, keyvaluepair.Key, keyvaluepair.Value));
+                }
+            }
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT,
+                fieldCreationInformation.FieldType,
+                fieldCreationInformation.InternalName,
+                fieldCreationInformation.DisplayName,
+                fieldCreationInformation.Id,
+                fieldCreationInformation.Group,
+                additionalAttributesList.Any() ? string.Join(" ", additionalAttributesList) : "");
             return newFieldCAML;
         }
 
@@ -644,6 +729,29 @@ namespace Microsoft.SharePoint.Client
             return fields;
         }
         #endregion
+
+        /// <summary>
+        /// Helper method to parse Key="Value" strings into a keyvaluepair
+        /// </summary>
+        /// <param name="xmlAttributes"></param>
+        /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.Linq.XElement.Parse(System.String)")]
+        private static List<KeyValuePair<string, string>> ParseAdditionalAttributes(string xmlAttributes)
+        {
+            List<KeyValuePair<string, string>> attributes = null;
+            // The XmlAttributes should be presented in the Key="Value" AnotherKey="Value" format.
+            if (!string.IsNullOrEmpty(xmlAttributes))
+            {
+                attributes = new List<KeyValuePair<string, string>>();
+                string parameterXml = string.Format(Constants.FIELD_XML_PARAMETER_WRAPPER_FORMAT, xmlAttributes); // Temporary xml structure
+                XElement xe = XElement.Parse(parameterXml);
+                foreach (var attribute in xe.Attributes())
+                {
+                    attributes.Add(new KeyValuePair<string, string>(attribute.Name.LocalName, attribute.Value));
+                }
+            }
+            return attributes;
+        }
 
         #region Content Types
 
@@ -1299,7 +1407,7 @@ namespace Microsoft.SharePoint.Client
             }
             
             var newOrder = ctIds.Except(
-                                    // remove the folder content type
+                // remove the folder content type
                                     ctIds.Where(id => id.StringValue.StartsWith("0x012000"))
                                  )
                                  .OrderBy(x => !x.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
@@ -1327,14 +1435,16 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">Target list containing the content types</param>
         /// <param name="contentTypeNamesOrIds">Content type names or ids to sort.</param>
-        public static void ReorderContentTypes(this List list, IEnumerable<string> contentTypeNamesOrIds) {
+        public static void ReorderContentTypes(this List list, IEnumerable<string> contentTypeNamesOrIds)
+        {
             var listContentTypes = list.ContentTypes;
             list.Context.Load(listContentTypes);
             list.Context.ExecuteQuery();
             IList<ContentTypeId> newOrder = new List<ContentTypeId>();
             var ctCol = listContentTypes.Cast<ContentType>().ToList();
 
-            foreach (var ctypeName in contentTypeNamesOrIds){
+            foreach (var ctypeName in contentTypeNamesOrIds)
+            {
                 var ctype = ctCol.Find(ct => ctypeName.Equals(ct.Name, StringComparison.OrdinalIgnoreCase) || ct.StringId.StartsWith(ctypeName));
                 if (ctype != null)
                     newOrder.Add(ctype.Id);

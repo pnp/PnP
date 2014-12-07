@@ -134,7 +134,7 @@ namespace Core.MMSSync
                     return 1;
                 }
                 MMSSyncManager _manager = new MMSSyncManager();
-                _manager.MoveTermGroup(_ctxSource, _ctxTarget, _termGroup);
+                _manager.CopyTermGroup(_ctxSource, _ctxTarget, _termGroup);
 
             }
             else if (opsTypeSelection == "2")
@@ -149,7 +149,7 @@ namespace Core.MMSSync
                 List<string> _termSets = new List<string>(_termsetInput);
 
                 MMSSyncManager _manager = new MMSSyncManager();
-                _manager.ProcessChanges(_ctxSource, _ctxTarget, _termSets);
+                _manager.ProcessChanges(_ctxSource, _ctxTarget, DateTime.Now.AddYears(-1), null, _termSets);
             }
 
             Console.WriteLine("I worked on it for you.");

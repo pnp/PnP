@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Workflow4AppCustomActivity" DefaultFile="SetWorkflowGlobalStatusActivity.xaml" SupportedTrustLevels="All" SupportedDeploymentScopes="AppPackage" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="SetWorkflowGlobalStatusActivity.xaml" Type="AppPackage" />
+  </Files>
+</ProjectItem>

@@ -10,7 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{74B2AC56-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{9BACE27E-A9A1-4AD5-BAED-8DFFF5F7C974}"
 	ProjectSection(SolutionItems) = preProject
-		Provisioning.Cloud.Sync.docx = Provisioning.Cloud.Sync.docx
 		readme.md = readme.md
 	EndProjectSection
 EndProject

@@ -7,7 +7,7 @@
      SharePointMinVersion="15.0.0.0"
 >
   <Properties>
-    <Title>Office AMS Page Provisioning sample</Title>
+    <Title>Office 365 PnP Page Provisioning </Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
   </Properties>
 

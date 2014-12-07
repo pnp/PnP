@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+
+  <!-- This custom Site Column will replace the out of the box OutcomeChoice column of the Workflow Task -->
+  <Field ID="{3924DA3D-77BF-4C23-BB54-C6491FA6FDDA}"
+         Name="CustomApprovalOutcome"
+         StaticName="CustomApprovalOutcome"
+         DisplayName="CustomApprovalOutcome"
+         Type="OutcomeChoice"
+         Required="FALSE"
+         Group="Custom Site Columns">
+    <CHOICES>
+      <CHOICE>Approved</CHOICE>
+      <CHOICE>Rejected</CHOICE>
+    </CHOICES>
+  </Field>
+  
+  <!-- Parent ContentType: Workflow Task (SharePoint 2013) (0x0108003365C4474CAE8C42BCE396314E88E51F) -->
+  <ContentType ID="0x0108003365C4474CAE8C42BCE396314E88E51F00032992A620484EF69483D9D2295556C2"
+               Name="CustomApprovalTask"
+               Group="Custom Content Types"
+               Description="Approval Task Content Type"
+               Inherits="FALSE"
+               Version="0">
+    <FieldRefs>
+      <FieldRef ID="{3924DA3D-77BF-4C23-BB54-C6491FA6FDDA}" Name="CustomApprovalOutcome" />
+    </FieldRefs>
+
+    <XmlDocuments>
+      <XmlDocument NamespaceURI="http://schemas.microsoft.com/sharepoint/v3/contenttype/forms/url">
+        <FormUrls xmlns="http://schemas.microsoft.com/sharepoint/v3/contenttype/forms/url">
+          <Display>Pages/CustomApprovalTaskForm.aspx</Display>
+          <Edit>Pages/CustomApprovalTaskForm.aspx</Edit>
+        </FormUrls>
+      </XmlDocument>
+    </XmlDocuments>
+  </ContentType>
+</Elements>

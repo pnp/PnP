@@ -1,0 +1,107 @@
+﻿<html dir="$Resources:core,PageDirection;">
+<head>
+    <meta name="GENERATOR" content="Microsoft SharePoint"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Expires" content="0"/>
+    <!-- _locID="id_PageTitle" _locComment="{StringCategory=TTL}" -->
+    <title id="onetidTitle">File Properties</title>
+<link rel="stylesheet" type="text/css" href="/_layouts/15/<%=System.Threading.Thread.CurrentThread.CurrentUICulture.LCID%>/styles/corev4.css">
+    <meta name="Microsoft Theme" content="default"/>
+    <meta name="Microsoft Border" content="none"/>
+<script type="text/javascript" src="/_layouts/15/<%=System.Threading.Thread.CurrentThread.CurrentUICulture.LCID%>/strings.js"></script>
+<script type="text/javascript" src="/_layouts/15/init.js"></script>
+<script type="text/javascript" src="/_layouts/15/core.js"></script>
+<ows:Switch> 
+    <Expr><ProjectProperty Select="CustomJSUrl"/></Expr>
+    <Case Value=""></Case>
+    <Default>
+        <HTML><![CDATA[<script language='javascript' src="]]></HTML>
+        <ProjectProperty Select="CustomJSUrl" URLEncodeAsURL="TRUE"/>
+        <HTML><![CDATA["></script>]]></HTML>
+    </Default>
+</ows:Switch>
+<ows:Switch><Expr><ProjectProperty Select="ThemeCSSURL"/></Expr>
+<Case Value=""/>
+<Default><HTML><![CDATA[<link rel="stylesheet" type="text/css" href="]]></HTML><ProjectProperty Select="ThemeCSSURL"/><HTML><![CDATA[">]]></HTML></Default>
+</ows:Switch>
+</head>
+<script language="JavaScript">
+L_tooltipfile_Text = "Double-click to select this document";
+L_tooltipfolder_Text = "";
+selectedElement = null
+inChangeSelection = false
+slElem = null;
+oldSelection = "";
+bIsFileDialogView = true;
+function selectrow()
+{
+    if (slElem) {
+	    slElem.className=oldSelection;
+	    slElem.title="";
+	    }
+    selectedElement = window.event.srcElement;
+    while (selectedElement.tagName!="TR") {
+    	   selectedElement=selectedElement.parentElement;
+           }
+    slElem = selectedElement;
+    oldSelection=slElem.className;		
+    slElem.className="ms-selected";
+    if (slElem.getAttribute("fileattribute") == "file")
+        slElem.title=L_tooltipfile_Text;
+    else
+        slElem.title=L_tooltipfolder_Text;
+    document.selection.empty();
+}
+function checkScroll()
+{
+    if (document.body.scrollHeight > document.body.offsetHeight ||
+		document.body.scrollWidth > document.body.offsetWidth)
+       document.body.scroll="yes";
+}
+</script>
+<body topmargin="5" leftmargin="5" scroll="no" serverType="OWS"
+        onload="checkScroll()" onresize="checkScroll()">
+<!-- Banner -->
+<table class="ms-fileDlgBannerTbl" cellpadding="0" cellspacing="0" border="0" width="100%">
+     <tr>
+         <td style="height:0px; vertical-align:top; white-space:nowrap">
+            <div class="s4-title">
+                <div class="s4-title-inner">
+                    <table class="s4-titletable" cellpadding="0" cellspacing="0" width="100%" border="0">
+                        <tr>
+                            <td class="s4-titlelogo">
+                                <image id="onetidFileDlgImg" src="/_layouts/15/images/siteIcon.png?rev=23"/>
+                            </td>
+                            <td width="100%">
+                                <table class="ms-fileDlgTitleTbl" cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td valign="top" class="ms-titlearea">
+                                            <span class="ms-fileDlgSiteTitle">
+                                                <ows:ProjectProperty Select="Title" HTMLEncode="TRUE"/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:100%; vertical-align:top;" class="s4-titletext">
+                                            <h1 class="ms-fileDlgListTitle">
+                                                <ows:ListProperty Select="Title" HTMLEncode="TRUE"/>
+                                            </h1>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="ms-libraryFileDlgView">
+            <!-- View table -->
+            <ows:View Name="FileDialog"/>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

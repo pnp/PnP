@@ -268,6 +268,18 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void GetTermGroupByIdTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+                var termGroup = site.GetTermGroupById(_termGroupId);
+                Assert.IsInstanceOfType(termGroup, typeof(TermGroup), "Did not return TermGroup object");
+                Assert.AreEqual(_termGroupId, termGroup.Id, "Name does not match");
+            }
+        }
+
+        [TestMethod()]
         public void GetTermByNameTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -716,6 +728,42 @@ namespace Microsoft.SharePoint.Client.Tests
             }
 
         }
+
+        [TestMethod()]
+        public void CreateTaxonomyFieldTest4()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Retrieve Termset and Term
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
+                var anchorTerm = termSet.GetTerm(_termId);
+                clientContext.Load(termSet);
+                clientContext.Load(anchorTerm);
+                clientContext.ExecuteQuery();
+
+                // Retrieve List
+                var list = clientContext.Web.Lists.GetById(_listId);
+                clientContext.Load(list);
+                clientContext.ExecuteQuery();
+
+                // Create field
+                var fieldId = Guid.NewGuid();
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var field = list.CreateTaxonomyField(
+                        fieldId,
+                        fieldName,
+                        "Test Fields Group",
+                        _termGroupName,
+                        anchorTerm);
+
+                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
+                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
+                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
+            }
+
+        }
+
 
         [TestMethod()]
         public void WireUpTaxonomyFieldTest()

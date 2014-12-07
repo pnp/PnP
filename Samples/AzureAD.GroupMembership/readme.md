@@ -46,6 +46,8 @@ I assume that the people using this sample also have an Office 365 tenant...and 
 - Just follow the wizard (you will be asked for your O365 AAD tenant Admin credentials).
 - When you log back (using your Azure admin credentials) to the Azure Management Portal you should see your Office 365 AAD tenant
 
+A more detailed step by step instruction set can also be found at http://www.edutech.me.uk/active-directory/link-microsoft-office-365-organization-account-to-windows-azure-subscription.
+
 ## Register an Azure AD App ##
 Next step is registering an app that has read permissions to the Azure AD. You'll need to clientid and clientsecret of this app in order to run this sample against your Azure AD. Follow below steps to register an Azure app:
 - Sign in to the Azure management portal
