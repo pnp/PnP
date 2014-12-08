@@ -1,5 +1,7 @@
 #Core.DisplayCalendarEvents
 
+![](http://i.imgur.com/yHSpcgb.png)
+
 Imagine you are tasked with creating an app that displays calendars from SharePoint.
 At first this app seems rather straight forward.  As with most apps the logic would be similar to the following:
 
