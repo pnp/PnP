@@ -1,4 +1,4 @@
-﻿(function (JXON, moment, R, SP) {
+﻿(function (JXON, moment, momentf, R, SP) {
 
     SP.Calendar = SP.Calendar || {};
 
@@ -249,6 +249,7 @@
             event.masterSeriesItemID    = mixedEvent.fieldValuesAsTextEvent.MasterSeriesItemID;
             event.recurrenceData        = mixedEvent.fieldValuesAsTextEvent.RecurrenceData;
             event.recurrenceID          = mixedEvent.fieldValuesAsTextEvent.RecurrenceID;
+            event.uid                   = mixedEvent.fieldValuesAsTextEvent.UID;
 
             // Parse duration string: '3,600' -> 3600
             durationString = mixedEvent.fieldValuesAsTextEvent.Duration.replace(/[^\d]/g, '');
@@ -310,10 +311,12 @@
     };
 
     SP.Calendar.Event.convertSpRuleToMatchFunction = function(seriesStartMoment, seriesEndMoment, spRule) {
+        var getDayIndicies = R.map(R.compose(SP.Calendar.Utility.getDayIndex, R.prop('name')));
         var rules = []
             , frequency
             , measure
             , rule
+            , date
             , days
             , dayIndicies
             , firstOfMoment
@@ -334,7 +337,7 @@
                         measure         = 'days';
                         firstOfMoment   = seriesStartMoment.clone().startOf('day');
 
-                        rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure));
+                        rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure, true));
                     }
                     // Example: every weekday aka. mo, tu, we, th, fr every week.
                     else if (spRule.repeat.daily['@weekday']) {
@@ -348,43 +351,69 @@
                     frequency       = spRule.repeat.weekly['@weekfrequency'];
                     measure         = 'week';
                     days            = SP.Calendar.Utility.extractDays(spRule.repeat.weekly);
-                    dayIndicies     = R.map(SP.Calendar.Utility.getDayIndex)(days);
+                    dayIndicies     = getDayIndicies(days);
                     firstOfMoment   = seriesStartMoment.clone().startOf('week');
 
                     // Add rule to ensure correct day of week
                     rules.push(momentf.isDayInDays(dayIndicies));
 
                     // Add rule to ensure correct interval of week
-                    rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure));
+                    rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure, false));
                 }
                     // Example: The 18th day of every 2 months
                 else if (spRule.repeat.monthly) {
                     frequency   = spRule.repeat.monthly['@monthfrequency'];
                     measure     = 'months';
-                        
-                    var date    = spRule.repeat.monthly['@day'];
-                    firstOfMoment = seriesStartMoment.clone().startOf('month');
+                    date    = spRule.repeat.monthly['@day'];
+                    firstOfMoment   = seriesStartMoment.clone().startOf('months');
 
-                    // Add rule to ensure correct day of month
-                    rules.push(momentf.isDateEq(date));
+                    // Add rule to ensure correct day of month, not sure if this is needed since interval check would overlap
+                    rules.push(momentf.isEq('date', date));
 
                     // Add rule to ensure correct interval of month
-                    rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure));
+                    rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure, false));
                 }
                     // Example: on the 'second' 'thursday' of every 3 months
                 else if (spRule.repeat.monthlybyday) {
-                    frequency = spRule.repeat.monthlybyday['@monthfrequency'];
-                    measure = 'months';
-                    weekdayofmonth = spRule.repeat.monthlybyday['@weekdayofmonth'];
+                    frequency       = spRule.repeat.monthlybyday['@monthfrequency'];
+                    measure         = 'months';
+                    weekdayOfMonth  = spRule.repeat.monthlybyday['@weekdayofmonth'];
 
-                    days = SP.Calendar.Utility.extractDays(spRule.repeat.monthlybyday);
-                    dayIndicies = R.map(SP.Calendar.Utility.getDayIndex)(days);
+                    days            = SP.Calendar.Utility.extractDays(spRule.repeat.monthlybyday);
+                    dayIndicies     = getDayIndicies(days);
+                    firstOfMoment   = seriesStartMoment.clone().startOf('months');
 
                     // Add rule to ensure correct interval of month (Every 3 months)
-                    rules.push(momentf.isOfFrequency(firstOfMonth, frequency, measure));
+                    rules.push(momentf.isOfFrequency(firstOfMoment, frequency, measure, false));
 
                     // Add rule to ensure correct occurance of day within month (Second Thursday)
-                    rules.push(momentf.isOccerenceOfDayWithinMonth(weekdayofmonth, dayIndicies));
+                    rules.push(momentf.isOccerenceOfDayWithinMonth(weekdayOfMonth, dayIndicies));
+                }
+                else if (spRule.repeat.yearly) {
+                    date    = spRule.repeat.yearly['@day'];
+                    // months in sharepoint start at 1, but start at 0 for moment-recur, subtract 1 to convert
+                    month   = spRule.repeat.yearly['@month'] - 1;
+
+                    // Add rule to ensure correct month of year (December)
+                    rules.push(momentf.isEq('month', month));
+
+                    // Add rule to ensure correct date of month (25th)
+                    rules.push(momentf.isEq('date', date));
+                }
+                    // Example: Repeat on the Second Tuesday of September
+                else if (spRule.repeat.yearlybyday) {
+                    frequency       = spRule.repeat.yearlybyday['@yearfrequency'];
+                    measure         = 'years';
+                    month           = spRule.repeat.yearlybyday['@month'] - 1;
+                    weekdayOfMonth  = spRule.repeat.yearlybyday['@weekdayofmonth'];
+                    days            = SP.Calendar.Utility.extractDays(spRule.repeat.yearlybyday);
+                    dayIndicies     = getDayIndicies(days);
+
+                    // Add rule to ensure correct month of year (December)
+                    rules.push(momentf.isEq('month', month));
+
+                    // Add rule to ensure correct occurance of day within month (Third Weekday)
+                    rules.push(momentf.isOccerenceOfDayWithinMonth(weekdayOfMonth, dayIndicies));
                 }
             }
         }
@@ -474,4 +503,4 @@
     };
 
 
-})(JXON, moment, R, this.SP = this.SP || {});
+})(JXON, moment, momentf, R, this.SP = this.SP || {});
