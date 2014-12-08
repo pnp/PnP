@@ -59,6 +59,7 @@ namespace OfficeDevPnP.Core.Utilities
         UpdateComposedLook = 2604,
 
         ClosedContextWarning = 4201,
+        RequestFrequencyExceeded = 4202,
         
         ProblemDeterminingTokenLease = 4301,
 

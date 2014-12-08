@@ -312,4 +312,10 @@
   <data name="TenantExtensions_SetLockState" xml:space="preserve">
     <value>SetSiteLockState: Current: {0} Target: {1}</value>
   </data>
+  <data name="ClientContext_MaxRetryAttemptsExceeded" xml:space="preserve">
+    <value>Maximum retry attempts {0} exceeded.</value>
+  </data>
+  <data name="ClientContext_RequestFrequencyExceed" xml:space="preserve">
+    <value>CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.</value>
+  </data>
 </root>
