@@ -26,7 +26,7 @@ namespace OfficeDevPnP.Core
             this._retryDelay = delay;
         }
 
-        public ClientContext(Uri uri, int retryCount = 0, int delay = 500)
+        public ClientContext(Uri uri, int retryCount = 1, int delay = 500)
             : base(uri)
         {
             if (retryCount <= 0)
