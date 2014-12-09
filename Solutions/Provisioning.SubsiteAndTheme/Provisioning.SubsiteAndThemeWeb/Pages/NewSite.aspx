@@ -68,7 +68,7 @@
         <div style="margin-top:20px">
             <asp:Button runat="server" ID="CancelButton" Text="Cancel" OnClick="CancelButton_Click" CausesValidation="false" />
             <asp:Button runat="server" ID="SubmitButton" Text="Submit" OnClick="SubmitButton_Click" />
-            <asp:HyperLink runat="server" ID="ApplyThemeButton" Text="Apply theme to all sites" NavigateUrl="~/Pages/ApplyThemeToSite.aspx"  />
+            <asp:HyperLink runat="server" ID="ApplyThemeLink" Text="Apply theme to all sites" style="margin-left: 20px" />
         </div>
     </div>
     </form>

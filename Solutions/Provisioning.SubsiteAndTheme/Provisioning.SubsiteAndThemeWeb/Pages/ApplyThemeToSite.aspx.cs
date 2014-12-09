@@ -17,6 +17,7 @@ namespace Provisioning.SubsiteAndThemeWeb.Pages {
 
                     ThemeList.DataSource = config.Branding.Themes;
                     ThemeList.DataBind();
+                    SetSiteLogoCheckbox.Text = string.IsNullOrEmpty(config.Branding.LogoUrl) ? " Logo File: " + config.Branding.LogoFilePath : " Logo Url: " + config.Branding.LogoUrl;
 
                     if (ThemeList.Items.Count == 2) {
                         ThemeList.Enabled = false;

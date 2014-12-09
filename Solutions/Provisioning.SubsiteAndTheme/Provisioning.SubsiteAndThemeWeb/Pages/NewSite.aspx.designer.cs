@@ -112,12 +112,12 @@ namespace Provisioning.SubsiteAndThemeWeb {
         protected global::System.Web.UI.WebControls.Button SubmitButton;
         
         /// <summary>
-        /// ApplyThemeButton control.
+        /// ApplyThemeLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink ApplyThemeButton;
+        protected global::System.Web.UI.WebControls.HyperLink ApplyThemeLink;
     }
 }

@@ -27,10 +27,13 @@ namespace Provisioning.SubsiteAndThemeWeb {
         protected void Page_Load(object sender, EventArgs e) {
             try {
                 ProvisioningContext.RenderChromeScript(this);
+                var config = ProvisioningContext.Current.Configuration;
+                var siteUrl = Request.QueryString["SPHostUrl"].TrimEnd('/') + '/';
+                ParentSiteLabel.Text = siteUrl;
+                ApplyThemeLink.NavigateUrl = string.Format("~/Pages/ApplyThemeToSite.aspx?SPHostUrl={0}", Uri.EscapeUriString(siteUrl));
 
                 if (!IsPostBack) {
-                    var config = ProvisioningContext.Current.Configuration;
-                    ParentSiteLabel.Text = Request.QueryString["SPHostUrl"].TrimEnd('/') + '/';
+
                     TemplateList.DataSource = config.Templates;
                     TemplateList.DataBind();
 
