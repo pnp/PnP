@@ -15,7 +15,7 @@ Sample that shows how to use REST API to retrieve calendar events and process th
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.DisplayCalendarEvents | Matt Mazola (**Microsoft**)
+Core.DisplayCalendarEvents | Matt Mazzola (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
