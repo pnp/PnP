@@ -77,6 +77,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci1.WebTemplate = "CMSPUBLISHING#0";
                 var web1 = context.Web.Webs.Add(wci1);
                 context.ExecuteQuery();
+                web1.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci2 = new WebCreationInformation();
                 wci2.Url = "a";
@@ -84,6 +85,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci2.WebTemplate = "CMSPUBLISHING#0";
                 var webA = web1.Webs.Add(wci2);
                 context.ExecuteQuery();
+                webA.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci3 = new WebCreationInformation();
                 wci3.Url = "b";
@@ -91,6 +93,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci3.WebTemplate = "CMSPUBLISHING#0";
                 var webB = web1.Webs.Add(wci3);
                 context.ExecuteQuery();
+                webB.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
+
+
             }
 
         }
@@ -281,7 +286,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                //context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
                 context.Web.UploadThemeFile(customColorFilePath);
                 context.Web.UploadThemeFile(customBackgroundFilePath);
                 context.Web.CreateComposedLookByName("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
@@ -294,8 +298,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                // context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                //Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
                 Assert.IsTrue(context.Web.ComposedLookExists("Office"));
                 Assert.IsFalse(context.Web.ComposedLookExists("Dummy Test Theme That Should Not Exist"));
             }
@@ -311,7 +313,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             using (var context = TestCommon.CreateClientContext())
             {
-                var theme = context.Web.GetCurrentLook();
+                var theme = context.Web.GetCurrentComposedLook();
                 Assert.IsTrue(theme != null);
                 Assert.IsTrue(theme.BackgroundImage.EndsWith("image_bg005.jpg"));
             }

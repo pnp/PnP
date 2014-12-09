@@ -326,13 +326,6 @@ namespace Microsoft.SharePoint.Client
             web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit);
         }
 
-        //public static void SetComposedLookInheritFromParent(this Web web, bool resetSubsitesToInherit = false)
-        //{
-        //    web.SetThemeInheritFromParent(resetSubsitesToInherit);
-        //    //web.SetMasterPageInheritFromParent(resetSubsitesToInherit);
-        //    //web.SetCustomMasterPageInheritFromParent(resetSubsitesToInherit);
-        //}
-
         /// <summary>
         /// Recursively applies the specified palette, font, and background image.
         /// </summary>
@@ -886,7 +879,7 @@ namespace Microsoft.SharePoint.Client
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static ThemeEntity GetCurrentTheme(this Web web)
         {
-            var theme = GetCurrentLook(web);
+            var theme = GetCurrentComposedLook(web);
             web.Context.Load(web, w => w.MasterUrl, w => w.CustomMasterUrl);
             web.Context.ExecuteQuery();
             if (string.IsNullOrEmpty(theme.MasterPage))
@@ -902,7 +895,19 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to check</param>
         /// <returns>Entity with attributes of current composed look, or null if none</returns>
+        [Obsolete("Use GetCurrentComposedLook")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static ThemeEntity GetCurrentLook(this Web web)
+        {
+            return GetComposedLook(web, CurrentLookName);
+        }
+
+        /// <summary>
+        /// Returns the current theme of a web
+        /// </summary>
+        /// <param name="web">Web to check</param>
+        /// <returns>Entity with attributes of current composed look, or null if none</returns>
+        public static ThemeEntity GetCurrentComposedLook(this Web web)
         {
             return GetComposedLook(web, CurrentLookName);
         }
@@ -962,6 +967,12 @@ namespace Microsoft.SharePoint.Client
             return theme;
         }
 
+        /// <summary>
+        /// Gets a page layout from the master page catalog
+        /// </summary>
+        /// <param name="web">root web</param>
+        /// <param name="pageLayoutName">name of the page layout to retrieve</param>
+        /// <returns>ListItem holding the page layout, null if not found</returns>
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
         {
             if (string.IsNullOrEmpty(pageLayoutName))
@@ -1031,7 +1042,6 @@ namespace Microsoft.SharePoint.Client
 
                         if (resetSubsitesToInherit || inheritTheme)
                         {
-                            //LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritMaster] = "True";
                             childWeb.MasterUrl = masterPageServerRelativeUrl;
