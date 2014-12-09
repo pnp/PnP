@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<SiteConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AllowedTemplates>
+    <Template DisplayName="Default" TemplateId="STS#0" />
+  </AllowedTemplates>
+  <Branding LogoUrl="" LogoFilePath="/Themes/contosologo.png">
+    <Theme Name="Contoso" ColorFile="/Themes/contoso.spcolor" />
+    <Theme Name="Contoso Red" ColorFile="/Themes/contosored.spcolor" />
+  </Branding>
+</SiteConfig>
