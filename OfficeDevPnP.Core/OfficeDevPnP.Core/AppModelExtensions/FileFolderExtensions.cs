@@ -644,7 +644,7 @@ namespace Microsoft.SharePoint.Client
         /// Uploads a file to the specified folder.
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
-        /// <param name="filePath">Location of the file to be uploaded.</param>
+        /// <param name="localFilePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFile(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists) {
@@ -687,6 +687,24 @@ namespace Microsoft.SharePoint.Client
             folder.Context.ExecuteQuery();
 
             return file;
+        }
+
+        /// <summary>
+        /// Uploads a file to the specified folder by saving the binary directly (via webdav).
+        /// </summary>
+        /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="localFilePath">Location of the file to be uploaded.</param>
+        /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
+        /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
+        public static File UploadFileWebDav(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists) {
+            if (folder == null) throw new ArgumentNullException("folder");
+            if (localFilePath == null) throw new ArgumentNullException("localFilePath");
+
+            if (!System.IO.File.Exists(localFilePath))
+                throw new FileNotFoundException("Local file was not found.", localFilePath);
+
+            using (var stream = System.IO.File.OpenRead(localFilePath))
+                return folder.UploadFileWebDav(fileName, stream, overwriteIfExists);
         }
 
         /// <summary>

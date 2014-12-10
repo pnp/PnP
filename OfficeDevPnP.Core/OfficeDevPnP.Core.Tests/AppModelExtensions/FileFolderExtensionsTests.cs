@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
+using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
@@ -17,7 +18,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
         private string DocumentLibraryName = "Unit_Test_Library";
         private string FolderName = "Unit_Test_Folder";
-        private string FilePath = "../../Resources/office365.png";
+        private string TestFilePath1 = "..\\..\\Resources\\office365.png";
+        private string TestFilePath2 = "..\\..\\Resources\\custombg.jpg";
         private string commentText = "Unit_Test_Comment";
         private CheckinType checkInType = CheckinType.MajorCheckIn;
 
@@ -31,7 +33,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             folder = documentLibrary.RootFolder.CreateFolder(FolderName);
 
             var fci = new FileCreationInformation();
-            fci.Content = System.IO.File.ReadAllBytes(FilePath);
+            fci.Content = System.IO.File.ReadAllBytes(TestFilePath1);
             fci.Url = folder.ServerRelativeUrl + "/office365.png";
             fci.Overwrite = true;
 
@@ -57,6 +59,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             clientContext.ExecuteQuery();
             clientContext.Dispose();
         }
+
+        public TestContext TestContext { get; set; }
 
         [TestMethod()]
         public void CheckOutFileTest()
@@ -158,6 +162,49 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             Assert.AreEqual(testFolder.ServerRelativeUrl, String.Format("{0}/{1}/{2}",clientContext.Web.ServerRelativeUrl, DocumentLibraryName, folderName));
         }
 
+        [TestMethod]
+        public void UploadFileTest() {
+            var fileNameExpected = "TestFile1.png";
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
 
+            Assert.AreEqual(fileNameExpected, file.Name);
+        }
+
+        [TestMethod]
+        public void UploadFileWebDavTest() {
+            var fileNameExpected = "TestFile1.png";
+            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+
+            Assert.AreEqual(fileNameExpected, file.Name);
+        }
+
+        [TestMethod]
+        public void VerifyIfUploadRequiredTest() {
+            var fileNameExpected = "TestFile1.png";
+            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+
+            var expectedFalse = file.VerifyIfUploadRequired(TestFilePath1);
+            var expectedTrue = file.VerifyIfUploadRequired(TestFilePath2);
+
+            Assert.IsFalse(expectedFalse, "Was not able to tell that the files were the SAME.");
+            Assert.IsTrue(expectedTrue, "Was not able to tell that the files were DIFFERENT.");
+        }
+
+        [TestMethod]
+        public void SetFilePropertiesTest() {
+            var fileNameExpected = "TestFile1.png";
+            var expectedTitle = "Test file 1";
+            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+
+            var properties = new Dictionary<string,string>();
+            properties["Title"] = expectedTitle;
+            file.SetFileProperties(properties);
+
+            file.Context.Load(file.ListItemAllFields);
+            file.Context.ExecuteQuery();
+
+            var actualTitle = file.ListItemAllFields["Title"];
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
     }
 }
