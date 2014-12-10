@@ -186,8 +186,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var expectedFalse = file.VerifyIfUploadRequired(TestFilePath1);
             var expectedTrue = file.VerifyIfUploadRequired(TestFilePath2);
 
-            Assert.IsFalse(expectedFalse, "Was not able to tell that the files were the SAME.");
-            Assert.IsTrue(expectedTrue, "Was not able to tell that the files were DIFFERENT.");
+            Assert.IsFalse(expectedFalse, "Was not able to tell that the files were DIFFERENT.");
+            Assert.IsTrue(expectedTrue, "Was not able to tell that the files were the SAME.");
         }
 
         [TestMethod]
