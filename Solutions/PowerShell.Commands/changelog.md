@@ -1,5 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-12-01**
+* Added Get-SPOListItem cmdlet to retrieve list items by id, unique id, or CAML. Optionally you can define which fields to load.
 **2014-11-05**
 * Added Add-SPOFolder cmdlet
 

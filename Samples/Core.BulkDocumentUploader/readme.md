@@ -28,7 +28,7 @@ Version  | Date | Comments
 ----------
 
 # OVERVIEW #
-This sample code and documentation presents an automated way of uploading documents to a targetted site collection through the REST C# API as is a typical request during O365 migrations, for example uploading company policies to each users OneDrive or an index of their migrated content. 
+This sample code and documentation presents an automated way of uploading documents to a targetted site collection through the REST C# API as is a typical request during O365 migrations, for example uploading company policies to each users OneDrive or an index of their migrated content. Below sample shows how to upload one particular file per OneDrive, but this can be easily extended to upload multiple files to a single OneDrive
 
 # SCENARIO 1: BULK UPLOADING DOCUMENTS TO ONEDRIVE #
 The single input file to the utility is **OneDriveUploader.xml** which defines the profile property mappings and connection details for the entire utility. The two primary root elements for the file are ```<loggers>``` and ```<actions>```:
@@ -72,6 +72,17 @@ The single input file to the utility is **OneDriveUploader.xml** which defines t
   </Actions>
 </PropertyMapper>
 ```
+
+## BEFORE YOU RUN THE SAMPLE FROM VS ##
+If you want to test this sample from Visual Studio it's needed that:
+* You update the above OneDriveUploader.xml file to contain:
+    * Your username and password
+    * UserMappingCSVFile pointing to the full locatoin of the SharePointSites.csv file (e.g. C:\Git\PnP\Samples\Core.BulkDocumentUploader\Input\SharePointSites.csv)
+    * DirectoryLocation pointing to the fully qualified directory (e.g. C:\GitHub\BertPnP\Samples\Core.BulkDocumentUploader\Input\OneDriveFiles)
+* Adjust the SharePointSites.CSV file to have the correct OneDrive urls for the users that will need to get the one file
+* Adjust the properties of the Core.BulkDocumentUploader project by adding the fully qualified path the OneDriveUplaoder.xml file as command line argument in the Debug settings
+
+
 
 ## LOG ELEMENTS ##
 Parent Element | Child Element | Value and Description

@@ -37,11 +37,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 document = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
                 var configElement = new XElement("items");
-                var siteProvisionServiceUrlElement = new XElement("item", new XAttribute("key", "RelativeSiteProvisionServiceUrl"));
-                siteProvisionServiceUrlElement.Value = "/_vti_bin/contoso.services.sitemanager/sitemanager.svc";
-                configElement.Add(siteProvisionServiceUrlElement);
                 document.Add(configElement);
-
                 document.Save(path);
             }
             else

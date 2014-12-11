@@ -1,0 +1,103 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.Activities.SetWorkflowGlobalStatusActivity"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:p="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:p1="wf://workflow.windows.net/$Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:Workflow.Activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="WorkflowStatus" Type="InArgument(x:String)" />
+  </x:Members>
+  <this:SetWorkflowGlobalStatusActivity.WorkflowStatus>
+    <InArgument x:TypeArguments="x:String">
+      <mca:CSharpValue x:TypeArguments="x:String">String.Empty</mca:CSharpValue>
+    </InArgument>
+  </this:SetWorkflowGlobalStatusActivity.WorkflowStatus>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Workflow.Activities.SetWorkflowGlobalStatusActivity_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.WorkflowServices.Activities</AssemblyReference>
+      <AssemblyReference>Workflow.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Set Workflow Global Status" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <If>
+      <If.Condition>
+        <InArgument x:TypeArguments="x:Boolean">
+          <mca:CSharpValue x:TypeArguments="x:Boolean">!String.IsNullOrEmpty(WorkflowStatus)</mca:CSharpValue>
+        </InArgument>
+      </If.Condition>
+      <If.Then>
+        <Sequence DisplayName="Set Global Status">
+          <p:SetUserStatus sap2010:WorkflowViewState.IdRef="SetUserStatus_1">
+            <p:SetUserStatus.Description>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">WorkflowStatus</mca:CSharpValue>
+              </InArgument>
+            </p:SetUserStatus.Description>
+          </p:SetUserStatus>
+          <p1:SetWorkflowStatus Disabled="{x:Null}" sap2010:WorkflowViewState.IdRef="SetWorkflowStatus_1">
+            <p1:SetWorkflowStatus.Status>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">WorkflowStatus</mca:CSharpValue>
+              </InArgument>
+            </p1:SetWorkflowStatus.Status>
+          </p1:SetWorkflowStatus>
+          <sap2010:WorkflowViewState.IdRef>Sequence_2</sap2010:WorkflowViewState.IdRef>
+        </Sequence>
+      </If.Then>
+      <sap2010:WorkflowViewState.IdRef>If_1</sap2010:WorkflowViewState.IdRef>
+    </If>
+    <sads:DebugSymbol.Symbol>d4cBQzpcZ2l0XFBuUFBhb2xvUGlhXFNhbXBsZXNcV29ya2Zsb3cuQWN0aXZpdGllc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFNldFdvcmtmbG93R2xvYmFsU3RhdHVzQWN0aXZpdHlcU2V0V29ya2Zsb3dHbG9iYWxTdGF0dXNBY3Rpdml0eS54YW1sCRMHE1EBAjMDUA4CAQE0BU4KAgECNws3bwIBAzsJSxQCAQU8C0IdAgEJQwtJIgIBBj8RP10CAQpGEUZdAgEH</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="SetUserStatus_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SetWorkflowStatus_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="222,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,358" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="486,482">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.Activities.SetWorkflowGlobalStatusActivity_1" sap:VirtualizedContainerService.HintSize="262,288" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

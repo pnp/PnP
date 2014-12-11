@@ -61,7 +61,16 @@ namespace Microsoft.SharePoint.Client.Tests
                 // List
 
                 _textFieldId = Guid.NewGuid();
-                var textfield = clientContext.Web.CreateField(_textFieldId, _textFieldName, FieldType.Text, "Test Text Field", "Test Group");
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = _textFieldId,
+                    InternalName = _textFieldName,
+                    DisplayName = "Test Text Field",
+                    Group = "Test Group"
+                };
+
+                var textfield = clientContext.Web.CreateField(fieldCI);
 
                 var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
 
