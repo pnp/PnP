@@ -221,7 +221,7 @@ namespace Microsoft.SharePoint.Client
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
         {
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
+            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, "FALSE", additionalXmlAttributes);
             return newFieldCAML;
         }
 
