@@ -738,6 +738,33 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Gets a file in a document library.
+        /// </summary>
+        /// <param name="folder">Folder containing the target file.</param>
+        /// <param name="fileName">File name.</param>
+        /// <returns>The target file if found, null if no file is found.</returns>
+        public static File GetFile(this Folder folder, string fileName) {
+            if (folder == null) throw new ArgumentNullException("folder");
+            if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+
+            try {
+                var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
+                var web = folder.ListItemAllFields.ParentList.ParentWeb;
+
+                var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
+
+                folder.Context.Load(file);
+                folder.Context.ExecuteQuery();
+                return file;
+            }
+            catch (Exception ex) {
+                if (ex.Message == "File Not Found.")
+                    return null;
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Used to compare the server file to the local file.
         /// This enables users with faster download speeds but slow upload speeds to evaluate if the server file should be overwritten.
         /// </summary>
@@ -900,6 +927,60 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Publishes a file based on the type of versioning required on the parent library.
+        /// </summary>
+        /// <param name="file">Target file to publish.</param>
+        /// <param name="level">Target publish direction (Draft and Published only apply, Checkout is ignored).</param>
+        public static void PublishFileToLevel(this File file, FileLevel level) {
+            if (file == null) throw new ArgumentNullException("file");
+
+            var publishingRequired = false;
+            var approvalRequired = false;
+            var checkOutRequired = false;
+
+            if (level == FileLevel.Draft || level == FileLevel.Published) {
+                var context = file.Context;
+                var parentList = file.ListItemAllFields.ParentList;
+                context.Load(parentList,
+                            l => l.EnableMinorVersions,
+                            l => l.EnableModeration,
+                            l => l.ForceCheckout);
+
+                checkOutRequired = parentList.ForceCheckout;
+
+                try {
+                    context.ExecuteQuery();
+                    publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
+                    approvalRequired = parentList.EnableModeration;
+                }
+                catch (ServerException ex) {
+                    if (ex.Message != "The object specified does not belong to a list.") {
+                        throw;
+                    }
+                }
+                //LoggingUtility.Internal.TraceVerbose("*** EnableMinorVerions {0}. EnableModeration {1}", publishingRequired, approvalRequired);
+
+                if (file.CheckOutType != CheckOutType.None || checkOutRequired) {
+                    LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", file.Name);
+                    file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
+                    context.ExecuteQuery();
+                }
+
+                if (level == FileLevel.Published) {
+                    if (publishingRequired) {
+                        LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", file.Name);
+                        file.Publish("Published by provisioning");
+                        context.ExecuteQuery();
+                    }
+                    if (approvalRequired) {
+                        LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", file.Name);
+                        file.Approve("Approved by provisioning");
+                        context.ExecuteQuery();
+                    }
+                }
+            }
+        }
         private static string WildcardToRegex(string pattern)
         {
             return "^" + Regex.Escape(pattern).

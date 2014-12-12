@@ -206,5 +206,19 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var actualTitle = file.ListItemAllFields["Title"];
             Assert.AreEqual(expectedTitle, actualTitle);
         }
+
+        [TestMethod()]
+        public void GetFileTest() {
+            var fileName1 = System.IO.Path.GetFileName(TestFilePath1);
+            var file1 = folder.GetFile(fileName1);
+            Assert.AreEqual(fileName1, file1.Name, "Existing file could not be found.");
+
+            var file2 = folder.GetFile(fileName1.ToUpperInvariant());
+            Assert.AreEqual(fileName1, file2.Name, "Existing file could not be found: case-sensitive.");
+
+            var fileName2 = System.IO.Path.GetFileName(TestFilePath2);
+            var file3 = folder.GetFile(fileName2);
+            Assert.IsNull(file3, "File should not exist, but test shows it does.");
+        }
     }
 }

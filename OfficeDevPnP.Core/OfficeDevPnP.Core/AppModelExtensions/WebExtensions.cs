@@ -306,7 +306,9 @@ namespace Microsoft.SharePoint.Client
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
-            rootWeb.RootFolder.UploadFile(sourceFilePath);
+            var sourceFileName = Path.GetFileName(sourceFilePath);
+            rootWeb.RootFolder.UploadFile(sourceFileName, sourceFilePath, true);
+
             var packageInfo = new DesignPackageInfo()
             {
                 PackageName = fileName,

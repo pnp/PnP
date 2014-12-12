@@ -381,7 +381,7 @@ namespace Microsoft.SharePoint.Client
             // Theme catalog only exists at site collection root
             var themesList = web.GetCatalog((int)ListTemplateType.ThemeCatalog);
             var themesFolder = themesList.RootFolder.EnsureFolder(themeFolderVersion);
-            return themesFolder.UploadFile(fileName, localStream);
+            return themesFolder.UploadFile(fileName, localStream, true);
         }
 
 
