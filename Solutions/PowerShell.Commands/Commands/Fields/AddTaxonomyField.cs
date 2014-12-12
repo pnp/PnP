@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Management.Automation;
@@ -53,15 +54,29 @@ namespace OfficeDevPnP.PowerShell.Commands
                 id = Guid.NewGuid();
             }
 
+            TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+            {
+                Id = id,
+                InternalName = InternalName,
+                DisplayName = DisplayName,
+                Group = Group,
+                TaxonomyItem = termSet,
+                MultiValue = MultiValue,
+                Required = Required,
+                AddToDefaultView = AddToDefaultView
+            };
+
             if (List != null)
             {
                 var list = this.SelectedWeb.GetList(List);
 
-                field = list.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+              
+
+                field = list.CreateTaxonomyField(fieldCI);
             }
             else
             {
-                field = this.SelectedWeb.CreateTaxonomyField(id, InternalName, DisplayName, Group, termSet as TermSet, MultiValue);
+                field = this.SelectedWeb.CreateTaxonomyField(fieldCI);
             }
             WriteObject(field);
         }
