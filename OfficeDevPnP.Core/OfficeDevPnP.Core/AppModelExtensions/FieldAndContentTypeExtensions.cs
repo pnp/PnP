@@ -417,6 +417,7 @@ namespace Microsoft.SharePoint.Client
                 fieldCreationInformation.DisplayName,
                 fieldCreationInformation.Id,
                 fieldCreationInformation.Group,
+                fieldCreationInformation.Required ? "TRUE" : "FALSE",
                 additionalAttributesList.Any() ? string.Join(" ", additionalAttributesList) : "");
             return newFieldCAML;
         }

@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static class TaxonomyExtensions
+    [System.Runtime.InteropServices.GuidAttribute("8A8AEA7A-7C25-4138-9C83-2584028868C5")]
+    public static partial class TaxonomyExtensions
     {
         #region Taxonomy Management
         private static Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -1459,109 +1460,34 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQuery();
         }
 
-        /// <summary>
-        /// Can be used to create taxonomy field remotely to web. Associated to group and term set in the GetDefaultSiteCollectionTermStore 
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="mmsGroupName">Taxonomy group </param>
-        /// <param name="mmsTermSetName">Term set name</param>
-        /// <param name="multiValue">If true, create a multi value field</param>
-        /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
-        {
-            id.ValidateNotNullOrEmpty("id");
-            internalName.ValidateNotNullOrEmpty("internalName");
-            displayName.ValidateNotNullOrEmpty("displayName");
-            // Group can be emtpy
-            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
-            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
-
-            TermStore termStore = GetDefaultTermStore(web);
-
-            if (termStore == null)
-                throw new NullReferenceException("The default term store is not available.");
 
 
-            // get the term group and term set
-            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
-            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
-            web.Context.Load(termStore);
-            web.Context.Load(termSet);
-            web.Context.ExecuteQuery();
-
-            return web.CreateTaxonomyFieldInternal(id, internalName, displayName, group, termSet, multiValue);
-        }
 
         /// <summary>
         /// Can be used to create taxonomy field remotely to web.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="termSet">Taxonomy Termset</param>
-        /// <param name="multiValue">if true, create a multivalue taxonomy field</param>
+        /// <param name="fieldCreationInformation">Creation Information of the field</param>
         /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
+        public static Field CreateTaxonomyField(this Web web, TaxonomyFieldCreationInformation fieldCreationInformation)
         {
-            return web.CreateTaxonomyFieldInternal(id, internalName, displayName, group, termSet, multiValue);
-        }
+            fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
+            fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
+            fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
-        /// <summary>
-        /// Can be used to create taxonomy field remotely to web.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="anchorTerm">Taxonomy Term</param>
-        /// <param name="multiValue">if true, create a multivalue taxonomy field</param>
-        /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, Term anchorTerm, bool multiValue = false)
-        {
-            return web.CreateTaxonomyFieldInternal(id, internalName, displayName, group, anchorTerm, multiValue);
-        }
-
-        /// <summary>
-        /// Can be used to create taxonomy field remotely to web.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
-        /// <param name="multiValue">if true, create a multivalue taxonomy field</param>
-        /// <returns>New taxonomy field</returns>
-        private static Field CreateTaxonomyFieldInternal(this Web web, Guid id, string internalName, string displayName, string group, TaxonomyItem taxonomyItem, bool multiValue)
-        {
-            internalName.ValidateNotNullOrEmpty("internalName");
-            displayName.ValidateNotNullOrEmpty("displayName");
-            taxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
+            if(fieldCreationInformation.Id == Guid.Empty)
+            {
+                fieldCreationInformation.Id = Guid.NewGuid();
+            }
 
             try
             {
                 List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
                 additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-                FieldCreationInformation fieldCI = new FieldCreationInformation(multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType")
-                {
-                    Id = id,
-                    InternalName = internalName,
-                    AddToDefaultView = true,
-                    DisplayName = displayName,
-                    Group = group,
-                    AdditionalAttributes = additionalAttributes
-                };
-                var _field = web.CreateField(fieldCI);
+                var _field = web.CreateField(fieldCreationInformation);
 
-                WireUpTaxonomyFieldInternal(_field, taxonomyItem, multiValue);
+                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
                 _field.Update();
 
                 web.Context.ExecuteQuery();
@@ -1574,7 +1500,7 @@ namespace Microsoft.SharePoint.Client
                 FieldCollection _fields = web.Fields;
                 web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
                 web.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
 
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
                 if (_field != null)
@@ -1588,109 +1514,34 @@ namespace Microsoft.SharePoint.Client
 
         }
 
-        /// <summary>
-        /// Can be used to create taxonomy field remotely in a list. Associated to group and term set in the GetDefaultSiteCollectionTermStore 
-        /// </summary>
-        /// <param name="list">List to be processed</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="mmsGroupName">Taxonomy group </param>
-        /// <param name="mmsTermSetName">Term set name</param>
-        /// <param name="multiValue">If true, create multi value field</param>
-        /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
-        {
-            id.ValidateNotNullOrEmpty("id");
-            internalName.ValidateNotNullOrEmpty("internalName");
-            displayName.ValidateNotNullOrEmpty("displayName");
-            mmsGroupName.ValidateNotNullOrEmpty("mmsGroupName");
-            mmsTermSetName.ValidateNotNullOrEmpty("mmsTermSetName");
-
-            var clientContext = list.Context as ClientContext;
-            TermStore termStore = clientContext.Site.GetDefaultSiteCollectionTermStore();
 
 
-            if (termStore == null)
-                throw new NullReferenceException("The default term store is not available.");
 
-            // get the term group and term set
-            TermGroup termGroup = termStore.Groups.GetByName(mmsGroupName);
-            TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
-            list.Context.Load(termStore);
-            list.Context.Load(termSet);
-            list.Context.ExecuteQuery();
-
-            return list.CreateTaxonomyFieldInternal(id, internalName, displayName, group, termSet, multiValue);
-        }
 
         /// <summary>
         /// Can be used to create taxonomy field remotely in a list. 
         /// </summary>
         /// <param name="list">List to be processed</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="termSet">Taxonomy TermSet</param>
-        /// <param name="multiValue">If true, create a multivalue field</param>
+        /// <param name="fieldCreationInformation">Creation information of the field</param>
         /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
+        public static Field CreateTaxonomyField(this List list, TaxonomyFieldCreationInformation fieldCreationInformation)
         {
-            return list.CreateTaxonomyFieldInternal(id, internalName, displayName, group, termSet, multiValue);
-        }
+            fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
+            fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
+            fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
-        /// <summary>
-        /// Can be used to create taxonomy field remotely in a list. 
-        /// </summary>
-        /// <param name="list">List to be processed</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="anchorTerm">Taxonomy Term</param>
-        /// <param name="multiValue">If true, create a multivalue field</param>
-        /// <returns>New taxonomy field</returns>
-        public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, Term anchorTerm, bool multiValue = false)
-        {
-            return list.CreateTaxonomyFieldInternal(id, internalName, displayName, group, anchorTerm, multiValue);
-        }
-
-        /// <summary>
-        /// Can be used to create taxonomy field remotely in a list. 
-        /// </summary>
-        /// <param name="list">List to be processed</param>
-        /// <param name="id">Unique Id for the taxonomy field</param>
-        /// <param name="internalName">Internal Name of the field</param>
-        /// <param name="displayName">Display name</param>
-        /// <param name="group">Site column group</param>
-        /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
-        /// <param name="multiValue">If true, create a multivalue field</param>
-        /// <returns>New taxonomy field</returns>
-        private static Field CreateTaxonomyFieldInternal(this List list, Guid id, string internalName, string displayName, string group, TaxonomyItem taxonomyItem, bool multiValue)
-        {
-            internalName.ValidateNotNullOrEmpty("internalName");
-            displayName.ValidateNotNullOrEmpty("displayName");
-            taxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
-
+            if (fieldCreationInformation.Id == Guid.Empty)
+            { 
+                fieldCreationInformation.Id = Guid.NewGuid(); 
+            }
             try
             {
                 List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
                 additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-                FieldCreationInformation fieldCI = new FieldCreationInformation(multiValue ? "TaxonomyFieldTypeMulti" : "TaxonomyFieldType")
-                {
-                    Id = id,
-                    InternalName = internalName,
-                    AddToDefaultView = true,
-                    DisplayName = displayName,
-                    Group = group,
-                    AdditionalAttributes = additionalAttributes
-                };
-                var _field = list.CreateField(fieldCI);
+                var _field = list.CreateField(fieldCreationInformation);
 
-                WireUpTaxonomyFieldInternal(_field, taxonomyItem, multiValue);
+                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
                 _field.Update();
 
                 list.Context.ExecuteQuery();
@@ -1703,7 +1554,7 @@ namespace Microsoft.SharePoint.Client
                 FieldCollection _fields = list.Fields;
                 list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
                 list.Context.ExecuteQuery();
-                var _hiddenField = id.ToString().Replace("-", "");
+                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
 
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
                 if (_field != null)
@@ -1716,6 +1567,7 @@ namespace Microsoft.SharePoint.Client
                 throw;
             }
         }
+
 
         /// <summary>
         /// Wires up MMS field to the specified term set.
