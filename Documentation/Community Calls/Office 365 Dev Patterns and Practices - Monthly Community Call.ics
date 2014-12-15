@@ -1,0 +1,145 @@
+BEGIN:VCALENDAR
+PRODID:-//Microsoft Corporation//Outlook 16.0 MIMEDIR//EN
+VERSION:2.0
+METHOD:REQUEST
+X-MS-OLK-FORCEINSPECTOROPEN:TRUE
+BEGIN:VTIMEZONE
+TZID:FLE Standard Time
+BEGIN:STANDARD
+DTSTART:16011028T040000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10
+TZOFFSETFROM:+0300
+TZOFFSETTO:+0200
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010325T030000
+RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0300
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+CLASS:PUBLIC
+CREATED:20141215T111824Z
+DESCRIPTION:Invite for Office 365 Developer Patterns & Practices monthly co
+	mmunity calls. \n\n*	https://github.com/OfficeDev/PnP/wiki/Community-call 
+	\n\n......................................................................
+	...................................................................\n--> J
+	oin Lync Meeting <https://join.microsoft.com/meet/vesaj/M4L6QF05>       \n
+	\nJoin by phone\n+17012817781 <tel:+17012817781>  (USA\, Fargo) 		English 
+	(United States) \nFind a local number <https://join.microsoft.com/dialin> 
+	 \n\nConference ID: 2611083\n\n Forgot your dial-in PIN? <https://join.mic
+	rosoft.com/dialin>  |Help <http://o15.officeredir.microsoft.com/r/rlidLync
+	15?clid=1033&p1=5&p2=2009>      \n\n[!OC([1033])!]\n......................
+	..........................................................................
+	.........................................\n\n
+DTEND;TZID="FLE Standard Time":20150113T190000
+DTSTAMP:20141112T104819Z
+DTSTART;TZID="FLE Standard Time":20150113T180000
+LAST-MODIFIED:20141215T111824Z
+LOCATION:Lync Meeting
+ORGANIZER;CN="Vesa Juvonen":mailto:Vesa.Juvonen@microsoft.com
+PRIORITY:5
+RRULE:FREQ=MONTHLY;COUNT=6;BYDAY=TU;BYSETPOS=2
+SEQUENCE:0
+SUMMARY;LANGUAGE=en-gb:Office 365 Dev Patterns and Practices - Monthly Comm
+	unity Call
+TRANSP:OPAQUE
+UID:040000008200E00074C5B7101A82E00800000000B0C354576918D001000000000000000
+	0100000002B5B1444E5EE1540A268F85B7428F96E
+X-ALT-DESC;FMTTYPE=text/html:<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//E
+	N">\n<HTML>\n<HEAD>\n<META NAME="Generator" CONTENT="MS Exchange Server ve
+	rsion rmj.rmm.rup.rpr">\n<TITLE></TITLE>\n</HEAD>\n<BODY>\n<!-- Converted 
+	from text/rtf format -->\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN><SPAN LAN
+	G="en-gb"></SPAN><SPAN LANG="en-gb"><FONT SIZE=2 FACE="Segoe UI">Invite fo
+	r Office 365 Developer Patterns</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SP
+	AN LANG="en-gb"></SPAN><SPAN LANG="en-gb"> <FONT SIZE=2 FACE="Segoe UI">&a
+	mp\; Practices monthly</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="
+	en-gb"></SPAN><SPAN LANG="en-gb"> <FONT SIZE=2 FACE="Segoe UI">community c
+	alls</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN><SPA
+	N LANG="en-gb"><FONT SIZE=2 FACE="Segoe UI">.</FONT></SPAN><SPAN LANG="en-
+	gb"></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><FONT SIZE=2 FACE=
+	"Segoe UI"></FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SP
+	AN><SPAN LANG="en-gb"> </SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN
+	><SPAN LANG="en-us"></SPAN><SPAN LANG="en-us"><FONT SIZE=2 FACE="Symbol">&
+	#183\;<FONT FACE="Courier New">&nbsp\;&nbsp\;&nbsp\;&nbsp\;&nbsp\;&nbsp\;<
+	/FONT></FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN><S
+	PAN LANG="en-gb"></SPAN><SPAN LANG="en-us"> </SPAN><A HREF="https://github
+	.com/OfficeDev/PnP/wiki/Community-call"><SPAN LANG="en-us"></SPAN><SPAN LA
+	NG="en-us"><U><FONT COLOR="#0563C1" SIZE=2 FACE="Calibri">https://github.c
+	om/OfficeDev/PnP/wiki/Community-call</FONT></U></SPAN><SPAN LANG="en-us"><
+	/SPAN></A><SPAN LANG="en-us"></SPAN><SPAN LANG="en-us"></SPAN><SPAN LANG="
+	en-us"><FONT SIZE=2 FACE="Segoe UI"> </FONT></SPAN></P>\n\n<P DIR=LTR><SPA
+	N LANG="en-us"></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN>
+	<SPAN LANG="en-gb"></SPAN><SPAN LANG="en-us"></SPAN></P>\n\n<P DIR=LTR><SP
+	AN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><FONT COLOR="#404040" SIZE=1 FAC
+	E="Calibri">..............................................................
+	..........................................................................
+	.</FONT></SPAN><SPAN LANG="en-gb"><B></B></SPAN><SPAN LANG="en-gb"><B></B>
+	</SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></S
+	PAN><A NAME=""><SPAN LANG="en-gb"></SPAN></A><SPAN LANG="en-gb"><FONT FACE
+	="Wingdings" SIZE=4>&#224\;</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN L
+	ANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN><SP
+	AN LANG="en-gb"><FONT COLOR="#0066CC" SIZE=4 FACE="Calibri"></FONT></SPAN>
+	<SPAN LANG="en-gb"> </SPAN><A HREF="https://join.microsoft.com/meet/vesaj/
+	M4L6QF05"><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><U><FONT COLOR="#00
+	66CC" SIZE=5 FACE="Calibri">Join Lync Meeting</FONT></U></SPAN><SPAN LANG=
+	"en-gb"></SPAN></A><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><FONT SIZE
+	=4 FACE="Calibri">&nbsp\; </FONT></SPAN><A NAME=""><SPAN LANG="en-gb"><FON
+	T SIZE=4 FACE="Calibri"></FONT></SPAN></A><SPAN LANG="en-gb"></SPAN><SPAN 
+	LANG="en-gb"> <FONT SIZE=4 FACE="Calibri">&nbsp\; </FONT></SPAN><A NAME=""
+	><SPAN LANG="en-gb"><FONT SIZE=4 FACE="Calibri"></FONT></SPAN></A><SPAN LA
+	NG="en-gb"></SPAN><SPAN LANG="en-gb"> </SPAN></P>\n\n<P DIR=LTR><SPAN LANG
+	="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=LTR><SPAN LANG="e
+	n-gb"></SPAN><SPAN LANG="en-gb"><FONT COLOR="#000000" SIZE=4 FACE="Calibri
+	">Join by phone</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb">
+	</SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN><A HREF="tel:+17012817
+	781"><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><U><FONT COLOR="#0066CC"
+	 SIZE=2 FACE="Calibri">+17012817781</FONT></U></SPAN><SPAN LANG="en-gb"></
+	SPAN></A><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><FONT SIZE=2 FACE="C
+	alibri"> (USA\, Fargo) &nbsp\;&nbsp\;&nbsp\;&nbsp\;&nbsp\; &nbsp\;&nbsp\;&
+	nbsp\;&nbsp\;&nbsp\;&nbsp\;&nbsp\; English (United States)</FONT></SPAN><S
+	PAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"> </SPAN></P>\n\n<P DIR=LTR><SPA
+	N LANG="en-gb"></SPAN><A HREF="https://join.microsoft.com/dialin"><SPAN LA
+	NG="en-gb"></SPAN><SPAN LANG="en-gb"><U><FONT COLOR="#0066CC" SIZE=2 FACE=
+	"Calibri">Find a local number</FONT></U></SPAN><SPAN LANG="en-gb"></SPAN><
+	/A><SPAN LANG="en-gb"><FONT FACE="Calibri"></FONT></SPAN><SPAN LANG="en-gb
+	"></SPAN><SPAN LANG="en-gb"> </SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb">
+	</SPAN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"><FO
+	NT FACE="Calibri">Conference ID: 2611083</FONT></SPAN><SPAN LANG="en-gb"><
+	/SPAN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"></SP
+	AN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN>
+	<SPAN LANG="en-gb"><FONT SIZE=1 FACE="Calibri"></FONT></SPAN><SPAN LANG="e
+	n-gb">&nbsp\;</SPAN><A HREF="https://join.microsoft.com/dialin"><SPAN LANG
+	="en-gb"><U><FONT COLOR="#0066CC" FACE="Calibri">Forgot your dial-in PIN?<
+	/FONT></U></SPAN><SPAN LANG="en-gb"></SPAN></A><SPAN LANG="en-gb"></SPAN><
+	SPAN LANG="en-gb"><FONT SIZE=1 FACE="Calibri"></FONT></SPAN><SPAN LANG="en
+	-gb"> <FONT FACE="Calibri">|</FONT></SPAN><SPAN LANG="en-gb"></SPAN><A HRE
+	F="http://o15.officeredir.microsoft.com/r/rlidLync15?clid=1033&amp\;p1=5&a
+	mp\;p2=2009"><SPAN LANG="en-gb"><U><FONT COLOR="#0066CC" FACE="Calibri">He
+	lp</FONT></U></SPAN><SPAN LANG="en-gb"></SPAN></A><SPAN LANG="en-gb"></SPA
+	N><SPAN LANG="en-gb"><FONT SIZE=1 FACE="Calibri">&nbsp\;&nbsp\;&nbsp\;&nbs
+	p\;</FONT></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"> </SPAN></P>
+	\n\n<P DIR=LTR><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN></P>\n\
+	n<P DIR=LTR><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"><SUB><FONT COLOR=
+	"#FFFFFF" SIZE=1 FACE="Calibri">[!OC([1033])!]</FONT></SUB></SPAN><SPAN LA
+	NG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=LTR><SPAN LANG=
+	"en-gb"></SPAN><SPAN LANG="en-gb"><FONT COLOR="#404040" SIZE=1 FACE="Calib
+	ri">......................................................................
+	...................................................................</FONT>
+	</SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN></P>\n\n<P DIR=
+	LTR><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"></SPAN><SPAN LANG="en-gb"
+	></SPAN></P>\n\n</BODY>\n</HTML>
+X-MICROSOFT-CDO-BUSYSTATUS:BUSY
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MS-OLK-APPTSEQTIME:20141112T104819Z
+X-MS-OLK-AUTOFILLLOCATION:FALSE
+X-MS-OLK-CONFTYPE:0
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VEVENT
+END:VCALENDAR
