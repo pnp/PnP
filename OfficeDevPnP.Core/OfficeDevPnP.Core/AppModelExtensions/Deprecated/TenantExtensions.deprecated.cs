@@ -13,6 +13,10 @@ namespace Microsoft.SharePoint.Client
 {
     public static partial class TenantExtensions
     {
+        const string SITE_STATUS_ACTIVE = "Active";
+        const string SITE_STATUS_CREATING = "Creating";
+        const string SITE_STATUS_RECYCLED = "Recycled";
+
         [Obsolete("Use tenant.CreateSiteCollection() instead.")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static Guid AddSiteCollection(this Tenant tenant, SiteEntity properties, bool removeFromRecycleBin = false, bool wait = true)
@@ -74,6 +78,39 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+
+        /// <summary>
+        /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
+        /// that does not have a dependency on the Tenant administration csom.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="adminLogins">Array of logins for the additional admins</param>
+        /// <param name="siteUrl">Url of the site to operate on</param>
+        [Obsolete("Use AddAdministrators(this Tenant tenant, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false) with addToOwnersGroup = True")]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static void AddAdministrators(this Tenant tenant, String[] adminLogins, Uri siteUrl)
+        {
+            if (adminLogins == null)
+                throw new ArgumentNullException("adminLogins");
+
+            if (siteUrl == null)
+                throw new ArgumentNullException("siteUrl");
+
+            foreach (var admin in adminLogins)
+            {
+                var siteUrlString = siteUrl.ToString();
+                tenant.SetSiteAdmin(siteUrlString, admin, true);
+                tenant.Context.ExecuteQuery();
+
+                using (var clientContext = new ClientContext(siteUrl))
+                {
+                    var spAdmin = clientContext.Web.EnsureUser(admin);
+                    clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
+                    clientContext.Web.AssociatedOwnerGroup.Update();
+                    clientContext.ExecuteQuery();
+                }
+            }
+        }
 
 
 
