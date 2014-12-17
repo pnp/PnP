@@ -801,7 +801,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -825,7 +826,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             ContentType ct = results.FirstOrDefault();
@@ -1060,7 +1062,7 @@ namespace Microsoft.SharePoint.Client
             ContentType myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQuery();
 
-            //Return the content type object
+            // Return the content type object
             return myContentType;
         }
 
@@ -1075,7 +1077,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
@@ -1092,7 +1095,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
