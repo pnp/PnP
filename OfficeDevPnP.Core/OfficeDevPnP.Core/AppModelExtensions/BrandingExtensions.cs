@@ -668,7 +668,8 @@ namespace Microsoft.SharePoint.Client
 
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
-            query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
+            // Use query Scope='RecursiveAll' to iterate through sub folders of Master page library because we might have file in folder hierarchy
+            query.ViewXml = "<View Scope='RecursiveAll'><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
@@ -766,7 +767,8 @@ namespace Microsoft.SharePoint.Client
 
             var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName, ".aspx");
             var query = new CamlQuery();
-            query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
+            // Use query Scope='RecursiveAll' to iterate through sub folders of Master page library because we might have file in folder hierarchy
+            query.ViewXml = string.Format("<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
             var galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
