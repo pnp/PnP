@@ -722,7 +722,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
 
             // Get the field if already exists in content type, else add field to content type
-            // This will help to customize (required or hidden) any pre-existing field.
+            // This will help to customize (required or hidden) any pre-existing field, also to handle existing field of Parent Content type
             FieldLink flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
             if (flink == null)
             {
