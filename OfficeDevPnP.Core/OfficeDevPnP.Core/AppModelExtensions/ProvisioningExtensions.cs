@@ -155,8 +155,29 @@ namespace Microsoft.SharePoint.Client
             var folderWebRelativeUrl = webRelativeUrl.Substring(0, webRelativeUrl.Length - fileName.Length);
             Folder folder = web.EnsureFolderPath(folderWebRelativeUrl);
 
-            var checkHashBeforeUpload = true;
-            return folder.UploadFile(fileName, path, propertyDictionary, replaceContent, checkHashBeforeUpload, level, useWebDav);
+            // perform all operations that used to be done in UploadFile
+            // Check to see that the file doesn't already exist.
+            var file = folder.GetFile(fileName);
+            var uploadRequired = true;
+
+            // If file exists, verify the files aren't the same.
+            if (file != null)
+                uploadRequired = file.VerifyIfUploadRequired(path);
+            
+            // Upload the file, if required, using the specified process for upload.
+            if (uploadRequired) {
+                if (useWebDav)
+                    file = folder.UploadFileWebDav(fileName, path, replaceContent);
+                else
+                    file = folder.UploadFile(fileName, path, replaceContent);
+            }
+            // Set file properties after upload
+            file.SetFileProperties(propertyDictionary);
+
+            // Publish the file
+            file.PublishFileToLevel(level);
+
+            return file;
         }
 
     }

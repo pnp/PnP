@@ -185,6 +185,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModelExtensions\Deprecated\BrandingExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\FieldAndContentTypeExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\FileFolderExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\ListExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\SecurityExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\TaxonomyExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\TenantExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\WebExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
@@ -202,6 +210,7 @@
     <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
     <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
+    <Compile Include="Entities\TaxonomyFieldCreationInformation.cs" />
     <Compile Include="Entities\FieldCreationInformation.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
