@@ -3,6 +3,7 @@ using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -935,15 +936,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Microsoft.SharePoint.Client.ServerException ex)
             {
-                if (ex.Message.IndexOf("Group cannot be found", StringComparison.InvariantCultureIgnoreCase) > -1)
-                {
-                    //eat the exception
-                }
-                else
-                {
-                    //rethrow exception
-                    throw;
-                }
+                LoggingUtility.Internal.TraceError((int)EventId.Unknown, ex, ex.Message);
             }
 
             return result;

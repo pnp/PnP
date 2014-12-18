@@ -274,7 +274,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             var web = pageLayoutTestWeb;
             web.Context.Load(web);
-            web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId);
+            web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId, null);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
             var item = web.GetPageLayoutListItemByName(publishingPageWithoutExtension);
