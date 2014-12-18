@@ -397,7 +397,77 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folderHierarchy">Folder hierarchy where the page layouts will be deployed</param>
         public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, List<WebPartEntity> webPartEntities, string folderHierarchy = "")
         {
-            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.PAGE_LAYOUT_CONTENT_TYPE, folderHierarchy);
+            if (string.IsNullOrEmpty(sourceFilePath))
+                throw new ArgumentNullException("sourceFilePath");
+
+            if (!System.IO.File.Exists(sourceFilePath))
+                throw new FileNotFoundException("File for param sourceFilePath file does not exist", sourceFilePath);
+
+            string fileName = Path.GetFileName(sourceFilePath);
+            LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, CoreResources.BrandingExtension_DeployPageLayout, fileName, web.Context.Url);
+
+            // Get the path to the file which we are about to deploy
+            List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+            Folder rootFolder = masterPageGallery.RootFolder;
+            web.Context.Load(masterPageGallery);
+            web.Context.Load(rootFolder);
+            web.Context.ExecuteQuery();
+
+            // Create folder structure inside master page gallery, if does not exists
+            // For e.g.: _catalogs/masterpage/contoso/
+            web.EnsureFolder(rootFolder, folderHierarchy);
+
+            var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
+
+            // Use CSOM to upload the file in
+            FileCreationInformation newFile = new FileCreationInformation();
+            newFile.Content = fileBytes;
+            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderHierarchy, fileName);
+            newFile.Overwrite = true;
+
+            Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
+            web.Context.Load(uploadFile);
+            web.Context.ExecuteQuery();
+
+            // Check out the file if needed
+            if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
+            {
+                if (uploadFile.CheckOutType == CheckOutType.None)
+                {
+                    uploadFile.CheckOut();
+                }
+            }
+
+            // Get content type for ID to assign associated content type information
+            ContentType associatedCt = web.GetContentTypeById(associatedContentTypeID);
+
+            var listItem = uploadFile.ListItemAllFields;
+            listItem["Title"] = title;
+            listItem["MasterPageDescription"] = description;
+            // Set the item as page layout
+            listItem["ContentTypeId"] = Constants.PAGE_LAYOUT_CONTENT_TYPE;
+            // Set the associated content type ID property
+            listItem["PublishingAssociatedContentType"] = string.Format(";#{0};#{1};#", associatedCt.Name, associatedCt.Id);
+            listItem["UIVersion"] = Convert.ToString(15);
+            listItem.Update();
+
+            // Add default web parts to the page layout
+            if ((webPartEntities != null) && (webPartEntities.Count > 0))
+            {
+                foreach (WebPartEntity webPart in webPartEntities)
+                {
+                    LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, CoreResources.BrandingExtension_AddWebPartToPageLayout, webPart.WebPartTitle, webPart.WebPartZone, webPart.WebPartIndex, uploadFile.Name);
+                    web.AddWebPartToWebPartPage(newFile.Url, webPart);
+                }
+            }
+
+            // Check in the page layout if needed
+            if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
+            {
+                uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
+                listItem.File.Publish(string.Empty);
+            }
+            web.Context.ExecuteQuery();
         }
 
         /// <summary>
@@ -491,8 +561,8 @@ namespace Microsoft.SharePoint.Client
                 uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
                 listItem.File.Publish(string.Empty);
             }
-            web.Context.ExecuteQuery();
 
+            web.Context.ExecuteQuery();
         }
 
         public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "", string folderPath = "")
