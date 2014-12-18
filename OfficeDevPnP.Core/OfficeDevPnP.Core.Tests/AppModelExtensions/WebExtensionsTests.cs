@@ -77,7 +77,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
         #region PROPBAG tests
         [TestMethod()]
-        public void SetPropertyBagValueTest()
+        public void SetPropertyBagValueIntTest()
         {
             clientContext.Web.SetPropertyBagValue(_key, _value_int);
 
@@ -89,8 +89,22 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void SetPropertyBagValueTest1()
+        public void SetPropertyBagValueStringTest()
         {
+            clientContext.Web.SetPropertyBagValue(_key, _value_string);
+
+            var props = clientContext.Web.AllProperties;
+            clientContext.Load(props);
+            clientContext.ExecuteQuery();
+            Assert.IsTrue(props.FieldValues.ContainsKey(_key), "Entry not added");
+            Assert.AreEqual(_value_string, props.FieldValues[_key] as string, "Entry not set with correct value");
+        }
+
+        [TestMethod()]
+        public void SetPropertyBagValueMultipleRunsTest()
+        {
+            string key2 = _key + "_multiple";
+            clientContext.Web.SetPropertyBagValue(key2, _value_string);
             clientContext.Web.SetPropertyBagValue(_key, _value_string);
 
             var props = clientContext.Web.AllProperties;
