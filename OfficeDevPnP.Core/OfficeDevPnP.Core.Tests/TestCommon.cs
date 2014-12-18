@@ -46,6 +46,8 @@ namespace OfficeDevPnP.Core.Tests {
         private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
         {
             var context = new ClientContext(contextUrl);
+            // Set Context RequestTimeout to avoid "The operation has timed out" error.
+            context.RequestTimeout = Constants.RequestTimeout;
             context.Credentials = credentials;
             return context;
         }

@@ -123,7 +123,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 string subSiteUrlGood = "";
                 string subSiteUrlWrong = "";
 
-                using (ClientContext cc = new ClientContext(siteToCreateUrl) { Credentials = tenantContext.Credentials})
+                using (ClientContext cc = new ClientContext(siteToCreateUrl) { Credentials = tenantContext.Credentials, RequestTimeout = Constants.RequestTimeout})
                 {
                     SiteEntity sub = new SiteEntity() { Title = "Test Sub", Url = "sub", Description = "Test" };
                     cc.Web.CreateWeb(sub);

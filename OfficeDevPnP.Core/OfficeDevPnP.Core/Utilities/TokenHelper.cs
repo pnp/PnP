@@ -423,6 +423,8 @@ namespace OfficeDevPnP.Core.Utilities
         public static ClientContext GetClientContextWithAccessToken(string targetUrl, string accessToken)
         {
             ClientContext clientContext = new ClientContext(targetUrl);
+            // Set Context RequestTimeout to avoid "The operation has timed out" error.
+            clientContext.RequestTimeout = Constants.RequestTimeout;
 
             clientContext.AuthenticationMode = ClientAuthenticationMode.Anonymous;
             clientContext.FormDigestHandlingEnabled = false;
@@ -1186,6 +1188,8 @@ namespace OfficeDevPnP.Core.Utilities
                 }
 
                 ClientContext ctx = new ClientContext("http://tempuri.org");
+                // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                ctx.RequestTimeout = Constants.RequestTimeout;
                 Dictionary<string, object> dict = (Dictionary<string, object>)ctx.ParseObjectFromJsonString(appctx);
                 string cacheKey = (string)dict["CacheKey"];
 
@@ -1207,6 +1211,8 @@ namespace OfficeDevPnP.Core.Utilities
                 }
 
                 ClientContext ctx = new ClientContext("http://tempuri.org");
+                // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                ctx.RequestTimeout = Constants.RequestTimeout;
                 Dictionary<string, object> dict = (Dictionary<string, object>)ctx.ParseObjectFromJsonString(appctx);
                 string securityTokenServiceUri = (string)dict["SecurityTokenServiceUri"];
 

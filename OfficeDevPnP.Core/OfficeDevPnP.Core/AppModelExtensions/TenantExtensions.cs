@@ -508,6 +508,8 @@ namespace Microsoft.SharePoint.Client
                     // Create a separate context to the web
                     using (var clientContext = new ClientContext(siteUrl))
                     {
+                        // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                        clientContext.RequestTimeout = Constants.RequestTimeout;
                         clientContext.Credentials = tenant.Context.Credentials;
                         var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
                         clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
