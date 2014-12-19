@@ -57,8 +57,8 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 int newCount = clientContext.Web.GetAdministrators().Count;
                 Assert.IsTrue(initialCount == newCount);
-                    // Assumes that we're on a dev tenant, and that the existing sitecol admin is the same as the user being added.
 
+                // Assumes that we're on a dev tenant, and that the existing sitecol admin is the same as the user being added.
                 clientContext.Web.RemoveAdministrator(userEntity);
             }
         }
@@ -75,39 +75,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 // Cleanup
                 if (group != null)
-                    clientContext.Web.RemoveGroup(group);
-            }
-        }
-
-        [TestMethod]
-        public void AddPermissionLevelbyRoleDefToGroupWithLanguage()
-        {
-            string subsiteurl = "fintest_" + Guid.NewGuid().ToString();
-            using (ClientContext clientContext = TestCommon.CreateClientContext())
-            {
-                var subweb = clientContext.Web.Webs.Add(new WebCreationInformation()
                 {
-                    Title = "Test Finnish web",
-                    Language = 1035,
-                    Url = subsiteurl,
-                    UseSamePermissionsAsParentSite = true
-                });
-                subweb.BreakRoleInheritance(true, false);
-                clientContext.Load(subweb);
-                clientContext.ExecuteQuery();
-
-                subweb.AddPermissionLevelToGroup(_testGroupName, "Approve", false); // looks like we don't need to put language specific version in, Approve works Hyväksy does not
-
-                //Get Group
-                clientContext.Load(subweb.SiteGroups);
-                Group group = subweb.SiteGroups.GetByName(_testGroupName);
-                clientContext.ExecuteQuery();
-
-                //Assert
-                Assert.IsTrue(CheckPermissionOnPrinciple(subweb, group, "Approve"));
-
-                subweb.DeleteObject();
-                clientContext.ExecuteQuery();
+                    clientContext.Web.RemoveGroup(group);
+                }
             }
         }
 
@@ -140,7 +110,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 Group group = clientContext.Web.SiteGroups.GetByName(_testGroupName);
                 clientContext.ExecuteQuery();
 
-                //Assert
+                //Assert 
                 Assert.IsTrue(CheckPermissionOnPrinciple(clientContext.Web, group, "Approve"));
             }
         }
