@@ -795,7 +795,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -819,7 +819,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             ContentType ct = results.FirstOrDefault();
@@ -1069,7 +1069,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
@@ -1086,7 +1086,7 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
