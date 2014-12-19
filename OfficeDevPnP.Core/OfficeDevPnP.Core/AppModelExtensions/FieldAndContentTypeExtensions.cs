@@ -71,7 +71,7 @@ namespace Microsoft.SharePoint.Client
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(fieldAsXml);
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
-            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            nsmgr.AddNamespace("namespace", xd.DocumentElement.NamespaceURI);
             XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
             string id = fieldNode.Attributes["ID"].Value;
             string name = fieldNode.Attributes["Name"].Value;
@@ -140,7 +140,7 @@ namespace Microsoft.SharePoint.Client
         public static void CreateFieldsFromXML(this Web web, XmlDocument xmlDoc)
         {
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
 
             XmlNodeList fields = xmlDoc.SelectNodes("//namespace:Field", nsmgr);
             int count = fields.Count;
@@ -149,7 +149,7 @@ namespace Microsoft.SharePoint.Client
                 string id = field.Attributes["ID"].Value;
                 string name = field.Attributes["Name"].Value;
 
-                // IF field already existed, let's move on
+                // If field already existed, let's move on
                 if (web.FieldExistsByName(name))
                 {
                     LoggingUtility.Internal.TraceWarning((int)EventId.FieldAlreadyExists, CoreResources.FieldAndContentTypeExtensions_Field01AlreadyExists, name, id);
@@ -437,7 +437,7 @@ namespace Microsoft.SharePoint.Client
             XmlDocument xd = new XmlDocument();
             xd.LoadXml(fieldAsXml);
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
-            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            nsmgr.AddNamespace("namespace", xd.DocumentElement.NamespaceURI);
             XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
             string id = fieldNode.Attributes["ID"].Value;
             string name = fieldNode.Attributes["Name"].Value;
@@ -712,26 +712,32 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(contentType, ct => ct.Id);
                 web.Context.ExecuteQuery();
             }
+
             if (!field.IsPropertyAvailable("Id"))
             {
                 web.Context.Load(field, f => f.Id);
                 web.Context.ExecuteQuery();
             }
+
             LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
 
-            FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
-            fldInfo.Field = field;
-            contentType.FieldLinks.Add(fldInfo);
-            contentType.Update(true);
-            web.Context.ExecuteQuery();
+            // Get the field if already exists in content type, else add field to content type
+            // This will help to customize (required or hidden) any pre-existing field, also to handle existing field of Parent Content type
+            FieldLink flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
+            if (flink == null)
+            {
+                FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
+                fldInfo.Field = field;
+                contentType.FieldLinks.Add(fldInfo);
+                contentType.Update(true);
+                web.Context.ExecuteQuery();
 
-            web.Context.Load(field);
-            web.Context.ExecuteQuery();
+                flink = contentType.FieldLinks.GetById(field.Id);
+            }
 
             if (required || hidden)
             {
-                //Update FieldLink
-                FieldLink flink = contentType.FieldLinks.GetById(field.Id);
+                // Update FieldLink
                 flink.Required = required;
                 flink.Hidden = hidden;
                 contentType.Update(true);
@@ -795,7 +801,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -819,7 +826,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             ContentType ct = results.FirstOrDefault();
@@ -957,7 +965,7 @@ namespace Microsoft.SharePoint.Client
         public static void CreateContentTypeFromXML(this Web web, XmlDocument xmlDoc)
         {
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("namespace", "http://schemas.microsoft.com/sharepoint/");
+            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
 
             XmlNodeList contentTypes = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
             int count = contentTypes.Count;
@@ -1054,7 +1062,7 @@ namespace Microsoft.SharePoint.Client
             ContentType myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQuery();
 
-            //Return the content type object
+            // Return the content type object
             return myContentType;
         }
 
@@ -1069,7 +1077,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
@@ -1086,7 +1095,8 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            // Web.AvailableContentTypes contains all content types that can be used on the site, rather than just the ones defined on this particular site.
+            ContentTypeCollection ctCol = web.AvailableContentTypes;
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -1207,7 +1217,7 @@ namespace Microsoft.SharePoint.Client
             {
                 ctIds.Add(ct.Id);
             }
-            
+
             var newOrder = ctIds.Except(
                 // remove the folder content type
                                     ctIds.Where(id => id.StringValue.StartsWith("0x012000"))

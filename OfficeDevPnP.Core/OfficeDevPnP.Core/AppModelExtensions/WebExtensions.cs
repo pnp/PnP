@@ -30,7 +30,6 @@ namespace Microsoft.SharePoint.Client
 
         #region Web (site) query, creation and deletion
 
-
         /// <summary>
         /// Adds a new child Web (site) to a parent Web.
         /// </summary>
@@ -62,6 +61,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
+
             LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
             WebCreationInformation creationInfo = new WebCreationInformation()
             {
@@ -95,6 +95,7 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
+
             var deleted = false;
             Utility.EnsureWeb(parentWeb.Context, parentWeb, "ServerRelativeUrl");
             var serverRelativeUrl = UrlUtility.Combine(parentWeb.ServerRelativeUrl, leafUrl);
@@ -135,16 +136,21 @@ namespace Microsoft.SharePoint.Client
             var siteContext = site.Context;
             siteContext.Load(site, s => s.Url);
             siteContext.ExecuteQuery();
+            
             var queue = new Queue<string>();
             queue.Enqueue(site.Url);
+            
             while (queue.Count > 0)
             {
                 var currentUrl = queue.Dequeue();
                 using (var webContext = new ClientContext(currentUrl))
                 {
+                    // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                    webContext.RequestTimeout = Constants.RequestTimeout;
                     webContext.Credentials = siteContext.Credentials;
                     webContext.Load(webContext.Web, web => web.Webs);
                     webContext.ExecuteQuery();
+
                     foreach (var subWeb in webContext.Web.Webs)
                     {
                         queue.Enqueue(subWeb.Url);
@@ -218,13 +224,17 @@ namespace Microsoft.SharePoint.Client
         public static bool WebExistsFullUrl(this ClientRuntimeContext context, string webFullUrl)
         {
             bool exists = false;
+
             try
             {
                 using (ClientContext testContext = new ClientContext(webFullUrl))
                 {
+                    // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                    testContext.RequestTimeout = Constants.RequestTimeout;
                     testContext.Credentials = context.Credentials;
                     testContext.Load(testContext.Web, w => w.Title);
                     testContext.ExecuteQuery();
+
                     exists = true;
                 }
             }
@@ -577,7 +587,6 @@ namespace Microsoft.SharePoint.Client
             SetPropertyBagValueInternal(web, key, value);
         }
 
-
         /// <summary>
         /// Sets a key/value pair in the web property bag
         /// </summary>
@@ -587,10 +596,20 @@ namespace Microsoft.SharePoint.Client
         private static void SetPropertyBagValueInternal(Web web, string key, object value)
         {
             var props = web.AllProperties;
-            web.Context.Load(props);
-            web.Context.ExecuteQuery();
 
-            props[key] = value;
+            // Get the value, if the web properties are already loaded
+            if (props.FieldValues.Count > 0)
+            {
+                props[key] = value;
+            }
+            else
+            {
+                // Load the web properties
+                web.Context.Load(props);
+                web.Context.ExecuteQuery();
+
+                props[key] = value;
+            }
 
             web.Update();
             web.Context.ExecuteQuery();

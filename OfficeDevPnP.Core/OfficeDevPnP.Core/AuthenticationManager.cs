@@ -43,6 +43,8 @@ namespace OfficeDevPnP.Core
             }
 
             var ctx = new ClientContext(siteUrl);
+            // Set Context RequestTimeout to avoid "The operation has timed out" error.
+            ctx.RequestTimeout = Constants.RequestTimeout;
             ctx.Credentials = sharepointOnlineCredentials;
 
             return ctx;
@@ -74,6 +76,8 @@ namespace OfficeDevPnP.Core
         public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, string password, string domain)
         {
             ClientContext clientContext = new ClientContext(siteUrl);
+            // Set Context RequestTimeout to avoid "The operation has timed out" error.
+            clientContext.RequestTimeout = Constants.RequestTimeout;
             clientContext.Credentials = new System.Net.NetworkCredential(user, password, domain);
             return clientContext;
         }

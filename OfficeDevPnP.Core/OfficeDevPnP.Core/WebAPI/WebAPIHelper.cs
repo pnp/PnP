@@ -162,6 +162,8 @@ namespace OfficeDevPnP.Core.WebAPI
                     if (appctx != null)
                     {
                         ClientContext ctx = new ClientContext("http://tempuri.org");
+                        // Set Context RequestTimeout to avoid "The operation has timed out" error.
+                        ctx.RequestTimeout = Constants.RequestTimeout;
                         Dictionary<string, object> dict = (Dictionary<string, object>)ctx.ParseObjectFromJsonString(appctx);
                         cacheKey = (string)dict["CacheKey"];
                     }

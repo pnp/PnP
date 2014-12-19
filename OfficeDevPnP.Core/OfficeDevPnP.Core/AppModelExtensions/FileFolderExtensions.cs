@@ -14,7 +14,8 @@ using System.Security.Cryptography;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static partial class FileFolderExtensions {
+    public static partial class FileFolderExtensions
+    {
         const string REGEX_INVALID_FILE_NAME_CHARS = @"[<>:;*?/\\|""&%\t\r\n]";
 
         /// <summary>
@@ -29,11 +30,12 @@ namespace Microsoft.SharePoint.Client
             file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
             web.Context.ExecuteQuery();
+
             if (file.Exists)
             {
                 file.Approve(comment);
+                web.Context.ExecuteQuery();
             }
-            web.Context.ExecuteQuery();
         }
 
         /// <summary>
@@ -84,6 +86,7 @@ namespace Microsoft.SharePoint.Client
         {
             byte[] buffer = new byte[32768];
             int bytesRead;
+
             do
             {
                 bytesRead = source.Read(buffer, 0, buffer.Length);
@@ -109,6 +112,7 @@ namespace Microsoft.SharePoint.Client
             if (folder == null) { throw new ArgumentNullException("folder"); }
             if (documentSetName == null) { throw new ArgumentNullException("documentSetName"); }
             if (contentTypeId == null) { throw new ArgumentNullException("contentTypeId"); }
+
             // TODO: Check for any other illegal characters in SharePoint
             if (documentSetName.Contains('/') || documentSetName.Contains('\\'))
             {
@@ -212,7 +216,7 @@ namespace Microsoft.SharePoint.Client
 
             return exists;
         }
-        
+
         /// <summary>
         /// Ensure that the folder structure is created. This also ensures hierarchy of folders.
         /// </summary>
@@ -228,39 +232,11 @@ namespace Microsoft.SharePoint.Client
                 web.Context.Load(parentFolder, f => f.ServerRelativeUrl);
                 web.Context.ExecuteQuery();
             }
+
             var parentWebRelativeUrl = parentFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length);
             var webRelativeUrl = parentWebRelativeUrl + (parentWebRelativeUrl.EndsWith("/") ? "" : "/") + folderPath;
 
             return web.EnsureFolderPath(webRelativeUrl);
-
-            //// Split up the incoming path so we have the first element as the a new sub-folder name 
-            //// and add it to ParentFolder folders collection
-            //string[] pathElements = folderPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            //string head = pathElements[0];
-
-            //Folder newFolder = parentFolder.Folders.Add(head);
-            //web.Context.Load(newFolder);
-            //web.Context.ExecuteQuery();
-
-            //// If we have subfolders to create then the length of PathElements will be greater than 1
-            //if (pathElements.Length > 1)
-            //{
-            //    // If we have more nested folders to create then reassemble the folder path using what we have left i.e. the tail
-            //    string Tail = string.Empty;
-
-            //    for (int i = 1; i < pathElements.Length; i++)
-            //    {
-            //        Tail = Tail + "/" + pathElements[i];
-            //    }
-
-            //    // Then make a recursive call to create the next subfolder
-            //    return web.EnsureFolder(newFolder, Tail);
-            //}
-            //else
-            //{
-            //    // This ensures that the folder at the end of the chain gets returned
-            //    return newFolder;
-            //}
         }
 
         /// <summary>
@@ -366,6 +342,7 @@ namespace Microsoft.SharePoint.Client
             var listCollection = web.Lists;
             web.Context.Load(listCollection, lc => lc.Include(l => l.RootFolder.ServerRelativeUrl));
             web.Context.ExecuteQuery();
+
             List containingList = null;
             foreach (var list in listCollection)
             {
@@ -392,16 +369,18 @@ namespace Microsoft.SharePoint.Client
                 locationType = "List";
                 currentFolder = containingList.RootFolder;
             }
+
             rootUrl = currentFolder.ServerRelativeUrl;
-            //LoggingUtility.Internal.TraceVerbose("*** Type {0}, root {1}", locationType, rootUrl);
 
             // Get remaining parts of the path and split
             var folderRootRelativeUrl = folderServerRelativeUrl.Substring(currentFolder.ServerRelativeUrl.Length);
             var childFolderNames = folderRootRelativeUrl.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             var currentCount = 0;
+
             foreach (var folderName in childFolderNames)
             {
                 currentCount++;
+
                 // Find next part of the path
                 var folderCollection = currentFolder.Folders;
                 folderCollection.Context.Load(folderCollection);
@@ -415,6 +394,7 @@ namespace Microsoft.SharePoint.Client
                         break;
                     }
                 }
+
                 // Or create it
                 if (nextFolder == null)
                 {
@@ -425,6 +405,7 @@ namespace Microsoft.SharePoint.Client
                     folderCollection.Context.Load(nextFolder);
                     folderCollection.Context.ExecuteQuery();
                 }
+
                 currentFolder = nextFolder;
             }
 
@@ -480,7 +461,9 @@ namespace Microsoft.SharePoint.Client
         public static bool FolderExists(this Folder parentFolder, string folderName)
         {
             if (string.IsNullOrEmpty(folderName))
+            {
                 throw new ArgumentNullException("folderName");
+            }
 
             var folderCollection = parentFolder.Folders;
             var exists = FolderExistsImplementation(folderCollection, folderName);
@@ -490,10 +473,14 @@ namespace Microsoft.SharePoint.Client
         private static bool FolderExistsImplementation(FolderCollection folderCollection, string folderName)
         {
             if (folderCollection == null)
+            {
                 throw new ArgumentNullException("folderCollection");
+            }
 
             if (string.IsNullOrEmpty(folderName))
+            {
                 throw new ArgumentNullException("folderName");
+            }
 
             // TODO: Check for any other illegal characters in SharePoint
             if (folderName.Contains('/') || folderName.Contains('\\'))
@@ -537,6 +524,7 @@ namespace Microsoft.SharePoint.Client
                 StreamReader reader = new StreamReader(memStream);
                 returnString = reader.ReadToEnd();
             }
+
             return returnString;
         }
 
@@ -546,6 +534,7 @@ namespace Microsoft.SharePoint.Client
             context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
             context.Load(folder.Folders);
             context.ExecuteQuery();
+
             foreach (Microsoft.SharePoint.Client.File file in files)
             {
                 if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
@@ -553,6 +542,7 @@ namespace Microsoft.SharePoint.Client
                     foundFiles.Add(file);
                 }
             }
+
             foreach (Folder subfolder in folder.Folders)
             {
                 ParseFiles(subfolder, match, context, ref foundFiles);
@@ -571,13 +561,14 @@ namespace Microsoft.SharePoint.Client
             file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
             web.Context.ExecuteQuery();
+
             if (file.Exists)
             {
                 file.Publish(comment);
+                web.Context.ExecuteQuery();
             }
-            web.Context.ExecuteQuery();
         }
-      
+
         /// <summary>
         /// Gets a folder with a given name in a given <see cref="Microsoft.SharePoint.Client.Folder"/>
         /// </summary>
@@ -587,11 +578,14 @@ namespace Microsoft.SharePoint.Client
         public static Folder ResolveSubFolder(this Folder folder, string folderName)
         {
             if (string.IsNullOrEmpty(folderName))
+            {
                 throw new ArgumentNullException("folderName");
+            }
 
             folder.Context.Load(folder);
             folder.Context.Load(folder.Folders);
             folder.Context.ExecuteQuery();
+
             foreach (Folder subFolder in folder.Folders)
             {
                 if (subFolder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
@@ -599,6 +593,7 @@ namespace Microsoft.SharePoint.Client
                     return subFolder;
                 }
             }
+
             return null;
         }
 
@@ -615,16 +610,12 @@ namespace Microsoft.SharePoint.Client
             var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
 
             clientContext.Load(file);
-
             clientContext.ExecuteQuery();
 
             ClientResult<Stream> stream = file.OpenBinaryStream();
-
             clientContext.ExecuteQuery();
 
             string fileOut;
-
-
             if (!string.IsNullOrEmpty(localFileName))
             {
                 fileOut = Path.Combine(localPath, localFileName);
@@ -639,7 +630,7 @@ namespace Microsoft.SharePoint.Client
                 CopyStream(stream.Value, fileStream);
             }
         }
-        
+
         /// <summary>
         /// Uploads a file to the specified folder.
         /// </summary>
@@ -647,12 +638,22 @@ namespace Microsoft.SharePoint.Client
         /// <param name="localFilePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFile(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists) {
-            if (folder == null) throw new ArgumentNullException("folder");
-            if (localFilePath == null) throw new ArgumentNullException("localFilePath");
+        public static File UploadFile(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists)
+        {
+            if (folder == null)
+            {
+                throw new ArgumentNullException("folder");
+            }
+
+            if (localFilePath == null)
+            {
+                throw new ArgumentNullException("localFilePath");
+            }
 
             if (!System.IO.File.Exists(localFilePath))
+            {
                 throw new FileNotFoundException("Local file was not found.", localFilePath);
+            }
 
             using (var stream = System.IO.File.OpenRead(localFilePath))
                 return folder.UploadFile(fileName, stream, overwriteIfExists);
@@ -665,22 +666,38 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFile(this Folder folder, string fileName, Stream stream, bool overwriteIfExists) {
+        public static File UploadFile(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
+        {
             LoggingUtility.Internal.TraceVerbose("UploadFile [{0}] to folder [{1}] - overwriteIfExists: {2}", fileName, folder.ServerRelativeUrl, overwriteIfExists);
 
-            if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            if (stream == null) { throw new ArgumentNullException("localStream"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (fileName == null) 
+            {
+                throw new ArgumentNullException("fileName"); 
+            }
+
+            if (stream == null) 
+            {
+                throw new ArgumentNullException("localStream"); 
+            }
+
+            if (string.IsNullOrWhiteSpace(fileName)) 
+            {
+                throw new ArgumentException("Destination file name is required.", "fileName"); 
+            }
 
             if (Regex.IsMatch(fileName, REGEX_INVALID_FILE_NAME_CHARS))
+            {
                 throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+            }
 
-            // create the file
-            var newFileInfo = new FileCreationInformation() {
+            // Create the file
+            var newFileInfo = new FileCreationInformation()
+            {
                 ContentStream = stream,
                 Url = fileName,
                 Overwrite = overwriteIfExists
             };
+
             LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", newFileInfo.Url);
             var file = folder.Files.Add(newFileInfo);
             folder.Context.Load(file);
@@ -696,12 +713,22 @@ namespace Microsoft.SharePoint.Client
         /// <param name="localFilePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFileWebDav(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists) {
-            if (folder == null) throw new ArgumentNullException("folder");
-            if (localFilePath == null) throw new ArgumentNullException("localFilePath");
+        public static File UploadFileWebDav(this Folder folder, string fileName, string localFilePath, bool overwriteIfExists)
+        {
+            if (folder == null)
+            {
+                throw new ArgumentNullException("folder");
+            }
+
+            if (localFilePath == null)
+            {
+                throw new ArgumentNullException("localFilePath");
+            }
 
             if (!System.IO.File.Exists(localFilePath))
+            {
                 throw new FileNotFoundException("Local file was not found.", localFilePath);
+            }
 
             using (var stream = System.IO.File.OpenRead(localFilePath))
                 return folder.UploadFileWebDav(fileName, stream, overwriteIfExists);
@@ -714,18 +741,33 @@ namespace Microsoft.SharePoint.Client
         /// <param name="filePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
-        public static File UploadFileWebDav(this Folder folder, string fileName, Stream stream, bool overwriteIfExists) {
-            if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            if (stream == null) { throw new ArgumentNullException("localStream"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+        public static File UploadFileWebDav(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
+        {
+            if (fileName == null) 
+            {
+                throw new ArgumentNullException("fileName"); 
+            }
+
+            if (stream == null) 
+            {
+                throw new ArgumentNullException("localStream"); 
+            }
+
+            if (string.IsNullOrWhiteSpace(fileName)) 
+            {
+                throw new ArgumentException("Destination file name is required.", "fileName"); 
+            }
 
             if (Regex.IsMatch(fileName, REGEX_INVALID_FILE_NAME_CHARS))
+            {
                 throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+            }
 
-            var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl , fileName);
+            var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
 
-            // create uploadContext to get a proper ClientContext instead of a ClientRuntimeContext
-            using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials }) {
+            // Create uploadContext to get a proper ClientContext instead of a ClientRuntimeContext
+            using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials, RequestTimeout = Constants.RequestTimeout })
+            {
                 LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
                 File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
                 uploadContext.ExecuteQuery();
@@ -734,6 +776,7 @@ namespace Microsoft.SharePoint.Client
             var file = folder.Files.GetByUrl(serverRelativeUrl);
             folder.Context.Load(file);
             folder.Context.ExecuteQuery();
+
             return file;
         }
 
@@ -743,23 +786,34 @@ namespace Microsoft.SharePoint.Client
         /// <param name="folder">Folder containing the target file.</param>
         /// <param name="fileName">File name.</param>
         /// <returns>The target file if found, null if no file is found.</returns>
-        public static File GetFile(this Folder folder, string fileName) {
-            if (folder == null) throw new ArgumentNullException("folder");
-            if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException("fileName");
+        public static File GetFile(this Folder folder, string fileName)
+        {
+            if (folder == null)
+            {
+                throw new ArgumentNullException("folder");
+            }
 
-            try {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException("fileName");
+            }
+
+            try
+            {
                 var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
                 var web = folder.ListItemAllFields.ParentList.ParentWeb;
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
-
                 folder.Context.Load(file);
                 folder.Context.ExecuteQuery();
                 return file;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 if (ex.Message == "File Not Found.")
+                {
                     return null;
+                }
                 throw;
             }
         }
@@ -770,11 +824,17 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="serverFile">File located on the server.</param>
         /// <param name="localFile">File to validate against.</param>
-        public static bool VerifyIfUploadRequired(this File serverFile, string localFile) {
-            if (localFile == null) throw new ArgumentNullException("localFile");
+        public static bool VerifyIfUploadRequired(this File serverFile, string localFile)
+        {
+            if (localFile == null)
+            {
+                throw new ArgumentNullException("localFile");
+            }
 
             if (!System.IO.File.Exists(localFile))
+            {
                 throw new FileNotFoundException("Local file was not found.", localFile);
+            }
 
             using (var file = System.IO.File.OpenRead(localFile))
                 return serverFile.VerifyIfUploadRequired(file);
@@ -787,9 +847,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverFile">File located on the server.</param>
         /// <param name="localStream">Stream to validate against.</param>
         /// <returns></returns>
-        public static bool VerifyIfUploadRequired(this File serverFile, Stream localStream) {
-            if (serverFile == null) throw new ArgumentNullException("serverFile");
-            if (localStream == null) throw new ArgumentNullException("localStream");
+        public static bool VerifyIfUploadRequired(this File serverFile, Stream localStream)
+        {
+            if (serverFile == null)
+            {
+                throw new ArgumentNullException("serverFile");
+            }
+
+            if (localStream == null)
+            {
+                throw new ArgumentNullException("localStream");
+            }
 
             byte[] serverHash = null;
             var streamResult = serverFile.OpenBinaryStream();
@@ -797,7 +865,8 @@ namespace Microsoft.SharePoint.Client
 
             // Hash contents
             HashAlgorithm ha = HashAlgorithm.Create();
-            using (var serverStream = streamResult.Value) {
+            using (var serverStream = streamResult.Value)
+            {
                 serverHash = ha.ComputeHash(serverStream);
                 //Console.WriteLine("Server hash: {0}", BitConverter.ToString(serverHash));
             }
@@ -810,13 +879,16 @@ namespace Microsoft.SharePoint.Client
 
             // Compare hash
             var contentsMatch = true;
-            for (var index = 0; index < serverHash.Length; index++) {
-                if (serverHash[index] != localHash[index]) {
+            for (var index = 0; index < serverHash.Length; index++)
+            {
+                if (serverHash[index] != localHash[index])
+                {
                     //Console.WriteLine("Hash does not match");
                     contentsMatch = false;
                     break;
                 }
             }
+
             localStream.Position = 0;
             return !contentsMatch;
         }
@@ -827,60 +899,82 @@ namespace Microsoft.SharePoint.Client
         /// <param name="file">Target file object.</param>
         /// <param name="properties">Dictionary of properties to set.</param>
         /// <param name="checkoutIfRequired">Check out the file if necessary to set properties.</param>
-        public static void SetFileProperties(this File file, IDictionary<string, string> properties, bool checkoutIfRequired = true) {
-            if (file == null) throw new ArgumentNullException("file");
-            if (properties == null) throw new ArgumentNullException("properties");
+        public static void SetFileProperties(this File file, IDictionary<string, string> properties, bool checkoutIfRequired = true)
+        {
+            if (file == null)
+            {
+                throw new ArgumentNullException("file");
+            }
+
+            if (properties == null)
+            {
+                throw new ArgumentNullException("properties");
+            }
 
             var changedProperties = new Dictionary<string, string>();
             var changedPropertiesString = new StringBuilder();
             var context = file.Context;
 
-            if (properties != null && properties.Count > 0) {
+            if (properties != null && properties.Count > 0)
+            {
                 // If this throws ServerException (does not belong to list), then shouldn't be trying to set properties)
                 context.Load(file.ListItemAllFields);
                 context.Load(file.ListItemAllFields.FieldValuesAsText);
                 context.ExecuteQuery();
 
                 // Loop through and detect changes first, then, check out if required and apply
-                foreach (var kvp in properties) {
+                foreach (var kvp in properties)
+                {
                     var propertyName = kvp.Key;
                     var propertyValue = kvp.Value;
 
                     var fieldValues = file.ListItemAllFields.FieldValues;
                     var currentValue = string.Empty;
-                    if (file.ListItemAllFields.FieldValues.ContainsKey(propertyName)) {
+                    if (file.ListItemAllFields.FieldValues.ContainsKey(propertyName))
+                    {
                         currentValue = file.ListItemAllFields.FieldValuesAsText[propertyName];
                     }
+
                     //LoggingUtility.Internal.TraceVerbose("*** Comparing property '{0}' to current '{1}', new '{2}'", propertyName, currentValue, propertyValue);
-                    switch (propertyName.ToUpperInvariant()) {
-                        case "CONTENTTYPE": {
+                    switch (propertyName.ToUpperInvariant())
+                    {
+                        case "CONTENTTYPE":
+                            {
                                 // TODO: Add support for named ContentType (need to lookup ID and check if it needs changing)
                                 throw new NotSupportedException("ContentType property not yet supported; use ContentTypeId instead.");
                                 //break;
                             }
-                        case "CONTENTTYPEID": {
+                        case "CONTENTTYPEID":
+                            {
                                 var currentBase = currentValue.Substring(0, currentValue.Length - 34);
                                 var sameValue = (currentBase == propertyValue);
-                                if (!sameValue && propertyValue.Length >= 32 + 6 && propertyValue.Substring(propertyValue.Length - 34, 2) == "00") {
+                                if (!sameValue && propertyValue.Length >= 32 + 6 && propertyValue.Substring(propertyValue.Length - 34, 2) == "00")
+                                {
                                     var propertyBase = propertyValue.Substring(0, propertyValue.Length - 34);
                                     sameValue = (currentBase == propertyBase);
                                 }
-                                if (!sameValue) {
+
+                                if (!sameValue)
+                                {
                                     changedProperties[propertyName] = propertyValue;
                                     changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
                                 }
                                 break;
                             }
-                        case "PUBLISHINGASSOCIATEDCONTENTTYPE": {
+                        case "PUBLISHINGASSOCIATEDCONTENTTYPE":
+                            {
                                 var testValue = ";#" + currentValue.Replace(", ", ";#") + ";#";
-                                if (testValue != propertyValue) {
+                                if (testValue != propertyValue)
+                                {
                                     changedProperties[propertyName] = propertyValue;
                                     changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
                                 }
                                 break;
                             }
-                        default: {
-                                if (currentValue != propertyValue) {
+                        default:
+                            {
+                                if (currentValue != propertyValue)
+                                {
                                     //Console.WriteLine("Setting property '{0}' to '{1}'", propertyName, propertyValue);
                                     changedProperties[propertyName] = propertyValue;
                                     changedPropertiesString.AppendFormat("{0}='{1}'; ", propertyName, propertyValue);
@@ -890,31 +984,37 @@ namespace Microsoft.SharePoint.Client
                     }
                 }
 
-                if (changedProperties.Count > 0) {
+                if (changedProperties.Count > 0)
+                {
                     LoggingUtility.Internal.TraceInformation((int)EventId.UpdateFileProperties, CoreResources.FileFolderExtensions_UpdateFile0Properties1, file.Name, changedPropertiesString);
                     var checkOutRequired = false;
 
                     var parentList = file.ListItemAllFields.ParentList;
                     context.Load(parentList, l => l.ForceCheckout);
-                    try {
+                    try
+                    {
                         context.ExecuteQuery();
                         checkOutRequired = parentList.ForceCheckout;
                     }
-                    catch (ServerException ex) {
-                        if (ex.Message != "The object specified does not belong to a list.") {
+                    catch (ServerException ex)
+                    {
+                        if (ex.Message != "The object specified does not belong to a list.")
+                        {
                             throw;
                         }
                     }
                     //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout2 {0}", checkOutRequired, approvalRequired);
 
-                    if (checkOutRequired && file.CheckOutType == CheckOutType.None) {
+                    if (checkOutRequired && file.CheckOutType == CheckOutType.None)
+                    {
                         LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", file.Name);
                         file.CheckOut();
                         context.ExecuteQuery();
                     }
 
                     LoggingUtility.Internal.TraceVerbose("Set properties: {0}", file.Name);
-                    foreach (var kvp in changedProperties) {
+                    foreach (var kvp in changedProperties)
+                    {
                         var propertyName = kvp.Key;
                         var propertyValue = kvp.Value;
 
@@ -932,14 +1032,19 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="file">Target file to publish.</param>
         /// <param name="level">Target publish direction (Draft and Published only apply, Checkout is ignored).</param>
-        public static void PublishFileToLevel(this File file, FileLevel level) {
-            if (file == null) throw new ArgumentNullException("file");
+        public static void PublishFileToLevel(this File file, FileLevel level)
+        {
+            if (file == null)
+            {
+                throw new ArgumentNullException("file");
+            }
 
             var publishingRequired = false;
             var approvalRequired = false;
             var checkOutRequired = false;
 
-            if (level == FileLevel.Draft || level == FileLevel.Published) {
+            if (level == FileLevel.Draft || level == FileLevel.Published)
+            {
                 var context = file.Context;
                 var parentList = file.ListItemAllFields.ParentList;
                 context.Load(parentList,
@@ -949,31 +1054,39 @@ namespace Microsoft.SharePoint.Client
 
                 checkOutRequired = parentList.ForceCheckout;
 
-                try {
+                try
+                {
                     context.ExecuteQuery();
                     publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
                     approvalRequired = parentList.EnableModeration;
                 }
-                catch (ServerException ex) {
-                    if (ex.Message != "The object specified does not belong to a list.") {
+                catch (ServerException ex)
+                {
+                    if (ex.Message != "The object specified does not belong to a list.")
+                    {
                         throw;
                     }
                 }
                 //LoggingUtility.Internal.TraceVerbose("*** EnableMinorVerions {0}. EnableModeration {1}", publishingRequired, approvalRequired);
 
-                if (file.CheckOutType != CheckOutType.None || checkOutRequired) {
+                if (file.CheckOutType != CheckOutType.None || checkOutRequired)
+                {
                     LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", file.Name);
                     file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
                     context.ExecuteQuery();
                 }
 
-                if (level == FileLevel.Published) {
-                    if (publishingRequired) {
+                if (level == FileLevel.Published)
+                {
+                    if (publishingRequired)
+                    {
                         LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", file.Name);
                         file.Publish("Published by provisioning");
                         context.ExecuteQuery();
                     }
-                    if (approvalRequired) {
+
+                    if (approvalRequired)
+                    {
                         LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", file.Name);
                         file.Approve("Approved by provisioning");
                         context.ExecuteQuery();
@@ -981,6 +1094,7 @@ namespace Microsoft.SharePoint.Client
                 }
             }
         }
+
         private static string WildcardToRegex(string pattern)
         {
             return "^" + Regex.Escape(pattern).
