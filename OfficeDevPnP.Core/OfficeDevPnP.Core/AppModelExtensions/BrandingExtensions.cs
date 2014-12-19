@@ -384,7 +384,6 @@ namespace Microsoft.SharePoint.Client
             return themesFolder.UploadFile(fileName, localStream, true);
         }
 
-
         /// <summary>
         /// Can be used to deploy page layouts to master page gallery. 
         /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
@@ -471,6 +470,21 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Can be used to deploy page layouts to master page gallery. 
+        /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
+        /// </summary>
+        /// <param name="web">Web as the root site of the publishing site collection</param>
+        /// <param name="sourceFilePath">Full path to the file which will be uploaded</param>
+        /// <param name="title">Title for the page layout</param>
+        /// <param name="description">Description for the page layout</param>
+        /// <param name="associatedContentTypeID">Associated content type ID</param>
+        /// <param name="folderHierarchy">Folder hierarchy where the page layouts will be deployed</param>
+        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderHierarchy = "")
+        {
+            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.PAGE_LAYOUT_CONTENT_TYPE, folderHierarchy);
+        }
+
+        /// <summary>
         /// Can be used to deploy html page layouts to master page gallery. 
         /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
         /// </summary>
@@ -495,7 +509,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="associatedContentTypeID">Associated content type ID</param>
         /// <param name="itemContentTypeId">Content type id for the item.</param>
         /// <param name="folderHierarchy">Folder hierarchy where the file will be uploaded</param>
-        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId, string folderHierarchy)
+        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId, string folderHierarchy = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
             {
