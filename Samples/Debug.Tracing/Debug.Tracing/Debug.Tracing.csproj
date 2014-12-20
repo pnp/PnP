@@ -50,9 +50,6 @@
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
     </Content>
-    <Content Include="Package\Package.Template.xml">
-      <DependentUpon>Package.package</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <AppManifestFile Include="AppManifest.xml">
@@ -76,9 +73,6 @@
     </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{bf25dc0f-1066-48dc-acd3-055785b9f10f}</FeatureId>
-    </None>
-    <None Include="Package\Package.package">
-      <PackageId>{4218f0ea-f65a-4b3c-8d23-2ec0edd8eb8d}</PackageId>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
