@@ -16,64 +16,11 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// This class provides extension methods that will help you work with fields and content types.
     /// </summary>
-    public static class FieldAndContentTypeExtensions
+    public static partial class FieldAndContentTypeExtensions
     {
 
         #region Site Columns
 
-        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static Field CreateField(this Web web, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                DisplayName = displayName,
-                Group = group,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(web, fieldCreationInformation, executeQuery);
-
-        }
-
-        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                DisplayName = displayName,
-                Group = group,
-                InternalName = internalName,
-                AddToDefaultView = false,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(web, fieldCreationInformation, executeQuery);
-        }
-
-        [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                DisplayName = displayName,
-                Group = group,
-                AddToDefaultView = addToDefaultView,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(web, fieldCreationInformation, executeQuery);
-        }
         /// <summary>
         /// Create field to web remotely
         /// </summary>
@@ -86,43 +33,6 @@ namespace Microsoft.SharePoint.Client
             return CreateField<Field>(web, fieldCreationInformation, executeQuery);
         }
 
-        [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            var fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                AddToDefaultView = addToDefaultView,
-                Group = group,
-                DisplayName = displayName,
-                AdditionalAttributes = additionalAttributes
-            };
-
-            return CreateField<TField>(web, fieldCreationInformation, executeQuery);
-        }
-
-        [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            var fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                AddToDefaultView = addToDefaultView,
-                Group = group,
-                DisplayName = displayName,
-                AdditionalAttributes = additionalAttributes
-            };
-
-            return CreateField<TField>(web, fieldCreationInformation, executeQuery);
-        }
 
         /// <summary>
         /// Create field to web remotely
@@ -416,58 +326,6 @@ namespace Microsoft.SharePoint.Client
         #endregion
 
         #region List Fields
-        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        public static Field CreateField(this List list, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                AddToDefaultView = false,
-                DisplayName = displayName,
-                Group = group,
-                InternalName = internalName,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(list, fieldCreationInformation, executeQuery);
-
-        }
-
-        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                AddToDefaultView = false,
-                DisplayName = displayName,
-                Group = group,
-                InternalName = internalName,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(list, fieldCreationInformation, executeQuery);
-        }
-
-        [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                AddToDefaultView = false,
-                DisplayName = displayName,
-                Group = group,
-                InternalName = internalName,
-                AdditionalAttributes = additionalAttributes
-            };
-            return CreateField(list, fieldCreationInformation, executeQuery);
-        }
-
         /// <summary>
         /// Adds field to a list
         /// </summary>
@@ -477,40 +335,6 @@ namespace Microsoft.SharePoint.Client
         public static Field CreateField(this List list, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)
         {
             return CreateField<Field>(list, fieldCreationInformation, executeQuery);
-        }
-
-        [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static TField CreateField<TField>(this List list, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                AddToDefaultView = addToDefaultView,
-                Group = group,
-                AdditionalAttributes = additionalAttributes,
-                DisplayName = displayName
-            };
-            return CreateField<TField>(list, fieldCreationInformation, executeQuery);
-        }
-
-        [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                AddToDefaultView = addToDefaultView,
-                Group = group,
-                AdditionalAttributes = additionalAttributes,
-                DisplayName = displayName
-            };
-            return CreateField<TField>(list, fieldCreationInformation, executeQuery);
         }
 
         /// <summary>
@@ -537,21 +361,6 @@ namespace Microsoft.SharePoint.Client
             return field;
         }
 
-        [Obsolete("Use CreateFieldBase<TField>(FieldCollection fields, FieldCreationInformation fieldCreationInformation, bool executeQuery = true")]
-        static TField CreateFieldBase<TField>(FieldCollection fields, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
-        {
-            var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
-            FieldCreationInformation fieldCreationInformation = new FieldCreationInformation(fieldType)
-            {
-                Id = id,
-                InternalName = internalName,
-                AddToDefaultView = addToDefaultView,
-                Group = group,
-                AdditionalAttributes = additionalAttributes,
-                DisplayName = displayName
-            };
-            return CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
-        }
 
         /// <summary>
         /// Base implementation for creating fields
@@ -592,14 +401,6 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
-        [Obsolete("Use FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, IEnumerable<KeyValuePair<string,string>> additionalAttributes)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
-        {
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, additionalXmlAttributes);
-            return newFieldCAML;
-        }
-
         public static string FormatFieldXml(FieldCreationInformation fieldCreationInformation)
         {
             List<string> additionalAttributesList = new List<string>();
@@ -616,6 +417,7 @@ namespace Microsoft.SharePoint.Client
                 fieldCreationInformation.DisplayName,
                 fieldCreationInformation.Id,
                 fieldCreationInformation.Group,
+                fieldCreationInformation.Required ? "TRUE" : "FALSE",
                 additionalAttributesList.Any() ? string.Join(" ", additionalAttributesList) : "");
             return newFieldCAML;
         }
@@ -987,13 +789,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>True if the content type exists, false otherwise</returns>
-        public static bool ContentTypeExistsById(this Web web, string contentTypeId)
+        public static bool ContentTypeExistsById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -1011,13 +823,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeName">Name of the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>True if the content type exists, false otherwise</returns>
-        public static bool ContentTypeExistsByName(this Web web, string contentTypeName)
+        public static bool ContentTypeExistsByName(this Web web, string contentTypeName, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             ContentType ct = results.FirstOrDefault();
@@ -1261,13 +1083,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeName">Name of the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>Content type object or null if was not found</returns>
-        public static ContentType GetContentTypeByName(this Web web, string contentTypeName)
+        public static ContentType GetContentTypeByName(this Web web, string contentTypeName, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
@@ -1278,13 +1110,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>Content type object or null if was not found</returns>
-        public static ContentType GetContentTypeById(this Web web, string contentTypeId)
+        public static ContentType GetContentTypeById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)

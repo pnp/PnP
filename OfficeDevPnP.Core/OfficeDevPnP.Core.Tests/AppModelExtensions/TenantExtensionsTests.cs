@@ -6,12 +6,37 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.Online.SharePoint.TenantAdministration;
+using System.Configuration;
+using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
     [TestClass()]
     public class TenantExtensionsTests
     {
+        private string sitecollectionName = "TestPnPSC_123456789";
+
+
+        [TestInitialize()]
+        public void Initialize()
+        {
+            using (var tenantContext = TestCommon.CreateTenantClientContext())
+            {
+                //Ensure nothing was left behind before we run our tests
+                CleanupCreatedTestSiteCollections(tenantContext);
+            }
+        }
+
+        [TestCleanup()]
+        public void CleanUp()
+        {
+            using (var tenantContext = TestCommon.CreateTenantClientContext())
+            {
+                //Cleanup after test run
+                CleanupCreatedTestSiteCollections(tenantContext);
+            }
+        }
+
         [TestMethod()]
         public void GetSiteCollectionsTest()
         {
@@ -87,28 +112,151 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             }
         }
 
-        // This works, but is not the best approach to test locking and unlocking sites
-        //[TestMethod()]
-        //public void SetSiteLockStateTest() {
-        //    using (var tenantContext = TestCommon.CreateTenantClientContext()) {
-        //        var tenant = new Tenant(tenantContext);
-        //        var siteUrl = string.Empty;
+        [TestMethod]
+        public void SubSiteExistsTest()
+        {
+            using (var tenantContext = TestCommon.CreateTenantClientContext())
+            {
+                var tenant = new Tenant(tenantContext);
+                string devSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
+                string siteToCreateUrl = CreateTestSiteCollection(tenant, sitecollectionName);
+                string subSiteUrlGood = "";
+                string subSiteUrlWrong = "";
 
-        //        var siteCollections = tenant.GetSiteCollections();
-        //        siteUrl = siteCollections.Last(s => {
-        //            var path = new Uri(s.Url).AbsolutePath;
-        //            return path.Length > 1;
-        //        }).Url;
-        //        tenant.SetSiteLockState(siteUrl, SiteLockState.NoAccess);
+                using (ClientContext cc = new ClientContext(siteToCreateUrl) { Credentials = tenantContext.Credentials})
+                {
+                    SiteEntity sub = new SiteEntity() { Title = "Test Sub", Url = "sub", Description = "Test" };
+                    cc.Web.CreateWeb(sub);
+                    siteToCreateUrl = UrlUtility.EnsureTrailingSlash(siteToCreateUrl);
+                    subSiteUrlGood = String.Format("{0}{1}", siteToCreateUrl, sub.Url);
+                    subSiteUrlWrong = String.Format("{0}{1}", siteToCreateUrl, "8988980");
+                }
 
-        //        var siteProperties = tenant.GetSitePropertiesByUrl(siteUrl, true);
-        //        tenantContext.Load(siteProperties);
-        //        tenantContext.ExecuteQuery();
+                // Check real sub site
+                bool subSiteExists = tenant.SubSiteExists(subSiteUrlGood);
+                Assert.IsTrue(subSiteExists);
 
-        //        Assert.IsTrue(siteProperties.LockState == SiteLockState.NoAccess.ToString());
-        //        // delay starting the Unlock test
-        //        System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1.5));
-        //    }
-        //}
+                // check non existing sub site
+                bool subSiteExists2 = tenant.SubSiteExists(subSiteUrlWrong);
+                Assert.IsFalse(subSiteExists2);
+
+                // check root site (= site collection). Will return true when existing
+                bool subSiteExists3 = tenant.SubSiteExists(siteToCreateUrl);
+                Assert.IsTrue(subSiteExists3);
+
+                // check root site (= site collection) that does not exist. Will return false when non-existant
+                bool subSiteExists4 = tenant.SubSiteExists(siteToCreateUrl + "8808809808");
+                Assert.IsFalse(subSiteExists4);
+            }
+        }
+
+        [TestMethod]
+        public void CreateDeleteSiteCollectionTest()
+        {
+            using (var tenantContext = TestCommon.CreateTenantClientContext())
+            {
+                var tenant = new Tenant(tenantContext);
+
+                //Create site collection test
+                string siteToCreateUrl = CreateTestSiteCollection(tenant, sitecollectionName);
+                var siteExists = tenant.SiteExists(siteToCreateUrl);
+                Assert.IsTrue(siteExists, "Site collection creation failed");
+
+                //Delete site collection test: move to recycle bin
+                tenant.DeleteSiteCollection(siteToCreateUrl, true);
+                bool recycled = tenant.CheckIfSiteExists(siteToCreateUrl, "Recycled");
+                Assert.IsTrue(recycled, "Site collection recycling failed");
+
+                //Remove from recycle bin
+                tenant.DeleteSiteCollectionFromRecycleBin(siteToCreateUrl, true);
+                var siteExists2 = tenant.SiteExists(siteToCreateUrl);
+                Assert.IsFalse(siteExists2, "Site collection deletion from recycle bin failed");
+            }
+        }
+
+        [TestMethod]
+        public void SetSiteLockStateTest()
+        {
+            using (var tenantContext = TestCommon.CreateTenantClientContext())
+            {
+                var tenant = new Tenant(tenantContext);
+                string devSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
+                string siteToCreateUrl = GetTestSiteCollectionName(devSiteUrl, sitecollectionName);
+
+                if (!tenant.SiteExists(siteToCreateUrl))
+                {
+                    siteToCreateUrl = CreateTestSiteCollection(tenant, sitecollectionName);
+                    var siteExists = tenant.SiteExists(siteToCreateUrl);
+                    Assert.IsTrue(siteExists, "Site collection creation failed");
+                }
+
+                // Set Lockstate NoAccess test
+                tenant.SetSiteLockState(siteToCreateUrl, SiteLockState.NoAccess, true);
+                var siteProperties = tenant.GetSitePropertiesByUrl(siteToCreateUrl, true);
+                tenantContext.Load(siteProperties);
+                tenantContext.ExecuteQuery();
+                Assert.IsTrue(siteProperties.LockState == SiteLockState.NoAccess.ToString(), "LockState wasn't set to NoAccess");
+
+                // Set Lockstate NoAccess test
+                tenant.SetSiteLockState(siteToCreateUrl, SiteLockState.Unlock, true);
+                var siteProperties2 = tenant.GetSitePropertiesByUrl(siteToCreateUrl, true);
+                tenantContext.Load(siteProperties2);
+                tenantContext.ExecuteQuery();
+                Assert.IsTrue(siteProperties2.LockState == SiteLockState.Unlock.ToString(), "LockState wasn't set to UnLock");
+
+                //Delete site collection, also
+                tenant.DeleteSiteCollection(siteToCreateUrl, false);
+                var siteExists2 = tenant.SiteExists(siteToCreateUrl);
+                Assert.IsFalse(siteExists2, "Site collection deletion, including from recycle bin, failed");
+            }
+        }
+
+
+        #region Private helper methods
+        private string GetTestSiteCollectionName(string devSiteUrl, string siteCollection)
+        {
+            Uri u = new Uri(devSiteUrl);
+            string host = String.Format("{0}://{1}:{2}", u.Scheme, u.DnsSafeHost, u.Port);
+
+            string path = u.AbsolutePath;
+            if (path.EndsWith("/"))
+            {
+                path = path.Substring(0, path.Length - 1);
+            }
+            path = path.Substring(0, path.LastIndexOf('/'));
+
+            return string.Format("{0}{1}/{2}", host, path, siteCollection);
+        }
+
+        private void CleanupCreatedTestSiteCollections(ClientContext tenantContext)
+        {
+            string devSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
+            String testSiteCollection = GetTestSiteCollectionName(devSiteUrl, sitecollectionName);
+
+            //Ensure the test site collection was deleted and removed from recyclebin
+            var tenant = new Tenant(tenantContext);
+            if (tenant.SiteExists(testSiteCollection))
+            {
+                tenant.DeleteSiteCollection(testSiteCollection, false);
+            }
+        }
+
+        private string CreateTestSiteCollection(Tenant tenant, string sitecollectionName)
+        {
+            string devSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
+            string siteToCreateUrl = GetTestSiteCollectionName(devSiteUrl, sitecollectionName);
+            SiteEntity siteToCreate = new SiteEntity()
+            {
+                Url = siteToCreateUrl,
+                Template = "STS#0",
+                Title = "Test",
+                Description = "Test site collection",
+                SiteOwnerLogin = ConfigurationManager.AppSettings["SPOUserName"],
+            };
+
+            tenant.CreateSiteCollection(siteToCreate, false, true);
+            return siteToCreateUrl;
+        }
+        #endregion
     }
 }

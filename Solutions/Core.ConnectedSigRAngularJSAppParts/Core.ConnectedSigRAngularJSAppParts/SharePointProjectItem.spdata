@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Type="ElementManifest" />
+    <ProjectItemFile Source="Scripts\jquery-1.6.4-vsdoc.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Scripts\jquery-1.6.4.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Scripts\jquery-1.6.4.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Scripts\jquery.signalR-2.1.2.min.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Scripts\jquery.signalR-2.1.2.js" Target="Scripts\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

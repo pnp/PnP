@@ -67,7 +67,7 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
                 }
             }
 
-            folder.UploadFile(Path, useWebDav: UseWebDav);
+            folder.UploadFile(new System.IO.FileInfo(Path).Name, Path, true);
 
             if (Checkout)
                 this.SelectedWeb.CheckInFile(fileUrl, CheckinType.MajorCheckIn, "");

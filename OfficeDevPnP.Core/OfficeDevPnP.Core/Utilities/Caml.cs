@@ -6,9 +6,28 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Utilities {
+    /// <summary>
+    /// Use this class to build your CAML xml and avoid XML issues.
+    /// </summary>
+    /// <example>
+    /// CAML.ViewQuery(
+    ///     CAML.Where(
+    ///         CAML.And(
+    ///             CAML.Eq(CAML.FieldValue("Project", "Integer", "{0}")),
+    ///             CAML.Geq(CAML.FieldValue("StartDate","DateTime", CAML.Today()))
+    ///         )
+    ///     ),
+    ///     CAML.OrderBy(
+    ///         new OrderByField("StartDate", false),
+    ///         new OrderByField("Title")
+    ///     ),
+    ///     rowLimit: 5
+    /// );
+    /// </example>
     public static class CAML {
         const string VIEW_XML_WRAPPER = "<View><Query>{0}{1}</Query><RowLimit>{2}</RowLimit></View>";
-        const string FIELD_VALUE = "<FieldRef Name='{0}' /><Value Type='{1}'>{2}</Value>";
+        const string FIELD_VALUE = "<FieldRef Name='{0}' {1}/><Value Type='{2}'>{3}</Value>";
+        const string FIELD_VALUE_ID = "<FieldRef ID='{0}' {1} /><Value Type='{2}'>{3}</Value>";
         const string WHERE_CLAUSE = "<Where>{0}</Where>";
         const string GENERIC_CLAUSE = "<{0}>{1}</{0}>";
         const string CONDITION_CLAUSE = "<{0}>{1}{2}</{0}>";
@@ -17,18 +36,48 @@ namespace OfficeDevPnP.Core.Utilities {
         public static readonly string Month = "<Month />";
         public static readonly string Now = "<Now />";
 
+        /// <summary>
+        /// Creates the &lt;Today /&gt; node.
+        /// </summary>
+        /// <param name="offset">Time offset from today (+5 days or -5 days, for example).</param>
+        /// <returns></returns>
         public static string Today(int? offset = null) {
             if (offset.HasValue)
                 return string.Format("<Today Offset='{0}' />", offset.Value);
             return "<Today />";
         }
 
+        /// <summary>
+        /// Root &lt;View&gt; and &lt;Query&gt; nodes.
+        /// </summary>
+        /// <param name="whereClause">&lt;Where&gt; node.</param>
+        /// <param name="orderByClause">&lt;OrderBy&gt; node.</param>
+        /// <param name="rowLimit">&lt;RowLimit&gt; node.</param>
+        /// <returns>String to be used in CAML queries</returns>
         public static string ViewQuery(string whereClause = "", string orderByClause = "", int rowLimit = 100) {
             return string.Format(VIEW_XML_WRAPPER, whereClause, orderByClause, rowLimit);
         }
 
-        public static string FieldValue(string fieldName, string fieldValueType, string value) {
-            return string.Format(FIELD_VALUE, fieldName, fieldValueType, value);
+        /// <summary>
+        /// Creates both a &lt;FieldRef&gt; and &lt;Value&gt; nodes combination for Where clauses.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="fieldValueType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string FieldValue(string fieldName, string fieldValueType, string value, string additionalFieldRefParams = "") {
+            return string.Format(FIELD_VALUE, fieldName, additionalFieldRefParams, fieldValueType, value);
+        }
+
+        /// <summary>
+        /// Creates both a &lt;FieldRef&gt; and &lt;Value&gt; nodes combination for Where clauses.
+        /// </summary>
+        /// <param name="fieldId"></param>
+        /// <param name="fieldValueType"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string FieldValue(Guid fieldId, string fieldValueType, string value, string additionalFieldRefParams = "") {
+            return string.Format(FIELD_VALUE_ID, fieldId.ToString(), additionalFieldRefParams, fieldValueType, value);
         }
 
         public static string OrderBy(params OrderByField[] fieldRefs) {
