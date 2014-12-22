@@ -20,7 +20,6 @@ namespace Microsoft.SharePoint.Client
     {
 
         #region Site Columns
-
         /// <summary>
         /// Create field to web remotely
         /// </summary>
@@ -532,6 +531,7 @@ namespace Microsoft.SharePoint.Client
         }
         #endregion
 
+        #region Helper methods
         /// <summary>
         /// Helper method to parse Key="Value" strings into a keyvaluepair
         /// </summary>
@@ -554,9 +554,9 @@ namespace Microsoft.SharePoint.Client
             }
             return attributes;
         }
+        #endregion
 
         #region Content Types
-
         /// <summary>
         /// Adds content type to list
         /// </summary>

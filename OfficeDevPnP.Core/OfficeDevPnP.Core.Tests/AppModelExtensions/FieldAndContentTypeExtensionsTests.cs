@@ -30,18 +30,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 var web = clientContext.Web;
                 clientContext.Load(web);
                 clientContext.ExecuteQuery();
-
                 EmptyRecycleBin(clientContext);
 
-                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
-                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach (var field in testFields)
-                {
-                    field.DeleteObject();
-                }
-                clientContext.ExecuteQuery();
-
+                // delete lists
                 var lists = clientContext.LoadQuery(clientContext.Web.Lists);
                 clientContext.ExecuteQuery();
                 var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
@@ -51,14 +42,27 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
                 clientContext.ExecuteQuery();
 
+                // first delete content types
                 var contentTypes = clientContext.LoadQuery(clientContext.Web.ContentTypes);
                 clientContext.ExecuteQuery();
                 var testContentTypes = contentTypes.Where(l => l.Name.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach (var ctype in testContentTypes) {
+                foreach (var ctype in testContentTypes)
+                {
                     ctype.DeleteObject();
-                clientContext.ExecuteQuery();
+                    clientContext.ExecuteQuery();
                 }
+                
+                // delete fields
+                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
+                clientContext.ExecuteQuery();
+                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var field in testFields)
+                {
+                    field.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
 
+                // clean recycle bin
                 EmptyRecycleBin(clientContext);
             }
         }
@@ -264,7 +268,66 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.IsTrue(clientContext.Web.ContentTypeExistsById(TEST_CT_PNP_ID, true));
             }
         }
-        #endregion
+
+        [TestMethod]
+        public void AddFieldToContentTypeTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.CreateContentType(TEST_CT_PNP, TEST_CT_PNP_ID, TEST_CATEGORY);
+                
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var fieldId = Guid.NewGuid();
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    DisplayName = fieldName,
+                    AddToDefaultView = true,
+                    Group = "Test fields group"
+                };
+                var fieldText = clientContext.Web.CreateField<FieldText>(fieldCI);
+
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId);
+                Assert.IsTrue(clientContext.Web.FieldExistsByNameInContentType(TEST_CT_PNP, fieldName));
+            }
+        }
+
+        [TestMethod]
+        public void AddFieldToContentTypeMakeRequiredTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.CreateContentType(TEST_CT_PNP, TEST_CT_PNP_ID, TEST_CATEGORY);
+
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var fieldId = Guid.NewGuid();
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    DisplayName = fieldName,
+                    AddToDefaultView = true,
+                    Group = "Test fields group"
+                };
+                var fieldText = clientContext.Web.CreateField<FieldText>(fieldCI);
+
+                // simply add the field to the content type
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId);
+
+                // add the same field, but now with required setting to true and hidden to true
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId, true);
+
+                // Fetch the created field and verify the state of the hidden and required properties
+                ContentType ct = clientContext.Web.GetContentTypeByName(TEST_CT_PNP);
+                FieldCollection fields = ct.Fields;
+                IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.Id == fieldId));
+                ct.Context.ExecuteQuery();
+                Assert.IsTrue(results.FirstOrDefault().Required);
+            }
+        }
 
         [TestMethod]
         public void SetDefaultContentTypeToListTest()
@@ -370,7 +433,10 @@ namespace Microsoft.SharePoint.Client.Tests
                 CollectionAssert.AreEqual(expectedIds, actualIds);
             }
         }
+        #endregion
 
+
+        #region Helper methods
         void EmptyRecycleBin(ClientContext clientContext) {
             var recycleBin = clientContext.Web.RecycleBin;
             clientContext.Load(recycleBin);
@@ -383,5 +449,6 @@ namespace Microsoft.SharePoint.Client.Tests
 
             clientContext.ExecuteQuery();
         }
+        #endregion
     }
 }
