@@ -789,13 +789,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>True if the content type exists, false otherwise</returns>
-        public static bool ContentTypeExistsById(this Web web, string contentTypeId)
+        public static bool ContentTypeExistsById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)
@@ -813,13 +823,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeName">Name of the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>True if the content type exists, false otherwise</returns>
-        public static bool ContentTypeExistsByName(this Web web, string contentTypeName)
+        public static bool ContentTypeExistsByName(this Web web, string contentTypeName, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             ContentType ct = results.FirstOrDefault();
@@ -1063,13 +1083,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeName">Name of the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>Content type object or null if was not found</returns>
-        public static ContentType GetContentTypeByName(this Web web, string contentTypeName)
+        public static ContentType GetContentTypeByName(this Web web, string contentTypeName, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQuery();
             return results.FirstOrDefault();
@@ -1080,13 +1110,23 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>Content type object or null if was not found</returns>
-        public static ContentType GetContentTypeById(this Web web, string contentTypeId)
+        public static ContentType GetContentTypeById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
         {
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
 
-            ContentTypeCollection ctCol = web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
+
             web.Context.Load(ctCol);
             web.Context.ExecuteQuery();
             foreach (var item in ctCol)

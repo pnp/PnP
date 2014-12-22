@@ -646,7 +646,30 @@ namespace Microsoft.SharePoint.Client
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
-            web.AddPermissionLevelImplementation(user, permissionLevel, removeExistingPermissionLevels);
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
+        }
+
+        /// <summary>
+        /// Add a role definition (e.g.Contribute, Read, Approve) to a user
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="userLoginName">Loginname of the user</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Hierarchy|Restricted Read. Use the correct name of the language of the root site you are using</param>
+        /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that user</param>
+        public static void AddPermissionLevelToUser(this Web web, string userLoginName, string roleDefinitionName, bool removeExistingPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("roleDefinitionName");
+
+            User user = web.EnsureUser(userLoginName);
+            web.Context.Load(user);
+            web.Context.ExecuteQuery();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
         }
 
         /// <summary>
@@ -664,10 +687,33 @@ namespace Microsoft.SharePoint.Client
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
-            web.AddPermissionLevelImplementation(group, permissionLevel, removeExistingPermissionLevels);
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
         }
 
-        private static void AddPermissionLevelImplementation(this Web web, Principal principal, RoleType permissionLevel, bool removeExistingPermissionLevels = false)
+        /// <summary>
+        /// Add a role definition (e.g.Contribute, Read, Approve) to a group
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="groupName">Name of the group</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Hierarchy|Restricted Read. Use the correct name of the language of the root site you are using</param>
+        /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that group</param>
+        public static void AddPermissionLevelToGroup(this Web web, string groupName, string roleDefinitionName, bool removeExistingPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("roleDefinitionName");
+
+            var group = web.SiteGroups.GetByName(groupName);
+            web.Context.Load(group);
+            web.Context.ExecuteQuery();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
+        }
+
+        private static void AddPermissionLevelImplementation(this Web web, Principal principal, RoleDefinition roleDefinition, bool removeExistingPermissionLevels = false)
         {
             if (principal != null)
             {
@@ -690,7 +736,7 @@ namespace Microsoft.SharePoint.Client
                         web.Context.ExecuteQuery();
 
                         // Load the role definition to add (e.g. contribute)
-                        RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+                        //RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                         if (removeExistingPermissionLevels)
                         {
                             // Remove current role definitions by removing all current role definitions
@@ -714,7 +760,6 @@ namespace Microsoft.SharePoint.Client
                 if (!processed)
                 {
                     RoleDefinitionBindingCollection rdc = new RoleDefinitionBindingCollection(web.Context);
-                    RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                     rdc.Add(roleDefinition);
                     web.RoleAssignments.Add(principal, rdc);
                     web.Context.ExecuteQuery();
@@ -737,7 +782,27 @@ namespace Microsoft.SharePoint.Client
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
             web.Context.ExecuteQuery();
-            web.RemovePermissionLevelImplementation(user, permissionLevel, removeAllPermissionLevels);
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
+        }
+
+        /// <summary>
+        /// Removes a permission level from a user
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="userLoginName">Loginname of user</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Heirarchy|Restricted Read. Use the correct name of the language of the site you are using</param>
+        /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
+        public static void RemovePermissionLevelFromUser(this Web web, string userLoginName, string roleDefinitionName, bool removeAllPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+
+            User user = web.EnsureUser(userLoginName);
+            web.Context.Load(user);
+            web.Context.ExecuteQuery();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
         }
 
         /// <summary>
@@ -755,10 +820,30 @@ namespace Microsoft.SharePoint.Client
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
             web.Context.ExecuteQuery();
-            web.RemovePermissionLevelImplementation(group, permissionLevel, removeAllPermissionLevels);
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
         }
 
-        private static void RemovePermissionLevelImplementation(this Web web, Principal principal, RoleType permissionLevel, bool removeAllPermissionLevels = false)
+        /// <summary>
+        /// Removes a permission level from a group
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="groupName">name of the group</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Heirarchy|Restricted Read. Use the correct name of the language of the site you are using</param>
+        /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
+        public static void RemovePermissionLevelFromGroup(this Web web, string groupName, string roleDefinitionName, bool removeAllPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+
+            var group = web.SiteGroups.GetByName(groupName);
+            web.Context.Load(group);
+            web.Context.ExecuteQuery();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
+        }
+
+        private static void RemovePermissionLevelImplementation(this Web web, Principal principal, RoleDefinition roleDefinition, bool removeAllPermissionLevels = false)
         {
             if (principal != null)
             {
@@ -786,7 +871,6 @@ namespace Microsoft.SharePoint.Client
                         else
                         {
                             // Load the role definition to remove (e.g. contribute)
-                            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                             rdc.Remove(roleDefinition);
                         }
 
