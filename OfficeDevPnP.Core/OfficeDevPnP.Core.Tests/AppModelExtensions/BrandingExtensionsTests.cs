@@ -94,8 +94,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var webB = web1.Webs.Add(wci3);
                 context.ExecuteQuery();
                 webB.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
-
-
             }
 
         }
@@ -177,6 +175,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     Console.WriteLine("Exception cleaning up: {0}", ex);
                 }
 
+                // Remove webs
                 var webCollection1 = web.Webs;
                 context.Load(webCollection1, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));
                 context.ExecuteQuery();
@@ -211,6 +210,33 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     {
                         Console.WriteLine("Exception cleaning up: {0}", ex);
                     }
+                }
+
+                // Remove pagelayouts
+                List masterPageGallery = context.Web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+                Folder rootFolderInMasterPageGallery = masterPageGallery.RootFolder;
+                context.Load(rootFolderInMasterPageGallery, f => f.ServerRelativeUrl);
+                context.ExecuteQuery();
+
+                try
+                {
+                    var fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, publishingPageWithoutExtension);
+                    var file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
+                    context.Load(file);
+                    context.ExecuteQuery();
+                    file.DeleteObject();
+                    context.ExecuteQuery();
+
+                    fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, "test/test", publishingPageWithoutExtension);
+                    file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
+                    context.Load(file);
+                    context.ExecuteQuery();
+                    file.DeleteObject();
+                    context.ExecuteQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception cleaning up: {0}", ex);
                 }
             }
 
@@ -258,7 +284,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod]
-        public void CanUploadHtmlPageLayoutAndConvertItToAspxVersion()
+        public void CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest()
         {
             var web = pageLayoutTestWeb;
             web.Context.Load(web);
@@ -270,7 +296,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod]
-        public void CanUploadPageLayout()
+        public void CanUploadPageLayoutTest()
         {
             var web = pageLayoutTestWeb;
             web.Context.Load(web);
@@ -278,6 +304,18 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQuery();
             var item = web.GetPageLayoutListItemByName(publishingPageWithoutExtension);
+            Assert.AreNotEqual(null, item);
+        }
+
+        [TestMethod]
+        public void CanUploadPageLayoutWithPathTest()
+        {
+            var web = pageLayoutTestWeb;
+            web.Context.Load(web);
+            web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId, "test/test");
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            var item = web.GetPageLayoutListItemByName("test/test/" + publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
 
@@ -354,7 +392,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void CreateComposedLookByNameShouldWork()
+        public void CreateComposedLookByNameShouldWorkTest()
         {
             var testLookName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
 
@@ -382,7 +420,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void SetComposedLookInherits()
+        public void SetComposedLookInheritsTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -431,7 +469,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void SetComposedLookResetInheritance()
+        public void SetComposedLookResetInheritanceTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -474,7 +512,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
         // Manually taken over from Gavin Barron's commit https://github.com/gavinbarron/PnP/blob/17c4d3647f4a509fb1eedb949ef07af7f962929c/OfficeDevPnP.Core/OfficeDevPnP.Core.Tests/AppModelExtensions/BrandingExtensionsTests.cs 
         [TestMethod]
-        public void SeattleMasterPageIsUnchanged()
+        public void SeattleMasterPageIsUnchangedTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {

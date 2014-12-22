@@ -800,8 +800,14 @@ namespace Microsoft.SharePoint.Client
 
             try
             {
-                var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-                var web = folder.ListItemAllFields.ParentList.ParentWeb;
+                if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
+                {
+                    folder.Context.Load(folder, w => w.ServerRelativeUrl);
+                    folder.Context.ExecuteQuery();
+                }
+
+                var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);                
+                var web = folder.ListItemAllFields.ParentList.ParentWeb;                
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
