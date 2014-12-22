@@ -28,7 +28,6 @@ namespace Microsoft.SharePoint.Client.Tests
             clientContext.Dispose();
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ActivateFeatureTest()
         {
@@ -42,7 +41,6 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsFalse(clientContext.Site.IsFeatureActive(sp2007WorkflowSiteFeatureId));
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ActivateFeatureTest1()
         {
@@ -56,7 +54,6 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsFalse(clientContext.Web.IsFeatureActive(contentOrganizerWebFeatureId));
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void DeactivateFeatureTest()
         {
@@ -68,7 +65,6 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsFalse(clientContext.Site.IsFeatureActive(sp2007WorkflowSiteFeatureId));
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void DeactivateFeatureTest1()
         {
@@ -80,7 +76,6 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsFalse(clientContext.Web.IsFeatureActive(contentOrganizerWebFeatureId));
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void IsFeatureActiveTest()
         {

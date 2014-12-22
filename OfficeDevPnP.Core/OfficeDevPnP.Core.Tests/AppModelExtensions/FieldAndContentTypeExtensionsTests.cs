@@ -65,7 +65,6 @@ namespace Microsoft.SharePoint.Client.Tests
 
         #region Field tests
         [TestMethod()]
-        [TestCategory(TEST_CATEGORY)]
         public void CreateFieldTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -93,7 +92,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Field was able to be created twice without exception.")]
         public void CreateExistingFieldTest()
@@ -123,7 +121,6 @@ namespace Microsoft.SharePoint.Client.Tests
         //FIXME: Tests does not revert target to a clean slate after running.
         //FIXME: Tests are tighthly coupled to eachother
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
@@ -144,7 +141,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         public void CreateFieldFromXmlTest()
         {
@@ -270,7 +266,6 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         public void SetDefaultContentTypeToListTest()
         {
@@ -305,7 +300,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ReorderContentTypesTest() {
             using (var clientContext = TestCommon.CreateClientContext()) {
