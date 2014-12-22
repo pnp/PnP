@@ -1,15 +1,15 @@
 # Control auditing settings in site collection using CSOM #
 
 ### Summary ###
-Demonstrates how to control auditing settings in teh site collection level usign CSOM.
+Demonstrates how to control auditing settings in the site collection level using CSOM.
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT) - Waiting for new redistributable
+-  Office 365 Multi Tenant (MT) - Waiting for new re-distributable
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-Any special pre-requisites?
+2014 December CU installed on farm for on-premises or new re-distributable package for cloud CSOM (released around end of January 2015).
 
 ### Solution ###
 Solution | Author(s)
@@ -27,17 +27,42 @@ Version  | Date | Comments
 
 ----------
 
-# Doc scenario 1 #
-Draft. Will be updated shortly.
+# Introduction #
+Sample shows how to control the auditing settings in the site collection level using client side object model.
 
+![](http://i.imgur.com/oYakX68.png)
 
-## Sub level 1.1 ##
-Description:
-Code snippet:
+## Enabling auditing in site collection level ##
+Following code example shows how to enable all auditing setting in site collection level and how to adjust audit log trimming.
 ```C#
-string scenario1Page = String.Format("scenario1-{0}.aspx", DateTime.Now.Ticks);
-string scenario1PageUrl = csomService.AddWikiPage("Site Pages", scenario1Page);
+Microsoft.SharePoint.Client.Site site = clientContext.Site;
+Audit audit = site.Audit;
+clientContext.Load(site);
+clientContext.Load(audit);
+clientContext.ExecuteQuery();
+// Enable all auditing is site collection level
+site.Audit.AuditFlags = Microsoft.SharePoint.Client.AuditMaskType.All;
+site.Audit.Update();
+// Adjust retention time to be 7 days
+site.AuditLogTrimmingRetention = 7;
+site.TrimAuditLog = true;
+clientContext.ExecuteQuery();
 ```
+## Disabling auditing in site collection level ##
+Following code example shows how to disable auditing from site collection level.
+```C#
+Microsoft.SharePoint.Client.Site site = clientContext.Site;
+Audit audit = site.Audit;
+clientContext.Load(site);
+clientContext.Load(audit);
+clientContext.ExecuteQuery();
+// Set remove any auditing from site colelction level
+site.Audit.AuditFlags = Microsoft.SharePoint.Client.AuditMaskType.None;
+site.Audit.Update();
+site.TrimAuditLog = false;
+clientContext.ExecuteQuery();
+```
+
 
 
 
