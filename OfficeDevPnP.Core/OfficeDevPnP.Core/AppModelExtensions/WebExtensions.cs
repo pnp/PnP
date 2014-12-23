@@ -141,9 +141,8 @@ namespace Microsoft.SharePoint.Client
             while (queue.Count > 0)
             {
                 var currentUrl = queue.Dequeue();
-                using (var webContext = new ClientContext(currentUrl))
+                using (var webContext = siteContext.Clone(currentUrl))
                 {
-                    webContext.Credentials = siteContext.Credentials;
                     webContext.Load(webContext.Web, web => web.Webs);
                     webContext.ExecuteQuery();
                     foreach (var subWeb in webContext.Web.Webs)
@@ -221,9 +220,8 @@ namespace Microsoft.SharePoint.Client
             bool exists = false;
             try
             {
-                using (ClientContext testContext = new ClientContext(webFullUrl))
+                using (ClientContext testContext = context.Clone(webFullUrl))
                 {
-                    testContext.Credentials = context.Credentials;
                     testContext.Load(testContext.Web, w => w.Title);
                     testContext.ExecuteQuery();
                     exists = true;

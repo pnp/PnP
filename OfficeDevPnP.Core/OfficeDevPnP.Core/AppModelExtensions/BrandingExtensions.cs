@@ -72,7 +72,8 @@ namespace Microsoft.SharePoint.Client
             var fontUrl = default(string);
             var backgroundUrl = default(string);
             var masterUrl = default(string);
-            using (var innerContext = new ClientContext(web.Context.Url) { Credentials = web.Context.Credentials })
+
+            using (var innerContext = web.Context.Clone(web.Context.Url))
             {
                 var rootWeb = innerContext.Site.RootWeb;
                 Utility.EnsureWeb(innerContext, rootWeb, "ServerRelativeUrl");

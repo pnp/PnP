@@ -506,9 +506,8 @@ namespace Microsoft.SharePoint.Client
                 if (addToOwnersGroup)
                 {
                     // Create a separate context to the web
-                    using (var clientContext = new ClientContext(siteUrl))
+                    using (var clientContext = tenant.Context.Clone(siteUrl))
                     {
-                        clientContext.Credentials = tenant.Context.Credentials;
                         var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
                         clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
                         clientContext.Web.AssociatedOwnerGroup.Update();

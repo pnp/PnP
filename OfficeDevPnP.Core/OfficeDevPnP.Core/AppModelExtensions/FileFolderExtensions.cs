@@ -766,7 +766,7 @@ namespace Microsoft.SharePoint.Client
             var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
 
             // Create uploadContext to get a proper ClientContext instead of a ClientRuntimeContext
-            using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials })
+            using (var uploadContext = folder.Context.Clone(folder.Context.Url))
             {
                 LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
                 File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
