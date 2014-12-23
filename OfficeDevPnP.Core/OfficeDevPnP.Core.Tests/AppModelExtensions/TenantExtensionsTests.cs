@@ -182,6 +182,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         #endregion
 
         #region Site lockstate tests
+#if !CLIENTSDKV15
         [TestMethod]
         public void SetSiteLockStateTest()
         {
@@ -218,6 +219,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsFalse(siteExists2, "Site collection deletion, including from recycle bin, failed");
             }
         }
+#endif
         #endregion
 
         #region Private helper methods

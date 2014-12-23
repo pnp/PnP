@@ -19,7 +19,12 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestInitialize]
         public void Initialize()
         {
+
+            #if !CLIENTSDKV15
             _userLogin = ConfigurationManager.AppSettings["SPOUserName"];
+            #else
+            _userLogin = String.Format(@"{0}\{1}", ConfigurationManager.AppSettings["OnPremDomain"], ConfigurationManager.AppSettings["OnPremUserName"]);            
+            #endif
 
             using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
@@ -55,11 +60,24 @@ namespace Microsoft.SharePoint.Client.Tests
             {
                 // Count admins
                 int initialCount = clientContext.Web.GetAdministrators().Count;
+                #if !CLIENTSDKV15
                 var userEntity = new UserEntity {LoginName = _userLogin, Email = _userLogin};
+                #else
+                var userEntity = new UserEntity { LoginName = _userLogin };
+                #endif
                 clientContext.Web.AddAdministrators(new List<UserEntity> {userEntity}, false);
 
-                int newCount = clientContext.Web.GetAdministrators().Count;
-                Assert.IsTrue(initialCount == newCount);
+                List<UserEntity> admins = clientContext.Web.GetAdministrators();
+                bool found = false;
+                foreach(var admin in admins)
+                {
+                    if (admin.LoginName.Equals(_userLogin, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                Assert.IsTrue(found);
 
                 // Assumes that we're on a dev tenant, and that the existing sitecol admin is the same as the user being added.
                 clientContext.Web.RemoveAdministrator(userEntity);
@@ -176,6 +194,7 @@ namespace Microsoft.SharePoint.Client.Tests
         #endregion
 
         #region Reader access tests
+#if !CLIENTSDKV15
         [TestMethod]
         public void AddReaderAccessToEveryoneExceptExternalsTest()
         {
@@ -202,6 +221,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
             }
         }
+#endif
 
         [TestMethod]
         public void AddReaderAccessToEveryoneTest()

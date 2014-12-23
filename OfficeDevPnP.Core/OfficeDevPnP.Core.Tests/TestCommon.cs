@@ -26,12 +26,23 @@ namespace OfficeDevPnP.Core.Tests {
             }
             else
             {
-                UserName = ConfigurationManager.AppSettings["SPOUserName"];
-                var password = ConfigurationManager.AppSettings["SPOPassword"];
+                if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOUserName"]) && 
+                    !String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOPassword"]))
+                {
+                    UserName = ConfigurationManager.AppSettings["SPOUserName"];
+                    var password = ConfigurationManager.AppSettings["SPOPassword"];
 
-                Password = password.ToSecureString();
+                    Password = password.ToSecureString();
 
-                Credentials = new SharePointOnlineCredentials(UserName, Password);
+                    Credentials = new SharePointOnlineCredentials(UserName, Password);
+                }
+                else if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremUserName"]) &&
+                         !String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremDomain"]) &&
+                         !String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremPassword"]))
+                {
+                    Password = ConfigurationManager.AppSettings["OnPremPassword"].ToSecureString();
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["OnPremUserName"], Password, ConfigurationManager.AppSettings["OnPremDomain"]);
+                }
             }
         }
 
