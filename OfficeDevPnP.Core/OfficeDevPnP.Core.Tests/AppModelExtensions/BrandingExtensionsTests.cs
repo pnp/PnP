@@ -18,7 +18,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string builtInMasterOslo = "oslo.master";
         private string builtInMasterSeattle = "seattle.master";
         private string builtInPalette003 = "palette003.spcolor";
-        private string builtInFont002 = "fontscheme002.spfont";
         private string knownHashOfSeattle = "EC-46-9D-CE-27-7E-D3-79-72-BE-89-35-01-6E-0B-B2-B1-09-F1-3E";
 
         private string customColorFilePath = string.Empty;
@@ -36,25 +35,21 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                         </Where>
                      </Query>
                 </View>";
+        
         private static string htmlPublishingPageWithoutExtension = "TestHtmlPublishingPageLayout";
         private static string publishingPageWithoutExtension = "TestPublishingPageLayout";
         private string htmlPublishingPagePath = string.Format("../../Resources/{0}.html", htmlPublishingPageWithoutExtension);
         private string publishingPagePath = string.Format("../../Resources/{0}.aspx", publishingPageWithoutExtension);
         private string pageLayoutTitle = "CustomHtmlPageLayout";
-
-        private string welcomePageContentTypeId =
-            "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4";
-
+        private string welcomePageContentTypeId = "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4";
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         private Guid publishingWebFeatureId = new Guid("94c94ca6-b32f-4da9-a9e3-1f3d343d7ecb");
-
         private string testWebName;
-
         bool deactivateSiteFeatureOnTeardown = false;
         bool deactivateWebFeatureOnTeardown = false;
         private Web pageLayoutTestWeb = null;
 
-
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -282,7 +277,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
+        #endregion
 
+        #region Pagelayout upload tests
         [TestMethod]
         public void CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest()
         {
@@ -318,9 +315,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var item = web.GetPageLayoutListItemByName("test/test/" + publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
+        #endregion
 
+        #region Composed Look tests
         [TestMethod()]
-        public void DeployThemeToWebTest()
+        public void DeployThemeAndCreateComposedLookTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -332,7 +331,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void ThemeEntryExistsTest()
+        public void ComposedLookExistsTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -342,7 +341,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void GetCurrentLookTest()
+        public void GetCurrentComposedLookTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -358,7 +357,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void CreateComposedLookShouldWork()
+        public void CreateComposedLookShouldWorkTest()
         {
             var testLookName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
 
@@ -509,7 +508,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.AreEqual("FFF07200", accentA.Value);
             }
         }
+        #endregion
 
+        #region Master page tests
         // Manually taken over from Gavin Barron's commit https://github.com/gavinbarron/PnP/blob/17c4d3647f4a509fb1eedb949ef07af7f962929c/OfficeDevPnP.Core/OfficeDevPnP.Core.Tests/AppModelExtensions/BrandingExtensionsTests.cs 
         [TestMethod]
         public void SeattleMasterPageIsUnchangedTest()
@@ -535,8 +536,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 //Check against last known hash 
                 Assert.AreEqual(knownHashOfSeattle, hex);
             }
-        } 
-
+        }
+        #endregion
 
     }
 }

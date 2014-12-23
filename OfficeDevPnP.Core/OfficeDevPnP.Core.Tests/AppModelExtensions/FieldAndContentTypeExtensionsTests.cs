@@ -19,10 +19,10 @@ namespace Microsoft.SharePoint.Client.Tests
         const string TEST_CT_PNP = "Test_CT_PNP";
         const string TEST_CT_PNP_ID = "0x01010080BA6ECAEDA6487EAD28FC3C21CA1900";
 
+        #region Test initialize and cleanup
         // **** IMPORTANT ****
         // In order to succesfully clean up after testing, create all artifacts that end up in the test site with a name starting with "Test_"
         // **** IMPORTANT ****
-
         [TestCleanup]
         public void Cleanup()
         {
@@ -66,6 +66,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 EmptyRecycleBin(clientContext);
             }
         }
+        #endregion
 
         #region Field tests
         [TestMethod()]
@@ -434,7 +435,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
         #endregion
-
 
         #region Helper methods
         void EmptyRecycleBin(ClientContext clientContext) {

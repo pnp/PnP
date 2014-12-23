@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client.Tests
         const string APPNAME = "HelloWorldApp";
         private ClientContext clientContext;
 
-        #region SETUP AND TEARDOWN
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -75,7 +75,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
-        #region PROPBAG tests
+        #region Property bag tests
         [TestMethod()]
         public void SetPropertyBagValueIntTest()
         {
@@ -281,20 +281,9 @@ namespace Microsoft.SharePoint.Client.Tests
             // All keys should be gone
             Assert.IsFalse(props.FieldValues.ContainsKey(_key), "Key still present");
         }
-
-        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (string current in keys)
-            {
-                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
-                stringBuilder.Append('|');
-            }
-            return stringBuilder.ToString();
-        }
-
         #endregion
 
+        #region App instance tests
         [TestMethod()]
         public void GetAppInstancesTest()
         {
@@ -335,7 +324,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
             Assert.AreEqual(instances.Count, instanceCount);
         }
+        #endregion
 
+        #region Install solution tests
         // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
         [Ignore()]
         [TestMethod()]
@@ -422,5 +413,20 @@ namespace Microsoft.SharePoint.Client.Tests
             // Teardown
             System.IO.File.Delete(solutionpath);
         }
+        #endregion
+
+        #region Helper methods
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
+        }
+        #endregion
+
     }
 }

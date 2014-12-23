@@ -14,6 +14,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string publishingPageTemplate = "BlankWebPartPage";
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         bool deactivatePublishingOnTearDown = false;
+
+        #region Test initialize and cleanup
         public Web Setup(string webTemplate = "STS#0", bool enablePublishingInfrastructure = false)
         {
             using (var ctx = TestCommon.CreateClientContext())
@@ -55,6 +57,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
+
         public void Teardown(Web web)
         {
             web.DeleteObject();
@@ -66,29 +69,31 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
-	    [TestMethod]
-        public void CanAddLayoutToWikiPage()
+        #endregion
+
+        #region Wiki page tests
+        [TestMethod]
+        public void CanAddLayoutToWikiPageTest()
         {
             var web = Setup();
 
             web.AddLayoutToWikiPage(folder, OfficeDevPnP.Core.WikiPageLayout.TwoColumns, pageName);
 
             Teardown(web);
-
         }
 
-	[TestMethod]
-        public void CanAddHtmlToWikiPage()
+	    [TestMethod]
+        public void CanAddHtmlToWikiPageTest()
         {
             var web = Setup();
 
             web.AddHtmlToWikiPage(folder, "<h1>I got text</h1>", pageName, 1, 1);
 
             Teardown(web);
-
         }
+
         [TestMethod]
-        public void ProveThatWeCanAddHtmlToPageAfterChangingLayout()
+        public void ProveThatWeCanAddHtmlToPageAfterChangingLayoutTest()
         {
             var web = Setup();
             web.AddLayoutToWikiPage(folder, OfficeDevPnP.Core.WikiPageLayout.TwoColumns, pageName);
@@ -100,9 +105,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+        #endregion
 
+        #region Publishing page tests
         [TestMethod]
-        public void CanCreatePublishingPage()
+        public void CanCreatePublishingPageTest()
         {
             var web = Setup("CMSPUBLISHING#0",true);
             web.Context.Load(web);
@@ -118,8 +125,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+
         [TestMethod]
-        public void PublishingPageWithInvalidCharsIsCorrectlyCreated()
+        public void PublishingPageWithInvalidCharsIsCorrectlyCreatedTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
@@ -134,7 +142,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod]
-        public void CanCreatePublishedPublishingPageWhenModerationIsEnabled()
+        public void CanCreatePublishedPublishingPageWhenModerationIsEnabledTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
@@ -156,8 +164,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+
         [TestMethod]
-        public void CanCreatePublishedPublishingPageWhenModerationIsDisabled()
+        public void CanCreatePublishedPublishingPageWhenModerationIsDisabledTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
@@ -177,8 +186,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+
         [TestMethod]
-        public void CreatedPublishingPagesSetsTitleCorrectly()
+        public void CreatedPublishingPagesSetsTitleCorrectlyTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             var customTitle = "Bad robot";
@@ -206,5 +216,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+        #endregion
     }
 }

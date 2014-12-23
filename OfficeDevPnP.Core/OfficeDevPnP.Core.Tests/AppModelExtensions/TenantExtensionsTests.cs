@@ -16,7 +16,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     {
         private string sitecollectionName = "TestPnPSC_123456789";
 
-
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -36,7 +36,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 CleanupCreatedTestSiteCollections(tenantContext);
             }
         }
+        #endregion
 
+        #region Get site collections tests
         [TestMethod()]
         public void GetSiteCollectionsTest()
         {
@@ -51,7 +53,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void GetOneDriveSiteCollections()
+        public void GetOneDriveSiteCollectionsTest()
         {
             using (var tenantContext = TestCommon.CreateTenantClientContext())
             {
@@ -64,7 +66,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void GetUserProfileServiceClient() {
+        public void GetUserProfileServiceClientTest() {
             using (var tenantContext = TestCommon.CreateTenantClientContext()) {
                 var tenant = new Tenant(tenantContext);
                 var serviceClient = tenant.GetUserProfileServiceClient();
@@ -76,7 +78,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsNotNull(profile);
             }
         }
+        #endregion
 
+        #region Site existance tests
         [TestMethod()]
         public void CheckIfSiteExistsTest() {
             using (var tenantContext = TestCommon.CreateTenantClientContext()) {
@@ -149,7 +153,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsFalse(subSiteExists4);
             }
         }
+        #endregion
 
+        #region Site collection creation and deletion tests
         [TestMethod]
         public void CreateDeleteSiteCollectionTest()
         {
@@ -173,7 +179,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsFalse(siteExists2, "Site collection deletion from recycle bin failed");
             }
         }
+        #endregion
 
+        #region Site lockstate tests
         [TestMethod]
         public void SetSiteLockStateTest()
         {
@@ -210,7 +218,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsFalse(siteExists2, "Site collection deletion, including from recycle bin, failed");
             }
         }
-
+        #endregion
 
         #region Private helper methods
         private string GetTestSiteCollectionName(string devSiteUrl, string siteCollection)
