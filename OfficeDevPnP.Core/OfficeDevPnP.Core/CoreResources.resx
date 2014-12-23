@@ -312,4 +312,7 @@
   <data name="TenantExtensions_SetLockState" xml:space="preserve">
     <value>SetSiteLockState: Current: {0} Target: {1}</value>
   </data>
+  <data name="BrandingExtensions_AddWebPartToPageLayout" xml:space="preserve">
+    <value>Adding web part '{0}' in zone '{1}' at index '{2}' to page layout '{3}'</value>
+  </data>
 </root>
