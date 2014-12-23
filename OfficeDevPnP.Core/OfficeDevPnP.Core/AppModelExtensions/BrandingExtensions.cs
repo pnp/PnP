@@ -759,7 +759,9 @@ namespace Microsoft.SharePoint.Client
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
         {
             if (string.IsNullOrEmpty(pageLayoutName))
+            {
                 throw new ArgumentNullException("pageLayoutName");
+            }
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
