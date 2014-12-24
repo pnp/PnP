@@ -225,6 +225,7 @@
     <None Include="Resources\HelloWorldApp.app" />
     <Content Include="Resources\GuidTermSet.csv" />
     <Content Include="Resources\ImportTermSet.csv" />
+    <None Include="Resources\HelloWorldApp15.app" />
     <None Include="Resources\TestSolution.wsp" />
     <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>

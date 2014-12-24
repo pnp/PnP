@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <appSettings>
+    <!-- For Office 365 MT sites are https://[tenant]-admin.sharepoint.com and https://[tenant].sharepoint.com/sites/dev, for on-premises
+         you can any Developer site collection (e.g https://sp.contoso.com/sites.dev). For tenant adminstration you'll need to specify the 
+         site collection you've marked as tenant administrator. This site collection must be in the same web app as the Developer site. See 
+         http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx
+         for more details on how to setup a tenant administration site in on-premises.
+    -->
     <add key="SPOTenantUrl" value="https://[tenant]-admin.sharepoint.com" />
     <add key="SPODevSiteUrl" value="https://[tenant].sharepoint.com/sites/dev" />
     
@@ -11,6 +17,9 @@
    
     <add key="SPOUserName" value="user@[tenant].onmicrosoft.com" />
     <add key="SPOPassword" value="" />
+    <add key="OnPremUserName" value="user" />
+    <add key="OnPremDomain" value="domain" />
+    <add key="OnPremPassword" value="" />    
   </appSettings>
   <system.diagnostics>
     <sharedListeners>

@@ -62,9 +62,15 @@ namespace Microsoft.SharePoint.Client.Tests
             var instances = AppCatalog.GetAppInstances(clientContext, clientContext.Web);
             clientContext.Load(instances);
             clientContext.ExecuteQuery();
+
+            string appToRemove = APPNAME;
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif            
+
             foreach (var instance in instances)
             {
-                if (string.Equals(instance.Title, APPNAME, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(instance.Title, appToRemove, StringComparison.OrdinalIgnoreCase))
                 {
                     instance.Uninstall();
                     clientContext.ExecuteQuery();
@@ -293,7 +299,13 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
                 clientContext.ExecuteQuery();
@@ -312,13 +324,25 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
                 clientContext.ExecuteQuery();
             }
 
-            Assert.IsTrue(web.RemoveAppInstanceByTitle(APPNAME));
+            string appToRemove = APPNAME;
+            
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif
+            
+            Assert.IsTrue(web.RemoveAppInstanceByTitle(appToRemove));
 
             instances = web.GetAppInstances();
 
