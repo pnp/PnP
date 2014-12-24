@@ -22,6 +22,7 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class WebExtensions
     {
+#if !CLIENTSDKV15
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         [Obsolete("Use Tenant.CreateSiteCollection()")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -121,6 +122,7 @@ namespace Microsoft.SharePoint.Client
             Tenant tenant = new Tenant(web.Context);
             return tenant.SubSiteExists(siteUrl);
         }
+#endif
 
         [Obsolete("Should use CreateWeb(), to avoid confusion betweeen Site (collection) and Web (site)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

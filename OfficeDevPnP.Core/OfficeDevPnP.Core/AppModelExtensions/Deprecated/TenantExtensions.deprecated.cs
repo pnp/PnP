@@ -13,6 +13,7 @@ namespace Microsoft.SharePoint.Client
 {
     public static partial class TenantExtensions
     {
+#if !CLIENTSDKV15
         const string SITE_STATUS_ACTIVE = "Active";
         const string SITE_STATUS_CREATING = "Creating";
         const string SITE_STATUS_RECYCLED = "Recycled";
@@ -112,7 +113,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-
+#endif
 
     }
 }

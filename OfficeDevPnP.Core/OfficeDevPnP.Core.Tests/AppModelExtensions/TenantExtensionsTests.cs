@@ -11,6 +11,7 @@ using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
+#if !CLIENTSDKV15
     [TestClass()]
     public class TenantExtensionsTests
     {
@@ -182,7 +183,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         #endregion
 
         #region Site lockstate tests
-#if !CLIENTSDKV15
         [TestMethod]
         public void SetSiteLockStateTest()
         {
@@ -219,7 +219,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.IsFalse(siteExists2, "Site collection deletion, including from recycle bin, failed");
             }
         }
-#endif
         #endregion
 
         #region Private helper methods
@@ -269,4 +268,5 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
         #endregion
     }
+#endif
 }
