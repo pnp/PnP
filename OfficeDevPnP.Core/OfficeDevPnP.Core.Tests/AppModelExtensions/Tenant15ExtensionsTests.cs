@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
+#if CLIENTSDKV15
     [TestClass()]
     public class Tenant15ExtensionsTests
     {
@@ -110,4 +111,5 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         #endregion
 
     }
+#endif
 }
