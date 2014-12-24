@@ -1289,7 +1289,14 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(listContentTypes);
             list.Context.ExecuteQuery();
             IList<ContentTypeId> newOrder = new List<ContentTypeId>();
-            var ctCol = listContentTypes.Cast<ContentType>().ToList();
+
+            //Casting throws "Specified method is not supported" when using in v15
+            //var ctCol = listContentTypes.Cast<ContentType>().ToList();
+            List<ContentType> ctCol = new List<ContentType>();
+            foreach(ContentType ct in listContentTypes)
+            {
+                ctCol.Add(ct);
+            }
 
             foreach (var ctypeName in contentTypeNamesOrIds)
             {
