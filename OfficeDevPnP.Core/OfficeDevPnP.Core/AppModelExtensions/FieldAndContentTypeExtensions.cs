@@ -387,12 +387,6 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
             field = fields.AddFieldAsXml(newFieldCAML, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
-            fields.Context.ExecuteQuery();
-
-            // Seems to be a bug in creating fields where the displayname is not persisted when creating them from xml
-            field.Title = fieldCreationInformation.DisplayName;
-            field.Update();
-            fields.Context.Load(field);
 
             if (executeQuery)
                 fields.Context.ExecuteQuery();
