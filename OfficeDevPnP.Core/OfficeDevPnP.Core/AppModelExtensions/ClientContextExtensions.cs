@@ -48,6 +48,9 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
+                //Take over the form digest handling setting
+                clonedClientContext.FormDigestHandlingEnabled = (clientContext as ClientContext).FormDigestHandlingEnabled;
+
                 // In case of app only or SAML
                 clonedClientContext.ExecutingWebRequest += delegate(object oSender, WebRequestEventArgs webRequestEventArgs)
                 {
