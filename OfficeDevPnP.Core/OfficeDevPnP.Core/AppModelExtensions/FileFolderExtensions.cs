@@ -736,6 +736,7 @@ namespace Microsoft.SharePoint.Client
 
         /// <summary>
         /// Uploads a file to the specified folder by saving the binary directly (via webdav).
+        /// Note: this method does not work using app only token.
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
         /// <param name="filePath">Location of the file to be uploaded.</param>

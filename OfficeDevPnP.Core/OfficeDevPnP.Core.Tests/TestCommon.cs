@@ -11,6 +11,10 @@ using System.Net;
 namespace OfficeDevPnP.Core.Tests {
     static class TestCommon {
         static TestCommon() {
+            // Instantiate authenticationManager class
+            AuthenticationManager = new Core.AuthenticationManager();
+
+            // Read configuration data
             TenantUrl = ConfigurationManager.AppSettings["SPOTenantUrl"];
             DevSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
 
@@ -18,7 +22,6 @@ namespace OfficeDevPnP.Core.Tests {
             {
                 throw new ConfigurationErrorsException("Tenant credentials in App.config are not set up.");
             }
-
 
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]))
             {
@@ -33,7 +36,6 @@ namespace OfficeDevPnP.Core.Tests {
                     var password = ConfigurationManager.AppSettings["SPOPassword"];
 
                     Password = password.ToSecureString();
-
                     Credentials = new SharePointOnlineCredentials(UserName, Password);
                 }
                 else if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremUserName"]) &&
@@ -42,6 +44,18 @@ namespace OfficeDevPnP.Core.Tests {
                 {
                     Password = ConfigurationManager.AppSettings["OnPremPassword"].ToSecureString();
                     Credentials = new NetworkCredential(ConfigurationManager.AppSettings["OnPremUserName"], Password, ConfigurationManager.AppSettings["OnPremDomain"]);
+                }
+                else if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["Realm"]) &&
+                         !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppId"]) &&
+                         !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppSecret"]))
+                {
+                    Realm = ConfigurationManager.AppSettings["Realm"];
+                    AppId = ConfigurationManager.AppSettings["AppId"];
+                    AppSecret = ConfigurationManager.AppSettings["AppSecret"];
+                }
+                else
+                {
+                    throw new ConfigurationErrorsException("Tenant credentials in App.config are not set up.");
                 }
             }
         }
@@ -56,8 +70,16 @@ namespace OfficeDevPnP.Core.Tests {
 
         private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
         {
-            var context = new ClientContext(contextUrl);
-            context.Credentials = credentials;
+            ClientContext context;
+            if (!String.IsNullOrEmpty(Realm) && !String.IsNullOrEmpty(AppId) && !String.IsNullOrEmpty(AppSecret))
+            {
+                context = AuthenticationManager.GetAppOnlyAuthenticatedContext(contextUrl, Realm, AppId, AppSecret); 
+            }
+            else
+            {
+                context = new ClientContext(contextUrl);
+                context.Credentials = credentials;
+            }
             return context;
         }
 
@@ -66,5 +88,9 @@ namespace OfficeDevPnP.Core.Tests {
         static string UserName { get; set; }
         static SecureString Password { get; set; }
         static ICredentials Credentials { get; set; }
+        static AuthenticationManager AuthenticationManager { get; set; }
+        static string Realm { get; set; }
+        static string AppId { get; set; }
+        static string AppSecret { get; set; }
     }
 }

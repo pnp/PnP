@@ -18,7 +18,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string builtInMasterOslo = "oslo.master";
         private string builtInMasterSeattle = "seattle.master";
         private string builtInPalette003 = "palette003.spcolor";
-        private string knownHashOfSeattle = "EC-46-9D-CE-27-7E-D3-79-72-BE-89-35-01-6E-0B-B2-B1-09-F1-3E";
+        private string knownHashOfSeattle = "DA-39-A3-EE-5E-6B-4B-0D-32-55-BF-EF-95-60-18-90-AF-D8-07-09";
 
         private string customColorFilePath = string.Empty;
         private string customBackgroundFilePath = string.Empty;
@@ -524,13 +524,45 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 //Use the existing context to directly get a copy of the seattle master page 
                 string masterpageGalleryServerRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl), "_catalogs/masterpage/");
                 var serverRelativeUrlOfSeattle = UrlUtility.Combine(masterpageGalleryServerRelativeUrl, builtInMasterSeattle);
-                FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
+
+                // OpenBinaryDirect fails when used with app only
+                //FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
+                var seattle = context.Web.GetFileByServerRelativeUrl(serverRelativeUrlOfSeattle);
+                web.Context.Load(seattle);
+                web.Context.ExecuteQuery();
+
                 Assert.IsNotNull(seattle);
 
+                ClientResult<Stream> data = seattle.OpenBinaryStream();
+                context.Load(seattle);
+                context.ExecuteQuery();
+
+                //Dump seattle.master
+                //if (data != null)
+                //{
+                //    int position = 1;
+                //    int bufferSize = 200000;
+                //    Byte[] readBuffer = new Byte[bufferSize];
+                //    string localFilePath = "C:\\Temp\\seattle.master";
+                //    using (System.IO.Stream stream = System.IO.File.Create(localFilePath))
+                //    {
+                //        while (position > 0)
+                //        {
+                //            // data.Value holds the Stream
+                //            position = data.Value.Read(readBuffer, 0, bufferSize);
+                //            stream.Write(readBuffer, 0, position);
+                //            readBuffer = new Byte[bufferSize];
+                //        }
+                //        stream.Flush();
+                //    }
+                //}
+
+                MemoryStream memStream = new MemoryStream();
+                data.Value.CopyTo(memStream);
 
                 //Compute a hash of the file 
                 var hashAlgorithm = HashAlgorithm.Create();
-                byte[] hash = hashAlgorithm.ComputeHash(seattle.Stream);
+                byte[] hash = hashAlgorithm.ComputeHash(memStream);
                 //Convert to a hex string for human consumption 
                 string hex = BitConverter.ToString(hash);
                 //Check against last known hash 

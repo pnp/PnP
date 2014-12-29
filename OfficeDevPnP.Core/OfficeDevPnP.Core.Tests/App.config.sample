@@ -12,14 +12,36 @@
     
     <add key="SPOCredentialManagerLabel" value=""/>
     <!-- If the above value is specified, a lookup will be done to the Windows Credential
-    manager for a -Windows- Credential that maps to the label. If not specified, it assumes you want to specify the username 
-    and password in the values below -->
-   
+    manager for a -Windows- Credential that maps to the label. If not specified, it assumes you want to specify on
+    of the below options. Value will be taken based on the what's entered in this order:
+    1. O365 username/pwd
+    2. On-premises username/pwd
+    3. App only (O365 & On-premises) 
+    -->
+
+    <!-- Priority 1: For testing against Office 365 provide a username and password -->
     <add key="SPOUserName" value="user@[tenant].onmicrosoft.com" />
     <add key="SPOPassword" value="" />
+    
+    <!-- Priority 2: For testing against on-premises provide a username, domain and password -->
     <add key="OnPremUserName" value="user" />
     <add key="OnPremDomain" value="domain" />
-    <add key="OnPremPassword" value="" />    
+    <add key="OnPremPassword" value="" />
+
+    <!-- Priority 3: For app only testing provide a realm, app id and app secret -->
+    <add key="Realm" value="a6623c9e-30c7-493b-87bc-d907df44a26e" />
+    <add key="AppId" value="b5bdf20c-2917-5178-3309-5deb57ee6c89" />
+    <add key="AppSecret" value="" />
+    
+    <!-- Permission XML for app only test
+  <AppPermissionRequests AllowAppOnlyPolicy="true" >
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
+    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+    <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="FullControl" />
+  </AppPermissionRequests>    
+    -->
+
   </appSettings>
   <system.diagnostics>
     <sharedListeners>

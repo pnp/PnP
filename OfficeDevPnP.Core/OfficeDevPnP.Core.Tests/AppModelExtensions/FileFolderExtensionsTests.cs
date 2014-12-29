@@ -120,7 +120,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         public void VerifyIfUploadRequiredTest()
         {
             var fileNameExpected = "TestFile1.png";
-            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            //Use App only friendly upload method
+            //var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
 
             var expectedFalse = file.VerifyIfUploadRequired(TestFilePath1);
             var expectedTrue = file.VerifyIfUploadRequired(TestFilePath2);
@@ -134,7 +136,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             var fileNameExpected = "TestFile1.png";
             var expectedTitle = "Test file 1";
-            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            //Use App only friendly upload method
+            //var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
 
             var properties = new Dictionary<string, string>();
             properties["Title"] = expectedTitle;

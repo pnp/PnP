@@ -69,9 +69,17 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 List<UserEntity> admins = clientContext.Web.GetAdministrators();
                 bool found = false;
-                foreach(var admin in admins)
-                {
-                    if (admin.LoginName.Equals(_userLogin, StringComparison.InvariantCultureIgnoreCase))
+                foreach(var admin in admins) 
+                {                    
+                    string adminLoginName = admin.LoginName;
+                    String[] parts = adminLoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (parts.Length > 1)
+                    {
+                        adminLoginName = parts[2];
+                    }
+                    
+                    if (adminLoginName.Equals(_userLogin, StringComparison.InvariantCultureIgnoreCase))
                     {
                         found = true;
                         break;

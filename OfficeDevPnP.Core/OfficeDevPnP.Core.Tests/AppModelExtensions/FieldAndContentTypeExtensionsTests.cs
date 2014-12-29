@@ -203,7 +203,7 @@ namespace Microsoft.SharePoint.Client.Tests
                     clientContext.Load(subweb);
                     clientContext.ExecuteQuery();
 
-                    using (var clientContextSub = new ClientContext(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)) { Credentials = clientContext.Credentials })
+                    using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
                         Assert.IsFalse(clientContextSub.Web.ContentTypeExistsByName(TEST_CT_PNP));
                         Assert.IsTrue(clientContextSub.Web.ContentTypeExistsByName(TEST_CT_PNP, true));
@@ -236,7 +236,7 @@ namespace Microsoft.SharePoint.Client.Tests
                     clientContext.Load(subweb);
                     clientContext.ExecuteQuery();
 
-                    using (var clientContextSub = new ClientContext(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)) { Credentials = clientContext.Credentials })
+                    using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
                         Assert.IsFalse(clientContextSub.Web.ContentTypeExistsById(TEST_CT_PNP_ID));
                         Assert.IsTrue(clientContextSub.Web.ContentTypeExistsById(TEST_CT_PNP_ID, true));
