@@ -851,15 +851,19 @@ namespace Microsoft.SharePoint.Client
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
-            context.Load(file, f => f.ListItemAllFields);
+            context.Load(file);
             context.ExecuteQuery();
 
-            ListItem listItem = file.ListItemAllFields;
             LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             context.Load(wpm.WebParts);
 
+            context.ExecuteQuery();
+
             WebPartDefinition def = wpm.WebParts.GetById(id);
+
+            context.Load(def);
+            context.ExecuteQuery();
 
             switch (key.ToLower())
             {
@@ -879,7 +883,8 @@ namespace Microsoft.SharePoint.Client
                         break;
                     }
             }
-
+        
+           
             def.SaveWebPartChanges();
 
             context.ExecuteQuery();
