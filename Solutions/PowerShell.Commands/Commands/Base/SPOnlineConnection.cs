@@ -12,17 +12,25 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         public int RetryCount { get; protected set; }
         public int RetryWait { get; protected set; }
         public PSCredential PSCredential { get; protected set; }
+
+        private string _url;
+      
         public string Url
         {
             get
             {
-                return this.Context.Url;
+                return this._url;
+                //return this.Context.Url;
+            }
+            protected set
+            {
+                this._url = value;
             }
         }
 
-        public ClientContext Context { get; protected set; }
+        public ClientContext Context { get; set; }
 
-        public SPOnlineConnection(ClientContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential)
+        public SPOnlineConnection(ClientContext context, ConnectionTypes connectionType, int minimalHealthScore, int retryCount, int retryWait, PSCredential credential, string url)
         {
             if (context == null)
                 throw new ArgumentNullException("context");
@@ -32,6 +40,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             this.RetryCount = retryCount;
             this.RetryWait = retryWait;
             this.PSCredential = credential;
+            this.Url = url;
         }
 
         public enum ConnectionTypes

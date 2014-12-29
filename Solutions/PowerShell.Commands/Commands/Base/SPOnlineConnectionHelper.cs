@@ -37,7 +37,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
                 }
             }
-            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null);
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
@@ -102,7 +102,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
                 }
             }
-            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials);
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, url.ToString());
         }
 
         public static string GetRealmFromTargetUrl(Uri targetApplicationUri)
