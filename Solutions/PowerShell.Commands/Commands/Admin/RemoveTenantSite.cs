@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿#if !CLIENTSDKV15
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
@@ -47,3 +48,4 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
     }
 }
+#endif

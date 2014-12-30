@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿#if !CLIENTSDKV15
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System;
@@ -73,3 +74,4 @@ available quota.
 
     }
 }
+#endif
