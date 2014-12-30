@@ -41,38 +41,42 @@ In order for the Client Side Rendering sample to render correctly, you must firs
 ## SHAREPOINT ##
 1)  Navigate to your SharePoint tenancy and create a new site collection using the Developer Site template in the Collaboration tab.
 
+
 ![](http://i.imgur.com/MDvG8Vr.png)
 
 2)  Once the site collection is created, open the Branding.ClientSideRendering.sln file with Visual Studio 2013.
-3.  If the Branding.ClientSideRendering project isn’t the StartUp project, set it as the StartUp project.
+
+3)  If the Branding.ClientSideRendering project isn’t the StartUp project, set it as the StartUp project.
 
 ![](http://i.imgur.com/b6whnvz.png)
 
-3)  In the Solution Explorer, select the Branding.ClientSideRendering project.
-4)  In the Properties window, set the “Site URL” property to the site collection you previously created and configured.
+4)  In the Solution Explorer, select the Branding.ClientSideRendering project.
+
+5)  In the Properties window, set the “Site URL” property to the site collection you previously created and configured.
 
 ![](http://i.imgur.com/jrxn4Zv.png)
 
-5)  Press F5 or click the Start button in Visual Studio 2013.
-6)  Enter you user name and password to connect to your SharePoint site collection. 
+6)  Press F5 or click the Start button in Visual Studio 2013.
+
+7)  Enter you user name and password to connect to your SharePoint site collection. 
 
 ![](http://i.imgur.com/pzygqkL.png)
 
-7)  After your username and password have been verified, the trust dialog is displayed. Click the “Trust It” button. 
+8)  After your username and password have been verified, the trust dialog is displayed. Click the “Trust It” button. 
 
 ![](http://i.imgur.com/p9fQUTp.png)
 
-8)  After app installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
+9)  After app installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
 
 ![](http://i.imgur.com/LGC32Fc.png)
 
-9)  After you have successfully configured your SharePoint environment and deployed the artifacts via the app, you can view the Client Side Rendering samples by clicking on the links in the app.
+10)  After you have successfully configured your SharePoint environment and deployed the artifacts via the app, you can view the Client Side Rendering samples by clicking on the links in the app.
 
 # DEPLOYMENT DETAILS #
 The code behind in the default.aspx.cs file contains all the code used to deploy the artifacts which support this sample.  This code sample uses the remote provisioning pattern to deploy the artifacts.  The remote provisioning pattern uses the SharePoint Client Side Object Model to deploy the artifacts.  There are many other Office AMS samples which demonstrate this same approach.
 
 ## UPLOADING THE CLIENT SIDE RENDERING JAVASCRIPT FILES ##
-When the Provision Sample sbutton is clicked the UploadJSFiles method is called.  The UploadJSFiles method creates a folder named JSLink-Samples in the Style Library to store the Client Side Rendering JavaScript files, then it uploads the Client Side Rendering JavaScript files.  Then, it creates a sub folder named imgs and uploads an image to the folder.  The image is used by on of the samples.
+When the Provision Sample sbutton is clicked the UploadJSFiles method is called.  The UploadJSFiles method creates a folder named JSLink-Samples in the Style Library to store the Client Side Rendering JavaScript files, then it uploads the Client Side Rendering JavaScript files.  Then, it creates a sub folder named imgs and uploads an image to the folder.  The image is used by one of the samples.
 
 ```C#
 void UploadJSFiles(Web web)
@@ -115,7 +119,7 @@ void UploadJSFiles(Web web)
 ## CREATING LISTS, VIEWS, ITEMS, AND REGISTERING CLIENT SIDE RENDERING JAVASCRIPT FILES WITH LIST VIEWS AND FORMS ##
 After the Client Side Rendering JavaScript files and image are uploaded, the app provisions the list columns, lists, list views, initializes the lists with data, and registers the Client Side Rendering JavaScript files with the list views and forms via the JSLink property.
 
-Not every sample demonstrates how to register the Client Side Rendering JavaScript files with list views and forms.  However, Sample 5 demonstrates everything.  The ProvisionSamle5 method deploys Sample 5.  It illustrates all of the patterns.
+Not every sample demonstrates how to register the Client Side Rendering JavaScript files with list views and forms.  However, Sample 5 demonstrates everything.  The ProvisionSample5 method deploys Sample 5.  It illustrates all of the patterns.
 
 ```C#
 void ProvisionSample5(Web web)
@@ -683,8 +687,11 @@ This is screenshots below indicate how the form appears when editing a list item
 ![](http://i.imgur.com/ltiFSjc.png)
 
 When the sample is deployed it shows the customized Edit form.  To see the default Edit form follow these steps:
+
 1) Navigate to the **CSR-Hide-Controls list**.
+
 2) In the Ribbon, click the **LIST tab**.
+
 3) In the Ribbon, click **Form Web Parts** and select **Default Edit Form**.
 
 ![](http://i.imgur.com/4xeNW0q.png)
@@ -698,6 +705,7 @@ When the sample is deployed it shows the customized Edit form.  To see the defau
 ![](http://i.imgur.com/ypyOI6g.png)
 
 6) Click OK.
+
 7) In the Ribbon, click Stop Editing.
 
 ![](http://i.imgur.com/ZngPaL1.png)
