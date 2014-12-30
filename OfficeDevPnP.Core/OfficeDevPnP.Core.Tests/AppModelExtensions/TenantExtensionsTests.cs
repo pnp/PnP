@@ -128,14 +128,19 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 string subSiteUrlGood = "";
                 string subSiteUrlWrong = "";
 
-                using (ClientContext cc = tenantContext.Clone(siteToCreateUrl))
-                {
-                    SiteEntity sub = new SiteEntity() { Title = "Test Sub", Url = "sub", Description = "Test" };
-                    cc.Web.CreateWeb(sub);
-                    siteToCreateUrl = UrlUtility.EnsureTrailingSlash(siteToCreateUrl);
-                    subSiteUrlGood = String.Format("{0}{1}", siteToCreateUrl, sub.Url);
-                    subSiteUrlWrong = String.Format("{0}{1}", siteToCreateUrl, "8988980");
-                }
+                Site site = tenant.GetSiteByUrl(siteToCreateUrl);
+                tenant.Context.Load(site);
+                tenant.Context.ExecuteQuery();
+                Web web = site.RootWeb;
+                web.Context.Load(web);
+                web.Context.ExecuteQuery();
+
+                //Create sub site
+                SiteEntity sub = new SiteEntity() { Title = "Test Sub", Url = "sub", Description = "Test" };
+                web.CreateWeb(sub);
+                siteToCreateUrl = UrlUtility.EnsureTrailingSlash(siteToCreateUrl);
+                subSiteUrlGood = String.Format("{0}{1}", siteToCreateUrl, sub.Url);
+                subSiteUrlWrong = String.Format("{0}{1}", siteToCreateUrl, "8988980");
 
                 // Check real sub site
                 bool subSiteExists = tenant.SubSiteExists(subSiteUrlGood);

@@ -11,9 +11,6 @@ using System.Net;
 namespace OfficeDevPnP.Core.Tests {
     static class TestCommon {
         static TestCommon() {
-            // Instantiate authenticationManager class
-            AuthenticationManager = new Core.AuthenticationManager();
-
             // Read configuration data
             TenantUrl = ConfigurationManager.AppSettings["SPOTenantUrl"];
             DevSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
@@ -73,7 +70,8 @@ namespace OfficeDevPnP.Core.Tests {
             ClientContext context;
             if (!String.IsNullOrEmpty(Realm) && !String.IsNullOrEmpty(AppId) && !String.IsNullOrEmpty(AppSecret))
             {
-                context = AuthenticationManager.GetAppOnlyAuthenticatedContext(contextUrl, Realm, AppId, AppSecret); 
+                AuthenticationManager am = new AuthenticationManager();
+                context = am.GetAppOnlyAuthenticatedContext(contextUrl, Realm, AppId, AppSecret); 
             }
             else
             {
@@ -88,7 +86,6 @@ namespace OfficeDevPnP.Core.Tests {
         static string UserName { get; set; }
         static SecureString Password { get; set; }
         static ICredentials Credentials { get; set; }
-        static AuthenticationManager AuthenticationManager { get; set; }
         static string Realm { get; set; }
         static string AppId { get; set; }
         static string AppSecret { get; set; }
