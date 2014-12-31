@@ -1,5 +1,10 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2014-12-30**
+* Changed New-SPOWeb to return the actual web as an object instead of a success message.
+* Added -SetAssociatedGroup parameter to New-SPOGroup to set a group as a default associated visitors, members or owners group
+* Updated New-SPOGroup to allow setting groups as owners
+
 **2014-12-01**
 * Added Get-SPOListItem cmdlet to retrieve list items by id, unique id, or CAML. Optionally you can define which fields to load.
 **2014-11-05**
