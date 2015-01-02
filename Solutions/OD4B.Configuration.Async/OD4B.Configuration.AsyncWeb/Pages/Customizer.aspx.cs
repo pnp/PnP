@@ -105,9 +105,7 @@ namespace OD4B.Configuration.AsyncWeb.Pages
             else
             {
                 // Output debugging information
-                WriteDebugInformationIfNeeded(string.Format(@"Cookie did existed, 
-                                            with {0} as expiration. Skipping code.", 
-                                            cookie.Expires));
+                WriteDebugInformationIfNeeded("Cookie did existed, skipping the code for now.");
                 //  Since cookie did existed, let's skip the code
                 return true;
             }
