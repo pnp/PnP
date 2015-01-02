@@ -5,7 +5,7 @@ This is an enhanced app part based customization for applying and managing neede
 
 Actual logical design follows the hidden app part approach, which was demonstrated in the older PnP samle called [Provisioning.OneDrive](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.OneDrive). This means that the assumption is that you have centralized Intranet in the office 365 environment where you can put the needed app part and that the end users will be landing to this welcome page when they open up their browser. It is common that each company browser will have same home page set using group policies, so that end users will always start from one centralized location when they open up their browser. This is the location where you’d put app part, which can be set to be sized as 0 pixel width and height. Key point here is that you use the end user context to execute the app part, which contains page from the provider hosted app.
 
-Solution and approach is explained in detail from following blog post: [Customizing OneDrive for Business sites with app model](#).
+Solution and approach is explained in detail from following blog post: [Customizing OneDrive for Business sites with app model](http://blogs.msdn.com/b/vesku/archive/2015/01/01/customizing-onedrive-for-business-sites-with-app-model.aspx).
 
 Here's also a video recording demonstrating the solution in detail from [Office 365 Developer Patterns and Practices Channel 9 section](http://aka.ms/officedevpnpvideos).
 
