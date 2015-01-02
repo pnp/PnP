@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity == null)
             {
-                ClientContext.Load(ClientContext.Web);
+                ClientContext.Load(ClientContext.Web, w => w.Id, w => w.Url, w => w.Title);
                 ClientContext.ExecuteQuery();
                 WriteObject(this.ClientContext.Web);
             }
