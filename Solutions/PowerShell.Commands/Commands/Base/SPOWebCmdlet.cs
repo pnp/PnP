@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             get
             {
-                if(_selectedWeb == null)
+                if (_selectedWeb == null)
                 {
                     _selectedWeb = GetWeb();
                 }
@@ -57,7 +57,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
                 {
-                    SPOnlineConnection.CurrentConnection.ResetContext();
+                    SPOnlineConnection.CurrentConnection.RestoreCachedContext();
                     //SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(SPOnlineConnection.CurrentConnection.Url);
                 }
                 web = ClientContext.Web;
@@ -71,8 +71,14 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
             {
-                SPOnlineConnection.CurrentConnection.ResetContext();
+                SPOnlineConnection.CurrentConnection.RestoreCachedContext();
             }
         }
+
+        protected override void BeginProcessing()
+        {
+            SPOnlineConnection.CurrentConnection.CacheContext();
+        }
+
     }
 }

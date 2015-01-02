@@ -53,9 +53,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             TenantAdmin = 2
         }
 
-        public void ResetContext()
+        public void RestoreCachedContext()
         {
             Context = _initialContext;
+        }
+
+        internal void CacheContext()
+        {
+            _initialContext = Context;
         }
     }
 }
