@@ -38,6 +38,9 @@ namespace OfficeDevPnP.Core.Entities
             set;
         }
 
+        /// <summary>
+        /// The site owner
+        /// </summary>
         public String SiteOwnerLogin
         {
             get;
@@ -45,7 +48,7 @@ namespace OfficeDevPnP.Core.Entities
         }
 
         /// <summary>
-        /// The currnet resource usage points 
+        /// The current resource usage points 
         /// </summary>
         public double CurrentResourceUsage
         {
