@@ -8,6 +8,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     public class SPOWebCmdlet : SPOCmdlet
     {
+        private Web _selectedWeb = null;
+
+
         [Parameter(Mandatory = false)]
         public WebPipeBind Web = new WebPipeBind();
 
@@ -15,7 +18,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             get
             {
-                return GetWeb();
+                if(_selectedWeb == null)
+                {
+                    _selectedWeb = GetWeb();
+                }
+                return _selectedWeb;
             }
         }
 
@@ -50,13 +57,22 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
                 {
-                    SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(SPOnlineConnection.CurrentConnection.Url);
+                    SPOnlineConnection.CurrentConnection.ResetContext();
+                    //SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(SPOnlineConnection.CurrentConnection.Url);
                 }
                 web = ClientContext.Web;
             }
 
 
             return web;
+        }
+
+        protected override void EndProcessing()
+        {
+            if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
+            {
+                SPOnlineConnection.CurrentConnection.ResetContext();
+            }
         }
     }
 }
