@@ -543,6 +543,10 @@ namespace Microsoft.SharePoint.Client
                 siteEntity.Url = prop.Url;
                 siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
                 siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
+                siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
+                siteEntity.StorageUsage = prop.StorageUsage;
+                siteEntity.WebsCount = prop.WebsCount;
                 sites.Add(siteEntity);
             }
             return sites;

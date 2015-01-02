@@ -45,6 +45,15 @@ namespace OfficeDevPnP.Core.Entities
         }
 
         /// <summary>
+        /// The currnet resource usage points 
+        /// </summary>
+        public double CurrentResourceUsage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's
         /// </summary>
         public uint Lcid
@@ -63,9 +72,27 @@ namespace OfficeDevPnP.Core.Entities
         }
 
         /// <summary>
+        /// The storage quota usage in MB
+        /// </summary>
+        public long StorageUsage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Site quota warning level in MB
         /// </summary>
         public long StorageWarningLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The last modified date/time of the site collection's content
+        /// </summary>
+        public DateTime LastContentModifiedDate
         {
             get;
             set;
@@ -103,6 +130,15 @@ namespace OfficeDevPnP.Core.Entities
         /// The user code quota warning level in points
         /// </summary>
         public double UserCodeWarningLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The count of the SPWeb objects in the site collection
+        /// </summary>
+        public int WebsCount
         {
             get;
             set;
