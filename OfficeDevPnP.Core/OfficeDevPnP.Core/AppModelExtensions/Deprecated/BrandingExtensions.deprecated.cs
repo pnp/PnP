@@ -42,19 +42,21 @@ namespace Microsoft.SharePoint.Client
             // Deploy files one by one to proper location
             if (!string.IsNullOrEmpty(colorFilePath) && System.IO.File.Exists(colorFilePath))
             {
-                rootWeb.DeployFileToThemeFolderSite(colorFilePath);
+                rootWeb.UploadThemeFile(colorFilePath);
             }
+
             if (!string.IsNullOrEmpty(fontFilePath) && System.IO.File.Exists(fontFilePath))
             {
-                rootWeb.DeployFileToThemeFolderSite(fontFilePath);
+                rootWeb.UploadThemeFile(fontFilePath);
             }
+
             if (!string.IsNullOrEmpty(backgroundImagePath) && System.IO.File.Exists(backgroundImagePath))
             {
-                rootWeb.DeployFileToThemeFolderSite(backgroundImagePath);
+                rootWeb.UploadThemeFile(backgroundImagePath);
             }
 
             // Let's also add entry to the Theme catalog. This is not actually required, but provides visibility for the theme option, if manually changed
-            web.AddNewThemeOptionToSubWeb(rootWeb, themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
+            web.CreateComposedLookByName(themeName, colorFilePath, fontFilePath, backgroundImagePath, masterPageName);
         }
 
         [Obsolete("Use web.ComposedLookExists")]
