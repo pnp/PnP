@@ -6,6 +6,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     public class SPOnlineConnection
     {
+        private ClientContext _initialContext;
+
         internal static SPOnlineConnection CurrentConnection { get; set; }
         public ConnectionTypes ConnectionType { get; protected set; }
         public int MinimalHealthScore { get; protected set; }
@@ -35,6 +37,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (context == null)
                 throw new ArgumentNullException("context");
             this.Context = context;
+            this._initialContext = context;
             this.ConnectionType = connectionType;
             this.MinimalHealthScore = minimalHealthScore;
             this.RetryCount = retryCount;
@@ -48,6 +51,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             OnPrem = 0,
             O365 = 1,
             TenantAdmin = 2
+        }
+
+        public void ResetContext()
+        {
+            Context = _initialContext;
         }
     }
 }
