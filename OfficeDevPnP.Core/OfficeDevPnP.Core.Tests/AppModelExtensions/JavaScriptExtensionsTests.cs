@@ -12,10 +12,10 @@ namespace Microsoft.SharePoint.Client.Tests
     public class JavaScriptExtensionsTests
     {
         const string KEY = "TEST_KEY";
+
         [TestMethod()]
         public void AddJsLinkTest()
         {
-
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Test
@@ -34,7 +34,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void AddJsLinkTest1()
+        public void AddJsLinkIEnumerableTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -62,13 +62,12 @@ namespace Microsoft.SharePoint.Client.Tests
                 // Setup
                 clientContext.Web.AddJsLink(KEY, "/jquery-2.1.1.min.js"); // Dummy link
 
-
                 // Test
                 clientContext.Web.DeleteJsLink(KEY);
 
                 var customActions = clientContext.Web.GetCustomActions();
                 var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
-                Assert.IsNull(existingAction, "Existing Action not found");
+                Assert.IsNull(existingAction, "Existing Action found");
             }
         }
 

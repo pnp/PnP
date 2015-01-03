@@ -13,6 +13,8 @@ namespace Microsoft.SharePoint.Client
 {
     public static partial class TenantExtensions
     {
+
+#if !CLIENTSDKV15
         #region Site collection creation
         /// <summary>
         /// Adds a SiteEntity by launching site collection creation and waits for the creation to finish
@@ -447,9 +449,6 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-#if !CLIENTSDKV15
-        // This is separate from SetSiteProperties because it is not available from the v15 assemblies.
-
         /// <summary>
         /// Sets a site to Unlock access or NoAccess. This operation may occur immediately, but the site lock may take a short while before it goes into effect.
         /// </summary>
@@ -479,7 +478,6 @@ namespace Microsoft.SharePoint.Client
 
             }
         }
-#endif
         #endregion
 
         #region Site collection administrators
@@ -506,9 +504,8 @@ namespace Microsoft.SharePoint.Client
                 if (addToOwnersGroup)
                 {
                     // Create a separate context to the web
-                    using (var clientContext = new ClientContext(siteUrl))
+                    using (var clientContext = tenant.Context.Clone(siteUrl))
                     {
-                        clientContext.Credentials = tenant.Context.Credentials;
                         var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
                         clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
                         clientContext.Web.AssociatedOwnerGroup.Update();
@@ -546,6 +543,10 @@ namespace Microsoft.SharePoint.Client
                 siteEntity.Url = prop.Url;
                 siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
                 siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
+                siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
+                siteEntity.StorageUsage = prop.StorageUsage;
+                siteEntity.WebsCount = prop.WebsCount;
                 sites.Add(siteEntity);
             }
             return sites;
@@ -640,5 +641,53 @@ namespace Microsoft.SharePoint.Client
             }
         }
         #endregion
+#else
+        /// <summary>
+        /// Adds a SiteEntity by launching site collection creation and waits for the creation to finish
+        /// </summary>
+        /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
+        /// <param name="properties">Describes the site collection to be created</param>
+        public static void CreateSiteCollection(this Tenant tenant, SiteEntity properties)
+        {
+            SiteCreationProperties newsite = new SiteCreationProperties();
+            newsite.Url = properties.Url;
+            newsite.Owner = properties.SiteOwnerLogin;
+            newsite.Template = properties.Template;
+            newsite.Title = properties.Title;
+            newsite.StorageMaximumLevel = properties.StorageMaximumLevel;
+            newsite.StorageWarningLevel = properties.StorageWarningLevel;
+            newsite.TimeZoneId = properties.TimeZoneId;
+            newsite.UserCodeMaximumLevel = properties.UserCodeMaximumLevel;
+            newsite.UserCodeWarningLevel = properties.UserCodeWarningLevel;
+            newsite.Lcid = properties.Lcid;
+
+            try
+            {
+                tenant.CreateSite(newsite);
+                tenant.Context.ExecuteQuery();
+            }
+            catch (Exception ex)
+            {
+                // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
+                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
+                {
+                    throw;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Deletes a site collection
+        /// </summary>
+        /// <param name="tenant">A tenant object pointing to the context of a Tenant Administration site</param>
+        /// <param name="siteFullUrl">Url of the site collection to delete</param>
+        public static void DeleteSiteCollection(this Tenant tenant, string siteFullUrl)
+        {
+            tenant.RemoveSite(siteFullUrl);
+            tenant.Context.ExecuteQuery();
+        }
+
+#endif
     }
 }

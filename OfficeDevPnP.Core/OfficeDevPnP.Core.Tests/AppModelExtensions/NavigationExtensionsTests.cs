@@ -8,6 +8,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     [TestClass]
     public class NavigationExtensionsTests
     {
+        #region Add navigation node tests
         [TestMethod]
         public void AddNavigationNodeTest()
         {
@@ -29,11 +30,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     navNode.DeleteObject();
                     clientContext.ExecuteQuery();
                 }
-
-
             }
         }
+        #endregion
 
+        #region Delete navigation node tests
         [TestMethod]
         public void DeleteNavigationNodeTest()
         {
@@ -53,8 +54,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     var navNode = web.Navigation.TopNavigationBar.Where(n => n.Title == "Test Node").FirstOrDefault();
                     Assert.IsNull(navNode);
                 }
-
-
             }
         }
 
@@ -68,8 +67,8 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 clientContext.Load(web, w => w.Navigation.QuickLaunch);
                 clientContext.ExecuteQuery();
                 Assert.IsFalse(web.Navigation.QuickLaunch.Any());
-
             }
         }
+        #endregion
     }
 }

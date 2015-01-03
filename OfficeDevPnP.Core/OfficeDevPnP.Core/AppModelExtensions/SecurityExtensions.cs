@@ -92,7 +92,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(users);
             web.Context.ExecuteQuery();
 
-            var adminToRemove = users.Where(u => u.LoginName == admin.LoginName).FirstOrDefault();
+            var adminToRemove = users.Where(u => u.LoginName.ToLower() == admin.LoginName.ToLower()).FirstOrDefault();
             if (adminToRemove != null && adminToRemove.IsSiteAdmin)
             {
                 adminToRemove.IsSiteAdmin = false;

@@ -1760,7 +1760,8 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static int GetWssIdForTerm(this Web web, Term term)
         {
-            var list = web.GetListByUrl("Lists/TaxonomyHiddenList");
+            var clientContext = web.Context as ClientContext;
+            var list = clientContext.Site.RootWeb.GetListByUrl("Lists/TaxonomyHiddenList");
             CamlQuery camlQuery = new CamlQuery();
             camlQuery.ViewXml = string.Format(@"<View><Query><Where><Eq><FieldRef Name='IdForTerm' /><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", term.Id);
 

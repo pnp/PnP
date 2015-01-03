@@ -17,6 +17,7 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class SecurityExtensions
     {
+#if !CLIENTSDKV15
         /// <summary>
         /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
         /// that does not have a dependency on the Tenant administration csom.
@@ -47,6 +48,6 @@ namespace Microsoft.SharePoint.Client
             tenant.AddAdministrators(adminLogins, siteUrl, addToOwnersGroup);
 
         }
-
+#endif
     }
 }

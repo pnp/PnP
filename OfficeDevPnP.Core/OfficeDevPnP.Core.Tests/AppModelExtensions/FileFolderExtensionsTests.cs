@@ -22,14 +22,15 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string TestFilePath2 = "..\\..\\Resources\\custombg.jpg";
         private string commentText = "Unit_Test_Comment";
         private CheckinType checkInType = CheckinType.MajorCheckIn;
+        public TestContext TestContext { get; set; }
 
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
             clientContext = TestCommon.CreateClientContext();
 
             documentLibrary = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, DocumentLibraryName, false);
-
             folder = documentLibrary.RootFolder.CreateFolder(FolderName);
 
             var fci = new FileCreationInformation();
@@ -38,9 +39,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             fci.Overwrite = true;
 
             file = folder.Files.Add(fci);
-
             clientContext.Load(file);
-
             clientContext.ExecuteQuery();
         }
 
@@ -59,9 +58,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             clientContext.ExecuteQuery();
             clientContext.Dispose();
         }
+        #endregion
 
-        public TestContext TestContext { get; set; }
-
+        #region File tests
         [TestMethod()]
         public void CheckOutFileTest()
         {
@@ -99,6 +98,76 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
         }
 
+        [TestMethod]
+        public void UploadFileTest()
+        {
+            var fileNameExpected = "TestFile1.png";
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
+
+            Assert.AreEqual(fileNameExpected, file.Name);
+        }
+
+        [TestMethod]
+        public void UploadFileWebDavTest()
+        {
+            var fileNameExpected = "TestFile1.png";
+            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+
+            Assert.AreEqual(fileNameExpected, file.Name);
+        }
+
+        [TestMethod]
+        public void VerifyIfUploadRequiredTest()
+        {
+            var fileNameExpected = "TestFile1.png";
+            //Use App only friendly upload method
+            //var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
+
+            var expectedFalse = file.VerifyIfUploadRequired(TestFilePath1);
+            var expectedTrue = file.VerifyIfUploadRequired(TestFilePath2);
+
+            Assert.IsFalse(expectedFalse, "Was not able to tell that the files were DIFFERENT.");
+            Assert.IsTrue(expectedTrue, "Was not able to tell that the files were the SAME.");
+        }
+
+        [TestMethod]
+        public void SetFilePropertiesTest()
+        {
+            var fileNameExpected = "TestFile1.png";
+            var expectedTitle = "Test file 1";
+            //Use App only friendly upload method
+            //var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
+            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
+
+            var properties = new Dictionary<string, string>();
+            properties["Title"] = expectedTitle;
+            file.SetFileProperties(properties);
+
+            file.Context.Load(file.ListItemAllFields);
+            file.Context.ExecuteQuery();
+
+            var actualTitle = file.ListItemAllFields["Title"];
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
+        [TestMethod()]
+        public void GetFileTest()
+        {
+            var fileName1 = System.IO.Path.GetFileName(TestFilePath1);
+            var file1 = folder.GetFile(fileName1);
+            Assert.AreEqual(fileName1, file1.Name, "Existing file could not be found.");
+
+            var file2 = folder.GetFile(fileName1.ToUpperInvariant());
+            Assert.AreEqual(fileName1, file2.Name, "Existing file could not be found: case-sensitive.");
+
+            var fileName2 = System.IO.Path.GetFileName(TestFilePath2);
+            var file3 = folder.GetFile(fileName2);
+            Assert.IsNull(file3, "File should not exist, but test shows it does.");
+        }
+        #endregion
+
+        #region Folder tests
         [TestMethod]
         public void EnsureSiteFolderTest()
         {
@@ -161,64 +230,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             clientContext.ExecuteQuery();
             Assert.AreEqual(testFolder.ServerRelativeUrl, String.Format("{0}/{1}/{2}",clientContext.Web.ServerRelativeUrl, DocumentLibraryName, folderName));
         }
+        #endregion
 
-        [TestMethod]
-        public void UploadFileTest() {
-            var fileNameExpected = "TestFile1.png";
-            var file = folder.UploadFile(fileNameExpected, TestFilePath1, true);
-
-            Assert.AreEqual(fileNameExpected, file.Name);
-        }
-
-        [TestMethod]
-        public void UploadFileWebDavTest() {
-            var fileNameExpected = "TestFile1.png";
-            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
-
-            Assert.AreEqual(fileNameExpected, file.Name);
-        }
-
-        [TestMethod]
-        public void VerifyIfUploadRequiredTest() {
-            var fileNameExpected = "TestFile1.png";
-            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
-
-            var expectedFalse = file.VerifyIfUploadRequired(TestFilePath1);
-            var expectedTrue = file.VerifyIfUploadRequired(TestFilePath2);
-
-            Assert.IsFalse(expectedFalse, "Was not able to tell that the files were DIFFERENT.");
-            Assert.IsTrue(expectedTrue, "Was not able to tell that the files were the SAME.");
-        }
-
-        [TestMethod]
-        public void SetFilePropertiesTest() {
-            var fileNameExpected = "TestFile1.png";
-            var expectedTitle = "Test file 1";
-            var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
-
-            var properties = new Dictionary<string,string>();
-            properties["Title"] = expectedTitle;
-            file.SetFileProperties(properties);
-
-            file.Context.Load(file.ListItemAllFields);
-            file.Context.ExecuteQuery();
-
-            var actualTitle = file.ListItemAllFields["Title"];
-            Assert.AreEqual(expectedTitle, actualTitle);
-        }
-
-        [TestMethod()]
-        public void GetFileTest() {
-            var fileName1 = System.IO.Path.GetFileName(TestFilePath1);
-            var file1 = folder.GetFile(fileName1);
-            Assert.AreEqual(fileName1, file1.Name, "Existing file could not be found.");
-
-            var file2 = folder.GetFile(fileName1.ToUpperInvariant());
-            Assert.AreEqual(fileName1, file2.Name, "Existing file could not be found: case-sensitive.");
-
-            var fileName2 = System.IO.Path.GetFileName(TestFilePath2);
-            var file3 = folder.GetFile(fileName2);
-            Assert.IsNull(file3, "File should not exist, but test shows it does.");
-        }
     }
 }

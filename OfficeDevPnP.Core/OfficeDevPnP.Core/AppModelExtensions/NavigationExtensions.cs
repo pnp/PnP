@@ -186,10 +186,12 @@ namespace Microsoft.SharePoint.Client
 
             var targetAction = web.UserCustomActions.FirstOrDefault(_uca => _uca.Name == customAction.Name);
 
-            if (targetAction == null) {
+            if (targetAction == null) 
+            {
                 targetAction = existingActions.Add();
             }
-            else if (customAction.Remove) {
+            else if (customAction.Remove) 
+            {
                 targetAction.DeleteObject();
                 web.Context.ExecuteQuery();
                 return true;
@@ -203,8 +205,7 @@ namespace Microsoft.SharePoint.Client
             {
                 targetAction.ScriptBlock = customAction.ScriptBlock;
                 targetAction.ScriptSrc = customAction.ScriptSrc;
-            }
-             
+            }             
             else
             {
                 targetAction.Sequence = customAction.Sequence;
@@ -212,16 +213,28 @@ namespace Microsoft.SharePoint.Client
                 targetAction.Group = customAction.Group;
                 targetAction.Title = customAction.Title;
                 targetAction.ImageUrl = customAction.ImageUrl;
-                targetAction.RegistrationId = customAction.RegistrationId;
-                targetAction.CommandUIExtension = customAction.CommandUIExtension;
+                
+                if (customAction.RegistrationId != null)
+                {
+                    targetAction.RegistrationId = customAction.RegistrationId;
+                }
+
+                if (customAction.CommandUIExtension != null)
+                {
+                    targetAction.CommandUIExtension = customAction.CommandUIExtension;
+                }
 
                 if (customAction.Rights != null)
+                {
                     targetAction.Rights = customAction.Rights;
+                }
 
                 if (customAction.RegistrationType.HasValue)
+                {
                     targetAction.RegistrationType = customAction.RegistrationType.Value;
-               
+                }
             }
+
             targetAction.Update();
             web.Context.Load(web, w => w.UserCustomActions);
             web.Context.ExecuteQuery();

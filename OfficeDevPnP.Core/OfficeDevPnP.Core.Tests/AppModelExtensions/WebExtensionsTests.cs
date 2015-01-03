@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client.Tests
         const string APPNAME = "HelloWorldApp";
         private ClientContext clientContext;
 
-        #region SETUP AND TEARDOWN
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -62,9 +62,15 @@ namespace Microsoft.SharePoint.Client.Tests
             var instances = AppCatalog.GetAppInstances(clientContext, clientContext.Web);
             clientContext.Load(instances);
             clientContext.ExecuteQuery();
+
+            string appToRemove = APPNAME;
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif            
+
             foreach (var instance in instances)
             {
-                if (string.Equals(instance.Title, APPNAME, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(instance.Title, appToRemove, StringComparison.OrdinalIgnoreCase))
                 {
                     instance.Uninstall();
                     clientContext.ExecuteQuery();
@@ -75,9 +81,9 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
-        #region PROPBAG tests
+        #region Property bag tests
         [TestMethod()]
-        public void SetPropertyBagValueTest()
+        public void SetPropertyBagValueIntTest()
         {
             clientContext.Web.SetPropertyBagValue(_key, _value_int);
 
@@ -89,8 +95,22 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void SetPropertyBagValueTest1()
+        public void SetPropertyBagValueStringTest()
         {
+            clientContext.Web.SetPropertyBagValue(_key, _value_string);
+
+            var props = clientContext.Web.AllProperties;
+            clientContext.Load(props);
+            clientContext.ExecuteQuery();
+            Assert.IsTrue(props.FieldValues.ContainsKey(_key), "Entry not added");
+            Assert.AreEqual(_value_string, props.FieldValues[_key] as string, "Entry not set with correct value");
+        }
+
+        [TestMethod()]
+        public void SetPropertyBagValueMultipleRunsTest()
+        {
+            string key2 = _key + "_multiple";
+            clientContext.Web.SetPropertyBagValue(key2, _value_string);
             clientContext.Web.SetPropertyBagValue(_key, _value_string);
 
             var props = clientContext.Web.AllProperties;
@@ -267,20 +287,9 @@ namespace Microsoft.SharePoint.Client.Tests
             // All keys should be gone
             Assert.IsFalse(props.FieldValues.ContainsKey(_key), "Key still present");
         }
-
-        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (string current in keys)
-            {
-                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
-                stringBuilder.Append('|');
-            }
-            return stringBuilder.ToString();
-        }
-
         #endregion
 
+        #region App instance tests
         [TestMethod()]
         public void GetAppInstancesTest()
         {
@@ -290,7 +299,13 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
                 clientContext.ExecuteQuery();
@@ -309,19 +324,33 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
                 clientContext.ExecuteQuery();
             }
 
-            Assert.IsTrue(web.RemoveAppInstanceByTitle(APPNAME));
+            string appToRemove = APPNAME;
+            
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif
+            
+            Assert.IsTrue(web.RemoveAppInstanceByTitle(appToRemove));
 
             instances = web.GetAppInstances();
 
             Assert.AreEqual(instances.Count, instanceCount);
         }
+        #endregion
 
+        #region Install solution tests
         // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
         [Ignore()]
         [TestMethod()]
@@ -408,5 +437,20 @@ namespace Microsoft.SharePoint.Client.Tests
             // Teardown
             System.IO.File.Delete(solutionpath);
         }
+        #endregion
+
+        #region Helper methods
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
+        }
+        #endregion
+
     }
 }

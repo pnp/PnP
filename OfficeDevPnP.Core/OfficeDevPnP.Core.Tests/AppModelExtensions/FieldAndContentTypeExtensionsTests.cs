@@ -19,10 +19,10 @@ namespace Microsoft.SharePoint.Client.Tests
         const string TEST_CT_PNP = "Test_CT_PNP";
         const string TEST_CT_PNP_ID = "0x01010080BA6ECAEDA6487EAD28FC3C21CA1900";
 
+        #region Test initialize and cleanup
         // **** IMPORTANT ****
         // In order to succesfully clean up after testing, create all artifacts that end up in the test site with a name starting with "Test_"
         // **** IMPORTANT ****
-
         [TestCleanup]
         public void Cleanup()
         {
@@ -30,18 +30,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 var web = clientContext.Web;
                 clientContext.Load(web);
                 clientContext.ExecuteQuery();
-
                 EmptyRecycleBin(clientContext);
 
-                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
-                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach (var field in testFields)
-                {
-                    field.DeleteObject();
-                }
-                clientContext.ExecuteQuery();
-
+                // delete lists
                 var lists = clientContext.LoadQuery(clientContext.Web.Lists);
                 clientContext.ExecuteQuery();
                 var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
@@ -51,21 +42,34 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
                 clientContext.ExecuteQuery();
 
+                // first delete content types
                 var contentTypes = clientContext.LoadQuery(clientContext.Web.ContentTypes);
                 clientContext.ExecuteQuery();
                 var testContentTypes = contentTypes.Where(l => l.Name.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach (var ctype in testContentTypes) {
+                foreach (var ctype in testContentTypes)
+                {
                     ctype.DeleteObject();
-                clientContext.ExecuteQuery();
+                    clientContext.ExecuteQuery();
                 }
+                
+                // delete fields
+                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
+                clientContext.ExecuteQuery();
+                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                foreach (var field in testFields)
+                {
+                    field.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
 
+                // clean recycle bin
                 EmptyRecycleBin(clientContext);
             }
         }
+        #endregion
 
         #region Field tests
         [TestMethod()]
-        [TestCategory(TEST_CATEGORY)]
         public void CreateFieldTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -93,7 +97,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException), "Field was able to be created twice without exception.")]
         public void CreateExistingFieldTest()
@@ -123,7 +126,6 @@ namespace Microsoft.SharePoint.Client.Tests
         //FIXME: Tests does not revert target to a clean slate after running.
         //FIXME: Tests are tighthly coupled to eachother
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void RemoveFieldByInternalNameThrowsOnNoMatchTest()
@@ -144,7 +146,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod]
         public void CreateFieldFromXmlTest()
         {
@@ -202,7 +203,7 @@ namespace Microsoft.SharePoint.Client.Tests
                     clientContext.Load(subweb);
                     clientContext.ExecuteQuery();
 
-                    using (var clientContextSub = new ClientContext(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)) { Credentials = clientContext.Credentials })
+                    using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
                         Assert.IsFalse(clientContextSub.Web.ContentTypeExistsByName(TEST_CT_PNP));
                         Assert.IsTrue(clientContextSub.Web.ContentTypeExistsByName(TEST_CT_PNP, true));
@@ -235,7 +236,7 @@ namespace Microsoft.SharePoint.Client.Tests
                     clientContext.Load(subweb);
                     clientContext.ExecuteQuery();
 
-                    using (var clientContextSub = new ClientContext(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)) { Credentials = clientContext.Credentials })
+                    using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
                         Assert.IsFalse(clientContextSub.Web.ContentTypeExistsById(TEST_CT_PNP_ID));
                         Assert.IsTrue(clientContextSub.Web.ContentTypeExistsById(TEST_CT_PNP_ID, true));
@@ -268,9 +269,67 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.IsTrue(clientContext.Web.ContentTypeExistsById(TEST_CT_PNP_ID, true));
             }
         }
-        #endregion
 
-        [TestCategory(TEST_CATEGORY)]
+        [TestMethod]
+        public void AddFieldToContentTypeTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.CreateContentType(TEST_CT_PNP, TEST_CT_PNP_ID, TEST_CATEGORY);
+                
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var fieldId = Guid.NewGuid();
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    DisplayName = fieldName,
+                    AddToDefaultView = true,
+                    Group = "Test fields group"
+                };
+                var fieldText = clientContext.Web.CreateField<FieldText>(fieldCI);
+
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId);
+                Assert.IsTrue(clientContext.Web.FieldExistsByNameInContentType(TEST_CT_PNP, fieldName));
+            }
+        }
+
+        [TestMethod]
+        public void AddFieldToContentTypeMakeRequiredTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.CreateContentType(TEST_CT_PNP, TEST_CT_PNP_ID, TEST_CATEGORY);
+
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var fieldId = Guid.NewGuid();
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = fieldId,
+                    InternalName = fieldName,
+                    DisplayName = fieldName,
+                    AddToDefaultView = true,
+                    Group = "Test fields group"
+                };
+                var fieldText = clientContext.Web.CreateField<FieldText>(fieldCI);
+
+                // simply add the field to the content type
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId);
+
+                // add the same field, but now with required setting to true and hidden to true
+                clientContext.Web.AddFieldToContentTypeByName(TEST_CT_PNP, fieldId, true);
+
+                // Fetch the created field and verify the state of the hidden and required properties
+                ContentType ct = clientContext.Web.GetContentTypeByName(TEST_CT_PNP);
+                FieldCollection fields = ct.Fields;
+                IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.Id == fieldId));
+                ct.Context.ExecuteQuery();
+                Assert.IsTrue(results.FirstOrDefault().Required);
+            }
+        }
+
         [TestMethod]
         public void SetDefaultContentTypeToListTest()
         {
@@ -305,7 +364,6 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
-        [TestCategory(TEST_CATEGORY)]
         [TestMethod()]
         public void ReorderContentTypesTest() {
             using (var clientContext = TestCommon.CreateClientContext()) {
@@ -376,7 +434,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 CollectionAssert.AreEqual(expectedIds, actualIds);
             }
         }
+        #endregion
 
+        #region Helper methods
         void EmptyRecycleBin(ClientContext clientContext) {
             var recycleBin = clientContext.Web.RecycleBin;
             clientContext.Load(recycleBin);
@@ -389,5 +449,6 @@ namespace Microsoft.SharePoint.Client.Tests
 
             clientContext.ExecuteQuery();
         }
+        #endregion
     }
 }

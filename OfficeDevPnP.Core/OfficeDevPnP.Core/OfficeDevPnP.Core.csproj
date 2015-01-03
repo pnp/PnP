@@ -185,6 +185,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModelExtensions\ClientContextExtensions.cs" />
     <Compile Include="AppModelExtensions\Deprecated\BrandingExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\FieldAndContentTypeExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\FileFolderExtensions.deprecated.cs" />

@@ -72,7 +72,8 @@ namespace Microsoft.SharePoint.Client
             var fontUrl = default(string);
             var backgroundUrl = default(string);
             var masterUrl = default(string);
-            using (var innerContext = new ClientContext(web.Context.Url) { Credentials = web.Context.Credentials })
+
+            using (var innerContext = web.Context.Clone(web.Context.Url))
             {
                 var rootWeb = innerContext.Site.RootWeb;
                 Utility.EnsureWeb(innerContext, rootWeb, "ServerRelativeUrl");
@@ -384,7 +385,6 @@ namespace Microsoft.SharePoint.Client
             return themesFolder.UploadFile(fileName, localStream, true);
         }
 
-
         /// <summary>
         /// Can be used to deploy page layouts to master page gallery. 
         /// <remarks>Should be only used with root web of site collection where publishing features are enabled.</remarks>
@@ -394,10 +394,10 @@ namespace Microsoft.SharePoint.Client
         /// <param name="title">Title for the page layout</param>
         /// <param name="description">Description for the page layout</param>
         /// <param name="associatedContentTypeID">Associated content type ID</param>
-        /// <param name="folderPath">Folder where the page layouts will be stored</param>
-        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderPath = "")
+        /// <param name="folderHierarchy">Folder hierarchy where the page layouts will be deployed</param>
+        public static void DeployPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderHierarchy = "")
         {
-            web.DeployMasterPageGalleryItem(sourceFilePath,title,description,associatedContentTypeID,Constants.PAGE_LAYOUT_CONTENT_TYPE);
+            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.PAGE_LAYOUT_CONTENT_TYPE, folderHierarchy);
         }
 
         /// <summary>
@@ -409,9 +409,10 @@ namespace Microsoft.SharePoint.Client
         /// <param name="title">Title for the page layout</param>
         /// <param name="description">Description for the page layout</param>
         /// <param name="associatedContentTypeID">Associated content type ID</param>
-        public static void DeployHtmlPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID)
+        /// <param name="folderHierarchy">Folder hierarchy where the html page layouts will be deployed</param>
+        public static void DeployHtmlPageLayout(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string folderHierarchy = "")
         {
-            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.HTMLPAGE_LAYOUT_CONTENT_TYPE);
+            web.DeployMasterPageGalleryItem(sourceFilePath, title, description, associatedContentTypeID, Constants.HTMLPAGE_LAYOUT_CONTENT_TYPE, folderHierarchy);
         }
 
         /// <summary>
@@ -423,13 +424,18 @@ namespace Microsoft.SharePoint.Client
         /// <param name="description">Description for the page layout</param>
         /// <param name="associatedContentTypeID">Associated content type ID</param>
         /// <param name="itemContentTypeId">Content type id for the item.</param>
-        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId)
+        /// <param name="folderHierarchy">Folder hierarchy where the file will be uploaded</param>
+        private static void DeployMasterPageGalleryItem(this Web web, string sourceFilePath, string title, string description, string associatedContentTypeID, string itemContentTypeId, string folderHierarchy = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
+            {
                 throw new ArgumentNullException("sourceFilePath");
+            }
 
             if (!System.IO.File.Exists(sourceFilePath))
+            {
                 throw new FileNotFoundException("File for param sourceFilePath file does not exist", sourceFilePath);
+            }
 
             string fileName = Path.GetFileName(sourceFilePath);
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, CoreResources.BrandingExtension_DeployPageLayout, fileName, web.Context.Url);
@@ -439,14 +445,18 @@ namespace Microsoft.SharePoint.Client
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
-            web.Context.ExecuteQuery();            
+            web.Context.ExecuteQuery();
+
+            // Create folder structure inside master page gallery, if does not exists
+            // For e.g.: _catalogs/masterpage/contoso/
+            web.EnsureFolder(rootFolder, folderHierarchy);
 
             var fileBytes = System.IO.File.ReadAllBytes(sourceFilePath);
 
             // Use CSOM to upload the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = fileBytes;
-            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, fileName);
+            newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderHierarchy, fileName);
             newFile.Overwrite = true;
 
             Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
@@ -461,7 +471,7 @@ namespace Microsoft.SharePoint.Client
                     uploadFile.CheckOut();
                 }
             }
-            
+
             // Get content type for ID to assign associated content type information
             ContentType associatedCt = web.GetContentTypeById(associatedContentTypeID);
 
@@ -492,7 +502,7 @@ namespace Microsoft.SharePoint.Client
 
             if (!System.IO.File.Exists(sourceFilePath))
                 throw new FileNotFoundException("File for param sourceFilePath not found.", sourceFilePath);
-                
+
             string fileName = Path.GetFileName(sourceFilePath);
             LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, CoreResources.BrandingExtension_DeployMasterPage, fileName, web.Context.Url);
 
@@ -502,7 +512,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
             web.Context.ExecuteQuery();
-            
+
             // Create folder if does not exists
             if (!String.IsNullOrEmpty(folderPath))
             {
@@ -658,7 +668,8 @@ namespace Microsoft.SharePoint.Client
 
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             CamlQuery query = new CamlQuery();
-            query.ViewXml = "<View><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
+            // Use query Scope='RecursiveAll' to iterate through sub folders of Master page library because we might have file in folder hierarchy
+            query.ViewXml = "<View Scope='RecursiveAll'><Query><Where><Contains><FieldRef Name='FileRef'/><Value Type='Text'>.master</Value></Contains></Where></Query></View>";
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
@@ -706,15 +717,15 @@ namespace Microsoft.SharePoint.Client
                     <FieldRef Name='FontSchemeUrl' />
                     <FieldRef Name='ThemeUrl' />
                 </ViewFields> 
-            </View>"; 
+            </View>";
 
             CamlQuery camlQuery = new CamlQuery();
             camlQuery.ViewXml = string.Format(camlString, composedLookName);
-            
+
             ListItemCollection themes = designCatalog.GetItems(camlQuery);
             web.Context.Load(themes);
             web.Context.ExecuteQuery();
-            if(themes.Count > 0)
+            if (themes.Count > 0)
             {
                 var themeItem = themes[0];
                 theme = new ThemeEntity();
@@ -748,15 +759,18 @@ namespace Microsoft.SharePoint.Client
         public static ListItem GetPageLayoutListItemByName(this Web web, string pageLayoutName)
         {
             if (string.IsNullOrEmpty(pageLayoutName))
+            {
                 throw new ArgumentNullException("pageLayoutName");
+            }
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
             web.Context.ExecuteQuery();
-            
+
             var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName, ".aspx");
             var query = new CamlQuery();
-            query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
+            // Use query Scope='RecursiveAll' to iterate through sub folders of Master page library because we might have file in folder hierarchy
+            query.ViewXml = string.Format("<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FileRef'/><Value Type='Text'>{0}</Value></Eq></Where></Query></View>", fileRefValue);
             var galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);

@@ -192,6 +192,7 @@
     <Compile Include="AppModelExtensions\SecurityExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensionsTests.cs" />
+    <Compile Include="AppModelExtensions\Tenant15ExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
     <Compile Include="Extensions\HttpVariablesExtensionsTests.cs" />
@@ -225,6 +226,7 @@
     <None Include="Resources\HelloWorldApp.app" />
     <Content Include="Resources\GuidTermSet.csv" />
     <Content Include="Resources\ImportTermSet.csv" />
+    <None Include="Resources\HelloWorldApp15.app" />
     <None Include="Resources\TestSolution.wsp" />
     <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
