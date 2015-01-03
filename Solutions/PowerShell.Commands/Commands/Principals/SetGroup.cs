@@ -13,8 +13,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
     [Cmdlet("Set", "SPOGroup")]
     public class SetGroup : SPOWebCmdlet
     {
-        [Parameter(Mandatory=true)]
-        public GroupPipeBind Identity;
+        [Parameter(Mandatory = true)]
+        public GroupPipeBind Identity = new GroupPipeBind();
 
         [Parameter(Mandatory = false)]
         public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
@@ -24,6 +24,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
 
         [Parameter(Mandatory = false)]
         public string RemoveRole = string.Empty;
+
+        [Parameter(Mandatory = false)]
+        public string Title = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
@@ -89,6 +92,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                     }
                 }
             }
+
+            if(!string.IsNullOrEmpty(Title))
+            {
+                group.Title = Title;
+                group.Update();
+                ClientContext.ExecuteQuery();
+            }
+            
         }
     }
 }
