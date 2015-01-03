@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
@@ -27,8 +28,8 @@ PS:> New-SPOUser -LogonName user@company.com
         [Parameter(Mandatory = false)]
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
-        [Parameter(Mandatory = false)]
-        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
+        [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
+        public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
 
         protected override void ExecuteCmdlet()
         {
@@ -55,17 +56,17 @@ PS:> New-SPOUser -LogonName user@company.com
                 group.AutoAcceptRequestToJoinLeave = true;
                 dirty = true;
             }
-            if(dirty)
+            if (dirty)
             {
                 group.Update();
                 ClientContext.ExecuteQuery();
             }
-           
+
 
             if (!string.IsNullOrEmpty(Owner))
             {
                 Principal groupOwner = null;
-             
+
                 try
                 {
                     groupOwner = web.EnsureUser(Owner);
@@ -83,21 +84,21 @@ PS:> New-SPOUser -LogonName user@company.com
             }
 
 
-            if (SetAssociatedGroup != AssociatedGroupType.None)
+            if (SetAssociatedGroup != AssociatedGroupTypeEnum.None)
             {
                 switch (SetAssociatedGroup)
                 {
-                    case AssociatedGroupType.Visitors:
+                    case AssociatedGroupTypeEnum.Visitors:
                         {
                             web.AssociateDefaultGroups(null, null, group);
                             break;
                         }
-                    case AssociatedGroupType.Members:
+                    case AssociatedGroupTypeEnum.Members:
                         {
                             web.AssociateDefaultGroups(null, group, null);
                             break;
                         }
-                    case AssociatedGroupType.Owners:
+                    case AssociatedGroupTypeEnum.Owners:
                         {
                             web.AssociateDefaultGroups(group, null, null);
                             break;
@@ -106,16 +107,6 @@ PS:> New-SPOUser -LogonName user@company.com
             }
             ClientContext.ExecuteQuery();
             WriteObject(group);
-
-
-        }
-
-        public enum AssociatedGroupType
-        {
-            None,
-            Visitors,
-            Members,
-            Owners
         }
     }
 }

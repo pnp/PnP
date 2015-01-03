@@ -149,6 +149,7 @@ Command | Description
 **New-SPOGroup** | Creates a group
 **New-SPOUser** | Adds a user to the Site User Info List. Equivalent to web.EnsureUser(user)
 **Remove-SPOUserFromGroup** | Removes a user from a group
+**Set-SPOGroup** | Sets a group as an associated group (Owners, Members, Visitors) or adds or removes a role assignment (e.g. "Contribute", "Read", etc.)
 
 #### Site Cmdlets ####
 Command | Description

@@ -166,6 +166,7 @@
     <Compile Include="Admin\GetTenantSite.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
+    <Compile Include="Enums\AssociatedGroupTypeEnum.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
+    <Compile Include="Principals\SetGroup.cs" />
     <Compile Include="Web\RemoveJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptBlock.cs" />

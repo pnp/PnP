@@ -14,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             var clientContext = currentWeb.Context as ClientContext;
             Site site = clientContext.Site;
             Web web = site.OpenWebById(guid);
-            clientContext.Load(web, w => w.Url);
+            clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
             clientContext.ExecuteQuery();
 
             return web;
@@ -25,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             var clientContext = currentWeb.Context as ClientContext;
             Site site = clientContext.Site;
             Web web = site.OpenWeb(url);
-            clientContext.Load(web, w => w.Url);
+            clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
             clientContext.ExecuteQuery();
 
             return web;
