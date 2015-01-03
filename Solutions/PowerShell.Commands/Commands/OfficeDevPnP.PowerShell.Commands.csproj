@@ -190,6 +190,8 @@
     <Compile Include="Lists\RemoveView.cs" />
     <Compile Include="Lists\RemoveList.cs" />
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
+    <Compile Include="Lists\SetList.cs" />
+    <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
     <Compile Include="Web\RemoveJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptLink.cs" />
