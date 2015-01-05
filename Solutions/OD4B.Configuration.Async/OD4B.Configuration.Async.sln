@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Projects", "Helper Projects", "{6C5F4166-6EDC-47E8-9227-51F528D44D01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,5 +85,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64FDBBED-1AAC-46AC-82D1-7FBE63C9A1DA} = {6C5F4166-6EDC-47E8-9227-51F528D44D01}
+		{3DCEC75E-EA9F-47EC-B9D5-8E20F4A12849} = {6C5F4166-6EDC-47E8-9227-51F528D44D01}
 	EndGlobalSection
 EndGlobal
