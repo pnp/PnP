@@ -964,16 +964,6 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(DefaultPageLayout, Inherit);
         }
 
-        /// <summary>
-        /// Can be used to remote filters from the available page layouts
-        /// </summary>
-        /// <param name="web"></param>
-        public static void ClearAvailablePageLayouts(this Web web)
-        {
-            web.SetPropertyBagValue(AvailablePageLayouts, "");
-        }
-
-
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
             XmlDocument xd = new XmlDocument();
