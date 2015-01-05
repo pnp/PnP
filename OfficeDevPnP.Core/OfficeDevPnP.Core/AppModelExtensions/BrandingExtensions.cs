@@ -973,6 +973,14 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(AvailablePageLayouts, "");
         }
 
+        /// <summary>
+        /// Allow the web to use all available page layouts
+        /// </summary>
+        /// <param name="web"></param>
+        public static void AllowAllPageLayouts(this Web web)
+        {
+            ClearAvailablePageLayouts(web);
+        }
 
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
