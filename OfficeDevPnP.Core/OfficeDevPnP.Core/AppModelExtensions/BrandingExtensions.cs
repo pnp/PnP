@@ -964,6 +964,15 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(DefaultPageLayout, Inherit);
         }
 
+        /// <summary>
+        /// Allow the web to use all available page layouts
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        public static void AllowAllPageLayouts(this Web web)
+        {
+            web.SetPropertyBagValue(AvailablePageLayouts, "");
+        }
+
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
             XmlDocument xd = new XmlDocument();
