@@ -17,7 +17,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         public GroupPipeBind Identity = new GroupPipeBind();
 
         [Parameter(Mandatory = false)]
-        public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         [Parameter(Mandatory = false)]
         public string AddRole = string.Empty;
@@ -44,21 +44,21 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                 group = Identity.Group;
             }
 
-            if (SetAssociatedGroup != AssociatedGroupTypeEnum.None)
+            if (SetAssociatedGroup != AssociatedGroupType.None)
             {
                 switch (SetAssociatedGroup)
                 {
-                    case AssociatedGroupTypeEnum.Visitors:
+                    case AssociatedGroupType.Visitors:
                         {
                             this.SelectedWeb.AssociateDefaultGroups(null, null, group);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Members:
+                    case AssociatedGroupType.Members:
                         {
                             this.SelectedWeb.AssociateDefaultGroups(null, group, null);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Owners:
+                    case AssociatedGroupType.Owners:
                         {
                             this.SelectedWeb.AssociateDefaultGroups(group, null, null);
                             break;
