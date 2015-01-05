@@ -961,7 +961,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web"></param>
         public static void SetSiteToInheritPageLayouts(this Web web)
         {
-            web.SetPropertyBagValue(DefaultPageLayout, Inherit); 
+            web.SetPropertyBagValue(DefaultPageLayout, Inherit);
         }
 
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
