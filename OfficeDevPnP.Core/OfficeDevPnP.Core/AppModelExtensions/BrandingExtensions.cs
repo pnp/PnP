@@ -973,25 +973,6 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(AvailablePageLayouts, "");
         }
 
-        /// <summary>
-        /// Allow the web to use all available page layouts
-        /// </summary>
-        /// <param name="web"></param>
-        public static void AllowAllPageLayouts(this Web web, bool resetSubsitesToInherit = false)
-        {
-            web.SetPropertyBagValue(AvailablePageLayouts, "");
-
-            if (resetSubsitesToInherit)
-            {
-                var websCollection = web.Webs;
-                web.Context.Load(websCollection, wc => wc.Include(w => w.AllProperties, w => w.ServerRelativeUrl));
-                web.Context.ExecuteQuery();
-                foreach (var childWeb in websCollection)
-                {
-                    web.SetPropertyBagValue(AvailablePageLayouts, "");
-                }
-            }
-        }
 
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
