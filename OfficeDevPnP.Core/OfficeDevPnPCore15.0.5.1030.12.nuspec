@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>OfficeDevPnPCore15</id>
-        <version>0.5.1030.8</version>
+        <version>0.5.1030.12</version>
         <title>OfficeDevPnP.Core (on-premises)</title>
         <authors>Office 365 Developer Patterns &amp; Practices</authors>
         <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
@@ -13,7 +13,7 @@
         <description>Office 365 Patterns &amp; Practices Core CSOM extension methods for SharePoint app model development in Office 365.</description>
         <summary>Core CSOM extension methods for SharePoint app model development.</summary>
         <releaseNotes />
-        <copyright>Copyright 2014</copyright>
+        <copyright>Copyright 2015</copyright>
         <tags>Office AppModel FTCtoCAM Office365</tags>
         <dependencies>
             <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
@@ -52,5 +52,6 @@
     <files>
         <file src="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" target="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
         <file src="OfficeDevPnP.Core\bin\Release15\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
+        <file src="OfficeDevPnP.Core\bin\Release15\OfficeDevPnP.Core.XmlSerializers.dll" target="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" />
     </files>
 </package>

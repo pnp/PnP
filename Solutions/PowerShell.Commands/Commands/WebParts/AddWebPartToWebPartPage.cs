@@ -54,11 +54,5 @@ namespace OfficeDevPnP.PowerShell.Commands
                 this.SelectedWeb.AddWebPartToWebPartPage(PageUrl, wp);
             }
         }
-
-        public enum WPPageType
-        {
-            WikiPage,
-            WebPartPage
-        }
     }
 }

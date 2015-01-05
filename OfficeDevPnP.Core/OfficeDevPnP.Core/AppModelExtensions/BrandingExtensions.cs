@@ -958,7 +958,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Can be used to set the site to inherit the default page layout option from parent. Cannot be used for root site of the site collection
         /// </summary>
-        /// <param name="web"></param>
+        /// <param name="web">Web to operate against</param>
         public static void SetSiteToInheritPageLayouts(this Web web)
         {
             web.SetPropertyBagValue(DefaultPageLayout, Inherit);
@@ -986,6 +986,11 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(AvailablePageLayouts, xmlNode.OuterXml);
         }
 
+        /// <summary>
+        /// Defines which templates are available for subsite creation
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="availableTemplates">List of <see cref="WebTemplateEntity"/> objects that define the templates that are allowed</param>
         public static void SetAvailableWebTemplates(this Web web, List<WebTemplateEntity> availableTemplates)
         {
             string propertyValue = string.Empty;
@@ -1053,7 +1058,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// 
+        /// Sets the web home page
         /// </summary>
         /// <param name="web">The Web to process</param>
         /// <param name="rootFolderRelativePath">The path relative to the root folder of the site, e.g. SitePages/Home.aspx</param>

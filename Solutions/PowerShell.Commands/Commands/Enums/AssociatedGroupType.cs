@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Enums
 {
-    public enum AssociatedGroupTypeEnum
+    public enum AssociatedGroupType
     {
         None,
         Visitors,

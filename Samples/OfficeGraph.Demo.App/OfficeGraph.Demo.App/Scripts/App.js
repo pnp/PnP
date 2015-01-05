@@ -38,7 +38,7 @@
                     });
 
                     //build an image
-                    o.pic = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=m&accountname=' + o.username;
+                    o.pic = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=m&url=' + PictureUrl(o.username);
 
                     results.push(o);
                 })
@@ -49,6 +49,13 @@
             }
         });
 
+    }
+
+    function PictureUrl(username) {
+        var host = window.location.host.replace(".sharepoint.com", "");
+        host = host.substring(0, host.lastIndexOf("-"));
+        var url = 'https://' + host + '-my.sharepoint.com/User%20Photos/Profile%20Pictures/' + username.replace("@", "_").replace(/\./g,'_') + "_MThumb.jpg";
+        return encodeURIComponent(url);
     }
 
     function RenderEverything(results) {

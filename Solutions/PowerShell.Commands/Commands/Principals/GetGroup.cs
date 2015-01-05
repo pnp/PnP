@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Commands.Base;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -15,8 +16,9 @@ PS:> Get-SPOGroup -Name 'Site Members'
 ", SortOrder = 2)]
     public class GetGroup : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true, ParameterSetName = "ByName", HelpMessage = "Get a specific group by name")]
-        public string Name = string.Empty;
+        [Parameter(Mandatory = false, Position = 0, ValueFromPipeline = true, ParameterSetName = "ByName", HelpMessage = "Get a specific group by name")]
+        [Alias("Name")]
+        public GroupPipeBind Identity = new GroupPipeBind();
 
         [Parameter(Mandatory = false, ParameterSetName = "Members", HelpMessage = "Retrieve the associated member group")]
         public SwitchParameter AssociatedMemberGroup;
@@ -31,7 +33,18 @@ PS:> Get-SPOGroup -Name 'Site Members'
         {
             if (ParameterSetName == "ByName")
             {
-                var group = this.SelectedWeb.SiteGroups.GetByName(Name);
+                Group group = null;
+                if(Identity.Id != -1)
+                {
+                    group = this.SelectedWeb.SiteGroups.GetById(Identity.Id);
+                }
+                else if(!string.IsNullOrEmpty(Identity.Name))
+                {
+                    group = this.SelectedWeb.SiteGroups.GetByName(Identity.Name);
+                } else if (Identity.Group != null)
+                {
+                    group = Identity.Group;
+                }
 
                 ClientContext.Load(group);
                 ClientContext.Load(group.Users);

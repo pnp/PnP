@@ -8,7 +8,7 @@ This sample shows how to consume the Office Graph API to return the collegues wi
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-All Office 365 tenants should have this now enabled.
+All Office 365 tenants should have the Office Graph API now enabled.
 
 ### Solution ###
 Solution | Author(s)
@@ -29,9 +29,11 @@ Version  | Date | Comments
 
 The App queries the Office Graph for the colleagues with whom you closely work with and displays them. Basically, it does the same thing which you see on the left hand side when you log in to Delve. This app can be a good starting point if you want to further develop apps which consume the Office Graph API. You can pick and choose the Delve elements which you want in your app. Also, you can create customized scenarios which leverage the Office Graph and deliver them as Apps for SharePoint. 
 
+![](http://i.imgur.com/MHTSLS5.png)
+
 
 # Required Details #
-Since the App requires Search permissions to be granted in the AppManifest, you will need to have the Tenant Admin credentials to install the App. I think this might be a blocker for some people in installing the App. Now fortunately, if you just want to test the functionality out, you can take all the code in the App.js and put it from inside a SharePoint Online page. You do not need tenant admin permissions to execute the code in the page.
+Since the App requires Search permissions to be granted in the AppManifest, you will need to have the Tenant Admin credentials to install the App. I think this might be a blocker for some people in installing the App. Now fortunately, if you just want to test the functionality out, you can take all the code in the App.js and run it from inside a SharePoint Online page. You do not need tenant admin permissions to execute the code in the page.
 
 
 # Searh Query to get the closest Colleagues of the current user  #

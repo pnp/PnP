@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -24,7 +25,7 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
 
         protected override void ExecuteCmdlet()
         {
-            if (SPOnlineConnection.CurrentConnection.ConnectionType == SPOnlineConnection.ConnectionTypes.OnPrem)
+            if (SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.OnPrem)
             {
                 WriteObject(ClientContext.Site);
             }
