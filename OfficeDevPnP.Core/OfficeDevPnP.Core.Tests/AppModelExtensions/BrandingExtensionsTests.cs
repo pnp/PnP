@@ -48,6 +48,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         bool deactivateSiteFeatureOnTeardown = false;
         bool deactivateWebFeatureOnTeardown = false;
         private Web pageLayoutTestWeb = null;
+        private string AvailablePageLayouts = "__PageLayouts";
 
         #region Test initialize and cleanup
         [TestInitialize()]
@@ -279,7 +280,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
         #endregion
 
-        #region Pagelayout upload tests
+        #region Pagelayout tests
         [TestMethod]
         public void CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest()
         {
@@ -315,7 +316,21 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var item = web.GetPageLayoutListItemByName("test/test/" + publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
+
+        [TestMethod]
+        public void AllowAllPageLayoutsTest()
+        {
+            var web = pageLayoutTestWeb;
+
+            web.AllowAllPageLayouts();
+
+            string allowedPageLayouts = web.GetPropertyBagValueString(AvailablePageLayouts, null);
+
+            Assert.AreEqual(allowedPageLayouts, string.Empty);
+        }
+
         #endregion
+
 
         #region Composed Look tests
         [TestMethod()]

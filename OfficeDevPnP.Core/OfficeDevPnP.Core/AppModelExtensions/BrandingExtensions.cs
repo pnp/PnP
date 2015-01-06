@@ -970,7 +970,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to operate against</param>
         public static void AllowAllPageLayouts(this Web web)
         {
-            web.SetPropertyBagValue(AvailablePageLayouts, "");
+            web.SetPropertyBagValue(AvailablePageLayouts, string.Empty);
         }
 
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
