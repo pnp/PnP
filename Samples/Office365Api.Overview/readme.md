@@ -45,17 +45,17 @@ For these tasks to succeed you need to provide some input before you run the app
 ## Run the sample ##
 When you run the sample you'll see some text fields, a window with a big button named "Run demo" and a black output section. Fill out the text fields with proper values, select a file to upload by browsing the file system, and click on the "Run demo" button to trigger the demo. What will first happen is that you need to logon with an Office 365 user account.
 
-![](http://i.imgur.com/RIGgm7H.png)
+![](http://i.imgur.com/852IH4o.png)
 
 
 Once you've logged on the Office 365 API will ask you for permissions: you need to consent that the app access your data for the listed categories:
 
-![](http://i.imgur.com/6bDBl5w.png)
+![](http://i.imgur.com/M9D343S.png)
 
 
 After those 2 steps are done the app can run and use all the API's to do it's work. The output is shown in console style:
 
-![](http://i.imgur.com/LQnkq5W.png)
+![](http://i.imgur.com/vLcdlrL.png)
 
 ## Some explanation about the API's themselves ##
 The app is built by extending the default classes added when you hookup a connected service:
