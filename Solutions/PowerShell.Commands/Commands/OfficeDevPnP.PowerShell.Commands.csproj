@@ -196,6 +196,7 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Web\RemoveJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptBlock.cs" />
