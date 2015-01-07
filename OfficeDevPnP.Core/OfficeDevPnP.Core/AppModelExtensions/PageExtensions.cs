@@ -831,7 +831,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverRelativePageUrl"></param>
         /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
-        public static void SetWebPartPropertyInternal(this Web web, string key, string value, Guid id, string serverRelativePageUrl)
+        public static void SetWebPartProperty(this Web web, string key, string value, Guid id, string serverRelativePageUrl)
         {
             SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
         }
@@ -846,7 +846,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverRelativePageUrl"></param>
         /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
-        public static void SetWebPartPropertyInternal(this Web web, string key, int value, Guid id, string serverRelativePageUrl)
+        public static void SetWebPartProperty(this Web web, string key, int value, Guid id, string serverRelativePageUrl)
         {
             SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
         }
