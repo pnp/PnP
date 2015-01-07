@@ -140,6 +140,8 @@ Command | Description
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
 **Set-SPODefaultColumnValues** | Sets default column values for a document library
+**Set-SPOList** | Sets list properties
+**Set-SPOListPermission** | Sets list permissions
 
 #### User and Group Cmdlets ####
 Command | Description
@@ -209,6 +211,7 @@ Command | Description
 **Get-SPOWebPart** | Returns the webparts on a given page
 **Remove-SPOWebPart** |	Removes a webpart from a page
 **Set-SPOWebPartProperty** | Sets a webpart property
+**Get-SPOWebPartProperty** | Returns webpart properties
 
 #### Wiki Page Cmdlets ####
 Command | Description

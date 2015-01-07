@@ -1,8 +1,14 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-01-07**
+* Introduced new Cmdlet: Get-SPOWebPartProperty to return webpart properties
+* Updated Set-SPOWebPartProperty cmdlet to support int values
+
 **2015-01-02**
 * Removed SetAssociatedGroup parameter from new-spogroup cmdlet and moved it to a separate cmdlet: Set-SPOGroup
 * Introduced new Cmdlet: Set-SPOGroup to set the group as an associated group and optionally add or remove role assignments
+* Introduced new Cmdlet: Set-SPOList to set list properties
+* Introduced new Cmdlet: Set-SPOListPermission to set list permissions
 
 **2014-12-30**
 * Changed New-SPOWeb to return the actual web as an object instead of a success message.
