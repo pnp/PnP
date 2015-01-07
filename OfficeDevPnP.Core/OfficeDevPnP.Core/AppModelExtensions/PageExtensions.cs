@@ -912,6 +912,41 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Returns web part properties
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="id">The id of the webpart</param>
+        /// <param name="serverRelativePageUrl"></param>
+        /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
+        public static PropertyValues GetWebPartProperties(this Web web, Guid id, string serverRelativePageUrl)
+        {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            ClientContext context = web.Context as ClientContext;
+
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            context.Load(file);
+            context.ExecuteQuery();
+
+            LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            WebPartDefinition def = wpm.WebParts.GetById(id);
+
+            context.Load(def.WebPart.Properties);
+            context.ExecuteQuery();
+
+            return def.WebPart.Properties;
+        }
+
+
+        /// <summary>
         /// Adds the publishing page.
         /// </summary>
         /// <param name="web">The web.</param>
