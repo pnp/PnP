@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office365.OAuth;
 using Microsoft.Office365.SharePoint;
+using Microsoft.Office365.SharePoint.CoreServices;
+using Microsoft.Office365.SharePoint.FileServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,66 +11,53 @@ using System.Threading.Tasks;
 namespace Office365Api.Demo
 {
     static class  SitesApiSample
-    {        
-        //const string SharePointResourceId = "https://bertonline.sharepoint.com";
-        
-        // Do not make static in Web apps; store it in session or in a cookie instead
-        static string _lastLoggedInUser;
-        //static DiscoveryContext _discoveryContext;
-        public static DiscoveryContext _discoveryContext
+    {
+        public static async Task<IEnumerable<IItem>> GetDefaultDocumentFiles(string tenantUri, string siteUri)
         {
-            get;
-            set;
-        }
-
-        public static string ServiceResourceId
-        {
-            get;
-            set;
-        }
-
-
-        public static async Task<IEnumerable<IFileSystemItem>> GetDefaultDocumentFiles(string siteUrl)
-        {
-            var client = await EnsureClientCreated(siteUrl);
+            var client = EnsureClientCreated(tenantUri, siteUri);
             client.Context.IgnoreMissingProperties = true;
 
-            // Obtain files in default SharePoint folder
-            var filesResults = await client.Files.ExecuteAsync();
-            var files = filesResults.CurrentPage.OrderBy(e => e.Name);
+            List<IItem> files = new List<IItem>();
+
+            // ***********************************************************
+            // Note from @PaoloPia: To not stress the server, limit the
+            // the query to no more than 50 email items
+            // ***********************************************************
+
+            // ***********************************************************
+            // IMPORTANT: This method always fails ... we need to 
+            // figure out why! Is it a kind of bug? Using Fiddler the
+            // JSON response comes out properly, then is the OData client
+            // that fails while materializing the object, saying that
+            // it cannot create an abstract class!
+            // ***********************************************************
+            var tmp = await client.Files.ExecuteAsync();
+
+            var query = (from f in client.Files
+                         orderby f.DateTimeLastModified descending
+                         select f).Take(50);
+
+            var filesResults = await query.ExecuteAsync(); 
+
+            do
+            {
+                files.AddRange(filesResults.CurrentPage);
+                filesResults = await filesResults.GetNextPageAsync();
+            }
+            while (filesResults.MorePagesAvailable);
+
             return files;
         }
 
-        public static async Task<SharePointClient> EnsureClientCreated(string siteUrl)
+        public static SharePointClient EnsureClientCreated(string tenantUri, string siteUri)
         {
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
-
-            var dcr = await _discoveryContext.DiscoverResourceAsync(ServiceResourceId);
-
-            _lastLoggedInUser = dcr.UserId;
-
-            return new SharePointClient(new Uri(string.Format("{0}/_api", siteUrl)), async () =>
-            {
-                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
-            });
-        }
-
-        public static async Task SignOut()
-        {
-            if (string.IsNullOrEmpty(_lastLoggedInUser))
-            {
-                return;
-            }
-
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
-
-            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
+            // Create the MyFiles client proxy:
+            return new SharePointClient(
+                new Uri(string.Format("{0}{1}_api", siteUri, siteUri.EndsWith("/") ? String.Empty : "/")),
+                async () =>
+                {
+                    return await AuthenticationHelper.GetAccessTokenForServiceAsync(tenantUri);
+                });
         }
     }
 }
