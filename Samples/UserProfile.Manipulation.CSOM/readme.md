@@ -29,9 +29,10 @@ Version  | Date | Comments
 # Reading user profile properties #
 Reading of the user profile properties using CSOM has been supported since the RTM version of SharePoint 2013 or SharePoint Online. This model has remained the same since. 
 
-In this sample we are using user profile CSOM to list all the user profile properties from current user. If user has specific access rights, you can also request or read properties from other profiles.
+In this sample we are calling into the user profile CSOM to list all the user profile properties from current user. If user has specific access rights, you can also request or read properties from other profiles.
 
-![](http://i.imgur.com/fEZJPDx.png)
+![](http://i.imgur.com/RnIBWv5.png)
+
 
 Code for reading the user profile properties is pretty straight forward. You will need to have reference to Microsoft.SharePoint.Client.UserProfiles assembly which is providing the needed objects for accessing user profile capabilities in the SharePoint.
 
