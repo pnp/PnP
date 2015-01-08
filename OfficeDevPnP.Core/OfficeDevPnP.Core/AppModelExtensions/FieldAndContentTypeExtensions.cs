@@ -701,15 +701,27 @@ namespace Microsoft.SharePoint.Client
         /// <param name="hidden">Optionally make this a hidden field</param>
         public static void AddFieldToContentType(this Web web, ContentType contentType, Field field, bool required = false, bool hidden = false)
         {
+            bool propertyLoadRequired = false;
             if (!contentType.IsPropertyAvailable("Id"))
             {
                 web.Context.Load(contentType, ct => ct.Id);
-                web.Context.ExecuteQuery();
+                propertyLoadRequired = true;
             }
 
             if (!field.IsPropertyAvailable("Id"))
             {
                 web.Context.Load(field, f => f.Id);
+                propertyLoadRequired = true;
+            }
+
+            if(!contentType.IsPropertyAvailable("FieldLinks"))
+            {
+                web.Context.Load(contentType.FieldLinks);
+                propertyLoadRequired = true;
+            }
+
+            if(propertyLoadRequired)
+            {
                 web.Context.ExecuteQuery();
             }
 
