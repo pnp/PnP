@@ -10,17 +10,16 @@ This WPF app show the output of various Office 365 API calls in a console alike 
 This sample requires the Office 365 API version released on November 2014. See http://msdn.microsoft.com/en-us/office/office365/howto/platform-development-overview for more details.
 
 ### Solution ###
-Solution | Author(s)|Twitter
----------|----------|----------
-Office365Api.Overview | Bert Jansen (**Microsoft**) |
-Office365Api.Overview | Paolo Pialorsi (**PiaSys.com**) | @PaoloPia
+Solution | Author(s)
+---------|----------
+Office365Api.Overview | Bert Jansen (**Microsoft**), Paolo Pialorsi (**PiaSys.com**, @PaoloPia)
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-3.0  | January 7th 2015 | Updated to Office 365 API RTM and ADAL 2.13.*
-2.0  | August 12th 2014 | Switched to WPF app and added documentation
-1.0  | July 29th 2014 | Initial release
+3.0  | January 7th 2015 | Updated to Office 365 API RTM and ADAL 2.13 (Paolo Pialorsi)
+2.0  | August 12th 2014 | Switched to WPF app and added documentation (Bert Jansen)
+1.0  | July 29th 2014 | Initial release (Bert Jansen)
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -40,7 +39,14 @@ This application will use the new Office 365 API's to perform the following list
 -  Create a mail in the "Drafts" mailbox folder
 -  Get all users from Azure AD, just print the first 10
 
-For these tasks to succeed you need to provide some input before you run the application. This is done by changing the text fields in the UI, just after launching the WPF project.
+For these tasks to succeed you need to provide some input before you run the application. This is done by changing the text fields in the UI, just after launching the WPF project + by registering an application in Azure AD. You can do this by right-clicking the **Office365Api.Demo** project -> **Add** -> **Connected Service**. Select **Office 365 APIs** and click on **Register your App**:
+
+![](http://i.imgur.com/vksc2KD.png)
+
+Click **Yes** to register an Azure AD App and then give it the permissions as shown below:
+
+![](http://i.imgur.com/uhQpqHt.png)
+
 
 ## Run the sample ##
 When you run the sample you'll see some text fields, a window with a big button named "Run demo" and a black output section. Fill out the text fields with proper values, select a file to upload by browsing the file system, and click on the "Run demo" button to trigger the demo. What will first happen is that you need to logon with an Office 365 user account.
