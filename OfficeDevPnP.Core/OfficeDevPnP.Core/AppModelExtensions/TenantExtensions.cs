@@ -358,7 +358,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The Guid of a site collection</returns>
         public static Guid GetSiteGuidByUrl(this Tenant tenant, string siteFullUrl)
         {
-            if (!string.IsNullOrEmpty(siteFullUrl))
+            if (string.IsNullOrEmpty(siteFullUrl))
                 throw new ArgumentNullException("siteFullUrl");
 
             return tenant.GetSiteGuidByUrl(new Uri(siteFullUrl));
