@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,25 +25,36 @@ namespace Office365Api.Demo
     {
         private double scrollViewerHeight = 0.0d;
 
-        //TODO: update these values to make them relevant for your environment
-        private string uploadFile = @"C:\temp\bulkadusers.xlsx";
-        private string serviceResourceId = "https://bertonline.sharepoint.com";
-        //https://bertonline.sharepoint.com/sites/20140050 should work due to the user having read access
-        //https://bertonline.sharepoint.com/sites/20140052 should not work due to the user not having access
-        //https://bertonline.sharepoint.com/sites/20140053 should not work due to the user being site collection admin
-        private string siteUrl = "https://bertonline.sharepoint.com/sites/20140053";
-        private string sendMailTo = "bjansen@microsoft.com";
-
         public MainWindow()
         {
             InitializeComponent();
             txtOutput.Background = Brushes.Black;
         }
-        
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            Uri authorityUri;
+            Uri sharePointTenantUri;
+            Uri siteCollectionUri;
+
+            Regex mailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+
+            // Input parameters sanity check 
+            if ((String.IsNullOrEmpty(this.Authority.Text) || !Uri.TryCreate(this.Authority.Text, UriKind.Absolute, out authorityUri)) ||
+                (String.IsNullOrEmpty(this.SharePointTenantUri.Text) || !Uri.TryCreate(this.SharePointTenantUri.Text, UriKind.Absolute, out sharePointTenantUri)) ||
+                (String.IsNullOrEmpty(this.SiteCollectionUri.Text) || !Uri.TryCreate(this.SiteCollectionUri.Text, UriKind.Absolute, out siteCollectionUri)) ||
+                (String.IsNullOrEmpty(this.MailAddressTo.Text) || !mailRegex.IsMatch(this.MailAddressTo.Text)) ||
+                (String.IsNullOrEmpty(this.FileToUploadPath.Text) || !File.Exists(this.FileToUploadPath.Text)))
+            {
+                MessageBoxResult msgBoxResult = MessageBox.Show("Please fill all the input parameters!");
+                return;
+            }
+
             try
             {
+                PrintHeader("Authentication Phase");
+                AuthenticationHelper.Authenticate(this.Authority.Text);
+
                 PrintHeader("Discovery API demo");
                 var t = await DiscoveryAPISample.DiscoverMyFiles();
                 PrintSubHeader("Current user information");
@@ -51,80 +65,92 @@ namespace Office365Api.Demo
 
                 PrintHeader("Files API demo");
                 // Read all files on your onedrive
-                PrintSubHeader("List all files and folders in the OneDrive");
+                PrintSubHeader("List TOP 20 files and folders in the OneDrive");
 
-                // Pass along the discovery context object
-                MyFilesApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
-                MailApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
-                SitesApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
-                ActiveDirectoryApiSample._discoveryContext = DiscoveryAPISample._discoveryContext;
+                var allMyFolders = await MyFilesApiSample.GetMyFolders();
 
                 var allMyFiles = await MyFilesApiSample.GetMyFiles();
-                foreach (var item in allMyFiles)
+                foreach (var item in allMyFiles.Take(20))
                 {
-                    PrintAttribute("URL", item.Url);
+                    PrintAttribute("URL", item.WebUrl);
                 }
 
                 // upload a file to the "Shared with everyone" folder
                 PrintSubHeader("Upload a file to OneDrive");
-                await MyFilesApiSample.UploadFile(uploadFile, "Shared with everyone");
+                if (allMyFolders.Any())
+                {
+                    await MyFilesApiSample.UploadFile(this.FileToUploadPath.Text, allMyFolders.First().Id);
+                }
+                else
+                {
+                    await MyFilesApiSample.UploadFile(this.FileToUploadPath.Text);
+                }
+                // Shared with everyone
 
                 // iterate over the "Shared with everyone" folder
                 PrintSubHeader("List all files and folders in the Shared with everyone folder");
-                var myFiles = await MyFilesApiSample.GetMyFiles("Shared with everyone");
+                var myFiles = await MyFilesApiSample.GetMyFiles(allMyFolders.First().Id);
                 foreach (var item in myFiles)
                 {
-                    PrintAttribute("URL", item.Url);
+                    PrintAttribute("URL", item.WebUrl);
                 }
 
-                PrintHeader("Sites API demo");
-                //set the SharePointResourceId
-                SitesApiSample.ServiceResourceId = serviceResourceId;
-                var mySharePointFiles = await SitesApiSample.GetDefaultDocumentFiles(siteUrl);
-                foreach (var item in mySharePointFiles)
-                {
-                    PrintAttribute("URL", item.Url);
-                }
+                // ***********************************************************
+                // Note from @PaoloPia: There is an issue, so far. Skip this
+                // sample method as long as it will not work properly
+                // Browse the SitesApiSample.GetDefaultDocumentFiles method
+                // for further details about the issue.
+                // ***********************************************************
+
+                //PrintHeader("Sites API demo");
+                //var mySharePointFiles = await SitesApiSample.GetDefaultDocumentFiles(this.SharePointTenantUri.Text, this.SiteCollectionUri.Text);
+                //foreach (var item in mySharePointFiles)
+                //{
+                //    PrintAttribute("URL", item.WebUrl);
+                //}
 
                 PrintHeader("Mail API demo");
-                //Get mail stats
-                PrintSubHeader("List mail statistics");
-                var mailStats = await MailApiSample.GetMailStats();
-                PrintAttribute("Total number of emails", mailStats);
+
+                // ***********************************************************
+                // Note from @PaoloPia: It looks like the mails stats method
+                // is no more available in Office365 API RTM. If you agree
+                // we should remove the following excerpt, which now 
+                // is commented out
+                // ***********************************************************
+
+                ////Get mail stats
+                //PrintSubHeader("List mail statistics");
+                //var mailStats = await MailApiSample.GetMailStats();
+                //PrintAttribute("Total number of emails", mailStats);
 
                 //Get mails
-                PrintSubHeader("Retrieve all mails, print first 10");
+                PrintSubHeader("Retrieve mails from INBOX");
                 var mails = await MailApiSample.GetMessages();
-                int i = 0;
-                foreach (var item in mails)
+                PrintSubHeader(String.Format("Printing TOP 10 mails of {0}", mails.Count()));
+                foreach (var item in mails.Take(10))
                 {
-                    PrintAttribute("From", String.Format("{0} / {1}", item.From != null ? item.From.Address : "", item.Subject));
-                    i++;
-                    if (i == 10) break;
+                    PrintAttribute("From", String.Format("{0} / {1}", item.From != null ? item.From.EmailAddress.Address : "", item.Subject));
                 }
 
                 //Send mail
                 PrintSubHeader("Send a mail");
-                await MailApiSample.SendMail(sendMailTo, "Let's Hack-A-Thon", "This will be <B>fun...</B>");
+                await MailApiSample.SendMail(this.MailAddressTo.Text, "Let's Hack-A-Thon", "This will be <B>fun...</B>");
 
                 //Create message in drafts folder
                 PrintSubHeader("Store a mail in the drafts folder");
-                await MailApiSample.DraftMail(sendMailTo, "Let's Hack-A-Thon", "This will be fun (in draft folder)...");
+                await MailApiSample.DraftMail(this.MailAddressTo.Text, "Let's Hack-A-Thon", "This will be fun (in draft folder)...");
 
                 PrintHeader("Active Directory API demo");
-                PrintSubHeader("Get all users, print first 10");
                 var allADUsers = await ActiveDirectoryApiSample.GetUsers();
-                i = 0;
-                foreach (var user in allADUsers)
+                PrintSubHeader(String.Format("Printing TOP 10 users of {0}", allADUsers.Count()));
+                foreach (var user in allADUsers.Take(10))
                 {
                     PrintAttribute("User", user.UserPrincipalName);
-                    i++;
-                    if (i == 10) break;
                 }
 
                 PrintHeader("All done...");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string message = "";
                 if (ex is AggregateException)
@@ -162,7 +188,7 @@ namespace Office365Api.Demo
 
         private void PrintAttribute(string attribute, object attributeValue)
         {
-            txtOutput.Inlines.Add(new Run(string.Format("{0}:", attribute)) { Foreground = Brushes.White });
+            txtOutput.Inlines.Add(new Run(string.Format("{0}: ", attribute)) { Foreground = Brushes.White });
             if (attributeValue != null)
             {
                 txtOutput.Inlines.Add(new Run(string.Format("{0}\r", attributeValue)) { Foreground = Brushes.Gray });
@@ -184,6 +210,19 @@ namespace Office365Api.Demo
             {
                 this.scrollViewerOutput.ScrollToVerticalOffset(this.scrollViewerOutput.ExtentHeight);
                 this.scrollViewerHeight = this.scrollViewerOutput.ExtentHeight;
+            }
+        }
+
+        private void BrowseFileToUploadPath_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+            Nullable<Boolean> fileDialogResult = fileDialog.ShowDialog();
+
+
+            // Get the file if any
+            if (fileDialogResult == true)
+            {
+                this.FileToUploadPath.Text = fileDialog.FileName;
             }
         }
     }
