@@ -38,44 +38,51 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ProcessRecord()
         {
-            if (SPOnlineConnection.CurrentConnection.MinimalHealthScore != -1)
+            try
             {
-                int healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
-                if(healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
+                if (SPOnlineConnection.CurrentConnection.MinimalHealthScore != -1)
                 {
-                    ExecuteCmdlet();
-                }
-                else
-                {
-                    if (SPOnlineConnection.CurrentConnection.RetryCount != -1)
+                    int healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
+                    if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
                     {
-                        int retry = 1;
-                        while (retry <= SPOnlineConnection.CurrentConnection.RetryCount)
-                        {
-                            WriteWarning(string.Format(Properties.Resources.Retry0ServerNotHealthyWaiting1seconds, retry, SPOnlineConnection.CurrentConnection.RetryWait, healthScore));
-                            Thread.Sleep(SPOnlineConnection.CurrentConnection.RetryWait * 1000);
-                            healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
-                            if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
-                            {
-                                ExecuteCmdlet();
-                                break;
-                            }
-                            retry++;
-                        }
-                        if(retry > SPOnlineConnection.CurrentConnection.RetryCount)
-                        {
-                            WriteError(new ErrorRecord(new Exception(Properties.Resources.HealthScoreNotSufficient),"HALT",ErrorCategory.LimitsExceeded,null));
-                        }
+                        ExecuteCmdlet();
                     }
                     else
                     {
-                        WriteError(new ErrorRecord(new Exception(Properties.Resources.HealthScoreNotSufficient), "HALT", ErrorCategory.LimitsExceeded, null));
+                        if (SPOnlineConnection.CurrentConnection.RetryCount != -1)
+                        {
+                            int retry = 1;
+                            while (retry <= SPOnlineConnection.CurrentConnection.RetryCount)
+                            {
+                                WriteWarning(string.Format(Properties.Resources.Retry0ServerNotHealthyWaiting1seconds, retry, SPOnlineConnection.CurrentConnection.RetryWait, healthScore));
+                                Thread.Sleep(SPOnlineConnection.CurrentConnection.RetryWait * 1000);
+                                healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
+                                if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
+                                {
+                                    ExecuteCmdlet();
+                                    break;
+                                }
+                                retry++;
+                            }
+                            if (retry > SPOnlineConnection.CurrentConnection.RetryCount)
+                            {
+                                WriteError(new ErrorRecord(new Exception(Properties.Resources.HealthScoreNotSufficient), "HALT", ErrorCategory.LimitsExceeded, null));
+                            }
+                        }
+                        else
+                        {
+                            WriteError(new ErrorRecord(new Exception(Properties.Resources.HealthScoreNotSufficient), "HALT", ErrorCategory.LimitsExceeded, null));
+                        }
                     }
                 }
+                else
+                {
+                    ExecuteCmdlet();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ExecuteCmdlet();
+                WriteError(new ErrorRecord(ex, "EXCEPTION", ErrorCategory.WriteError,null));
             }
         }
 
