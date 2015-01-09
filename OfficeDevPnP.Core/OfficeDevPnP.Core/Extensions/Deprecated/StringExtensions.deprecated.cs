@@ -17,6 +17,7 @@ namespace System
         /// <summary>
         /// Convert a sequence of items to a delimited string. By default, ToString() will be called on each item in the sequence to formulate the result. The default delimiter of ', ' will be used
         /// </summary>
+        [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source)
         {
             return source.ToDelimitedString(x => x.ToString(), DefaultDelimiter);
@@ -26,6 +27,7 @@ namespace System
         /// Convert a sequence of items to a delimited string. By default, ToString() will be called on each item in the sequence to formulate the result
         /// </summary>
         /// <param name="delimiter">The delimiter to separate each item with</param>
+        [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source, string delimiter)
         {
             return source.ToDelimitedString(x => x.ToString(), delimiter);
@@ -35,6 +37,7 @@ namespace System
         /// Convert a sequence of items to a delimited string. The default delimiter of ', ' will be used
         /// </summary>
         /// <param name="selector">A lambda expression to select a string property of <typeparamref name="T"/></param>
+        [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source, Func<T, string> selector)
         {
             return source.ToDelimitedString(selector, DefaultDelimiter);
@@ -45,6 +48,7 @@ namespace System
         /// </summary>
         /// <param name="selector">A lambda expression to select a string property of <typeparamref name="T"/></param>
         /// <param name="delimiter">The delimiter to separate each item with</param>
+        [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source, Func<T, string> selector, string delimiter)
         {
             if (source == null || source.Count() == 0)
@@ -69,6 +73,7 @@ namespace System
         /// <summary>
         /// Splits a comma-separated string into an array of strings.  Returns an empty array if the string is null or empty.
         /// </summary>
+        [Obsolete("Method deprecated")]
         public static IEnumerable<string> SplitCsv(this string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -80,6 +85,7 @@ namespace System
         /// <summary>
         /// Strips any non-alphanumeric characters from a string
         /// </summary>
+        [Obsolete("Method deprecated")]
         public static string StripSpecialCharacters(this string s)
         {
             return Regex.Replace(s, @"\W+", string.Empty);
@@ -88,6 +94,7 @@ namespace System
         /// <summary>
         /// Strips any non-alphanumeric characters from a string
         /// </summary>
+        [Obsolete("Method deprecated")]
         public static string StripSpecialCharacters(this string s, string replacementChar)
         {
             return Regex.Replace(s, @"\W+", replacementChar);
@@ -99,6 +106,7 @@ namespace System
         /// </summary>
         /// <param name="pageName"></param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string NormalizePageName(this string pageName)
         {
             string strFilteredName = pageName;
@@ -117,6 +125,7 @@ namespace System
         /// <param name="value"></param>
         /// <param name="tagCharactersOnly"></param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string HtmlEncode(this string value, bool tagCharactersOnly = true) {
             if (tagCharactersOnly)
                 return value.Replace("<", "&lt;").Replace(">", "&gt;");
@@ -128,6 +137,7 @@ namespace System
         /// </summary>
         /// <param name="input">Input string to be transformed</param>
         /// <returns>Secure string</returns>
+        [Obsolete("Method deprecated")]
         public static SecureString ToSecureString(this string input) {
             if (string.IsNullOrEmpty(input))
                 throw new ArgumentException("Input string is empty and cannot be made into a SecureString", "input");
@@ -144,6 +154,7 @@ namespace System
         /// </summary>
         /// <param name="value">Enum object</param>
         /// <returns>String attribute for the enum.</returns>
+        [Obsolete("Method deprecated")]
         public static string ToEnumDescription(this Enum value) {
             string description = string.Empty;
 
@@ -168,6 +179,7 @@ namespace System
         /// <typeparam name="T">Enum type.</typeparam>
         /// <param name="inputStringValue">String description used in the Enum.</param>
         /// <returns>Enum that corresponds to the given input.</returns>
+        [Obsolete("Method deprecated")]
         public static T FromEnumDescription<T>(this string inputStringValue) where T : struct {
             try {
                 var type = typeof(T);

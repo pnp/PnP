@@ -17,6 +17,7 @@ namespace OfficeDevPnP.Core.Extensions
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static Dictionary<string, string> GetQueryStrings(this HttpRequestMessage request)
         {
             return request.GetQueryNameValuePairs()
@@ -29,6 +30,7 @@ namespace OfficeDevPnP.Core.Extensions
         /// <param name="request"></param>
         /// <param name="key"></param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string GetQueryString(this HttpRequestMessage request, string key)
         {
             // IEnumerable<KeyValuePair<string,string>> - right!
@@ -49,6 +51,7 @@ namespace OfficeDevPnP.Core.Extensions
         /// <param name="request"></param>
         /// <param name="key"></param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string GetHeader(this HttpRequestMessage request, string key)
         {
             IEnumerable<string> keys = null;

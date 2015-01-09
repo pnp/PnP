@@ -38,7 +38,7 @@ namespace OfficeDevPnP.Core
 
             if (sharepointOnlineCredentials == null)
             {
-                var spoPassword = tenantUserPassword.ToSecureString();
+                var spoPassword = GetSecureString(tenantUserPassword);
                 sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, spoPassword);
             }
 
@@ -48,6 +48,17 @@ namespace OfficeDevPnP.Core
             return ctx;
         }
 
+        private SecureString GetSecureString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("Input string is empty and cannot be made into a SecureString", "input");
+
+            var secureString = new SecureString();
+            foreach (char c in input.ToCharArray())
+                secureString.AppendChar(c);
+
+            return secureString;
+        }
         /// <summary>
         /// Returns an app only ClientContext object
         /// </summary>

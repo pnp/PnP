@@ -226,6 +226,21 @@ namespace OfficeDevPnP.Core.WebAPI
             }
         }
 
+        private static T GetQueryString<T>(this NameValueCollection queryString, string parameterName, Func<string, T> operation, T defaultValue)
+        {
+            T returnValue = defaultValue;
+            if (!string.IsNullOrEmpty(queryString[parameterName]))
+            {
+                return operation(queryString[parameterName]);
+            }
+            return returnValue;
+        }
+
+        private static string AsString(this NameValueCollection queryString, string parameterName, string defaultValue)
+        {
+            return GetQueryString(queryString, parameterName, value => value, defaultValue);
+        }
+
         private static string GetClaimValue(JsonWebSecurityToken token, string claimType)
         {
             if (token == null)

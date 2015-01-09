@@ -69,6 +69,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void EndProcessing()
         {
+            base.EndProcessing();
             if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
             {
                 SPOnlineConnection.CurrentConnection.RestoreCachedContext();
@@ -77,6 +78,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void BeginProcessing()
         {
+            base.BeginProcessing();
             SPOnlineConnection.CurrentConnection.CacheContext();
         }
 

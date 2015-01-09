@@ -13,6 +13,7 @@ namespace System
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
+        [Obsolete("Method obsolete")]
         public static string StripHtml(this string html)
         {
             if (string.IsNullOrEmpty(html))
@@ -26,6 +27,7 @@ namespace System
         /// </summary>
         /// <param name="text">Input text.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
+        [Obsolete("Method obsolete")]
         public static string Truncate(this string text, int maxCharacters)
         {
             return text.Truncate(maxCharacters, null);
@@ -38,6 +40,7 @@ namespace System
         /// <param name="maxCharacters">Maximum number of characters.</param>
         /// <param name="trailingText">Defaults to ellipsis.</param>
         /// <returns></returns>
+        [Obsolete("Method obsolete")]
         public static string Truncate(this string text, int maxCharacters, string trailingText)
         {
             if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
@@ -53,6 +56,7 @@ namespace System
         /// <param name="text">Input text.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
         /// <returns></returns>
+        [Obsolete("Method obsolete")]
         public static string TruncateWholeWords(this string text, int maxCharacters)
         {
             return text.TruncateWholeWords(maxCharacters, null);
@@ -65,6 +69,7 @@ namespace System
         /// <param name="maxCharacters">Maximum number of characters.</param>
         /// <param name="trailingText">Defaults to ellipsis.</param>
         /// <returns></returns>
+        [Obsolete("Method obsolete")]
         public static string TruncateWholeWords(this string text, int maxCharacters, string trailingText)
         {
             if (string.IsNullOrEmpty(text) || maxCharacters <= 0 || text.Length <= maxCharacters)
@@ -82,6 +87,7 @@ namespace System
         /// <param name="html">Input HTML.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
         /// <returns></returns>
+        [Obsolete("Method obsolete")]
         public static string TruncateHtml(this string html, int maxCharacters)
         {
             return html.TruncateHtml(maxCharacters, null);
@@ -93,6 +99,7 @@ namespace System
         /// </summary>
         /// <param name="html">Input HTML.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
+        [Obsolete("Method obsolete")]
         public static string TruncateHtml(this string html, int maxCharacters, string trailingText)
         {
             if (string.IsNullOrEmpty(html))
