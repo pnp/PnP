@@ -21,7 +21,9 @@ namespace Core.UserProfiles.Sync
                 AuthenticationContext authenticationContext = new AuthenticationContext(authString, false);
 
                 // Config for OAuth client credentials 
-                ClientCredential clientCred = new ClientCredential(ConfigurationManager.AppSettings["AzureADClientId"], ConfigurationManager.AppSettings["AzureADClientSecret"]);
+                ClientCredential clientCred = new ClientCredential(
+                    ConfigurationManager.AppSettings["AzureADClientId"],
+                    ConfigurationManager.AppSettings["AzureADClientSecret"]);
                 string resource = "https://graph.windows.net";
                 string token = String.Empty;
 
@@ -29,24 +31,21 @@ namespace Core.UserProfiles.Sync
                 AuthenticationResult authenticationResult = authenticationContext.AcquireToken(resource, clientCred);
                 token = authenticationResult.AccessToken;
 
-                GraphConnection graphConnection = SetupGraphConnection(token);
+                var activeDirectoryClient = AuthenticationHelper.GetActiveDirectoryClientAsApplication();
 
+                List<IUser> users = activeDirectoryClient.Users.ExecuteAsync().Result.CurrentPage.ToList();
+
+                foreach (var user in users)
+                {
+                    Console.WriteLine(user.DisplayName);
+                }
             }
             catch (AuthenticationException ex)
             {
 
             }
+            Console.ReadLine();
 
         }
-        
-        private static GraphConnection SetupGraphConnection(string accessToken)
-        {
-            Guid ClientRequestId = Guid.NewGuid();
-            GraphSettings graphSettings = new GraphSettings();
-            graphSettings.ApiVersion = "2013-11-08";
-            graphSettings.GraphDomainName = "graph.windows.net";
-            return new GraphConnection(accessToken, ClientRequestId, graphSettings);
-        }
-
     }
 }
