@@ -1,5 +1,5 @@
-﻿using Microsoft.Office365.Exchange;
-using Microsoft.Office365.OAuth;
+﻿using Microsoft.Office365.OAuth;
+using Microsoft.Office365.OutlookServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,18 +10,6 @@ namespace Office365Api.Demo
 {
     public static class CalendarAPISample
     {
-        const string ServiceResourceId = "https://outlook.office365.com";
-        static readonly Uri ServiceEndpointUri = new Uri("https://outlook.office365.com/ews/odata");
-
-        // Do not make static in Web apps; store it in session or in a cookie instead
-        static string _lastLoggedInUser;
-        //static DiscoveryContext _discoveryContext;
-        public static DiscoveryContext _discoveryContext
-        {
-            get;
-            set;
-        }
-
         public static async Task<IOrderedEnumerable<IEvent>> GetCalendarEvents()
         {
             var client = await EnsureClientCreated();
@@ -36,36 +24,20 @@ namespace Office365Api.Demo
             return events;
         }
 
-        public static async Task<ExchangeClient> EnsureClientCreated()
+        public static async Task<OutlookServicesClient> EnsureClientCreated()
         {
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
+            var discoveryResult = await DiscoveryAPISample.DiscoveryClient.DiscoverCapabilityAsync(Office365Capabilities.Calendar.ToString());
 
-            var dcr = await _discoveryContext.DiscoverResourceAsync(ServiceResourceId);
+            var ServiceResourceId = discoveryResult.ServiceResourceId;
+            var ServiceEndpointUri = discoveryResult.ServiceEndpointUri;
 
-            _lastLoggedInUser = dcr.UserId;
-
-            return new ExchangeClient(ServiceEndpointUri, async () =>
-            {
-                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
-            });
-        }
-
-        public static async Task SignOut()
-        {
-            if (string.IsNullOrEmpty(_lastLoggedInUser))
-            {
-                return;
-            }
-
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
-
-            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
+            // Create the OutlookServicesClient client proxy:
+            return new OutlookServicesClient(
+                ServiceEndpointUri,
+                async () =>
+                {
+                    return await AuthenticationHelper.GetAccessTokenForServiceAsync(discoveryResult);
+                });
         }
     }
 }

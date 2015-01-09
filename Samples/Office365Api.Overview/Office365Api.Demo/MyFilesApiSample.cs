@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office365.OAuth;
 using Microsoft.Office365.SharePoint;
+using SPOFileServices = Microsoft.Office365.SharePoint.FileServices;
+using Microsoft.Office365.SharePoint.CoreServices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,42 +13,46 @@ namespace Office365Api.Demo
 {
     static class  MyFilesApiSample
     {
-        const string MyFilesCapability = "MyFiles";
-
-        // Do not make static in Web apps; store it in session or in a cookie instead
-        static string _lastLoggedInUser;
-//        static DiscoveryContext _discoveryContext;
-
-        public static DiscoveryContext _discoveryContext
-        {
-            get;
-            set;
-        }
-
-        public static async Task<IEnumerable<IFileSystemItem>> GetMyFiles()
+        public static async Task<IEnumerable<SPOFileServices.IItem>> GetMyFiles()
         {
             var client = await EnsureClientCreated();
             client.Context.IgnoreMissingProperties = true;
 
             var filesResults = await client.Files.ExecuteAsync();
-            var files = filesResults.CurrentPage.OrderBy(e => e.TimeLastModified);
+            var files = filesResults.CurrentPage.OrderBy(e => e.DateTimeLastModified);
 
             return files;
         }
 
-        public static async Task<IEnumerable<IFileSystemItem>> GetMyFiles(string folder)
+        public static async Task<IEnumerable<SPOFileServices.IItem>> GetMyFiles(string folderId)
         {
             var client = await EnsureClientCreated();
             client.Context.IgnoreMissingProperties = true;
 
             // Obtain files in passed folder
-            var filesResults = await client.Files[folder].ToFolder().Children.ExecuteAsync();
+            var filesResults = await client.Files.GetById(folderId).ToFolder().Children.ExecuteAsync();
             var files = filesResults.CurrentPage.OrderBy(e => e.Name);
 
             return files;
         }
 
-        public static async Task UploadFile(string filePath, string folder)
+        public static async Task<IEnumerable<SPOFileServices.IItem>> GetMyFolders()
+        {
+            var client = await EnsureClientCreated();
+            client.Context.IgnoreMissingProperties = true;
+
+            var filesResults = await client.Files.ExecuteAsync();
+            var folders = filesResults.CurrentPage.Where(e => e.Type == "Folder");
+
+            return folders;
+        }
+
+        public static async Task UploadFile(string filePath)
+        {
+            await UploadFile(filePath, null);
+        }
+
+        public static async Task UploadFile(string filePath, string folderId)
         {
             var client = await EnsureClientCreated();
             client.Context.IgnoreMissingProperties = true;
@@ -54,49 +60,33 @@ namespace Office365Api.Demo
             string filename = System.IO.Path.GetFileName(filePath);
             using (FileStream fileStream = System.IO.File.OpenRead(filePath))
             {
-                if (!String.IsNullOrEmpty(folder))
+                SPOFileServices.File file = new SPOFileServices.File() { Name = filename };
+                if (!String.IsNullOrEmpty(folderId))
                 {
-                    filename = string.Format("{0}/{1}", folder, filename);
+                    await client.Files.GetById(folderId).ToFolder().Children.AddItemAsync(file);
                 }
-
-                var uploadedFile = await client.Files.AddAsync(filename, true, fileStream);                
+                else
+                {
+                    await client.Files.AddItemAsync(file);
+                }
+                await client.Files.GetById(file.Id).ToFile().UploadAsync(fileStream);
             }
         }
 
         public static async Task<SharePointClient> EnsureClientCreated()
         {
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
+            var discoveryResult = await DiscoveryAPISample.DiscoveryClient.DiscoverCapabilityAsync(Office365Capabilities.MyFiles.ToString());
 
-            var dcr = await _discoveryContext.DiscoverCapabilityAsync(MyFilesCapability);
-
-            var ServiceResourceId = dcr.ServiceResourceId;
-            var ServiceEndpointUri = dcr.ServiceEndpointUri;
-
-            _lastLoggedInUser = dcr.UserId;
+            var ServiceResourceId = discoveryResult.ServiceResourceId;
+            var ServiceEndpointUri = discoveryResult.ServiceEndpointUri;
 
             // Create the MyFiles client proxy:
-            return new SharePointClient(ServiceEndpointUri, async () =>
-            {
-                return (await _discoveryContext.AuthenticationContext.AcquireTokenSilentAsync(ServiceResourceId, _discoveryContext.AppIdentity.ClientId, new Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifier(dcr.UserId, Microsoft.IdentityModel.Clients.ActiveDirectory.UserIdentifierType.UniqueId))).AccessToken;
-            });
-        }
-
-        public static async Task SignOut()
-        {
-            if (string.IsNullOrEmpty(_lastLoggedInUser))
-            {
-                return;
-            }
-
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
-
-            await _discoveryContext.LogoutAsync(_lastLoggedInUser);
+            return new SharePointClient(
+                ServiceEndpointUri,
+                async () =>
+                {
+                    return await AuthenticationHelper.GetAccessTokenForServiceAsync(discoveryResult);
+                });
         }
     }
 }

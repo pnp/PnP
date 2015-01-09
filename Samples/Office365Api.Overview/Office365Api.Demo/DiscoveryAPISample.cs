@@ -1,4 +1,6 @@
-﻿using Microsoft.Office365.OAuth;
+﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Office365.Discovery;
+using Microsoft.Office365.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,36 +11,63 @@ namespace Office365Api.Demo
 {
     static class DiscoveryAPISample
     {
-        // Do not make static in Web apps; store it in session or in a cookie instead
-        static string _lastLoggedInUser;
-        //static DiscoveryContext _discoveryContext;
-        public static DiscoveryContext _discoveryContext
+        static DiscoveryAPISample()
+        {
+            DiscoveryClient discoveryClient =
+                new DiscoveryClient(
+                    Office365ServicesUris.DiscoveryServiceEndpointUri,
+                                    async () =>
+                                    {
+                                        var discoveryAuthResult =
+                                            await AuthenticationHelper.AuthenticationContext.AcquireTokenSilentAsync(
+                                                Office365ServicesUris.DiscoveryServiceResourceId,
+                                                AuthenticationHelper.ClientId,
+                                                new UserIdentifier(
+                                                    AuthenticationHelper.AuthenticationResult.UserInfo.UniqueId, 
+                                                    UserIdentifierType.UniqueId));
+
+                                        return discoveryAuthResult.AccessToken;
+                                    });
+
+            DiscoveryAPISample.DiscoveryClient = discoveryClient;
+        }
+
+        public static DiscoveryClient DiscoveryClient
         {
             get;
-            set;
+            private set;
         }
         
-        // Discovery service supports MyFiles, Mail, Contacts and Calendar
-        public static async Task<CapabilityDiscoveryResult> DiscoverMyFiles()
+        private static async Task<CapabilityDiscoveryResult> DiscoverCapabilityInternalAsync(String capabilityName)
         {
-            if (_discoveryContext == null)
+            if (DiscoveryClient == null)
             {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
+                throw new ApplicationException("Missing the DiscoveryClient object!");
             }
 
-            var dcr = await _discoveryContext.DiscoverCapabilityAsync("MyFiles");
+            var dcr = await DiscoveryClient.DiscoverCapabilityAsync(capabilityName);
             return dcr;
         }
 
+        // Discovery service supports MyFiles, Mail, Contacts and Calendar
         public static async Task<CapabilityDiscoveryResult> DiscoverMail()
         {
-            if (_discoveryContext == null)
-            {
-                _discoveryContext = await DiscoveryContext.CreateAsync();
-            }
+            return (await DiscoverCapabilityInternalAsync(Office365Capabilities.Mail.ToString()));
+        }
 
-            var dcr = await _discoveryContext.DiscoverCapabilityAsync("Mail");
-            return dcr;
+        public static async Task<CapabilityDiscoveryResult> DiscoverContacts()
+        {
+            return (await DiscoverCapabilityInternalAsync(Office365Capabilities.Contacts.ToString()));
+        }
+
+        public static async Task<CapabilityDiscoveryResult> DiscoverCalendar()
+        {
+            return (await DiscoverCapabilityInternalAsync(Office365Capabilities.Calendar.ToString()));
+        }
+
+        public static async Task<CapabilityDiscoveryResult> DiscoverMyFiles()
+        {
+            return (await DiscoverCapabilityInternalAsync(Office365Capabilities.MyFiles.ToString()));
         }
     }
 }
