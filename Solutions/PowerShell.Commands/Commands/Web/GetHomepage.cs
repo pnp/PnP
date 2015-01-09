@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
 
+
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOHomePage")]
@@ -15,7 +16,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             ClientContext.ExecuteQuery();
 
-            WriteObject(folder.WelcomePage);
+            if (string.IsNullOrEmpty(folder.WelcomePage))
+            {
+                WriteObject("default.aspx");
+            }
+            else
+            {
+                WriteObject(folder.WelcomePage);
+            }
         }
     }
 }
