@@ -188,7 +188,15 @@ namespace Microsoft.SharePoint.Client
 
             if (targetAction == null) 
             {
-                targetAction = existingActions.Add();
+                // If we're removing the custom action then we need to leave when not found...else we're creating the custom action
+                if (customAction.Remove)
+                {
+                    return true;
+                }
+                else
+                {
+                    targetAction = existingActions.Add();
+                }
             }
             else if (customAction.Remove) 
             {

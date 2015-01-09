@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Management.Automation;
 
@@ -30,11 +31,6 @@ namespace OfficeDevPnP.PowerShell.Commands
             this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
         }
 
-        public enum NavigationNodeType
-        {
-            Top,
-            QuickLaunch
-        }
     }
 
     

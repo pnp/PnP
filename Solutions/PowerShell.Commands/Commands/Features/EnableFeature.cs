@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
@@ -40,12 +41,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             {
                 ClientContext.Site.ActivateFeature(featureId);
             }
-        }
-
-        public enum FeatureScope
-        {
-            Web,
-            Site
         }
 
     }

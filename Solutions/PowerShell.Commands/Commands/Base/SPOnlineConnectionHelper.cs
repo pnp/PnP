@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Management.Automation;
 using System.Management.Automation.Host;
@@ -25,16 +26,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             context.ApplicationName = Properties.Resources.ApplicationName;
             context.RequestTimeout = requestTimeout;
 
-            var connectionType = SPOnlineConnection.ConnectionTypes.OnPrem;
+            var connectionType = ConnectionType.OnPrem;
             if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
-                connectionType = SPOnlineConnection.ConnectionTypes.O365;
+                connectionType = ConnectionType.O365;
             }
             if (skipAdminCheck == false)
             {
                 if (IsTenantAdminSite(context))
                 {
-                    connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
+                    connectionType = ConnectionType.TenantAdmin;
                 }
             }
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
@@ -90,16 +91,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
                 }
             }
-            var connectionType = SPOnlineConnection.ConnectionTypes.OnPrem;
+            var connectionType = ConnectionType.OnPrem;
             if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
-                connectionType = SPOnlineConnection.ConnectionTypes.O365;
+                connectionType = ConnectionType.O365;
             }
             if (skipAdminCheck == false)
             {
                 if (IsTenantAdminSite(context))
                 {
-                    connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
+                    connectionType = ConnectionType.TenantAdmin;
                 }
             }
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, url.ToString());

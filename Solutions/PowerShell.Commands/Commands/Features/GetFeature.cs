@@ -5,6 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Linq;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
@@ -64,11 +65,5 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             }
         }
 
-
-        public enum FeatureScope
-        {
-            Web,
-            Site
-        }
     }
 }
