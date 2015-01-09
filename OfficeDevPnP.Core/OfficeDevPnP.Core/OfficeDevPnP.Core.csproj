@@ -229,24 +229,24 @@
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs">
+    <Compile Include="Extensions\Deprecated\DateTimeExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\EnumerationExtensions.cs" />
-    <Compile Include="Extensions\HttpVariablesExtensions.cs">
+    <Compile Include="Extensions\Deprecated\HttpVariablesExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\RequestMessageExtensions.cs" />
+    <Compile Include="Extensions\Deprecated\RequestMessageExtensions.deprecated.cs" />
     <Compile Include="Extensions\SafeConvertExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringExtensions.cs">
+    <Compile Include="Extensions\Deprecated\StringExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringHtmlExtensions.cs">
+    <Compile Include="Extensions\Deprecated\StringHtmlExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\SystemWebUIExtensions.cs" />
+    <Compile Include="Extensions\Deprecated\SystemWebUIExtensions.deprecated.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
     <Compile Include="CoreResources.Designer.cs">
       <AutoGen>True</AutoGen>

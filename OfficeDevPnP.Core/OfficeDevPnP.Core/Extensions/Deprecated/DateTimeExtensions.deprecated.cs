@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
 
 namespace System {
+    [Obsolete("Method deprecated")]
     public static class DateTimeExtensions {
         #region [ AsTimeAgoString ]
         /// <summary>
@@ -82,6 +83,7 @@ namespace System {
         /// </summary>
         /// <param name="modified">Last modified date.</param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string AsTimeAgoString(this DateTime modified) {
             return AsTimeAgoString(modified, false);
         }
@@ -92,6 +94,7 @@ namespace System {
         /// <param name="modified">Last modified date.</param>
         /// <param name="useLocalTime">Use local time or server time.</param>
         /// <returns></returns>
+        [Obsolete("Method deprecated")]
         public static string AsTimeAgoString(this DateTime modified, bool useLocalTime) {
             TimeSpan diff = useLocalTime ? DateTime.Now.ToLocalTime() - modified.ToLocalTime() : DateTime.Now - modified;
             string dateString = string.Empty;
@@ -160,6 +163,7 @@ namespace System {
         #endregion
 
         #region [ GetTimeZoneAbbreviation ]
+        [Obsolete("Method deprecated")]
         private static string GetTimeZoneAbbreviation()
         {
             StringBuilder abbreviations = new StringBuilder();

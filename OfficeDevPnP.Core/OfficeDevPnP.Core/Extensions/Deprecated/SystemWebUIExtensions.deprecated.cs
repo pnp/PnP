@@ -12,6 +12,7 @@ namespace System.Web.UI {
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageType"></param>
+        [Obsolete("Method deprecated")]
         public static void RegisterSPChromePageScript(this System.Web.UI.Page page, Type pageType) {
             string script = @"
             function chromeLoaded() {

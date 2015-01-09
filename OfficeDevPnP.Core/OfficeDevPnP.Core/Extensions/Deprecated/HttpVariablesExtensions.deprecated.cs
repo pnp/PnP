@@ -4,10 +4,12 @@ using System.Web;
 
 namespace System.Web
 {
-	/// <summary>
-	/// Used to retrieve HttpVariables
-	/// </summary>
-	public static class HttpVariablesExtensions {
+    /// <summary>
+    /// Used to retrieve HttpVariables
+    /// </summary>
+    [Obsolete("Method deprecated")]
+    public static class HttpVariablesExtensions
+    {
         #region [ Definition ]
         /// <summary>
         /// Gets a value from the query string and provides a means to translate the item to another type.
@@ -18,13 +20,15 @@ namespace System.Web
         /// <param name="operation">Operation to convert the query string value to the target type.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
-        public static T GetQueryString<T>(this NameValueCollection queryString, string parameterName, Func<string, T> operation, T defaultValue) {
+        public static T GetQueryString<T>(this NameValueCollection queryString, string parameterName, Func<string, T> operation, T defaultValue)
+        {
             T returnValue = defaultValue;
-            if (!string.IsNullOrEmpty(queryString[parameterName])) {
+            if (!string.IsNullOrEmpty(queryString[parameterName]))
+            {
                 return operation(queryString[parameterName]);
             }
             return returnValue;
-        } 
+        }
         #endregion
 
         #region [ HasVariable ]
@@ -33,11 +37,13 @@ namespace System.Web
         /// </summary>
         /// <param name="variable"></param>
         /// <returns></returns>
-        public static bool HasVariable(this NameValueCollection queryString, string variable) {
+        [Obsolete("Method deprecated")]
+        public static bool HasVariable(this NameValueCollection queryString, string variable)
+        {
             return !string.IsNullOrEmpty(queryString[variable]);
-        } 
+        }
         #endregion
-		
+
         #region [ AsString ]
         /// <summary>
         /// Gets a value as a string.
@@ -46,33 +52,37 @@ namespace System.Web
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static string AsString(this NameValueCollection queryString, string parameterName, string defaultValue)
-		{
+        {
             return GetQueryString(queryString, parameterName, value => value, defaultValue);
-		}
+        }
         /// <summary>
         /// Gets a value as a string.
         /// </summary>
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <returns>A query string value returned as the target type.</returns>
-        public static string AsString(this NameValueCollection queryString, string parameterName) {
+        [Obsolete("Method deprecated")]
+        public static string AsString(this NameValueCollection queryString, string parameterName)
+        {
             return AsString(queryString, parameterName, string.Empty);
         }
-		#endregion
+        #endregion
 
-		#region [ AsInt ]
-		/// <summary>
+        #region [ AsInt ]
+        /// <summary>
         /// Gets a value as an integer.
         /// </summary>
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static int AsInt(this NameValueCollection queryString, string parameterName, int defaultValue)
-		{
+        {
             return GetQueryString(queryString, parameterName, value => value.ToInt32(), defaultValue);
-		}
+        }
 
         /// <summary>
         /// Gets a value as an integer.
@@ -80,10 +90,11 @@ namespace System.Web
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static int AsInt(this NameValueCollection queryString, string parameterName)
-		{
+        {
             return AsInt(queryString, parameterName, 0);
-		}
+        }
         #endregion
 
         #region [ AsLong ]
@@ -94,7 +105,9 @@ namespace System.Web
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
-        public static long AsLong(this NameValueCollection queryString, string parameterName, long defaultValue) {
+        [Obsolete("Method deprecated")]
+        public static long AsLong(this NameValueCollection queryString, string parameterName, long defaultValue)
+        {
             return GetQueryString(queryString, parameterName, value => value.ToInt64(), defaultValue);
         }
 
@@ -104,12 +117,14 @@ namespace System.Web
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <returns>A query string value returned as the target type.</returns>
-        public static long AsLong(this NameValueCollection queryString, string parameterName) {
+        [Obsolete("Method deprecated")]
+        public static long AsLong(this NameValueCollection queryString, string parameterName)
+        {
             return AsLong(queryString, parameterName, (long)0);
         }
         #endregion
 
-		#region [ AsBool ]
+        #region [ AsBool ]
         /// <summary>
         /// Gets a value as a Boolean.
         /// </summary>
@@ -117,10 +132,11 @@ namespace System.Web
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static bool AsBool(this NameValueCollection queryString, string parameterName, bool defaultValue)
-		{
+        {
             return GetQueryString(queryString, parameterName, value => value.ToBoolean(), defaultValue);
-		}
+        }
 
         /// <summary>
         /// Gets a value as a Boolean.
@@ -128,13 +144,14 @@ namespace System.Web
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static bool AsBool(this NameValueCollection queryString, string parameterName)
-		{
+        {
             return AsBool(queryString, parameterName, false);
-		}
-		#endregion
+        }
+        #endregion
 
-		#region [ AsGuid ]
+        #region [ AsGuid ]
         /// <summary>
         /// Gets a value as a GUID.
         /// </summary>
@@ -142,9 +159,11 @@ namespace System.Web
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
-        public static Guid AsGuid(this NameValueCollection queryString, string parameterName, Guid defaultValue) {
+        [Obsolete("Method deprecated")]
+        public static Guid AsGuid(this NameValueCollection queryString, string parameterName, Guid defaultValue)
+        {
             return GetQueryString(queryString, parameterName, value => value.ToGuid(), defaultValue);
-		}
+        }
 
         /// <summary>
         /// Gets a value as a GUID.
@@ -152,11 +171,12 @@ namespace System.Web
         /// <param name="queryString">This appears off of the Request.QueryString and Request.Form properties as an extension.</param>
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static Guid AsGuid(this NameValueCollection queryString, string parameterName)
-		{
+        {
             return AsGuid(queryString, parameterName, Guid.Empty);
-		}
-		#endregion
+        }
+        #endregion
 
         #region [ AsEnum ]
         /// <summary>
@@ -168,15 +188,18 @@ namespace System.Web
         /// <param name="parameterName">The parameter to get from the collection.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>A query string value returned as the target type.</returns>
+        [Obsolete("Method deprecated")]
         public static T AsEnum<T>(this NameValueCollection queryString, string parameterName, T defaultValue)
-		{
-            try {
+        {
+            try
+            {
                 return GetQueryString(queryString, parameterName, value => value.ToEnum<T>(), defaultValue);
             }
-            catch {
+            catch
+            {
                 return defaultValue;
             }
-		}
-		#endregion
-	}
+        }
+        #endregion
+    }
 }
