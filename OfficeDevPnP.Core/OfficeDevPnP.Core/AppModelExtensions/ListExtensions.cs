@@ -665,6 +665,27 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Get list items from a list by matching caml query
+        /// </summary>
+        /// <param name="list">List to operate against</param>
+        /// <param name="camlQueryViewXml">CAML query view xml, including Where</param>
+        /// <example>
+        ///     <Where><Contains><FieldRef Name='Title'/><Value Type='Text'>announce</Value></Contains></Where>
+        /// </example>
+        /// <returns>Matching list items</returns>
+        public static ListItemCollection GetListItems(this List list, string camlQueryViewXml)
+        {
+            CamlQuery camlQuery = new CamlQuery();
+            camlQuery.ViewXml = string.Format(@"<View><Query>{0}</Query></View>", camlQueryViewXml);
+
+            ListItemCollection items = list.GetItems(camlQuery);
+            list.Context.Load(items);
+            list.Context.ExecuteQuery();
+
+            return items;
+        }
+
+        /// <summary>
         /// Creates list views based on specific xml structure from file
         /// </summary>
         /// <param name="web"></param>
@@ -847,7 +868,8 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
 
                 return view;
-            } catch (ServerException)
+            }
+            catch (ServerException)
             {
                 return null;
             }
