@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using Microsoft.SharePoint.Client.Utilities;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
@@ -664,6 +665,65 @@ namespace Microsoft.SharePoint.Client
             return foundList;
         }
 
+        #region List Permissions
+
+        /// <summary>
+        /// Set custom permissions to List
+        /// </summary>
+        /// <param name="list">List for which permission to be set</param>
+        /// <param name="loginName">Name of the User or Group to grant the permission</param>
+        /// <param name="principalType">SharePoint Group or User</param>
+        /// <param name="roleType">Role type</param>
+        /// <remarks>
+        /// To give permission to all users, specify loginName as "Everyone" and principalType as "SharePointGroup"
+        /// </remarks>
+        public static void SetListPermissions(this List list, string loginName, PrincipalType principalType, RoleType roleType)
+        {
+            if ((principalType != PrincipalType.SharePointGroup) || (principalType != PrincipalType.User))
+            {
+                throw new ArgumentException("Invalid principal type. Valid values are SharePointGroup and User.");
+            }
+
+            // Get the web for list
+            Web web = list.ParentWeb;
+            list.Context.Load(web);
+            list.Context.ExecuteQuery();
+
+            // Stop inheriting permissions
+            list.BreakRoleInheritance(true, false);
+
+            // Get role type
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(roleType);
+            RoleDefinitionBindingCollection rdbColl = new RoleDefinitionBindingCollection(web.Context);
+            rdbColl.Add(roleDefinition);
+
+            Principal permissionEntity = null;
+
+            if (principalType == PrincipalType.SharePointGroup)
+            {
+                // If you want to user the "Everyone", you can use "c:0(.s|true" as the login name 
+                if (loginName.Equals("Everyone", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    permissionEntity = web.EnsureUser("c:0(.s|true");
+                }
+                else
+                {
+                    permissionEntity = web.SiteGroups.GetByName(loginName);
+                }
+            }
+            else if (principalType == PrincipalType.User)
+            {
+                permissionEntity = web.EnsureUser(loginName);
+            }
+
+            list.RoleAssignments.Add(permissionEntity, rdbColl);
+            list.Context.ExecuteQuery();
+        }
+
+        #endregion
+
+        #region List View
+
         /// <summary>
         /// Creates list views based on specific xml structure from file
         /// </summary>
@@ -879,6 +939,7 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        #endregion
 
         private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
@@ -1131,6 +1192,5 @@ namespace Microsoft.SharePoint.Client
                 return hashFolder ^ hashFieldInternalName;
             }
         }
-
     }
 }
