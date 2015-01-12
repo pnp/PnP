@@ -558,10 +558,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listTitle">Title of the list</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
         /// <param name="defaultContent">Optionally make this the default content type</param>
-        public static void AddContentTypeToListById(this Web web, string listTitle, string contentTypeId, bool defaultContent = false)
+        /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
+        public static void AddContentTypeToListById(this Web web, string listTitle, string contentTypeId, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             // Get content type instance
-            ContentType contentType = GetContentTypeById(web, contentTypeId);
+            ContentType contentType = GetContentTypeById(web, contentTypeId, searchContentTypeInSiteHierarchy);
             // Add content type to list
             AddContentTypeToList(web, listTitle, contentType, defaultContent);
         }
@@ -573,10 +574,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="listTitle">Title of the list</param>
         /// <param name="contentTypeName">Name of the content type</param>
         /// <param name="defaultContent">Optionally make this the default content type</param>
-        public static void AddContentTypeToListByName(this Web web, string listTitle, string contentTypeName, bool defaultContent = false)
+        /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
+        public static void AddContentTypeToListByName(this Web web, string listTitle, string contentTypeName, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             // Get content type instance
-            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            ContentType contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
             // Add content type to list
             AddContentTypeToList(web, listTitle, contentType, defaultContent);
         }
@@ -602,10 +604,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="list">List to add content type to</param>
         /// <param name="contentTypeID">Complete ID for the content type</param>
         /// <param name="defaultContent">If set true, content type is updated to be default content type for the list</param>
-        public static void AddContentTypeToListById(this List list, string contentTypeID, bool defaultContent = false)
+        /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
+        public static void AddContentTypeToListById(this List list, string contentTypeID, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             Web web = list.ParentWeb;
-            ContentType contentType = GetContentTypeById(web, contentTypeID);
+            ContentType contentType = GetContentTypeById(web, contentTypeID, searchContentTypeInSiteHierarchy);
             AddContentTypeToList(list, contentType, defaultContent);
         }
 
@@ -615,10 +618,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="list">List to add content type to</param>
         /// <param name="contentTypeName">Name of the content type</param>
         /// <param name="defaultContent">If set true, content type is updated to be default content type for the list</param>
-        public static void AddContentTypeToListByName(this List list, string contentTypeName, bool defaultContent = false)
+        /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
+        public static void AddContentTypeToListByName(this List list, string contentTypeName, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             Web web = list.ParentWeb;
-            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            ContentType contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
             AddContentTypeToList(list, contentType, defaultContent);
         }
 
