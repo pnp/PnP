@@ -32,14 +32,14 @@ namespace OfficeDevPnP.Core.Tests {
                     UserName = ConfigurationManager.AppSettings["SPOUserName"];
                     var password = ConfigurationManager.AppSettings["SPOPassword"];
 
-                    Password = password.ToSecureString();
+                    Password = GetSecureString(password);
                     Credentials = new SharePointOnlineCredentials(UserName, Password);
                 }
                 else if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremUserName"]) &&
                          !String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremDomain"]) &&
                          !String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremPassword"]))
                 {
-                    Password = ConfigurationManager.AppSettings["OnPremPassword"].ToSecureString();
+                    Password = GetSecureString(ConfigurationManager.AppSettings["OnPremPassword"]);
                     Credentials = new NetworkCredential(ConfigurationManager.AppSettings["OnPremUserName"], Password, ConfigurationManager.AppSettings["OnPremDomain"]);
                 }
                 else if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["Realm"]) &&
@@ -80,6 +80,19 @@ namespace OfficeDevPnP.Core.Tests {
             }
             return context;
         }
+
+        private static SecureString GetSecureString(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("Input string is empty and cannot be made into a SecureString", "input");
+
+            var secureString = new SecureString();
+            foreach (char c in input.ToCharArray())
+                secureString.AppendChar(c);
+
+            return secureString;
+        }
+
 
         static string TenantUrl { get; set; }
         static string DevSiteUrl { get; set; }
