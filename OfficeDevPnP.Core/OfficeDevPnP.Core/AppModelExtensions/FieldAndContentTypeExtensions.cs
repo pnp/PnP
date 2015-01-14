@@ -67,13 +67,13 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(fieldAsXml))
                 throw new ArgumentNullException("fieldAsXml");
 
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(fieldAsXml);
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
-            nsmgr.AddNamespace("namespace", xd.DocumentElement.NamespaceURI);
-            XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
-            string id = fieldNode.Attributes["ID"].Value;
-            string name = fieldNode.Attributes["Name"].Value;
+            XDocument xd = XDocument.Parse(fieldAsXml);
+            var ns = xd.Root.Name.Namespace;
+
+            var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
+
+            string id = fieldNode.Attribute("ID").Value;
+            string name = fieldNode.Attribute("Name").Value;
 
             LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
 
@@ -110,8 +110,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlFilePath">Absolute path to the xml location</param>
         public static void CreateFieldsFromXMLFile(this Web web, string xmlFilePath)
         {
-            XmlDocument xd = new XmlDocument();
-            xd.Load(xmlFilePath);
+            XDocument xd = XDocument.Load(xmlFilePath);
 
             // Perform the action field creation
             CreateFieldsFromXML(web, xd);
@@ -124,8 +123,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlStructure">XML structure in string format</param>
         public static void CreateFieldsFromXMLString(this Web web, string xmlStructure)
         {
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(xmlStructure);
+            XDocument xd = XDocument.Parse(xmlStructure);
 
             // Perform the action field creation
             CreateFieldsFromXML(web, xd);
@@ -135,18 +133,17 @@ namespace Microsoft.SharePoint.Client
         /// Creates field from xml structure which follows the classic feature framework structure
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
-        /// <param name="xmlDoc">Actual XML document</param>
-        public static void CreateFieldsFromXML(this Web web, XmlDocument xmlDoc)
+        /// <param name="xDocument">Actual XML document</param>
+        public static void CreateFieldsFromXML(this Web web, XDocument xDocument)
         {
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
+            var ns = xDocument.Root.Name.Namespace;
 
-            XmlNodeList fields = xmlDoc.SelectNodes("//namespace:Field", nsmgr);
-            int count = fields.Count;
-            foreach (XmlNode field in fields)
+            var fields = from f in xDocument.Elements(ns + "Field") select f;
+
+            foreach (var field in fields)
             {
-                string id = field.Attributes["ID"].Value;
-                string name = field.Attributes["Name"].Value;
+                string id = field.Attribute("ID").Value;
+                string name = field.Attribute("Name").Value;
 
                 // If field already existed, let's move on
                 if (web.FieldExistsByName(name))
@@ -155,7 +152,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    web.CreateField(field.OuterXml);
+                    web.CreateField(field.ToString());
                 }
             }
         }
@@ -281,47 +278,7 @@ namespace Microsoft.SharePoint.Client
             return false;
         }
 
-        /// <summary>
-        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
-        /// <param name="absolutePathToFile">Absolute path to the xml location</param>
-        public static void BindFieldsToTermSetsFromXMLFile(this Web web, string absolutePathToFile)
-        {
-            XmlDocument xd = new XmlDocument();
-            xd.Load(absolutePathToFile);
-            BindFieldsToTermSetsFromXML(web, xd);
-        }
 
-        /// <summary>
-        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
-        /// <param name="xmlStructure">XML structure in string format</param>
-        public static void BindFieldsToTermSetsFromXMLString(this Web web, string xmlStructure)
-        {
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(xmlStructure);
-            BindFieldsToTermSetsFromXML(web, xd);
-        }
-
-        /// <summary>
-        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
-        /// <param name="xmlDoc">Actual XML document</param>
-        public static void BindFieldsToTermSetsFromXML(this Web web, XmlDocument xmlDoc)
-        {
-            XmlNodeList fields = xmlDoc.SelectNodes("//MMSField");
-            foreach (XmlNode mmsfield in fields)
-            {
-                string fieldGuid = mmsfield.Attributes["FieldGuid"].Value;
-                string MMSGroupName = mmsfield.Attributes["MMSGroupName"].Value;
-                string TermSet = mmsfield.Attributes["TermSet"].Value;
-
-                TaxonomyExtensions.WireUpTaxonomyField(web, new Guid(fieldGuid), MMSGroupName, TermSet);
-            }
-        }
         #endregion
 
         #region List Fields
@@ -427,13 +384,13 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(fields);
             list.Context.ExecuteQuery();
 
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(fieldAsXml);
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xd.NameTable);
-            nsmgr.AddNamespace("namespace", xd.DocumentElement.NamespaceURI);
-            XmlNode fieldNode = xd.SelectSingleNode("//namespace:Field", nsmgr);
-            string id = fieldNode.Attributes["ID"].Value;
-            string name = fieldNode.Attributes["Name"].Value;
+            XDocument xd = XDocument.Parse(fieldAsXml);
+            var ns = xd.Root.Name.Namespace;
+
+            var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
+
+            string id = fieldNode.Attribute("ID").Value;
+            string name = fieldNode.Attribute("Name").Value;
 
             LoggingUtility.Internal.TraceInformation((int)EventId.CreateListField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
@@ -714,13 +671,13 @@ namespace Microsoft.SharePoint.Client
                 propertyLoadRequired = true;
             }
 
-            if(!contentType.IsPropertyAvailable("FieldLinks"))
+            if (!contentType.IsPropertyAvailable("FieldLinks"))
             {
                 web.Context.Load(contentType.FieldLinks);
                 propertyLoadRequired = true;
             }
 
-            if(propertyLoadRequired)
+            if (propertyLoadRequired)
             {
                 web.Context.ExecuteQuery();
             }
@@ -962,11 +919,10 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to operate against</param>
         /// <param name="absolutePathToFile">Absolute path to the xml location</param>
-        public static void CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
+        public static ContentType CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
         {
-            XmlDocument xd = new XmlDocument();
-            xd.Load(absolutePathToFile);
-            CreateContentTypeFromXML(web, xd);
+            XDocument xd = XDocument.Load(absolutePathToFile);
+            return CreateContentTypeFromXML(web, xd);
         }
 
         /// <summary>
@@ -974,29 +930,28 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to operate against</param>
         /// <param name="xmlStructure">XML structure in string format</param>
-        public static void CreateContentTypeFromXMLString(this Web web, string xmlStructure)
+        public static ContentType CreateContentTypeFromXMLString(this Web web, string xmlStructure)
         {
-            XmlDocument xd = new XmlDocument();
-            xd.LoadXml(xmlStructure);
-            CreateContentTypeFromXML(web, xd);
+            XDocument xd = XDocument.Parse(xmlStructure);
+            return CreateContentTypeFromXML(web, xd);
         }
 
         /// <summary>
         /// Create a content type based on the classic feature framework structure.
         /// </summary>
         /// <param name="web">Web to operate against</param>
-        /// <param name="xmlDoc">Actual XML document</param>
-        public static void CreateContentTypeFromXML(this Web web, XmlDocument xmlDoc)
+        /// <param name="xDocument">Actual XML document</param>
+        public static ContentType CreateContentTypeFromXML(this Web web, XDocument xDocument)
         {
-            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
-            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
+            ContentType returnCT = null;
+            var ns = xDocument.Root.Name.Namespace;
 
-            XmlNodeList contentTypes = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
-            int count = contentTypes.Count;
-            foreach (XmlNode ct in contentTypes)
+            var contentTypes = from cType in xDocument.Elements(ns + "ContentType") select cType;
+
+            foreach (var ct in contentTypes)
             {
-                string ctid = ct.Attributes["ID"].Value;
-                string name = ct.Attributes["Name"].Value;
+                string ctid = ct.Attribute("ID").Value;
+                string name = ct.Attribute("Name").Value;
                 if (web.ContentTypeExistsByName(name))
                 {
                     LoggingUtility.Internal.TraceWarning((int)EventId.ContentTypeAlreadyExists, CoreResources.FieldAndContentTypeExtensions_ContentType01AlreadyExists, name, ctid);
@@ -1004,44 +959,31 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    var description = "";
-                    if (((XmlElement)ct).HasAttribute("Description"))
-                    {
-                        description = ((XmlElement)ct).GetAttribute("Description");
-                    }
-                    var group = "";
-                    if (((XmlElement)ct).HasAttribute("Group"))
-                    {
-                        group = ((XmlElement)ct).GetAttribute("Group");
-                    }
+                    var description = ct.Attribute("Description") != null ? ct.Attribute("Description").Value : string.Empty;
+                    var group = ct.Attribute("Group") != null ? ct.Attribute("Group").Value : string.Empty;
 
                     //Create CT
                     web.CreateContentType(name, description, ctid, group);
 
                     //Add fields to content type 
-                    XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
-                    XmlAttribute attr = null;
-                    foreach (XmlNode fr in fieldRefs)
+
+                    var fieldRefs = from fr in ct.Descendants(ns + "FieldRefs").Elements(ns + "FieldRef") select fr;
+                    foreach (var fieldRef in fieldRefs)
                     {
-                        bool required = false;
-                        bool hidden = false;
-                        string frid = fr.Attributes["ID"].Value;
-                        string frName = fr.Attributes["Name"].Value;
-                        attr = fr.Attributes["Required"];
-                        if (attr != null)
-                        {
-                            required = attr.Value.ToBoolean();
-                        }
-                        attr = fr.Attributes["Hidden"];
-                        if (attr != null)
-                        {
-                            hidden = attr.Value.ToBoolean();
-                        }
+                        var frid = fieldRef.Attribute("ID").Value;
+                        var required = fieldRef.Attribute("Required") != null ? bool.Parse(fieldRef.Attribute("Required").Value) : false;
+                        var hidden = fieldRef.Attribute("Hidden") != null ? bool.Parse(fieldRef.Attribute("Hidden").Value) : false;
                         web.AddFieldToContentTypeById(ctid, frid, required, hidden);
                     }
+
+                    returnCT = web.GetContentTypeById(ctid);
                 }
             }
+
+            return returnCT;
         }
+
+      
 
         /// <summary>
         /// Create new content type to web
@@ -1299,7 +1241,7 @@ namespace Microsoft.SharePoint.Client
             //Casting throws "Specified method is not supported" when using in v15
             //var ctCol = listContentTypes.Cast<ContentType>().ToList();
             List<ContentType> ctCol = new List<ContentType>();
-            foreach(ContentType ct in listContentTypes)
+            foreach (ContentType ct in listContentTypes)
             {
                 ctCol.Add(ct);
             }
