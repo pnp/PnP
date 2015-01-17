@@ -1,4 +1,4 @@
-# OFFICE AMS: ONEDRIVE PROVISIONING #
+# ONEDRIVE DOCUMENT MIGRATION #
 
 ### Summary ###
 This sample demonstrates how to migrate documents from onpremise mysite to OneDrive for Business on Office 365.
@@ -16,7 +16,7 @@ Contoso.Core.OneDriveDocumentMigration | Jaakko Nikko, Vesa Juvonen (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | 13-JUNE-2014 | Initial release
+1.0  | June 13th 2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -27,13 +27,10 @@ Version  | Date | Comments
 # GENERAL COMMENTS #
 As part of the new Client Side Object Model (CSOM) assemblies released in the [SharePoint Online Client Components SDK](http://www.microsoft.com/en-us/download/details.aspx?id=42038), we now have many new capabilities and improvements. One specifically is the capability to programmatically upload files to One Drive for Business sites in Office 365.
 
-Migrating users’ files from existing SharePoint 2010 MySite to Office One Drive for Business sites in Office 365 can be done manually which is not very feasible solution when multiple thousand users and files are concerned. This solution is build for automation where a lot of users with a lot of files are to be migrated. This solution reads folder structure from MySite (Personal Document, Shared Documents and Shared Pictures) with subfolders and creates equivalent scructure and mapping in OneDrive. If user has created other lists in MySite, this solution does not take those into account. The solution can be run multiple times as there is an attribute to not overwrite existing files.
+Migrating users’ files from existing SharePoint 2010 MySite to Office One Drive for Business sites in Office 365 can be done manually which is not very feasible solution when multiple thousand users and files are concerned. This solution is build for automation where a lot of users with a lot of files are to be migrated. This solution reads folder structure from MySite (Personal Document, Shared Documents and Shared Pictures) with sub folders and creates equivalent structure and mapping in OneDrive. If user has created other lists in MySite, this solution does not take those into account. The solution can be run multiple times as there is an attribute to not overwrite existing files.
 
 The users and their Mysite/OneDrive tokens are provided via comma-separated file (.csv, sample attached). The same csv file could be used for automated OneDrive for Business site promotion (small changes to Core.OneDriveProvision needed, however).
 
-### DEPENDENCIES ###
-- Microsoft.SharePoint.Client.dll
-- Microsoft.SharePoint.Client.Runtime.dll
 
 ### CSV FILE EXAMPLE ###
 CSV file containing relevat user information. First line is removed in solution.
