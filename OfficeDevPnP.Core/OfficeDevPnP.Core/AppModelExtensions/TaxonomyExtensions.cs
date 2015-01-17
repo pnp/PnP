@@ -407,7 +407,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="termLines"></param>
         /// <param name="lcid"></param>
         /// <param name="delimiter"></param>
-        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter = "|")
+        /// <param name="overwriteExisting"></param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter = "|", bool overwriteExisting = false)
         {
             termLines.ValidateNotNullOrEmpty("termLines");
 
@@ -416,7 +417,7 @@ namespace Microsoft.SharePoint.Client
             TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
             TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
 
-            ImportTerms(site, termLines, lcid, termStore, delimiter);
+            ImportTerms(site, termLines, lcid, termStore, delimiter, overwriteExisting);
         }
 
         /// <summary>
@@ -431,7 +432,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="lcid"></param>
         /// <param name="termStore">The termstore to import the terms into</param>
         /// <param name="delimiter"></param>
-        public static void ImportTerms(this Site site, string[] termLines, int lcid, TermStore termStore, string delimiter = "|")
+        /// <param name="overwriteExisting">Overwrites existing tags if already existing</param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, TermStore termStore, string delimiter = "|", bool overwriteExisting=false)
         {
             var groupCache = new List<TermGroup>();
             var setCache = new List<TermGroup>();
@@ -513,10 +515,10 @@ namespace Microsoft.SharePoint.Client
                         // TermSet
                         if (termGroup.ServerObjectIsNull == false)
                         {
-                            string termsetItem = items[1];
-                            string termsetName = termsetItem;
-                            Guid termsetId = Guid.Empty;
-                            if (termsetItem.IndexOf(";#") > -1)
+                            var termsetItem = items[1];
+                            var termsetName = termsetItem;
+                            var termsetId = Guid.Empty;
+                            if (termsetItem.IndexOf(";#", StringComparison.Ordinal) > -1)
                             {
                                 termsetName = termsetItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
                                 termsetId = new Guid(termsetItem.Split(new string[] { ";#" }, StringSplitOptions.None)[1]);
@@ -569,7 +571,7 @@ namespace Microsoft.SharePoint.Client
                                     {
                                         term = termSet.Terms.GetByName(NormalizeName(termName));
                                     }
-                                    clientContext.Load(term);
+                                    clientContext.Load(term, t => t.Name, t => t.Id, t => t.Terms);
                                     try
                                     {
                                         clientContext.ExecuteQuery();
@@ -583,11 +585,19 @@ namespace Microsoft.SharePoint.Client
                                         }
                                         term = termSet.CreateTerm(NormalizeName(termName), lcid, termId);
                                         clientContext.ExecuteQuery();
+                                    } else if (overwriteExisting && term.ServerObjectIsNull == false)
+                                    {
+                                        if (term.Name != termName)
+                                        {
+                                            term.Name = termName;
+                                            termStore.CommitAll();
+                                            clientContext.ExecuteQuery();
+                                        }
                                     }
 
                                     if (items.Count() > 3)
                                     {
-                                        clientContext.Load(term);
+                                        clientContext.Load(term, t => t.Id, t => t.Name, t => t.Terms);
                                         clientContext.ExecuteQuery();
                                         if (term.ServerObjectIsNull == false)
                                         {
@@ -595,7 +605,7 @@ namespace Microsoft.SharePoint.Client
                                             {
                                                 var subTermItem = items[q];
                                                 termId = Guid.Empty;
-                                                if (termItem.IndexOf(";#", StringComparison.Ordinal) > -1)
+                                                if (subTermItem.IndexOf(";#", StringComparison.Ordinal) > -1)
                                                 {
                                                     termName =
                                                         subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[
@@ -609,7 +619,40 @@ namespace Microsoft.SharePoint.Client
                                                 {
                                                     termName = subTermItem;
                                                 }
-                                                term = term.AddTermToTerm(lcid, termName, termId);
+                                                Term subTerm = null;
+                                                if (termId != Guid.Empty)
+                                                {
+                                                    subTerm = term.Terms.GetById(termId);
+                                                }
+                                                else
+                                                {
+                                                    subTerm = term.Terms.GetByName(NormalizeName(termName));
+                                                }
+                                                clientContext.Load(term);
+                                                try
+                                                {
+                                                    clientContext.ExecuteQuery();
+                                                }
+                                                catch
+                                                {
+                                                }
+                                                if (subTerm.ServerObjectIsNull == null)
+                                                {
+                                                    term = term.AddTermToTerm(lcid, termName, termId);
+                                                }
+                                                else if (overwriteExisting && subTerm.ServerObjectIsNull == false)
+                                                {
+                                                    clientContext.Load(subTerm, t => t.Id, t => t.Name, t => t.Terms);
+                                                    clientContext.ExecuteQuery();
+
+                                                    if (subTerm.Name != termName)
+                                                    {
+                                                        subTerm.Name = termName;
+                                                        termStore.CommitAll();
+                                                        clientContext.ExecuteQuery();
+                                                    }
+                                                    term = subTerm;
+                                                }
                                             }
                                         }
                                     }
