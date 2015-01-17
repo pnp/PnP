@@ -26,18 +26,18 @@
 }
 
 .cam-taxpicker-dialog-overlay {
-    position: absolute;
+    position: fixed;
     left: 0px;
     right: 0px;
     top: 0px;
-    bottom: 0px;
+    height: 100%;
     background-color: #999;
     opacity: 0.4;
     z-index: 1500;
 }
 
 .cam-taxpicker-dialog-content {
-    position: absolute;
+    position: fixed;
     width: 820px;
     height: 650px;
     left: 50%;
