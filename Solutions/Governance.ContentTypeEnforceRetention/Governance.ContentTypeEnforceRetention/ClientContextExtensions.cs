@@ -9,6 +9,11 @@ using System.Diagnostics;
 
 namespace Core.Throttling
 {
+ 
+    /// <summary>
+    /// This extension method allows ExecuteQuery to be sent out with retry capability
+    /// It will monitor for HTTP status code 429
+    /// </summary>
     public static class ClientContextExtension
     {
         // This is the extension method. 
