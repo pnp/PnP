@@ -10,6 +10,7 @@
     {
         public static string TokenForUser;
         public const string ResourceUrl = "https://graph.windows.net";
+
         /// <summary>
         /// Async task to acquire token for Application.
         /// </summary>
@@ -19,13 +20,23 @@
             return GetTokenForApplication();
         }
 
-         public static ActiveDirectoryClient GetActiveDirectoryClientAsApplication() 
+         public static ActiveDirectoryClient GetActiveDirectoryClientAsApplication(Guid tenantId) 
          { 
              Uri servicePointUri = new Uri(ResourceUrl); 
-             Uri serviceRoot = new Uri(servicePointUri, ConfigurationManager.AppSettings["TenantId"]); 
+             Uri serviceRoot = new Uri(servicePointUri, tenantId.ToString()); 
              ActiveDirectoryClient activeDirectoryClient = new ActiveDirectoryClient(serviceRoot, 
                  async () => await AcquireTokenAsyncForApplication()); 
              return activeDirectoryClient; 
+         }
+
+         public static ActiveDirectoryClient GetActiveDirectoryClientAsApplication(Uri sharePointAdminUrl)
+         {
+             Uri servicePointUri = new Uri(ResourceUrl);
+             string adminRealm = TokenHelper.GetRealmFromTargetUrl(sharePointAdminUrl);
+             Uri serviceRoot = new Uri(servicePointUri, adminRealm);
+             ActiveDirectoryClient activeDirectoryClient = new ActiveDirectoryClient(serviceRoot,
+                 async () => await AcquireTokenAsyncForApplication());
+             return activeDirectoryClient;
          } 
 
         /// <summary>
@@ -34,13 +45,13 @@
         /// <returns>Token for application.</returns>
         public static string GetTokenForApplication()
         {
-            var authenticationUrl = "https://login.windows.net/" + ConfigurationManager.AppSettings["TenantName"];
+            var authenticationUrl = "https://login.windows.net/" + ConfigurationManager.AppSettings["TenantUpnDomain"];
             AuthenticationContext authenticationContext = new AuthenticationContext(authenticationUrl, false);
 
             // Config for OAuth client credentials 
             ClientCredential clientCred = new ClientCredential(
-                ConfigurationManager.AppSettings["AzureADClientId"],
-                ConfigurationManager.AppSettings["AzureADClientSecret"]);
+                ConfigurationManager.AppSettings["ClientId"],
+                ConfigurationManager.AppSettings["ClientSecret"]);
 
             AuthenticationResult authenticationResult = authenticationContext.AcquireToken(ResourceUrl,
                 clientCred);
