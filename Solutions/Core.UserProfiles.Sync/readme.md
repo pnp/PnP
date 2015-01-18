@@ -104,7 +104,7 @@ Note: I didn't manage to get this working with an App-Only Policy context... the
 ```XML
   <appSettings>
     <!--Used in SharePoint and in Azure AD-->
-    <add key="ClientId" value="GUID HERE />
+    <add key="ClientId" value="GUID HERE" />
     <add key="ClientSecret" value="SECRET HERE" />
     
     <!--Used in Azure AD AuthenticationHelper-->
