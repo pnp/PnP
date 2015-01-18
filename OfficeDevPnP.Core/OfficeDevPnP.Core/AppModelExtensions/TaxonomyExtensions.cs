@@ -407,7 +407,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="termLines"></param>
         /// <param name="lcid"></param>
         /// <param name="delimiter"></param>
-        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter = "|")
+        /// <param name="overwriteExisting"></param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, string delimiter = "|", bool overwriteExisting = false)
         {
             termLines.ValidateNotNullOrEmpty("termLines");
 
@@ -416,7 +417,7 @@ namespace Microsoft.SharePoint.Client
             TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
             TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
 
-            ImportTerms(site, termLines, lcid, termStore, delimiter);
+            ImportTerms(site, termLines, lcid, termStore, delimiter, overwriteExisting);
         }
 
         /// <summary>
@@ -431,10 +432,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="lcid"></param>
         /// <param name="termStore">The termstore to import the terms into</param>
         /// <param name="delimiter"></param>
-        public static void ImportTerms(this Site site, string[] termLines, int lcid, TermStore termStore, string delimiter = "|")
+        /// <param name="overwriteExisting">Overwrites existing tags if already existing</param>
+        public static void ImportTerms(this Site site, string[] termLines, int lcid, TermStore termStore, string delimiter = "|", bool overwriteExisting = false)
         {
             var groupCache = new List<TermGroup>();
-            var setCache = new List<TermGroup>();
+            var setCache = new List<TermSet>();
             termLines.ValidateNotNullOrEmpty("termLines");
             termStore.ValidateNotNullOrEmpty("termStore");
 
@@ -449,12 +451,12 @@ namespace Microsoft.SharePoint.Client
             foreach (string line in termLines)
             {
                 // split up
-                string[] items = line.Split(new string[] { delimiter }, StringSplitOptions.None);
+                var items = line.Split(new string[] { delimiter }, StringSplitOptions.None);
                 if (items.Any())
                 {
-                    string groupItem = items[0];
-                    string groupName = groupItem;
-                    Guid groupId = Guid.Empty;
+                    var groupItem = items[0];
+                    var groupName = groupItem;
+                    var groupId = Guid.Empty;
                     if (groupItem.IndexOf(";#", StringComparison.Ordinal) > -1)
                     {
                         groupName = groupItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
@@ -463,9 +465,9 @@ namespace Microsoft.SharePoint.Client
                     TermGroup termGroup = null;
 
                     // Cached?
-                    if(groupCache.Any())
+                    if (groupCache.Any())
                     {
-                        if(groupId != Guid.Empty)
+                        if (groupId != Guid.Empty)
                         {
                             termGroup = groupCache.FirstOrDefault(tg => tg.Id == groupId);
                         }
@@ -506,36 +508,49 @@ namespace Microsoft.SharePoint.Client
                         clientContext.Load(termGroup);
                         clientContext.ExecuteQuery();
                         groupCache.Add(termGroup);
-                            
+
                     }
                     if (items.Count() > 1)
                     {
                         // TermSet
                         if (termGroup.ServerObjectIsNull == false)
                         {
-                            string termsetItem = items[1];
-                            string termsetName = termsetItem;
-                            Guid termsetId = Guid.Empty;
-                            if (termsetItem.IndexOf(";#") > -1)
+                            var termsetItem = items[1];
+                            var termsetName = termsetItem;
+                            var termsetId = Guid.Empty;
+                            if (termsetItem.IndexOf(";#", StringComparison.Ordinal) > -1)
                             {
                                 termsetName = termsetItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
                                 termsetId = new Guid(termsetItem.Split(new string[] { ";#" }, StringSplitOptions.None)[1]);
                             }
                             TermSet termSet = null;
-                            if (termsetId != Guid.Empty)
+                            if (setCache.Any())
                             {
-                                termSet = termGroup.TermSets.GetById(termsetId);
+                                if (termsetId != Guid.Empty)
+                                {
+                                    termSet = setCache.FirstOrDefault(ts => ts.Id == termsetId);
+                                }
                             }
-                            else
+                            if (termSet == null)
                             {
-                                termSet = termGroup.TermSets.GetByName(NormalizeName(termsetName));
+                                if (termsetId != Guid.Empty)
+                                {
+                                    termSet = termGroup.TermSets.GetById(termsetId);
+                                }
+                                else
+                                {
+                                    termSet = termGroup.TermSets.GetByName(NormalizeName(termsetName));
+                                }
+                                clientContext.Load(termSet);
+                                try
+                                {
+                                    clientContext.ExecuteQuery();
+                                    setCache.Add(termSet);
+                                }
+                                catch
+                                {
+                                }
                             }
-                            clientContext.Load(termSet);
-                            try
-                            {
-                                clientContext.ExecuteQuery();
-                            }
-                            catch { }
                             if (termSet.ServerObjectIsNull == null)
                             {
                                 if (termsetId == Guid.Empty)
@@ -545,6 +560,7 @@ namespace Microsoft.SharePoint.Client
                                 termSet = termGroup.CreateTermSet(NormalizeName(termsetName), termsetId, lcid);
                                 clientContext.Load(termSet);
                                 clientContext.ExecuteQuery();
+                                setCache.Add(termSet);
                             }
                             if (items.Count() > 2)
                             {
@@ -552,70 +568,124 @@ namespace Microsoft.SharePoint.Client
 
                                 if (termSet.ServerObjectIsNull == false)
                                 {
-                                    string termItem = items[2];
-                                    string termName = termItem;
-                                    Guid termId = Guid.Empty;
-                                    if (termItem.IndexOf(";#", StringComparison.Ordinal) > -1)
-                                    {
-                                        termName = termItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
-                                        termId = new Guid(termItem.Split(new string[] { ";#" }, StringSplitOptions.None)[1]);
-                                    }
-                                    Term term = null;
-                                    if (termId != Guid.Empty)
-                                    {
-                                        term = termSet.Terms.GetById(termId);
-                                    }
-                                    else
-                                    {
-                                        term = termSet.Terms.GetByName(NormalizeName(termName));
-                                    }
-                                    clientContext.Load(term);
-                                    try
-                                    {
-                                        clientContext.ExecuteQuery();
-                                    }
-                                    catch { }
-                                    if (term.ServerObjectIsNull == null)
-                                    {
-                                        if(termId == Guid.Empty)
-                                        {
-                                            termId = Guid.NewGuid();
-                                        }
-                                        term = termSet.CreateTerm(NormalizeName(termName), lcid, termId);
-                                        clientContext.ExecuteQuery();
-                                    }
-
-                                    if (items.Count() > 3)
-                                    {
-                                        clientContext.Load(term);
-                                        clientContext.ExecuteQuery();
-                                        if (term.ServerObjectIsNull == false)
-                                        {
-                                            for (var q = 3; q < items.Count(); q++)
-                                            {
-                                                var subTermItem = items[q];
-                                                termId = Guid.Empty;
-                                                if (termItem.IndexOf(";#", StringComparison.Ordinal) > -1)
-                                                {
-                                                    termName =
-                                                        subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[
-                                                            0];
-                                                    termId =
-                                                        new Guid(
-                                                            subTermItem.Split(new string[] {";#"},
-                                                                StringSplitOptions.None)[1]);
-                                                }
-                                                else
-                                                {
-                                                    termName = subTermItem;
-                                                }
-                                                term = term.AddTermToTerm(lcid, termName, termId);
-                                            }
-                                        }
-                                    }
+                                    ParseTerms(lcid, termStore, overwriteExisting, items, termSet, clientContext);
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        private static void ParseTerms(int lcid, TermStore termStore, bool overwriteExisting, string[] items, TermSet termSet, ClientRuntimeContext clientContext)
+        {
+            var termItem = items[2];
+            var termName = termItem;
+            var termId = Guid.Empty;
+            if (termItem.IndexOf(";#", StringComparison.Ordinal) > -1)
+            {
+                termName = termItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
+                termId = new Guid(termItem.Split(new string[] { ";#" }, StringSplitOptions.None)[1]);
+            }
+            Term term = null;
+            if (termId != Guid.Empty)
+            {
+                term = termSet.Terms.GetById(termId);
+            }
+            else
+            {
+                term = termSet.Terms.GetByName(NormalizeName(termName));
+            }
+            clientContext.Load(term, t => t.Name, t => t.Id, t => t.Terms);
+            try
+            {
+                clientContext.ExecuteQuery();
+            }
+            catch
+            {
+            }
+            if (term.ServerObjectIsNull == null)
+            {
+                if (termId == Guid.Empty)
+                {
+                    termId = Guid.NewGuid();
+                }
+                term = termSet.CreateTerm(NormalizeName(termName), lcid, termId);
+                clientContext.ExecuteQuery();
+            }
+            else if (overwriteExisting && term.ServerObjectIsNull == false)
+            {
+                if (term.Name != termName)
+                {
+                    term.Name = termName;
+                    termStore.CommitAll();
+                    clientContext.ExecuteQuery();
+                }
+            }
+
+            if (items.Count() > 3)
+            {
+                ParseSubTerms(lcid, termStore, overwriteExisting, clientContext, term, items);
+            }
+        }
+
+        private static void ParseSubTerms(int lcid, TermStore termStore, bool overwriteExisting, ClientRuntimeContext clientContext, Term term, string[] items)
+        {
+            clientContext.Load(term, t => t.Id, t => t.Name, t => t.Terms);
+            clientContext.ExecuteQuery();
+            if (term.ServerObjectIsNull == false)
+            {
+                for (var q = 3; q < items.Count(); q++)
+                {
+                    var subTermItem = items[q];
+                    var termId = Guid.Empty;
+                    string termName;
+                    if (subTermItem.IndexOf(";#", StringComparison.Ordinal) > -1)
+                    {
+                        termName = subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[0];
+                        termId = new Guid(subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[1]);
+                    }
+                    else
+                    {
+                        termName = subTermItem;
+                    }
+                    Term subTerm = null;
+                    if (termId != Guid.Empty)
+                    {
+                        subTerm = term.Terms.GetById(termId);
+                    }
+                    else
+                    {
+                        subTerm = term.Terms.GetByName(NormalizeName(termName));
+                    }
+                    clientContext.Load(term);
+                    try
+                    {
+                        clientContext.ExecuteQuery();
+                    }
+                    catch
+                    {
+                    }
+                    if (subTerm.ServerObjectIsNull == null)
+                    {
+                        term = term.AddTermToTerm(lcid, termName, termId);
+                    }
+                    else if (overwriteExisting && subTerm.ServerObjectIsNull == false)
+                    {
+                        clientContext.Load(subTerm, t => t.Id, t => t.Name, t => t.Terms);
+                        clientContext.ExecuteQuery();
+
+                        if (subTerm.Name != termName)
+                        {
+                            subTerm.Name = termName;
+                            termStore.CommitAll();
+                            clientContext.ExecuteQuery();
+                        }
+                        term = subTerm;
+                    }
+                    else
+                    {
+                        term = subTerm;
                     }
                 }
             }
@@ -1510,7 +1580,7 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
-            if(fieldCreationInformation.Id == Guid.Empty)
+            if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
@@ -1566,8 +1636,8 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
             if (fieldCreationInformation.Id == Guid.Empty)
-            { 
-                fieldCreationInformation.Id = Guid.NewGuid(); 
+            {
+                fieldCreationInformation.Id = Guid.NewGuid();
             }
             try
             {
