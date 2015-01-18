@@ -1,16 +1,17 @@
 # Azure AD to User Profile Sync Tool #
 
 ### Overview ###
-This solution builds on top of the UserProfile.Manipulation.CSOM.Console code sample.
+This solution builds on top of the UserProfile.Manipulation.CSOM.Console code sample. The business problem that it solves is that not all Azure AD properties are synced to SharePoint User Profiles, so you must cater for your own sync process for any other properties (like extended) of interest.
 
 It aims to show a working solution that:
 
+- you can configure which properties to read and where to write them
 - authenticates & pulls data from Azure AD
 - authenticates and updates all user profiles with the data from Azure AD. v1 of this sample uses the SharePointOnlineCredentials object.
 
 Key points are that it uses the new API for updating **User Profiles with CSOM** (not the web services) and the use of the new **Graph API 2.0** recently announced here: [http://blogs.msdn.com/b/aadgraphteam/archive/2014/12/12/announcing-azure-ad-graph-api-client-library-2-0.aspx](http://blogs.msdn.com/b/aadgraphteam/archive/2014/12/12/announcing-azure-ad-graph-api-client-library-2-0.aspx)
 
-One of the interesting elements is giving access to a SharePoint App to read (or write) in the Azure AD instance behind an Office 365 tenant.
+One of the interesting demonstration elements is giving access to a SharePoint App to read (or write) in the Azure AD instance behind an Office 365 tenant.
 
 Many of the concepts are described in other samples and blog posts:
 
@@ -27,6 +28,7 @@ Note that there is no SharePoint App, just a console application, which you can 
 ### Prerequisites ###
 - A ClientId and ClientSecret registered with SharePoint's "appregnew.aspx" page
 - Credentials to authenticate to SharePoint Online with tenand admin rights to write to user profiles
+- The ClientId to hae permissions to read Azure AD user data
 
 ### Solution ###
 Solution | Author(s)
@@ -92,4 +94,29 @@ You will find PropertyConfiguration.xml in the project. This is a simple XML fil
     <Property ADAttributeName="Country" UserProfileAttributeName="Test-Country" WriteIfBlank="true" IsMulti="false"/>
   </Properties>
 </Configuration>
+```
+## Settings in the App.Config file ##
+Some key settings are required in the app.config file. 
+
+This solution still makes use of SharePointOnlineCredentials, so think about how to protect the password (encrypt it, etc).
+
+Note: I didn't manage to get this working with an App-Only Policy context... the PeopleManager doesn't seem to work without a user context.
+```XML
+  <appSettings>
+    <!--Used in SharePoint and in Azure AD-->
+    <add key="ClientId" value="GUID HERE />
+    <add key="ClientSecret" value="SECRET HERE" />
+    
+    <!--Used in Azure AD AuthenticationHelper-->
+
+    <add key="TenantSharePointAdminUrl" value="https://onebitdev2015-admin.sharepoint.com" /> <!--Used in console code for Admin url-->
+    <add key="TenantUpnDomain" value="onebitsoftware.onmicrosoft.com" />
+  
+    <!--Used to buils SharePointOnlineCredentials to write to UPA-->
+    <add key="TenantAdminLogin" value="admin@onebitsoftware.onmicrosoft.com" />
+    <add key="TenantAdminPassword" value="PASSWORD HERE" /> 
+  
+    <!--Not used, but you could save the extra lookup of TokenHelper.GetRealmFromTargetUrl(sharePointAdminUrl); realm is tenantid --> 
+    <!--<add key="TenantId" value="GUID HERE" /> left for academic reasons-->
+  </appSettings>
 ```
