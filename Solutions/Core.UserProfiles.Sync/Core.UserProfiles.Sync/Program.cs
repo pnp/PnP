@@ -21,6 +21,8 @@ using Microsoft.IdentityModel.Claims;
 using Newtonsoft.Json;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Azure.ActiveDirectory.GraphClient.Extensions;
+using System.Xml.Linq;
+using Core.UserProfiles.Sync.Extensions;
 
 namespace Core.UserProfiles.Sync
 {
@@ -41,9 +43,9 @@ namespace Core.UserProfiles.Sync
                 Console.WriteLine("Found " + users.Count + " users...");
 
                 //pass users and populate data
-                SetUserProfileDataWithUserContext(configuration, users);
+                SetUserProfileDataWithUserContext(sharePointAdminUri, configuration, users);
             }
-            catch (GraphApi.AuthenticationException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
@@ -79,12 +81,12 @@ namespace Core.UserProfiles.Sync
             return usersList;
         }
 
-        private static void SetUserProfileDataWithUserContext(SyncConfiguration configuration, List<GraphApi.IUser> users)
+        private static void SetUserProfileDataWithUserContext(Uri sharePointAdminUri, SyncConfiguration configuration, List<GraphApi.IUser> users)
         {
             string tenantAdminLoginName = ConfigurationManager.AppSettings["TenantAdminLogin"];
             string tenantAdminPassword = ConfigurationManager.AppSettings["TenantAdminPassword"];
 
-            using (ClientContext clientContext = new ClientContext(SharePointAdminUri.ToString()))
+            using (ClientContext clientContext = new ClientContext(sharePointAdminUri.ToString()))
             {
                 //authenticate with SPOCredentials
                 SecureString password = new SecureString();
@@ -101,34 +103,42 @@ namespace Core.UserProfiles.Sync
                     {
                         try
                         {
-                            var propertyNewValue = typeof(GraphApi.User).GetProperty(prop.ADAttributeName).GetValue(user);
-
-                            if (propertyNewValue != null || prop.WriteIfBlank)
-                            {
-                                if (prop.IsMulti)
-                                {
-                                    peopleManager.SetMultiValuedProfileProperty(UserProfilePrefix + user.UserPrincipalName,
-                                        prop.UserProfileAttributeName, new List<string>() { });
-                                }
-                                else
-                                {
-                                    peopleManager.SetSingleValueProfileProperty(UserProfilePrefix + user.UserPrincipalName,
-                                        prop.UserProfileAttributeName,
-                                        propertyNewValue == null ? string.Empty : propertyNewValue.ToString());
-                                }
-
-                                clientContext.ExecuteQuery();
-
-                                Console.WriteLine("Updated User: {0} Property: {1} New Value: {2}", user.DisplayName, prop.UserProfileAttributeName, propertyNewValue);
-                            }
+                            UpdateProperty(peopleManager, user, prop);
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.Message);
                         }
                     }
+
+                    clientContext.ExecuteQueryWithExponentialRetry(10, 30000); //implemented with throttling
                 }
             }
+        }
+
+        private static void UpdateProperty(PeopleManager peopleManager, GraphApi.User user, Property prop)
+        {
+            var propertyNewValue = typeof(GraphApi.User).GetProperty(prop.ADAttributeName).GetValue(user);
+
+            if (propertyNewValue != null || prop.WriteIfBlank)
+            {
+                if (prop.IsMulti)
+                {
+                    peopleManager.SetMultiValuedProfileProperty(UserProfilePrefix + user.UserPrincipalName,
+                        prop.UserProfileAttributeName, new List<string>() { });
+                }
+                else
+                {
+                    peopleManager.SetSingleValueProfileProperty(UserProfilePrefix + user.UserPrincipalName,
+                        prop.UserProfileAttributeName,
+                        propertyNewValue == null ? string.Empty : propertyNewValue.ToString());
+                }
+
+                Console.WriteLine("Updated User: {0} Property: {1} New Value: {2}",
+                    user.DisplayName, prop.UserProfileAttributeName, propertyNewValue);
+            }
+
+            //logic to write only if different
         }
 
         private static SyncConfiguration GetSyncConfiguration()
@@ -136,12 +146,11 @@ namespace Core.UserProfiles.Sync
             SyncConfiguration configuration = null;
             string path = "PropertyConfiguration.xml";
 
-            XmlSerializer serializer = new XmlSerializer(typeof(SyncConfiguration));
+            XElement xml = XElement.Load(path);
 
-            StreamReader reader = new StreamReader(path);
-            object result = serializer.Deserialize(reader);
-            configuration = (SyncConfiguration)result;
-            reader.Close();
+            var xmlSerializer = new XmlSerializer(typeof(SyncConfiguration));
+            configuration = (SyncConfiguration)xmlSerializer.Deserialize(xml.CreateReader());
+
             return configuration;
         }
     }

@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationHelper.cs" />
+    <Compile Include="Extensions\ClientContextExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -112,8 +113,8 @@
     </Compile>
     <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
-    <Compile Include="XMLObjects\Property.cs" />
-    <Compile Include="XMLObjects\PropertyCollection.cs" />
+    <Compile Include="XObjects\Property.cs" />
+    <Compile Include="XObjects\PropertyCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -128,6 +129,7 @@
   <ItemGroup>
     <Content Include="PropertyConfiguration.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
