@@ -642,8 +642,8 @@ namespace Microsoft.SharePoint.Client
                     string termName;
                     if (subTermItem.IndexOf(";#", StringComparison.Ordinal) > -1)
                     {
-                        termName = subTermItem.Split(new string[] { ";#" }, StringSplitOptions.None)[0];
-                        termId = new Guid(subTermItem.Split(new string[] { ";#" }, StringSplitOptions.None)[1]);
+                        termName = subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[0];
+                        termId = new Guid(subTermItem.Split(new string[] {";#"}, StringSplitOptions.None)[1]);
                     }
                     else
                     {
@@ -681,6 +681,10 @@ namespace Microsoft.SharePoint.Client
                             termStore.CommitAll();
                             clientContext.ExecuteQuery();
                         }
+                        term = subTerm;
+                    }
+                    else
+                    {
                         term = subTerm;
                     }
                 }
