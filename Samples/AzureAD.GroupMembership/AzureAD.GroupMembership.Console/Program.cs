@@ -16,21 +16,8 @@ namespace AzureAD.GroupMembership
         {
             try
             {
-                // get OAuth token using Client Credentials
-                string authString = "https://login.windows.net/" + ConfigurationManager.AppSettings["TenantName"];
-                AuthenticationContext authenticationContext = new AuthenticationContext(authString, false);
-
-                // Config for OAuth client credentials 
-                ClientCredential clientCred = new ClientCredential(ConfigurationManager.AppSettings["AzureADClientId"], ConfigurationManager.AppSettings["AzureADClientSecret"]);
-                string resource = "https://graph.windows.net";
-                string token = String.Empty;
-
-                // Authenticate
-                AuthenticationResult authenticationResult = authenticationContext.AcquireToken(resource, clientCred);
-                token = authenticationResult.AccessToken;
-
                 // setup Graph connection
-                GraphConnection graphConnection = SetupGraphConnection(token);
+                GraphConnection graphConnection = SetupGraphConnection("");
 
                 // Check group memberships. Pass along UPN of user and displayname of 
                 // the group to be checked. API support checking multiple groups at once
