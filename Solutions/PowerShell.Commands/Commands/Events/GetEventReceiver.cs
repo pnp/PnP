@@ -31,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "List")
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (list != null)
                 {
@@ -51,13 +51,13 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Identity == null)
                 {
-                    var query = ClientContext.LoadQuery(this.SelectedWeb.EventReceivers);
+                    var query = ClientContext.LoadQuery(SelectedWeb.EventReceivers);
                     ClientContext.ExecuteQuery();
                     WriteObject(query, true);
                 }
                 else
                 {
-                    WriteObject(this.SelectedWeb.GetEventReceiverById(Identity.Id));
+                    WriteObject(SelectedWeb.GetEventReceiverById(Identity.Id));
                 }
             }
 

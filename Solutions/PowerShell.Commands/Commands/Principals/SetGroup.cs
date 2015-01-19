@@ -33,11 +33,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
             Group group = null;
             if (Identity.Id != -1)
             {
-                group = this.SelectedWeb.SiteGroups.GetById(Identity.Id);
+                group = SelectedWeb.SiteGroups.GetById(Identity.Id);
             }
             else if (!string.IsNullOrEmpty(Identity.Name))
             {
-                group = this.SelectedWeb.SiteGroups.GetByName(Identity.Name);
+                group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
             }
             else if (Identity.Group != null)
             {
@@ -50,46 +50,43 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                 {
                     case AssociatedGroupType.Visitors:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(null, null, group);
+                            SelectedWeb.AssociateDefaultGroups(null, null, group);
                             break;
                         }
                     case AssociatedGroupType.Members:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(null, group, null);
+                            SelectedWeb.AssociateDefaultGroups(null, group, null);
                             break;
                         }
                     case AssociatedGroupType.Owners:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(group, null, null);
+                            SelectedWeb.AssociateDefaultGroups(group, null, null);
                             break;
                         }
                 }
             }
             if(!string.IsNullOrEmpty(AddRole))
             {
-                var roleDefinition = this.SelectedWeb.RoleDefinitions.GetByName(AddRole);
+                var roleDefinition = SelectedWeb.RoleDefinitions.GetByName(AddRole);
                 var roleDefinitionBindings = new RoleDefinitionBindingCollection(ClientContext);
                 roleDefinitionBindings.Add(roleDefinition);
-                var roleAssignments = this.SelectedWeb.RoleAssignments;
+                var roleAssignments = SelectedWeb.RoleAssignments;
                 roleAssignments.Add(group,roleDefinitionBindings);
                 ClientContext.Load(roleAssignments);
                 ClientContext.ExecuteQuery();
             }
             if(!string.IsNullOrEmpty(RemoveRole))
             {
-                var roleAssignment = this.SelectedWeb.RoleAssignments.GetByPrincipal(group);
+                var roleAssignment = SelectedWeb.RoleAssignments.GetByPrincipal(group);
                 var roleDefinitionBindings = roleAssignment.RoleDefinitionBindings;
                 ClientContext.Load(roleDefinitionBindings);
                 ClientContext.ExecuteQuery();
-                foreach(var roleDefinition in roleDefinitionBindings)
+                foreach (var roleDefinition in roleDefinitionBindings.Where(roleDefinition => roleDefinition.Name == RemoveRole))
                 {
-                    if(roleDefinition.Name == RemoveRole)
-                    {
-                        roleDefinitionBindings.Remove(roleDefinition);
-                        roleAssignment.Update();
-                        ClientContext.ExecuteQuery();
-                        break;
-                    }
+                    roleDefinitionBindings.Remove(roleDefinition);
+                    roleAssignment.Update();
+                    ClientContext.ExecuteQuery();
+                    break;
                 }
             }
 

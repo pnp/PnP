@@ -44,7 +44,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
                 {
-                    var eventReceiver = this.SelectedWeb.GetEventReceiverById(Identity.Id);
+                    var eventReceiver = SelectedWeb.GetEventReceiverById(Identity.Id);
                     if (eventReceiver != null)
                     {
                         eventReceiver.DeleteObject();

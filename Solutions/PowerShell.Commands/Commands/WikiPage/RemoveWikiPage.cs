@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            File file = this.SelectedWeb.GetFileByServerRelativeUrl(ServerRelativePageUrl);
+            var file = SelectedWeb.GetFileByServerRelativeUrl(ServerRelativePageUrl);
 
             file.DeleteObject();
 

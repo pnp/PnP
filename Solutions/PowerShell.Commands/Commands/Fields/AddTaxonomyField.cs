@@ -68,7 +68,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
               
 
@@ -76,7 +76,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                field = this.SelectedWeb.CreateTaxonomyField(fieldCI);
+                field = SelectedWeb.CreateTaxonomyField(fieldCI);
             }
             WriteObject(field);
         }

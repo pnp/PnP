@@ -33,9 +33,9 @@ PS:> New-SPOUser -LogonName user@company.com
 
         protected override void ExecuteCmdlet()
         {
-            var web = this.SelectedWeb;
+            var web = SelectedWeb;
 
-            GroupCreationInformation groupCI = new GroupCreationInformation();
+            var groupCI = new GroupCreationInformation();
             groupCI.Title = Title;
             groupCI.Description = Description;
 
@@ -44,7 +44,7 @@ PS:> New-SPOUser -LogonName user@company.com
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
             ClientContext.ExecuteQuery();
-            bool dirty = false;
+            var dirty = false;
             if (AllowRequestToJoinLeave)
             {
                 group.AllowRequestToJoinLeave = true;

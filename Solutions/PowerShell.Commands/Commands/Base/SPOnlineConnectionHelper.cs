@@ -56,28 +56,28 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     {
                         context.ExecuteQuery();
                     }
-                    catch (Microsoft.SharePoint.Client.ClientRequestException)
+                    catch (ClientRequestException)
                     {
-                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                        context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     }
-                    catch (Microsoft.SharePoint.Client.ServerException)
+                    catch (ServerException)
                     {
-                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                        context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     }
                 }
                 catch (ArgumentException)
                 {
                     // OnPrem?
-                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     try
                     {
                         context.ExecuteQuery();
                     }
-                    catch (Microsoft.SharePoint.Client.ClientRequestException ex)
+                    catch (ClientRequestException ex)
                     {
                         throw new Exception("Error establishing a connection", ex);
                     }
-                    catch (Microsoft.SharePoint.Client.ServerException ex)
+                    catch (ServerException ex)
                     {
                         throw new Exception("Error establishing a connection", ex);
                     }
@@ -88,7 +88,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 if (credentials != null)
                 {
-                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                 }
             }
             var connectionType = ConnectionType.OnPrem;
@@ -162,11 +162,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 clientContext.ExecuteQuery();
                 return true;
             }
-            catch (Microsoft.SharePoint.Client.ClientRequestException)
+            catch (ClientRequestException)
             {
                 return false;
             }
-            catch (Microsoft.SharePoint.Client.ServerException)
+            catch (ServerException)
             {
                 return false;
             }

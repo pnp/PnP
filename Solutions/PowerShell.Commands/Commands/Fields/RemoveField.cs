@@ -21,9 +21,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
-                Field f = Identity.Field;
+                var f = Identity.Field;
                 if (list != null)
                 {
                     if (f == null)
@@ -51,17 +51,17 @@ namespace OfficeDevPnP.PowerShell.Commands
             } 
             else
             {
-                Field f = Identity.Field;
+                var f = Identity.Field;
 
                 if (f == null)
                 {
                     if (Identity.Id != Guid.Empty)
                     {
-                        f = this.SelectedWeb.Fields.GetById(Identity.Id);
+                        f = SelectedWeb.Fields.GetById(Identity.Id);
                     }
                     else if (!string.IsNullOrEmpty(Identity.Name))
                     {
-                        f = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
+                        f = SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
                     }
                 }
                 ClientContext.Load(f);

@@ -16,7 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var properties = this.SelectedWeb.GetWebPartProperties(Identity.Id, PageUrl);
+            var properties = SelectedWeb.GetWebPartProperties(Identity.Id, PageUrl);
             WriteObject(properties.FieldValues);
         }
 

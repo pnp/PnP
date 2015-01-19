@@ -32,7 +32,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
 
         protected override void ExecuteCmdlet()
         {
-            Guid featureId = Identity.Id;
+            var featureId = Identity.Id;
             if(Scope == FeatureScope.Web)
             {
                 ClientContext.Web.ActivateFeature(featureId);

@@ -27,11 +27,11 @@ PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'", 
 
         protected override void ExecuteCmdlet()
         {
-            PeopleManager peopleManager = new PeopleManager(ClientContext);
+            var peopleManager = new PeopleManager(ClientContext);
 
             foreach (var acc in Account)
             {
-                ClientResult<string> result = Tenant.EncodeClaim(acc);
+                var result = Tenant.EncodeClaim(acc);
                 ClientContext.ExecuteQuery();
                 var properties = peopleManager.GetPropertiesFor(result.Value);
                 ClientContext.Load(properties);
