@@ -16,11 +16,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (On)
             {
-                ClientContext.Site.ActivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.ActivateFeature(Core.Constants.APPSIDELOADINGFEATUREID);
             }
             else
             {
-                ClientContext.Site.DeactivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.DeactivateFeature(Core.Constants.APPSIDELOADINGFEATUREID);
             }
         }
 

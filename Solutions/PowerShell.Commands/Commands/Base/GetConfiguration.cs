@@ -18,13 +18,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             XDocument document = null;
 
             // check for existing configuration, if not existing, create it
-            string appDataFolder = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string configFolder = System.IO.Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell");
+            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string configFolder = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell");
             if (!Directory.Exists(configFolder))
             {
                 Directory.CreateDirectory(configFolder);
             }
-            path = System.IO.Path.Combine(configFolder, "configuration.xml");
+            path = Path.Combine(configFolder, "configuration.xml");
 
 
             if (!File.Exists(path))

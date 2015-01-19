@@ -28,12 +28,12 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 case "WithTitle":
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title, publish: Publish);
+                        SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title, publish: Publish);
                         break;
                     }
                 default:
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, publish: Publish);
+                        SelectedWeb.AddPublishingPage(PageName, PageTemplateName, publish: Publish);
                         break;
                     }
             }

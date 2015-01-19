@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Force || ShouldContinue(Properties.Resources.RemoveCustomAction, Properties.Resources.Confirm))
                 {
-                    this.SelectedWeb.DeleteCustomAction(Identity.Id);
+                    SelectedWeb.DeleteCustomAction(Identity.Id);
                 }
             }
         }

@@ -28,14 +28,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             
             if (Identity != null)
             {
-                var instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                var instance = SelectedWeb.GetAppInstanceById(Identity.Id);
                 ClientContext.Load(instance);
                 ClientContext.ExecuteQuery();
                 WriteObject(instance);
             }
             else
             {
-                var instances = this.SelectedWeb.GetAppInstances();
+                var instances = SelectedWeb.GetAppInstances();
                 if (instances.Count > 1)
                 {
                     WriteObject(instances,true);

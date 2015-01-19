@@ -5,6 +5,7 @@ using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
+using Microsoft.Online.SharePoint.TenantManagement;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -21,22 +22,22 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
         [Parameter(Mandatory = false)]
         public string Title;
         [Parameter(Mandatory = false)]
-        public Nullable<Microsoft.Online.SharePoint.TenantManagement.SharingCapabilities> Sharing = null;
+        public SharingCapabilities? Sharing = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<long> StorageMaximumLevel = null;
+        public long? StorageMaximumLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<long> StorageWarningLevel = null;
+        public long? StorageWarningLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<double> UserCodeMaximumLevel = null;
+        public double? UserCodeMaximumLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<double> UserCodeWarningLevel = null;
+        public double? UserCodeWarningLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<SwitchParameter> AllowSelfServiceUpgrade = null;
+        public SwitchParameter? AllowSelfServiceUpgrade = null;
 
         protected override void ExecuteCmdlet()
         {

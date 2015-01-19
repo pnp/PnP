@@ -32,6 +32,9 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string Delimiter = "|";
 
+        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "If specified, existing terms will be overwritten. Notice that this only works if you include term ids in your import data.")]
+        public SwitchParameter Force;
+
         protected override void ExecuteCmdlet()
         {
             string[] lines = null;
@@ -47,11 +50,11 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
                 var termStore = taxSession.TermStores.GetByName(TermStoreName);
-                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter);
+                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter, Force);
             }
             else
             {
-                ClientContext.Site.ImportTerms(lines, LCID, Delimiter);
+                ClientContext.Site.ImportTerms(lines, LCID, Delimiter, Force);
             }
         }
 

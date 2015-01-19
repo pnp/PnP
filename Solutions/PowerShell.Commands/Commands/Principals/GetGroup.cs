@@ -36,11 +36,11 @@ PS:> Get-SPOGroup -Name 'Site Members'
                 Group group = null;
                 if(Identity.Id != -1)
                 {
-                    group = this.SelectedWeb.SiteGroups.GetById(Identity.Id);
+                    group = SelectedWeb.SiteGroups.GetById(Identity.Id);
                 }
                 else if(!string.IsNullOrEmpty(Identity.Name))
                 {
-                    group = this.SelectedWeb.SiteGroups.GetByName(Identity.Name);
+                    group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
                 } else if (Identity.Group != null)
                 {
                     group = Identity.Group;
@@ -55,28 +55,28 @@ PS:> Get-SPOGroup -Name 'Site Members'
             }
             else if (ParameterSetName == "Members")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedMemberGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedMemberGroup.Users);
+                ClientContext.Load(SelectedWeb.AssociatedMemberGroup);
+                ClientContext.Load(SelectedWeb.AssociatedMemberGroup.Users);
                 ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedMemberGroup);
+                WriteObject(SelectedWeb.AssociatedMemberGroup);
             }
             else if (ParameterSetName == "Visitors")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedVisitorGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedVisitorGroup.Users);
+                ClientContext.Load(SelectedWeb.AssociatedVisitorGroup);
+                ClientContext.Load(SelectedWeb.AssociatedVisitorGroup.Users);
                 ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedVisitorGroup);
+                WriteObject(SelectedWeb.AssociatedVisitorGroup);
             }
             else if (ParameterSetName == "Owners")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedOwnerGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedOwnerGroup.Users);
+                ClientContext.Load(SelectedWeb.AssociatedOwnerGroup);
+                ClientContext.Load(SelectedWeb.AssociatedOwnerGroup.Users);
                 ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedOwnerGroup);
+                WriteObject(SelectedWeb.AssociatedOwnerGroup);
             }
             else if (ParameterSetName == "All")
             {
-                var groups = ClientContext.LoadQuery(this.SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
+                var groups = ClientContext.LoadQuery(SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
                 ClientContext.ExecuteQuery();
                 WriteObject(groups,true);
             }

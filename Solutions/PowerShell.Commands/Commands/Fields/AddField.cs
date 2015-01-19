@@ -65,7 +65,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                List list = this.SelectedWeb.GetList(List);
+                var list = this.SelectedWeb.GetList(List);
                 Field f = null;
                 var fieldCI = new FieldCreationInformation(Type)
                 {
@@ -112,14 +112,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 
                 if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    f = this.SelectedWeb.CreateField<FieldChoice>(fieldCI);
+                    f = SelectedWeb.CreateField<FieldChoice>(fieldCI);
                     ((FieldChoice)f).Choices = context.Choices;
                     f.Update();
                     ClientContext.ExecuteQuery();
                 }
                 else
                 {
-                    f = this.SelectedWeb.CreateField(fieldCI);
+                    f = SelectedWeb.CreateField(fieldCI);
                 }
 
                 if (Required)

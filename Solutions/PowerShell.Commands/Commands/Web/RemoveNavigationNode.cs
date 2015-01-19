@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+            SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch);
         }
 
     }

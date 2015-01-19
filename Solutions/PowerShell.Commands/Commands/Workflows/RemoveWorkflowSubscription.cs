@@ -21,13 +21,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             }
             else if (Identity.Id != Guid.Empty)
             {
-                var subscription = this.SelectedWeb.GetWorkflowSubscription(Identity.Id);
+                var subscription = SelectedWeb.GetWorkflowSubscription(Identity.Id);
                 if (subscription != null)
                     subscription.Delete();
             }
             else if (!string.IsNullOrEmpty(Identity.Name))
             {
-                var subscription = this.SelectedWeb.GetWorkflowSubscription(Identity.Name);
+                var subscription = SelectedWeb.GetWorkflowSubscription(Identity.Name);
                 if (subscription != null)
                     subscription.Delete();
             }

@@ -17,11 +17,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Keys != null && Keys.Count > 0)
             {
-                this.SelectedWeb.RemovePropertyBagValue("vti_indexedpropertykeys");
+                SelectedWeb.RemovePropertyBagValue("vti_indexedpropertykeys");
 
                 foreach (var key in Keys)
                 {
-                    this.SelectedWeb.AddIndexedPropertyBagKey(key);
+                    SelectedWeb.AddIndexedPropertyBagKey(key);
                 }
             }
         }
