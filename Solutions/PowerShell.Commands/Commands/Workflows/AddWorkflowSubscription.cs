@@ -41,8 +41,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             var list = this.SelectedWeb.GetList(List);
 
-            Guid subscriptionId = list.AddWorkflowSubscription(DefinitionName,Name,StartManually,StartOnCreated,StartOnChanged,HistoryListName,TaskListName, AssociationValues);
-
+            list.AddWorkflowSubscription(DefinitionName,Name,StartManually,StartOnCreated,StartOnChanged,HistoryListName,TaskListName, AssociationValues);
         }
     }
 

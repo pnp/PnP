@@ -39,13 +39,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "List")
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
                 WriteObject(list.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
             }
             else
             {
-                Microsoft.SharePoint.Client.Web web = SelectedWeb;
-                WriteObject(this.SelectedWeb.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
+                WriteObject(SelectedWeb.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
             }
 
         }

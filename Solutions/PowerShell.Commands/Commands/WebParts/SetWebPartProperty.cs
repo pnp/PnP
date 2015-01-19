@@ -24,11 +24,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Value is string)
             {
-                this.SelectedWeb.SetWebPartProperty(Key, Value as string, Identity.Id, PageUrl);
+                SelectedWeb.SetWebPartProperty(Key, Value as string, Identity.Id, PageUrl);
             }
             else if (Value is int)
             {
-                this.SelectedWeb.SetWebPartProperty(Key, (int)Value, Identity.Id, PageUrl);
+                SelectedWeb.SetWebPartProperty(Key, (int)Value, Identity.Id, PageUrl);
             }
         }
 

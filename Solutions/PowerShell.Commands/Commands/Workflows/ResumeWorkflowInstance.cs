@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Client.WorkflowServices;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
@@ -21,14 +22,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             }
             else if (Identity.Id != Guid.Empty)
             {
-                var allinstances = this.SelectedWeb.GetWorkflowInstances();
-                foreach(var instance in allinstances)
+                var allinstances = SelectedWeb.GetWorkflowInstances();
+                foreach (var instance in allinstances.Where(instance => instance.Id == Identity.Id))
                 {
-                    if(instance.Id == Identity.Id)
-                    {
-                        instance.ResumeWorkflow();
-                        break;
-                    }
+                    instance.ResumeWorkflow();
+                    break;
                 }
             }
         }

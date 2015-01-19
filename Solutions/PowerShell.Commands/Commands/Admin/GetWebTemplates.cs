@@ -20,14 +20,15 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
     public class GetWebTemplates : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false)]
-        public uint LCID;
+        [Alias("LCID")]
+        public uint Lcid;
 
         [Parameter(Mandatory = false)]
         public int CompatibilityLevel;
 
         protected override void ProcessRecord()
         {
-            WriteObject(this.Tenant.GetWebTemplates(LCID, CompatibilityLevel));
+            WriteObject(this.Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
         }
     }
 }

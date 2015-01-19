@@ -15,17 +15,17 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!string.IsNullOrEmpty(Key))
             {
-                WriteObject(this.SelectedWeb.GetPropertyBagValueString(Key, string.Empty));
+                WriteObject(SelectedWeb.GetPropertyBagValueString(Key, string.Empty));
             }
             else
             {
-                if (this.SelectedWeb.IsPropertyAvailable("AllProperties"))
+                if (SelectedWeb.IsPropertyAvailable("AllProperties"))
                 {
                     WriteObject(SelectedWeb.AllProperties.FieldValues);
                 }
                 else
                 {
-                    PropertyValues values = this.SelectedWeb.AllProperties;
+                    var values = SelectedWeb.AllProperties;
                     ClientContext.Load(values);
                     ClientContext.ExecuteQuery();
                     WriteObject(values.FieldValues);

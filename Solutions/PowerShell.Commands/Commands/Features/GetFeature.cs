@@ -33,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
 
         protected override void ExecuteCmdlet()
         {
-            List<Feature> features = new List<Feature>();
+            var features = new List<Feature>();
             FeatureCollection featureCollection = null;
             if (Scope == FeatureScope.Site)
             {
@@ -41,7 +41,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             }
             else
             {
-                featureCollection = this.SelectedWeb.Features;
+                featureCollection = SelectedWeb.Features;
             }
             IEnumerable<Feature> query = null;
 #if !CLIENTSDKV15

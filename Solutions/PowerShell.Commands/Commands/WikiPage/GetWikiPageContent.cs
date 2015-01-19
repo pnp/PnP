@@ -14,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(this.SelectedWeb.GetWikiPageContent(ServerRelativePageUrl));
+            WriteObject(SelectedWeb.GetWikiPageContent(ServerRelativePageUrl));
         }
     }
 }

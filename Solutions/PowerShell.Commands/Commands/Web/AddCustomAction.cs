@@ -34,19 +34,12 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            BasePermissions permissions = new BasePermissions();
-            foreach (PermissionKind kind in Rights)
+            var permissions = new BasePermissions();
+            foreach (var kind in Rights)
             {
                 permissions.Set(kind);
             }
-            CustomActionEntity ca = new CustomActionEntity();
-            ca.Description = Description;
-            ca.Location = Location;
-            ca.Group = Group;
-            ca.Sequence = Sequence;
-            ca.Title = Title;
-            ca.Url = Url;
-            ca.Rights = new BasePermissions();
+            var ca = new CustomActionEntity {Description = Description, Location = Location, Group = Group, Sequence = Sequence, Title = Title, Url = Url, Rights = new BasePermissions()};
 
             foreach(var permission in Rights)
             {

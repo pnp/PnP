@@ -42,27 +42,27 @@ namespace OfficeDevPnP.PowerShell.Commands
                 }
                 AppInstance instance = null;
 
-                FileStream appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
+                var appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
                 if (Locale == -1)
                 {
                     if (LoadOnly)
                     {
-                        instance = this.SelectedWeb.LoadApp(appPackageStream, CultureInfo.CurrentCulture.LCID);
+                        instance = SelectedWeb.LoadApp(appPackageStream, CultureInfo.CurrentCulture.LCID);
                     }
                     else
                     {
-                        instance = this.SelectedWeb.LoadAndInstallApp(appPackageStream);
+                        instance = SelectedWeb.LoadAndInstallApp(appPackageStream);
                     }
                 }
                 else
                 {
                     if (LoadOnly)
                     {
-                        instance = this.SelectedWeb.LoadApp(appPackageStream, Locale);
+                        instance = SelectedWeb.LoadApp(appPackageStream, Locale);
                     }
                     else
                     {
-                        instance = this.SelectedWeb.LoadAndInstallAppInSpecifiedLocale(appPackageStream, Locale);
+                        instance = SelectedWeb.LoadAndInstallAppInSpecifiedLocale(appPackageStream, Locale);
                     }
                 }
                 ClientContext.Load(instance);

@@ -15,11 +15,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
 
-            if (this.SelectedWeb.PropertyBagContainsKey(Key))
+            if (SelectedWeb.PropertyBagContainsKey(Key))
             {
                 if (Force || ShouldContinue(string.Format(Properties.Resources.Delete0, Key), Properties.Resources.Confirm))
                 {
-                    this.SelectedWeb.RemovePropertyBagValue(Key);
+                    SelectedWeb.RemovePropertyBagValue(Key);
                 }
             }
         }

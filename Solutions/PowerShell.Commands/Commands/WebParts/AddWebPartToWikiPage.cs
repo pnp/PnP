@@ -31,26 +31,25 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             WebPartEntity wp = null;
 
-            if (ParameterSetName == "FILE")
+            switch (ParameterSetName)
             {
-                if (System.IO.File.Exists(Path))
-                {
-                    System.IO.StreamReader fileStream = new System.IO.StreamReader(Path);
-                    string webPartString = fileStream.ReadToEnd();
-                    fileStream.Close();
+                case "FILE":
+                    if (System.IO.File.Exists(Path))
+                    {
+                        var fileStream = new System.IO.StreamReader(Path);
+                        var webPartString = fileStream.ReadToEnd();
+                        fileStream.Close();
 
-                    wp = new WebPartEntity();
-                    wp.WebPartXml = webPartString;
-                }
-            }
-            else if (ParameterSetName == "XML")
-            {
-                wp = new WebPartEntity();
-                wp.WebPartXml = Xml;
+                        wp = new WebPartEntity {WebPartXml = webPartString};
+                    }
+                    break;
+                case "XML":
+                    wp = new WebPartEntity {WebPartXml = Xml};
+                    break;
             }
             if (wp != null)
             {
-                this.SelectedWeb.AddWebPartToWikiPage(PageUrl, wp, Row, Column, AddSpace);
+                SelectedWeb.AddWebPartToWikiPage(PageUrl, wp, Row, Column, AddSpace);
             }
         }
     }
