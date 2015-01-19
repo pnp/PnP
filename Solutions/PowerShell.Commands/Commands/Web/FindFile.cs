@@ -17,7 +17,7 @@ PS:> Find-SPOFile -Match *.master
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(this.SelectedWeb.FindFiles(Match));
+            WriteObject(SelectedWeb.FindFiles(Match));
         }
     }
 }

@@ -24,11 +24,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if(Url == null)
             {
-                ClientContext.Load(this.SelectedWeb, w => w.Url);
+                ClientContext.Load(SelectedWeb, w => w.Url);
                 ClientContext.ExecuteQuery();
-                Url = this.SelectedWeb.Url;
+                Url = SelectedWeb.Url;
             }
-            this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+            SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
         }
 
     }

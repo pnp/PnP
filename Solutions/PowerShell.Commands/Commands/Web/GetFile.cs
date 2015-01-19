@@ -39,11 +39,11 @@ PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.s
                 {
                     Path = Directory.GetCurrentDirectory();
                 }
-                this.SelectedWeb.SaveFileToLocal(ServerRelativeUrl, Path, Filename);
+                SelectedWeb.SaveFileToLocal(ServerRelativeUrl, Path, Filename);
             }
             else
             {
-                WriteObject(this.SelectedWeb.GetFileAsString(ServerRelativeUrl));
+                WriteObject(SelectedWeb.GetFileAsString(ServerRelativeUrl));
             }
 
         }

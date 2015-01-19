@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            Folder folder = this.SelectedWeb.RootFolder;
+            var folder = this.SelectedWeb.RootFolder;
 
             ClientContext.Load(folder, f => f.WelcomePage);
 

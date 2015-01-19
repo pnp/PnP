@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
        
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.AddJsLink(Key, Url);
+            SelectedWeb.AddJsLink(Key, Url);
         }
     }
 }
