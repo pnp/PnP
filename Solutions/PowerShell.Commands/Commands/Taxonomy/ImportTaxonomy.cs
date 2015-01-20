@@ -24,7 +24,7 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         public string Path;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
-        public int LCID = 1033;
+        public int Lcid = 1033;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string TermStoreName;
@@ -32,8 +32,8 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string Delimiter = "|";
 
-        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "If specified, existing terms will be overwritten. Notice that this only works if you include term ids in your import data.")]
-        public SwitchParameter Force;
+        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "If specified, terms that exist in the termset, but are not in the imported data will be removed.")]
+        public SwitchParameter SynchronizeDeletions;
 
         protected override void ExecuteCmdlet()
         {
@@ -50,11 +50,11 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
                 var termStore = taxSession.TermStores.GetByName(TermStoreName);
-                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter, Force);
+                ClientContext.Site.ImportTerms(lines, Lcid, termStore, Delimiter, SynchronizeDeletions);
             }
             else
             {
-                ClientContext.Site.ImportTerms(lines, LCID, Delimiter, Force);
+                ClientContext.Site.ImportTerms(lines, Lcid, Delimiter, SynchronizeDeletions);
             }
         }
 
