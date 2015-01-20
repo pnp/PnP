@@ -26,7 +26,6 @@ namespace Microsoft.SharePoint.Client
         private const string WikiPage_ThreeColumnsHeader = @"<div class=""ExternalClassD1A150D6187F449B8A6C4BEA2D4913BB""><table id=""layoutsTable"" style=""width&#58;100%;""><tbody><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr></tbody></table><span id=""layoutsData"" style=""display&#58;none;"">true,false,3</span></div>";
         private const string WikiPage_ThreeColumnsHeaderFooter = @"<div class=""ExternalClass5849C2C61FEC44E9B249C60F7B0ACA38""><table id=""layoutsTable"" style=""width&#58;100%;""><tbody><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr></tbody></table><span id=""layoutsData"" style=""display&#58;none;"">true,true,3</span></div>";
 
-
         /// <summary>
         /// Returns the HTML contents of a wiki page
         /// </summary>
@@ -850,7 +849,6 @@ namespace Microsoft.SharePoint.Client
         {
             SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
         }
-        
 
         private static void SetWebPartPropertyInternal(this Web web, string key, object value, Guid id, string serverRelativePageUrl)
         {
@@ -945,7 +943,6 @@ namespace Microsoft.SharePoint.Client
             return def.WebPart.Properties;
         }
 
-
         /// <summary>
         /// Adds the publishing page.
         /// </summary>
@@ -1030,30 +1027,38 @@ namespace Microsoft.SharePoint.Client
             }
 
             ClientContext context = web.Context as ClientContext;
-            List spList = web.Lists.GetByTitle("Pages");
+
+            // Get the language agnostic pages library name
+            ClientResult<string> pagesLibraryName = Microsoft.SharePoint.Client.Utilities.Utility.GetLocalizedString(web.Context, "$Resources:List_Pages_UrlName", "cmscore.resx", (int)web.Language);
+            web.Context.ExecuteQuery();
+
+            List spList = web.Lists.GetByTitle(pagesLibraryName.Value);
             context.Load(spList);
             context.ExecuteQuery();
+
             if (spList != null && spList.ItemCount > 0)
             {
-
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
                 camlQuery.ViewXml = string.Format(@"<View>  
-                        <Query> 
-                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
-                        </Query> 
-                  </View>", fileLeafRef);
+                                                        <Query> 
+                                                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                                                        </Query> 
+                                                  </View>", fileLeafRef);
 
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
                 context.ExecuteQuery();
+
                 if (listItems.Count > 0)
                 {
                     PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
                     context.Load(page);
                     context.ExecuteQuery();
+
                     return page;
                 }
             }
+
             return null;
         }
     }
