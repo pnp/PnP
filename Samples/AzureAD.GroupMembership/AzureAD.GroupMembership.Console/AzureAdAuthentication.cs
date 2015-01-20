@@ -6,22 +6,31 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace AzureAD.GroupMembership
 {
     public static class AzureAdAuthentication
     {
         private const string AzureAdTenantLoginUrl = "https://login.windows.net/";
-        private const string GraphApiUrl = "https://graph.windows.net";
+        private const string AzureAdFederationUrl = "https://login.windows.net/{0}/FederationMetadata/2007-06/FederationMetadata.xml";
+        private const string GraphApiUrl = "https://graph.windows.net/";
 
-        public static ActiveDirectoryClient GetActiveDirectoryClientAsApplication(Uri sharePointAdminUrl)
+        public static string GetTenantId()
         {
-            Uri servicePointUri = new Uri("");
-            string adminRealm = "";
-            Uri serviceRoot = new Uri(servicePointUri, adminRealm);
+            string url = string.Format(AzureAdFederationUrl, ConfigurationManager.AppSettings["TenantUpnDomain"]);
+            var document = XDocument.Load(url);
+            var stsUri = document.Root.Attribute("entityID");
+            string tenantId = stsUri.Value.Substring(24, 36); //this line removes sts.windows.net
+            return tenantId;
+        }
 
-            ActiveDirectoryClient activeDirectoryClient = new ActiveDirectoryClient(serviceRoot,
-                async () => await AcquireApplicationTokenAsync());
+        public static ActiveDirectoryClient GetActiveDirectoryClientAsApplication()
+        {
+            var tenantId = GetTenantId();
+            Uri authenticationUri = new Uri(GraphApiUrl + tenantId);
+
+            ActiveDirectoryClient activeDirectoryClient = new ActiveDirectoryClient(authenticationUri, async () => await AcquireApplicationTokenAsync());
             return activeDirectoryClient;
         } 
 
@@ -35,7 +44,7 @@ namespace AzureAD.GroupMembership
                 ConfigurationManager.AppSettings["ClientId"],
                 ConfigurationManager.AppSettings["ClientSecret"]);
 
-            AuthenticationResult authenticationResult = authenticationContext.AcquireToken(
+            AuthenticationResult authenticationResult = await authenticationContext.AcquireTokenAsync(
                 GraphApiUrl,
                 clientCred);
 

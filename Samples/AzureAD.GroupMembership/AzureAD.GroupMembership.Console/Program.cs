@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
+using Microsoft.Azure.ActiveDirectory.GraphClient.Extensions;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,30 @@ namespace AzureAD.GroupMembership
         {
             try
             {
-                // setup Graph connection
-                GraphConnection graphConnection = SetupGraphConnection("");
+                //An example of building & authenticating the ActiveDirectoryClient 
+                ActiveDirectoryClient azureClient = AzureAdAuthentication.GetActiveDirectoryClientAsApplication();
 
-                // Check group memberships. Pass along UPN of user and displayname of 
-                // the group to be checked. API support checking multiple groups at once
-                Test(graphConnection, "kevinc@set1.bertonline.info", "executives");
-                Test(graphConnection, "frankm@set1.bertonline.info", "executives");
-                Test(graphConnection, "frankm@set1.bertonline.info", "employees");
+                //a sample of getting app groups
+                GetAllGroups(azureClient);
 
-                Console.WriteLine("Press enter to continue...");
-                Console.ReadLine();
+                //a sample showing how to get users, first 5 in this case
+                var users = GetUsers(azureClient);
+
+                //this sample lists all groups for a given user
+                foreach (var user in users.Result)
+                {
+                    GetAllGroupsForUser(azureClient, user);                    
+                }
+
+                //this sample checks if a user is in the "All Employees" group
+                foreach (var user in users.Result)
+                {
+                    var member = IsUserMemberOfGroup(azureClient, user, "All Employees");
+                    if (!member) Console.WriteLine("User is not in group");
+                }
+                
+                Console.WriteLine("Application finished. Press any key to continue...");
+                Console.ReadKey();
             }
             catch (AuthenticationException ex)
             {
@@ -42,71 +56,137 @@ namespace AzureAD.GroupMembership
                 Console.ReadKey();
                 return;
             }
-        }
-
-        private static void Test(GraphConnection graphConnection, string userUPN, string groupDisplayName)
-        {
-            Console.WriteLine("Is user {0} member of group {1}: {2}", userUPN, groupDisplayName, UserIsMemberOfGroup(graphConnection, userUPN, groupDisplayName));
-        }
-
-        private static bool UserIsMemberOfGroup(GraphConnection graphConnection, string userUPN, string groupDisplayName)
-        {
-            // Get the group for which we want to check membership
-            FilterGenerator filter = new FilterGenerator();
-            Expression filterExpression = ExpressionHelper.CreateEqualsExpression(typeof(Group), GraphProperty.DisplayName, groupDisplayName);
-            filter.QueryFilter = filterExpression;
-            PagedResults<Group> groupToCheckResults = graphConnection.List<Group>(null, filter);
-
-            if (groupToCheckResults.Results.Count == 1)
+            catch (Exception ex)
             {
-                // Add group to our groups to check list
-                Group groupToCheck = groupToCheckResults.Results[0] as Group;
-                IList<String> groupsList = new List<string>();
-                groupsList.Add(groupToCheck.ObjectId);
-
-                // Get the user for which we want to check the group membership
-                FilterGenerator userFilter = new FilterGenerator();
-                Expression userFilterExpression = ExpressionHelper.CreateEqualsExpression(typeof(User), GraphProperty.UserPrincipalName, userUPN);
-                userFilter.QueryFilter = userFilterExpression;
-                User retrievedUser = new User();
-                PagedResults<User> pagedUserResults = graphConnection.List<User>(null, userFilter);
-                if (pagedUserResults.Results.Count == 1)
-                {
-                    retrievedUser = pagedUserResults.Results[0] as User;
-
-                    // Check if the user belongs to any of the passed groups
-                    IList<String> memberships = graphConnection.CheckMemberGroups(retrievedUser, groupsList);
-
-                    // If the passed group is returned back then the user is a member
-                    if (memberships.Contains(groupToCheck.ObjectId))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    throw new ArgumentException(String.Format("Group {0} does not exist", groupDisplayName));
-                }
-            }
-            else
-            {
-                throw new ArgumentException(String.Format("User {0} does not exist", userUPN));
+                Console.WriteLine(ex.ToString());
+                Console.ReadKey();
             }
         }
 
-        private static GraphConnection SetupGraphConnection(string accessToken)
+
+        /// <summary>
+        /// Gets all groups for a given user
+        /// </summary>
+        /// <param name="azureClient">An authenticated ActiveDirectoryClient</param>
+        /// <param name="user">A resolved User object</param>
+        private static void GetAllGroupsForUser(ActiveDirectoryClient azureClient, IUser user)
         {
-            Guid ClientRequestId = Guid.NewGuid();
-            GraphSettings graphSettings = new GraphSettings();
-            graphSettings.ApiVersion = "2013-11-08";
-            graphSettings.GraphDomainName = "graph.windows.net";
-            return new GraphConnection(accessToken, ClientRequestId, graphSettings);
+            Console.WriteLine("");
+            Console.WriteLine("Listing groups for " + user.DisplayName);
+            IUserFetcher retrievedUserFetcher = (User)user;
+
+            //access through the MemberOf collection
+            IPagedCollection<IDirectoryObject> pagedCollection = retrievedUserFetcher.MemberOf.ExecuteAsync().Result; 
+            do 
+            { 
+                List<IDirectoryObject> directoryObjects = pagedCollection.CurrentPage.ToList(); 
+
+                foreach (IDirectoryObject directoryObject in directoryObjects) 
+                { 
+                    if (directoryObject is Group) 
+                    { 
+                        Group group = directoryObject as Group; 
+                        Console.WriteLine(" Group: {0}", group.DisplayName); 
+                        //add to parent collection if you need to extract them
+                    } 
+
+                    //removed to simplify 
+                    //if (directoryObject is DirectoryRole) 
+                    //{ 
+                    //    DirectoryRole role = directoryObject as DirectoryRole; 
+                    //    Console.WriteLine(" Role: {0}  Description: {1}", role.DisplayName, role.Description); 
+                    //} 
+                } 
+                pagedCollection = pagedCollection.GetNextPageAsync().Result; 
+
+            } while (pagedCollection != null && pagedCollection.MorePagesAvailable); 
+
         }
 
+        /// <summary>
+        /// A simple method that resolves the Id of a passed group display name
+        /// and checks if the passed user belongs to the group
+        /// </summary>
+        /// <param name="azureClient">ActiveDirectoryClient object</param>
+        /// <param name="user">Azure AD User object</param>
+        /// <param name="groupName">The display name of the group</param>
+        /// <returns>Yes if the user is a member of the group</returns>
+        private static bool IsUserMemberOfGroup(ActiveDirectoryClient azureClient, IUser user, string groupName)
+        {
+            Console.WriteLine("");
+            Console.WriteLine(String.Format("Checking if user {0} is member of '{1}' ", user.DisplayName, groupName));
 
+            //get group id
+            var groupId = azureClient.Groups.Where(g=>g.DisplayName == groupName).ExecuteSingleAsync().Result;
+
+            //check if group id is in Users groups
+            IUserFetcher retrievedUserFetcher = (User)user;
+            var groups = retrievedUserFetcher.CheckMemberGroupsAsync
+                (new List<string> { groupId.ObjectId }).Result.ToList();
+
+            if (groups.Count() > 0)
+            {
+                Console.WriteLine("User is in group " + groupName + " " + groups.FirstOrDefault());
+                return true;
+            }
+            else return false;
+
+        }
+
+        /// <summary>
+        /// This method demonstrates how to get all groups for a user with the pager logic
+        /// </summary>
+        /// <param name="azureClient">ActiveDirectoryClient object</param>
+        private static void GetAllGroups(ActiveDirectoryClient azureClient)
+        {
+            Console.WriteLine("Listing all groups...");
+
+            List<IGroup> groups = new List<IGroup>();
+            IPagedCollection<IGroup> pagedCollection = azureClient.Groups.ExecuteAsync().Result;
+
+            if (pagedCollection != null)
+            {
+                do //append pages to the list
+                {
+                    groups.AddRange(pagedCollection.CurrentPage.ToList());
+                    pagedCollection = pagedCollection.GetNextPageAsync().Result;
+                } while (pagedCollection != null && pagedCollection.MorePagesAvailable);
+            }
+
+            foreach (var group in groups)
+            {
+                Console.WriteLine("Group: " + group.DisplayName);
+            }
+        }
+
+        /// <summary>
+        /// This method illustrates how to get a list of users from AD
+        /// </summary>
+        /// <param name="azureClient">ActiveDirectoryClient object</param>
+        /// <returns></returns>
+        private static async Task<List<IUser>> GetUsers(ActiveDirectoryClient azureClient)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Listing top 5 users...");
+
+            List<IUser> users = new List<IUser>();
+            IPagedCollection<IUser> pagedCollection = await azureClient.Users.Take(5).ExecuteAsync();
+
+            if (pagedCollection != null)
+            {
+                do //append pages to the list
+                {
+                    users.AddRange(pagedCollection.CurrentPage.ToList());
+                    pagedCollection = await pagedCollection.GetNextPageAsync();
+                } while (pagedCollection != null && pagedCollection.MorePagesAvailable);
+            }
+
+            foreach (var user in users)
+            {
+                Console.WriteLine("User: " + user.DisplayName);
+            }
+
+            return users;
+        }
     }
 }
