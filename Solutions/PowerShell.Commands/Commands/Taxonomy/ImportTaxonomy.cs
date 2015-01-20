@@ -24,7 +24,7 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         public string Path;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
-        public int LCID = 1033;
+        public int Lcid = 1033;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string TermStoreName;
@@ -50,11 +50,11 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
                 var termStore = taxSession.TermStores.GetByName(TermStoreName);
-                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter, Force);
+                ClientContext.Site.ImportTerms(lines, Lcid, termStore, Delimiter, Force);
             }
             else
             {
-                ClientContext.Site.ImportTerms(lines, LCID, Delimiter, Force);
+                ClientContext.Site.ImportTerms(lines, Lcid, Delimiter, Force);
             }
         }
 
