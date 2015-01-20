@@ -850,7 +850,7 @@ namespace Microsoft.SharePoint.Client
         {
             SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
         }
-        
+
 
         private static void SetWebPartPropertyInternal(this Web web, string key, object value, Guid id, string serverRelativePageUrl)
         {
@@ -1030,22 +1030,31 @@ namespace Microsoft.SharePoint.Client
             }
 
             ClientContext context = web.Context as ClientContext;
-            List spList = web.Lists.GetByTitle("Pages");
+
+            // Get the language agnostic "Pages" library name
+            context.Load(web, l => l.Language);
+            context.ExecuteQuery();
+
+            ClientResult<string> pagesLibraryName = Microsoft.SharePoint.Client.Utilities.Utility.GetLocalizedString(context, "$Resources:List_Pages_UrlName", "cmscore", (int)web.Language);
+            context.ExecuteQuery();
+
+            List spList = web.Lists.GetByTitle(pagesLibraryName.Value);
             context.Load(spList);
             context.ExecuteQuery();
+
             if (spList != null && spList.ItemCount > 0)
             {
-
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
                 camlQuery.ViewXml = string.Format(@"<View>  
-                        <Query> 
-                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
-                        </Query> 
-                  </View>", fileLeafRef);
+                                                        <Query> 
+                                                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                                                        </Query> 
+                                                    </View>", fileLeafRef);
 
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
                 context.ExecuteQuery();
+
                 if (listItems.Count > 0)
                 {
                     PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
@@ -1054,6 +1063,7 @@ namespace Microsoft.SharePoint.Client
                     return page;
                 }
             }
+
             return null;
         }
     }
