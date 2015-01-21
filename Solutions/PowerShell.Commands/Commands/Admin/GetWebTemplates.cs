@@ -20,7 +20,6 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
     public class GetWebTemplates : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false)]
-        [Alias("LCID")]
         public uint Lcid;
 
         [Parameter(Mandatory = false)]
