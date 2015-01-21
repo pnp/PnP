@@ -65,7 +65,7 @@ namespace ECM.DocumentLibrariesWeb
                 using (var _ctx = _spContext.CreateUserClientContextForSPHost())
                 {
                     //TODO Change your application name
-                    _ctx.ApplicationName = "AMS ECM.DocumentLibraries";
+                    _ctx.ApplicationName = "ECM.DocumentLibraries";
                     ContentTypeManager _manager = new ContentTypeManager();
                     switch(_templateSelectedItem)
                     {
