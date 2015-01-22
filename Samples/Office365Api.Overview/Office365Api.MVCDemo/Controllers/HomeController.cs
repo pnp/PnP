@@ -112,7 +112,8 @@ namespace Office365Api.MVCDemo.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult> SendMail()
+        [HttpPost]
+        public async Task<ActionResult> SendMail(String targetEMail)
         {
             HomeViewModel model = new HomeViewModel();
 
@@ -121,7 +122,7 @@ namespace Office365Api.MVCDemo.Controllers
             authenticationHelper.EnsureAuthenticationContext(new ADALTokenCache(signInUserId));
 
             MailHelper mailHelper = new MailHelper(authenticationHelper);
-            await mailHelper.SendMail("paolo@pialorsi.com", "Let's Hack-A-Thon - Office365Api.MVCDemo", "This will be <B>fun...</B>");
+            await mailHelper.SendMail(targetEMail, "Let's Hack-A-Thon - Office365Api.MVCDemo", "This will be <B>fun...</B>");
             model.Office365ActionResult = "Email sent!";
 
             return View("UseOffice365API", model);
