@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Tests {
 
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]))
             {
-                Credentials = CredentialManager.GetCredential(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]);
+                Credentials = Core.Utilities.CredentialManager.GetSharePointOnlineCredential(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]);
             }
             else
             {
