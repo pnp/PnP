@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Office365Api.Helpers;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace Office365Api.Demo
 {
@@ -53,95 +55,74 @@ namespace Office365Api.Demo
             try
             {
                 PrintHeader("Authentication Phase");
-                AuthenticationHelper.Authenticate(this.Authority.Text);
+                AuthenticationHelper authenticationHelper = new AuthenticationHelper();
+                authenticationHelper.EnsureAuthenticationContext(this.Authority.Text);
 
                 PrintHeader("Discovery API demo");
-                var t = await DiscoveryAPISample.DiscoverMyFiles();
+                DiscoveryHelper discoveryHelper = new DiscoveryHelper(authenticationHelper);
+                var t = await discoveryHelper.DiscoverMyFiles();
                 PrintSubHeader("Current user information");
                 PrintAttribute("OneDrive URL", t.ServiceEndpointUri);
 
-                var t3 = await DiscoveryAPISample.DiscoverMail();
+                var t3 = await discoveryHelper.DiscoverMail();
                 PrintAttribute("Mail URL", t3.ServiceEndpointUri);
 
                 PrintHeader("Files API demo");
                 // Read all files on your onedrive
                 PrintSubHeader("List TOP 20 files and folders in the OneDrive");
 
-                var allMyFolders = await MyFilesApiSample.GetMyFolders();
+                MyFilesHelper myFilesHelper = new MyFilesHelper(authenticationHelper);
+                var allMyFolders = await myFilesHelper.GetMyFolders();
 
-                var allMyFiles = await MyFilesApiSample.GetMyFiles();
+                var allMyFiles = await myFilesHelper.GetMyFiles();
                 foreach (var item in allMyFiles.Take(20))
                 {
                     PrintAttribute("URL", item.WebUrl);
                 }
 
-                // upload a file to the "Shared with everyone" folder
+                // Upload a file to the "Shared with everyone" folder
                 PrintSubHeader("Upload a file to OneDrive");
                 if (allMyFolders.Any())
                 {
-                    await MyFilesApiSample.UploadFile(this.FileToUploadPath.Text, allMyFolders.First().Id);
+                    await myFilesHelper.UploadFile(this.FileToUploadPath.Text, allMyFolders.First().Id);
                 }
                 else
                 {
-                    await MyFilesApiSample.UploadFile(this.FileToUploadPath.Text);
+                    await myFilesHelper.UploadFile(this.FileToUploadPath.Text);
                 }
                 // Shared with everyone
 
-                // iterate over the "Shared with everyone" folder
+                // Iterate over the "Shared with everyone" folder
                 PrintSubHeader("List all files and folders in the Shared with everyone folder");
-                var myFiles = await MyFilesApiSample.GetMyFiles(allMyFolders.First().Id);
+                var myFiles = await myFilesHelper.GetMyFiles(allMyFolders.First().Id);
                 foreach (var item in myFiles)
                 {
                     PrintAttribute("URL", item.WebUrl);
                 }
 
-                // ***********************************************************
-                // Note from @PaoloPia: There is an issue, so far. Skip this
-                // sample method as long as it will not work properly
-                // Browse the SitesApiSample.GetDefaultDocumentFiles method
-                // for further details about the issue.
-                // ***********************************************************
-
-                //PrintHeader("Sites API demo");
-                //var mySharePointFiles = await SitesApiSample.GetDefaultDocumentFiles(this.SharePointTenantUri.Text, this.SiteCollectionUri.Text);
-                //foreach (var item in mySharePointFiles)
-                //{
-                //    PrintAttribute("URL", item.WebUrl);
-                //}
-
                 PrintHeader("Mail API demo");
-
-                // ***********************************************************
-                // Note from @PaoloPia: It looks like the mails stats method
-                // is no more available in Office365 API RTM. If you agree
-                // we should remove the following excerpt, which now 
-                // is commented out
-                // ***********************************************************
-
-                ////Get mail stats
-                //PrintSubHeader("List mail statistics");
-                //var mailStats = await MailApiSample.GetMailStats();
-                //PrintAttribute("Total number of emails", mailStats);
 
                 //Get mails
                 PrintSubHeader("Retrieve mails from INBOX");
-                var mails = await MailApiSample.GetMessages();
+                MailHelper mailHelper = new MailHelper(authenticationHelper);
+                var mails = await mailHelper.GetMessages();
                 PrintSubHeader(String.Format("Printing TOP 10 mails of {0}", mails.Count()));
                 foreach (var item in mails.Take(10))
                 {
-                    PrintAttribute("From", String.Format("{0} / {1}", item.From != null ? item.From.EmailAddress.Address : "", item.Subject));
+                    PrintAttribute("From ", String.Format("{0} / {1}", item.From != null ? item.From.EmailAddress.Address : "", item.Subject));
                 }
 
                 //Send mail
                 PrintSubHeader("Send a mail");
-                await MailApiSample.SendMail(this.MailAddressTo.Text, "Let's Hack-A-Thon", "This will be <B>fun...</B>");
+                await mailHelper.SendMail(this.MailAddressTo.Text, "Let's Hack-A-Thon - Office365Api.Demo", "This will be <B>fun...</B>");
 
                 //Create message in drafts folder
                 PrintSubHeader("Store a mail in the drafts folder");
-                await MailApiSample.DraftMail(this.MailAddressTo.Text, "Let's Hack-A-Thon", "This will be fun (in draft folder)...");
+                await mailHelper.DraftMail(this.MailAddressTo.Text, "Let's Hack-A-Thon - Office365Api.Demo", "This will be fun (in draft folder)...");
 
                 PrintHeader("Active Directory API demo");
-                var allADUsers = await ActiveDirectoryApiSample.GetUsers();
+                ActiveDirectoryHelper activeDirectoryHelper = new ActiveDirectoryHelper(authenticationHelper);
+                var allADUsers = await activeDirectoryHelper.GetUsers();
                 PrintSubHeader(String.Format("Printing TOP 10 users of {0}", allADUsers.Count()));
                 foreach (var user in allADUsers.Take(10))
                 {

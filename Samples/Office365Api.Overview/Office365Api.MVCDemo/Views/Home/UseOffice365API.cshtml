@@ -1,0 +1,50 @@
+﻿@model Office365Api.MVCDemo.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Use Office 365 API";
+}
+
+<div class="jumbotron">
+    <h1>Office 365 API</h1>
+    <p class="lead">This page shows you some results from the Office 365 API.</p>
+</div>
+
+<div class="row">
+    <div class="row">
+        <h2>List of TOP 10 My Files in OneDrive for Business</h2>
+        <p></p>
+        <p>@Html.ActionLink("List My Files", "ListMyFiles", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="row">
+        <h2>List of TOP 10 Contacts</h2>
+        <p></p>
+        <p>@Html.ActionLink("List Contacts", "ListMyContacts", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="row">
+        <h2>List of TOP 10 emails in Inbox</h2>
+        <p></p>
+        <p>@Html.ActionLink("List Messages", "ListMyMessages", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="row">
+        <h2>Send a mail Message as Current User</h2>
+        <p></p>
+        <p>@Html.ActionLink("Send Mail", "SendMail", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>
+
+@if (Model != null)
+{
+    <h1>@Model.Office365ActionResult</h1>
+    <p>
+        @if (Model.Items.Count > 0)
+        {
+            <ul>
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+                    <li>@item</li>
+                }
+            </ul>
+        }
+    </p>
+}
