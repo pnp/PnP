@@ -168,6 +168,7 @@
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
     <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="Enums\CredentialType.cs" />
     <Compile Include="Enums\FeatureScope.cs" />
     <Compile Include="Enums\NavigationNodeTypeEnum.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
