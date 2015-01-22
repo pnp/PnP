@@ -28,7 +28,7 @@
     @using (Html.BeginForm("SendMail", "Home", FormMethod.Post))
     {    <div class="row">
             <h2>Send a mail Message as Current User</h2>
-            <p>To: <input type="text" value="[target-email]" name="targetEMail" id="targetEMail" width="30" /></p>
+            <p>To: <input type="text" value=@(Model != null ? Model.TargetEMail : "[target-email]") name="targetEMail" id="targetEMail" width="30" /></p>
             <p><input type="submit" value="Send Mail" class="btn btn-default" /></p>
         </div>
     }

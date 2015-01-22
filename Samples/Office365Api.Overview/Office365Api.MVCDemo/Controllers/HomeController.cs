@@ -117,6 +117,8 @@ namespace Office365Api.MVCDemo.Controllers
         {
             HomeViewModel model = new HomeViewModel();
 
+            model.TargetEMail = targetEMail;
+
             var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
             AuthenticationHelper authenticationHelper = new AuthenticationHelper();
             authenticationHelper.EnsureAuthenticationContext(new ADALTokenCache(signInUserId));

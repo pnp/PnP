@@ -10,11 +10,14 @@ namespace Office365Api.MVCDemo.Models
         public HomeViewModel()
         {
             this.Office365ActionResult = String.Empty;
+            this.TargetEMail = "[target-email]";
             this.Items = new List<String>();
         }
 
         public String Office365ActionResult { get; set; }
 
         public List<String> Items { get; set; }
+
+        public String TargetEMail { get; set; }
     }
 }

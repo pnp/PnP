@@ -111,12 +111,12 @@ You will be redirected back to the web application. And you will have the confir
 
 Now you can click the "Office 365 API" menu item. You will see the following page:
 
-![](http://i.imgur.com/Way4HSX.png)
+![](http://i.imgur.com/24DwisF.png)
 
 Press each of the buttons, in order to play with the capabilites demonstrated by the web application.
 Here you can see the sample result of pressing the "Send Mail" button.
 
-![](http://i.imgur.com/v2chLzs.png)
+![](http://i.imgur.com/9BpMZZG.png)
 
 
 ----------
