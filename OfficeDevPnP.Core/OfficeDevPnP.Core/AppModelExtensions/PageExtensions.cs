@@ -26,7 +26,6 @@ namespace Microsoft.SharePoint.Client
         private const string WikiPage_ThreeColumnsHeader = @"<div class=""ExternalClassD1A150D6187F449B8A6C4BEA2D4913BB""><table id=""layoutsTable"" style=""width&#58;100%;""><tbody><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr></tbody></table><span id=""layoutsData"" style=""display&#58;none;"">true,false,3</span></div>";
         private const string WikiPage_ThreeColumnsHeaderFooter = @"<div class=""ExternalClass5849C2C61FEC44E9B249C60F7B0ACA38""><table id=""layoutsTable"" style=""width&#58;100%;""><tbody><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td><td class=""ms-wiki-columnSpacing"" style=""width&#58;33.3%;""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr><tr style=""vertical-align&#58;top;""><td colspan=""3""><div class=""ms-rte-layoutszone-outer"" style=""width&#58;100%;""><div class=""ms-rte-layoutszone-inner"" role=""textbox"" aria-haspopup=""true"" aria-autocomplete=""both"" aria-multiline=""true""></div>&#160;</div></td></tr></tbody></table><span id=""layoutsData"" style=""display&#58;none;"">true,true,3</span></div>";
 
-
         /// <summary>
         /// Returns the HTML contents of a wiki page
         /// </summary>
@@ -851,7 +850,6 @@ namespace Microsoft.SharePoint.Client
             SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
         }
 
-
         private static void SetWebPartPropertyInternal(this Web web, string key, object value, Guid id, string serverRelativePageUrl)
         {
             if (string.IsNullOrEmpty(key))
@@ -945,7 +943,6 @@ namespace Microsoft.SharePoint.Client
             return def.WebPart.Properties;
         }
 
-
         /// <summary>
         /// Adds the publishing page.
         /// </summary>
@@ -964,21 +961,26 @@ namespace Microsoft.SharePoint.Client
                   ? new ArgumentNullException("pageName")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageName");
             }
+
             if (string.IsNullOrEmpty(pageTemplateName))
             {
                 throw (title == null)
                   ? new ArgumentNullException("pageTemplateName")
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "pageTemplateName");
             }
+
             if (string.IsNullOrEmpty(title))
             {
                 title = pageName;
             }
+
             pageName = pageName.ReplaceInvalidUrlChars("-");
+
             ClientContext context = web.Context as ClientContext;
             Site site = context.Site;
             context.Load(site, s => s.ServerRelativeUrl);
             context.ExecuteQuery();
+            
             File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
                 UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
                 pageTemplateName));
@@ -993,14 +995,18 @@ namespace Microsoft.SharePoint.Client
                 Name = string.Format("{0}.aspx", pageName),
                 PageLayoutListItem = pageLayoutItem
             });
+            
             //Get parent list of item, this way we can handle all languages
             List pagesLibrary = page.ListItem.ParentList;
             context.Load(pagesLibrary);
             context.ExecuteQuery();
+            
             ListItem pageItem = page.ListItem;
             pageItem["Title"] = title;
             pageItem.Update();
+            
             pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+
             if (publish)
             {
                 pageItem.File.Publish(String.Empty);
@@ -1045,7 +1051,7 @@ namespace Microsoft.SharePoint.Client
             if (spList != null && spList.ItemCount > 0)
             {
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
-                camlQuery.ViewXml = string.Format(@"<View>  
+                camlQuery.ViewXml = string.Format(@"<View Scope='RecursiveAll'>  
                                                         <Query> 
                                                            <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
                                                         </Query> 
@@ -1065,6 +1071,96 @@ namespace Microsoft.SharePoint.Client
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Check out the publishing page
+        /// </summary>
+        /// <param name="web">SharePoint site</param>
+        /// <param name="publishingPage">Publishing page to check out</param>
+        public static void CheckOutPublishingPage(this Web web, PublishingPage publishingPage)
+        {
+            ListItem pageItem = publishingPage.ListItem;
+
+            web.Context.Load(pageItem.File);
+            web.Context.ExecuteQuery();
+
+            // Check out the page
+            if (pageItem.File.CheckOutType == CheckOutType.None)
+            {
+                pageItem.File.CheckOut();
+                web.Context.ExecuteQuery();
+            }
+        }
+
+        /// <summary>
+        /// Check in the publishing page
+        /// </summary>
+        /// <param name="web">SharePoint site</param>
+        /// <param name="publishingPage">Publishing page to check in</param>
+        /// <param name="checkInComment">Comment for page check in</param>
+        /// <param name="publish">True, to publish page</param>
+        /// <param name="publishComment">Comment for publishing</param>
+        /// <param name="checkInType">Type of check in</param>
+        /// <param name="approve">True, to approve page</param>
+        /// <param name="approvalComment">Approval comment</param>
+        public static void CheckInPublishingPage(this Web web, PublishingPage publishingPage, string checkInComment = "", bool publish = true, string publishComment = "", CheckinType checkInType = CheckinType.MajorCheckIn, bool approve = true, string approvalComment = "")
+        {
+            ListItem pageItem = publishingPage.ListItem;
+
+            // Check in and publish the page
+            pageItem.File.CheckIn(checkInComment, checkInType);
+            web.Context.ExecuteQuery();
+
+            if (publish)
+            {
+                pageItem.File.Publish(publishComment);
+                web.Context.ExecuteQuery();
+            }
+
+            if (approve)
+            {
+                // Get parent list of item, this way we can handle all languages
+                List pagesLibrary = pageItem.File.ListItemAllFields.ParentList;
+                web.Context.Load(pagesLibrary);
+                web.Context.ExecuteQuery();
+
+                if (pagesLibrary.EnableModeration)
+                {
+                    pageItem.File.Approve(approvalComment);
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add web parts to the publishing page
+        /// </summary>
+        /// <param name="web">SharePoint web</param>
+        /// <param name="pageUrl">Publishing page url</param>
+        /// <param name="webPartsToAdd">List of web parts to add to the page</param>
+        public static void AddWebPartsToPublishingPage(this Web web, string pageUrl, List<WebPartEntity> webPartsToAdd)
+        {
+            if (webPartsToAdd.Count == 0)
+            {
+                return;
+            }
+
+            // Get only page name (as last part of url)
+            var pageName = pageUrl.LastIndexOf("/") > 0 ? pageUrl.Substring(pageUrl.LastIndexOf('/') + 1) : pageUrl;
+            PublishingPage publishingPage = GetPublishingPage(web, pageName);
+
+            // Check out the publishing page
+            CheckOutPublishingPage(web, publishingPage);
+
+            // Add web parts to the publishing page
+            foreach (WebPartEntity webPart in webPartsToAdd)
+            {
+                web.AddWebPartToWebPartPage(pageUrl, webPart);
+            }
+
+            // Check in the publishing page
+            CheckInPublishingPage(web, publishingPage);
         }
     }
 }
