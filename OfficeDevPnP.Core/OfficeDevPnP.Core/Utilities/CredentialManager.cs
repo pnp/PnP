@@ -4,39 +4,60 @@ using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
-namespace OfficeDevPnP.Core.Tests
+namespace OfficeDevPnP.Core.Utilities
 {
-    internal static class CredentialManager
+    public static class CredentialManager
     {
 
-        public static Microsoft.SharePoint.Client.SharePointOnlineCredentials GetCredential(string Name)
+        /// <summary>
+        /// Returns a SharePoint Online Credential given a certain name. Add the credential in the Windows Credential Manager and create a new Windows Credential. Then add a new GENERIC Credential. The name parameter in the method maps to the Internet or network address field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Microsoft.SharePoint.Client.SharePointOnlineCredentials</returns>
+        public static SharePointOnlineCredentials GetSharePointOnlineCredential(string name)
         {
-            Microsoft.SharePoint.Client.SharePointOnlineCredentials credential = null;
+            var networkCredential = GetCredential(name);
+
+            var credential = new SharePointOnlineCredentials(networkCredential.UserName,networkCredential.SecurePassword);
+
+            return credential;
+        }
+
+        /// <summary>
+        /// Returns a NetworkCredential given a certain name. Add the credential in the Windows Credential Manager and create a new Windows Credential. Then add a new GENERIC Credential. The name parameter in the method maps to the Internet or network address field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>System.Net.NetworkCredential</returns>
+        public static NetworkCredential GetCredential(string name)
+        {
+            NetworkCredential credential = null;
             IntPtr credPtr;
 
-            bool success = CredRead(Name, CRED_TYPE.GENERIC, 0, out credPtr);
+            var success = NativeMethods.CredRead(name, CRED_TYPE.GENERIC, 0, out credPtr);
             if (success)
             {
                 var critCred = new CriticalCredentialHandle(credPtr);
                 var cred = critCred.GetCredential();
                 var username = cred.UserName;
                 var securePassword = new SecureString();
-                string credentialBlob = cred.CredentialBlob;
-                char[] passwordChars = credentialBlob.ToCharArray();
-                foreach (char c in passwordChars)
+                var credentialBlob = cred.CredentialBlob;
+                var passwordChars = credentialBlob.ToCharArray();
+                foreach (var c in passwordChars)
                 {
                     securePassword.AppendChar(c);
                 }
-                credential = new Microsoft.SharePoint.Client.SharePointOnlineCredentials(username, securePassword);
+                credential = new NetworkCredential(username, securePassword);
             }
             return credential;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        public struct NativeCredential
+        private struct NativeCredential
         {
             public UInt32 Flags;
             public CRED_TYPE Type;
@@ -53,7 +74,7 @@ namespace OfficeDevPnP.Core.Tests
 
             internal static NativeCredential GetNativeCredential(Credential cred)
             {
-                NativeCredential ncred = new NativeCredential();
+                var ncred = new NativeCredential();
                 ncred.AttributeCount = 0;
                 ncred.Attributes = IntPtr.Zero;
                 ncred.Comment = IntPtr.Zero;
@@ -66,10 +87,11 @@ namespace OfficeDevPnP.Core.Tests
                 ncred.UserName = Marshal.StringToCoTaskMemUni(System.Environment.UserName);
                 return ncred;
             }
-        }
+
+           }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        public struct Credential
+        private struct Credential
         {
             public UInt32 Flags;
             public CRED_TYPE Type;
@@ -85,7 +107,7 @@ namespace OfficeDevPnP.Core.Tests
             public string UserName;
         }
 
-        public enum CRED_TYPE : uint
+        private enum CRED_TYPE : uint
         {
             GENERIC = 1,
             DOMAIN_PASSWORD = 2,
@@ -97,7 +119,7 @@ namespace OfficeDevPnP.Core.Tests
             MAXIMUM_EX = (MAXIMUM + 1000),  // Allow new applications to run on old OSes
         }
 
-        public class CriticalCredentialHandle : Microsoft.Win32.SafeHandles.CriticalHandleZeroOrMinusOneIsInvalid
+        private class CriticalCredentialHandle : Microsoft.Win32.SafeHandles.CriticalHandleZeroOrMinusOneIsInvalid
         {
             public CriticalCredentialHandle(IntPtr preexistingHandle)
             {
@@ -108,9 +130,9 @@ namespace OfficeDevPnP.Core.Tests
             {
                 if (!IsInvalid)
                 {
-                    NativeCredential ncred = (NativeCredential)Marshal.PtrToStructure(handle,
+                    var ncred = (NativeCredential)Marshal.PtrToStructure(handle,
                           typeof(NativeCredential));
-                    Credential cred = new Credential();
+                    var cred = new Credential();
                     cred.CredentialBlobSize = ncred.CredentialBlobSize;
                     cred.CredentialBlob = Marshal.PtrToStringUni(ncred.CredentialBlob,
                           (int)ncred.CredentialBlobSize / 2);
@@ -132,7 +154,7 @@ namespace OfficeDevPnP.Core.Tests
             {
                 if (!IsInvalid)
                 {
-                    CredFree(handle);
+                    NativeMethods.CredFree(handle);
                     SetHandleAsInvalid();
                     return true;
                 }
@@ -140,10 +162,13 @@ namespace OfficeDevPnP.Core.Tests
             }
         }
 
-        [DllImport("Advapi32.dll", EntryPoint = "CredReadW", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern bool CredRead(string target, CRED_TYPE type, int reservedFlag, out IntPtr CredentialPtr);
+        private static class NativeMethods
+        {
+            [DllImport("Advapi32.dll", EntryPoint = "CredReadW", CharSet = CharSet.Unicode, SetLastError = true)]
+            public static extern bool CredRead(string target, CRED_TYPE type, int reservedFlag, out IntPtr CredentialPtr);
 
-        [DllImport("Advapi32.dll", EntryPoint = "CredFree", SetLastError = true)]
-        public static extern bool CredFree([In] IntPtr cred);
+            [DllImport("Advapi32.dll", EntryPoint = "CredFree", SetLastError = true)]
+            public static extern bool CredFree([In] IntPtr cred);
+        }
     }
 }
