@@ -7,6 +7,7 @@ using System.Security;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -17,10 +18,24 @@ namespace OfficeDevPnP.Core.Utilities
         /// Returns a SharePoint Online Credential given a certain name. Add the credential in the Windows Credential Manager and create a new Windows Credential. Then add a new GENERIC Credential. The name parameter in the method maps to the Internet or network address field.
         /// </summary>
         /// <param name="name"></param>
-        /// <returns></returns>
-        public static Microsoft.SharePoint.Client.SharePointOnlineCredentials GetSharePointOnlineCredential(string name)
+        /// <returns>Microsoft.SharePoint.Client.SharePointOnlineCredentials</returns>
+        public static SharePointOnlineCredentials GetSharePointOnlineCredential(string name)
         {
-            Microsoft.SharePoint.Client.SharePointOnlineCredentials credential = null;
+            var networkCredential = GetCredential(name);
+
+            var credential = new SharePointOnlineCredentials(networkCredential.UserName,networkCredential.SecurePassword);
+
+            return credential;
+        }
+
+        /// <summary>
+        /// Returns a NetworkCredential given a certain name. Add the credential in the Windows Credential Manager and create a new Windows Credential. Then add a new GENERIC Credential. The name parameter in the method maps to the Internet or network address field.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>System.Net.NetworkCredential</returns>
+        public static NetworkCredential GetCredential(string name)
+        {
+            NetworkCredential credential = null;
             IntPtr credPtr;
 
             var success = NativeMethods.CredRead(name, CRED_TYPE.GENERIC, 0, out credPtr);
@@ -36,13 +51,13 @@ namespace OfficeDevPnP.Core.Utilities
                 {
                     securePassword.AppendChar(c);
                 }
-                credential = new Microsoft.SharePoint.Client.SharePointOnlineCredentials(username, securePassword);
+                credential = new NetworkCredential(username, securePassword);
             }
             return credential;
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        private struct NativeCredential : IDisposable
+        private struct NativeCredential
         {
             public UInt32 Flags;
             public CRED_TYPE Type;
@@ -73,11 +88,7 @@ namespace OfficeDevPnP.Core.Utilities
                 return ncred;
             }
 
-            public void Dispose()
-            {
-                
-            }
-        }
+           }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct Credential
