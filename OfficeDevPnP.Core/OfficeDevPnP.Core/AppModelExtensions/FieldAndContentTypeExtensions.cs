@@ -592,10 +592,17 @@ namespace Microsoft.SharePoint.Client
         public static void AddContentTypeToList(this List list, ContentType contentType, bool defaultContent = false)
         {
             if (contentType == null)
+            {
                 throw new ArgumentNullException("contentType");
+            }
 
             if (list.ContentTypeExistsById(contentType.Id.StringValue))
+            {
                 return;
+            }
+
+            list.Context.Load(list, l => l.ContentTypesEnabled);
+            list.Context.ExecuteQuery();
 
             list.ContentTypesEnabled = true;
             list.Update();
@@ -603,7 +610,8 @@ namespace Microsoft.SharePoint.Client
 
             list.ContentTypes.AddExistingContentType(contentType);
             list.Context.ExecuteQuery();
-            //set the default content type
+
+            // Set the default content type
             if (defaultContent)
             {
                 SetDefaultContentTypeToList(list, contentType);
@@ -851,7 +859,12 @@ namespace Microsoft.SharePoint.Client
         public static bool ContentTypeExistsById(this List list, string contentTypeId)
         {
             if (string.IsNullOrEmpty(contentTypeId))
+            {
                 throw new ArgumentNullException("contentTypeId");
+            }
+
+            list.Context.Load(list, l => l.ContentTypesEnabled);
+            list.Context.ExecuteQuery();
 
             if (!list.ContentTypesEnabled)
             {
@@ -869,6 +882,7 @@ namespace Microsoft.SharePoint.Client
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -900,7 +914,12 @@ namespace Microsoft.SharePoint.Client
         public static bool ContentTypeExistsByName(this List list, string contentTypeName)
         {
             if (string.IsNullOrEmpty(contentTypeName))
+            {
                 throw new ArgumentNullException("contentTypeName");
+            }
+
+            list.Context.Load(list, l => l.ContentTypesEnabled);
+            list.Context.ExecuteQuery();
 
             if (!list.ContentTypesEnabled)
             {
@@ -910,6 +929,7 @@ namespace Microsoft.SharePoint.Client
             ContentTypeCollection ctCol = list.ContentTypes;
             IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
             list.Context.ExecuteQuery();
+
             if (results.FirstOrDefault() != null)
             {
                 return true;
