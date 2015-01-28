@@ -656,8 +656,11 @@ namespace Microsoft.SharePoint.Client
                 return;
             }
 
-            list.Context.Load(list, l => l.ContentTypesEnabled);
-            list.Context.ExecuteQuery();
+            if (!list.IsPropertyAvailable("ContentTypesEnabled"))
+            {
+                list.Context.Load(list, l => l.ContentTypesEnabled);
+                list.Context.ExecuteQuery();
+            }
 
             list.ContentTypesEnabled = true;
             list.Update();
@@ -941,8 +944,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeId");
             }
 
-            list.Context.Load(list, l => l.ContentTypesEnabled);
-            list.Context.ExecuteQuery();
+            if (!list.IsPropertyAvailable("ContentTypesEnabled"))
+            {
+                list.Context.Load(list, l => l.ContentTypesEnabled);
+                list.Context.ExecuteQuery();
+            }
 
             if (!list.ContentTypesEnabled)
             {
@@ -1000,8 +1006,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeName");
             }
 
-            list.Context.Load(list, l => l.ContentTypesEnabled);
-            list.Context.ExecuteQuery();
+            if (!list.IsPropertyAvailable("ContentTypesEnabled"))
+            {
+                list.Context.Load(list, l => l.ContentTypesEnabled);
+                list.Context.ExecuteQuery();
+            }
 
             if (!list.ContentTypesEnabled)
             {
