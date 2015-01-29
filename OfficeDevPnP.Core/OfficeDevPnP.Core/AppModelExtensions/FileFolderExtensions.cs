@@ -668,9 +668,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFile(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
         {
-            LoggingUtility.Internal.TraceVerbose("UploadFile [{0}] to folder [{1}] - overwriteIfExists: {2}", fileName, folder.ServerRelativeUrl, overwriteIfExists);
-
-            if (fileName == null) 
+           if (fileName == null) 
             {
                 throw new ArgumentNullException("fileName"); 
             }
@@ -1010,7 +1008,6 @@ namespace Microsoft.SharePoint.Client
                             throw;
                         }
                     }
-                    //LoggingUtility.Internal.TraceVerbose("*** ForceCheckout2 {0}", checkOutRequired, approvalRequired);
 
                     if (checkOutRequired && file.CheckOutType == CheckOutType.None)
                     {
@@ -1074,7 +1071,6 @@ namespace Microsoft.SharePoint.Client
                         throw;
                     }
                 }
-                //LoggingUtility.Internal.TraceVerbose("*** EnableMinorVerions {0}. EnableModeration {1}", publishingRequired, approvalRequired);
 
                 if (file.CheckOutType != CheckOutType.None || checkOutRequired)
                 {
