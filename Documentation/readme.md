@@ -8,6 +8,9 @@ This folder contains the following documentation:
     *  address search customization scenarios
     *  customize enterprise content management 
     *  create composite business applications
+    *  provide localization
+    *  work with user profile properties
+
 
 ### Note ###
 If you are looking for documentation on how to contribute and use the Patterns and Practices guidance, check our project wiki at https://github.com/OfficeDev/PnP/wiki

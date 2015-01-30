@@ -434,6 +434,30 @@ namespace Microsoft.SharePoint.Client.Tests
                 CollectionAssert.AreEqual(expectedIds, actualIds);
             }
         }
+
+        [TestMethod]
+        public void CreateContentTypeByXmlTest()
+        {
+            var xml = @"<ContentType ID=""0x0101000728167cd9c94899925ba69c4af6743e"" Name=""Test_NewContentType"" Group=""Test Group"" Description=""Text Content Type"" Inherits=""TRUE"" Version=""0"">
+    <FieldRefs>
+      <!--  Built-in Title field -->
+      <FieldRef ID=""{fa564e0f-0c70-4ab9-b863-0177e6ddd247}"" Name=""Title"" DisplayName=""Test"" Required=""TRUE"" Sealed=""TRUE""/>
+    </FieldRefs>
+  </ContentType>";
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+                var ct = web.CreateContentTypeFromXMLString(xml);
+                Assert.IsNotNull(ct);
+                clientContext.Load(ct.FieldLinks);
+                clientContext.ExecuteQuery();                
+                Assert.IsTrue(ct.FieldLinks.Count == 8); // Includes default fields
+
+                ct.DeleteObject();
+                clientContext.ExecuteQuery();
+            }
+
+        }
         #endregion
 
         #region Helper methods

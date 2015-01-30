@@ -17,11 +17,11 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var actions = this.SelectedWeb.GetCustomActions();
+            var actions = SelectedWeb.GetCustomActions();
 
             if (Identity != null)
             {
-                var foundAction = actions.Where(x => x.Id == Identity.Id).FirstOrDefault();
+                var foundAction = actions.FirstOrDefault(x => x.Id == Identity.Id);
                 WriteObject(foundAction);
             }
             else

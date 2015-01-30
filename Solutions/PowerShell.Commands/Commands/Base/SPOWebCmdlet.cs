@@ -14,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public WebPipeBind Web = new WebPipeBind();
 
-        internal Microsoft.SharePoint.Client.Web SelectedWeb
+        internal Web SelectedWeb
         {
             get
             {
@@ -26,20 +26,20 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
         }
 
-        private Microsoft.SharePoint.Client.Web GetWeb()
+        private Web GetWeb()
         {
-            Microsoft.SharePoint.Client.Web web = ClientContext.Web;
+            Web web = ClientContext.Web;
 
             if (Web.Id != Guid.Empty)
             {
                 web = web.GetWebById(Web.Id);
-                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else if (!string.IsNullOrEmpty(Web.Url))
             {
                 web = web.GetWebByUrl(Web.Url);
-                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else if (Web.Web != null)
@@ -50,7 +50,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     ClientContext.Load(web, w => w.Url);
                     ClientContext.ExecuteQuery();
                 }
-                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else
@@ -58,7 +58,6 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
                 {
                     SPOnlineConnection.CurrentConnection.RestoreCachedContext();
-                    //SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(SPOnlineConnection.CurrentConnection.Url);
                 }
                 web = ClientContext.Web;
             }
@@ -69,6 +68,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void EndProcessing()
         {
+            base.EndProcessing();
             if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
             {
                 SPOnlineConnection.CurrentConnection.RestoreCachedContext();
@@ -77,6 +77,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void BeginProcessing()
         {
+            base.BeginProcessing();
             SPOnlineConnection.CurrentConnection.CacheContext();
         }
 

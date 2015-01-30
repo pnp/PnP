@@ -22,7 +22,7 @@ PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing S
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
+            SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
         }
     }
 }

@@ -1,7 +1,7 @@
-# OFFICE AMS: ONEDRIVE FOR BUSINESS BRANDING CUSTOMIZATION #
+# ONEDRIVE FOR BUSINESS BRANDING CUSTOMIZATION #
 
 ### Summary ###
-This sample demonstrates how to perform taxonomy related operations.
+This sample demonstrates how to access an end-user's OneDrive for Business site and apply custom branding to it automatically.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -16,7 +16,7 @@ Contoso.Core.OneDriveCustomizer | Vesa Juvonen, Bert Jansen, Frank Marasco (Micr
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | 5-MAY-2014 | Initial release
+1.0  | May 5th 2014 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -80,7 +80,3 @@ Now we need to grant permissions to the app principal.  You will have to navigat
 </AppPermissionRequests>
 ```
 
-## DEPENDENCIES ##
-•	Microsoft.SharePoint.Client.dll
-•	Microsoft.SharePoint.Client.Runtime.dll
-•	Microsoft.SharePoint.Client.UserProfiles

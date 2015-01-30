@@ -38,11 +38,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Field.Id != Guid.Empty)
                 {
-                    field = this.SelectedWeb.Fields.GetById(Field.Id);
+                    field = SelectedWeb.Fields.GetById(Field.Id);
                 }
                 else if (!string.IsNullOrEmpty(Field.Name))
                 {
-                    field = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
+                    field = SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
                 }
                 ClientContext.Load(field);
                 ClientContext.ExecuteQuery();
@@ -51,23 +51,23 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (ContentType.ContentType != null)
                 {
-                    this.SelectedWeb.AddFieldToContentType(ContentType.ContentType, field, Required, Hidden);
+                    SelectedWeb.AddFieldToContentType(ContentType.ContentType, field, Required, Hidden);
                 }
                 else
                 {
                     ContentType ct = null;
                     if (!string.IsNullOrEmpty(ContentType.Id))
                     {
-                        ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                        ct = SelectedWeb.GetContentTypeById(ContentType.Id);
                       
                     }
                     else
                     {
-                        ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                        ct = SelectedWeb.GetContentTypeByName(ContentType.Name);
                     }
                     if (ct != null)
                     {
-                        this.SelectedWeb.AddFieldToContentType(ct, field, Required, false);
+                        SelectedWeb.AddFieldToContentType(ct, field, Required, false);
                     }
                 }
             }

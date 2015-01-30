@@ -60,7 +60,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         protected override void ProcessRecord()
         {
             // Turn off OfficeDev.PnP.Core logging to console for powershell commands
-            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Listeners.Clear();
+            LoggingUtility.Internal.Source.Listeners.Clear();
             
             PSCredential creds = null;
             if (Credentials != null)
@@ -76,7 +76,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 if (!CurrentCredentials && creds == null)
                 {
-                    creds = this.Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                    creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, this.Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }

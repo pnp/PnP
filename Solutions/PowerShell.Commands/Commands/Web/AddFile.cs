@@ -38,13 +38,13 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
-            if (!this.SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                ClientContext.Load(this.SelectedWeb, w => w.ServerRelativeUrl);
+                ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
                 ClientContext.ExecuteQuery();
             }
 
-            Folder folder = this.SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(this.SelectedWeb.ServerRelativeUrl, Folder));
+            var folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
             ClientContext.Load(folder, f => f.ServerRelativeUrl);
             ClientContext.ExecuteQuery();
 
@@ -56,10 +56,10 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
             {
                 try
                 {
-                    var existingFile = this.SelectedWeb.GetFileByServerRelativeUrl(fileUrl);
+                    var existingFile = SelectedWeb.GetFileByServerRelativeUrl(fileUrl);
                     if (existingFile.Exists)
                     {
-                        this.SelectedWeb.CheckOutFile(fileUrl);
+                        SelectedWeb.CheckOutFile(fileUrl);
                     }
                 }
                 catch
@@ -70,13 +70,13 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
             folder.UploadFile(new System.IO.FileInfo(Path).Name, Path, true);
 
             if (Checkout)
-                this.SelectedWeb.CheckInFile(fileUrl, CheckinType.MajorCheckIn, "");
+                SelectedWeb.CheckInFile(fileUrl, CheckinType.MajorCheckIn, "");
 
             if (Publish)
-                this.SelectedWeb.PublishFile(fileUrl, PublishComment);
+                SelectedWeb.PublishFile(fileUrl, PublishComment);
 
             if (Approve)
-                this.SelectedWeb.ApproveFile(fileUrl, PublishComment);
+                SelectedWeb.ApproveFile(fileUrl, PublishComment);
         }
     }
 }

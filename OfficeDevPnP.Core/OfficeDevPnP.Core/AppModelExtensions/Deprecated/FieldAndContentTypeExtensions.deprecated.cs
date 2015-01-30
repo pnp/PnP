@@ -18,6 +18,69 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class FieldAndContentTypeExtensions
     {
+        /// <summary>
+        /// Create a content type based on the classic feature framework structure.
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="xmlDoc">Actual XML document</param>
+        [Obsolete("Use CreateContentTypeFromXML(this Web web, XDocument xDocument)")]
+        public static void CreateContentTypeFromXML(this Web web, XmlDocument xmlDoc)
+        {
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
+
+            XmlNodeList contentTypes = xmlDoc.SelectNodes("//namespace:ContentType", nsmgr);
+            int count = contentTypes.Count;
+            foreach (XmlNode ct in contentTypes)
+            {
+                string ctid = ct.Attributes["ID"].Value;
+                string name = ct.Attributes["Name"].Value;
+                if (web.ContentTypeExistsByName(name))
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.ContentTypeAlreadyExists, CoreResources.FieldAndContentTypeExtensions_ContentType01AlreadyExists, name, ctid);
+                    // Skip
+                }
+                else
+                {
+                    var description = "";
+                    if (((XmlElement)ct).HasAttribute("Description"))
+                    {
+                        description = ((XmlElement)ct).GetAttribute("Description");
+                    }
+                    var group = "";
+                    if (((XmlElement)ct).HasAttribute("Group"))
+                    {
+                        group = ((XmlElement)ct).GetAttribute("Group");
+                    }
+
+                    //Create CT
+                    web.CreateContentType(name, description, ctid, group);
+
+                    //Add fields to content type 
+                    XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
+                    XmlAttribute attr = null;
+                    foreach (XmlNode fr in fieldRefs)
+                    {
+                        bool required = false;
+                        bool hidden = false;
+                        string frid = fr.Attributes["ID"].Value;
+                        string frName = fr.Attributes["Name"].Value;
+                        attr = fr.Attributes["Required"];
+                        if (attr != null)
+                        {
+                            required = attr.Value.ToBoolean();
+                        }
+                        attr = fr.Attributes["Hidden"];
+                        if (attr != null)
+                        {
+                            hidden = attr.Value.ToBoolean();
+                        }
+                        web.AddFieldToContentTypeById(ctid, frid, required, hidden);
+                    }
+                }
+            }
+        }
+
         #region Site Columns
         [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
         [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -225,6 +288,83 @@ namespace Microsoft.SharePoint.Client
             return newFieldCAML;
         }
 
+        /// <summary>
+        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="absolutePathToFile">Absolute path to the xml location</param>
+        [Obsolete]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static void BindFieldsToTermSetsFromXMLFile(this Web web, string absolutePathToFile)
+        {
+            XmlDocument xd = new XmlDocument();
+            xd.Load(absolutePathToFile);
+            BindFieldsToTermSetsFromXML(web, xd);
+        }
+
+        /// <summary>
+        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="xmlStructure">XML structure in string format</param>
+        [Obsolete]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static void BindFieldsToTermSetsFromXMLString(this Web web, string xmlStructure)
+        {
+            XmlDocument xd = new XmlDocument();
+            xd.LoadXml(xmlStructure);
+            BindFieldsToTermSetsFromXML(web, xd);
+        }
+
+        /// <summary>
+        /// Binds a field to a termset based on an xml structure which follows the classic feature framework structure
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="xmlDoc">Actual XML document</param>
+        [Obsolete]
+        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public static void BindFieldsToTermSetsFromXML(this Web web, XmlDocument xmlDoc)
+        {
+            XmlNodeList fields = xmlDoc.SelectNodes("//MMSField");
+            foreach (XmlNode mmsfield in fields)
+            {
+                string fieldGuid = mmsfield.Attributes["FieldGuid"].Value;
+                string MMSGroupName = mmsfield.Attributes["MMSGroupName"].Value;
+                string TermSet = mmsfield.Attributes["TermSet"].Value;
+
+                TaxonomyExtensions.WireUpTaxonomyField(web, new Guid(fieldGuid), MMSGroupName, TermSet);
+            }
+        }
+
+        /// <summary>
+        /// Creates field from xml structure which follows the classic feature framework structure
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
+        /// <param name="xmlDoc">Actual XML document</param>
+        [Obsolete("Use CreateFieldsFromXML(this Web web, XDocument xDocument)")]
+        public static void CreateFieldsFromXML(this Web web, XmlDocument xmlDoc)
+        {
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(xmlDoc.NameTable);
+            nsmgr.AddNamespace("namespace", xmlDoc.DocumentElement.NamespaceURI);
+
+            XmlNodeList fields = xmlDoc.SelectNodes("//namespace:Field", nsmgr);
+            int count = fields.Count;
+            foreach (XmlNode field in fields)
+            {
+                string id = field.Attributes["ID"].Value;
+                string name = field.Attributes["Name"].Value;
+
+                // If field already existed, let's move on
+                if (web.FieldExistsByName(name))
+                {
+                    LoggingUtility.Internal.TraceWarning((int)EventId.FieldAlreadyExists, CoreResources.FieldAndContentTypeExtensions_Field01AlreadyExists, name, id);
+                }
+                else
+                {
+                    web.CreateField(field.OuterXml);
+                }
+            }
+        }
         #endregion
 
 

@@ -20,13 +20,13 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                List list = this.SelectedWeb.GetList(List);
+                List list = SelectedWeb.GetList(List);
 
                 f = list.CreateField(FieldXml);
             }
             else
             {
-                f = this.SelectedWeb.CreateField(FieldXml);
+                f = SelectedWeb.CreateField(FieldXml);
             }
             ClientContext.Load(f);
             ClientContext.ExecuteQuery();

@@ -14,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         protected override void ProcessRecord()
         {
             if (!DisconnectSPOnline.DisconnectCurrentService())
-                throw new InvalidOperationException(OfficeDevPnP.PowerShell.Commands.Properties.Resources.NoConnectionToDisconnect);
+                throw new InvalidOperationException(Properties.Resources.NoConnectionToDisconnect);
         }
 
         internal static bool DisconnectCurrentService()

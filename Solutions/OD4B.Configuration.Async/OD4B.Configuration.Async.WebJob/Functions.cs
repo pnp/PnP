@@ -34,15 +34,12 @@ namespace OD4B.Configuration.Async.WebJob
                 SiteModificationConfig config = new SiteModificationConfig()
                 {
                     SiteUrl = url.ToString(),
-                    JSFile = Path.Combine(Environment.GetEnvironmentVariable
-                        ("WEBROOT_PATH"), "Resources\\OneDriveConfiguration.js"),
+                    JSFile = Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources\\OneDriveConfiguration.js"),
                     ThemeName = "Garage",
                     ThemeColorFile = 
-                        Path.Combine(Environment.GetEnvironmentVariable
-                        ("WEBROOT_PATH"), "Resources\\Themes\\Garage\\garagewhite.spcolor"),
+                        Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources\\Themes\\Garage\\garagewhite.spcolor"),
                     ThemeBGFile = 
-                        Path.Combine(Environment.GetEnvironmentVariable
-                        ("WEBROOT_PATH"), "Resources\\Themes\\Garage\\garagebg.jpg"),
+                        Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources\\Themes\\Garage\\garagebg.jpg"),
                     ThemeFontFile = "" // Ignored in this case, but could be also set
                 };
 

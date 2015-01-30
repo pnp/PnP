@@ -25,13 +25,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             XDocument document = null;
          
                 // check for existing configuration, if not existing, create it
-                string appDataFolder = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string configFolder = System.IO.Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell");
+                var appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var configFolder = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell");
                 if (!Directory.Exists(configFolder))
                 {
                     Directory.CreateDirectory(configFolder);
                 }
-                path = System.IO.Path.Combine(configFolder, "configuration.xml");
+                path = Path.Combine(configFolder, "configuration.xml");
             
             if (!File.Exists(path))
             {
@@ -50,7 +50,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 var items = from item in document.Descendants("item") 
                             where item.Attribute("key").Value == Key
                             select item;
-                if(items.Count() > 0)
+                if(items.Any())
                 {
                     items.FirstOrDefault().Value = Value;
                 }
@@ -66,7 +66,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 var items = from item in document.Descendants("item")
                             where item.Attribute("key").Value == Key
                             select item;
-                if(items.Count() > 0)
+                if(items.Any())
                 {
                     items.FirstOrDefault().Remove();
                 }

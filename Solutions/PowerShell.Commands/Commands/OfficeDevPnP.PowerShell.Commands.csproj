@@ -166,7 +166,11 @@
     <Compile Include="Admin\GetTenantSite.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
-    <Compile Include="Enums\AssociatedGroupTypeEnum.cs" />
+    <Compile Include="Enums\AssociatedGroupType.cs" />
+    <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="Enums\CredentialType.cs" />
+    <Compile Include="Enums\FeatureScope.cs" />
+    <Compile Include="Enums\NavigationNodeTypeEnum.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
@@ -193,6 +197,7 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Web\RemoveJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptLink.cs" />
     <Compile Include="Web\AddJavaScriptBlock.cs" />

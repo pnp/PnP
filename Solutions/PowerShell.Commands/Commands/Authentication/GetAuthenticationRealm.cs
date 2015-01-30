@@ -36,22 +36,22 @@ PS:> Get-SPOAuthenticationRealm -Url https://contoso.sharepoint.com", SortOrder 
                 {
                 }
 
-                string bearerResponseHeader = e.Response.Headers["WWW-Authenticate"];
+                var bearerResponseHeader = e.Response.Headers["WWW-Authenticate"];
                 if (string.IsNullOrEmpty(bearerResponseHeader))
                 {
                 }
 
                 const string bearer = "Bearer realm=\"";
-                int bearerIndex = bearerResponseHeader.IndexOf(bearer, StringComparison.Ordinal);
+                var bearerIndex = bearerResponseHeader.IndexOf(bearer, StringComparison.Ordinal);
                 if (bearerIndex < 0)
                 {
                 }
 
-                int realmIndex = bearerIndex + bearer.Length;
+                var realmIndex = bearerIndex + bearer.Length;
 
                 if (bearerResponseHeader.Length >= realmIndex + 36)
                 {
-                    string targetRealm = bearerResponseHeader.Substring(realmIndex, 36);
+                    var targetRealm = bearerResponseHeader.Substring(realmIndex, 36);
 
                     Guid realmGuid;
 

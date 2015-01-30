@@ -19,13 +19,13 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity != null)
             {
-                var list = this.SelectedWeb.GetList(Identity);
+                var list = SelectedWeb.GetList(Identity);
                 WriteObject(list);
 
             }
             else
             {
-                var lists = ClientContext.LoadQuery(this.SelectedWeb.Lists.IncludeWithDefaultProperties(l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden));
+                var lists = ClientContext.LoadQuery(SelectedWeb.Lists.IncludeWithDefaultProperties(l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden));
                 ClientContext.ExecuteQuery();
                 WriteObject(lists,true);
             }
