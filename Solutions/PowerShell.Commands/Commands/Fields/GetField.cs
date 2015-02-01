@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 Field f = null;
                 FieldCollection c = null;
@@ -62,20 +62,20 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (Identity.Id == Guid.Empty && string.IsNullOrEmpty(Identity.Name))
                 {
                     // Get all columns
-                    ClientContext.Load(this.SelectedWeb.Fields);
+                    ClientContext.Load(SelectedWeb.Fields);
                     ClientContext.ExecuteQuery();
-                    WriteObject(this.SelectedWeb.Fields, true);
+                    WriteObject(SelectedWeb.Fields, true);
                 }
                 else
                 {
                     Field f = null;
                     if (Identity.Id != Guid.Empty)
                     {
-                        f = this.SelectedWeb.Fields.GetById(Identity.Id);
+                        f = SelectedWeb.Fields.GetById(Identity.Id);
                     }
                     else if (!string.IsNullOrEmpty(Identity.Name))
                     {
-                        f = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
+                        f = SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
                     }
                     ClientContext.Load(f);
                     ClientContext.ExecuteQuery();

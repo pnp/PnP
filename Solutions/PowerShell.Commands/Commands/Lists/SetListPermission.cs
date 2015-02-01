@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(Identity);
+            var list = SelectedWeb.GetList(Identity);
 
             if (list != null)
             {
@@ -38,11 +38,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 {
                     if (Group.Id != -1)
                     {
-                        principal = this.SelectedWeb.SiteGroups.GetById(Group.Id);
+                        principal = SelectedWeb.SiteGroups.GetById(Group.Id);
                     }
                     else if (!string.IsNullOrEmpty(Group.Name))
                     {
-                        principal = this.SelectedWeb.SiteGroups.GetByName(Group.Name);
+                        principal = SelectedWeb.SiteGroups.GetByName(Group.Name);
                     }
                     else if (Group.Group != null)
                     {
@@ -51,13 +51,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 }
                 else
                 {
-                    principal = this.SelectedWeb.EnsureUser(User);
+                    principal = SelectedWeb.EnsureUser(User);
                 }
                 if (principal != null)
                 {
                     if (!string.IsNullOrEmpty(AddRole))
                     {
-                        var roleDefinition = this.SelectedWeb.RoleDefinitions.GetByName(AddRole);
+                        var roleDefinition = SelectedWeb.RoleDefinitions.GetByName(AddRole);
                         var roleDefinitionBindings = new RoleDefinitionBindingCollection(ClientContext);
                         roleDefinitionBindings.Add(roleDefinition);
                         var roleAssignments = list.RoleAssignments;
@@ -71,15 +71,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                         var roleDefinitionBindings = roleAssignment.RoleDefinitionBindings;
                         ClientContext.Load(roleDefinitionBindings);
                         ClientContext.ExecuteQuery();
-                        foreach (var roleDefinition in roleDefinitionBindings)
+                        foreach (var roleDefinition in roleDefinitionBindings.Where(roleDefinition => roleDefinition.Name == RemoveRole))
                         {
-                            if (roleDefinition.Name == RemoveRole)
-                            {
-                                roleDefinitionBindings.Remove(roleDefinition);
-                                roleAssignment.Update();
-                                ClientContext.ExecuteQuery();
-                                break;
-                            }
+                            roleDefinitionBindings.Remove(roleDefinition);
+                            roleAssignment.Update();
+                            ClientContext.ExecuteQuery();
+                            break;
                         }
                     }
                 }

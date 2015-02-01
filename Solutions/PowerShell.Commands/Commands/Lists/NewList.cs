@@ -7,7 +7,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.New, "SPOList")]
     [CmdletHelp("Creates a new list")]
     [CmdletExample(Code = "PS:> New-SPOList -Title Announcements -Template Announcements", SortOrder = 1)]
-    [CmdletExample(Code = "PS:> New-SPOList -Title \"Demo List\" -Url \"DemoList\" -Template Announcements", SortOrder = 2, Remarks = "Create a list with a title that is different from the url")]
+    [CmdletExample(Code = @"PS:> New-SPOList -Title ""Demo List"" -Url ""DemoList"" -Template Announcements", SortOrder = 2, Remarks = "Create a list with a title that is different from the url")]
     public class NewList : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -30,7 +30,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
+            SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
         }
     }
 

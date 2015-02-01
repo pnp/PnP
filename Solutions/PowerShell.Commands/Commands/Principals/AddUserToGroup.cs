@@ -28,15 +28,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         {
             if (Identity.Id != -1)
             {
-                this.SelectedWeb.AddUserToGroup(Identity.Id, LoginName);
+                SelectedWeb.AddUserToGroup(Identity.Id, LoginName);
             }
             else if (!string.IsNullOrEmpty(Identity.Name))
             {
-                this.SelectedWeb.AddUserToGroup(Identity.Name, LoginName);
+                SelectedWeb.AddUserToGroup(Identity.Name, LoginName);
             }
             else if (Identity.Group != null)
             {
-                this.SelectedWeb.AddUserToGroup(Identity.Group, LoginName);
+                SelectedWeb.AddUserToGroup(Identity.Group, LoginName);
             }
         }
     }

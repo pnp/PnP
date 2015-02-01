@@ -304,9 +304,13 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
 
             var rootWeb = site.RootWeb;
-            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
             var sourceFileName = Path.GetFileName(sourceFilePath);
-            rootWeb.RootFolder.UploadFile(sourceFileName, sourceFilePath, true);
+
+            var rootFolder = rootWeb.RootFolder;
+            rootWeb.Context.Load(rootFolder, f => f.ServerRelativeUrl);
+            rootWeb.Context.ExecuteQuery();
+
+            rootFolder.UploadFile(sourceFileName, sourceFilePath, true);
 
             var packageInfo = new DesignPackageInfo()
             {
@@ -325,7 +329,7 @@ namespace Microsoft.SharePoint.Client
             catch (ServerException ex)
             {
                 // The execute query fails is the package does not already exist; would be better if we could test beforehand
-                if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
+                if (ex.Message.Contains("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}"))
                 {
                     LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
                 }
@@ -345,7 +349,7 @@ namespace Microsoft.SharePoint.Client
             site.Context.ExecuteQuery();
 
             // Remove package from rootfolder
-            var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
+            var uploadedSolutionFile = rootFolder.Files.GetByUrl(fileName);
             uploadedSolutionFile.DeleteObject();
             site.Context.ExecuteQuery();
         }

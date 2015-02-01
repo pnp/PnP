@@ -23,11 +23,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (On)
             {
-                this.SelectedWeb.Features.Add(new Guid(Properties.Resources.MDSFeatureGuid), Force, FeatureDefinitionScope.None);
+                SelectedWeb.Features.Add(new Guid(Properties.Resources.MDSFeatureGuid), Force, FeatureDefinitionScope.None);
             }
             else
             {
-                this.SelectedWeb.Features.Remove(new Guid(Properties.Resources.MDSFeatureGuid), Force);
+                SelectedWeb.Features.Remove(new Guid(Properties.Resources.MDSFeatureGuid), Force);
             }
             ClientContext.ExecuteQuery();
         }

@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
        
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.AddJsBlock(Key,Script);
+            SelectedWeb.AddJsBlock(Key,Script);
         }
     }
 }

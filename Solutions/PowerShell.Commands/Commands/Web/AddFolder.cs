@@ -20,13 +20,13 @@ PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder")]
 
         protected override void ExecuteCmdlet()
         {
-            if (!this.SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                ClientContext.Load(this.SelectedWeb, w => w.ServerRelativeUrl);
+                ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
                 ClientContext.ExecuteQuery();
             }
 
-            Folder folder = this.SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(this.SelectedWeb.ServerRelativeUrl, Folder));
+            Folder folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
             ClientContext.Load(folder, f => f.ServerRelativeUrl);
             ClientContext.ExecuteQuery();
 

@@ -17,11 +17,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 ClientContext.Load(ClientContext.Web, w => w.Id, w => w.Url, w => w.Title);
                 ClientContext.ExecuteQuery();
-                WriteObject(this.ClientContext.Web);
+                WriteObject(ClientContext.Web);
             }
             else
             {
-                if (Identity.Id != null && Identity.Id != Guid.Empty)
+                if (Identity.Id != Guid.Empty)
                 {
                     WriteObject(ClientContext.Web.GetWebById(Identity.Id));
                 }

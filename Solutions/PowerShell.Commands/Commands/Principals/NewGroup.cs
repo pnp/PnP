@@ -29,13 +29,13 @@ PS:> New-SPOUser -LogonName user@company.com
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
         [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
-        public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
-            var web = this.SelectedWeb;
+            var web = SelectedWeb;
 
-            GroupCreationInformation groupCI = new GroupCreationInformation();
+            var groupCI = new GroupCreationInformation();
             groupCI.Title = Title;
             groupCI.Description = Description;
 
@@ -44,7 +44,7 @@ PS:> New-SPOUser -LogonName user@company.com
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
             ClientContext.ExecuteQuery();
-            bool dirty = false;
+            var dirty = false;
             if (AllowRequestToJoinLeave)
             {
                 group.AllowRequestToJoinLeave = true;
@@ -84,21 +84,21 @@ PS:> New-SPOUser -LogonName user@company.com
             }
 
 
-            if (SetAssociatedGroup != AssociatedGroupTypeEnum.None)
+            if (SetAssociatedGroup != AssociatedGroupType.None)
             {
                 switch (SetAssociatedGroup)
                 {
-                    case AssociatedGroupTypeEnum.Visitors:
+                    case AssociatedGroupType.Visitors:
                         {
                             web.AssociateDefaultGroups(null, null, group);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Members:
+                    case AssociatedGroupType.Members:
                         {
                             web.AssociateDefaultGroups(null, group, null);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Owners:
+                    case AssociatedGroupType.Owners:
                         {
                             web.AssociateDefaultGroups(group, null, null);
                             break;

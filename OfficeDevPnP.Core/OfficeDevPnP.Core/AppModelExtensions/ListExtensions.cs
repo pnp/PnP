@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -664,6 +665,71 @@ namespace Microsoft.SharePoint.Client
             return foundList;
         }
 
+        #region List Permissions
+
+        /// <summary>
+        /// Set custom permission to the list
+        /// </summary>
+        /// <param name="list">List on which permission to be set</param>
+        /// <param name="user">Built in user</param>
+        /// <param name="roleType">Role type</param>
+        public static void SetListPermission(this List list, BuiltInIdentity user, RoleType roleType)
+        {
+            Principal permissionEntity = null;
+
+            // Get the web for list
+            Web web = list.ParentWeb;
+            list.Context.Load(web);
+            list.Context.ExecuteQuery();
+
+            switch (user)
+            {
+                case BuiltInIdentity.Everyone:
+                    {
+                        permissionEntity = web.EnsureUser("c:0(.s|true");
+                        break;
+                    }
+                case BuiltInIdentity.EveryoneButExternalUsers:
+                    {
+                        string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
+                        permissionEntity = web.EnsureUser(userIdentity);
+                        break;
+                    }
+            }
+
+            list.SetListPermission(permissionEntity, roleType);
+        }
+
+        /// <summary>
+        /// Set custom permission to the list
+        /// </summary>
+        /// <param name="list">List on which permission to be set</param>
+        /// <param name="principal">SharePoint Group or User</param>
+        /// <param name="roleType">Role type</param>
+        public static void SetListPermission(this List list, Principal principal, RoleType roleType)
+        {
+            // Get the web for list
+            Web web = list.ParentWeb;
+            list.Context.Load(web);
+            list.Context.ExecuteQuery();
+
+            // Stop inheriting permissions
+            list.BreakRoleInheritance(true, false);
+
+            // Get role type
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(roleType);
+            RoleDefinitionBindingCollection rdbColl = new RoleDefinitionBindingCollection(web.Context);
+            rdbColl.Add(roleDefinition);
+
+            // Set custom permission to the list
+            list.RoleAssignments.Add(principal, rdbColl);
+            list.Context.ExecuteQuery();
+        }
+
+        #endregion
+
+        #region List view
+
         /// <summary>
         /// Creates list views based on specific xml structure from file
         /// </summary>
@@ -847,7 +913,8 @@ namespace Microsoft.SharePoint.Client
                 list.Context.ExecuteQuery();
 
                 return view;
-            } catch (ServerException)
+            }
+            catch (ServerException)
             {
                 return null;
             }
@@ -879,6 +946,7 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        #endregion
 
         private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {

@@ -25,15 +25,15 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (System.IO.File.Exists(Path))
                 {
-                    System.IO.StreamReader fileStream = new System.IO.StreamReader(Path);
-                    string contentString = fileStream.ReadToEnd();
+                    var fileStream = new System.IO.StreamReader(Path);
+                    var contentString = fileStream.ReadToEnd();
                     fileStream.Close();
-                    this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, contentString);
+                    SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, contentString);
                 }
             }
             else
             {
-                this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, Content);
+                SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, Content);
             }
         }
     }

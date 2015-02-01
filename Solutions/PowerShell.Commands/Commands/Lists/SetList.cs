@@ -23,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(Identity);
+            var list = SelectedWeb.GetList(Identity);
 
             if(list != null)
             {

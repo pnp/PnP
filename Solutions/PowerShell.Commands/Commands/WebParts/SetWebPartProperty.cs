@@ -18,11 +18,18 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Key = string.Empty;
 
         [Parameter(Mandatory = true)]
-        public string Value = string.Empty;
+        public object Value = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.SetWebPartProperty(Key, Value, Identity.Id, PageUrl);
+            if (Value is string)
+            {
+                SelectedWeb.SetWebPartProperty(Key, Value as string, Identity.Id, PageUrl);
+            }
+            else if (Value is int)
+            {
+                SelectedWeb.SetWebPartProperty(Key, (int)Value, Identity.Id, PageUrl);
+            }
         }
 
 

@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using System.Management.Automation;
 
+
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOHomePage")]
@@ -9,13 +10,20 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            Folder folder = this.SelectedWeb.RootFolder;
+            var folder = this.SelectedWeb.RootFolder;
 
             ClientContext.Load(folder, f => f.WelcomePage);
 
             ClientContext.ExecuteQuery();
 
-            WriteObject(folder.WelcomePage);
+            if (string.IsNullOrEmpty(folder.WelcomePage))
+            {
+                WriteObject("default.aspx");
+            }
+            else
+            {
+                WriteObject(folder.WelcomePage);
+            }
         }
     }
 }

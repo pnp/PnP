@@ -28,37 +28,26 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             WebPartEntity wp = null;
 
-            if (ParameterSetName == "FILE")
+            switch (ParameterSetName)
             {
-                if (System.IO.File.Exists(Path))
-                {
-                    System.IO.StreamReader fileStream = new System.IO.StreamReader(Path);
-                    string webPartString = fileStream.ReadToEnd();
-                    fileStream.Close();
+                case "FILE":
+                    if (System.IO.File.Exists(Path))
+                    {
+                        var fileStream = new System.IO.StreamReader(Path);
+                        var webPartString = fileStream.ReadToEnd();
+                        fileStream.Close();
 
-                    wp = new WebPartEntity();
-                    wp.WebPartZone = ZoneId;
-                    wp.WebPartIndex = ZoneIndex;
-                    wp.WebPartXml = webPartString;
-                }
-            }
-            else if (ParameterSetName == "XML")
-            {
-                wp = new WebPartEntity();
-                wp.WebPartZone = ZoneId;
-                wp.WebPartIndex = ZoneIndex;
-                wp.WebPartXml = Xml;
+                        wp = new WebPartEntity {WebPartZone = ZoneId, WebPartIndex = ZoneIndex, WebPartXml = webPartString};
+                    }
+                    break;
+                case "XML":
+                    wp = new WebPartEntity {WebPartZone = ZoneId, WebPartIndex = ZoneIndex, WebPartXml = Xml};
+                    break;
             }
             if (wp != null)
             {
-                this.SelectedWeb.AddWebPartToWebPartPage(PageUrl, wp);
+                SelectedWeb.AddWebPartToWebPartPage(PageUrl, wp);
             }
-        }
-
-        public enum WPPageType
-        {
-            WikiPage,
-            WebPartPage
         }
     }
 }

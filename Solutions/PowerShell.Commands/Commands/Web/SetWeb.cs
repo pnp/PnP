@@ -23,18 +23,18 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!string.IsNullOrEmpty(SiteLogoUrl))
             {
-                this.SelectedWeb.SiteLogoUrl = SiteLogoUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.SiteLogoUrl = SiteLogoUrl;
+                SelectedWeb.Update();
             }
             if (!string.IsNullOrEmpty(AlternateCssUrl))
             {
-                this.SelectedWeb.AlternateCssUrl = AlternateCssUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.AlternateCssUrl = AlternateCssUrl;
+                SelectedWeb.Update();
             }
             if(!string.IsNullOrEmpty(Title))
             {
-                this.SelectedWeb.Title = Title;
-                this.SelectedWeb.Update();
+                SelectedWeb.Title = Title;
+                SelectedWeb.Update();
             }
             ClientContext.ExecuteQuery();
         }

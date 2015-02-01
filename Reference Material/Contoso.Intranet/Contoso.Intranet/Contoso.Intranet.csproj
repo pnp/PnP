@@ -150,6 +150,10 @@
     <None Include="SP\ListTemplate\LTContosoLibrary\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{61f419e2-80dd-4216-a9cc-3fba02ef3ed4}</SharePointProjectItemId>
     </None>
+    <None Include="SP\Modules\MOContosoDocument\ContosoDocument.docx" />
+    <None Include="SP\Modules\MOContosoDocument\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7d2dcd2d-2073-4a69-a6f9-f295d847915c}</SharePointProjectItemId>
+    </None>
     <None Include="SP\Modules\MOMasterPage\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d69e9ad9-9145-4843-b9ac-a2323b1ed54e}</SharePointProjectItemId>
     </None>
@@ -217,6 +221,7 @@
     <Content Include="SP\ListTemplate\LTContosoLibrary\Repair.aspx" />
     <Content Include="SP\ListTemplate\LTContosoLibrary\Schema.xml" />
     <Content Include="SP\ListTemplate\LTContosoLibrary\Upload.aspx" />
+    <Content Include="SP\Modules\MOContosoDocument\Elements.xml" />
     <Content Include="SP\Modules\MOMasterPage\Elements.xml" />
     <Content Include="SP\Modules\MOPageLayouts\ContosoWelcomeLinks.aspx" />
     <Content Include="SP\Modules\MOWelcomePagePublishing\default.aspx" />

@@ -10,10 +10,10 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            ClientContext.Load(this.SelectedWeb, w => w.MasterUrl, w => w.CustomMasterUrl);
+            ClientContext.Load(SelectedWeb, w => w.MasterUrl, w => w.CustomMasterUrl);
             ClientContext.ExecuteQuery();
 
-            WriteObject(new { MasterUrl = this.SelectedWeb.MasterUrl, CustomMasterUrl = this.SelectedWeb.CustomMasterUrl });
+            WriteObject(new {SelectedWeb.MasterUrl, SelectedWeb.CustomMasterUrl });
         }
     }
 }

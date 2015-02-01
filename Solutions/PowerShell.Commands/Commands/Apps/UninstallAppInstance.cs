@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                instance = SelectedWeb.GetAppInstanceById(Identity.Id);
             }
 
             if(instance != null)

@@ -57,7 +57,7 @@ namespace Core.CreateContentTypes
         private static void LocalizeSiteAndList(ClientContext cc, Web web)
         {
             // Localize site title
-            web.TitleResource.SetValueForUICulture("en-US", "Localize Me");
+            web.TitleResource.SetValueForUICulture("en-US", "Hello World");
             web.TitleResource.SetValueForUICulture("fi-FI", "Kielikäännä minut");
             web.TitleResource.SetValueForUICulture("fr-FR", "Localize Me to French");
             // Site description
