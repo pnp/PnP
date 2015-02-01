@@ -15,13 +15,13 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity == null)
             {
-                ClientContext.Load(ClientContext.Web);
+                ClientContext.Load(ClientContext.Web, w => w.Id, w => w.Url, w => w.Title);
                 ClientContext.ExecuteQuery();
-                WriteObject(this.ClientContext.Web);
+                WriteObject(ClientContext.Web);
             }
             else
             {
-                if (Identity.Id != null && Identity.Id != Guid.Empty)
+                if (Identity.Id != Guid.Empty)
                 {
                     WriteObject(ClientContext.Web.GetWebById(Identity.Id));
                 }

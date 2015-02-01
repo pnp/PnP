@@ -32,6 +32,10 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             get { return _name; }
         }
 
+        internal GroupPipeBind()
+        {
+        }
+
         public GroupPipeBind(int id)
         {
             this._id = id;

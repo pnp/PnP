@@ -22,16 +22,16 @@ PS:> Get-SPOUserProfileProperty -Account 'user@domain.com'", Remarks = "Returns 
 PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'", Remarks = "Returns the profile properties for the specified users")]
     public class GetUserProfileProperty : SPOAdminCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The account of the user, formatted either as a login name, or as a claims identity, e.g. i:0#.f|membership|user@domain.com", Position = 0)]
+        [Parameter(Mandatory = true, HelpMessage = "The account of the user, formatted either as a login name, or as a claims identity, e.g. i:0#.f|membership|user@domain.com", Position = 0)]
         public string[] Account;
 
         protected override void ExecuteCmdlet()
         {
-            PeopleManager peopleManager = new PeopleManager(ClientContext);
+            var peopleManager = new PeopleManager(ClientContext);
 
             foreach (var acc in Account)
             {
-                ClientResult<string> result = Tenant.EncodeClaim(acc);
+                var result = Tenant.EncodeClaim(acc);
                 ClientContext.ExecuteQuery();
                 var properties = peopleManager.GetPropertiesFor(result.Value);
                 ClientContext.Load(properties);

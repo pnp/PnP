@@ -24,11 +24,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "NAME")
             {
-                this.SelectedWeb.DeleteWebPart(PageUrl, Name);
+                SelectedWeb.DeleteWebPart(PageUrl, Name);
             }
             else
             {
-                var wps = this.SelectedWeb.GetWebParts(PageUrl);
+                var wps = SelectedWeb.GetWebParts(PageUrl);
                 var wp = from w in wps where w.Id == Identity.Id select w;
                 if(wp.Any())
                 {

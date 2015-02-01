@@ -24,17 +24,17 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (!Indexed)
             {
                 // If it is already an indexed property we still have to add it back to the indexed properties
-                Indexed = !string.IsNullOrEmpty(this.SelectedWeb.GetIndexedPropertyBagKeys().Where(k => k == Key).FirstOrDefault());
+                Indexed = !string.IsNullOrEmpty(SelectedWeb.GetIndexedPropertyBagKeys().FirstOrDefault(k => k == Key));
             }
 
-            this.SelectedWeb.SetPropertyBagValue(Key, Value);
+            SelectedWeb.SetPropertyBagValue(Key, Value);
             if(Indexed)
             {
-                this.SelectedWeb.AddIndexedPropertyBagKey(Key);
+                SelectedWeb.AddIndexedPropertyBagKey(Key);
             }
             else
             {
-                this.SelectedWeb.RemoveIndexedPropertyBagKey(Key);
+                SelectedWeb.RemoveIndexedPropertyBagKey(Key);
             }
         }
     }

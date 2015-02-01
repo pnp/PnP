@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿#if !CLIENTSDKV15
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using Microsoft.SharePoint.Client;
 using System;
@@ -68,8 +69,9 @@ available quota.
 
         protected override void ProcessRecord()
         {
-            this.Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
+            Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
         }
 
     }
 }
+#endif

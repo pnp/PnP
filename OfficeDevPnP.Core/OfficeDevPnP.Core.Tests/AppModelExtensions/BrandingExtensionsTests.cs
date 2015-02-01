@@ -18,8 +18,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string builtInMasterOslo = "oslo.master";
         private string builtInMasterSeattle = "seattle.master";
         private string builtInPalette003 = "palette003.spcolor";
-        private string builtInFont002 = "fontscheme002.spfont";
-        private string knownHashOfSeattle = "EC-46-9D-CE-27-7E-D3-79-72-BE-89-35-01-6E-0B-B2-B1-09-F1-3E";
+        private string knownHashOfSeattle = "DA-39-A3-EE-5E-6B-4B-0D-32-55-BF-EF-95-60-18-90-AF-D8-07-09";
 
         private string customColorFilePath = string.Empty;
         private string customBackgroundFilePath = string.Empty;
@@ -36,25 +35,22 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                         </Where>
                      </Query>
                 </View>";
+        
         private static string htmlPublishingPageWithoutExtension = "TestHtmlPublishingPageLayout";
         private static string publishingPageWithoutExtension = "TestPublishingPageLayout";
         private string htmlPublishingPagePath = string.Format("../../Resources/{0}.html", htmlPublishingPageWithoutExtension);
         private string publishingPagePath = string.Format("../../Resources/{0}.aspx", publishingPageWithoutExtension);
         private string pageLayoutTitle = "CustomHtmlPageLayout";
-
-        private string welcomePageContentTypeId =
-            "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4";
-
+        private string welcomePageContentTypeId = "0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4";
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         private Guid publishingWebFeatureId = new Guid("94c94ca6-b32f-4da9-a9e3-1f3d343d7ecb");
-
         private string testWebName;
-
         bool deactivateSiteFeatureOnTeardown = false;
         bool deactivateWebFeatureOnTeardown = false;
         private Web pageLayoutTestWeb = null;
+        private string AvailablePageLayouts = "__PageLayouts";
 
-
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -77,6 +73,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci1.WebTemplate = "CMSPUBLISHING#0";
                 var web1 = context.Web.Webs.Add(wci1);
                 context.ExecuteQuery();
+                web1.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci2 = new WebCreationInformation();
                 wci2.Url = "a";
@@ -84,6 +81,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci2.WebTemplate = "CMSPUBLISHING#0";
                 var webA = web1.Webs.Add(wci2);
                 context.ExecuteQuery();
+                webA.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci3 = new WebCreationInformation();
                 wci3.Url = "b";
@@ -91,6 +89,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci3.WebTemplate = "CMSPUBLISHING#0";
                 var webB = web1.Webs.Add(wci3);
                 context.ExecuteQuery();
+                webB.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
             }
 
         }
@@ -172,6 +171,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     Console.WriteLine("Exception cleaning up: {0}", ex);
                 }
 
+                // Remove webs
                 var webCollection1 = web.Webs;
                 context.Load(webCollection1, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));
                 context.ExecuteQuery();
@@ -206,6 +206,33 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     {
                         Console.WriteLine("Exception cleaning up: {0}", ex);
                     }
+                }
+
+                // Remove pagelayouts
+                List masterPageGallery = context.Web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
+                Folder rootFolderInMasterPageGallery = masterPageGallery.RootFolder;
+                context.Load(rootFolderInMasterPageGallery, f => f.ServerRelativeUrl);
+                context.ExecuteQuery();
+
+                try
+                {
+                    var fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, publishingPageWithoutExtension);
+                    var file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
+                    context.Load(file);
+                    context.ExecuteQuery();
+                    file.DeleteObject();
+                    context.ExecuteQuery();
+
+                    fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, "test/test", publishingPageWithoutExtension);
+                    file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
+                    context.Load(file);
+                    context.ExecuteQuery();
+                    file.DeleteObject();
+                    context.ExecuteQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception cleaning up: {0}", ex);
                 }
             }
 
@@ -251,9 +278,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
+        #endregion
 
+        #region Pagelayout tests
         [TestMethod]
-        public void CanUploadHtmlPageLayoutAndConvertItToAspxVersion()
+        public void CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest()
         {
             var web = pageLayoutTestWeb;
             web.Context.Load(web);
@@ -265,7 +294,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod]
-        public void CanUploadPageLayout()
+        public void CanUploadPageLayoutTest()
         {
             var web = pageLayoutTestWeb;
             web.Context.Load(web);
@@ -276,12 +305,39 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             Assert.AreNotEqual(null, item);
         }
 
+        [TestMethod]
+        public void CanUploadPageLayoutWithPathTest()
+        {
+            var web = pageLayoutTestWeb;
+            web.Context.Load(web);
+            web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId, "test/test");
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQuery();
+            var item = web.GetPageLayoutListItemByName("test/test/" + publishingPageWithoutExtension);
+            Assert.AreNotEqual(null, item);
+        }
+
+        [TestMethod]
+        public void AllowAllPageLayoutsTest()
+        {
+            var web = pageLayoutTestWeb;
+
+            web.AllowAllPageLayouts();
+
+            string allowedPageLayouts = web.GetPropertyBagValueString(AvailablePageLayouts, null);
+
+            Assert.AreEqual(allowedPageLayouts, string.Empty);
+        }
+
+        #endregion
+
+
+        #region Composed Look tests
         [TestMethod()]
-        public void DeployThemeToWebTest()
+        public void DeployThemeAndCreateComposedLookTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                //context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
                 context.Web.UploadThemeFile(customColorFilePath);
                 context.Web.UploadThemeFile(customBackgroundFilePath);
                 context.Web.CreateComposedLookByName("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
@@ -290,19 +346,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void ThemeEntryExistsTest()
+        public void ComposedLookExistsTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
-                // context.Web.DeployThemeToWeb("Test_Theme", customColorFilePath, null, customBackgroundFilePath, null);
-                //Assert.IsTrue(context.Web.ThemeEntryExists("Test_Theme"));
                 Assert.IsTrue(context.Web.ComposedLookExists("Office"));
                 Assert.IsFalse(context.Web.ComposedLookExists("Dummy Test Theme That Should Not Exist"));
             }
         }
 
         [TestMethod()]
-        public void GetCurrentLookTest()
+        public void GetCurrentComposedLookTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -311,14 +365,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             using (var context = TestCommon.CreateClientContext())
             {
-                var theme = context.Web.GetCurrentLook();
+                var theme = context.Web.GetCurrentComposedLook();
                 Assert.IsTrue(theme != null);
                 Assert.IsTrue(theme.BackgroundImage.EndsWith("image_bg005.jpg"));
             }
         }
 
         [TestMethod()]
-        public void CreateComposedLookShouldWork()
+        public void CreateComposedLookShouldWorkTest()
         {
             var testLookName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
 
@@ -352,7 +406,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void CreateComposedLookByNameShouldWork()
+        public void CreateComposedLookByNameShouldWorkTest()
         {
             var testLookName = string.Format("Test_CL{0:yyyyMMddTHHmmss}", DateTimeOffset.Now);
 
@@ -380,7 +434,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void SetComposedLookInherits()
+        public void SetComposedLookInheritsTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -429,7 +483,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod()]
-        public void SetComposedLookResetInheritance()
+        public void SetComposedLookResetInheritanceTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -469,10 +523,12 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.AreEqual("FFF07200", accentA.Value);
             }
         }
+        #endregion
 
+        #region Master page tests
         // Manually taken over from Gavin Barron's commit https://github.com/gavinbarron/PnP/blob/17c4d3647f4a509fb1eedb949ef07af7f962929c/OfficeDevPnP.Core/OfficeDevPnP.Core.Tests/AppModelExtensions/BrandingExtensionsTests.cs 
         [TestMethod]
-        public void SeattleMasterPageIsUnchanged()
+        public void SeattleMasterPageIsUnchangedTest()
         {
             using (var context = TestCommon.CreateClientContext())
             {
@@ -483,20 +539,52 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 //Use the existing context to directly get a copy of the seattle master page 
                 string masterpageGalleryServerRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl), "_catalogs/masterpage/");
                 var serverRelativeUrlOfSeattle = UrlUtility.Combine(masterpageGalleryServerRelativeUrl, builtInMasterSeattle);
-                FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
+
+                // OpenBinaryDirect fails when used with app only
+                //FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
+                var seattle = context.Web.GetFileByServerRelativeUrl(serverRelativeUrlOfSeattle);
+                web.Context.Load(seattle);
+                web.Context.ExecuteQuery();
+
                 Assert.IsNotNull(seattle);
 
+                ClientResult<Stream> data = seattle.OpenBinaryStream();
+                context.Load(seattle);
+                context.ExecuteQuery();
+
+                //Dump seattle.master
+                //if (data != null)
+                //{
+                //    int position = 1;
+                //    int bufferSize = 200000;
+                //    Byte[] readBuffer = new Byte[bufferSize];
+                //    string localFilePath = "C:\\Temp\\seattle.master";
+                //    using (System.IO.Stream stream = System.IO.File.Create(localFilePath))
+                //    {
+                //        while (position > 0)
+                //        {
+                //            // data.Value holds the Stream
+                //            position = data.Value.Read(readBuffer, 0, bufferSize);
+                //            stream.Write(readBuffer, 0, position);
+                //            readBuffer = new Byte[bufferSize];
+                //        }
+                //        stream.Flush();
+                //    }
+                //}
+
+                MemoryStream memStream = new MemoryStream();
+                data.Value.CopyTo(memStream);
 
                 //Compute a hash of the file 
                 var hashAlgorithm = HashAlgorithm.Create();
-                byte[] hash = hashAlgorithm.ComputeHash(seattle.Stream);
+                byte[] hash = hashAlgorithm.ComputeHash(memStream);
                 //Convert to a hex string for human consumption 
                 string hex = BitConverter.ToString(hash);
                 //Check against last known hash 
                 Assert.AreEqual(knownHashOfSeattle, hex);
             }
-        } 
-
+        }
+        #endregion
 
     }
 }

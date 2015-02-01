@@ -38,7 +38,19 @@ namespace OfficeDevPnP.Core.Entities
             set;
         }
 
+        /// <summary>
+        /// The site owner
+        /// </summary>
         public String SiteOwnerLogin
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The current resource usage points 
+        /// </summary>
+        public double CurrentResourceUsage
         {
             get;
             set;
@@ -63,9 +75,27 @@ namespace OfficeDevPnP.Core.Entities
         }
 
         /// <summary>
+        /// The storage quota usage in MB
+        /// </summary>
+        public long StorageUsage
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Site quota warning level in MB
         /// </summary>
         public long StorageWarningLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The last modified date/time of the site collection's content
+        /// </summary>
+        public DateTime LastContentModifiedDate
         {
             get;
             set;
@@ -103,6 +133,15 @@ namespace OfficeDevPnP.Core.Entities
         /// The user code quota warning level in points
         /// </summary>
         public double UserCodeWarningLevel
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The count of the SPWeb objects in the site collection
+        /// </summary>
+        public int WebsCount
         {
             get;
             set;

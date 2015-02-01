@@ -17,7 +17,7 @@ Core.MMSSync | Kimmo Forss, Frank Marasco, Bert Jansen (**Microsoft**)
 Version | Date | Comments
 ---------| -----| --------
 1.0 | May 5th 2014 | Initial release
-2.0 | December 2nd 2014 | Major rewrite of the sync manager, now supports all change events for groups, temsets and terms, hierarchical termsets, reused terms, multiple languages, term and termset properties, more robust operations, logging,...
+2.0 | December 2nd 2014 | Major rewrite of the sync manager, now supports all change events for groups, term sets and terms, hierarchical term sets, reused terms, multiple languages, more robust operations, logging,...
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -26,7 +26,7 @@ Version | Date | Comments
 ----------
 
 # Taxonomy Synchronization Scenarios #
-Have you ever wanted to move Taxonomy items from one term store to another? With on-premises implementations you can move your MMS database, but this takes some work. What about SharePoint Online? Obviously, we cannot move our database to Office 365. There is already an AMS (Core.MMS) sample that demonstrates how to perform basic operations with the term store. What if, you have use case where you only want to synchronize changes of a specific Term set? This sample takes the Core.MMS sample a step further, by using the ChangeInformation class in the Microsoft.SharePoint.Client.Taxonomy assembly.
+Have you ever wanted to move Taxonomy items from one term store to another? With on-premises implementations you can move your MMS database, but this takes some work. What about SharePoint Online? Obviously, we cannot move our database to Office 365. There is already an PNP (Core.MMS) sample that demonstrates how to perform basic operations with the term store. What if, you have use case where you only want to synchronize changes of a specific Term set? This sample takes the Core.MMS sample a step further, by using the ChangeInformation class in the Microsoft.SharePoint.Client.Taxonomy assembly.
 
 Here's the high level process for the MMS synchronization tooling.
 

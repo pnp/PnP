@@ -14,7 +14,7 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-ECM.DocumentLibrariess | Frank Marasco (**Microsoft**)
+ECM.DocumentLibraries | Frank Marasco (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments

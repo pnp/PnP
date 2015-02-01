@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.CheckInFile(Url, CheckinType, Comment);
+            SelectedWeb.CheckInFile(Url, CheckinType, Comment);
         }
     }
 }

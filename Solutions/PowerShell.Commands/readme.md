@@ -140,6 +140,8 @@ Command | Description
 **Remove-SPOList** | Removes a list
 **Remove-SPOView** | Removes a view
 **Set-SPODefaultColumnValues** | Sets default column values for a document library
+**Set-SPOList** | Sets list properties
+**Set-SPOListPermission** | Sets list permissions
 
 #### User and Group Cmdlets ####
 Command | Description
@@ -149,6 +151,7 @@ Command | Description
 **New-SPOGroup** | Creates a group
 **New-SPOUser** | Adds a user to the Site User Info List. Equivalent to web.EnsureUser(user)
 **Remove-SPOUserFromGroup** | Removes a user from a group
+**Set-SPOGroup** | Sets a group as an associated group (Owners, Members, Visitors) or adds or removes a role assignment (e.g. "Contribute", "Read", etc.)
 
 #### Site Cmdlets ####
 Command | Description
@@ -208,6 +211,7 @@ Command | Description
 **Get-SPOWebPart** | Returns the webparts on a given page
 **Remove-SPOWebPart** |	Removes a webpart from a page
 **Set-SPOWebPartProperty** | Sets a webpart property
+**Get-SPOWebPartProperty** | Returns webpart properties
 
 #### Wiki Page Cmdlets ####
 Command | Description

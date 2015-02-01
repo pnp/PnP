@@ -833,6 +833,27 @@ namespace Microsoft.SharePoint.Client
         /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
         public static void SetWebPartProperty(this Web web, string key, string value, Guid id, string serverRelativePageUrl)
         {
+            SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
+        }
+
+        /// <summary>
+        /// Sets a web part property
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="key">The key to update</param>
+        /// <param name="value">The value to set</param>
+        /// <param name="id">The id of the webpart</param>
+        /// <param name="serverRelativePageUrl"></param>
+        /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
+        public static void SetWebPartProperty(this Web web, string key, int value, Guid id, string serverRelativePageUrl)
+        {
+            SetWebPartPropertyInternal(web, key, value, id, serverRelativePageUrl);
+        }
+
+
+        private static void SetWebPartPropertyInternal(this Web web, string key, object value, Guid id, string serverRelativePageUrl)
+        {
             if (string.IsNullOrEmpty(key))
             {
                 throw (key == null)
@@ -851,26 +872,30 @@ namespace Microsoft.SharePoint.Client
 
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
-            context.Load(file, f => f.ListItemAllFields);
+            context.Load(file);
             context.ExecuteQuery();
 
-            ListItem listItem = file.ListItemAllFields;
             LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             context.Load(wpm.WebParts);
 
+            context.ExecuteQuery();
+
             WebPartDefinition def = wpm.WebParts.GetById(id);
+
+            context.Load(def);
+            context.ExecuteQuery();
 
             switch (key.ToLower())
             {
                 case "title":
                     {
-                        def.WebPart.Title = value;
+                        def.WebPart.Title = value as string;
                         break;
                     }
                 case "titleurl":
                     {
-                        def.WebPart.TitleUrl = value;
+                        def.WebPart.TitleUrl = value as string;
                         break;
                     }
                 default:
@@ -880,10 +905,46 @@ namespace Microsoft.SharePoint.Client
                     }
             }
 
+
             def.SaveWebPartChanges();
 
             context.ExecuteQuery();
         }
+
+        /// <summary>
+        /// Returns web part properties
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="id">The id of the webpart</param>
+        /// <param name="serverRelativePageUrl"></param>
+        /// <exception cref="System.ArgumentException">Thrown when key or serverRelativePageUrl is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown when key or serverRelativePageUrl is null</exception>
+        public static PropertyValues GetWebPartProperties(this Web web, Guid id, string serverRelativePageUrl)
+        {
+            if (string.IsNullOrEmpty(serverRelativePageUrl))
+            {
+                throw (serverRelativePageUrl == null)
+                  ? new ArgumentNullException("serverRelativePageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
+            }
+
+            ClientContext context = web.Context as ClientContext;
+
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+
+            context.Load(file);
+            context.ExecuteQuery();
+
+            LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            WebPartDefinition def = wpm.WebParts.GetById(id);
+
+            context.Load(def.WebPart.Properties);
+            context.ExecuteQuery();
+
+            return def.WebPart.Properties;
+        }
+
 
         /// <summary>
         /// Adds the publishing page.
@@ -945,7 +1006,7 @@ namespace Microsoft.SharePoint.Client
                 pageItem.File.Publish(String.Empty);
                 if (pagesLibrary.EnableModeration)
                 {
-                    pageItem.File.Approve(String.Empty);      
+                    pageItem.File.Approve(String.Empty);
                 }
             }
             context.ExecuteQuery();
@@ -969,22 +1030,31 @@ namespace Microsoft.SharePoint.Client
             }
 
             ClientContext context = web.Context as ClientContext;
-            List spList = web.Lists.GetByTitle("Pages");
+
+            // Get the language agnostic "Pages" library name
+            context.Load(web, l => l.Language);
+            context.ExecuteQuery();
+
+            ClientResult<string> pagesLibraryName = Microsoft.SharePoint.Client.Utilities.Utility.GetLocalizedString(context, "$Resources:List_Pages_UrlName", "cmscore", (int)web.Language);
+            context.ExecuteQuery();
+
+            List spList = web.Lists.GetByTitle(pagesLibraryName.Value);
             context.Load(spList);
             context.ExecuteQuery();
+
             if (spList != null && spList.ItemCount > 0)
             {
-
                 Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
                 camlQuery.ViewXml = string.Format(@"<View>  
-                        <Query> 
-                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
-                        </Query> 
-                  </View>", fileLeafRef);
+                                                        <Query> 
+                                                           <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 
+                                                        </Query> 
+                                                    </View>", fileLeafRef);
 
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
                 context.ExecuteQuery();
+
                 if (listItems.Count > 0)
                 {
                     PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
@@ -993,6 +1063,7 @@ namespace Microsoft.SharePoint.Client
                     return page;
                 }
             }
+
             return null;
         }
     }

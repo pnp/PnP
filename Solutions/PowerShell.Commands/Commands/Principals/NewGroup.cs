@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
@@ -27,39 +28,85 @@ PS:> New-SPOUser -LogonName user@company.com
         [Parameter(Mandatory = false)]
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
-
+        [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
-            User groupOwner = null;
-            if (!string.IsNullOrEmpty(Owner))
-            {
-                groupOwner = this.SelectedWeb.EnsureUser(Owner);
-            }
-            GroupCreationInformation groupCI = new GroupCreationInformation();
+            var web = SelectedWeb;
+
+            var groupCI = new GroupCreationInformation();
             groupCI.Title = Title;
             groupCI.Description = Description;
 
-            var group = this.SelectedWeb.SiteGroups.Add(groupCI);
+            var group = web.SiteGroups.Add(groupCI);
 
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
             ClientContext.ExecuteQuery();
-
+            var dirty = false;
             if (AllowRequestToJoinLeave)
+            {
                 group.AllowRequestToJoinLeave = true;
+                dirty = true;
+            }
 
             if (AutoAcceptRequestToJoinLeave)
+            {
                 group.AutoAcceptRequestToJoinLeave = true;
+                dirty = true;
+            }
+            if (dirty)
+            {
+                group.Update();
+                ClientContext.ExecuteQuery();
+            }
+
 
             if (!string.IsNullOrEmpty(Owner))
-                group.Owner = groupOwner;
+            {
+                Principal groupOwner = null;
 
-            group.Update();
+                try
+                {
+                    groupOwner = web.EnsureUser(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQuery();
+                }
+                catch
+                {
+                    groupOwner = web.SiteGroups.GetByName(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQuery();
+                }
+            }
+
+
+            if (SetAssociatedGroup != AssociatedGroupType.None)
+            {
+                switch (SetAssociatedGroup)
+                {
+                    case AssociatedGroupType.Visitors:
+                        {
+                            web.AssociateDefaultGroups(null, null, group);
+                            break;
+                        }
+                    case AssociatedGroupType.Members:
+                        {
+                            web.AssociateDefaultGroups(null, group, null);
+                            break;
+                        }
+                    case AssociatedGroupType.Owners:
+                        {
+                            web.AssociateDefaultGroups(group, null, null);
+                            break;
+                        }
+                }
+            }
             ClientContext.ExecuteQuery();
             WriteObject(group);
-
-            
         }
     }
 }

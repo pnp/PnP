@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -24,23 +25,22 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
 
         protected override void ExecuteCmdlet()
         {
-            if (SPOnlineConnection.CurrentConnection.ConnectionType == SPOnlineConnection.ConnectionTypes.OnPrem)
+            if (SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.OnPrem)
             {
                 WriteObject(ClientContext.Site);
             }
             else
             {
-
                 if (!string.IsNullOrEmpty(Url))
                 {
-                    var list = this.Tenant.GetSitePropertiesByUrl(Url, Detailed);
+                    var list = Tenant.GetSitePropertiesByUrl(Url, Detailed);
                     list.Context.Load(list);
                     list.Context.ExecuteQuery();
                     WriteObject(list,true);
                 }
                 else
                 {
-                    var list = this.Tenant.GetSiteProperties(0, Detailed);
+                    var list = Tenant.GetSiteProperties(0, Detailed);
                     list.Context.Load(list);
                     list.Context.ExecuteQuery();
                     WriteObject(list, true);

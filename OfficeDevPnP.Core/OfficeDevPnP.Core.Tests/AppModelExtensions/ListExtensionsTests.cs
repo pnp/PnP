@@ -25,6 +25,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private Guid _listId; // For easy reference
 
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -122,7 +123,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.ExecuteQuery();
             }
         }
+        #endregion
 
+        #region Create list tests
         [TestMethod()]
         public void CreateListTest()
         {
@@ -132,7 +135,6 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Create List
                 var web = clientContext.Web;
-
                 web.CreateList(ListTemplateType.GenericList, listName, false);
 
                 //Get List
@@ -146,7 +148,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.ExecuteQuery();
             }
         }
+        #endregion
 
+        #region Default value tests
         [TestMethod()]
         public void SetDefaultColumnValuesTest()
         {
@@ -175,7 +179,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 list.SetDefaultColumnValues(defaultValues);
             }
         }
-
+        #endregion
 
     }
 }

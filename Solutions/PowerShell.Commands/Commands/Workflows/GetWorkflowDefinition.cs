@@ -30,7 +30,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             }
             else
             {
-                WriteObject(this.SelectedWeb.GetWorkflowDefinition(Name, PublishedOnly));
+                WriteObject(SelectedWeb.GetWorkflowDefinition(Name, PublishedOnly));
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿#if !CLIENTSDKV15
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using System.Management.Automation;
@@ -19,14 +20,15 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
     public class GetWebTemplates : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false)]
-        public uint LCID;
+        public uint Lcid;
 
         [Parameter(Mandatory = false)]
         public int CompatibilityLevel;
 
         protected override void ProcessRecord()
         {
-            WriteObject(this.Tenant.GetWebTemplates(LCID, CompatibilityLevel));
+            WriteObject(this.Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
         }
     }
 }
+#endif

@@ -21,7 +21,7 @@
         <asp:Label ID="lblStatus1" runat="server" />
         <br />
         <br />
-        <h1>Perform personalized search based listing of sites based on profile data</h1>
+        <h1>Perform personalized search of all site templates using profile data</h1>
         <br />       
         <br />
         <lu>

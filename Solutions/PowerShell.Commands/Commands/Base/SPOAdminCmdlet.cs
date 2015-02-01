@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 throw new InvalidOperationException(Properties.Resources.NoConnection);
             }
-            if (SPOnlineConnection.CurrentConnection.ConnectionType != SPOnlineConnection.ConnectionTypes.TenantAdmin)
+            if (SPOnlineConnection.CurrentConnection.ConnectionType != ConnectionType.TenantAdmin)
             {
                 throw new InvalidOperationException(Properties.Resources.CurrentSiteIsNoTenantAdminSite);
             }

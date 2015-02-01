@@ -31,11 +31,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (ContentType.Id != null)
                 {
-                    ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                    ct = SelectedWeb.GetContentTypeById(ContentType.Id);
                 }
                 else if (ContentType.Name != null)
                 {
-                    ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                    ct = SelectedWeb.GetContentTypeByName(ContentType.Name);
                 }
             }
             else
@@ -44,7 +44,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (ct != null)
             {
-                this.SelectedWeb.AddContentTypeToList(list.Title, ct, DefaultContentType);
+                SelectedWeb.AddContentTypeToList(list.Title, ct, DefaultContentType);
             }
         }
 

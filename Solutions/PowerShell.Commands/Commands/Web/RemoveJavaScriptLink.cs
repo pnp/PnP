@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Force || ShouldContinue(Properties.Resources.RemoveJavaScript, Properties.Resources.Confirm))
             {
-                this.SelectedWeb.DeleteJsLink(Key);
+                SelectedWeb.DeleteJsLink(Key);
             }
         }
     }
