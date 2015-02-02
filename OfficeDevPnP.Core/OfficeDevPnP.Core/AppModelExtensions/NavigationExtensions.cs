@@ -301,7 +301,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="clientContext"></param>
         /// <param name="name">Name of the custom action</param>
         /// <returns></returns>
-        private static bool CustomActionAlreadyExists(ClientContext clientContext, string name)
+        public static bool CustomActionExists(ClientContext clientContext, string name)
         {
             if (clientContext == null)
                 throw new ArgumentNullException("clientContext");
