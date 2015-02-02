@@ -14,7 +14,7 @@ namespace Microsoft.SharePoint.Client.Tests
         const string KEY = "TEST_KEY";
 
         [TestMethod()]
-        public void AddJsLinkTest()
+        public void AddJsLinkToWebTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -22,7 +22,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.AddJsLink(KEY, "/jquery-2.1.1.min.js"); // Dummy link
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 
                 // Teardown
@@ -34,15 +34,35 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void AddJsLinkIEnumerableTest()
+        public void AddJsLinkToSiteTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 // Test
-                clientContext.Web.AddJsLink(KEY, new List<string> { "/jquery-2.1.1.min.js", "/anotherjslink.js" }); // Dummy link
+                clientContext.Site.AddJsLink(KEY, "/jquery-2.1.1.min.js"); // Dummy link
+
+                var customActions = clientContext.Site.GetCustomActions();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
+                Assert.IsNotNull(existingAction, "Existing Action not found");
+
+                // Teardown
+                if (existingAction != null)
+                {
+                    clientContext.Web.DeleteCustomAction(existingAction.Id);
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void AddJsLinkIEnumerableToWebTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Test
+                clientContext.Web.AddJsLink(KEY, new List<string> {"/jquery-2.1.1.min.js", "/anotherjslink.js"}); // Dummy link
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
 
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 
@@ -55,7 +75,30 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void DeleteJsLinkTest()
+        public void AddJsLinkIEnumerableToSiteTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Test
+                clientContext.Site.AddJsLink(KEY, new List<string> { "/jquery-2.1.1.min.js", "/anotherjslink.js" }); // Dummy link
+
+                var customActions = clientContext.Site.GetCustomActions();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
+
+                Assert.IsNotNull(existingAction, "Existing Action not found");
+
+                // Teardown
+                if (existingAction != null)
+                {
+                    clientContext.Web.DeleteCustomAction(existingAction.Id);
+                }
+            }
+        }
+
+
+
+        [TestMethod()]
+        public void DeleteJsLinkFromWebTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -66,13 +109,31 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.DeleteJsLink(KEY);
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
                 Assert.IsNull(existingAction, "Existing Action found");
             }
         }
 
         [TestMethod()]
-        public void AddJsBlockTest()
+        public void DeleteJsLinkFromSiteTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Setup
+                clientContext.Site.AddJsLink(KEY, "/jquery-2.1.1.min.js"); // Dummy link
+
+                // Test
+                clientContext.Site.DeleteJsLink(KEY);
+
+                var customActions = clientContext.Site.GetCustomActions();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
+                Assert.IsNull(existingAction, "Existing Action found");
+            }
+        }
+
+
+        [TestMethod()]
+        public void AddJsBlockToWebTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -80,7 +141,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Web.AddJsBlock(KEY, "<script>alert('Testing')</script>");
 
                 var customActions = clientContext.Web.GetCustomActions();
-                var existingAction = customActions.Where(a => a.Name == KEY).FirstOrDefault();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
 
                 Assert.IsNotNull(existingAction, "Existing Action not found");
 
@@ -88,6 +149,27 @@ namespace Microsoft.SharePoint.Client.Tests
                 if (existingAction != null)
                 {
                     clientContext.Web.DeleteCustomAction(existingAction.Id);
+                }
+            }
+        }
+
+        [TestMethod()]
+        public void AddJsBlockToSiteTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Test
+                clientContext.Site.AddJsBlock(KEY, "<script>alert('Testing')</script>");
+
+                var customActions = clientContext.Site.GetCustomActions();
+                var existingAction = customActions.FirstOrDefault(a => a.Name == KEY);
+
+                Assert.IsNotNull(existingAction, "Existing Action not found");
+
+                // Teardown
+                if (existingAction != null)
+                {
+                    clientContext.Site.DeleteCustomAction(existingAction.Id);
                 }
             }
         }
