@@ -72,7 +72,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var tenant = new Tenant(tenantContext);
                 var serviceClient = tenant.GetUserProfileServiceClient();
                 tenantContext.Load(tenantContext.Web, w => w.CurrentUser);
-                tenantContext.ExecuteQuery();
+                tenantContext.ExecuteQueryRetry();
 
                 var profile = serviceClient.GetUserProfileByName(tenantContext.Web.CurrentUser.LoginName);
 
@@ -130,10 +130,10 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
                 Site site = tenant.GetSiteByUrl(siteToCreateUrl);
                 tenant.Context.Load(site);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
                 Web web = site.RootWeb;
                 web.Context.Load(web);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //Create sub site
                 SiteEntity sub = new SiteEntity() { Title = "Test Sub", Url = "sub", Description = "Test" };
@@ -208,14 +208,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 tenant.SetSiteLockState(siteToCreateUrl, SiteLockState.NoAccess, true);
                 var siteProperties = tenant.GetSitePropertiesByUrl(siteToCreateUrl, true);
                 tenantContext.Load(siteProperties);
-                tenantContext.ExecuteQuery();
+                tenantContext.ExecuteQueryRetry();
                 Assert.IsTrue(siteProperties.LockState == SiteLockState.NoAccess.ToString(), "LockState wasn't set to NoAccess");
 
                 // Set Lockstate NoAccess test
                 tenant.SetSiteLockState(siteToCreateUrl, SiteLockState.Unlock, true);
                 var siteProperties2 = tenant.GetSitePropertiesByUrl(siteToCreateUrl, true);
                 tenantContext.Load(siteProperties2);
-                tenantContext.ExecuteQuery();
+                tenantContext.ExecuteQueryRetry();
                 Assert.IsTrue(siteProperties2.LockState == SiteLockState.Unlock.ToString(), "LockState wasn't set to UnLock");
 
                 //Delete site collection, also

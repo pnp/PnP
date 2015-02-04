@@ -29,12 +29,12 @@ namespace Microsoft.SharePoint.Client
             File file = null;
             file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
                 file.Approve(comment);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -49,14 +49,14 @@ namespace Microsoft.SharePoint.Client
         {
             File file = web.GetFileByServerRelativeUrl(url);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
                 if (file.CheckOutType != CheckOutType.None)
                 {
                     file.CheckIn(comment, checkinType);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
         }
@@ -70,14 +70,14 @@ namespace Microsoft.SharePoint.Client
         {
             File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
                 if (file.CheckOutType == CheckOutType.None)
                 {
                     file.CheckOut();
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation(1, CoreResources.FieldAndContentTypeExtensions_CreateDocumentSet, documentSetName);
 
             var result = DocumentSet.DocumentSet.Create(folder.Context, folder, documentSetName, contentTypeId);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
 
             var fullUri = new Uri(result.Value);
             var serverRelativeUrl = fullUri.AbsolutePath;
@@ -187,7 +187,7 @@ namespace Microsoft.SharePoint.Client
         {
             var newFolder = folderCollection.Add(folderName);
             folderCollection.Context.Load(newFolder);
-            folderCollection.Context.ExecuteQuery();
+            folderCollection.Context.ExecuteQueryRetry();
 
             return newFolder;
         }
@@ -206,7 +206,7 @@ namespace Microsoft.SharePoint.Client
 
             try
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 exists = true;
             }
             catch
@@ -230,7 +230,7 @@ namespace Microsoft.SharePoint.Client
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.Load(parentFolder, f => f.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             var parentWebRelativeUrl = parentFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length);
@@ -293,7 +293,7 @@ namespace Microsoft.SharePoint.Client
             Folder folder = null;
 
             folderCollection.Context.Load(folderCollection);
-            folderCollection.Context.ExecuteQuery();
+            folderCollection.Context.ExecuteQueryRetry();
             foreach (Folder existingFolder in folderCollection)
             {
                 if (string.Equals(existingFolder.Name, folderName, StringComparison.InvariantCultureIgnoreCase))
@@ -334,14 +334,14 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             var folderServerRelativeUrl = web.ServerRelativeUrl + (web.ServerRelativeUrl.EndsWith("/") ? "" : "/") + webRelativeUrl;
 
             // Check if folder is inside a list
             var listCollection = web.Lists;
             web.Context.Load(listCollection, lc => lc.Include(l => l.RootFolder.ServerRelativeUrl));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             List containingList = null;
             foreach (var list in listCollection)
@@ -362,7 +362,7 @@ namespace Microsoft.SharePoint.Client
                 locationType = "Web";
                 currentFolder = web.RootFolder;
                 web.Context.Load(currentFolder, f => f.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             else
             {
@@ -384,7 +384,7 @@ namespace Microsoft.SharePoint.Client
                 // Find next part of the path
                 var folderCollection = currentFolder.Folders;
                 folderCollection.Context.Load(folderCollection);
-                folderCollection.Context.ExecuteQuery();
+                folderCollection.Context.ExecuteQueryRetry();
                 Folder nextFolder = null;
                 foreach (Folder existingFolder in folderCollection)
                 {
@@ -403,7 +403,7 @@ namespace Microsoft.SharePoint.Client
 
                     nextFolder = folderCollection.Add(folderName);
                     folderCollection.Context.Load(nextFolder);
-                    folderCollection.Context.ExecuteQuery();
+                    folderCollection.Context.ExecuteQueryRetry();
                 }
 
                 currentFolder = nextFolder;
@@ -489,7 +489,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             folderCollection.Context.Load(folderCollection);
-            folderCollection.Context.ExecuteQuery();
+            folderCollection.Context.ExecuteQueryRetry();
             foreach (Folder folder in folderCollection)
             {
                 if (folder.Name.Equals(folderName, StringComparison.InvariantCultureIgnoreCase))
@@ -513,9 +513,9 @@ namespace Microsoft.SharePoint.Client
 
             var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             ClientResult<Stream> stream = file.OpenBinaryStream();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             using (Stream memStream = new MemoryStream())
             {
@@ -533,7 +533,7 @@ namespace Microsoft.SharePoint.Client
             FileCollection files = folder.Files;
             context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
             context.Load(folder.Folders);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             foreach (Microsoft.SharePoint.Client.File file in files)
             {
@@ -560,12 +560,12 @@ namespace Microsoft.SharePoint.Client
             File file = null;
             file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
             web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
                 file.Publish(comment);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -584,7 +584,7 @@ namespace Microsoft.SharePoint.Client
 
             folder.Context.Load(folder);
             folder.Context.Load(folder.Folders);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
 
             foreach (Folder subFolder in folder.Folders)
             {
@@ -610,10 +610,10 @@ namespace Microsoft.SharePoint.Client
             var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
 
             clientContext.Load(file);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             ClientResult<Stream> stream = file.OpenBinaryStream();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             string fileOut;
             if (!string.IsNullOrEmpty(localFileName))
@@ -699,7 +699,7 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", newFileInfo.Url);
             var file = folder.Files.Add(newFileInfo);
             folder.Context.Load(file);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
 
             return file;
         }
@@ -769,12 +769,12 @@ namespace Microsoft.SharePoint.Client
             {
                 LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
                 File.SaveBinaryDirect(uploadContext, serverRelativeUrl, stream, overwriteIfExists);
-                uploadContext.ExecuteQuery();
+                uploadContext.ExecuteQueryRetry();
             }
 
             var file = folder.Files.GetByUrl(serverRelativeUrl);
             folder.Context.Load(file);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
 
             return file;
         }
@@ -802,7 +802,7 @@ namespace Microsoft.SharePoint.Client
                 if (!folder.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     folder.Context.Load(folder, w => w.ServerRelativeUrl);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryRetry();
                 }
 
                 var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);                
@@ -810,7 +810,7 @@ namespace Microsoft.SharePoint.Client
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
-                folder.Context.ExecuteQuery();
+                folder.Context.ExecuteQueryRetry();
                 return file;
             }
             catch (Exception ex)
@@ -866,7 +866,7 @@ namespace Microsoft.SharePoint.Client
 
             byte[] serverHash = null;
             var streamResult = serverFile.OpenBinaryStream();
-            serverFile.Context.ExecuteQuery();
+            serverFile.Context.ExecuteQueryRetry();
 
             // Hash contents
             HashAlgorithm ha = HashAlgorithm.Create();
@@ -925,7 +925,7 @@ namespace Microsoft.SharePoint.Client
                 // If this throws ServerException (does not belong to list), then shouldn't be trying to set properties)
                 context.Load(file.ListItemAllFields);
                 context.Load(file.ListItemAllFields.FieldValuesAsText);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 // Loop through and detect changes first, then, check out if required and apply
                 foreach (var kvp in properties)
@@ -998,7 +998,7 @@ namespace Microsoft.SharePoint.Client
                     context.Load(parentList, l => l.ForceCheckout);
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                         checkOutRequired = parentList.ForceCheckout;
                     }
                     catch (ServerException ex)
@@ -1013,7 +1013,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", file.Name);
                         file.CheckOut();
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
 
                     LoggingUtility.Internal.TraceVerbose("Set properties: {0}", file.Name);
@@ -1026,7 +1026,7 @@ namespace Microsoft.SharePoint.Client
                         file.ListItemAllFields[propertyName] = propertyValue;
                     }
                     file.ListItemAllFields.Update();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
             }
         }
@@ -1060,7 +1060,7 @@ namespace Microsoft.SharePoint.Client
 
                 try
                 {
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                     publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
                     approvalRequired = parentList.EnableModeration;
                 }
@@ -1076,7 +1076,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", file.Name);
                     file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
 
                 if (level == FileLevel.Published)
@@ -1085,14 +1085,14 @@ namespace Microsoft.SharePoint.Client
                     {
                         LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", file.Name);
                         file.Publish("Published by provisioning");
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
 
                     if (approvalRequired)
                     {
                         LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", file.Name);
                         file.Approve("Approved by provisioning");
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                 }
             }

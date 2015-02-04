@@ -38,7 +38,7 @@ namespace Microsoft.SharePoint.Client
                 WireUpTaxonomyFieldInternal(_field, taxonomyItem, multiValue);
                 _field.Update();
 
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 return _field;
             }
@@ -47,7 +47,7 @@ namespace Microsoft.SharePoint.Client
                 ///If there is an exception the hidden field might be present
                 FieldCollection _fields = list.Fields;
                 list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
                 var _hiddenField = id.ToString().Replace("-", "");
 
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
@@ -56,7 +56,7 @@ namespace Microsoft.SharePoint.Client
                     _field.Hidden = false; // Cannot delete a hidden column
                     _field.Update();
                     _field.DeleteObject();
-                    list.Context.ExecuteQuery();
+                    list.Context.ExecuteQueryRetry();
                 }
                 throw;
             }
@@ -90,7 +90,7 @@ namespace Microsoft.SharePoint.Client
                 WireUpTaxonomyFieldInternal(_field, taxonomyItem, multiValue);
                 _field.Update();
 
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 return _field;
             }
@@ -99,14 +99,14 @@ namespace Microsoft.SharePoint.Client
                 ///If there is an exception the hidden field might be present
                 FieldCollection _fields = web.Fields;
                 web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 var _hiddenField = id.ToString().Replace("-", "");
 
                 var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
                 if (_field != null)
                 {
                     _field.DeleteObject();
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
                 throw;
 
@@ -136,7 +136,7 @@ namespace Microsoft.SharePoint.Client
             TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
             web.Context.Load(termStore);
             web.Context.Load(termSet);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
             {
@@ -206,7 +206,7 @@ namespace Microsoft.SharePoint.Client
             TermSet termSet = termGroup.TermSets.GetByName(mmsTermSetName);
             list.Context.Load(termStore);
             list.Context.Load(termSet);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
             {

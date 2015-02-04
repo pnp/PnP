@@ -23,7 +23,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptions = subscriptionService.EnumerateSubscriptions();
             var subscriptionQuery = from sub in subscriptions where sub.Name == name select sub;
             var subscriptionsResults = web.Context.LoadQuery(subscriptionQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var subscription = subscriptionsResults.FirstOrDefault();
             return subscription;
 
@@ -41,7 +41,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
             var subscription = subscriptionService.GetSubscription(id);
             web.Context.Load(subscription);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return subscription;
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptions = subscriptionService.EnumerateSubscriptionsByList(list.Id);
             var subscriptionQuery = from sub in subscriptions where sub.Name == name select sub;
             var subscriptionResults = list.Context.LoadQuery(subscriptionQuery);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             var subscription = subscriptionResults.FirstOrDefault();
             return subscription;
         }
@@ -145,7 +145,7 @@ namespace Microsoft.SharePoint.Client
 
             var subscriptionResult = subscriptionService.PublishSubscriptionForList(sub, list.Id);
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return subscriptionResult.Value;
         }
@@ -165,7 +165,7 @@ namespace Microsoft.SharePoint.Client
 
             subscriptionService.DeleteSubscription(subscription.Id);
 
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
 
@@ -184,7 +184,7 @@ namespace Microsoft.SharePoint.Client
             var definitions = deploymentService.EnumerateDefinitions(publishedOnly);
             var definitionQuery = from def in definitions where def.DisplayName == displayName select def;
             var definitionResults = web.Context.LoadQuery(definitionQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var definition = definitionResults.FirstOrDefault();
             return definition;
         }
@@ -201,7 +201,7 @@ namespace Microsoft.SharePoint.Client
             var deploymentService = servicesManager.GetWorkflowDeploymentService();
             var definition = deploymentService.GetDefinition(id);
             web.Context.Load(definition);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return definition;
         }
 
@@ -211,7 +211,7 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var deploymentService = servicesManager.GetWorkflowDeploymentService();
             deploymentService.DeleteDefinition(definition.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
 
@@ -227,7 +227,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.EnumerateInstancesForSite();
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return instances;
         }
 
@@ -242,7 +242,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.EnumerateInstancesForListItem(item.ParentList.Id, item.Id);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return instances;
         }
 
@@ -258,7 +258,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.Enumerate(subscription);
             clientContext.Load(instances);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             return instances;
         }
 
@@ -272,7 +272,7 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             workflowInstanceService.CancelWorkflow(instance);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             workflowInstanceService.ResumeWorkflow(instance);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
     }

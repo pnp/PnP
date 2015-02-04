@@ -48,7 +48,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
@@ -79,14 +79,14 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             web.Update();
 
             if (executeQuery)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return field;
@@ -95,7 +95,7 @@ namespace Microsoft.SharePoint.Client
         public static void RemoveFieldByInternalName(this Web web, string internalName)
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.InternalName == internalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (fields.Count() == 0)
             {
@@ -186,7 +186,7 @@ namespace Microsoft.SharePoint.Client
         public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldId));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var field = fields.FirstOrDefault();
             if (field == null)
@@ -212,7 +212,7 @@ namespace Microsoft.SharePoint.Client
                 fields.ServerObjectIsNull.Value)
             {
                 fields.Context.Load(fields);
-                fields.Context.ExecuteQuery();
+                fields.Context.ExecuteQueryRetry();
             }
 
             var field = fields.FirstOrDefault(f => f.StaticName == internalName);
@@ -241,7 +241,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             IEnumerable<Field> results = web.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (results.FirstOrDefault() != null)
             {
                 return true;
@@ -288,7 +288,7 @@ namespace Microsoft.SharePoint.Client
             ContentType ct = GetContentTypeByName(web, contentTypeName);
             FieldCollection fields = ct.Fields;
             IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            ct.Context.ExecuteQuery();
+            ct.Context.ExecuteQueryRetry();
             if (results.FirstOrDefault() != null)
             {
                 return true;
@@ -335,7 +335,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = list.Fields;
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
@@ -372,7 +372,7 @@ namespace Microsoft.SharePoint.Client
 
             if (executeQuery)
             {
-                fields.Context.ExecuteQuery();
+                fields.Context.ExecuteQueryRetry();
             }
 
             return fields.Context.CastTo<TField>(field);
@@ -412,7 +412,7 @@ namespace Microsoft.SharePoint.Client
         {
             FieldCollection fields = list.Fields;
             list.Context.Load(fields);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             XDocument xd = XDocument.Parse(fieldAsXml);
             var ns = xd.Root.Name.Namespace;
@@ -426,7 +426,7 @@ namespace Microsoft.SharePoint.Client
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return field;
         }
@@ -441,7 +441,7 @@ namespace Microsoft.SharePoint.Client
         {
             FieldCollection fields = list.Fields;
             list.Context.Load(fields);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in fields)
             {
@@ -485,7 +485,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = list.Fields;
             IEnumerable<Field> results = list.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             if (results.FirstOrDefault() != null)
             {
@@ -517,7 +517,7 @@ namespace Microsoft.SharePoint.Client
                 fields.Add(field);
             }
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             return fields;
         }
 
@@ -654,15 +654,15 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             list.ContentTypesEnabled = true;
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             list.ContentTypes.AddExistingContentType(contentType);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             // Set the default content type
             if (defaultContent)
@@ -683,7 +683,7 @@ namespace Microsoft.SharePoint.Client
             ContentType ct = web.GetContentTypeById(contentTypeID);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Get field
             Field fld = web.Fields.GetById(new Guid(fieldID));
@@ -704,7 +704,7 @@ namespace Microsoft.SharePoint.Client
             ContentType ct = web.GetContentTypeByName(contentTypeName);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Get field
             Field fld = web.Fields.GetById(fieldID);
@@ -744,7 +744,7 @@ namespace Microsoft.SharePoint.Client
 
             if (propertyLoadRequired)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
@@ -758,7 +758,7 @@ namespace Microsoft.SharePoint.Client
                 fldInfo.Field = field;
                 contentType.FieldLinks.Add(fldInfo);
                 contentType.Update(true);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 flink = contentType.FieldLinks.GetById(field.Id);
             }
@@ -769,7 +769,7 @@ namespace Microsoft.SharePoint.Client
                 flink.Required = required;
                 flink.Hidden = hidden;
                 contentType.Update(true);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -806,7 +806,7 @@ namespace Microsoft.SharePoint.Client
         {
             var contentTypes = list.ContentTypes;
             list.Context.Load(contentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceVerbose("Checking {0} content types in list for best match", contentTypes.Count);
 
@@ -855,7 +855,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(ctCol);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in ctCol)
             {
                 if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
@@ -892,7 +892,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             ContentType ct = results.FirstOrDefault();
             if (ct != null)
@@ -942,7 +942,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             if (!list.ContentTypesEnabled)
@@ -952,7 +952,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in ctCol)
             {
@@ -1004,7 +1004,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             if (!list.ContentTypesEnabled)
@@ -1014,7 +1014,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             if (results.FirstOrDefault() != null)
             {
@@ -1124,7 +1124,7 @@ namespace Microsoft.SharePoint.Client
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;
             web.Context.Load(contentTypes);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
 
             // Set the properties for the content type
@@ -1134,7 +1134,7 @@ namespace Microsoft.SharePoint.Client
             newCt.Group = group;
             newCt.ParentContentType = parentContentType;
             ContentType myContentType = contentTypes.Add(newCt);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Return the content type object
             return myContentType;
@@ -1165,7 +1165,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return results.FirstOrDefault();
         }
 
@@ -1194,7 +1194,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(ctCol);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in ctCol)
             {
                 if (item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase))
@@ -1221,7 +1221,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return results.FirstOrDefault();
         }
@@ -1241,7 +1241,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in ctCol)
             {
@@ -1287,7 +1287,7 @@ namespace Microsoft.SharePoint.Client
             // Get list instances
             List list = web.GetListByTitle(listTitle);
             web.Context.Load(list);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Add content type to list
             SetDefaultContentTypeToList(list, contentTypeId);
@@ -1315,7 +1315,7 @@ namespace Microsoft.SharePoint.Client
         {
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var ctIds = new List<ContentTypeId>();
             foreach (ContentType ct in ctCol)
@@ -1331,7 +1331,7 @@ namespace Microsoft.SharePoint.Client
 
             list.RootFolder.Update();
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1354,7 +1354,7 @@ namespace Microsoft.SharePoint.Client
         {
             var listContentTypes = list.ContentTypes;
             list.Context.Load(listContentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             IList<ContentTypeId> newOrder = new List<ContentTypeId>();
 
             // Casting throws "Specified method is not supported" when using in v15
@@ -1375,7 +1375,7 @@ namespace Microsoft.SharePoint.Client
             list.RootFolder.UniqueContentTypeOrder = newOrder;
             list.RootFolder.Update();
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         #endregion
@@ -1410,10 +1410,10 @@ namespace Microsoft.SharePoint.Client
         {
             ContentTypeCollection contentTypes = list.ContentTypes;
             list.Context.Load(contentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             ContentType contentType = contentTypes.GetById(contentTypeId);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             contentType.SetLocalizationForContentType(cultureName, nameResource, descriptionResource);
         }
@@ -1430,14 +1430,14 @@ namespace Microsoft.SharePoint.Client
             if (contentType.IsObjectPropertyInstantiated("TitleResource"))
             {
                 contentType.Context.Load(contentType);
-                contentType.Context.ExecuteQuery();
+                contentType.Context.ExecuteQueryRetry();
             }
 
             // Set translations for the culture
             contentType.NameResource.SetValueForUICulture(cultureName, nameResource);
             contentType.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             contentType.Update(true);
-            contentType.Context.ExecuteQuery();
+            contentType.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1548,14 +1548,14 @@ namespace Microsoft.SharePoint.Client
             if (field.IsObjectPropertyInstantiated("TitleResource"))
             {
                 field.Context.Load(field);
-                field.Context.ExecuteQuery();
+                field.Context.ExecuteQueryRetry();
             }
 
             // Set translations for the culture
             field.TitleResource.SetValueForUICulture(cultureName, titleResource);
             field.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             field.UpdateAndPushChanges(true);
-            field.Context.ExecuteQuery();
+            field.Context.ExecuteQueryRetry();
         }
 
         #endregion

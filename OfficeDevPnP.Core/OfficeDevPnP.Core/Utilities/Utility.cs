@@ -23,7 +23,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(site);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return site;
         }
@@ -41,7 +41,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(web);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return web;
         }

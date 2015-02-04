@@ -77,7 +77,7 @@ namespace Microsoft.SharePoint.Client
             newWeb.Navigation.UseShared = inheritNavigation;
             newWeb.Update();
 
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
 
             return newWeb;
         }
@@ -103,13 +103,13 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
                 LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
                 existingWeb.DeleteObject();
-                parentWeb.Context.ExecuteQuery();
+                parentWeb.Context.ExecuteQueryRetry();
                 deleted = true;
             }
             else
@@ -135,7 +135,7 @@ namespace Microsoft.SharePoint.Client
         {
             var siteContext = site.Context;
             siteContext.Load(site, s => s.Url);
-            siteContext.ExecuteQuery();
+            siteContext.ExecuteQueryRetry();
             var queue = new Queue<string>();
             queue.Enqueue(site.Url);
             while (queue.Count > 0)
@@ -144,7 +144,7 @@ namespace Microsoft.SharePoint.Client
                 using (var webContext = siteContext.Clone(currentUrl))
                 {
                     webContext.Load(webContext.Web, web => web.Webs);
-                    webContext.ExecuteQuery();
+                    webContext.ExecuteQueryRetry();
                     foreach (var subWeb in webContext.Web.Webs)
                     {
                         queue.Enqueue(subWeb.Url);
@@ -179,7 +179,7 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var childWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return childWeb;
         }
@@ -204,7 +204,7 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var exists = webs.Any(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return exists;
         }
@@ -223,7 +223,7 @@ namespace Microsoft.SharePoint.Client
                 using (ClientContext testContext = context.Clone(webFullUrl))
                 {
                     testContext.Load(testContext.Web, w => w.Title);
-                    testContext.ExecuteQuery();
+                    testContext.ExecuteQueryRetry();
                     exists = true;
                 }
             }
@@ -255,7 +255,7 @@ namespace Microsoft.SharePoint.Client
         {
             var instances = AppCatalog.GetAppInstances(web.Context, web);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return instances;
         }
@@ -272,7 +272,7 @@ namespace Microsoft.SharePoint.Client
             bool removed = false;
             var instances = AppCatalog.GetAppInstances(web.Context, web);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var app in instances)
             {
                 if (string.Equals(app.Title, appTitle, StringComparison.OrdinalIgnoreCase))
@@ -280,7 +280,7 @@ namespace Microsoft.SharePoint.Client
                     removed = true;
                     LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
                     app.Uninstall();
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
             if (!removed)
@@ -308,7 +308,7 @@ namespace Microsoft.SharePoint.Client
 
             var rootFolder = rootWeb.RootFolder;
             rootWeb.Context.Load(rootFolder, f => f.ServerRelativeUrl);
-            rootWeb.Context.ExecuteQuery();
+            rootWeb.Context.ExecuteQueryRetry();
 
             rootFolder.UploadFile(sourceFileName, sourceFilePath, true);
 
@@ -324,7 +324,7 @@ namespace Microsoft.SharePoint.Client
             DesignPackage.UnInstall(site.Context, site, packageInfo);
             try
             {
-                site.Context.ExecuteQuery();
+                site.Context.ExecuteQueryRetry();
             }
             catch (ServerException ex)
             {
@@ -346,12 +346,12 @@ namespace Microsoft.SharePoint.Client
             // The solution package should be loaded into the solutions catalog (_catalogs/solutions, list template 121).
 
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
 
             // Remove package from rootfolder
             var uploadedSolutionFile = rootFolder.Files.GetByUrl(fileName);
             uploadedSolutionFile.DeleteObject();
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace Microsoft.SharePoint.Client
 
             var solutions = solutionGallery.GetItems(camlQuery);
             site.Context.Load(solutions);
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
 
             if (solutions.AreItemsAvailable)
             {
@@ -396,7 +396,7 @@ namespace Microsoft.SharePoint.Client
                 DesignPackage.UnInstall(site.Context, site, packageInfo);
                 try
                 {
-                    site.Context.ExecuteQuery();
+                    site.Context.ExecuteQueryRetry();
                 }
                 catch (ServerException ex)
                 {
@@ -530,7 +530,7 @@ namespace Microsoft.SharePoint.Client
             keywordQuery.SortList.Add("SPSiteUrl", SortDirection.Ascending);
             SearchExecutor searchExec = new SearchExecutor(web.Context);
             ClientResult<ResultTableCollection> results = searchExec.ExecuteQuery(keywordQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (results != null)
             {
@@ -599,13 +599,13 @@ namespace Microsoft.SharePoint.Client
             {
                 // Load the web properties
                 web.Context.Load(props);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 props[key] = value;
             }
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -633,7 +633,7 @@ namespace Microsoft.SharePoint.Client
 
             web.Update();
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (checkIndexed)
                 RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
         }
@@ -685,7 +685,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return props.FieldValues[key];
@@ -706,7 +706,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return true;
@@ -854,14 +854,14 @@ namespace Microsoft.SharePoint.Client
                         where receiver.ReceiverName == name
                         select receiver;
             web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var receiverExists = query.Any();
             if (receiverExists && force)
             {
                 var receiver = query.FirstOrDefault();
                 receiver.DeleteObject();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 receiverExists = false;
             }
             EventReceiverDefinition def = null;
@@ -876,7 +876,7 @@ namespace Microsoft.SharePoint.Client
                 receiver.Synchronization = synchronization;
                 def = web.EventReceivers.Add(receiver);
                 web.Context.Load(def);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             return def;
         }
@@ -896,7 +896,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -922,7 +922,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -956,7 +956,7 @@ namespace Microsoft.SharePoint.Client
             web.TitleResource.SetValueForUICulture(cultureName, titleResource);
             web.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 #endif
         #endregion

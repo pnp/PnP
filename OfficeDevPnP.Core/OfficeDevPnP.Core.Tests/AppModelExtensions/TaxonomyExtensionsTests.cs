@@ -43,16 +43,16 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var termGroup = termStore.CreateGroup(_termGroupName, _termGroupId);
                 clientContext.Load(termGroup);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Termset
                 var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Term
                 termSet.CreateTerm(_termName, 1033, _termId);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // List
                 ListCreationInformation listCI = new ListCreationInformation();
@@ -60,7 +60,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 listCI.Title = "Test_List_" + DateTime.Now.ToFileTime();
                 var list = clientContext.Web.Lists.Add(listCI);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 _listId = list.Id;
             }
         }
@@ -77,28 +77,28 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termGroup = termStore.GetGroup(_termGroupId);
                 var termSets = termGroup.TermSets;
                 clientContext.Load(termSets);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 foreach (var termSet in termSets)
                 {
                     termSet.DeleteObject();
                 }
                 termGroup.DeleteObject(); // Will delete underlying termset
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var field in testFields)
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
         #endregion
@@ -113,7 +113,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Get Test TermSet
 
@@ -146,7 +146,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Get Test TermSet
 
@@ -183,13 +183,13 @@ namespace Microsoft.SharePoint.Client.Tests
                 // Retrieve list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Retrieve Termset
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Create taxonomyfield first
                 TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
@@ -208,12 +208,12 @@ namespace Microsoft.SharePoint.Client.Tests
                 var item = list.AddItem(itemCi);
                 item.Update();
                 clientContext.Load(item);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 item.SetTaxonomyFieldValue(fieldId, _termName, _termId);
 
                 clientContext.Load(item, i => i[fieldName]);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var value = item[fieldName] as TaxonomyFieldValue;
 
@@ -230,11 +230,11 @@ namespace Microsoft.SharePoint.Client.Tests
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var list = clientContext.Web.Lists.GetById(_listId);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var fieldName = "Test_" + DateTime.Now.ToFileTime();
                 var fieldId = Guid.NewGuid();
@@ -265,12 +265,12 @@ namespace Microsoft.SharePoint.Client.Tests
                 var anchorTerm = termSet.GetTerm(_termId);
                 clientContext.Load(termSet);
                 clientContext.Load(anchorTerm);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Retrieve List
                 var list = clientContext.Web.Lists.GetById(_listId);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Create field
                 var fieldId = Guid.NewGuid();
@@ -450,7 +450,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var term2 = termSet.Terms.GetByName(termName2);
                 clientContext.Load(term1);
                 clientContext.Load(term2);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsNotNull(term1);
                 Assert.IsNotNull(term2);
@@ -482,7 +482,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var term2 = termSet.Terms.GetByName(termName2);
                 clientContext.Load(term1);
                 clientContext.Load(term2);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsNotNull(term1);
                 Assert.IsNotNull(term2);
@@ -513,7 +513,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
                 clientContext.Load(rootCollection, ts => ts.Include(t=> t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Political Geography", createdSet.Name);
                 Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
@@ -535,7 +535,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 clientContext.Load(termStore, s => s.DefaultLanguage);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var lcid = termStore.DefaultLanguage;
 
                 var termGroup = termStore.GetGroup(_termGroupId);
@@ -551,7 +551,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 delete2.SetDescription("Term to delete", lcid);
                 var delete3 = delete2.CreateTerm("Delete3", lcid, Guid.NewGuid());
                 delete3.SetDescription("Child term to delete", lcid);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
             using (var clientContext = TestCommon.CreateClientContext())
@@ -574,7 +574,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
                 clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Updated term set description", createdSet.Description);
                 Assert.IsTrue(createdSet.IsOpenForTermCreation);
@@ -583,7 +583,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var retain1Collection = rootCollection.First(t => t.Name == "Retain1").Terms;
                 clientContext.Load(retain1Collection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsTrue(retain1Collection.Any(t => t.Name == "New2"));
                 Assert.IsFalse(retain1Collection.Any(t => t.Name == "Delete2"));
@@ -603,7 +603,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 clientContext.Load(termStore, s => s.DefaultLanguage);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var lcid = termStore.DefaultLanguage;
 
                 var termGroup = termStore.GetGroup(_termGroupId);
@@ -613,7 +613,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 retain1.SetDescription("Retained term description", lcid);
                 var toUpdate1 = termSet.CreateTerm("ToUpdate1", lcid, changedTermId);
                 toUpdate1.SetDescription("Inital term description", lcid);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
             using (var clientContext = TestCommon.CreateClientContext())
@@ -634,7 +634,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var rootCollection = createdSet.Terms;
                 clientContext.Load(createdSet);
                 clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Id));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Updated Guids", createdSet.Name);
                 Assert.AreEqual("Updated Test Guid term set description", createdSet.Description);
