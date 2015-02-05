@@ -45,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     field = SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
                 }
                 ClientContext.Load(field);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             if (field != null)
             {

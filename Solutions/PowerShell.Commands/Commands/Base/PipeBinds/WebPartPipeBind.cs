@@ -13,14 +13,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WebPartPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WebPartPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._title = id;
+                _title = id;
             }
         }
 
@@ -33,8 +33,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WebPartPipeBind()
         {
-            this._id = Guid.Empty;
-            this._title = string.Empty;
+            _id = Guid.Empty;
+            _title = string.Empty;
         }
     }
 }

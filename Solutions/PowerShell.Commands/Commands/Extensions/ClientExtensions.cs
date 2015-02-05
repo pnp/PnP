@@ -14,7 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Extensions
             if (collection.ServerObjectIsNull == null || collection.ServerObjectIsNull == true)
             {
                 collection.Context.Load(collection);
-                collection.Context.ExecuteQuery();
+                collection.Context.ExecuteQueryRetry();
                 return collection;
             }
             else

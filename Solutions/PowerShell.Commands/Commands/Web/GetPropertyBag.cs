@@ -27,7 +27,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     var values = SelectedWeb.AllProperties;
                     ClientContext.Load(values);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(values.FieldValues);
                 }
             }

@@ -37,12 +37,12 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if(!instance.IsObjectPropertyInstantiated("Title"))
                 {
                     ClientContext.Load(instance, i => i.Title);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 if (Force || ShouldContinue(string.Format(Properties.Resources.UninstallApp0, instance.Title), Properties.Resources.Confirm))
                 {
                     instance.Uninstall();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
 

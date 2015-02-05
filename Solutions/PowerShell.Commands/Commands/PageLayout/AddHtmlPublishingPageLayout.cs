@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
      
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeployHtmlPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
+            SelectedWeb.DeployHtmlPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
         }
     }
 }

@@ -15,12 +15,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public CredentialPipeBind(PSCredential pscredential)
         {
-            this._pscredential = pscredential;
+            _pscredential = pscredential;
         }
 
         public CredentialPipeBind(string id)
         {
-            this._storedcredential = id;
+            _storedcredential = id;
         }
 
         public PSCredential Credential

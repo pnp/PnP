@@ -41,12 +41,12 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
             if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
 
             var folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
             ClientContext.Load(folder, f => f.ServerRelativeUrl);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             var fileUrl = UrlUtility.Combine(folder.ServerRelativeUrl, System.IO.Path.GetFileName(Path));
 

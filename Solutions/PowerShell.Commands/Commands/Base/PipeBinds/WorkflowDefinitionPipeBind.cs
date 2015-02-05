@@ -19,19 +19,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WorkflowDefinitionPipeBind(WorkflowDefinition def)
         {
-            this._def = def;
+            _def = def;
         }
 
         public WorkflowDefinitionPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WorkflowDefinitionPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._name = id;
+                _name = id;
             }
         }
 

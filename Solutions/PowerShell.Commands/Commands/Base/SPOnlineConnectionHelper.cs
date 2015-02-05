@@ -54,7 +54,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     context.Credentials = (ICredentials)onlineCredentials;
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                     catch (ClientRequestException)
                     {
@@ -71,7 +71,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                     catch (ClientRequestException ex)
                     {
@@ -159,7 +159,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             try
             {
                 Tenant tenant = new Tenant((ClientRuntimeContext)clientContext);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 return true;
             }
             catch (ClientRequestException)

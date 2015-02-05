@@ -23,12 +23,12 @@ PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder")]
             if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
 
             Folder folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
             ClientContext.Load(folder, f => f.ServerRelativeUrl);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             folder.CreateFolder(Name);
         }

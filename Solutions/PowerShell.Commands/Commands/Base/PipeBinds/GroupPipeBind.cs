@@ -38,17 +38,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public GroupPipeBind(int id)
         {
-            this._id = id;
+            _id = id;
         }
 
         public GroupPipeBind(Group group)
         {
-            this._group = group;
+            _group = group;
         }
 
         public GroupPipeBind(string name)
         {
-            this._name = name;
+            _name = name;
         }
 
     }

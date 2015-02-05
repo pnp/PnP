@@ -25,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             ContentType ct = null;
-            List list = this.SelectedWeb.GetList(List);
+            List list = SelectedWeb.GetList(List);
 
             if (ContentType.ContentType == null)
             {

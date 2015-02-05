@@ -19,13 +19,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             if (string.IsNullOrEmpty(Name))
             {
-                var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                 var deploymentService = servicesManager.GetWorkflowDeploymentService();
                 var definitions = deploymentService.EnumerateDefinitions(PublishedOnly);
 
                 ClientContext.Load(definitions);
 
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(definitions, true);
             }
             else

@@ -56,8 +56,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 else
                 {
-                    var itemElement = new XElement("item", new XAttribute("key", Key));
-                    itemElement.Value = Value;
+                    var itemElement = new XElement("item", new XAttribute("key", Key)) {Value = Value};
                     itemsElement.Add(itemElement);
                 }
             }

@@ -35,15 +35,13 @@ PS:> New-SPOUser -LogonName user@company.com
         {
             var web = SelectedWeb;
 
-            var groupCI = new GroupCreationInformation();
-            groupCI.Title = Title;
-            groupCI.Description = Description;
+            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
 
             var group = web.SiteGroups.Add(groupCI);
 
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             var dirty = false;
             if (AllowRequestToJoinLeave)
             {
@@ -59,7 +57,7 @@ PS:> New-SPOUser -LogonName user@company.com
             if (dirty)
             {
                 group.Update();
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
 
 
@@ -72,14 +70,14 @@ PS:> New-SPOUser -LogonName user@company.com
                     groupOwner = web.EnsureUser(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 catch
                 {
                     groupOwner = web.SiteGroups.GetByName(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
 
@@ -105,7 +103,7 @@ PS:> New-SPOUser -LogonName user@company.com
                         }
                 }
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(group);
         }
     }

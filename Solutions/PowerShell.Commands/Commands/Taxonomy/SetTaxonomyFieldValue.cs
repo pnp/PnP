@@ -36,7 +36,7 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
         {
             Field field = ListItem.ParentList.Fields.GetByInternalNameOrTitle(InternalFieldName);
             ClientContext.Load(field);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             switch (ParameterSetName)
             {

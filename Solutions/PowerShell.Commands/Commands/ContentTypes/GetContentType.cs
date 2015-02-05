@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             else
             {
                 var cts = ClientContext.LoadQuery(SelectedWeb.ContentTypes);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
     
                 WriteObject(cts, true);
             }

@@ -25,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             if(Url == null)
             {
                 ClientContext.Load(SelectedWeb, w => w.Url);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 Url = SelectedWeb.Url;
             }
             SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);

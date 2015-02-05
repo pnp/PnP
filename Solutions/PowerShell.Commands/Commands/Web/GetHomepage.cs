@@ -10,11 +10,11 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            var folder = this.SelectedWeb.RootFolder;
+            var folder = SelectedWeb.RootFolder;
 
             ClientContext.Load(folder, f => f.WelcomePage);
 
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             if (string.IsNullOrEmpty(folder.WelcomePage))
             {

@@ -15,14 +15,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public FieldPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public FieldPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._name = id;
+                _name = id;
             }
         }
 
@@ -33,8 +33,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public FieldPipeBind()
         {
-            this._id = Guid.Empty;
-            this._name = String.Empty;
+            _id = Guid.Empty;
+            _name = String.Empty;
         }
 
         public Guid Id

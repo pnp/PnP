@@ -22,12 +22,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             get
             {
-                return this._url;
+                return _url;
                 //return this.Context.Url;
             }
             protected set
             {
-                this._url = value;
+                _url = value;
             }
         }
 
@@ -37,14 +37,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             if (context == null)
                 throw new ArgumentNullException("context");
-            this.Context = context;
-            this._initialContext = context;
-            this.ConnectionType = connectionType;
-            this.MinimalHealthScore = minimalHealthScore;
-            this.RetryCount = retryCount;
-            this.RetryWait = retryWait;
-            this.PSCredential = credential;
-            this.Url = url;
+            Context = context;
+            _initialContext = context;
+            ConnectionType = connectionType;
+            MinimalHealthScore = minimalHealthScore;
+            RetryCount = retryCount;
+            RetryWait = retryWait;
+            PSCredential = credential;
+            Url = url;
         }
 
         public void RestoreCachedContext()

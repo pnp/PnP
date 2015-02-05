@@ -66,7 +66,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                 }
                 ClientContext.Load(instance);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 
 
                 if (Force)

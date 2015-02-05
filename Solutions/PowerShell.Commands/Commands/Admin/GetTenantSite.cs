@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -35,14 +36,14 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
                 {
                     var list = Tenant.GetSitePropertiesByUrl(Url, Detailed);
                     list.Context.Load(list);
-                    list.Context.ExecuteQuery();
+                    list.Context.ExecuteQueryRetry();
                     WriteObject(list,true);
                 }
                 else
                 {
                     var list = Tenant.GetSiteProperties(0, Detailed);
                     list.Context.Load(list);
-                    list.Context.ExecuteQuery();
+                    list.Context.ExecuteQueryRetry();
                     WriteObject(list, true);
                 }
             }
