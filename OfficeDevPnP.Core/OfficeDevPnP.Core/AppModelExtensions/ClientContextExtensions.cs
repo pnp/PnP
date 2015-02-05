@@ -120,6 +120,7 @@ namespace Microsoft.SharePoint.Client
             return clonedClientContext;
         }
 
+        [Serializable]
         public class MaximumRetryAttemptedException : Exception
         {
             public MaximumRetryAttemptedException(string message)

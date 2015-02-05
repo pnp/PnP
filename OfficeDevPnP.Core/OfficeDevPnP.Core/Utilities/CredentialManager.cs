@@ -53,20 +53,23 @@ namespace OfficeDevPnP.Core.Utilities
             return credential;
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1049:TypesThatOwnNativeResourcesShouldBeDisposable"), StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         private struct NativeCredential
         {
             public UInt32 Flags;
             public CRED_TYPE Type;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
             public IntPtr TargetName;
             public IntPtr Comment;
             public FILETIME LastWritten;
             public UInt32 CredentialBlobSize;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
             public IntPtr CredentialBlob;
             public UInt32 Persist;
             public UInt32 AttributeCount;
             public IntPtr Attributes;
             public IntPtr TargetAlias;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
             public IntPtr UserName;
 
             internal static NativeCredential GetNativeCredential(Credential cred)
