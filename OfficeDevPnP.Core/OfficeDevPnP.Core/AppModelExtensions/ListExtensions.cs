@@ -1,18 +1,15 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -46,7 +43,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="url">The URL of the remote WCF service that handles the event</param>
         /// <param name="eventReceiverType"></param>
         /// <param name="synchronization"></param>
-        /// <param name "sequenceNumber"></param>
+        /// <param name="sequenceNumber"></param>
         /// <param name="force">If True any event already registered with the same name will be removed first.</param>
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
         public static EventReceiverDefinition AddRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, int sequenceNumber, bool force)
@@ -112,8 +109,8 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
+        /// <param name="list">The list to process</param>
         /// <param name="name"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
         {
@@ -141,7 +138,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the web property bag
         /// </summary>
-        /// <param name="web">Web that will hold the property bag entry</param>
+        /// <param name="list">The list to process</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">Integer value for the property bag entry</param>
         public static void SetPropertyBagValue(this List list, string key, int value)
@@ -153,7 +150,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the list property bag
         /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="list">List that will hold the property bag entry</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">String value for the property bag entry</param>
         public static void SetPropertyBagValue(this List list, string key, string value)
@@ -165,7 +162,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the list property bag
         /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="list">List that will hold the property bag entry</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">Value for the property bag entry</param>
         private static void SetPropertyBagValueInternal(List list, string key, object value)
@@ -182,8 +179,9 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as integer</returns>
         public static int? GetPropertyBagValueInt(this List list, string key, int defaultValue)
         {
@@ -201,8 +199,9 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Get string typed property bag value. If does not contain, returns given default value.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as string</returns>
         public static string GetPropertyBagValueString(this List list, string key, string defaultValue)
         {
@@ -220,7 +219,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Type independent implementation of the property gettter.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
         /// <returns>Value of the property bag entry</returns>
         private static object GetPropertyBagValueInternal(List list, string key)
@@ -241,7 +240,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Checks if the given property bag entry exists
         /// </summary>
-        /// <param name="web">List to be processed</param>
+        /// <param name="list">List to be processed</param>
         /// <param name="key">Key of the property bag entry to check</param>
         /// <returns>True if the entry exists, false otherwise</returns>
         public static bool PropertyBagContainsKey(this List list, string key)
@@ -298,6 +297,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <param name="urlPath"></param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static List CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
@@ -419,7 +419,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">List to operate on</param>
         /// <param name="enableVersioning">True to enable versioning, false to disable</param>
-        /// <param name="enableMinorversioning">Enable/Disable minor versioning</param>
+        /// <param name="enableMinorVersioning">Enable/Disable minor versioning</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
@@ -448,7 +448,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">List to be processed</param>
         /// <param name="enableVersioning">True to enable versioning, false to disable</param>
-        /// <param name="enableMinorversioning">Enable/Disable minor versioning</param>
+        /// <param name="enableMinorVersioning">Enable/Disable minor versioning</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         public static void UpdateListVersioning(this List list, bool enableVersioning, bool enableMinorVersioning = true, bool updateAndExecuteQuery = true)
         {
@@ -521,7 +521,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listName">Title of the list </param>
+        /// <param name="listTitle">Title of the list</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
         /// <param name="descriptionResource">Localized Description string</param>
@@ -568,7 +568,6 @@ namespace Microsoft.SharePoint.Client
         /// </example>
         /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="list">List to be processed </param>
-        /// <param name="listName">Title of the list </param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
         /// <param name="descriptionResource">Localized Description string</param>
@@ -802,7 +801,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("filePath");
 
             if (!System.IO.File.Exists(filePath))
-                throw new System.IO.FileNotFoundException(filePath);
+                throw new FileNotFoundException(filePath);
 
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
@@ -1180,9 +1179,9 @@ namespace Microsoft.SharePoint.Client
         {
             public bool Equals(IDefaultColumnValue x, IDefaultColumnValue y)
             {
-                if (Object.ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, y)) return true;
 
-                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
                     return false;
 
                 return x.FieldInternalName == y.FieldInternalName && x.FolderRelativePath == y.FolderRelativePath;
@@ -1190,7 +1189,7 @@ namespace Microsoft.SharePoint.Client
 
             public int GetHashCode(IDefaultColumnValue defaultValue)
             {
-                if (Object.ReferenceEquals(defaultValue, null)) return 0;
+                if (ReferenceEquals(defaultValue, null)) return 0;
 
                 int hashFolder = defaultValue.FolderRelativePath == null ? 0 : defaultValue.FolderRelativePath.GetHashCode();
 

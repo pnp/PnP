@@ -47,13 +47,13 @@ namespace OfficeDevPnP.Core.WebAPI
         /// <param name="sharePointServiceContextCacheItem">A <see cref="WebAPIContexCacheItem"/> object</param>
         public void Put(string cacheKey, WebAPIContexCacheItem sharePointServiceContextCacheItem)
         {
-            if (!this.clientContextCache.ContainsKey(cacheKey))
+            if (!clientContextCache.ContainsKey(cacheKey))
             {
-                this.clientContextCache.Add(cacheKey, sharePointServiceContextCacheItem);
+                clientContextCache.Add(cacheKey, sharePointServiceContextCacheItem);
             }
             else
             {
-                this.clientContextCache[cacheKey] = sharePointServiceContextCacheItem;
+                clientContextCache[cacheKey] = sharePointServiceContextCacheItem;
             }
         }
 
@@ -64,7 +64,7 @@ namespace OfficeDevPnP.Core.WebAPI
         /// <returns>A <see cref="WebAPIContexCacheItem"/> object</returns>
         public WebAPIContexCacheItem Get(string cacheKey)
         {
-            return this.clientContextCache[cacheKey];
+            return clientContextCache[cacheKey];
         }
 
     }

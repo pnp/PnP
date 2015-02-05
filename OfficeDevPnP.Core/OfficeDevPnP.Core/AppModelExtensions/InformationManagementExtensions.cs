@@ -1,11 +1,8 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.InformationPolicy;
-using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.InformationPolicy;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client {
 
@@ -140,7 +137,7 @@ namespace Microsoft.SharePoint.Client {
 
             if (policies.Count > 0)
             {
-                SitePolicyEntity policy = policies.Where(p => p.Name == sitePolicy).FirstOrDefault();
+                SitePolicyEntity policy = policies.FirstOrDefault(p => p.Name == sitePolicy);
                 return policy;
             }
             else
@@ -165,7 +162,7 @@ namespace Microsoft.SharePoint.Client {
 
             if (sitePolicies != null && sitePolicies.Count > 0)
             {
-                ProjectPolicy policyToApply = sitePolicies.Where(p => p.Name == sitePolicy).FirstOrDefault();
+                ProjectPolicy policyToApply = sitePolicies.FirstOrDefault(p => p.Name == sitePolicy);
                                 
                 if (policyToApply != null)
                 {

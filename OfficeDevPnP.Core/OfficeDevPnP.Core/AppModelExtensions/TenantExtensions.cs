@@ -1,13 +1,15 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.UPAWebService;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
-using System.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -90,6 +92,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userCodeMaximumLevel">The user code quota in points</param>
         /// <param name="userCodeWarningLevel">The user code quota warning level in points</param>
         /// <param name="lcid">The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's</param>
+        /// <param name="removeFromRecycleBin">If true, any existing site with the same URL will be removed from the recycle bin</param>
+        /// <param name="wait">Wait for the site to be created before continuing processing</param>
         /// <returns></returns>
         public static Guid CreateSiteCollection(this Tenant tenant, string siteFullUrl, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
@@ -165,7 +169,7 @@ namespace Microsoft.SharePoint.Client
             //Judge whether this sub web site is existing or not
             else
             {
-                var subsiteUrl = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                var subsiteUrl = string.Format(CultureInfo.CurrentCulture,
                             "{0}{1}{2}", siteDomainUrl, managedPath, siteRelativePath.Split('/')[0]);
                 var subsiteRelativeUrl = siteRelativePath.Substring(siteRelativePath.IndexOf('/') + 1);
                 var site = tenant.GetSiteByUrl(subsiteUrl);
@@ -220,7 +224,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
                 {
                     if (ex.Message.IndexOf("Unable to access site") != -1)
                     {
@@ -263,7 +267,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
                 {
                     return true;
                 }
@@ -597,9 +601,9 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="tenant"></param>
         /// <returns>UserProfileService web service client</returns>
-        public static OfficeDevPnP.Core.UPAWebService.UserProfileService GetUserProfileServiceClient(this Tenant tenant)
+        public static UserProfileService GetUserProfileServiceClient(this Tenant tenant)
         {
-            var client = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+            var client = new UserProfileService();
 
             client.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
             client.UseDefaultCredentials = false;
@@ -623,7 +627,7 @@ namespace Microsoft.SharePoint.Client
         {
             while (!op.IsComplete)
             {
-                System.Threading.Thread.Sleep(op.PollingInterval);
+                Thread.Sleep(op.PollingInterval);
                 op.RefreshLoad();
                 if (!op.IsComplete)
                 {

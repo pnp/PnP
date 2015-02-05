@@ -1,14 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.WebParts;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using Microsoft.SharePoint.Client.Publishing;
+using Microsoft.SharePoint.Client.Utilities;
+using Microsoft.SharePoint.Client.WebParts;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -69,7 +67,7 @@ namespace Microsoft.SharePoint.Client
                   : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "serverRelativePageUrl");
             }
 
-            Microsoft.SharePoint.Client.File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
+            File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
             LimitedWebPartManager limitedWebPartManager = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             var query = web.Context.LoadQuery(limitedWebPartManager.WebParts.IncludeWithDefaultProperties(wp => wp.Id, wp => wp.WebPart, wp => wp.WebPart.Title, wp => wp.WebPart.Properties, wp => wp.WebPart.Hidden));
@@ -205,7 +203,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="addSpace">Does a blank line need to be added after the web part (to space web parts)</param>
         /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or webPart is null</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddWebPartToWikiPage(this Web web, string serverRelativePageUrl, WebPartEntity webPart, int row, int col, bool addSpace)
         {
             if (string.IsNullOrEmpty(serverRelativePageUrl))
@@ -595,7 +593,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="col">Column of the wiki table that should hold the inserted web part</param>
         /// <exception cref="System.ArgumentException">Thrown when serverRelativePageUrl or html is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when serverRelativePageUrl or html is null</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.XmlDocument.CreateTextNode(System.String)")]
         public static void AddHtmlToWikiPage(this Web web, string serverRelativePageUrl, string html, int row, int col)
         {
             if (string.IsNullOrEmpty(serverRelativePageUrl))
@@ -1035,7 +1033,7 @@ namespace Microsoft.SharePoint.Client
             context.Load(web, l => l.Language);
             context.ExecuteQueryRetry();
 
-            ClientResult<string> pagesLibraryName = Microsoft.SharePoint.Client.Utilities.Utility.GetLocalizedString(context, "$Resources:List_Pages_UrlName", "cmscore", (int)web.Language);
+            ClientResult<string> pagesLibraryName = Utility.GetLocalizedString(context, "$Resources:List_Pages_UrlName", "cmscore", (int)web.Language);
             context.ExecuteQueryRetry();
 
             List spList = web.Lists.GetByTitle(pagesLibraryName.Value);
@@ -1044,7 +1042,7 @@ namespace Microsoft.SharePoint.Client
 
             if (spList != null && spList.ItemCount > 0)
             {
-                Microsoft.SharePoint.Client.CamlQuery camlQuery = new CamlQuery();
+                CamlQuery camlQuery = new CamlQuery();
                 camlQuery.ViewXml = string.Format(@"<View>  
                                                         <Query> 
                                                            <Where><Eq><FieldRef Name='FileLeafRef' /><Value Type='Text'>{0}</Value></Eq></Where> 

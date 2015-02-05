@@ -1,8 +1,6 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.IO;
-using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -11,7 +9,7 @@ namespace System
         /// <summary>
         /// Strips all HTML tags from a string
         /// </summary>
-        /// <param name="s"></param>
+        /// <param name="html"></param>
         /// <returns></returns>
         [Obsolete("Method obsolete")]
         public static string StripHtml(this string html)
@@ -99,6 +97,7 @@ namespace System
         /// </summary>
         /// <param name="html">Input HTML.</param>
         /// <param name="maxCharacters">Maximum number of characters.</param>
+        /// <param name="trailingText"></param>
         [Obsolete("Method obsolete")]
         public static string TruncateHtml(this string html, int maxCharacters, string trailingText)
         {

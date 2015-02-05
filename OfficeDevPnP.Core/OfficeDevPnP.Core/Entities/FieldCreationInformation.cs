@@ -1,9 +1,6 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Entities
 {
@@ -21,12 +18,12 @@ namespace OfficeDevPnP.Core.Entities
 
         public FieldCreationInformation(string fieldType)
         {
-            this.FieldType = fieldType;
+            FieldType = fieldType;
         }
 
         public FieldCreationInformation(FieldType fieldType)
         {
-            this.FieldType = fieldType.ToString();
+            FieldType = fieldType.ToString();
         }
     }
 

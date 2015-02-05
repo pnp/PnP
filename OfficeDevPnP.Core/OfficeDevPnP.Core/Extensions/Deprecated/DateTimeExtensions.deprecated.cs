@@ -1,7 +1,4 @@
 ﻿using System.Text;
-using System.Threading;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Utilities;
 
 namespace System {
     [Obsolete("Method deprecated")]

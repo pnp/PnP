@@ -1,16 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Xml;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
 
 namespace Microsoft.SharePoint.Client
@@ -330,8 +326,8 @@ namespace Microsoft.SharePoint.Client
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
             if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
-            var fileName = System.IO.Path.GetFileName(localFilePath);
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            var fileName = Path.GetFileName(localFilePath);
+            using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
                 return UploadThemeFile(web, fileName, localStream, themeFolderVersion);
             }
@@ -353,7 +349,7 @@ namespace Microsoft.SharePoint.Client
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
             if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
                 return UploadThemeFile(web, fileName, localStream, themeFolderVersion);
             }
@@ -368,7 +364,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="localStream">Stream containing the contents of the file</param>
         /// <param name="themeFolderVersion">Leaf folder name to upload to; default is "15"</param>
         /// <returns>The uploaded file, with at least the ServerRelativeUrl property available</returns>
-        public static File UploadThemeFile(this Web web, string fileName, System.IO.Stream localStream, string themeFolderVersion = "15")
+        public static File UploadThemeFile(this Web web, string fileName, Stream localStream, string themeFolderVersion = "15")
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
@@ -459,7 +455,7 @@ namespace Microsoft.SharePoint.Client
             newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderHierarchy, fileName);
             newFile.Overwrite = true;
 
-            Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
+            File uploadFile = rootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
             web.Context.ExecuteQueryRetry();
 
@@ -528,7 +524,7 @@ namespace Microsoft.SharePoint.Client
             newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderPath, fileName);
             newFile.Overwrite = true;
 
-            Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
+            File uploadFile = rootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
             web.Context.ExecuteQueryRetry();
 
@@ -590,8 +586,8 @@ namespace Microsoft.SharePoint.Client
         /// Can be used to set master page and custom master page in single command
         /// </summary>
         /// <param name="web"></param>
-        /// <param name="masterPageName"></param>
-        /// <param name="customMasterPageName"></param>
+        /// <param name="masterPageUrl"></param>
+        /// <param name="customMasterPageUrl"></param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesByUrl(this Web web, string masterPageUrl, string customMasterPageUrl)
@@ -599,14 +595,14 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(masterPageUrl))
             {
                 throw (masterPageUrl == null)
-                  ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
+                  ? new ArgumentNullException("masterPageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageUrl");
             }
             if (string.IsNullOrEmpty(customMasterPageUrl))
             {
                 throw (customMasterPageUrl == null)
-                  ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
+                  ? new ArgumentNullException("customMasterPageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageUrl");
             }
 
             web.SetMasterPageByUrl(masterPageUrl);
@@ -659,7 +655,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
@@ -706,7 +702,7 @@ namespace Microsoft.SharePoint.Client
             ThemeEntity theme = null;
 
             List designCatalog = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-            string camlString = @"
+            const string camlString = @"
             <View>  
                 <Query> 
                     <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>{0}</Value></Eq></Where> 
@@ -787,7 +783,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="updateRootOnly">false (default) to apply to subsites; true to only apply to specified site</param>
         public static void SetMasterPageByUrl(this Web web, string masterPageServerRelativeUrl, bool resetSubsitesToInherit = false, bool updateRootOnly = false)
         {
-            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageUrl"); }
+            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageServerRelativeUrl"); }
 
             var websToUpdate = new List<Web>();
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
@@ -838,12 +834,12 @@ namespace Microsoft.SharePoint.Client
         /// Set Custom master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
-        /// <param name="masterPageName">URL to the master page.</param>
+        /// <param name="masterPageServerRelativeUrl">URL to the master page.</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
         /// <param name="updateRootOnly">false (default) to apply to subsites; true to only apply to specified site</param>
         public static void SetCustomMasterPageByUrl(this Web web, string masterPageServerRelativeUrl, bool resetSubsitesToInherit = false, bool updateRootOnly = false)
         {
-            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageUrl"); }
+            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageServerRelativeUrl"); }
 
             var websToUpdate = new List<Web>();
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);

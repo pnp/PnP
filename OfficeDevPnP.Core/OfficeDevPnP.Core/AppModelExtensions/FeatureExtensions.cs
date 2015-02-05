@@ -1,11 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Linq;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
 {

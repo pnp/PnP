@@ -1,19 +1,14 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -229,7 +224,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException &&
+                if (ex is ServerException &&
                     (ex.Message.IndexOf("Unable to access site") != -1 ||
                      ex.Message.IndexOf("Cannot get site") != -1))
                 {
@@ -416,7 +411,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <returns>All my site site collections</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
+        [SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
             Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
@@ -498,7 +493,7 @@ namespace Microsoft.SharePoint.Client
         /// Returns all site collection that match with the provided title
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">Base URL for which sites can be returned</param>
+        /// <param name="siteTitle">Title of the site to search for</param>
         /// <returns>All found site collections</returns>
         public static List<SiteEntity> SiteSearchScopedByTitle(this Web web, string siteTitle)
         {
@@ -637,11 +632,13 @@ namespace Microsoft.SharePoint.Client
             if (checkIndexed)
                 RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
         }
+
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
         /// <param name="web">Web to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as integer</returns>
         public static int? GetPropertyBagValueInt(this Web web, string key, int defaultValue)
         {
@@ -661,6 +658,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as string</returns>
         public static string GetPropertyBagValueString(this Web web, string key, string defaultValue)
         {
@@ -884,7 +882,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="web">Web to process</param>
         /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverById(this Web web, Guid id)
@@ -910,8 +908,8 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
+        /// <param name="web"></param>
         /// <param name="name"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverByName(this Web web, string name)
         {
