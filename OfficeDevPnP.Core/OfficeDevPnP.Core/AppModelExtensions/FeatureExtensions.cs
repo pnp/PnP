@@ -94,11 +94,11 @@ namespace Microsoft.SharePoint.Client
             bool featureIsActive = false;
 
             features.Context.Load(features);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             Feature iprFeature = features.GetById(featureID);
             features.Context.Load(iprFeature, f => f.DefinitionId);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && !iprFeature.ServerObjectIsNull.Value && iprFeature.DefinitionId.Equals(featureID))
             {
@@ -143,7 +143,7 @@ namespace Microsoft.SharePoint.Client
         private static void ProcessFeatureInternal(FeatureCollection features, Guid featureID, bool activate)
         {
             features.Context.Load(features);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             // The original number of active features...use this to track if the feature activation went OK
             int oldCount = features.Count();
@@ -154,11 +154,11 @@ namespace Microsoft.SharePoint.Client
 
                 // FeatureDefinitionScope defines how the features have been deployed. All OOB features are farm deployed
                 features.Add(featureID, true, FeatureDefinitionScope.Farm);
-                features.Context.ExecuteQuery();
+                features.Context.ExecuteQueryRetry();
 
                 // retry logic needed to make this more bulletproof :-(
                 features.Context.Load(features);
-                features.Context.ExecuteQuery();
+                features.Context.ExecuteQueryRetry();
 
                 int tries = 0;
                 int currentCount = features.Count();
@@ -166,9 +166,9 @@ namespace Microsoft.SharePoint.Client
                 {
                     tries++;
                     features.Add(featureID, true, FeatureDefinitionScope.Farm);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                     features.Context.Load(features);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                     currentCount = features.Count();
                 }
             }
@@ -177,7 +177,7 @@ namespace Microsoft.SharePoint.Client
                 try
                 {
                     features.Remove(featureID, false);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                 }
                 catch (Exception ex)
                 {

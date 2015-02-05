@@ -23,7 +23,7 @@ namespace Microsoft.SharePoint.Client {
         public static bool HasSitePolicyApplied(this Web web)
         {
             ClientResult<bool> hasSitePolicyApplied = ProjectPolicy.DoesProjectHavePolicy(web.Context, web);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return hasSitePolicyApplied.Value;
         }
 
@@ -37,7 +37,7 @@ namespace Microsoft.SharePoint.Client {
             if (web.HasSitePolicyApplied())
             {
                 ClientResult<DateTime> expirationDate = ProjectPolicy.GetProjectExpirationDate(web.Context, web);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return expirationDate.Value;
             }
             else
@@ -56,7 +56,7 @@ namespace Microsoft.SharePoint.Client {
             if (web.HasSitePolicyApplied())
             {
                 ClientResult<DateTime> closeDate = ProjectPolicy.GetProjectCloseDate(web.Context, web);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return closeDate.Value;
             }
             else
@@ -74,7 +74,7 @@ namespace Microsoft.SharePoint.Client {
         {
             ClientObjectList<ProjectPolicy> sitePolicies = ProjectPolicy.GetProjectPolicies(web.Context, web);
             web.Context.Load(sitePolicies);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             List<SitePolicyEntity> policies = new List<SitePolicyEntity>();
 
@@ -112,7 +112,7 @@ namespace Microsoft.SharePoint.Client {
                              p => p.EmailSubject,
                              p => p.EmailBody,
                              p => p.EmailBodyWithTeamMailbox);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return new SitePolicyEntity
                     {
                         Name = policy.Name,
@@ -161,7 +161,7 @@ namespace Microsoft.SharePoint.Client {
             
             ClientObjectList<ProjectPolicy> sitePolicies = ProjectPolicy.GetProjectPolicies(web.Context, web);
             web.Context.Load(sitePolicies);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (sitePolicies != null && sitePolicies.Count > 0)
             {
@@ -170,7 +170,7 @@ namespace Microsoft.SharePoint.Client {
                 if (policyToApply != null)
                 {
                     ProjectPolicy.ApplyProjectPolicy(web.Context, web, policyToApply);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     result = true;
                 }
             }

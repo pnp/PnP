@@ -74,7 +74,7 @@ namespace Microsoft.SharePoint.Client
 
             ListCollection listCollection = web.Lists;
             web.Context.Load(listCollection, lists => lists.Include(list => list.Title).Where(list => list.Title == listName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (listCollection.Count == 0)
             {
@@ -99,7 +99,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     newList.Update();
                     web.Context.Load(listCol);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
 
                 created = true;

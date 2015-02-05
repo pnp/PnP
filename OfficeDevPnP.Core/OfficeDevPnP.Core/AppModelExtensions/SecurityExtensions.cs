@@ -27,7 +27,7 @@ namespace Microsoft.SharePoint.Client
         {
             var users = web.SiteUsers;
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             List<UserEntity> admins = new List<UserEntity>();
 
@@ -66,7 +66,7 @@ namespace Microsoft.SharePoint.Client
                 //User addedAdmin = users.Add(newAdmin);
                 User addedAdmin = web.EnsureUser(newAdmin.LoginName);
                 web.Context.Load(addedAdmin);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //now that the user exists in the context, update to be an admin
                 addedAdmin.IsSiteAdmin = true;
@@ -77,7 +77,7 @@ namespace Microsoft.SharePoint.Client
                     web.AssociatedOwnerGroup.Users.AddUser(addedAdmin);
                     web.AssociatedOwnerGroup.Update();
                 }
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -90,14 +90,14 @@ namespace Microsoft.SharePoint.Client
         {
             var users = web.SiteUsers;
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var adminToRemove = users.Where(u => u.LoginName.ToLower() == admin.LoginName.ToLower()).FirstOrDefault();
             if (adminToRemove != null && adminToRemove.IsSiteAdmin)
             {
                 adminToRemove.IsSiteAdmin = false;
                 adminToRemove.Update();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
         }
@@ -134,11 +134,11 @@ namespace Microsoft.SharePoint.Client
                         string userIdentity = "c:0(.s|true";
                         User spReader = web.EnsureUser(userIdentity);
                         web.Context.Load(spReader);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         return spReader;
                     }
                 case BuiltInIdentity.EveryoneButExternalUsers:
@@ -150,7 +150,7 @@ namespace Microsoft.SharePoint.Client
                             string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
                             spReader = web.EnsureUser(userIdentity);
                             web.Context.Load(spReader);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                         }
                         catch (ServerException)
                         {
@@ -158,7 +158,7 @@ namespace Microsoft.SharePoint.Client
                             string userIdentity = string.Empty;
 
                             web.Context.Load(web, w => w.Language);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
 
                             switch (web.Language)
                             {
@@ -299,7 +299,7 @@ namespace Microsoft.SharePoint.Client
                             {
                                 spReader = web.EnsureUser(userIdentity);
                                 web.Context.Load(spReader);
-                                web.Context.ExecuteQuery();
+                                web.Context.ExecuteQueryRetry();
                             }
                             else
                             {
@@ -308,7 +308,7 @@ namespace Microsoft.SharePoint.Client
                         }
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         return spReader;
                     }
             }
@@ -333,7 +333,7 @@ namespace Microsoft.SharePoint.Client
             Tenant tenant = new Tenant(web.Context);
             SiteProperties site = tenant.GetSitePropertiesByUrl(siteUrl.OriginalString, true);
             web.Context.Load(site);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return site.SharingCapability.ToString();
         }
 
@@ -356,7 +356,7 @@ namespace Microsoft.SharePoint.Client
             {
                 results = tenant.GetExternalUsers(position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 foreach (var externalUser in results.ExternalUserCollection)
                 {
@@ -408,17 +408,17 @@ namespace Microsoft.SharePoint.Client
             {
                 results = tenant.GetExternalUsersForSite(siteUrl.OriginalString, position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 foreach (var externalUser in results.ExternalUserCollection)
                 {
 
                     User user = web.SiteUsers.GetByEmail(externalUser.AcceptedAs);
                     web.Context.Load(user);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
 
                     var permission = web.GetUserEffectivePermissions(user.LoginName);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     var doesUserHavePermission = permission.Value.Has(PermissionKind.ViewPages);
                     if (doesUserHavePermission)
                     {
@@ -464,7 +464,7 @@ namespace Microsoft.SharePoint.Client
 
             var manageMessageGroup = web.SiteGroups.GetByName(groupName);
             web.Context.Load(manageMessageGroup);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (manageMessageGroup != null)
             {
                 groupID = manageMessageGroup.Id;
@@ -501,7 +501,7 @@ namespace Microsoft.SharePoint.Client
 
             if (updateAndExecuteQuery)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return group;
@@ -534,7 +534,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -556,12 +556,12 @@ namespace Microsoft.SharePoint.Client
             userToAdd.LoginName = userLoginName;
             User user = web.EnsureUser(userToAdd.LoginName);
             web.Context.Load(user);
-            //web.Context.ExecuteQuery();
+            //web.Context.ExecuteQueryRetry();
 
             //Add the user to the group
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 web.AddUserToGroup(group, user);
@@ -582,7 +582,7 @@ namespace Microsoft.SharePoint.Client
             Group group = web.SiteGroups.GetById(groupId);
             web.Context.Load(group);
             User user = web.EnsureUser(userLoginName);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (user != null && group != null)
             {
@@ -605,7 +605,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("user");
 
             group.Users.AddUser(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -623,11 +623,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("userLoginName");
 
             User user = web.EnsureUser(userLoginName);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (user != null)
             {
                 group.Users.AddUser(user);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -645,7 +645,7 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
             web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
         }
@@ -667,7 +667,7 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
             web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
         }
@@ -686,7 +686,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
             web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
         }
@@ -708,7 +708,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
             web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
         }
@@ -721,7 +721,7 @@ namespace Microsoft.SharePoint.Client
 
                 RoleAssignmentCollection rac = web.RoleAssignments;
                 web.Context.Load(rac);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //Find the roles assigned to the principal
                 foreach (RoleAssignment ra in rac)
@@ -733,7 +733,7 @@ namespace Microsoft.SharePoint.Client
                         RoleDefinitionBindingCollection rdc = ra.RoleDefinitionBindings;
                         web.Context.Load(rdc);
                         web.Context.Load(web.RoleDefinitions);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Load the role definition to add (e.g. contribute)
                         //RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
@@ -748,7 +748,7 @@ namespace Microsoft.SharePoint.Client
                         //update                        
                         ra.ImportRoleDefinitionBindings(rdc);
                         ra.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Leave the for each loop
                         processed = true;
@@ -762,7 +762,7 @@ namespace Microsoft.SharePoint.Client
                     RoleDefinitionBindingCollection rdc = new RoleDefinitionBindingCollection(web.Context);
                     rdc.Add(roleDefinition);
                     web.RoleAssignments.Add(principal, rdc);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
         }
@@ -781,7 +781,7 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
             web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
         }
@@ -800,7 +800,7 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
             web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
         }
@@ -819,7 +819,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
             web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
         }
@@ -838,7 +838,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
             web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
         }
@@ -849,7 +849,7 @@ namespace Microsoft.SharePoint.Client
             {
                 RoleAssignmentCollection rac = web.RoleAssignments;
                 web.Context.Load(rac);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //Find the roles assigned to the principal
                 foreach (RoleAssignment ra in rac)
@@ -861,7 +861,7 @@ namespace Microsoft.SharePoint.Client
                         RoleDefinitionBindingCollection rdc = ra.RoleDefinitionBindings;
                         web.Context.Load(rdc);
                         web.Context.Load(web.RoleDefinitions);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         if (removeAllPermissionLevels)
                         {
@@ -877,7 +877,7 @@ namespace Microsoft.SharePoint.Client
                         //update                      
                         ra.ImportRoleDefinitionBindings(rdc);
                         ra.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Leave the for each loop
                         break;
@@ -899,7 +899,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 User user = group.Users.GetByLoginName(userLoginName);
@@ -926,7 +926,7 @@ namespace Microsoft.SharePoint.Client
 
             group.Users.Remove(user);
             group.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -941,7 +941,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 web.RemoveGroup(group);
@@ -960,7 +960,7 @@ namespace Microsoft.SharePoint.Client
 
             GroupCollection groups = web.SiteGroups;
             groups.Remove(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -984,7 +984,7 @@ namespace Microsoft.SharePoint.Client
             var users = group.Users;
             web.Context.Load(group);
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 result = users.Any(u => u.LoginName.Contains(userLoginName));
@@ -1011,7 +1011,7 @@ namespace Microsoft.SharePoint.Client
             {
                 var group = web.SiteGroups.GetByName(groupName);
                 web.Context.Load(group);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 if (group != null)
                 {
                     result = true;
@@ -1042,7 +1042,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsPropertyAvailable("Url"))
             {
                 web.Context.Load(web, w => w.Url);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             returnGuid = new Guid(OfficeDevPnP.Core.Utilities.TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));

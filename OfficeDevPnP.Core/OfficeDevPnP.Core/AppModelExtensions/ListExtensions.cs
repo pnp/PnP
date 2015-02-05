@@ -56,14 +56,14 @@ namespace Microsoft.SharePoint.Client
                         where receiver.ReceiverName == name
                         select receiver;
             var receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var receiverExists = receivers.Any();
             if (receiverExists && force)
             {
                 var receiver = receivers.FirstOrDefault();
                 receiver.DeleteObject();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
                 receiverExists = false;
             }
             EventReceiverDefinition def = null;
@@ -78,7 +78,7 @@ namespace Microsoft.SharePoint.Client
                 receiver.Synchronization = synchronization;
                 def = list.EventReceivers.Add(receiver);
                 list.Context.Load(def);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
             return def;
         }
@@ -98,7 +98,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -124,7 +124,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -172,11 +172,11 @@ namespace Microsoft.SharePoint.Client
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             props[key] = value;
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return props.FieldValues[key];
@@ -248,7 +248,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return true;
@@ -281,14 +281,14 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(_cts);
 
             IEnumerable<ContentType> _results = list.Context.LoadQuery<ContentType>(_cts.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             ContentType _ct = _results.FirstOrDefault();
             if (_ct != null)
             {
                 _ct.DeleteObject();
                 list.Update();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
         }
 
@@ -331,7 +331,7 @@ namespace Microsoft.SharePoint.Client
 
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             List existingList = results.FirstOrDefault();
 
             if (existingList != null)
@@ -407,7 +407,7 @@ namespace Microsoft.SharePoint.Client
             {
                 newList.Update();
                 web.Context.Load(listCol);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return newList;
@@ -439,7 +439,7 @@ namespace Microsoft.SharePoint.Client
             if (updateAndExecuteQuery)
             {
                 listToUpdate.Update();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -458,7 +458,7 @@ namespace Microsoft.SharePoint.Client
             if (updateAndExecuteQuery)
             {
                 list.Update();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
         }
 
@@ -480,14 +480,14 @@ namespace Microsoft.SharePoint.Client
             var terms = termSet.Terms;
             var term = web.Context.LoadQuery(termSet.Terms.Where(t => t.Name == termName));
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var foundTerm = term.First();
 
             var list = web.GetListByTitle(listName);
 
             var fields = web.Context.LoadQuery(list.Fields.Where(f => f.InternalName == fieldInternalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var taxField = web.Context.CastTo<TaxonomyField>(fields.First());
 
@@ -502,7 +502,7 @@ namespace Microsoft.SharePoint.Client
             item.SetTaxonomyFieldValue(taxField.Id, foundTerm.Name, foundTerm.Id);
 
             web.Context.Load(item);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             dynamic val = item[fieldInternalName];
 
@@ -512,7 +512,7 @@ namespace Microsoft.SharePoint.Client
             taxField.DefaultValue = string.Format("{0};#{1}|{2}", val.WssId, val.Label, val.TermGuid);
             taxField.Update();
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
 #if !CLIENTSDKV15
@@ -577,7 +577,7 @@ namespace Microsoft.SharePoint.Client
             list.TitleResource.SetValueForUICulture(cultureName, titleResource);
             list.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 #endif
 
@@ -599,7 +599,7 @@ namespace Microsoft.SharePoint.Client
 
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return listToQuery.Id;
         }
@@ -622,7 +622,7 @@ namespace Microsoft.SharePoint.Client
             }
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return results.FirstOrDefault();
         }
 
@@ -640,7 +640,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             var listServerRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, webRelativeUrl);
 
@@ -648,7 +648,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(foundList, l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder);
             try
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             catch (ServerException se)
             {
@@ -680,7 +680,7 @@ namespace Microsoft.SharePoint.Client
             // Get the web for list
             Web web = list.ParentWeb;
             list.Context.Load(web);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             switch (user)
             {
@@ -711,7 +711,7 @@ namespace Microsoft.SharePoint.Client
             // Get the web for list
             Web web = list.ParentWeb;
             list.Context.Load(web);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             // Stop inheriting permissions
             list.BreakRoleInheritance(true, false);
@@ -723,7 +723,7 @@ namespace Microsoft.SharePoint.Client
 
             // Set custom permission to the list
             list.RoleAssignments.Add(principal, rdbColl);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         #endregion
@@ -785,7 +785,7 @@ namespace Microsoft.SharePoint.Client
             // Get instances to the list
             List list = web.GetList(listUrl);
             web.Context.Load(list);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Execute the actual xml based creation
             list.CreateViewsFromXML(xmlDoc);
@@ -890,7 +890,7 @@ namespace Microsoft.SharePoint.Client
 
             View view = list.Views.Add(viewCreationInformation);
             list.Context.Load(view);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return view;
         }
@@ -910,7 +910,7 @@ namespace Microsoft.SharePoint.Client
                 var view = list.Views.GetById(id);
 
                 list.Context.Load(view);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 return view;
             }
@@ -935,7 +935,7 @@ namespace Microsoft.SharePoint.Client
                 var view = list.Views.GetByTitle(name);
 
                 list.Context.Load(view);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 return view;
             }
@@ -958,7 +958,7 @@ namespace Microsoft.SharePoint.Client
 
                     clientContext.Load(list.RootFolder);
                     clientContext.Load(list.RootFolder.Folders);
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
 
                     var xMetadataDefaults = new XElement("MetadataDefaults");
 
@@ -998,7 +998,7 @@ namespace Microsoft.SharePoint.Client
                                     if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
                                     {
                                         clientContext.Load(term, t => t.Id, t => t.Name);
-                                        clientContext.ExecuteQuery();
+                                        clientContext.ExecuteQueryRetry();
                                     }
                                     var wssId = list.ParentWeb.GetWssIdForTerm(term);
                                     fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
@@ -1041,7 +1041,7 @@ namespace Microsoft.SharePoint.Client
 
                         objFileInfo.Overwrite = true;
                         formsFolder.Files.Add(objFileInfo);
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
 
                     // Add the event receiver if not already there
@@ -1059,7 +1059,7 @@ namespace Microsoft.SharePoint.Client
 
                         list.Update();
 
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
                 }
                 catch (Exception ex)
@@ -1087,7 +1087,7 @@ namespace Microsoft.SharePoint.Client
             {
                 clientContext.Load(list.RootFolder);
                 clientContext.Load(list.RootFolder.Folders);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 // Check if default values file is present
                 var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
@@ -1100,7 +1100,7 @@ namespace Microsoft.SharePoint.Client
                     bool fileExists = false;
                     try
                     {
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                         fileExists = true;
                     }
                     catch { }
@@ -1108,7 +1108,7 @@ namespace Microsoft.SharePoint.Client
                     if (fileExists)
                     {
                         var streamResult = configFile.OpenBinaryStream();
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                         XDocument document = XDocument.Load(streamResult.Value);
                         var values = from a in document.Descendants("a") select a;
 
@@ -1126,7 +1126,7 @@ namespace Microsoft.SharePoint.Client
 
                                 var field = list.Fields.GetByInternalNameOrTitle(fieldName);
                                 clientContext.Load(field);
-                                clientContext.ExecuteQuery();
+                                clientContext.ExecuteQueryRetry();
                                 if (field.FieldTypeKind == FieldType.Text)
                                 {
                                     var textValue = defaultValue.Value;
@@ -1150,7 +1150,7 @@ namespace Microsoft.SharePoint.Client
                                         var termIdString = terms[q].Split(new char[] { '|' })[1];
                                         var term = taxSession.GetTerm(new Guid(termIdString));
                                         clientContext.Load(term, t => t.Id, t => t.Name);
-                                        clientContext.ExecuteQuery();
+                                        clientContext.ExecuteQueryRetry();
                                         existingTerms.Add(term);
                                         q++; // Skip one
                                     }

@@ -144,7 +144,7 @@ namespace Microsoft.SharePoint.Client
             newFile.Overwrite = true;
             Microsoft.SharePoint.Client.File uploadFile = themeAssetsFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         [Obsolete("Use web.UploadThemeFile")]
@@ -234,7 +234,7 @@ namespace Microsoft.SharePoint.Client
         {
             var theme = GetCurrentComposedLook(web);
             web.Context.Load(web, w => w.MasterUrl, w => w.CustomMasterUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (string.IsNullOrEmpty(theme.MasterPage))
             {
                 theme.MasterPage = web.MasterUrl;
