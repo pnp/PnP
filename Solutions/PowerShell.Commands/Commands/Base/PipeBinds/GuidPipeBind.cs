@@ -12,12 +12,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public GuidPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public GuidPipeBind(string id)
         {
-            this._id = new Guid(id);
+            _id = new Guid(id);
         }
 
         public Guid Id
@@ -27,7 +27,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public GuidPipeBind()
         {
-            this._id = Guid.Empty;
+            _id = Guid.Empty;
         }
 
     }

@@ -27,7 +27,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
         protected override void ProcessRecord()
         {
-            WriteObject(this.Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
+            WriteObject(Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
         }
     }
 }

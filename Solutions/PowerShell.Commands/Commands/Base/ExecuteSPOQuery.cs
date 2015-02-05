@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
     {
         protected override void ProcessRecord()
         {
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 }

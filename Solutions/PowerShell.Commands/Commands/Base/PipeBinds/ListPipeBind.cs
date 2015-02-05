@@ -18,19 +18,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public ListPipeBind(List list)
         {
-            this._list = list;
+            _list = list;
         }
 
         public ListPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public ListPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._name = id;
+                _name = id;
             }
         }
 

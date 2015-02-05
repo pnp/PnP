@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             var webs = ClientContext.LoadQuery(SelectedWeb.Webs);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(webs, true);
 
         }

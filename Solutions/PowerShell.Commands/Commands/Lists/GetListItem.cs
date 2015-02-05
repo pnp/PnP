@@ -52,7 +52,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 {
                     ClientContext.Load(listItem);
                 }
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItem);
             }
             else if (UniqueId != null && UniqueId.Id != Guid.Empty)
@@ -71,23 +71,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>{0}</Value></Eq></Where></Query>{1}</View>", UniqueId.Id, viewFieldsStringBuilder);
                 var listItem = list.GetItems(query);
                 ClientContext.Load(listItem);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItem);
             }
             else if (Query != null)
             {
-                CamlQuery query = new CamlQuery();
-                query.ViewXml = Query;
+                CamlQuery query = new CamlQuery {ViewXml = Query};
                 var listItems = list.GetItems(query);
                 ClientContext.Load(listItems);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItems, true);
             }
             else
             {
                 var listItems = list.GetItems(CamlQuery.CreateAllItemsQuery());
                 ClientContext.Load(listItems);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItems, true);
             }
         }

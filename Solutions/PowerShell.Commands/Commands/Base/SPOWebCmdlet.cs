@@ -48,7 +48,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (!web.IsPropertyAvailable("Url"))
                 {
                     ClientContext.Load(web, w => w.Url);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;

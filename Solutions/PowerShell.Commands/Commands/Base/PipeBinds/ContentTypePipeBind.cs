@@ -19,18 +19,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             if (id.ToLower().StartsWith("0x0"))
             {
-                this._id = id;
+                _id = id;
             }
             else
             {
-                this._name = id;
+                _name = id;
             }
 
         }
 
         public ContentTypePipeBind(ContentType contentType)
         {
-            this._contentType = contentType;
+            _contentType = contentType;
         }
 
         public string Id

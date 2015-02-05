@@ -22,7 +22,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             }
             else if (Identity.Id != Guid.Empty)
             {
-                var allinstances = this.SelectedWeb.GetWorkflowInstances();
+                var allinstances = SelectedWeb.GetWorkflowInstances();
                 foreach (var instance in allinstances.Where(instance => instance.Id == Identity.Id))
                 {
                     instance.CancelWorkFlow();

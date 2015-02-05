@@ -10,17 +10,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public AppPipeBind(AppInstance instance)
         {
-            this._appInstance = instance;
+            _appInstance = instance;
         }
 
         public AppPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public AppPipeBind(string id)
         {
-            this._id = new Guid(id);
+            _id = new Guid(id);
         }
 
         public Guid Id

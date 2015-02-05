@@ -63,19 +63,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                         var roleAssignments = list.RoleAssignments;
                         roleAssignments.Add(principal, roleDefinitionBindings);
                         ClientContext.Load(roleAssignments);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     if (!string.IsNullOrEmpty(RemoveRole))
                     {
                         var roleAssignment = list.RoleAssignments.GetByPrincipal(principal);
                         var roleDefinitionBindings = roleAssignment.RoleDefinitionBindings;
                         ClientContext.Load(roleDefinitionBindings);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                         foreach (var roleDefinition in roleDefinitionBindings.Where(roleDefinition => roleDefinition.Name == RemoveRole))
                         {
                             roleDefinitionBindings.Remove(roleDefinition);
                             roleAssignment.Update();
-                            ClientContext.ExecuteQuery();
+                            ClientContext.ExecuteQueryRetry();
                             break;
                         }
                     }

@@ -47,7 +47,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if(ct != null)
                 {
                     ct.DeleteObject();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
 
             }

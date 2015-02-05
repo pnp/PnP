@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     if (Identity == null)
                     {
                         var query = ClientContext.LoadQuery(list.EventReceivers);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                         WriteObject(query, true);
                     }
                     else
@@ -52,7 +52,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (Identity == null)
                 {
                     var query = ClientContext.LoadQuery(SelectedWeb.EventReceivers);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(query, true);
                 }
                 else

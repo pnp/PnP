@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             file.DeleteObject();
 
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 }

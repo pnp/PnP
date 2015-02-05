@@ -18,20 +18,20 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WebPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WebPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._url = id;
+                _url = id;
             }
         }
 
         public WebPipeBind(Web web)
         {
-            this._web = web;
+            _web = web;
         }
 
         public Guid Id

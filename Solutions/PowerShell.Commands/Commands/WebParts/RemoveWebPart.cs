@@ -33,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if(wp.Any())
                 {
                     wp.FirstOrDefault().DeleteWebPart();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
         }

@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 SelectedWeb.Features.Remove(new Guid(Properties.Resources.MDSFeatureGuid), Force);
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 

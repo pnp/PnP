@@ -56,7 +56,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
 #else
             query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties());
 #endif
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             if (Identity == null)
             {
                 WriteObject(query, true);

@@ -28,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "List")
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (Force || ShouldContinue(Properties.Resources.RemoveEventReceiver, Properties.Resources.Confirm))
                 {
@@ -36,7 +36,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     if(eventReceiver != null)
                     {
                         eventReceiver.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }
@@ -48,7 +48,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     if (eventReceiver != null)
                     {
                         eventReceiver.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }

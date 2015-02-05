@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 f = SelectedWeb.CreateField(FieldXml);
             }
             ClientContext.Load(f);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(f);
         }
 

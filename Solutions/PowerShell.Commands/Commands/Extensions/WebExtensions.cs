@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             Site site = clientContext.Site;
             Web web = site.OpenWebById(guid);
             clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             return web;
         }
@@ -26,7 +26,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             Site site = clientContext.Site;
             Web web = site.OpenWeb(url);
             clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             return web;
         }

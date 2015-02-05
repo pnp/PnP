@@ -30,7 +30,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 var instance = SelectedWeb.GetAppInstanceById(Identity.Id);
                 ClientContext.Load(instance);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(instance);
             }
             else

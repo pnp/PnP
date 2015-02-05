@@ -36,7 +36,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 SelectedWeb.Title = Title;
                 SelectedWeb.Update();
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 

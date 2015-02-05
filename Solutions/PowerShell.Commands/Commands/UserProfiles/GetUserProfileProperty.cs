@@ -32,10 +32,10 @@ PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'", 
             foreach (var acc in Account)
             {
                 var result = Tenant.EncodeClaim(acc);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 var properties = peopleManager.GetPropertiesFor(result.Value);
                 ClientContext.Load(properties);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(properties);
             }
         }

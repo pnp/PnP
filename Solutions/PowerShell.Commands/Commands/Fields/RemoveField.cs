@@ -38,13 +38,13 @@ namespace OfficeDevPnP.PowerShell.Commands
                         }
                     }
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     if (f != null && f.IsPropertyAvailable("InternalName"))
                     {
                         if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
                         {
                             f.DeleteObject();
-                            ClientContext.ExecuteQuery();
+                            ClientContext.ExecuteQueryRetry();
                         }
                     }
                 }
@@ -65,14 +65,14 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                 }
                 ClientContext.Load(f);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
 
                 if (f != null && f.IsPropertyAvailable("InternalName"))
                 {
                     if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
                     {
                         f.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }

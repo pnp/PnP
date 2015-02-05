@@ -46,7 +46,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ca.Rights.Set(permission);
             }
 
-            this.SelectedWeb.AddCustomAction(ca);
+            SelectedWeb.AddCustomAction(ca);
         }
     }
 }

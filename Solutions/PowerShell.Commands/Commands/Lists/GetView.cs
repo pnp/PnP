@@ -41,7 +41,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     else
                     {
                         views = ClientContext.LoadQuery(list.Views.IncludeWithDefaultProperties(v => v.ViewFields));
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                         
                     }
                     if (views != null && views.Any())

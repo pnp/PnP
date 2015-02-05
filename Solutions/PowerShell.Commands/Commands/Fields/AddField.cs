@@ -65,7 +65,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
                 Field f = null;
                 var fieldCI = new FieldCreationInformation(Type)
                 {
@@ -81,7 +81,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f = list.CreateField<FieldChoice>(fieldCI);
                     ((FieldChoice)f).Choices = context.Choices;
                     f.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 WriteObject(f);
             }
@@ -115,7 +115,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f = SelectedWeb.CreateField<FieldChoice>(fieldCI);
                     ((FieldChoice)f).Choices = context.Choices;
                     f.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                
                 WriteObject(f);

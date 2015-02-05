@@ -17,17 +17,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WorkflowInstancePipeBind(WorkflowInstance instance)
         {
-            this._instance = instance;
+            _instance = instance;
         }
 
         public WorkflowInstancePipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WorkflowInstancePipeBind(string id)
         {
-            this._id = Guid.Parse(id);
+            _id = Guid.Parse(id);
         }
 
         public Guid Id
