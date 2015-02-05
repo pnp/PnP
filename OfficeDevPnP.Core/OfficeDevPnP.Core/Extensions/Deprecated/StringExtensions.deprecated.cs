@@ -1,12 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Collections;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Text;
-using System.Security;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Security;
+using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.SharePoint.Client.Utilities;
 
 namespace System
 {
@@ -26,6 +25,7 @@ namespace System
         /// <summary>
         /// Convert a sequence of items to a delimited string. By default, ToString() will be called on each item in the sequence to formulate the result
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="delimiter">The delimiter to separate each item with</param>
         [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source, string delimiter)
@@ -36,6 +36,7 @@ namespace System
         /// <summary>
         /// Convert a sequence of items to a delimited string. The default delimiter of ', ' will be used
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="selector">A lambda expression to select a string property of <typeparamref name="T"/></param>
         [Obsolete("Method deprecated")]
         public static string ToDelimitedString<T>(this IEnumerable<T> source, Func<T, string> selector)
@@ -46,6 +47,7 @@ namespace System
         /// <summary>
         /// Convert a sequence of items to a delimited string.
         /// </summary>
+        /// <param name="source"></param>
         /// <param name="selector">A lambda expression to select a string property of <typeparamref name="T"/></param>
         /// <param name="delimiter">The delimiter to separate each item with</param>
         [Obsolete("Method deprecated")]
@@ -120,7 +122,7 @@ namespace System
         }
 
         /// <summary>
-        /// Html encodes a string value with the option to simply replace < and > characters.
+        /// Html encodes a string value with the option to simply replace &lt; and &gt; characters.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="tagCharactersOnly"></param>
@@ -129,7 +131,7 @@ namespace System
         public static string HtmlEncode(this string value, bool tagCharactersOnly = true) {
             if (tagCharactersOnly)
                 return value.Replace("<", "&lt;").Replace(">", "&gt;");
-            return Microsoft.SharePoint.Client.Utilities.HttpUtility.HtmlEncode(value);
+            return HttpUtility.HtmlEncode(value);
         }
 
         /// <summary>

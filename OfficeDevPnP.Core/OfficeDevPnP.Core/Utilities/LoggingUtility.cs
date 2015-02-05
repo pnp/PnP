@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Utilities 
 {
@@ -197,7 +195,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="category">Category to be used for the logged message</param>
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceVerbose()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void LogVerbose(string message, EventCategory category) 
         {
             InitializeBehaviour();
@@ -209,9 +207,9 @@ namespace OfficeDevPnP.Core.Utilities
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="category">Category to be used for the logged message</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceInformation(System.Int32,System.String,System.Object[])")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceInformation(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceInformation()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void LogInformation(string message, EventCategory category)
         {
             InitializeBehaviour();
@@ -224,9 +222,9 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceWarning(System.Int32,System.String,System.Object[])")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceWarning(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceWarning()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void LogWarning(string message, Exception ex, EventCategory category)
         {
             InitializeBehaviour();
@@ -239,9 +237,9 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="message">Message to be logged</param>
         /// <param name="ex">Exception to be logged, null can be passed if there are no exception details</param>
         /// <param name="category">Category to be used for the logged message</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceError(System.Int32,System.String,System.Object[])")]
+        [SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "OfficeDevPnP.Core.Utilities.LoggingUtility.TraceError(System.Int32,System.String,System.Object[])")]
         [Obsolete("Create a named instance or, internally, use LoggingUtility.Internal.TraceError()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void LogError(string message, Exception ex, EventCategory category)
         {
             InitializeBehaviour();

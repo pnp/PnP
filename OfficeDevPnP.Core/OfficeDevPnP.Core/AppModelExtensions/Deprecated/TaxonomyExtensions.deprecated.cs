@@ -1,18 +1,16 @@
-﻿using Microsoft.SharePoint.Client.Taxonomy;
-using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client
 {
     public static partial class TaxonomyExtensions
     {
         [Obsolete("Use CreateTaxonomyField(List,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static Field CreateTaxonomyFieldInternal(this List list, Guid id, string internalName, string displayName, string group, TaxonomyItem taxonomyItem, bool multiValue)
         {
             internalName.ValidateNotNullOrEmpty("internalName");
@@ -44,7 +42,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception)
             {
-                ///If there is an exception the hidden field might be present
+                // If there is an exception the hidden field might be present
                 FieldCollection _fields = list.Fields;
                 list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
                 list.Context.ExecuteQueryRetry();
@@ -64,7 +62,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         private static Field CreateTaxonomyFieldInternal(this Web web, Guid id, string internalName, string displayName, string group, TaxonomyItem taxonomyItem, bool multiValue)
         {
             internalName.ValidateNotNullOrEmpty("internalName");
@@ -96,7 +94,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception)
             {
-                ///If there is an exception the hidden field might be present
+                // If there is an exception the hidden field might be present
                 FieldCollection _fields = web.Fields;
                 web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
                 web.Context.ExecuteQueryRetry();
@@ -115,7 +113,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateTaxonomyFieldInternal(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
             id.ValidateNotNullOrEmpty("id");
@@ -152,7 +150,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
             TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
@@ -168,7 +166,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateTaxonomyField(this Web web, Guid id, string internalName, string displayName, string group, Term anchorTerm, bool multiValue = false)
         {
             TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
@@ -185,7 +183,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, string mmsGroupName, string mmsTermSetName, bool multiValue = false)
         {
             id.ValidateNotNullOrEmpty("id");
@@ -223,7 +221,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, TermSet termSet, bool multiValue = false)
         {
             TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
@@ -241,7 +239,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateTaxonomyField(Web,TaxonomyFieldCreationInformation) instead")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
 
         public static Field CreateTaxonomyField(this List list, Guid id, string internalName, string displayName, string group, Term anchorTerm, bool multiValue = false)
         {

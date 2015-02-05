@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -64,10 +61,10 @@ namespace Microsoft.SharePoint.Client
                     // Check is request failed due to server unavailable - http status code 503
                     if (response != null && (response.StatusCode == (HttpStatusCode)429 || response.StatusCode == (HttpStatusCode)503))
                     {
-                        Debug.WriteLine(string.Format("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", backoffInterval));
+                        Debug.WriteLine("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", backoffInterval);
 
                         //Add delay for retry
-                        System.Threading.Thread.Sleep(backoffInterval);
+                        Thread.Sleep(backoffInterval);
 
                         //Add to retry count and increase delay.
                         retryAttempts++;

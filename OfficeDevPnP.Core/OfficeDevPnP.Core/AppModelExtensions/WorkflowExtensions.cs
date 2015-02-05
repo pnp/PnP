@@ -1,9 +1,7 @@
-﻿using Microsoft.SharePoint.Client.WorkflowServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.WorkflowServices;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -67,7 +65,10 @@ namespace Microsoft.SharePoint.Client
         /// Adds a workflow subscription
         /// </summary>
         /// <param name="list"></param>
-        /// <param name="workflowDefinitionName">The name of the workflow definition <seealso cref="WorkflowExtensions.GetWorkflowDefinition"/></param>
+        /// <param name="workflowDefinitionName">The name of the workflow definition <seealso>
+        ///         <cref>WorkflowExtensions.GetWorkflowDefinition</cref>
+        ///     </seealso>
+        /// </param>
         /// <param name="subscriptionName">The name of the workflow subscription to create</param>
         /// <param name="startManually">if True the workflow can be started manually</param>
         /// <param name="startOnCreate">if True the workflow will be started on item creation</param>
@@ -87,7 +88,10 @@ namespace Microsoft.SharePoint.Client
         /// Adds a workflow subscription to a list
         /// </summary>
         /// <param name="list"></param>
-        /// <param name="workflowDefinition">The workflow definition. <seealso cref="WorkflowExtensions.GetWorkflowDefinition"/></param>
+        /// <param name="workflowDefinition">The workflow definition. <seealso>
+        ///         <cref>WorkflowExtensions.GetWorkflowDefinition</cref>
+        ///     </seealso>
+        /// </param>
         /// <param name="subscriptionName">The name of the workflow subscription to create</param>
         /// <param name="startManually">if True the workflow can be started manually</param>
         /// <param name="startOnCreate">if True the workflow will be started on item creation</param>
@@ -235,6 +239,7 @@ namespace Microsoft.SharePoint.Client
         /// Returns alls workflow instances for a list item
         /// </summary>
         /// <param name="web"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
         public static WorkflowInstanceCollection GetWorkflowInstances(this Web web, ListItem item)
         {

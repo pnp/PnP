@@ -1,11 +1,9 @@
-﻿using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -35,7 +33,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Returns Yammer Group if group exists. If the group does not exist, returns null.
         /// </summary>
-        /// <param name="groupName">Group name to search for</param>
+        /// <param name="groupId">Group Id to search for</param>
         /// <param name="accessToken"></param>
         /// <returns>Returns Yammer Group is group exists. If group does not exists, returns null.</returns>
         public static YammerGroup GetYammerGroupById(int groupId, string accessToken)
@@ -109,7 +107,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// Creates web part entity with the Yammer group structure on it
         /// </summary>
         /// <param name="yammerNetworkName"></param>
-        /// <param name="url"></param>
+        /// <param name="yammerGroupId"></param>
         /// <param name="showHeader"></param>
         /// <param name="showFooter"></param>
         /// <returns></returns>
@@ -129,6 +127,9 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="url"></param>
         /// <param name="showHeader"></param>
         /// <param name="showFooter"></param>
+        /// <param name="postTitle"></param>
+        /// <param name="postImageUrl"></param>
+        /// <param name="defaultGroupId"></param>
         /// <returns></returns>
         public static WebPartEntity GetYammerOpenGraphDiscussionPart(string yammerNetworkName, string url, bool showHeader, bool showFooter, string postTitle = "", string postImageUrl = "", string defaultGroupId = "")
         {
@@ -142,8 +143,11 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Constructs the webpart XML for yammer group needed to inject as Yammer web part to SharePoint page
         /// </summary>
-        /// <param name="yammerNetwork">ID of the network</param>
+        /// <param name="yammerNetworkName">Name of the network</param>
         /// <param name="yammerGroupId">Group ID</param>
+        /// <param name="showHeader"></param>
+        /// <param name="showFooter"></param>
+        /// <param name="useSSO"></param>
         /// <returns>The constructed web part XML</returns>
         public static string CreateYammerDiscussionPartXml(string yammerNetworkName, int yammerGroupId, bool showHeader, bool showFooter, bool useSSO = true)
         {
@@ -153,8 +157,11 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Constructs the webpart XML for yammer group needed to inject as Yammer web part to SharePoint page
         /// </summary>
-        /// <param name="yammerNetwork">ID of the network</param>
+        /// <param name="yammerNetworkName">Name of the network</param>
         /// <param name="yammerGroupId">Group ID</param>
+        /// <param name="showHeader"></param>
+        /// <param name="showFooter"></param>
+        /// <param name="useSSO"></param>
         /// <returns>The constructed web part XML</returns>
         public static string CreateYammerGroupDiscussionPartXml(string yammerNetworkName, int yammerGroupId, bool showHeader, bool showFooter, bool useSSO = true)
         {
@@ -195,14 +202,17 @@ namespace OfficeDevPnP.Core.Utilities
         /// Constructs web part definition for Open Graph discussion web part definition
         /// </summary>
         /// <param name="yammerNetworkName"></param>
-        /// <param name="yammerGroupId"></param>
+        /// <param name="url"></param>
         /// <param name="showHeader"></param>
         /// <param name="showFooter"></param>
-        /// <param name="useSSO"></param>
+        /// <param name="postImageUrl"></param>
+        /// <param name="useSso"></param>
+        /// <param name="postTitle"></param>
+        /// <param name="groupId"></param>
         /// <returns></returns>
         public static string CreateYammerOpenGraphDiscussionPartXml(string yammerNetworkName, string url, bool showHeader, 
                                                                     bool showFooter, string postTitle="", string postImageUrl="", 
-                                                                    bool useSSO = true, string groupId = "")
+                                                                    bool useSso = true, string groupId = "")
         {
             StringBuilder wp = new StringBuilder(100);
             wp.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -227,7 +237,7 @@ namespace OfficeDevPnP.Core.Utilities
             wp.Append("				                , feedType: 'open-graph'");
             wp.Append("				                , feedId: ''");
             wp.Append("				                , config: {");
-            wp.Append("				                     use_sso: " + useSSO.ToString().ToLower());
+            wp.Append("				                     use_sso: " + useSso.ToString().ToLower());
             wp.Append("				                     , header: " + showHeader.ToString().ToLower());
             wp.Append("				                     , footer: " + showFooter.ToString().ToLower());
             wp.Append("				                     , showOpenGraphPreview: false");
@@ -265,7 +275,7 @@ namespace OfficeDevPnP.Core.Utilities
             request.Headers.Add("Authorization", "Bearer" + " " + accessToken);
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
-                Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+                Encoding encode = Encoding.GetEncoding("utf-8");
                 StreamReader reader = new StreamReader(response.GetResponseStream(), encode);
                 json = reader.ReadToEnd();
             }
@@ -281,7 +291,7 @@ namespace OfficeDevPnP.Core.Utilities
             request.Headers.Add("Authorization", "Bearer" + " " + accessToken);
             using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
             {
-                Encoding encode = System.Text.Encoding.GetEncoding("utf-8");
+                Encoding encode = Encoding.GetEncoding("utf-8");
                 StreamReader reader = new StreamReader(response.GetResponseStream(), encode);
                 json = reader.ReadToEnd();
             }

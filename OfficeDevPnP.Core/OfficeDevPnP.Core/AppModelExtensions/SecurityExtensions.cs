@@ -1,14 +1,12 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -92,7 +90,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(users);
             web.Context.ExecuteQueryRetry();
 
-            var adminToRemove = users.Where(u => u.LoginName.ToLower() == admin.LoginName.ToLower()).FirstOrDefault();
+            var adminToRemove = users.FirstOrDefault(u => String.Equals(u.LoginName, admin.LoginName, StringComparison.CurrentCultureIgnoreCase));
             if (adminToRemove != null && adminToRemove.IsSiteAdmin)
             {
                 adminToRemove.IsSiteAdmin = false;
@@ -131,7 +129,7 @@ namespace Microsoft.SharePoint.Client
             {
                 case BuiltInIdentity.Everyone:
                     {
-                        string userIdentity = "c:0(.s|true";
+                        const string userIdentity = "c:0(.s|true";
                         User spReader = web.EnsureUser(userIdentity);
                         web.Context.Load(spReader);
                         web.Context.ExecuteQueryRetry();
@@ -348,13 +346,12 @@ namespace Microsoft.SharePoint.Client
             Office365Tenant tenant = new Office365Tenant(web.Context);
 
             List<ExternalUserEntity> externalUsers = new List<ExternalUserEntity>();
-            int pageSize = 50;
+            const int pageSize = 50;
             int position = 0;
-            GetExternalUsersResults results = null;
 
             while (true)
             {
-                results = tenant.GetExternalUsers(position, pageSize, string.Empty, SortOrder.Ascending);
+                var results = tenant.GetExternalUsers(position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
                 web.Context.ExecuteQueryRetry();
 
@@ -400,13 +397,12 @@ namespace Microsoft.SharePoint.Client
             web = site.RootWeb;
 
             List<ExternalUserEntity> externalUsers = new List<ExternalUserEntity>();
-            int pageSize = 50;
+            const int pageSize = 50;
             int position = 0;
-            GetExternalUsersResults results = null;
 
             while (true)
             {
-                results = tenant.GetExternalUsersForSite(siteUrl.OriginalString, position, pageSize, string.Empty, SortOrder.Ascending);
+                var results = tenant.GetExternalUsersForSite(siteUrl.OriginalString, position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
                 web.Context.ExecuteQueryRetry();
 
@@ -999,7 +995,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to operate against</param>
         /// <param name="groupName">Name of the group</param>
         /// <returns>True if the group exists, false otherwise</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
+        [SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         public static bool GroupExists(this Web web, string groupName)
         {
             if (string.IsNullOrEmpty(groupName))
@@ -1017,7 +1013,7 @@ namespace Microsoft.SharePoint.Client
                     result = true;
                 }
             }
-            catch (Microsoft.SharePoint.Client.ServerException ex)
+            catch (ServerException ex)
             {
                 if (ex.Message.IndexOf("Group cannot be found", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
@@ -1045,7 +1041,7 @@ namespace Microsoft.SharePoint.Client
                 web.Context.ExecuteQueryRetry();
             }
 
-            returnGuid = new Guid(OfficeDevPnP.Core.Utilities.TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));
+            returnGuid = new Guid(TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));
 
             return returnGuid;
 

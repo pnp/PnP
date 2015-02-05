@@ -1,16 +1,12 @@
-﻿using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.SharePoint.Client.DocumentSet;
-using System.ComponentModel;
-using System.Security.Cryptography;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -195,7 +191,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Checks if a specific folder exists
         /// </summary>
-        /// <param name="clientContext">Current User Context</param>
+        /// <param name="web">The web to process</param>
         /// <param name="serverRelativeFolderUrl">Folder to check</param>
         /// <returns></returns>
         public static bool DoesFolderExists(this Web web, string serverRelativeFolderUrl)
@@ -418,11 +414,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">The web to process</param>
         /// <param name="match">a wildcard pattern to match</param>
         /// <returns>A list with the found <see cref="Microsoft.SharePoint.Client.File"/> objects</returns>
-        public static List<Microsoft.SharePoint.Client.File> FindFiles(this Web web, string match)
+        public static List<File> FindFiles(this Web web, string match)
         {
             Folder rootFolder = web.RootFolder;
             match = WildcardToRegex(match);
-            List<Microsoft.SharePoint.Client.File> files = new List<Microsoft.SharePoint.Client.File>();
+            List<File> files = new List<File>();
 
             ParseFiles(rootFolder, match, web.Context as ClientContext, ref files);
 
@@ -528,14 +524,14 @@ namespace Microsoft.SharePoint.Client
             return returnString;
         }
 
-        private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<Microsoft.SharePoint.Client.File> foundFiles)
+        private static void ParseFiles(Folder folder, string match, ClientContext context, ref List<File> foundFiles)
         {
             FileCollection files = folder.Files;
             context.Load(files, fs => fs.Include(f => f.ServerRelativeUrl, f => f.Name, f => f.Title, f => f.TimeCreated, f => f.TimeLastModified));
             context.Load(folder.Folders);
             context.ExecuteQueryRetry();
 
-            foreach (Microsoft.SharePoint.Client.File file in files)
+            foreach (File file in files)
             {
                 if (Regex.IsMatch(file.Name, match, RegexOptions.IgnoreCase))
                 {
@@ -635,6 +631,7 @@ namespace Microsoft.SharePoint.Client
         /// Uploads a file to the specified folder.
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="fileName"></param>
         /// <param name="localFilePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
@@ -663,7 +660,8 @@ namespace Microsoft.SharePoint.Client
         /// Uploads a file to the specified folder.
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
-        /// <param name="filePath">Location of the file to be uploaded.</param>
+        /// <param name="fileName">Location of the file to be uploaded.</param>
+        /// <param name="stream"></param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFile(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
@@ -675,7 +673,7 @@ namespace Microsoft.SharePoint.Client
 
             if (stream == null) 
             {
-                throw new ArgumentNullException("localStream"); 
+                throw new ArgumentNullException("stream"); 
             }
 
             if (string.IsNullOrWhiteSpace(fileName)) 
@@ -708,6 +706,7 @@ namespace Microsoft.SharePoint.Client
         /// Uploads a file to the specified folder by saving the binary directly (via webdav).
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
+        /// <param name="fileName"></param>
         /// <param name="localFilePath">Location of the file to be uploaded.</param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
@@ -737,7 +736,8 @@ namespace Microsoft.SharePoint.Client
         /// Note: this method does not work using app only token.
         /// </summary>
         /// <param name="folder">Folder to upload file to.</param>
-        /// <param name="filePath">Location of the file to be uploaded.</param>
+        /// <param name="fileName">Location of the file to be uploaded.</param>
+        /// <param name="stream"></param>
         /// <param name="overwriteIfExists">true (default) to overwite existing files</param>
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFileWebDav(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
@@ -749,7 +749,7 @@ namespace Microsoft.SharePoint.Client
 
             if (stream == null) 
             {
-                throw new ArgumentNullException("localStream"); 
+                throw new ArgumentNullException("stream"); 
             }
 
             if (string.IsNullOrWhiteSpace(fileName)) 
@@ -877,8 +877,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             // Check hash (& rewind)
-            byte[] localHash;
-            localHash = ha.ComputeHash(localStream);
+            var localHash = ha.ComputeHash(localStream);
             localStream.Position = 0;
             //Console.WriteLine("Local hash: {0}", BitConverter.ToString(localHash));
 
@@ -1045,7 +1044,6 @@ namespace Microsoft.SharePoint.Client
 
             var publishingRequired = false;
             var approvalRequired = false;
-            var checkOutRequired = false;
 
             if (level == FileLevel.Draft || level == FileLevel.Published)
             {
@@ -1056,7 +1054,7 @@ namespace Microsoft.SharePoint.Client
                             l => l.EnableModeration,
                             l => l.ForceCheckout);
 
-                checkOutRequired = parentList.ForceCheckout;
+                var checkOutRequired = parentList.ForceCheckout;
 
                 try
                 {

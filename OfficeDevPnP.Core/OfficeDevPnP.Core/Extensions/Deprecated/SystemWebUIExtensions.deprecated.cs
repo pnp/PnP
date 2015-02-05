@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System.Web.UI {
+﻿namespace System.Web.UI {
     public static class SystemWebUIExtensions {
 
         /// <summary>
@@ -13,7 +7,7 @@ namespace System.Web.UI {
         /// <param name="page"></param>
         /// <param name="pageType"></param>
         [Obsolete("Method deprecated")]
-        public static void RegisterSPChromePageScript(this System.Web.UI.Page page, Type pageType) {
+        public static void RegisterSPChromePageScript(this Page page, Type pageType) {
             string script = @"
             function chromeLoaded() {
                 $('body').show();

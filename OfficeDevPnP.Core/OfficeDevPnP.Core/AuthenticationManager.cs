@@ -1,14 +1,10 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
-using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Security;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core
 {
@@ -70,7 +66,7 @@ namespace OfficeDevPnP.Core
         public ClientContext GetAppOnlyAuthenticatedContext(string siteUrl, string realm, string appId, string appSecret)
         {
             EnsureToken(siteUrl, realm, appId, appSecret);
-            ClientContext clientContext = TokenHelper.GetClientContextWithAccessToken(siteUrl, this.appOnlyAccessToken);
+            ClientContext clientContext = TokenHelper.GetClientContextWithAccessToken(siteUrl, appOnlyAccessToken);
             return clientContext;
         }
 
@@ -85,7 +81,7 @@ namespace OfficeDevPnP.Core
         public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, string password, string domain)
         {
             ClientContext clientContext = new ClientContext(siteUrl);
-            clientContext.Credentials = new System.Net.NetworkCredential(user, password, domain);
+            clientContext.Credentials = new NetworkCredential(user, password, domain);
             return clientContext;
         }
 
@@ -155,12 +151,12 @@ namespace OfficeDevPnP.Core
         /// <param name="appSecret">Application secret of the Application which is requesting the ClientContext object</param>
         private void EnsureToken(string siteUrl, string realm, string appId, string appSecret)
         {
-            if (this.appOnlyAccessToken == null)
+            if (appOnlyAccessToken == null)
             {
                 lock (tokenLock)
                 {
                     LoggingUtility.Internal.TraceVerbose("AuthenticationManager:EnsureToken(siteUrl:{0},realm:{1},appId:{2},appSecret:PRIVATE)", siteUrl, realm, appId);
-                    if (this.appOnlyAccessToken == null)
+                    if (appOnlyAccessToken == null)
                     {
                         TokenHelper.Realm = realm;
                         TokenHelper.ServiceNamespace = realm;
@@ -179,15 +175,15 @@ namespace OfficeDevPnP.Core
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
                                                  TimeSpan.FromHours(1).TotalSeconds));
                                 Thread.Sleep(lease);
-                                this.appOnlyAccessToken = null;
+                                appOnlyAccessToken = null;
                             }
                             catch (Exception ex)
                             {
                                 LoggingUtility.Internal.TraceWarning((int)EventId.ProblemDeterminingTokenLease, ex, CoreResources.AuthenticationManger_ProblemDeterminingTokenLease);
-                                this.appOnlyAccessToken = null;
+                                appOnlyAccessToken = null;
                             }
                         });
-                        this.appOnlyAccessToken = token;
+                        appOnlyAccessToken = token;
                     }
                 }
             }

@@ -1,28 +1,27 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
-using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
-    [System.Runtime.InteropServices.GuidAttribute("8A8AEA7A-7C25-4138-9C83-2584028868C5")]
+    [Guid("8A8AEA7A-7C25-4138-9C83-2584028868C5")]
     public static partial class TaxonomyExtensions
     {
         #region Taxonomy Management
-        private static Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TrimSpacesRegex = new Regex("\\s+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static Regex invalidDescriptionRegex = new Regex("[\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex InvalidDescriptionRegex = new Regex("[\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static Regex invalidNameRegex = new Regex("[;\"<>|&\\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex InvalidNameRegex = new Regex("[;\"<>|&\\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public const string TaxonomyGuidLabelDelimiter = "|";
 
@@ -118,8 +117,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="lcid">(Optional) Default language of the term set; if not provided the default of the associate term store is used</param>
         /// <param name="description">(Optional) Description of the term set; if null or not provided the parameter is ignored, otherwise the term set is updated as necessary to match the description; passing an empty string will clear the description</param>
         /// <param name="isOpen">(Optional) Whether the term store is open for new term creation or not</param>
-        /// <param name="contact">(Optional)</param>
-        /// <param name="owner">(Optional)</param>
+        /// <param name="termSetContact"></param>
+        /// <param name="termSetOwner"></param>
         /// <returns>The required term set</returns>
         public static TermSet EnsureTermSet(this TermGroup parentGroup, string termSetName, Guid termSetId = default(Guid), int? lcid = null, string description = null, bool? isOpen = null, string termSetContact = null, string termSetOwner = null)
         {
@@ -329,9 +328,9 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Gets a Taxonomy Term by Name
         /// </summary>
+        /// <param name="site">The site to process</param>
         /// <param name="termSetId"></param>
         /// <param name="term"></param>
-        /// <param name="clientContext"></param>
         /// <returns></returns>
         public static Term GetTermByName(this Site site, Guid termSetId, string term)
         {
@@ -659,7 +658,7 @@ namespace Microsoft.SharePoint.Client
             if (filePath == null) { throw new ArgumentNullException("filePath"); }
             if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
 
-            using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+            using (var fs = new FileStream(filePath, FileMode.Open))
             {
                 return ImportTermSet(termGroup, fs, termSetId, synchroniseDeletions, termSetIsOpen, termSetContact, termSetOwner);
             }
@@ -712,15 +711,11 @@ namespace Microsoft.SharePoint.Client
             LoggingUtility.Internal.TraceInformation((int)EventId.ImportTermSet, CoreResources.TaxonomyExtension_ImportTermSet);
 
             TermSet termSet = null;
-            bool allTermsAdded;
             var importedTermIds = new Dictionary<Guid, object>();
             using (var reader = new StreamReader(termSetData))
             {
+                bool allTermsAdded;
                 termSet = ImportTermSetImplementation(termGroup, reader, termSetId, importedTermIds, termSetIsOpen, termSetContact, termSetOwner, out allTermsAdded);
-                //if (!string.IsNullOrEmpty(errorMessage))
-                //{
-                //    //Diagnostics.ErrorEvent(EventId.ProvisionErrorImportingTermSet, "Error adding term set '{0}': {1}", TermSetName, errorMessage);
-                //}
             }
 
             if (synchroniseDeletions)
@@ -728,8 +723,6 @@ namespace Microsoft.SharePoint.Client
                 ImportTermSetRemoveExtraTerms(termSet, importedTermIds);
             }
 
-            //termStore.CommitAll();
-            //TaxonomySession.SyncHiddenList(site);
             return termSet;
         }
 
@@ -1002,7 +995,7 @@ namespace Microsoft.SharePoint.Client
                         try
                         {
                             ValidateDescription(description, "description");
-                            if (!(term.Description == description))
+                            if (term.Description != description)
                             {
                                 LoggingUtility.Internal.TraceVerbose("Updating description for term '{0}'.", term.Name);
                                 term.SetDescription(description, lcid);
@@ -1019,7 +1012,7 @@ namespace Microsoft.SharePoint.Client
                             success = false;
                         }
                     }
-                    if (!(term.Name == termName))
+                    if (term.Name != termName)
                     {
                         LoggingUtility.Internal.TraceVerbose("Updating name for term '{0}'.", term.Name);
                         term.Name = termName;
@@ -1361,7 +1354,7 @@ namespace Microsoft.SharePoint.Client
             {
                 return;
             }
-            if (invalidDescriptionRegex.IsMatch(description))
+            if (InvalidDescriptionRegex.IsMatch(description))
             {
                 throw new ArgumentException(string.Format("Invalid characters in description '{0}'.", new object[]
 				{
@@ -1381,7 +1374,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(name)) { throw new ArgumentNullException(parameterName); }
 
-            if (name.Length > 255 || invalidNameRegex.IsMatch(name))
+            if (name.Length > 255 || InvalidNameRegex.IsMatch(name))
             {
                 throw new ArgumentException(string.Format("Invalid taxonomy name '{0}'.", new object[]
 				{
@@ -1696,7 +1689,6 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Wires up MMS field to the specified term set or term.
         /// </summary>
-        /// <param name="list">List to be processed</param>
         /// <param name="field">Field to be wired up</param>
         /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
         /// <param name="multiValue">Allow multiple selection</param>

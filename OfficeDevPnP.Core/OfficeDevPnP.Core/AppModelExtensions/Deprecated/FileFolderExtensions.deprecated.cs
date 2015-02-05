@@ -1,16 +1,13 @@
-﻿using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.SharePoint.Client.DocumentSet;
-using System.ComponentModel;
 using System.Security.Cryptography;
+using System.Text;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -18,14 +15,14 @@ namespace Microsoft.SharePoint.Client
     {
 
         [Obsolete("Use FolderExists() instead, which works for both web sites and subfolders.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool SubFolderExists(this Folder folder, string folderName)
         {
             return folder.FolderExists(folderName);
         }
 
         [Obsolete("Prefer list.RootFolder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this Web web, string filePath, string libraryName, bool createLibrary = false)
         {
 
@@ -49,21 +46,21 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use list.RootFolder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this Web web, string filePath, List library)
         {
             var file = library.RootFolder.UploadFile(filePath);
         }
 
         [Obsolete("Use list.RootFolder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadDocumentToLibrary(this List list, string filePath)
         {
             var file = list.RootFolder.UploadFile(filePath);
         }
 
         [Obsolete("Prefer web.RootFolder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadDocumentToFolder(this Web web, string filePath, string folderName, bool createFolder = false)
         {
             var filename = Path.GetFileName(filePath);
@@ -91,17 +88,17 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use list.RootFolder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadDocumentToFolder(this Web web, string filePath, Folder folder)
         {
             folder.UploadFile(filePath);
         }
 
         [Obsolete("Prefer folder.UploadFile() instead.")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void UploadFileToServerRelativeUrl(this Web web, string filePath, string serverRelativeUrl, bool useWebDav = false)
         {
-            if (!serverRelativeUrl.ToLower().EndsWith(System.IO.Path.GetFileName(filePath).ToLower()))
+            if (!serverRelativeUrl.ToLower().EndsWith(Path.GetFileName(filePath).ToLower()))
             {
                 serverRelativeUrl = UrlUtility.Combine(serverRelativeUrl, filePath);
             }
@@ -111,7 +108,7 @@ namespace Microsoft.SharePoint.Client
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
                     clientContext.ExecuteQueryRetry();
-                    Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, serverRelativeUrl, fs, true);
+                    File.SaveBinaryDirect(clientContext, serverRelativeUrl, fs, true);
                 }
             }
             else
@@ -138,13 +135,13 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Prefer folder.UploadFile() or folder.UploadFileWebDav().")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static File UploadFile(this Folder folder, string filePath, ContentTypeId contentTypeId, bool overwriteIfExists = true, bool useWebDav = true) {
             if (filePath == null) { throw new ArgumentNullException("filePath"); }
             if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
 
-            var fileName = System.IO.Path.GetFileName(filePath);
-            using (var fs = new System.IO.FileStream(filePath, System.IO.FileMode.Open)) {
+            var fileName = Path.GetFileName(filePath);
+            using (var fs = new FileStream(filePath, FileMode.Open)) {
                 var additionalProperties = new Dictionary<string, string>();
                 if (contentTypeId != null) {
                     additionalProperties["ContentTypeId"] = contentTypeId.StringValue;
@@ -154,7 +151,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Prefer folder.UploadFile() or folder.UploadFileWebDav().")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static File UploadFile(this Folder folder, string fileName, Stream stream, ContentTypeId contentTypeId, bool overwriteIfExists = true, bool useWebDav = true) {
             var additionalProperties = new Dictionary<string, string>();
             if (contentTypeId != null) {
@@ -164,19 +161,19 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Prefer folder.UploadFile() or folder.UploadFileWebDav(). Also can use file.SetFileProperties() and file.VerifyIfUploadRequired().")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static File UploadFile(this Folder folder, string localFilePath, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true) {
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
             if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
-            var fileName = System.IO.Path.GetFileName(localFilePath);
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open)) {
+            var fileName = Path.GetFileName(localFilePath);
+            using (var localStream = new FileStream(localFilePath, FileMode.Open)) {
                 return UploadFile(folder, fileName, localStream, additionalProperties, replaceContent, checkHashBeforeUpload, level, useWebDav);
             }
         }
 
         [Obsolete("Prefer folder.UploadFile() or folder.UploadFileWebDav(). Also can use file.SetFileProperties() and file.VerifyIfUploadRequired().")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static File UploadFile(this Folder folder, string fileName, string localFilePath, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true) {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
@@ -185,14 +182,14 @@ namespace Microsoft.SharePoint.Client
 
             //Console.WriteLine("Provisioning file '{0}' to '{1}'", localFilePath, fileName);
 
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open)) {
+            using (var localStream = new FileStream(localFilePath, FileMode.Open)) {
                 return UploadFile(folder, fileName, localStream, additionalProperties, replaceContent, checkHashBeforeUpload, level, useWebDav);
             }
         }
 
         [Obsolete("Prefer folder.UploadFile() or folder.UploadFileWebDav(). Also can use file.SetFileProperties() and file.VerifyIfUploadRequired().")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static File UploadFile(this Folder folder, string fileName, System.IO.Stream localStream, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true) {
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static File UploadFile(this Folder folder, string fileName, Stream localStream, IDictionary<string, string> additionalProperties = null, bool replaceContent = true, bool checkHashBeforeUpload = true, FileLevel level = FileLevel.Published, bool useWebDav = true) {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
             if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
@@ -226,7 +223,6 @@ namespace Microsoft.SharePoint.Client
 
             // Determine if upload required
             bool uploadRequired = false;
-            byte[] serverHash = null;
             if (existingFile != null) {
                 if (replaceContent) {
                     if (checkHashBeforeUpload) {
@@ -234,14 +230,14 @@ namespace Microsoft.SharePoint.Client
                         folder.Context.ExecuteQueryRetry();
                         // Hash contents
                         HashAlgorithm ha = HashAlgorithm.Create();
+                        byte[] serverHash;
                         using (var serverStream = streamResult.Value) {
                             serverHash = ha.ComputeHash(serverStream);
                             //Console.WriteLine("Server hash: {0}", BitConverter.ToString(serverHash));
                         }
 
                         // Check hash (& rewind)
-                        byte[] localHash;
-                        localHash = ha.ComputeHash(localStream);
+                        var localHash = ha.ComputeHash(localStream);
                         localStream.Position = 0;
                         //Console.WriteLine("Local hash: {0}", BitConverter.ToString(localHash));
 

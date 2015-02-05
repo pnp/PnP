@@ -1,11 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Management;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -22,7 +18,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="nodeTitle">the title of node to add</param>
         /// <param name="nodeUri">the url of node to add</param>
         /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
-        /// <param name="isQucikLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
+        /// <param name="isQuickLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
         public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, bool isQuickLaunch)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
@@ -336,7 +332,10 @@ namespace Microsoft.SharePoint.Client
         /// Removes a custom action
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions"/></param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
         public static void DeleteCustomAction(this Web web, Guid id)
         {
             var clientContext = web.Context as ClientContext;
@@ -360,7 +359,10 @@ namespace Microsoft.SharePoint.Client
         /// Removes a custom action
         /// </summary>
         /// <param name="site">The site to process</param>
-        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions"/></param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
         public static void DeleteCustomAction(this Site site, Guid id)
         {
             var clientContext = site.Context as ClientContext;
