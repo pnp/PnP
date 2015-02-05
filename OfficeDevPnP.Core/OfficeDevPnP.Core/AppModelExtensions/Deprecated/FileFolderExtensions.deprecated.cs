@@ -110,7 +110,7 @@ namespace Microsoft.SharePoint.Client
             {
                 using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                     Microsoft.SharePoint.Client.File.SaveBinaryDirect(clientContext, serverRelativeUrl, fs, true);
                 }
             }
@@ -119,7 +119,7 @@ namespace Microsoft.SharePoint.Client
                 var files = web.RootFolder.Files;
                 clientContext.Load(files);
 
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 if (files != null)
                 {
@@ -131,7 +131,7 @@ namespace Microsoft.SharePoint.Client
                         createInfo.Overwrite = true;
                         createInfo.Url = serverRelativeUrl;
                         files.Add(createInfo);
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
                 }
             }
@@ -204,7 +204,7 @@ namespace Microsoft.SharePoint.Client
             // Check for existing file
             if (!folder.IsObjectPropertyInstantiated("ServerRelativeUrl")) {
                 folder.Context.Load(folder, f => f.ServerRelativeUrl);
-                folder.Context.ExecuteQuery();
+                folder.Context.ExecuteQueryRetry();
             }
             var serverRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
 
@@ -216,7 +216,7 @@ namespace Microsoft.SharePoint.Client
             var fileCollection = folder.Files;
             File existingFile = null;
             folder.Context.Load(fileCollection);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
             foreach (var checkFile in fileCollection) {
                 if (string.Equals(checkFile.Name, fileName, StringComparison.InvariantCultureIgnoreCase)) {
                     existingFile = checkFile;
@@ -231,7 +231,7 @@ namespace Microsoft.SharePoint.Client
                 if (replaceContent) {
                     if (checkHashBeforeUpload) {
                         var streamResult = existingFile.OpenBinaryStream();
-                        folder.Context.ExecuteQuery();
+                        folder.Context.ExecuteQueryRetry();
                         // Hash contents
                         HashAlgorithm ha = HashAlgorithm.Create();
                         using (var serverStream = streamResult.Value) {
@@ -279,7 +279,7 @@ namespace Microsoft.SharePoint.Client
                     var parentList = existingFile.ListItemAllFields.ParentList;
                     folder.Context.Load(parentList, l => l.ForceCheckout);
                     try {
-                        folder.Context.ExecuteQuery();
+                        folder.Context.ExecuteQueryRetry();
                         checkOutRequired = parentList.ForceCheckout;
                     }
                     catch (ServerException ex) {
@@ -292,7 +292,7 @@ namespace Microsoft.SharePoint.Client
                     if (checkOutRequired && existingFile.CheckOutType == CheckOutType.None) {
                         LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
                         existingFile.CheckOut();
-                        folder.Context.ExecuteQuery();
+                        folder.Context.ExecuteQueryRetry();
                     }
                 }
 
@@ -300,7 +300,7 @@ namespace Microsoft.SharePoint.Client
                     using (var uploadContext = new ClientContext(folder.Context.Url) { Credentials = folder.Context.Credentials }) {
                         LoggingUtility.Internal.TraceVerbose("Save binary direct (via webdav) to '{0}'", serverRelativeUrl);
                         File.SaveBinaryDirect(uploadContext, serverRelativeUrl, localStream, true);
-                        uploadContext.ExecuteQuery();
+                        uploadContext.ExecuteQueryRetry();
                     }
                     file = folder.Files.GetByUrl(serverRelativeUrl);
                 }
@@ -311,7 +311,7 @@ namespace Microsoft.SharePoint.Client
                     fileCreation.Overwrite = true;
                     LoggingUtility.Internal.TraceVerbose("Creating file info with Url '{0}'", fileCreation.Url);
                     file = folder.Files.Add(fileCreation);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryRetry();
                 }
             }
             else {
@@ -321,7 +321,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             folder.Context.Load(file);
-            folder.Context.ExecuteQuery();
+            folder.Context.ExecuteQueryRetry();
 
             // Set file properties (child elements <Property>)
             var changedProperties = new Dictionary<string, string>();
@@ -331,7 +331,7 @@ namespace Microsoft.SharePoint.Client
                 // If this throws ServerException (does not belong to list), then shouldn't be trying to set properties)
                 folder.Context.Load(file.ListItemAllFields);
                 folder.Context.Load(file.ListItemAllFields.FieldValuesAsText);
-                folder.Context.ExecuteQuery();
+                folder.Context.ExecuteQueryRetry();
 
                 // Loop through and detect changes first, then, check out if required and apply
                 foreach (var kvp in additionalProperties) {
@@ -390,7 +390,7 @@ namespace Microsoft.SharePoint.Client
                             var parentList = file.ListItemAllFields.ParentList;
                             folder.Context.Load(parentList, l => l.ForceCheckout);
                             try {
-                                folder.Context.ExecuteQuery();
+                                folder.Context.ExecuteQueryRetry();
                                 checkOutRequired = parentList.ForceCheckout;
                             }
                             catch (ServerException ex) {
@@ -403,7 +403,7 @@ namespace Microsoft.SharePoint.Client
                             if (checkOutRequired && file.CheckOutType == CheckOutType.None) {
                                 LoggingUtility.Internal.TraceVerbose("Checking out file '{0}'", fileName);
                                 file.CheckOut();
-                                folder.Context.ExecuteQuery();
+                                folder.Context.ExecuteQueryRetry();
                             }
                         }
                     }
@@ -418,7 +418,7 @@ namespace Microsoft.SharePoint.Client
                         file.ListItemAllFields[propertyName] = propertyValue;
                     }
                     file.ListItemAllFields.Update();
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryRetry();
                     propertyChanged = true;
                 }
             }
@@ -429,7 +429,7 @@ namespace Microsoft.SharePoint.Client
                 var parentList2 = file.ListItemAllFields.ParentList;
                 folder.Context.Load(parentList2, l => l.EnableMinorVersions, l => l.EnableModeration);
                 try {
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryRetry();
                     publishingRequired = parentList2.EnableMinorVersions;
                     approvalRequired = parentList2.EnableModeration;
                 }
@@ -443,19 +443,19 @@ namespace Microsoft.SharePoint.Client
                 if (file.CheckOutType != CheckOutType.None || checkOutRequired) {
                     LoggingUtility.Internal.TraceVerbose("Checking in file '{0}'", fileName);
                     file.CheckIn("Checked in by provisioning", publishingRequired ? CheckinType.MinorCheckIn : CheckinType.MajorCheckIn);
-                    folder.Context.ExecuteQuery();
+                    folder.Context.ExecuteQueryRetry();
                 }
 
                 if (level == FileLevel.Published) {
                     if (publishingRequired) {
                         LoggingUtility.Internal.TraceVerbose("Publishing file '{0}'", fileName);
                         file.Publish("Published by provisioning");
-                        folder.Context.ExecuteQuery();
+                        folder.Context.ExecuteQueryRetry();
                     }
                     if (approvalRequired) {
                         LoggingUtility.Internal.TraceVerbose("Approving file '{0}'", fileName);
                         file.Approve("Approved by provisioning");
-                        folder.Context.ExecuteQuery();
+                        folder.Context.ExecuteQueryRetry();
                     }
                 }
             }

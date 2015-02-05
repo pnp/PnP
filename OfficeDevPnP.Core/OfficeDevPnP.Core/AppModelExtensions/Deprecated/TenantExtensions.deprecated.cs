@@ -101,14 +101,14 @@ namespace Microsoft.SharePoint.Client
             {
                 var siteUrlString = siteUrl.ToString();
                 tenant.SetSiteAdmin(siteUrlString, admin, true);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
 
                 using (var clientContext = new ClientContext(siteUrl))
                 {
                     var spAdmin = clientContext.Web.EnsureUser(admin);
                     clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
                     clientContext.Web.AssociatedOwnerGroup.Update();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }

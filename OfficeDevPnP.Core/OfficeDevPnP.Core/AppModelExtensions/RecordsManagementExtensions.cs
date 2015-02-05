@@ -384,7 +384,7 @@ namespace Microsoft.SharePoint.Client
 
                 //Hookup the needed event handlers
                 list.Context.Load(list.EventReceivers);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 List<EventReceiverDefinition> currentEventReceivers = new List<EventReceiverDefinition>(list.EventReceivers.Count);
                 currentEventReceivers.AddRange(list.EventReceivers);
@@ -438,7 +438,7 @@ namespace Microsoft.SharePoint.Client
                 if (eventReceiverAdded)
                 {
                     list.Update();
-                    list.Context.ExecuteQuery();
+                    list.Context.ExecuteQueryRetry();
                 }
 
                 //Set the property that dictates the auto declaration

@@ -48,7 +48,7 @@ namespace Microsoft.SharePoint.Client
 
             web.Context.Load(file, f => f.ListItemAllFields);
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return file.ListItemAllFields["WikiField"] as string;
         }
@@ -74,7 +74,7 @@ namespace Microsoft.SharePoint.Client
 
             var query = web.Context.LoadQuery(limitedWebPartManager.WebParts.IncludeWithDefaultProperties(wp => wp.Id, wp => wp.WebPart, wp => wp.WebPart.Title, wp => wp.WebPart.Properties, wp => wp.WebPart.Hidden));
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return query;
         }
@@ -104,7 +104,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             var serverRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, page);
 
@@ -141,13 +141,13 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(webPartPage);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             LimitedWebPartManager limitedWebPartManager = webPartPage.GetLimitedWebPartManager(PersonalizationScope.Shared);
             WebPartDefinition oWebPartDefinition = limitedWebPartManager.ImportWebPart(webPart.WebPartXml);
 
             limitedWebPartManager.AddWebPart(oWebPartDefinition.WebPart, webPart.WebPartZone, webPart.WebPartIndex);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
@@ -229,7 +229,7 @@ namespace Microsoft.SharePoint.Client
 
             web.Context.Load(webPartPage);
             web.Context.Load(webPartPage.ListItemAllFields);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             string wikiField = (string)webPartPage.ListItemAllFields["WikiField"];
 
@@ -237,7 +237,7 @@ namespace Microsoft.SharePoint.Client
             WebPartDefinition oWebPartDefinition = limitedWebPartManager.ImportWebPart(webPart.WebPartXml);
             WebPartDefinition wpdNew = limitedWebPartManager.AddWebPart(oWebPartDefinition.WebPart, "wpz", 0);
             web.Context.Load(wpdNew);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             //HTML structure in default team site home page (W16)
             //<div class="ExternalClass284FC748CB4242F6808DE69314A7C981">
@@ -341,7 +341,7 @@ namespace Microsoft.SharePoint.Client
             ListItem listItem = webPartPage.ListItemAllFields;
             listItem["WikiField"] = xd.OuterXml;
             listItem.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
         }
 
@@ -490,7 +490,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
@@ -527,7 +527,7 @@ namespace Microsoft.SharePoint.Client
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             ListItem item = file.ListItemAllFields;
 
@@ -535,7 +535,7 @@ namespace Microsoft.SharePoint.Client
 
             item.Update();
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -575,7 +575,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
@@ -615,7 +615,7 @@ namespace Microsoft.SharePoint.Client
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             web.Context.Load(file, f => f.ListItemAllFields);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             ListItem item = file.ListItemAllFields;
 
@@ -639,7 +639,7 @@ namespace Microsoft.SharePoint.Client
 
             item["WikiField"] = xd.OuterXml.Replace("!!123456789!!", html);
             item.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -677,7 +677,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             var webServerRelativeUrl = UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl);
@@ -719,11 +719,11 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(webPartPage);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             LimitedWebPartManager limitedWebPartManager = webPartPage.GetLimitedWebPartManager(PersonalizationScope.Shared);
             web.Context.Load(limitedWebPartManager.WebParts, wps => wps.Include(wp => wp.WebPart.Title));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (limitedWebPartManager.WebParts.Count >= 0)
             {
@@ -733,7 +733,7 @@ namespace Microsoft.SharePoint.Client
                     if (oWebPart.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase))
                     {
                         limitedWebPartManager.WebParts[i].DeleteWebPart();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         break;
                     }
                 }
@@ -770,7 +770,7 @@ namespace Microsoft.SharePoint.Client
             var pageLibrary = web.Lists.GetByTitle(wikiPageLibraryName);
 
             web.Context.Load(pageLibrary.RootFolder, f => f.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var pageLibraryUrl = pageLibrary.RootFolder.ServerRelativeUrl;
             var newWikiPageUrl = pageLibraryUrl + "/" + wikiPageName;
@@ -778,14 +778,14 @@ namespace Microsoft.SharePoint.Client
             var currentPageFile = web.GetFileByServerRelativeUrl(newWikiPageUrl);
 
             web.Context.Load(currentPageFile, f => f.Exists);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (!currentPageFile.Exists)
             {
                 var newpage = pageLibrary.RootFolder.Files.AddTemplateFile(newWikiPageUrl, TemplateFileType.WikiPage);
 
                 web.Context.Load(newpage);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 wikiPageUrl = UrlUtility.Combine("sitepages", wikiPageName);
             }
@@ -814,7 +814,7 @@ namespace Microsoft.SharePoint.Client
             Folder folder = web.GetFolderByServerRelativeUrl(folderName);
             File file = folder.Files.AddTemplateFile(serverRelativePageUrl, TemplateFileType.WikiPage);
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (html != null)
             {
                 web.AddHtmlToWikiPage(serverRelativePageUrl, html);
@@ -873,18 +873,18 @@ namespace Microsoft.SharePoint.Client
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             context.Load(file);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             context.Load(wpm.WebParts);
 
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             WebPartDefinition def = wpm.WebParts.GetById(id);
 
             context.Load(def);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             switch (key.ToLower())
             {
@@ -908,7 +908,7 @@ namespace Microsoft.SharePoint.Client
 
             def.SaveWebPartChanges();
 
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -933,14 +933,14 @@ namespace Microsoft.SharePoint.Client
             File file = web.GetFileByServerRelativeUrl(serverRelativePageUrl);
 
             context.Load(file);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
 
             WebPartDefinition def = wpm.WebParts.GetById(id);
 
             context.Load(def.WebPart.Properties);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             return def.WebPart.Properties;
         }
@@ -978,13 +978,13 @@ namespace Microsoft.SharePoint.Client
             ClientContext context = web.Context as ClientContext;
             Site site = context.Site;
             context.Load(site, s => s.ServerRelativeUrl);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
             File pageFromPageLayout = context.Site.RootWeb.GetFileByServerRelativeUrl(String.Format("{0}_catalogs/masterpage/{1}.aspx",
                 UrlUtility.EnsureTrailingSlash(site.ServerRelativeUrl),
                 pageTemplateName));
             ListItem pageLayoutItem = pageFromPageLayout.ListItemAllFields;
             context.Load(pageLayoutItem);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             PublishingWeb publishingWeb = PublishingWeb.GetPublishingWeb(context, web);
             context.Load(publishingWeb);
@@ -996,7 +996,7 @@ namespace Microsoft.SharePoint.Client
             //Get parent list of item, this way we can handle all languages
             List pagesLibrary = page.ListItem.ParentList;
             context.Load(pagesLibrary);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
             ListItem pageItem = page.ListItem;
             pageItem["Title"] = title;
             pageItem.Update();
@@ -1009,7 +1009,7 @@ namespace Microsoft.SharePoint.Client
                     pageItem.File.Approve(String.Empty);
                 }
             }
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1033,14 +1033,14 @@ namespace Microsoft.SharePoint.Client
 
             // Get the language agnostic "Pages" library name
             context.Load(web, l => l.Language);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             ClientResult<string> pagesLibraryName = Microsoft.SharePoint.Client.Utilities.Utility.GetLocalizedString(context, "$Resources:List_Pages_UrlName", "cmscore", (int)web.Language);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             List spList = web.Lists.GetByTitle(pagesLibraryName.Value);
             context.Load(spList);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             if (spList != null && spList.ItemCount > 0)
             {
@@ -1053,13 +1053,13 @@ namespace Microsoft.SharePoint.Client
 
                 ListItemCollection listItems = spList.GetItems(camlQuery);
                 context.Load(listItems);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 if (listItems.Count > 0)
                 {
                     PublishingPage page = PublishingPage.GetPublishingPage(context, listItems[0]);
                     context.Load(page);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                     return page;
                 }
             }
