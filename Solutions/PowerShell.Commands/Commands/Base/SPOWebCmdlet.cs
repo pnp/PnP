@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     public class SPOWebCmdlet : SPOCmdlet
     {
-        private Web _selectedWeb = null;
+        private Web _selectedWeb;
 
 
         [Parameter(Mandatory = false)]

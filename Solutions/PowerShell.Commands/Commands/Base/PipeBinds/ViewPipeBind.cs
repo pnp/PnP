@@ -5,9 +5,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public class ViewPipeBind
     {
-        private View _view;
-        private Guid _id;
-        private string _name;
+        private readonly View _view;
+        private readonly Guid _id;
+        private readonly string _name;
 
         public ViewPipeBind()
         {

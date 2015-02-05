@@ -1,8 +1,6 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WorkflowServices;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System.Linq;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {

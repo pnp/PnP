@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             if (SPOnlineConnection.CurrentConnection == null)
                 return false;
-            SPOnlineConnection.CurrentConnection = (SPOnlineConnection)null;
+            SPOnlineConnection.CurrentConnection = null;
             return true;
         }
     }

@@ -16,20 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         public int RetryWait { get; protected set; }
         public PSCredential PSCredential { get; protected set; }
 
-        private string _url;
-      
-        public string Url
-        {
-            get
-            {
-                return _url;
-                //return this.Context.Url;
-            }
-            protected set
-            {
-                _url = value;
-            }
-        }
+        public string Url { get; protected set; }
 
         public ClientContext Context { get; set; }
 

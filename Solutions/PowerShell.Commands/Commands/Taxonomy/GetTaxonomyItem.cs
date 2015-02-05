@@ -1,5 +1,4 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands

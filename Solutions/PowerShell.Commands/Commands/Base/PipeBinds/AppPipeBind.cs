@@ -5,8 +5,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class AppPipeBind
     {
-        private AppInstance _appInstance;
-        private Guid _id;
+        private readonly AppInstance _appInstance;
+        private readonly Guid _id;
 
         public AppPipeBind(AppInstance instance)
         {

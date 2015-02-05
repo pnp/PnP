@@ -4,13 +4,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class ContentTypePipeBind
     {
-        private string _id;
-        private string _name;
-        private ContentType _contentType;
+        private readonly string _id;
+        private readonly string _name;
+        private readonly ContentType _contentType;
 
         public ContentTypePipeBind()
         {
-            _id = string.Empty; ;
+            _id = string.Empty;
             _name = string.Empty;
             _contentType = null;
         }

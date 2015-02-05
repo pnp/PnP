@@ -1,8 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
+﻿using System;
 using System.Management.Automation;
-using System;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -23,11 +23,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (On)
             {
-                SelectedWeb.Features.Add(new Guid(Properties.Resources.MDSFeatureGuid), Force, FeatureDefinitionScope.None);
+                SelectedWeb.Features.Add(new Guid(Resources.MDSFeatureGuid), Force, FeatureDefinitionScope.None);
             }
             else
             {
-                SelectedWeb.Features.Remove(new Guid(Properties.Resources.MDSFeatureGuid), Force);
+                SelectedWeb.Features.Remove(new Guid(Resources.MDSFeatureGuid), Force);
             }
             ClientContext.ExecuteQueryRetry();
         }
