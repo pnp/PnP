@@ -83,7 +83,7 @@
         /// </summary>
         public static bool Missing<T>(this Enum obj, T value)
         {
-            return !EnumerationExtensions.Has<T>(obj, value);
+            return !Has<T>(obj, value);
         }
 
         #endregion
