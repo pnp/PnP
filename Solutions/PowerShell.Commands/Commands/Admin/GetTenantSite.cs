@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Enums;
-using System.Management.Automation;
-using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.SharePoint.Client;
 using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -57,7 +55,7 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
                     var siteProperties = list.ToList();
                     if (IncludeOneDriveSites)
                     {
-                        if (Force || ShouldContinue(Resources.GetTenantSite_ExecuteCmdlet_This_request_can_take_a_long_time_to_execute__Continue_, Properties.Resources.Confirm))
+                        if (Force || ShouldContinue(Resources.GetTenantSite_ExecuteCmdlet_This_request_can_take_a_long_time_to_execute__Continue_, Resources.Confirm))
                         {
                             var onedriveSites = Tenant.GetOneDriveSiteCollections();
 
