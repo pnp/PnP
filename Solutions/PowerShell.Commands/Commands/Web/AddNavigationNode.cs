@@ -28,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ClientContext.ExecuteQueryRetry();
                 Url = SelectedWeb.Url;
             }
-            SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+            SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch);
         }
 
     }

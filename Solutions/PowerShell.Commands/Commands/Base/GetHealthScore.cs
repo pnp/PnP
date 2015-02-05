@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            var url = string.Empty;
+            string url;
             if (Url != null)
             {
                 url = Url;

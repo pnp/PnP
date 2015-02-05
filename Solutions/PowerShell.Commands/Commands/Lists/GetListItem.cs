@@ -1,12 +1,9 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {

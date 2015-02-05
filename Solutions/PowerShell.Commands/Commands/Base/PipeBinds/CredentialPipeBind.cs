@@ -1,17 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Utilities;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class CredentialPipeBind
     {
-        private PSCredential _pscredential;
-        public string _storedcredential;
+        private readonly PSCredential _pscredential;
+        private readonly string _storedcredential;
 
         public CredentialPipeBind(PSCredential pscredential)
         {

@@ -1,8 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Enums;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -63,7 +62,7 @@ PS:> New-SPOUser -LogonName user@company.com
 
             if (!string.IsNullOrEmpty(Owner))
             {
-                Principal groupOwner = null;
+                Principal groupOwner;
 
                 try
                 {

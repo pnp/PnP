@@ -1,14 +1,13 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
 using Microsoft.SharePoint.Client.WorkflowServices;
-using System;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class WorkflowDefinitionPipeBind
     {
-        private WorkflowDefinition _def;
-        private Guid _id;
-        private string _name;
+        private readonly WorkflowDefinition _def;
+        private readonly Guid _id;
+        private readonly string _name;
 
         public WorkflowDefinitionPipeBind()
         {

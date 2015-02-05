@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (Identity != null)
             {
-                ContentType ct = null;
+                ContentType ct;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
                     ct = SelectedWeb.GetContentTypeById(Identity.Id);

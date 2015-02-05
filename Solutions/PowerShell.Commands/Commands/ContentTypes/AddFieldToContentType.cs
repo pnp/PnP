@@ -1,13 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -55,7 +50,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 }
                 else
                 {
-                    ContentType ct = null;
+                    ContentType ct;
                     if (!string.IsNullOrEmpty(ContentType.Id))
                     {
                         ct = SelectedWeb.GetContentTypeById(ContentType.Id);

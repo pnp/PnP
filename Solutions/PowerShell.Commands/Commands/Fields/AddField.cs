@@ -66,7 +66,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (List != null)
             {
                 var list = SelectedWeb.GetList(List);
-                Field f = null;
+                Field f;
                 var fieldCI = new FieldCreationInformation(Type)
                 {
                     Id = Id.Id,
@@ -99,7 +99,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                Field f = null;
+                Field f;
 
                 var fieldCI = new FieldCreationInformation(Type)
                 {

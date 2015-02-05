@@ -5,9 +5,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class WebPipeBind
     {
-        private Guid _id;
-        private string _url;
-        private Web _web;
+        private readonly Guid _id;
+        private readonly string _url;
+        private readonly Web _web;
 
         public WebPipeBind()
         {

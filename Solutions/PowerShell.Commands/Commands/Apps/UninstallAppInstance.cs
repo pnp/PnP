@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            AppInstance instance = null;
+            AppInstance instance;
 
             if (Identity.Instance != null)
             {

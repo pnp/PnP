@@ -1,8 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -37,10 +37,10 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
 
         protected override void ExecuteCmdlet()
         {
-            string[] lines = null;
+            string[] lines;
             if (ParameterSetName == "File")
             {
-                lines = System.IO.File.ReadAllLines(Path);
+                lines = File.ReadAllLines(Path);
             }
             else
             {

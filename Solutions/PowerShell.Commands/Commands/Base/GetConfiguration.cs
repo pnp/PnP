@@ -14,8 +14,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            string path = null;
-            XDocument document = null;
+            XDocument document;
 
             // check for existing configuration, if not existing, create it
             string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -24,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 Directory.CreateDirectory(configFolder);
             }
-            path = Path.Combine(configFolder, "configuration.xml");
+            var path = Path.Combine(configFolder, "configuration.xml");
 
 
             if (!File.Exists(path))

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class GuidPipeBind
     {
-        private Guid _id;
+        private readonly Guid _id;
 
         public GuidPipeBind(Guid guid)
         {

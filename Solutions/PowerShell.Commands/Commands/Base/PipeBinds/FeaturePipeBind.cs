@@ -1,17 +1,13 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class FeaturePipeBind
     {
-        Guid _id;
-        string _name;
-        Feature _feature;
+        readonly Guid _id;
+        readonly string _name;
+        readonly Feature _feature;
 
         public FeaturePipeBind(Guid id)
         {

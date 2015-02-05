@@ -1,9 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
+﻿using System.Linq;
 using System.Management.Automation;
-using System.Linq;
-
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
