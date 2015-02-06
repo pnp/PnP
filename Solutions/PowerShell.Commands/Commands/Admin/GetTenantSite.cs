@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if !CLIENTSDKV15
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
@@ -8,6 +9,7 @@ using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
+
     [Cmdlet(VerbsCommon.Get, "SPOTenantSite")]
     [CmdletHelp(@"Office365 only: Uses the tenant API to retrieve site information.
 
@@ -76,3 +78,4 @@ PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects", R
     }
 
 }
+#endif
