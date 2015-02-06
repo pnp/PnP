@@ -1,0 +1,13 @@
+﻿.lblError {
+    color: red;
+}
+
+.lblExplanation {
+    color: darkgray;
+    font-style:italic;
+    font-size:small;
+}
+
+.line-space {
+    margin-top: 15px !important;
+}
