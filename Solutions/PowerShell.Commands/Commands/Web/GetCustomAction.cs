@@ -20,11 +20,11 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (Identity != null)
             {
                 var foundAction = actions.FirstOrDefault(x => x.Id == Identity.Id);
-                WriteObject(foundAction);
+                WriteObject(foundAction, true);
             }
             else
             {
-                WriteObject(actions);
+                WriteObject(actions,true);
             }
         }
     }
