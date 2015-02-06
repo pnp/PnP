@@ -30,6 +30,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Create field to web remotely
         /// </summary>
+        /// <typeparam name="TField">The created field type to return.</typeparam>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="fieldCreationInformation">Field creation information</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
@@ -48,7 +49,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
@@ -59,6 +60,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="fieldAsXml">The XML declaration of SiteColumn definition</param>
+        /// <param name="executeQuery"></param>
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this Web web, string fieldAsXml, bool executeQuery = true)
         {
@@ -79,14 +81,14 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             web.Update();
 
             if (executeQuery)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return field;
@@ -95,9 +97,9 @@ namespace Microsoft.SharePoint.Client
         public static void RemoveFieldByInternalName(this Web web, string internalName)
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.InternalName == internalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
-            if (fields.Count() == 0)
+            if (!fields.Any())
             {
                 throw new ArgumentException(string.Format("Could not find field with internalName {0}", internalName));
             }
@@ -179,14 +181,14 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns the field if it exists. Null if it does not exist.
         /// </summary>
-        /// <param name="TField">Field type to be returned</param>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="fieldId">Guid for the field ID</param>
         /// <returns>Field of type TField</returns>
         public static TField GetFieldById<TField>(this Web web, Guid fieldId) where TField : Field
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldId));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var field = fields.FirstOrDefault();
             if (field == null)
@@ -202,9 +204,9 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns the field if it exists. Null if it does not exist.
         /// </summary>
-        /// <param name="TField">Field type to be returned</param>
-        /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
-        /// <param name="fieldId">Guid for the field ID</param>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="fields">FieldCollection to be processed.</param>
+        /// <param name="internalName">Guid for the field ID</param>
         /// <returns>Field of type TField</returns>
         public static TField GetFieldByName<TField>(this FieldCollection fields, string internalName) where TField : Field
         {
@@ -212,7 +214,7 @@ namespace Microsoft.SharePoint.Client
                 fields.ServerObjectIsNull.Value)
             {
                 fields.Context.Load(fields);
-                fields.Context.ExecuteQuery();
+                fields.Context.ExecuteQueryRetry();
             }
 
             var field = fields.FirstOrDefault(f => f.StaticName == internalName);
@@ -241,7 +243,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = web.Fields;
             IEnumerable<Field> results = web.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (results.FirstOrDefault() != null)
             {
                 return true;
@@ -288,7 +290,7 @@ namespace Microsoft.SharePoint.Client
             ContentType ct = GetContentTypeByName(web, contentTypeName);
             FieldCollection fields = ct.Fields;
             IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            ct.Context.ExecuteQuery();
+            ct.Context.ExecuteQueryRetry();
             if (results.FirstOrDefault() != null)
             {
                 return true;
@@ -307,6 +309,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">List to process</param>
         /// <param name="fieldCreationInformation">Creation information for the field</param>
+        /// <param name="executeQuery"></param>
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this List list, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)
         {
@@ -335,7 +338,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = list.Fields;
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
@@ -346,13 +349,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <typeparam name="TField">The selected field type to return.</typeparam>
         /// <param name="fields">Field collection to which the created field will be added</param>
-        /// <param name="id">Guid for the new field.</param>
-        /// <param name="internalName">Internal name of the field</param>
-        /// <param name="fieldType">Field type to be created.</param>
-        /// <param name="addToDefaultView">Bool to add to the default view</param>
-        /// <param name="displayName">The display name of the field</param>
-        /// <param name="group">The field group name</param>
-        /// <param name="additionalAttributes">Optionally specify additional XML attributes for the field creation</param>
+        /// <param name="fieldCreationInformation">The information about the field to be created</param>
         /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns></returns>
         static TField CreateFieldBase<TField>(FieldCollection fields, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
@@ -372,7 +369,7 @@ namespace Microsoft.SharePoint.Client
 
             if (executeQuery)
             {
-                fields.Context.ExecuteQuery();
+                fields.Context.ExecuteQueryRetry();
             }
 
             return fields.Context.CastTo<TField>(field);
@@ -390,7 +387,7 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT,
+            string newFieldCAML = string.Format(Constants.FIELD_XML_FORMAT,
                 fieldCreationInformation.FieldType,
                 fieldCreationInformation.InternalName,
                 fieldCreationInformation.DisplayName,
@@ -412,7 +409,7 @@ namespace Microsoft.SharePoint.Client
         {
             FieldCollection fields = list.Fields;
             list.Context.Load(fields);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             XDocument xd = XDocument.Parse(fieldAsXml);
             var ns = xd.Root.Name.Namespace;
@@ -426,7 +423,7 @@ namespace Microsoft.SharePoint.Client
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return field;
         }
@@ -441,7 +438,7 @@ namespace Microsoft.SharePoint.Client
         {
             FieldCollection fields = list.Fields;
             list.Context.Load(fields);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in fields)
             {
@@ -485,7 +482,7 @@ namespace Microsoft.SharePoint.Client
 
             FieldCollection fields = list.Fields;
             IEnumerable<Field> results = list.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             if (results.FirstOrDefault() != null)
             {
@@ -517,7 +514,7 @@ namespace Microsoft.SharePoint.Client
                 fields.Add(field);
             }
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             return fields;
         }
 
@@ -560,7 +557,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <param name="defaultContent">Optionally make this the default content type</param>
         /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
         public static void AddContentTypeToListById(this Web web, string listTitle, string contentTypeId, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
@@ -654,15 +651,15 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             list.ContentTypesEnabled = true;
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             list.ContentTypes.AddExistingContentType(contentType);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             // Set the default content type
             if (defaultContent)
@@ -675,18 +672,20 @@ namespace Microsoft.SharePoint.Client
         /// Associates field to content type
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="id">Complete ID for the content type</param>
-        /// <param name="fieldID">String representation of the field ID (=guid)</param>
-        public static void AddFieldToContentTypeById(this Web web, string contentTypeID, string fieldID, bool required = false, bool hidden = false)
+        /// <param name="contentTypeID">String representation of the id of the content type to add the field to</param>
+        /// <param name="fieldId">String representation of the field ID (=guid)</param>
+        /// <param name="required">True if the field is required</param>
+        /// <param name="hidden">True if the field is hidden</param>
+        public static void AddFieldToContentTypeById(this Web web, string contentTypeID, string fieldId, bool required = false, bool hidden = false)
         {
             // Get content type
             ContentType ct = web.GetContentTypeById(contentTypeID);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Get field
-            Field fld = web.Fields.GetById(new Guid(fieldID));
+            Field fld = web.Fields.GetById(new Guid(fieldId));
 
             // Add field association to content type
             AddFieldToContentType(web, ct, fld, required, hidden);
@@ -698,13 +697,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="contentTypeName">Name of the content type</param>
         /// <param name="fieldID">Guid representation of the field ID</param>
+        /// <param name="required">True if the field is required</param>
+        /// <param name="hidden">True if the field is hidden</param>
         public static void AddFieldToContentTypeByName(this Web web, string contentTypeName, Guid fieldID, bool required = false, bool hidden = false)
         {
             // Get content type
             ContentType ct = web.GetContentTypeByName(contentTypeName);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Get field
             Field fld = web.Fields.GetById(fieldID);
@@ -744,7 +745,7 @@ namespace Microsoft.SharePoint.Client
 
             if (propertyLoadRequired)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
@@ -758,7 +759,7 @@ namespace Microsoft.SharePoint.Client
                 fldInfo.Field = field;
                 contentType.FieldLinks.Add(fldInfo);
                 contentType.Update(true);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 flink = contentType.FieldLinks.GetById(field.Id);
             }
@@ -769,7 +770,7 @@ namespace Microsoft.SharePoint.Client
                 flink.Required = required;
                 flink.Hidden = hidden;
                 contentType.Update(true);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -806,7 +807,7 @@ namespace Microsoft.SharePoint.Client
         {
             var contentTypes = list.ContentTypes;
             list.Context.Load(contentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceVerbose("Checking {0} content types in list for best match", contentTypes.Count);
 
@@ -834,7 +835,7 @@ namespace Microsoft.SharePoint.Client
         /// Does content type exists in the web
         /// </summary>
         /// <param name="web">Web to be processed</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>True if the content type exists, false otherwise</returns>
         public static bool ContentTypeExistsById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
@@ -855,7 +856,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(ctCol);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in ctCol)
             {
                 if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
@@ -892,7 +893,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             ContentType ct = results.FirstOrDefault();
             if (ct != null)
@@ -908,7 +909,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed</param>
         /// <param name="listTitle">Title of the list to be updated</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <returns>True if the content type exists, false otherwise</returns>
         public static bool ContentTypeExistsById(this Web web, string listTitle, string contentTypeId)
         {
@@ -930,7 +931,7 @@ namespace Microsoft.SharePoint.Client
         /// Does content type exist in list
         /// </summary>
         /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <returns>True if the content type exists, false otherwise</returns>
         public static bool ContentTypeExistsById(this List list, string contentTypeId)
         {
@@ -942,7 +943,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             if (!list.ContentTypesEnabled)
@@ -952,7 +953,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in ctCol)
             {
@@ -1004,7 +1005,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.IsPropertyAvailable("ContentTypesEnabled"))
             {
                 list.Context.Load(list, l => l.ContentTypesEnabled);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
 
             if (!list.ContentTypesEnabled)
@@ -1014,7 +1015,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             if (results.FirstOrDefault() != null)
             {
@@ -1124,7 +1125,7 @@ namespace Microsoft.SharePoint.Client
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;
             web.Context.Load(contentTypes);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
 
             // Set the properties for the content type
@@ -1134,7 +1135,7 @@ namespace Microsoft.SharePoint.Client
             newCt.Group = group;
             newCt.ParentContentType = parentContentType;
             ContentType myContentType = contentTypes.Add(newCt);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Return the content type object
             return myContentType;
@@ -1165,7 +1166,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return results.FirstOrDefault();
         }
 
@@ -1173,7 +1174,7 @@ namespace Microsoft.SharePoint.Client
         /// Return content type by Id
         /// </summary>
         /// <param name="web">Web to be processed</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <param name="searchInSiteHierarchy">Searches accross all content types in the site up to the root site</param>
         /// <returns>Content type object or null if was not found</returns>
         public static ContentType GetContentTypeById(this Web web, string contentTypeId, bool searchInSiteHierarchy = false)
@@ -1194,7 +1195,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Context.Load(ctCol);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in ctCol)
             {
                 if (item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase))
@@ -1221,7 +1222,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return results.FirstOrDefault();
         }
@@ -1230,7 +1231,7 @@ namespace Microsoft.SharePoint.Client
         /// Return content type by Id
         /// </summary>
         /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         /// <returns>Content type object or null if was not found</returns>
         public static ContentType GetContentTypeById(this List list, string contentTypeId)
         {
@@ -1241,7 +1242,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             foreach (var item in ctCol)
             {
@@ -1259,7 +1260,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         public static void SetDefaultContentTypeToList(this Web web, List list, string contentTypeId)
         {
             SetDefaultContentTypeToList(list, contentTypeId);
@@ -1281,13 +1282,13 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list to be updated</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         public static void SetDefaultContentTypeToList(this Web web, string listTitle, string contentTypeId)
         {
             // Get list instances
             List list = web.GetListByTitle(listTitle);
             web.Context.Load(list);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Add content type to list
             SetDefaultContentTypeToList(list, contentTypeId);
@@ -1310,12 +1311,12 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <remarks>Notice. Currently removes other content types from the list. Known issue</remarks>
         /// <param name="list">List to update</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         public static void SetDefaultContentTypeToList(this List list, string contentTypeId)
         {
             ContentTypeCollection ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var ctIds = new List<ContentTypeId>();
             foreach (ContentType ct in ctCol)
@@ -1331,7 +1332,7 @@ namespace Microsoft.SharePoint.Client
 
             list.RootFolder.Update();
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1354,7 +1355,7 @@ namespace Microsoft.SharePoint.Client
         {
             var listContentTypes = list.ContentTypes;
             list.Context.Load(listContentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             IList<ContentTypeId> newOrder = new List<ContentTypeId>();
 
             // Casting throws "Specified method is not supported" when using in v15
@@ -1375,7 +1376,7 @@ namespace Microsoft.SharePoint.Client
             list.RootFolder.UniqueContentTypeOrder = newOrder;
             list.RootFolder.Update();
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         #endregion
@@ -1410,10 +1411,10 @@ namespace Microsoft.SharePoint.Client
         {
             ContentTypeCollection contentTypes = list.ContentTypes;
             list.Context.Load(contentTypes);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             ContentType contentType = contentTypes.GetById(contentTypeId);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             contentType.SetLocalizationForContentType(cultureName, nameResource, descriptionResource);
         }
@@ -1430,14 +1431,14 @@ namespace Microsoft.SharePoint.Client
             if (contentType.IsObjectPropertyInstantiated("TitleResource"))
             {
                 contentType.Context.Load(contentType);
-                contentType.Context.ExecuteQuery();
+                contentType.Context.ExecuteQueryRetry();
             }
 
             // Set translations for the culture
             contentType.NameResource.SetValueForUICulture(cultureName, nameResource);
             contentType.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             contentType.Update(true);
-            contentType.Context.ExecuteQuery();
+            contentType.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1548,14 +1549,14 @@ namespace Microsoft.SharePoint.Client
             if (field.IsObjectPropertyInstantiated("TitleResource"))
             {
                 field.Context.Load(field);
-                field.Context.ExecuteQuery();
+                field.Context.ExecuteQueryRetry();
             }
 
             // Set translations for the culture
             field.TitleResource.SetValueForUICulture(cultureName, titleResource);
             field.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             field.UpdateAndPushChanges(true);
-            field.Context.ExecuteQuery();
+            field.Context.ExecuteQueryRetry();
         }
 
         #endregion

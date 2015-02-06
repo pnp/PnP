@@ -1,9 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -46,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ca.Rights.Set(permission);
             }
 
-            this.SelectedWeb.AddCustomAction(ca);
+            SelectedWeb.AddCustomAction(ca);
         }
     }
 }

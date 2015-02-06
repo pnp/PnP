@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             if (SecurityMode.Message == securityMode)
             {
-                this._clientCredentialType = HttpClientCredentialType.None;
+                _clientCredentialType = HttpClientCredentialType.None;
             }
         }
 
@@ -37,12 +37,12 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
                 throw new InvalidOperationException("ID3225");
             }
             
-            this._clientCredentialType = clientCredentialType;
+            _clientCredentialType = clientCredentialType;
         }
 
         protected override void ApplyTransportSecurity(HttpTransportBindingElement transport)
         {
-            if (this._clientCredentialType == HttpClientCredentialType.Basic)
+            if (_clientCredentialType == HttpClientCredentialType.Basic)
             {
                 transport.AuthenticationScheme = AuthenticationSchemes.Basic;
             }
@@ -82,7 +82,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             get
             {
-                return this._clientCredentialType;
+                return _clientCredentialType;
             }
             set
             {
@@ -94,7 +94,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
                 {
                     throw new InvalidOperationException("ID3225");
                 }
-                this._clientCredentialType = value;
+                _clientCredentialType = value;
             }
         }
     }

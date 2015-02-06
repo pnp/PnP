@@ -1,16 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Xml;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
 
 namespace Microsoft.SharePoint.Client
@@ -94,7 +90,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             if (!string.IsNullOrEmpty(masterFileName))
             {
@@ -125,7 +121,7 @@ namespace Microsoft.SharePoint.Client
             query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, lookName);
             var existingCollection = composedLooksList.GetItems(query);
             web.Context.Load(existingCollection);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             ListItem item = existingCollection.FirstOrDefault();
 
             if (item == null)
@@ -169,7 +165,7 @@ namespace Microsoft.SharePoint.Client
 
             item["DisplayOrder"] = displayOrder;
             item.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -198,7 +194,7 @@ namespace Microsoft.SharePoint.Client
                 query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, lookName);
                 var existingCollection = composedLooksList.GetItems(query);
                 web.Context.Load(existingCollection);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 var item = existingCollection.FirstOrDefault();
 
                 if (item != null)
@@ -269,13 +265,13 @@ namespace Microsoft.SharePoint.Client
         {
             var websToUpdate = new List<Web>();
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritTheme] = "False";
             web.Update();
             web.ApplyTheme(paletteServerRelativeUrl, fontServerRelativeUrl, backgroundServerRelativeUrl, shareGenerated: true);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             //web.Context.Load(web, w => w.ThemedCssFolderUrl);
             //var themedCssFolderUrl = childWeb.ThemedCssFolderUrl;
             websToUpdate.Add(web);
@@ -288,7 +284,7 @@ namespace Microsoft.SharePoint.Client
                     var currentWeb = websToUpdate[index];
                     var websCollection = currentWeb.Webs;
                     web.Context.Load(websCollection, wc => wc.Include(w => w.AllProperties, w => w.ServerRelativeUrl));
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     foreach (var childWeb in websCollection)
                     {
                         var inheritThemeProperty = childWeb.GetPropertyBagValueString(InheritTheme, "");
@@ -307,7 +303,7 @@ namespace Microsoft.SharePoint.Client
                             // TODO: CSOM does not support the ThemedCssFolderUrl property yet (Nov 2014), so must call ApplyTheme at each level.
                             // This is very slow, so replace with simply setting the ThemedCssFolderUrl property instead once available.
                             childWeb.ApplyTheme(paletteServerRelativeUrl, fontServerRelativeUrl, backgroundServerRelativeUrl, shareGenerated: true);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                             websToUpdate.Add(childWeb);
                         }
                     }
@@ -330,8 +326,8 @@ namespace Microsoft.SharePoint.Client
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
             if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
-            var fileName = System.IO.Path.GetFileName(localFilePath);
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            var fileName = Path.GetFileName(localFilePath);
+            using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
                 return UploadThemeFile(web, fileName, localStream, themeFolderVersion);
             }
@@ -353,7 +349,7 @@ namespace Microsoft.SharePoint.Client
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
             if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
 
-            using (var localStream = new System.IO.FileStream(localFilePath, System.IO.FileMode.Open))
+            using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
                 return UploadThemeFile(web, fileName, localStream, themeFolderVersion);
             }
@@ -368,7 +364,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="localStream">Stream containing the contents of the file</param>
         /// <param name="themeFolderVersion">Leaf folder name to upload to; default is "15"</param>
         /// <returns>The uploaded file, with at least the ServerRelativeUrl property available</returns>
-        public static File UploadThemeFile(this Web web, string fileName, System.IO.Stream localStream, string themeFolderVersion = "15")
+        public static File UploadThemeFile(this Web web, string fileName, Stream localStream, string themeFolderVersion = "15")
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
@@ -445,7 +441,7 @@ namespace Microsoft.SharePoint.Client
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Create folder structure inside master page gallery, if does not exists
             // For e.g.: _catalogs/masterpage/contoso/
@@ -459,9 +455,9 @@ namespace Microsoft.SharePoint.Client
             newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderHierarchy, fileName);
             newFile.Overwrite = true;
 
-            Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
+            File uploadFile = rootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Check out the file if needed
             if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
@@ -491,7 +487,7 @@ namespace Microsoft.SharePoint.Client
                 uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
                 listItem.File.Publish(string.Empty);
             }
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
         }
 
@@ -511,7 +507,7 @@ namespace Microsoft.SharePoint.Client
             Folder rootFolder = masterPageGallery.RootFolder;
             web.Context.Load(masterPageGallery);
             web.Context.Load(rootFolder);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Create folder if does not exists
             if (!String.IsNullOrEmpty(folderPath))
@@ -528,9 +524,9 @@ namespace Microsoft.SharePoint.Client
             newFile.Url = UrlUtility.Combine(rootFolder.ServerRelativeUrl, folderPath, fileName);
             newFile.Overwrite = true;
 
-            Microsoft.SharePoint.Client.File uploadFile = rootFolder.Files.Add(newFile);
+            File uploadFile = rootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
 
             var listItem = uploadFile.ListItemAllFields;
@@ -554,7 +550,7 @@ namespace Microsoft.SharePoint.Client
                 listItem.File.Publish(string.Empty);
             }
             web.Context.Load(listItem);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
         }
 
@@ -590,8 +586,8 @@ namespace Microsoft.SharePoint.Client
         /// Can be used to set master page and custom master page in single command
         /// </summary>
         /// <param name="web"></param>
-        /// <param name="masterPageName"></param>
-        /// <param name="customMasterPageName"></param>
+        /// <param name="masterPageUrl"></param>
+        /// <param name="customMasterPageUrl"></param>
         /// <exception cref="System.ArgumentException">Thrown when masterPageName or customMasterPageName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when masterPageName or customMasterPageName is null</exception>
         public static void SetMasterPagesByUrl(this Web web, string masterPageUrl, string customMasterPageUrl)
@@ -599,14 +595,14 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(masterPageUrl))
             {
                 throw (masterPageUrl == null)
-                  ? new ArgumentNullException("masterPageName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageName");
+                  ? new ArgumentNullException("masterPageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "masterPageUrl");
             }
             if (string.IsNullOrEmpty(customMasterPageUrl))
             {
                 throw (customMasterPageUrl == null)
-                  ? new ArgumentNullException("customMasterPageName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageName");
+                  ? new ArgumentNullException("customMasterPageUrl")
+                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "customMasterPageUrl");
             }
 
             web.SetMasterPageByUrl(masterPageUrl);
@@ -659,7 +655,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
+        [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
         {
@@ -673,7 +669,7 @@ namespace Microsoft.SharePoint.Client
             ListItemCollection galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in galleryItems)
             {
                 var fileRef = item["FileRef"].ToString();
@@ -706,7 +702,7 @@ namespace Microsoft.SharePoint.Client
             ThemeEntity theme = null;
 
             List designCatalog = web.GetCatalog((int)ListTemplateType.DesignCatalog);
-            string camlString = @"
+            const string camlString = @"
             <View>  
                 <Query> 
                     <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>{0}</Value></Eq></Where> 
@@ -724,7 +720,7 @@ namespace Microsoft.SharePoint.Client
 
             ListItemCollection themes = designCatalog.GetItems(camlQuery);
             web.Context.Load(themes);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (themes.Count > 0)
             {
                 var themeItem = themes[0];
@@ -765,7 +761,7 @@ namespace Microsoft.SharePoint.Client
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var fileRefValue = string.Format("{0}/{1}{2}", masterPageGallery.RootFolder.ServerRelativeUrl, pageLayoutName, ".aspx");
             var query = new CamlQuery();
@@ -774,7 +770,7 @@ namespace Microsoft.SharePoint.Client
             var galleryItems = masterPageGallery.GetItems(query);
             web.Context.Load(masterPageGallery);
             web.Context.Load(galleryItems);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return galleryItems.Count > 0 ? galleryItems[0] : null;
         }
 
@@ -787,17 +783,17 @@ namespace Microsoft.SharePoint.Client
         /// <param name="updateRootOnly">false (default) to apply to subsites; true to only apply to specified site</param>
         public static void SetMasterPageByUrl(this Web web, string masterPageServerRelativeUrl, bool resetSubsitesToInherit = false, bool updateRootOnly = false)
         {
-            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageUrl"); }
+            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageServerRelativeUrl"); }
 
             var websToUpdate = new List<Web>();
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritMaster] = "False";
             web.MasterUrl = masterPageServerRelativeUrl;
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             websToUpdate.Add(web);
 
             if (!updateRootOnly)
@@ -808,7 +804,7 @@ namespace Microsoft.SharePoint.Client
                     var currentWeb = websToUpdate[index];
                     var websCollection = currentWeb.Webs;
                     web.Context.Load(websCollection, wc => wc.Include(w => w.AllProperties, w => w.ServerRelativeUrl));
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     foreach (var childWeb in websCollection)
                     {
 
@@ -825,7 +821,7 @@ namespace Microsoft.SharePoint.Client
                             childWeb.AllProperties[InheritMaster] = "True";
                             childWeb.MasterUrl = masterPageServerRelativeUrl;
                             childWeb.Update();
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                             websToUpdate.Add(childWeb);
                         }
                     }
@@ -838,22 +834,22 @@ namespace Microsoft.SharePoint.Client
         /// Set Custom master page by using given URL as parameter. Suitable for example in cases where you want sub sites to reference root site master page gallery. This is typical with publishing sites.
         /// </summary>
         /// <param name="web">Context web</param>
-        /// <param name="masterPageName">URL to the master page.</param>
+        /// <param name="masterPageServerRelativeUrl">URL to the master page.</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
         /// <param name="updateRootOnly">false (default) to apply to subsites; true to only apply to specified site</param>
         public static void SetCustomMasterPageByUrl(this Web web, string masterPageServerRelativeUrl, bool resetSubsitesToInherit = false, bool updateRootOnly = false)
         {
-            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageUrl"); }
+            if (string.IsNullOrEmpty(masterPageServerRelativeUrl)) { throw new ArgumentNullException("masterPageServerRelativeUrl"); }
 
             var websToUpdate = new List<Web>();
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceInformation((int)EventId.SetCustomMasterUrl, CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritMaster] = "False";
             web.CustomMasterUrl = masterPageServerRelativeUrl;
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             websToUpdate.Add(web);
 
             if (!updateRootOnly)
@@ -864,7 +860,7 @@ namespace Microsoft.SharePoint.Client
                     var currentWeb = websToUpdate[index];
                     var websCollection = currentWeb.Webs;
                     web.Context.Load(websCollection, wc => wc.Include(w => w.AllProperties, w => w.ServerRelativeUrl));
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     foreach (var childWeb in websCollection)
                     {
                         var inheritThemeProperty = childWeb.GetPropertyBagValueString(InheritTheme, "");
@@ -880,7 +876,7 @@ namespace Microsoft.SharePoint.Client
                             childWeb.AllProperties[InheritMaster] = "True";
                             childWeb.CustomMasterUrl = masterPageServerRelativeUrl;
                             childWeb.Update();
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                             websToUpdate.Add(childWeb);
                         }
                     }
@@ -1067,7 +1063,7 @@ namespace Microsoft.SharePoint.Client
             Folder folder = web.RootFolder;
             folder.WelcomePage = rootFolderRelativePath;
             folder.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
 

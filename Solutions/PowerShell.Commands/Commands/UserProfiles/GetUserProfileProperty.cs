@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.UserProfiles;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base;
 
 namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
 {
@@ -32,10 +27,10 @@ PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'", 
             foreach (var acc in Account)
             {
                 var result = Tenant.EncodeClaim(acc);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 var properties = peopleManager.GetPropertiesFor(result.Value);
                 ClientContext.Load(properties);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(properties);
             }
         }

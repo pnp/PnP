@@ -1,11 +1,9 @@
 ﻿#if !CLIENTSDKV15
+using System.Management.Automation;
+using Microsoft.Online.SharePoint.TenantManagement;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System;
-using Microsoft.Online.SharePoint.TenantManagement;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -41,7 +39,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
         protected override void ExecuteCmdlet()
         {
-            this.Tenant.SetSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
+            Tenant.SetSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
         }
     }
 

@@ -1,7 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity != null)
             {
-                if (Force || ShouldContinue(Properties.Resources.RemoveCustomAction, Properties.Resources.Confirm))
+                if (Force || ShouldContinue(Resources.RemoveCustomAction, Resources.Confirm))
                 {
                     SelectedWeb.DeleteCustomAction(Identity.Id);
                 }

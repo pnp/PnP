@@ -1,9 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -15,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             Site site = clientContext.Site;
             Web web = site.OpenWebById(guid);
             clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             return web;
         }
@@ -26,7 +22,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             Site site = clientContext.Site;
             Web web = site.OpenWeb(url);
             clientContext.Load(web, w => w.Url, w => w.Title, w => w.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             return web;
         }

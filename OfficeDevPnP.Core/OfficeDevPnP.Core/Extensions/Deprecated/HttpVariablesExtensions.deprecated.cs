@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Specialized;
-using System.Web;
 
 namespace System.Web
 {
@@ -32,9 +30,11 @@ namespace System.Web
         #endregion
 
         #region [ HasVariable ]
+
         /// <summary>
         /// Determines whether a query string variable is present in the current request.
         /// </summary>
+        /// <param name="queryString"></param>
         /// <param name="variable"></param>
         /// <returns></returns>
         [Obsolete("Method deprecated")]

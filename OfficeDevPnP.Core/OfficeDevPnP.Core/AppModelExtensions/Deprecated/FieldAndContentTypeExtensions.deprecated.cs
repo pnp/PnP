@@ -1,15 +1,9 @@
-﻿using Microsoft.SharePoint.Client.Taxonomy;
+﻿using System;
+using System.ComponentModel;
+using System.Xml;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -58,14 +52,13 @@ namespace Microsoft.SharePoint.Client
 
                     //Add fields to content type 
                     XmlNodeList fieldRefs = ct.SelectNodes(".//namespace:FieldRef", nsmgr);
-                    XmlAttribute attr = null;
                     foreach (XmlNode fr in fieldRefs)
                     {
                         bool required = false;
                         bool hidden = false;
                         string frid = fr.Attributes["ID"].Value;
                         string frName = fr.Attributes["Name"].Value;
-                        attr = fr.Attributes["Required"];
+                        var attr = fr.Attributes["Required"];
                         if (attr != null)
                         {
                             required = attr.Value.ToBoolean();
@@ -83,7 +76,7 @@ namespace Microsoft.SharePoint.Client
 
         #region Site Columns
         [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, FieldType fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -101,7 +94,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this Web web, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -121,7 +114,7 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -139,7 +132,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField(Web web, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateField(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -157,7 +150,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this Web web, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -195,7 +188,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateField(this List list, Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -213,7 +206,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static Field CreateField(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true)
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -230,7 +223,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this List list, Guid id, string internalName, FieldType fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -247,7 +240,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Use CreateField<TField>(List list, FieldCreationInformation fieldCreationInformation, System.Boolean executeQuery = True)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static TField CreateField<TField>(this List list, Guid id, string internalName, string fieldType, bool addToDefaultView, string displayName, string group, string additionalXmlAttributes = "", bool executeQuery = true) where TField : Field
         {
             var additionalAttributes = ParseAdditionalAttributes(additionalXmlAttributes);
@@ -281,10 +274,10 @@ namespace Microsoft.SharePoint.Client
 
 
         [Obsolete("Use FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, IEnumerable<KeyValuePair<string,string>> additionalAttributes)")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static string FormatFieldXml(Guid id, string internalName, string fieldType, string displayName, string group, string additionalXmlAttributes)
         {
-            string newFieldCAML = string.Format(OfficeDevPnP.Core.Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, "FALSE", additionalXmlAttributes);
+            string newFieldCAML = string.Format(Constants.FIELD_XML_FORMAT, fieldType, internalName, displayName, id, group, "FALSE", additionalXmlAttributes);
             return newFieldCAML;
         }
 
@@ -294,7 +287,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="absolutePathToFile">Absolute path to the xml location</param>
         [Obsolete]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void BindFieldsToTermSetsFromXMLFile(this Web web, string absolutePathToFile)
         {
             XmlDocument xd = new XmlDocument();
@@ -308,7 +301,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="xmlStructure">XML structure in string format</param>
         [Obsolete]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void BindFieldsToTermSetsFromXMLString(this Web web, string xmlStructure)
         {
             XmlDocument xd = new XmlDocument();
@@ -322,7 +315,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site. Site columns should be created to root site.</param>
         /// <param name="xmlDoc">Actual XML document</param>
         [Obsolete]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void BindFieldsToTermSetsFromXML(this Web web, XmlDocument xmlDoc)
         {
             XmlNodeList fields = xmlDoc.SelectNodes("//MMSField");

@@ -1,12 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using OfficeDevPnP.PowerShell.Commands.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -73,19 +69,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                 var roleAssignments = SelectedWeb.RoleAssignments;
                 roleAssignments.Add(group,roleDefinitionBindings);
                 ClientContext.Load(roleAssignments);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             if(!string.IsNullOrEmpty(RemoveRole))
             {
                 var roleAssignment = SelectedWeb.RoleAssignments.GetByPrincipal(group);
                 var roleDefinitionBindings = roleAssignment.RoleDefinitionBindings;
                 ClientContext.Load(roleDefinitionBindings);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 foreach (var roleDefinition in roleDefinitionBindings.Where(roleDefinition => roleDefinition.Name == RemoveRole))
                 {
                     roleDefinitionBindings.Remove(roleDefinition);
                     roleAssignment.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     break;
                 }
             }
@@ -94,7 +90,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
             {
                 group.Title = Title;
                 group.Update();
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             
         }

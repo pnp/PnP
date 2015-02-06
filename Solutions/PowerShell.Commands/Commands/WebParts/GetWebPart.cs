@@ -17,7 +17,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var definitions = this.SelectedWeb.GetWebParts(PageUrl);
+            var definitions = SelectedWeb.GetWebParts(PageUrl);
 
             if (Identity != null)
             {

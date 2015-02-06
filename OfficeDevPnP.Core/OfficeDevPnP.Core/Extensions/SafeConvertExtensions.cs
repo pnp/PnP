@@ -1,5 +1,3 @@
-using System;
-
 namespace System {
     /// <summary>
     /// Safely convert strings to specified types.

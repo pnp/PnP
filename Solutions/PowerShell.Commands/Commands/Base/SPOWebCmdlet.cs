@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     public class SPOWebCmdlet : SPOCmdlet
     {
-        private Web _selectedWeb = null;
+        private Web _selectedWeb;
 
 
         [Parameter(Mandatory = false)]
@@ -48,7 +48,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if (!web.IsPropertyAvailable("Url"))
                 {
                     ClientContext.Load(web, w => w.Url);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;

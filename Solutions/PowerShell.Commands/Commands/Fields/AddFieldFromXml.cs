@@ -1,7 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -16,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            Field f = null;
+            Field f;
 
             if (List != null)
             {
@@ -29,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 f = SelectedWeb.CreateField(FieldXml);
             }
             ClientContext.Load(f);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(f);
         }
 

@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (Identity != null)
             {
-                ContentType ct = null;
+                ContentType ct;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
                     ct = SelectedWeb.GetContentTypeById(Identity.Id);
@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             else
             {
                 var cts = ClientContext.LoadQuery(SelectedWeb.ContentTypes);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
     
                 WriteObject(cts, true);
             }

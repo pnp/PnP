@@ -1,10 +1,4 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace OfficeDevPnP.Core.Entities
 {
@@ -21,11 +15,11 @@ namespace OfficeDevPnP.Core.Entities
             {
                 if (value)
                 {
-                    this.FieldType = "TaxonomyFieldTypeMulti";
+                    FieldType = "TaxonomyFieldTypeMulti";
                 }
                 else
                 {
-                    this.FieldType = "TaxonomyFieldType";
+                    FieldType = "TaxonomyFieldType";
                 }
                 _multiValue = value;
             }

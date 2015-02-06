@@ -1,28 +1,24 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class FieldPipeBind
     {
-        private string _name;
-        private Guid _id = Guid.Empty;
-        private Field _field;
+        private readonly string _name;
+        private readonly Guid _id = Guid.Empty;
+        private readonly Field _field;
 
         public FieldPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public FieldPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._name = id;
+                _name = id;
             }
         }
 
@@ -33,8 +29,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public FieldPipeBind()
         {
-            this._id = Guid.Empty;
-            this._name = String.Empty;
+            _id = Guid.Empty;
+            _name = String.Empty;
         }
 
         public Guid Id

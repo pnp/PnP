@@ -27,7 +27,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else
@@ -45,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else

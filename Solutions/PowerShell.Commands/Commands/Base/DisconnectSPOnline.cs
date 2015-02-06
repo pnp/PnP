@@ -13,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
     {
         protected override void ProcessRecord()
         {
-            if (!DisconnectSPOnline.DisconnectCurrentService())
+            if (!DisconnectCurrentService())
                 throw new InvalidOperationException(Properties.Resources.NoConnectionToDisconnect);
         }
 
@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             if (SPOnlineConnection.CurrentConnection == null)
                 return false;
-            SPOnlineConnection.CurrentConnection = (SPOnlineConnection)null;
+            SPOnlineConnection.CurrentConnection = null;
             return true;
         }
     }

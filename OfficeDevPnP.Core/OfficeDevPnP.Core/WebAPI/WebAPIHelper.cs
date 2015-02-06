@@ -1,21 +1,18 @@
-﻿using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
-using Microsoft.IdentityModel.S2S.Tokens;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.UI;
+using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+using Microsoft.IdentityModel.S2S.Tokens;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.WebAPI
 {

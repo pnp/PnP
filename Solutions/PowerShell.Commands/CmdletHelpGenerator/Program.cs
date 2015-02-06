@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 {
@@ -16,12 +12,12 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
     {
         static void Main(string[] args)
         {
-            string inFile = args[0];
-            string outFile = args[1];
-            XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
+            var inFile = args[0];
+            var outFile = args[1];
+            var doc = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
 
             XNamespace ns = "http://msh";
-            XElement helpItems = new XElement(ns + "helpItems", new XAttribute("schema", "maml"));
+            var helpItems = new XElement(ns + "helpItems", new XAttribute("schema", "maml"));
             doc.Add(helpItems);
 
 
@@ -29,60 +25,57 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             XNamespace command = "http://schemas.microsoft.com/maml/dev/command/2004/10";
             XNamespace dev = "http://schemas.microsoft.com/maml/dev/2004/10";
 
-            XAttribute mamlNsAttr = new XAttribute(XNamespace.Xmlns + "maml", "http://schemas.microsoft.com/maml/2004/10");
-            XAttribute commandNsAttr = new XAttribute(XNamespace.Xmlns + "command", "http://schemas.microsoft.com/maml/dev/command/2004/10");
-            XAttribute devNsAttr = new XAttribute(XNamespace.Xmlns + "dev", "http://schemas.microsoft.com/maml/dev/2004/10");
+            var mamlNsAttr = new XAttribute(XNamespace.Xmlns + "maml", "http://schemas.microsoft.com/maml/2004/10");
+            var commandNsAttr = new XAttribute(XNamespace.Xmlns + "command", "http://schemas.microsoft.com/maml/dev/command/2004/10");
+            var devNsAttr = new XAttribute(XNamespace.Xmlns + "dev", "http://schemas.microsoft.com/maml/dev/2004/10");
 
-            string output = string.Empty;
-            Assembly assembly = Assembly.LoadFrom(inFile);
-            Type[] types = assembly.GetTypes();
-            foreach (Type t in types)
+            var assembly = Assembly.LoadFrom(inFile);
+            var types = assembly.GetTypes();
+            foreach (var t in types)
             {
                 if (t.BaseType.Name == "SPOCmdlet" || t.BaseType.Name == "PSCmdlet" || t.BaseType.Name == "SPOWebCmdlet" || t.BaseType.Name == "SPOAdminCmdlet")
                 {
                     //XElement examples = new XElement(command + "examples");
 
-                    string verb = string.Empty;
-                    string noun = string.Empty;
-                    string description = string.Empty;
-                    string detaileddescription = string.Empty;
-                    string details = string.Empty;
-                    string copyright = string.Empty;
-                    string version = string.Empty;
+                    var verb = string.Empty;
+                    var noun = string.Empty;
+                    var description = string.Empty;
+                    var detaileddescription = string.Empty;
+                    var copyright = string.Empty;
+                    var version = string.Empty;
                     var attrs = t.GetCustomAttributes();
-                    List<CmdletExampleAttribute> examples = new List<CmdletExampleAttribute>();
+                    var examples = new List<CmdletExampleAttribute>();
 
                     //System.Attribute.GetCustomAttributes(t); 
 
-                    foreach (System.Attribute attr in attrs)
+                    foreach (var attr in attrs)
                     {
                         if (attr is CmdletAttribute)
                         {
-                            CmdletAttribute a = (CmdletAttribute)attr;
+                            var a = (CmdletAttribute)attr;
                             verb = a.VerbName;
                             noun = a.NounName;
 
                         }
                         if (attr is CmdletHelpAttribute)
                         {
-                            CmdletHelpAttribute a = (CmdletHelpAttribute)attr;
+                            var a = (CmdletHelpAttribute)attr;
                             description = a.Description;
-                            details = a.Details;
                             copyright = a.Copyright;
                             version = a.Version;
                             detaileddescription = a.DetailedDescription;
                         }
                         if (attr is CmdletExampleAttribute)
                         {
-                            CmdletExampleAttribute a = (CmdletExampleAttribute)attr;
+                            var a = (CmdletExampleAttribute)attr;
                             examples.Add(a);
 
 
                         }
                     }
 
-                    XElement commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
-                    XElement detailsElement = new XElement(command + "details");
+                    var commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
+                    var detailsElement = new XElement(command + "details");
                     commandElement.Add(detailsElement);
 
                     detailsElement.Add(new XElement(command + "name", string.Format("{0}-{1}", verb, noun)));
@@ -94,23 +87,22 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 
                     commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
 
-                    XElement syntaxElement = new XElement(command + "syntax");
+                    var syntaxElement = new XElement(command + "syntax");
                     commandElement.Add(syntaxElement);
 
-                    FieldInfo[] fields = t.GetFields();
-                    List<SyntaxItem> syntaxItems = new List<SyntaxItem>();
-                    foreach (FieldInfo field in fields)
+                    var fields = t.GetFields();
+                    var syntaxItems = new List<SyntaxItem>();
+                    foreach (var field in fields)
                     {
-                        foreach (System.Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
+                        foreach (Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
                         {
                             if (attr is ParameterAttribute)
                             {
-                                SyntaxItem syntaxItem = null;
-                                ParameterAttribute a = (ParameterAttribute)attr;
+                                var a = (ParameterAttribute)attr;
 
                                 if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
                                 {
-                                    syntaxItem = syntaxItems.Where(x => x.Name == a.ParameterSetName).FirstOrDefault();
+                                    var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
                                     if (syntaxItem == null)
                                     {
                                         syntaxItem = new SyntaxItem(a.ParameterSetName);
@@ -123,13 +115,13 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     }
 
                     // all parameters
-                    foreach (FieldInfo field in fields)
+                    foreach (var field in fields)
                     {
-                        foreach (System.Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
+                        foreach (Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
                         {
                             if (attr is ParameterAttribute)
                             {
-                                ParameterAttribute a = (ParameterAttribute)attr;
+                                var a = (ParameterAttribute)attr;
                                 if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
                                 {
                                     foreach (var si in syntaxItems)
@@ -144,13 +136,13 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     //
                     foreach (var syntaxItem in syntaxItems)
                     {
-                        XElement syntaxItemElement = new XElement(command + "syntaxItem");
+                        var syntaxItemElement = new XElement(command + "syntaxItem");
                         syntaxElement.Add(syntaxItemElement);
 
                         syntaxItemElement.Add(new XElement(maml + "name", string.Format("{0}-{1}", verb, noun)));
                         foreach (var parameter in syntaxItem.Parameters)
                         {
-                            XElement parameterElement = new XElement(command + "parameter", new XAttribute("required", parameter.Required), new XAttribute("position", parameter.Position > 0 ? parameter.Position.ToString() : "named"));
+                            var parameterElement = new XElement(command + "parameter", new XAttribute("required", parameter.Required), new XAttribute("position", parameter.Position > 0 ? parameter.Position.ToString() : "named"));
 
                             parameterElement.Add(new XElement(maml + "name", parameter.Name));
 
@@ -161,17 +153,17 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
-                    XElement parametersElement = new XElement(command + "parameters");
+                    var parametersElement = new XElement(command + "parameters");
                     commandElement.Add(parametersElement);
 
-                    foreach (FieldInfo field in fields)
+                    foreach (var field in fields)
                     {
-                        foreach (System.Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
+                        foreach (Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
                         {
                             if (attr is ParameterAttribute)
                             {
-                                ParameterAttribute a = (ParameterAttribute)attr;
-                                XElement parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
+                                var a = (ParameterAttribute)attr;
+                                var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
 
                                 parameter2Element.Add(new XElement(maml + "name", field.Name));
 
@@ -211,12 +203,12 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     new XElement(maml + "description",
                                         new XElement(maml + "para", "description"))))));
 
-                    XElement examplesElement = new XElement(command + "examples");
-                    int exampleCount = 1;
+                    var examplesElement = new XElement(command + "examples");
+                    var exampleCount = 1;
                     foreach (var exampleAttr in examples.OrderBy(e => e.SortOrder))
                     {
-                        XElement example = new XElement(command + "example");
-                        string title = string.Format("------------------EXAMPLE {0}---------------------", exampleCount);
+                        var example = new XElement(command + "example");
+                        var title = string.Format("------------------EXAMPLE {0}---------------------", exampleCount);
                         example.Add(new XElement(maml + "title", title));
                         example.Add(new XElement(maml + "introduction", new XElement(maml + "para", exampleAttr.Introduction)));
                         example.Add(new XElement(dev + "code", exampleAttr.Code));
@@ -237,13 +229,13 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 
         private class SyntaxItem
         {
-            public string Name;
-            public List<Parameter> Parameters;
+            public readonly string Name;
+            public readonly List<Parameter> Parameters;
 
             public SyntaxItem(string name)
             {
-                this.Name = name;
-                this.Parameters = new List<Parameter>();
+                Name = name;
+                Parameters = new List<Parameter>();
             }
 
             public class Parameter
