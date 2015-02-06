@@ -1,9 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using System.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -30,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 var instance = SelectedWeb.GetAppInstanceById(Identity.Id);
                 ClientContext.Load(instance);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(instance);
             }
             else

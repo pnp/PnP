@@ -46,7 +46,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
             newStream.Write(data, 0, data.Length);
             newStream.Close();
 
-            string fedAuthCookieValue = "";
+            string fedAuthCookieValue;
             using (HttpWebResponse webResponse = (HttpWebResponse)sharepointRequest.GetResponse())
             {
                 fedAuthCookieValue = webResponse.Cookies["FedAuth"].Value;

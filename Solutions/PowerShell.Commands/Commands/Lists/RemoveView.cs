@@ -45,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                             if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveView0, view.Title), Properties.Resources.Confirm))
                             {
                                 view.DeleteObject();
-                                ClientContext.ExecuteQuery();
+                                ClientContext.ExecuteQueryRetry();
                             }
                         }
                     }

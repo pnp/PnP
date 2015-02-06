@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
@@ -31,14 +32,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 {
                     list.BreakRoleInheritance(CopyRoleAssignments, ClearSubscopes);
                     list.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
 
                 if (!string.IsNullOrEmpty(Title))
                 {
                     list.Title = Title;
                     list.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
         }

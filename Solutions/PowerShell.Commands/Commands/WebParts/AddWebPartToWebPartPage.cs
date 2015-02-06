@@ -1,8 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.WebParts;
+﻿using System.IO;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -31,9 +31,9 @@ namespace OfficeDevPnP.PowerShell.Commands
             switch (ParameterSetName)
             {
                 case "FILE":
-                    if (System.IO.File.Exists(Path))
+                    if (File.Exists(Path))
                     {
-                        var fileStream = new System.IO.StreamReader(Path);
+                        var fileStream = new StreamReader(Path);
                         var webPartString = fileStream.ReadToEnd();
                         fileStream.Close();
 

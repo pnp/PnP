@@ -1,8 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using Microsoft.SharePoint.Client.WebParts;
-using System;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -19,7 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             file.DeleteObject();
 
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 web.AddNavigationNode("Test Node", new Uri("https://www.microsoft.com"), string.Empty, NavigationType.TopNavigationBar);
 
                 clientContext.Load(web, w => w.Navigation.TopNavigationBar);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsTrue(web.Navigation.TopNavigationBar.AreItemsAvailable);
 
@@ -75,7 +75,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     var navNode = searchNavigation.FirstOrDefault(n => n.Title == "Test Node");
                     Assert.IsNotNull(navNode);
                     navNode.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 web.DeleteNavigationNode("Test Node", string.Empty, NavigationType.TopNavigationBar);
 
                 clientContext.Load(web, w => w.Navigation.TopNavigationBar);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 if (web.Navigation.TopNavigationBar.Any())
                 {
@@ -155,7 +155,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var web = clientContext.Web;
                 web.DeleteAllQuickLaunchNodes();
                 clientContext.Load(web, w => w.Navigation.QuickLaunch);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 Assert.IsFalse(web.Navigation.QuickLaunch.Any());
             }
         }

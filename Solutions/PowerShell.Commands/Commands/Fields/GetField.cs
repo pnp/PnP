@@ -36,13 +36,13 @@ namespace OfficeDevPnP.PowerShell.Commands
                     {
                         c = list.Fields;
                         ClientContext.Load(c);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
                 if (f != null)
                 {
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(f);
                 }
                 else if (c != null)
@@ -63,7 +63,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     // Get all columns
                     ClientContext.Load(SelectedWeb.Fields);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(SelectedWeb.Fields, true);
                 }
                 else
@@ -78,7 +78,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                         f = SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
                     }
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(f);
                 }
             }

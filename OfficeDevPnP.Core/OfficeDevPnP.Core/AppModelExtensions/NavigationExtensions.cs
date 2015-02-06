@@ -5,20 +5,12 @@ using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client
 {
-    public enum NavigationType
-    {
-        TopNavigationBar,
-        QuickLaunch,
-        SearchNav
-    }
-
     /// <summary>
     /// This class holds navigation related methods
     /// </summary>
     public static class NavigationExtensions
     {
-        #region Navigation elements - quicklaunch, top navigation, search navigation
-
+        #region Navigation elements  - quicklaunch and top navigation
         /// <summary>
         /// Add a node to quickLaunch or top navigation bar
         /// </summary>
@@ -27,62 +19,40 @@ namespace Microsoft.SharePoint.Client
         /// <param name="nodeUri">the url of node to add</param>
         /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
         /// <param name="isQuickLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
-        [Obsolete(
-            "Use public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType)"
-            )]
         public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, bool isQuickLaunch)
         {
-            AddNavigationNode(web, nodeTitle, nodeUri, parentNodeTitle, isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
-        }
-
-        /// <summary>
-        /// Add a node to quick launch, top navigation bar or search navigation. The node will be added as the last node in the
-        /// collection.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="nodeTitle">the title of node to add</param>
-        /// <param name="nodeUri">the url of node to add</param>
-        /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
-        /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
-        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType)
-        {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
-            web.Context.ExecuteQuery();
-            NavigationNodeCreationInformation node = new NavigationNodeCreationInformation
-            {
-                AsLastNode = true,
-                Title = nodeTitle,
-                Url = nodeUri != null ? nodeUri.OriginalString : string.Empty
-            };
+            web.Context.ExecuteQueryRetry();
+            NavigationNodeCreationInformation node = new NavigationNodeCreationInformation();
+            node.AsLastNode = true;
+            node.Title = nodeTitle;
+            node.Url = nodeUri != null ? nodeUri.OriginalString : "";
 
-            try
+            if (isQuickLaunch)
             {
-                if (navigationType == NavigationType.QuickLaunch)
+                var quickLaunch = web.Navigation.QuickLaunch;
+                if (string.IsNullOrEmpty(parentNodeTitle))
                 {
-                    var quickLaunch = web.Navigation.QuickLaunch;
-                    if (string.IsNullOrEmpty(parentNodeTitle))
+                    quickLaunch.Add(node);
+                }
+                else
+                {
+                    foreach (var nodeInfo in quickLaunch)
                     {
-                        quickLaunch.Add(node);
-                        return;
+                        if (nodeInfo.Title == parentNodeTitle)
+                        {
+                            nodeInfo.Children.Add(node);
+                            break;
+                        }
                     }
-                    NavigationNode parentNode = quickLaunch.SingleOrDefault(n => n.Title == parentNodeTitle);
-                    if (parentNode != null) parentNode.Children.Add(node);
-                }
-                else if (navigationType == NavigationType.TopNavigationBar)
-                {
-                    var topLink = web.Navigation.TopNavigationBar;
-                    topLink.Add(node);
-                }
-                else if (navigationType == NavigationType.SearchNav)
-                {
-                    var searchNavigation = web.LoadSearchNavigation();
-                    searchNavigation.Add(node);
                 }
             }
-            finally
+            else
             {
-                web.Context.ExecuteQuery();
+                var topLink = web.Navigation.TopNavigationBar;
+                topLink.Add(node);
             }
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -92,62 +62,62 @@ namespace Microsoft.SharePoint.Client
         /// <param name="nodeTitle">the title of node to delete</param>
         /// <param name="parentNodeTitle">if string.Empty, then will delete this node as top level node</param>
         /// <param name="isQuickLaunch">true: delete from quickLaunch; otherwise, delete from top navigation bar</param>
-        [Obsolete("Use: DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, NavigationType navigationType)")]
-        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle,bool isQuickLaunch)
-        {
-            DeleteNavigationNode(web, nodeTitle, parentNodeTitle,isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
-        }
-
-        /// <summary>
-        /// Deletes a navigation node from the quickLaunch or top navigation bar
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="nodeTitle">the title of node to delete</param>
-        /// <param name="parentNodeTitle">if string.Empty, then will delete this node as top level node</param>
-        /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
-        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle,NavigationType navigationType)
+        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, bool isQuickLaunch)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
-            web.Context.ExecuteQuery();
-            NavigationNode deleteNode = null;
-            try
+            web.Context.ExecuteQueryRetry();
+
+            if (isQuickLaunch)
             {
-                if (navigationType == NavigationType.QuickLaunch)
+                var quickLaunch = web.Navigation.QuickLaunch;
+                if (string.IsNullOrEmpty(parentNodeTitle))
                 {
-                    var quickLaunch = web.Navigation.QuickLaunch;
-                    if (string.IsNullOrEmpty(parentNodeTitle))
+                    foreach (var nodeInfo in quickLaunch)
                     {
-                        deleteNode = quickLaunch.SingleOrDefault(n => n.Title == nodeTitle);
-                    }
-                    else
-                    {
-                        foreach (var nodeInfo in quickLaunch)
+                        if (nodeInfo.Title == nodeTitle)
                         {
-                            if (nodeInfo.Title != parentNodeTitle) continue;
-                            web.Context.Load(nodeInfo.Children);
-                            web.Context.ExecuteQuery();
-                            deleteNode = nodeInfo.Children.SingleOrDefault(n => n.Title == nodeTitle);
+                            nodeInfo.DeleteObject();
+                            web.Context.ExecuteQueryRetry();
+                            break;
                         }
                     }
                 }
-                else if (navigationType == NavigationType.TopNavigationBar)
+                else
                 {
-                    var topLink = web.Navigation.TopNavigationBar;
-                    deleteNode = topLink.SingleOrDefault(n => n.Title == nodeTitle);
-                }
-                else if (navigationType == NavigationType.SearchNav)
-                {
-                    NavigationNodeCollection nodeCollection = web.LoadSearchNavigation();
-                    deleteNode = nodeCollection.SingleOrDefault(n => n.Title == nodeTitle);
+                    bool done = false;
+                    foreach (var nodeInfo in quickLaunch)
+                    {
+                        if (nodeInfo.Title == parentNodeTitle)
+                        {
+                            web.Context.Load(nodeInfo.Children);
+                            web.Context.ExecuteQueryRetry();
+                            foreach (var nodeInfo2 in nodeInfo.Children)
+                            {
+                                if (nodeInfo2.Title == nodeTitle)
+                                {
+                                    nodeInfo2.DeleteObject();
+                                    web.Context.ExecuteQueryRetry();
+                                    done = true;
+                                    break;
+                                }
+                            }
+                            if (done) break;
+                        }
+                    }
                 }
             }
-            finally
+            else
             {
-                if (deleteNode != null)
+                var topLink = web.Navigation.TopNavigationBar;
+                foreach (var nodeInfo in topLink)
                 {
-                    deleteNode.DeleteObject();
+                    if (nodeInfo.Title == nodeTitle)
+                    {
+                        nodeInfo.DeleteObject();
+                        web.Context.ExecuteQueryRetry();
+                        break;
+                    }
                 }
-                web.Context.ExecuteQuery();
             }
         }
 
@@ -157,15 +127,16 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         public static void DeleteAllQuickLaunchNodes(this Web web)
         {
+
             web.Context.Load(web, w => w.Navigation.QuickLaunch);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var quickLaunch = web.Navigation.QuickLaunch;
             for (int i = quickLaunch.Count - 1; i >= 0; i--)
             {
                 quickLaunch[i].DeleteObject();
             }
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -177,23 +148,11 @@ namespace Microsoft.SharePoint.Client
         {
             web.Navigation.UseShared = inheritNavigation;
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
-
-        public static NavigationNodeCollection LoadSearchNavigation(this Web web)
-        {
-            var searchNav = web.Navigation.GetNodeById(1040); // 1040 is the id of the search navigation            
-            var nodeCollection = searchNav.Children;
-            web.Context.Load(searchNav);
-            web.Context.Load(nodeCollection);
-            web.Context.ExecuteQuery();
-            return nodeCollection;
-        }
-
         #endregion
 
         #region Custom actions
-
         /// <summary>
         /// Adds custom action to a web. If the CustomAction exists the item will be updated.
         /// Setting CustomActionEntity.Remove == true will delete the CustomAction.
@@ -203,14 +162,14 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         /// var editAction = new CustomActionEntity()
         /// {
-        ///    Title = "Edit Site Classification",
-        ///    Description = "Manage business impact information for site collection or sub sites.",
-        ///    Sequence = 1000,
-        ///    Group = "SiteActions",
-        ///    Location = "Microsoft.SharePoint.StandardMenu",
-        ///    Url = EditFormUrl,
-        ///    ImageUrl = EditFormImageUrl,
-        ///    Rights = new BasePermissions(),
+        ///     Title = "Edit Site Classification",
+        ///     Description = "Manage business impact information for site collection or sub sites.",
+        ///     Sequence = 1000,
+        ///     Group = "SiteActions",
+        ///     Location = "Microsoft.SharePoint.StandardMenu",
+        ///     Url = EditFormUrl,
+        ///     ImageUrl = EditFormImageUrl,
+        ///     Rights = new BasePermissions(),
         /// };
         /// editAction.Rights.Set(PermissionKind.ManageWeb);
         /// AddCustomAction(editAction, new Uri(site.Properties.Url));
@@ -228,25 +187,25 @@ namespace Microsoft.SharePoint.Client
 
         private static bool AddCustomActionImplementation(ClientObject clientObject, CustomActionEntity customAction)
         {
-            UserCustomAction targetAction;
-            UserCustomActionCollection existingActions;
+            UserCustomAction targetAction = null;
+            UserCustomActionCollection existingActions = null;
             if (clientObject is Web)
             {
-                var web = (Web)clientObject;
+                var web = (Web) clientObject;
 
                 existingActions = web.UserCustomActions;
                 web.Context.Load(existingActions);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 targetAction = web.UserCustomActions.FirstOrDefault(uca => uca.Name == customAction.Name);
             }
             else
             {
-                var site = (Site)clientObject;
+                var site = (Site) clientObject;
 
                 existingActions = site.UserCustomActions;
                 site.Context.Load(existingActions);
-                site.Context.ExecuteQuery();
+                site.Context.ExecuteQueryRetry();
 
                 targetAction = site.UserCustomActions.FirstOrDefault(uca => uca.Name == customAction.Name);
             }
@@ -258,12 +217,15 @@ namespace Microsoft.SharePoint.Client
                 {
                     return true;
                 }
-                targetAction = existingActions.Add();
+                else
+                {
+                    targetAction = existingActions.Add();
+                }
             }
             else if (customAction.Remove)
             {
                 targetAction.DeleteObject();
-                clientObject.Context.ExecuteQuery();
+                clientObject.Context.ExecuteQueryRetry();
                 return true;
             }
 
@@ -310,17 +272,18 @@ namespace Microsoft.SharePoint.Client
             {
                 var web = (Web)clientObject;
                 web.Context.Load(web, w => w.UserCustomActions);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             else
             {
-                var site = (Site)clientObject;
+                var site = (Site) clientObject;
                 site.Context.Load(site, s => s.UserCustomActions);
-                site.Context.ExecuteQuery();
+                site.Context.ExecuteQueryRetry();
             }
 
             return true;
         }
+
 
 
         /// <summary>
@@ -330,12 +293,12 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static IEnumerable<UserCustomAction> GetCustomActions(this Web web)
         {
-            var clientContext = (ClientContext)web.Context;
+            var clientContext = web.Context as ClientContext;
 
             List<UserCustomAction> actions = new List<UserCustomAction>();
 
             clientContext.Load(web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction uca in web.UserCustomActions)
             {
@@ -351,12 +314,12 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static IEnumerable<UserCustomAction> GetCustomActions(this Site site)
         {
-            var clientContext = (ClientContext)site.Context;
+            var clientContext = site.Context as ClientContext;
 
             List<UserCustomAction> actions = new List<UserCustomAction>();
 
             clientContext.Load(site.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction uca in site.UserCustomActions)
             {
@@ -369,43 +332,50 @@ namespace Microsoft.SharePoint.Client
         /// Removes a custom action
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions" /></param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
         public static void DeleteCustomAction(this Web web, Guid id)
         {
-            var clientContext = (ClientContext)web.Context;
+            var clientContext = web.Context as ClientContext;
 
             clientContext.Load(web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction action in web.UserCustomActions)
             {
                 if (action.Id == id)
                 {
                     action.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                     break;
                 }
             }
+
         }
 
         /// <summary>
         /// Removes a custom action
         /// </summary>
         /// <param name="site">The site to process</param>
-        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions" /></param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
         public static void DeleteCustomAction(this Site site, Guid id)
         {
-            var clientContext = (ClientContext)site.Context;
+            var clientContext = site.Context as ClientContext;
 
             clientContext.Load(site.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction action in site.UserCustomActions)
             {
                 if (action.Id == id)
                 {
                     action.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                     break;
                 }
             }
@@ -426,7 +396,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("name");
 
             clientContext.Load(clientContext.Web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             var customActions = clientContext.Web.UserCustomActions.Cast<UserCustomAction>();
             foreach (var customAction in customActions)
@@ -440,7 +410,6 @@ namespace Microsoft.SharePoint.Client
             }
             return false;
         }
-
         #endregion
     }
 }

@@ -1,7 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
@@ -49,7 +48,7 @@ PS:> Get-SPOGroup -Name 'Site Members'
                 ClientContext.Load(group);
                 ClientContext.Load(group.Users);
 
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
 
                 WriteObject(group);
             }
@@ -57,27 +56,27 @@ PS:> Get-SPOGroup -Name 'Site Members'
             {
                 ClientContext.Load(SelectedWeb.AssociatedMemberGroup);
                 ClientContext.Load(SelectedWeb.AssociatedMemberGroup.Users);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(SelectedWeb.AssociatedMemberGroup);
             }
             else if (ParameterSetName == "Visitors")
             {
                 ClientContext.Load(SelectedWeb.AssociatedVisitorGroup);
                 ClientContext.Load(SelectedWeb.AssociatedVisitorGroup.Users);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(SelectedWeb.AssociatedVisitorGroup);
             }
             else if (ParameterSetName == "Owners")
             {
                 ClientContext.Load(SelectedWeb.AssociatedOwnerGroup);
                 ClientContext.Load(SelectedWeb.AssociatedOwnerGroup.Users);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(SelectedWeb.AssociatedOwnerGroup);
             }
             else if (ParameterSetName == "All")
             {
                 var groups = ClientContext.LoadQuery(SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(groups,true);
             }
 

@@ -40,7 +40,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     ClientContext.Site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
                 }
-                AppInstance instance = null;
+                AppInstance instance;
 
                 var appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
                 if (Locale == -1)
@@ -66,7 +66,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                 }
                 ClientContext.Load(instance);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 
 
                 if (Force)

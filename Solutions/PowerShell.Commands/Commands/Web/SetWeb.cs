@@ -1,8 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using System;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -36,7 +34,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 SelectedWeb.Title = Title;
                 SelectedWeb.Update();
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 

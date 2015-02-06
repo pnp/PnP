@@ -23,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     if (Force || ShouldContinue(Properties.Resources.RemoveList, Properties.Resources.Confirm))
                     {
                         list.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }

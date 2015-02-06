@@ -1,8 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -27,7 +24,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 {
                     var values = SelectedWeb.AllProperties;
                     ClientContext.Load(values);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(values.FieldValues);
                 }
             }

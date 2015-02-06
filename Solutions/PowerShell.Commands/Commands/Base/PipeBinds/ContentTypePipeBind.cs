@@ -4,13 +4,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class ContentTypePipeBind
     {
-        private string _id;
-        private string _name;
-        private ContentType _contentType;
+        private readonly string _id;
+        private readonly string _name;
+        private readonly ContentType _contentType;
 
         public ContentTypePipeBind()
         {
-            _id = string.Empty; ;
+            _id = string.Empty;
             _name = string.Empty;
             _contentType = null;
         }
@@ -19,18 +19,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             if (id.ToLower().StartsWith("0x0"))
             {
-                this._id = id;
+                _id = id;
             }
             else
             {
-                this._name = id;
+                _name = id;
             }
 
         }
 
         public ContentTypePipeBind(ContentType contentType)
         {
-            this._contentType = contentType;
+            _contentType = contentType;
         }
 
         public string Id

@@ -12,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             var site = ClientContext.Site;
             ClientContext.Load(site, s => s.Url, s => s.CompatibilityLevel);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(site);
         }
     }

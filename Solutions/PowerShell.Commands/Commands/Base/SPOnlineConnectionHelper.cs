@@ -16,7 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string realm, string clientId, string clientSecret, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
-            OfficeDevPnP.Core.AuthenticationManager authManager = new OfficeDevPnP.Core.AuthenticationManager();
+            Core.AuthenticationManager authManager = new Core.AuthenticationManager();
             if (realm == null)
             {
                 realm = GetRealmFromTargetUrl(url);
@@ -51,10 +51,10 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 try
                 {
                     SharePointOnlineCredentials onlineCredentials = new SharePointOnlineCredentials(credentials.UserName, credentials.Password);
-                    context.Credentials = (ICredentials)onlineCredentials;
+                    context.Credentials = onlineCredentials;
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                     catch (ClientRequestException)
                     {
@@ -71,7 +71,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                     context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                     catch (ClientRequestException ex)
                     {
@@ -158,8 +158,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             try
             {
-                Tenant tenant = new Tenant((ClientRuntimeContext)clientContext);
-                clientContext.ExecuteQuery();
+                var tenant = new Tenant(clientContext);
+                clientContext.ExecuteQueryRetry();
                 return true;
             }
             catch (ClientRequestException)
