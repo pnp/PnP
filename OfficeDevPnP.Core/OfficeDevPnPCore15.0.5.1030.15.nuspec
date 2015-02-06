@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>OfficeDevPnPCore15</id>
-        <version>0.5.1030.12</version>
+        <version>0.5.1030.15</version>
         <title>OfficeDevPnP.Core (on-premises)</title>
         <authors>Office 365 Developer Patterns &amp; Practices</authors>
         <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
