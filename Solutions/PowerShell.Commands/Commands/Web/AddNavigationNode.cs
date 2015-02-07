@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Management.Automation;
 
@@ -23,18 +24,13 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if(Url == null)
             {
-                ClientContext.Load(this.SelectedWeb, w => w.Url);
-                ClientContext.ExecuteQuery();
-                Url = this.SelectedWeb.Url;
+                ClientContext.Load(SelectedWeb, w => w.Url);
+                ClientContext.ExecuteQueryRetry();
+                Url = SelectedWeb.Url;
             }
-            this.SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+            SelectedWeb.AddNavigationNode(Title, new Uri(Url), Header, Location == NavigationNodeType.QuickLaunch);
         }
 
-        public enum NavigationNodeType
-        {
-            Top,
-            QuickLaunch
-        }
     }
 
     

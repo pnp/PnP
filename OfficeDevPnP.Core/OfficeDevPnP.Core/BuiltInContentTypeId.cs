@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OfficeDevPnP.Core
+﻿namespace OfficeDevPnP.Core
 {
     /// <summary>
     /// A class that returns strings that represent identifiers (IDs) for built-in content types.

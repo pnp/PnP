@@ -1,9 +1,9 @@
 ﻿#if !CLIENTSDKV15
+using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.SharePoint.Client;
-using System.Management.Automation;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -33,15 +33,15 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
         protected override void ProcessRecord()
         {
-            if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveSiteCollection0, Url), Properties.Resources.Confirm))
+            if (Force || ShouldContinue(string.Format(Resources.RemoveSiteCollection0, Url), Resources.Confirm))
             {
                 if (!FromRecycleBin)
                 {
-                    this.Tenant.DeleteSiteCollection(Url, !SkipRecycleBin);
+                    Tenant.DeleteSiteCollection(Url, !SkipRecycleBin);
                 }
                 else
                 {
-                    this.Tenant.DeleteSiteCollectionFromRecycleBin(Url);
+                    Tenant.DeleteSiteCollectionFromRecycleBin(Url);
                 }
             }
         }

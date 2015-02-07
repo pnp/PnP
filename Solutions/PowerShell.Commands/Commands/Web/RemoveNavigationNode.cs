@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -17,14 +18,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch ? true : false);
+            SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch);
         }
 
-        public enum NavigationNodeType
-        {
-            Top,
-            QuickLaunch
-        }
     }
 
     

@@ -1,13 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
 using Microsoft.SharePoint.Client.WorkflowServices;
-using System;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class WorkflowInstancePipeBind
     {
-        private WorkflowInstance _instance;
-        private Guid _id;
+        private readonly WorkflowInstance _instance;
+        private readonly Guid _id;
 
         public WorkflowInstancePipeBind()
         {
@@ -17,17 +16,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WorkflowInstancePipeBind(WorkflowInstance instance)
         {
-            this._instance = instance;
+            _instance = instance;
         }
 
         public WorkflowInstancePipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WorkflowInstancePipeBind(string id)
         {
-            this._id = Guid.Parse(id);
+            _id = Guid.Parse(id);
         }
 
         public Guid Id

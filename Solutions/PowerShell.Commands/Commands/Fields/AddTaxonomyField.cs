@@ -1,9 +1,8 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
+﻿using System;
+using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -46,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            Field field = null;
+            Field field;
             var termSet = ClientContext.Site.GetTaxonomyItemByPath(TermSetPath, TermPathDelimiter);
             Guid id = Id.Id;
             if (id == Guid.Empty)
@@ -68,7 +67,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
               
 
@@ -76,7 +75,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                field = this.SelectedWeb.CreateTaxonomyField(fieldCI);
+                field = SelectedWeb.CreateTaxonomyField(fieldCI);
             }
             WriteObject(field);
         }

@@ -1,6 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -16,10 +15,10 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             if(!string.IsNullOrEmpty(MasterPageUrl))
-                this.SelectedWeb.SetMasterPageByUrl(MasterPageUrl);
+                SelectedWeb.SetMasterPageByUrl(MasterPageUrl);
 
             if (!string.IsNullOrEmpty(CustomMasterPageUrl))
-                this.SelectedWeb.SetCustomMasterPageByUrl(CustomMasterPageUrl);
+                SelectedWeb.SetCustomMasterPageByUrl(CustomMasterPageUrl);
             
         }
     }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -26,7 +24,7 @@ namespace OfficeDevPnP.Core.Utilities
             SmtpClient server = new SmtpClient(servername);
             server.Port = 587;
             server.EnableSsl = true;
-            server.Credentials = new System.Net.NetworkCredential(fromAddress, fromUserPassword);
+            server.Credentials = new NetworkCredential(fromAddress, fromUserPassword);
 
             MailMessage mail = new MailMessage();
             //mail from and the network credentials must match!

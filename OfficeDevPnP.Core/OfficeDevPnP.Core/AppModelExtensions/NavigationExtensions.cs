@@ -1,10 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -21,11 +18,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="nodeTitle">the title of node to add</param>
         /// <param name="nodeUri">the url of node to add</param>
         /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
-        /// <param name="isQucikLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
+        /// <param name="isQuickLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
         public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, bool isQuickLaunch)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             NavigationNodeCreationInformation node = new NavigationNodeCreationInformation();
             node.AsLastNode = true;
             node.Title = nodeTitle;
@@ -55,7 +52,7 @@ namespace Microsoft.SharePoint.Client
                 var topLink = web.Navigation.TopNavigationBar;
                 topLink.Add(node);
             }
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -68,7 +65,7 @@ namespace Microsoft.SharePoint.Client
         public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, bool isQuickLaunch)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (isQuickLaunch)
             {
@@ -80,7 +77,7 @@ namespace Microsoft.SharePoint.Client
                         if (nodeInfo.Title == nodeTitle)
                         {
                             nodeInfo.DeleteObject();
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                             break;
                         }
                     }
@@ -93,13 +90,13 @@ namespace Microsoft.SharePoint.Client
                         if (nodeInfo.Title == parentNodeTitle)
                         {
                             web.Context.Load(nodeInfo.Children);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                             foreach (var nodeInfo2 in nodeInfo.Children)
                             {
                                 if (nodeInfo2.Title == nodeTitle)
                                 {
                                     nodeInfo2.DeleteObject();
-                                    web.Context.ExecuteQuery();
+                                    web.Context.ExecuteQueryRetry();
                                     done = true;
                                     break;
                                 }
@@ -117,7 +114,7 @@ namespace Microsoft.SharePoint.Client
                     if (nodeInfo.Title == nodeTitle)
                     {
                         nodeInfo.DeleteObject();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         break;
                     }
                 }
@@ -132,14 +129,14 @@ namespace Microsoft.SharePoint.Client
         {
 
             web.Context.Load(web, w => w.Navigation.QuickLaunch);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var quickLaunch = web.Navigation.QuickLaunch;
             for (int i = quickLaunch.Count - 1; i >= 0; i--)
             {
                 quickLaunch[i].DeleteObject();
             }
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace Microsoft.SharePoint.Client
         {
             web.Navigation.UseShared = inheritNavigation;
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
         #endregion
 
@@ -180,32 +177,67 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if action was successfull</returns>
         public static bool AddCustomAction(this Web web, CustomActionEntity customAction)
         {
-            var existingActions = web.UserCustomActions;
-            web.Context.Load(existingActions);
-            web.Context.ExecuteQuery();
+            return AddCustomActionImplementation(web, customAction);
+        }
 
-            var targetAction = web.UserCustomActions.FirstOrDefault(_uca => _uca.Name == customAction.Name);
+        public static bool AddCustomAction(this Site site, CustomActionEntity customAction)
+        {
+            return AddCustomActionImplementation(site, customAction);
+        }
 
-            if (targetAction == null) 
+        private static bool AddCustomActionImplementation(ClientObject clientObject, CustomActionEntity customAction)
+        {
+            UserCustomAction targetAction = null;
+            UserCustomActionCollection existingActions = null;
+            if (clientObject is Web)
             {
-                targetAction = existingActions.Add();
+                var web = (Web) clientObject;
+
+                existingActions = web.UserCustomActions;
+                web.Context.Load(existingActions);
+                web.Context.ExecuteQueryRetry();
+
+                targetAction = web.UserCustomActions.FirstOrDefault(uca => uca.Name == customAction.Name);
             }
-            else if (customAction.Remove) 
+            else
+            {
+                var site = (Site) clientObject;
+
+                existingActions = site.UserCustomActions;
+                site.Context.Load(existingActions);
+                site.Context.ExecuteQueryRetry();
+
+                targetAction = site.UserCustomActions.FirstOrDefault(uca => uca.Name == customAction.Name);
+            }
+
+            if (targetAction == null)
+            {
+                // If we're removing the custom action then we need to leave when not found...else we're creating the custom action
+                if (customAction.Remove)
+                {
+                    return true;
+                }
+                else
+                {
+                    targetAction = existingActions.Add();
+                }
+            }
+            else if (customAction.Remove)
             {
                 targetAction.DeleteObject();
-                web.Context.ExecuteQuery();
+                clientObject.Context.ExecuteQueryRetry();
                 return true;
             }
 
             targetAction.Name = customAction.Name;
             targetAction.Description = customAction.Description;
             targetAction.Location = customAction.Location;
-            
+
             if (customAction.Location == JavaScriptExtensions.SCRIPT_LOCATION)
             {
                 targetAction.ScriptBlock = customAction.ScriptBlock;
                 targetAction.ScriptSrc = customAction.ScriptSrc;
-            }             
+            }
             else
             {
                 targetAction.Sequence = customAction.Sequence;
@@ -213,7 +245,7 @@ namespace Microsoft.SharePoint.Client
                 targetAction.Group = customAction.Group;
                 targetAction.Title = customAction.Title;
                 targetAction.ImageUrl = customAction.ImageUrl;
-                
+
                 if (customAction.RegistrationId != null)
                 {
                     targetAction.RegistrationId = customAction.RegistrationId;
@@ -236,11 +268,23 @@ namespace Microsoft.SharePoint.Client
             }
 
             targetAction.Update();
-            web.Context.Load(web, w => w.UserCustomActions);
-            web.Context.ExecuteQuery();
-            
+            if (clientObject is Web)
+            {
+                var web = (Web)clientObject;
+                web.Context.Load(web, w => w.UserCustomActions);
+                web.Context.ExecuteQueryRetry();
+            }
+            else
+            {
+                var site = (Site) clientObject;
+                site.Context.Load(site, s => s.UserCustomActions);
+                site.Context.ExecuteQueryRetry();
+            }
+
             return true;
         }
+
+
 
         /// <summary>
         /// Returns all custom actions in a web
@@ -254,9 +298,30 @@ namespace Microsoft.SharePoint.Client
             List<UserCustomAction> actions = new List<UserCustomAction>();
 
             clientContext.Load(web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction uca in web.UserCustomActions)
+            {
+                actions.Add(uca);
+            }
+            return actions;
+        }
+
+        /// <summary>
+        /// Returns all custom actions in a web
+        /// </summary>
+        /// <param name="site">The site to process</param>
+        /// <returns></returns>
+        public static IEnumerable<UserCustomAction> GetCustomActions(this Site site)
+        {
+            var clientContext = site.Context as ClientContext;
+
+            List<UserCustomAction> actions = new List<UserCustomAction>();
+
+            clientContext.Load(site.UserCustomActions);
+            clientContext.ExecuteQueryRetry();
+
+            foreach (UserCustomAction uca in site.UserCustomActions)
             {
                 actions.Add(uca);
             }
@@ -267,24 +332,53 @@ namespace Microsoft.SharePoint.Client
         /// Removes a custom action
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="id">The id of the action to remove. <seealso cref="GetCustomActions"/></param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
         public static void DeleteCustomAction(this Web web, Guid id)
         {
             var clientContext = web.Context as ClientContext;
 
             clientContext.Load(web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             foreach (UserCustomAction action in web.UserCustomActions)
             {
                 if (action.Id == id)
                 {
                     action.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                     break;
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Removes a custom action
+        /// </summary>
+        /// <param name="site">The site to process</param>
+        /// <param name="id">The id of the action to remove. <seealso>
+        ///         <cref>GetCustomActions</cref>
+        ///     </seealso>
+        /// </param>
+        public static void DeleteCustomAction(this Site site, Guid id)
+        {
+            var clientContext = site.Context as ClientContext;
+
+            clientContext.Load(site.UserCustomActions);
+            clientContext.ExecuteQueryRetry();
+
+            foreach (UserCustomAction action in site.UserCustomActions)
+            {
+                if (action.Id == id)
+                {
+                    action.DeleteObject();
+                    clientContext.ExecuteQueryRetry();
+                    break;
+                }
+            }
         }
 
         /// <summary>
@@ -293,7 +387,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="clientContext"></param>
         /// <param name="name">Name of the custom action</param>
         /// <returns></returns>
-        private static bool CustomActionAlreadyExists(ClientContext clientContext, string name)
+        public static bool CustomActionExists(ClientContext clientContext, string name)
         {
             if (clientContext == null)
                 throw new ArgumentNullException("clientContext");
@@ -302,7 +396,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("name");
 
             clientContext.Load(clientContext.Web.UserCustomActions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             var customActions = clientContext.Web.UserCustomActions.Cast<UserCustomAction>();
             foreach (var customAction in customActions)

@@ -1,12 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using OfficeDevPnP.PowerShell.Commands.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -17,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         public GroupPipeBind Identity = new GroupPipeBind();
 
         [Parameter(Mandatory = false)]
-        public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         [Parameter(Mandatory = false)]
         public string AddRole = string.Empty;
@@ -33,63 +29,60 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
             Group group = null;
             if (Identity.Id != -1)
             {
-                group = this.SelectedWeb.SiteGroups.GetById(Identity.Id);
+                group = SelectedWeb.SiteGroups.GetById(Identity.Id);
             }
             else if (!string.IsNullOrEmpty(Identity.Name))
             {
-                group = this.SelectedWeb.SiteGroups.GetByName(Identity.Name);
+                group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
             }
             else if (Identity.Group != null)
             {
                 group = Identity.Group;
             }
 
-            if (SetAssociatedGroup != AssociatedGroupTypeEnum.None)
+            if (SetAssociatedGroup != AssociatedGroupType.None)
             {
                 switch (SetAssociatedGroup)
                 {
-                    case AssociatedGroupTypeEnum.Visitors:
+                    case AssociatedGroupType.Visitors:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(null, null, group);
+                            SelectedWeb.AssociateDefaultGroups(null, null, group);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Members:
+                    case AssociatedGroupType.Members:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(null, group, null);
+                            SelectedWeb.AssociateDefaultGroups(null, group, null);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Owners:
+                    case AssociatedGroupType.Owners:
                         {
-                            this.SelectedWeb.AssociateDefaultGroups(group, null, null);
+                            SelectedWeb.AssociateDefaultGroups(group, null, null);
                             break;
                         }
                 }
             }
             if(!string.IsNullOrEmpty(AddRole))
             {
-                var roleDefinition = this.SelectedWeb.RoleDefinitions.GetByName(AddRole);
+                var roleDefinition = SelectedWeb.RoleDefinitions.GetByName(AddRole);
                 var roleDefinitionBindings = new RoleDefinitionBindingCollection(ClientContext);
                 roleDefinitionBindings.Add(roleDefinition);
-                var roleAssignments = this.SelectedWeb.RoleAssignments;
+                var roleAssignments = SelectedWeb.RoleAssignments;
                 roleAssignments.Add(group,roleDefinitionBindings);
                 ClientContext.Load(roleAssignments);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             if(!string.IsNullOrEmpty(RemoveRole))
             {
-                var roleAssignment = this.SelectedWeb.RoleAssignments.GetByPrincipal(group);
+                var roleAssignment = SelectedWeb.RoleAssignments.GetByPrincipal(group);
                 var roleDefinitionBindings = roleAssignment.RoleDefinitionBindings;
                 ClientContext.Load(roleDefinitionBindings);
-                ClientContext.ExecuteQuery();
-                foreach(var roleDefinition in roleDefinitionBindings)
+                ClientContext.ExecuteQueryRetry();
+                foreach (var roleDefinition in roleDefinitionBindings.Where(roleDefinition => roleDefinition.Name == RemoveRole))
                 {
-                    if(roleDefinition.Name == RemoveRole)
-                    {
-                        roleDefinitionBindings.Remove(roleDefinition);
-                        roleAssignment.Update();
-                        ClientContext.ExecuteQuery();
-                        break;
-                    }
+                    roleDefinitionBindings.Remove(roleDefinition);
+                    roleAssignment.Update();
+                    ClientContext.ExecuteQueryRetry();
+                    break;
                 }
             }
 
@@ -97,7 +90,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
             {
                 group.Title = Title;
                 group.Update();
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             
         }

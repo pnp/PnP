@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var name = "WebExtensions";
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryRetry();
 
                 ExceptionHandlingScope scope = new ExceptionHandlingScope(ctx);
 
@@ -115,11 +115,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web);
             web.AddPublishingPage(publishingPageName, publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var page = web.GetPublishingPage(string.Format("{0}.aspx",publishingPageName));
             web.Context.Load(page.ListItem, i => i["Title"]);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             
             Assert.AreEqual(page.ListItem["Title"], publishingPageName);
 
@@ -133,7 +133,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web);
             web.AddPublishingPage("Happy?is&good", publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var page = web.GetPublishingPage(string.Format("{0}.aspx", "Happy-is-good"));
             Assert.IsNotNull(page);
@@ -150,14 +150,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var pagesLibrary = web.Lists.GetByTitle("Pages");
             pagesLibrary.EnableModeration = true;
             pagesLibrary.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             web.AddPublishingPage(publishingPageName, publishingPageTemplate,publish:true);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
             web.Context.Load(page.ListItem, i => i["_ModerationStatus"]);
             web.Context.Load(page.ListItem, i => i.File.MajorVersion);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Assert.AreEqual(0, page.ListItem["_ModerationStatus"]);
             Assert.AreEqual(1, page.ListItem.File.MajorVersion);
@@ -174,13 +174,13 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var pagesLibrary = web.Lists.GetByTitle("Pages");
             pagesLibrary.EnableModeration = false;
             pagesLibrary.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
             web.Context.Load(page.ListItem, i => i.File.MajorVersion);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Assert.AreEqual(1, page.ListItem.File.MajorVersion);
 
@@ -198,16 +198,16 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var pagesLibrary = web.Lists.GetByTitle("Pages");
             pagesLibrary.EnableModeration = true;
             pagesLibrary.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
             web.AddPublishingPage(customPublishingPageName, publishingPageTemplate, publish: true, title: customTitle);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var pageWithNoTitle = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
             var pageWithCustomTitle = web.GetPublishingPage(string.Format("{0}.aspx", customPublishingPageName));
             web.Context.Load(pageWithNoTitle.ListItem, i => i["Title"]);
             web.Context.Load(pageWithCustomTitle.ListItem, i => i["Title"]);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             //Check that title is set to page name
             Assert.AreEqual(publishingPageName, pageWithNoTitle.ListItem["Title"]);

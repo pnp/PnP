@@ -23,18 +23,18 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
 
         protected WSTrustBinding(SecurityMode securityMode, TrustVersion trustVersion)
         {
-            this._securityMode = SecurityMode.Message;
-            this._trustVersion = TrustVersion.WSTrust13;
+            _securityMode = SecurityMode.Message;
+            _trustVersion = TrustVersion.WSTrust13;
           
             if (trustVersion == null)
             {
                 throw new ArgumentNullException("trustVersion");
             }
             
-            this.ValidateTrustVersion(trustVersion);
+            ValidateTrustVersion(trustVersion);
             ValidateSecurityMode(securityMode);
-            this._securityMode = securityMode;
-            this._trustVersion = trustVersion;
+            _securityMode = securityMode;
+            _trustVersion = trustVersion;
         }
 
         protected virtual SecurityBindingElement ApplyMessageSecurity(SecurityBindingElement securityBindingElement)
@@ -44,7 +44,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
                 throw new ArgumentNullException("securityBindingElement");
             }
             
-            if (TrustVersion.WSTrustFeb2005 == this._trustVersion)
+            if (TrustVersion.WSTrustFeb2005 == _trustVersion)
             {
                 securityBindingElement.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
             }
@@ -53,7 +53,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
                 securityBindingElement.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrust13WSSecureConversation13WSSecurityPolicy12BasicSecurityProfile10;
             }
             
-            if (this._enableRsaProofKeys)
+            if (_enableRsaProofKeys)
             {
                 RsaSecurityTokenParameters item = new RsaSecurityTokenParameters
                 {
@@ -70,12 +70,12 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             BindingElementCollection elements = new BindingElementCollection();
             elements.Clear();
-            if ((SecurityMode.Message == this._securityMode) || (SecurityMode.TransportWithMessageCredential == this._securityMode))
+            if ((SecurityMode.Message == _securityMode) || (SecurityMode.TransportWithMessageCredential == _securityMode))
             {
-                elements.Add(this.ApplyMessageSecurity(this.CreateSecurityBindingElement()));
+                elements.Add(ApplyMessageSecurity(CreateSecurityBindingElement()));
             }
-            elements.Add(this.CreateEncodingBindingElement());
-            elements.Add(this.CreateTransportBindingElement());
+            elements.Add(CreateEncodingBindingElement());
+            elements.Add(CreateTransportBindingElement());
             return elements.Clone();
         }
 
@@ -88,7 +88,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             HttpTransportBindingElement element;
             
-            if (SecurityMode.Message == this._securityMode)
+            if (SecurityMode.Message == _securityMode)
             {
                 element = new HttpTransportBindingElement();
             }
@@ -99,9 +99,9 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
             
             element.MaxReceivedMessageSize = 0x200000L;
             
-            if (SecurityMode.Transport == this._securityMode)
+            if (SecurityMode.Transport == _securityMode)
             {
-                this.ApplyTransportSecurity(element);
+                ApplyTransportSecurity(element);
             }
             
             return element;
@@ -132,11 +132,11 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             get
             {
-                return this._enableRsaProofKeys;
+                return _enableRsaProofKeys;
             }
             set
             {
-                this._enableRsaProofKeys = value;
+                _enableRsaProofKeys = value;
             }
         }
 
@@ -144,7 +144,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             get
             {
-                TransportBindingElement element = this.CreateBindingElements().Find<TransportBindingElement>();
+                TransportBindingElement element = CreateBindingElements().Find<TransportBindingElement>();
 
                 if (element == null)
                 {
@@ -159,12 +159,12 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             get
             {
-                return this._securityMode;
+                return _securityMode;
             }
             set
             {
                 ValidateSecurityMode(value);
-                this._securityMode = value;
+                _securityMode = value;
             }
         }
 
@@ -172,7 +172,7 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
         {
             get
             {
-                return this._trustVersion;
+                return _trustVersion;
             }
             set
             {
@@ -181,8 +181,8 @@ namespace OfficeDevPnP.Core.IdentityModel.WSTrustBindings
                     throw new ArgumentNullException("value");
                 }
                 
-                this.ValidateTrustVersion(value);
-                this._trustVersion = value;
+                ValidateTrustVersion(value);
+                _trustVersion = value;
             }
         }
     }

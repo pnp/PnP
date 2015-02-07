@@ -1,8 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Enums;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -29,22 +28,20 @@ PS:> New-SPOUser -LogonName user@company.com
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
         [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
-        public AssociatedGroupTypeEnum SetAssociatedGroup = AssociatedGroupTypeEnum.None;
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
-            var web = this.SelectedWeb;
+            var web = SelectedWeb;
 
-            GroupCreationInformation groupCI = new GroupCreationInformation();
-            groupCI.Title = Title;
-            groupCI.Description = Description;
+            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
 
             var group = web.SiteGroups.Add(groupCI);
 
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
-            ClientContext.ExecuteQuery();
-            bool dirty = false;
+            ClientContext.ExecuteQueryRetry();
+            var dirty = false;
             if (AllowRequestToJoinLeave)
             {
                 group.AllowRequestToJoinLeave = true;
@@ -59,53 +56,53 @@ PS:> New-SPOUser -LogonName user@company.com
             if (dirty)
             {
                 group.Update();
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
 
 
             if (!string.IsNullOrEmpty(Owner))
             {
-                Principal groupOwner = null;
+                Principal groupOwner;
 
                 try
                 {
                     groupOwner = web.EnsureUser(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 catch
                 {
                     groupOwner = web.SiteGroups.GetByName(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
 
 
-            if (SetAssociatedGroup != AssociatedGroupTypeEnum.None)
+            if (SetAssociatedGroup != AssociatedGroupType.None)
             {
                 switch (SetAssociatedGroup)
                 {
-                    case AssociatedGroupTypeEnum.Visitors:
+                    case AssociatedGroupType.Visitors:
                         {
                             web.AssociateDefaultGroups(null, null, group);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Members:
+                    case AssociatedGroupType.Members:
                         {
                             web.AssociateDefaultGroups(null, group, null);
                             break;
                         }
-                    case AssociatedGroupTypeEnum.Owners:
+                    case AssociatedGroupType.Owners:
                         {
                             web.AssociateDefaultGroups(group, null, null);
                             break;
                         }
                 }
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(group);
         }
     }

@@ -1,6 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -9,13 +8,20 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         protected override void ExecuteCmdlet()
         {
-            Folder folder = this.SelectedWeb.RootFolder;
+            var folder = SelectedWeb.RootFolder;
 
             ClientContext.Load(folder, f => f.WelcomePage);
 
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
-            WriteObject(folder.WelcomePage);
+            if (string.IsNullOrEmpty(folder.WelcomePage))
+            {
+                WriteObject("default.aspx");
+            }
+            else
+            {
+                WriteObject(folder.WelcomePage);
+            }
         }
     }
 }

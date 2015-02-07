@@ -5,22 +5,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class AppPipeBind
     {
-        private AppInstance _appInstance;
-        private Guid _id;
+        private readonly AppInstance _appInstance;
+        private readonly Guid _id;
 
         public AppPipeBind(AppInstance instance)
         {
-            this._appInstance = instance;
+            _appInstance = instance;
         }
 
         public AppPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public AppPipeBind(string id)
         {
-            this._id = new Guid(id);
+            _id = new Guid(id);
         }
 
         public Guid Id

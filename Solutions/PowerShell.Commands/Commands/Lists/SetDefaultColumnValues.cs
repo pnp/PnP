@@ -33,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             List list = null;
             if (List != null)
             {
-                list = this.SelectedWeb.GetList(List);
+                list = SelectedWeb.GetList(List);
             }
             if (list != null)
             {
@@ -53,19 +53,19 @@ namespace OfficeDevPnP.PowerShell.Commands
                             ClientContext.Load(field, f => f.InternalName);
                         }
                         ClientContext.Load(field);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     else if (Field.Id != Guid.Empty)
                     {
                         field = list.Fields.GetById(Field.Id);
                         ClientContext.Load(field, f => f.InternalName, f => f.TypeAsString);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     else if (!string.IsNullOrEmpty(Field.Name))
                     {
                         field = list.Fields.GetByInternalNameOrTitle(Field.Name);
                         ClientContext.Load(field, f => f.InternalName, f => f.TypeAsString);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     if (field != null)
                     {

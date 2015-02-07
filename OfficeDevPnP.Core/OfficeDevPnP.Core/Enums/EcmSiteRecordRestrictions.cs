@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OfficeDevPnP.Core
+﻿namespace OfficeDevPnP.Core
 {
     /// <summary>
     /// Specify restrictions to place on a document or item once it has been declared as a record.  Changing this setting 

@@ -29,38 +29,38 @@ namespace Microsoft.SharePoint.Client.Tests
             using (var clientContext = TestCommon.CreateClientContext()) {
                 var web = clientContext.Web;
                 clientContext.Load(web);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 EmptyRecycleBin(clientContext);
 
                 // delete lists
                 var lists = clientContext.LoadQuery(clientContext.Web.Lists);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testLists = lists.Where(l => l.Title.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var list in testLists)
                 {
                     list.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // first delete content types
                 var contentTypes = clientContext.LoadQuery(clientContext.Web.ContentTypes);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testContentTypes = contentTypes.Where(l => l.Name.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var ctype in testContentTypes)
                 {
                     ctype.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
                 
                 // delete fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var field in testFields)
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // clean recycle bin
                 EmptyRecycleBin(clientContext);
@@ -89,7 +89,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var field = clientContext.Web.Fields.GetByTitle(fieldName);
                 clientContext.Load(field);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
                 Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
@@ -119,7 +119,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var field = clientContext.Web.Fields.GetByTitle(fieldName);
                 clientContext.Load(field);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
 
@@ -201,7 +201,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 try
                 {
                     clientContext.Load(subweb);
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
 
                     using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
@@ -212,7 +212,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 finally
                 {
                     subweb.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 try
                 {
                     clientContext.Load(subweb);
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
 
                     using (var clientContextSub = clientContext.Clone(String.Format("{0}\\{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], subsiteurl)))
                     {
@@ -245,7 +245,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 finally
                 {
                     subweb.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
@@ -325,7 +325,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 ContentType ct = clientContext.Web.GetContentTypeByName(TEST_CT_PNP);
                 FieldCollection fields = ct.Fields;
                 IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.Id == fieldId));
-                ct.Context.ExecuteQuery();
+                ct.Context.ExecuteQueryRetry();
                 Assert.IsTrue(results.FirstOrDefault().Required);
             }
         }
@@ -343,7 +343,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var ct = web.CreateContentType("Test_SetDefaultContentTypeToListCt", "Desc", "", "Test_Group", parentCt);
                 clientContext.Load(ct);
                 clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var prevUniqueContentTypeOrder = testList.RootFolder.ContentTypeOrder;
 
@@ -353,14 +353,14 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 testList.SetDefaultContentTypeToList(ct);
                 clientContext.Load(testList.RootFolder, f => f.ContentTypeOrder);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual(2, testList.RootFolder.ContentTypeOrder.Count());
                 Assert.IsTrue(testList.RootFolder.ContentTypeOrder.First().StringValue.StartsWith(ct.Id.StringValue, StringComparison.OrdinalIgnoreCase));
 
                 testList.DeleteObject();
                 ct.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
 
@@ -369,7 +369,7 @@ namespace Microsoft.SharePoint.Client.Tests
             using (var clientContext = TestCommon.CreateClientContext()) {
                 var web = clientContext.Web;
                 clientContext.Load(web, w=>w.ContentTypes);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // create content types
                 var documentCtype = web.ContentTypes.FirstOrDefault(ct=>ct.Name == "Document");
@@ -398,7 +398,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Load(newCtype1);
                 clientContext.Load(newCtype2);
                 clientContext.Load(newCtype3);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var newList = new ListCreationInformation() {
                     TemplateType = (int)ListTemplateType.DocumentLibrary,
@@ -413,7 +413,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 doclib.ContentTypes.AddExistingContentType(newCtype3);
                 doclib.Update();
                 clientContext.Load(doclib.ContentTypes);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var expectedIds = new string[]{
                     newCtype3.Name,
@@ -424,7 +424,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 doclib.ReorderContentTypes(expectedIds);
                 var reorderedCtypes = clientContext.LoadQuery(doclib.ContentTypes);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var actualIds = reorderedCtypes.Except(
                                         // remove the folder content type
@@ -434,20 +434,44 @@ namespace Microsoft.SharePoint.Client.Tests
                 CollectionAssert.AreEqual(expectedIds, actualIds);
             }
         }
+
+        [TestMethod]
+        public void CreateContentTypeByXmlTest()
+        {
+            var xml = @"<ContentType ID=""0x0101000728167cd9c94899925ba69c4af6743e"" Name=""Test_NewContentType"" Group=""Test Group"" Description=""Text Content Type"" Inherits=""TRUE"" Version=""0"">
+    <FieldRefs>
+      <!--  Built-in Title field -->
+      <FieldRef ID=""{fa564e0f-0c70-4ab9-b863-0177e6ddd247}"" Name=""Title"" DisplayName=""Test"" Required=""TRUE"" Sealed=""TRUE""/>
+    </FieldRefs>
+  </ContentType>";
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var web = clientContext.Web;
+                var ct = web.CreateContentTypeFromXMLString(xml);
+                Assert.IsNotNull(ct);
+                clientContext.Load(ct.FieldLinks);
+                clientContext.ExecuteQueryRetry();                
+                Assert.IsTrue(ct.FieldLinks.Count == 8); // Includes default fields
+
+                ct.DeleteObject();
+                clientContext.ExecuteQueryRetry();
+            }
+
+        }
         #endregion
 
         #region Helper methods
         void EmptyRecycleBin(ClientContext clientContext) {
             var recycleBin = clientContext.Web.RecycleBin;
             clientContext.Load(recycleBin);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             var items = recycleBin.ToArray();
 
             for (var i = 0; i < items.Length; i++)
                 items[i].DeleteObject();
 
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
     }

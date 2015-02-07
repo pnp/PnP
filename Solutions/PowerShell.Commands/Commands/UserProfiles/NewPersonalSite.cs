@@ -1,12 +1,7 @@
-﻿using Microsoft.SharePoint.Client.UserProfiles;
-using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.UserProfiles;
 using OfficeDevPnP.PowerShell.Commands.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 
 #if !CLIENTSDKV15
 namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
@@ -22,7 +17,7 @@ namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
         {
             ProfileLoader profileLoader = ProfileLoader.GetProfileLoader(ClientContext);
             profileLoader.CreatePersonalSiteEnqueueBulk(Email);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 }

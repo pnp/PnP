@@ -5,9 +5,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public class ViewPipeBind
     {
-        private View _view;
-        private Guid _id;
-        private string _name;
+        private readonly View _view;
+        private readonly Guid _id;
+        private readonly string _name;
 
         public ViewPipeBind()
         {
@@ -18,19 +18,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public ViewPipeBind(View view)
         {
-            this._view = view;
+            _view = view;
         }
 
         public ViewPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public ViewPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._name = id;
+                _name = id;
             }
         }
 

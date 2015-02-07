@@ -1,6 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -16,11 +16,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (On)
             {
-                ClientContext.Site.ActivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
             else
             {
-                ClientContext.Site.DeactivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.DeactivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
         }
 

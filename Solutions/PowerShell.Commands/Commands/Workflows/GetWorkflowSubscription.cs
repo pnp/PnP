@@ -17,17 +17,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (string.IsNullOrEmpty(Name))
                 {
-                    var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                    var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                     var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
                     var subscriptions = subscriptionService.EnumerateSubscriptionsByList(list.Id);
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else
@@ -39,18 +39,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             {
                 if (string.IsNullOrEmpty(Name))
                 {
-                    var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                    var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                     var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
                     var subscriptions = subscriptionService.EnumerateSubscriptions();
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else
                 {
-                    WriteObject(this.SelectedWeb.GetWorkflowSubscription(Name));
+                    WriteObject(SelectedWeb.GetWorkflowSubscription(Name));
                 }
             }
         }

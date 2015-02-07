@@ -1,9 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Collections.Generic;
-using System.Management.Automation;
-using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -19,9 +17,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (Force || ShouldContinue(Properties.Resources.RemoveJavaScript, Properties.Resources.Confirm))
+            if (Force || ShouldContinue(Resources.RemoveJavaScript, Resources.Confirm))
             {
-                this.SelectedWeb.DeleteJsLink(Key);
+                SelectedWeb.DeleteJsLink(Key);
             }
         }
     }

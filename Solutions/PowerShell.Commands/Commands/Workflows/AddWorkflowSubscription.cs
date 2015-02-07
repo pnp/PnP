@@ -1,9 +1,7 @@
-﻿using System.Management.Automation;
+﻿using System.Collections.Generic;
+using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.WorkflowServices;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System.Collections.Generic;
-using System;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
@@ -39,10 +37,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(List);
+            var list = SelectedWeb.GetList(List);
 
-            Guid subscriptionId = list.AddWorkflowSubscription(DefinitionName,Name,StartManually,StartOnCreated,StartOnChanged,HistoryListName,TaskListName, AssociationValues);
-
+            list.AddWorkflowSubscription(DefinitionName,Name,StartManually,StartOnCreated,StartOnChanged,HistoryListName,TaskListName, AssociationValues);
         }
     }
 

@@ -1,8 +1,6 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WorkflowServices;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System.Linq;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
@@ -19,18 +17,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             if (string.IsNullOrEmpty(Name))
             {
-                var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                 var deploymentService = servicesManager.GetWorkflowDeploymentService();
                 var definitions = deploymentService.EnumerateDefinitions(PublishedOnly);
 
                 ClientContext.Load(definitions);
 
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(definitions, true);
             }
             else
             {
-                WriteObject(this.SelectedWeb.GetWorkflowDefinition(Name, PublishedOnly));
+                WriteObject(SelectedWeb.GetWorkflowDefinition(Name, PublishedOnly));
             }
         }
     }

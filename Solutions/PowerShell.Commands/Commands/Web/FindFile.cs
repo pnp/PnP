@@ -1,7 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -17,7 +16,7 @@ PS:> Find-SPOFile -Match *.master
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(this.SelectedWeb.FindFiles(Match));
+            WriteObject(SelectedWeb.FindFiles(Match));
         }
     }
 }

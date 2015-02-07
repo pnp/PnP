@@ -1,9 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Utilities {
     /// <summary>
@@ -64,6 +60,7 @@ namespace OfficeDevPnP.Core.Utilities {
         /// <param name="fieldName"></param>
         /// <param name="fieldValueType"></param>
         /// <param name="value"></param>
+        /// <param name="additionalFieldRefParams"></param>
         /// <returns></returns>
         public static string FieldValue(string fieldName, string fieldValueType, string value, string additionalFieldRefParams = "") {
             return string.Format(FIELD_VALUE, fieldName, additionalFieldRefParams, fieldValueType, value);
@@ -75,6 +72,7 @@ namespace OfficeDevPnP.Core.Utilities {
         /// <param name="fieldId"></param>
         /// <param name="fieldValueType"></param>
         /// <param name="value"></param>
+        /// <param name="additionalFieldRefParams"></param>
         /// <returns></returns>
         public static string FieldValue(Guid fieldId, string fieldValueType, string value, string additionalFieldRefParams = "") {
             return string.Format(FIELD_VALUE_ID, fieldId.ToString(), additionalFieldRefParams, fieldValueType, value);

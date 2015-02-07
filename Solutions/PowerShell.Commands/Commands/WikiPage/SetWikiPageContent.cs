@@ -1,7 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
+﻿using System.IO;
 using System.Management.Automation;
-using Microsoft.SharePoint.Client.WebParts;
+using Microsoft.SharePoint.Client;
+using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -23,17 +23,17 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "FILE")
             {
-                if (System.IO.File.Exists(Path))
+                if (File.Exists(Path))
                 {
-                    System.IO.StreamReader fileStream = new System.IO.StreamReader(Path);
-                    string contentString = fileStream.ReadToEnd();
+                    var fileStream = new StreamReader(Path);
+                    var contentString = fileStream.ReadToEnd();
                     fileStream.Close();
-                    this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, contentString);
+                    SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, contentString);
                 }
             }
             else
             {
-                this.SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, Content);
+                SelectedWeb.AddHtmlToWikiPage(ServerRelativePageUrl, Content);
             }
         }
     }

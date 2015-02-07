@@ -1,13 +1,15 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.UPAWebService;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
-using System.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -51,7 +53,7 @@ namespace Microsoft.SharePoint.Client
                 SpoOperation op = tenant.CreateSite(newsite);
                 tenant.Context.Load(tenant);
                 tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
 
                 if (wait)
                 {
@@ -90,6 +92,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userCodeMaximumLevel">The user code quota in points</param>
         /// <param name="userCodeWarningLevel">The user code quota warning level in points</param>
         /// <param name="lcid">The site locale. See http://technet.microsoft.com/en-us/library/ff463597.aspx for a complete list of Lcid's</param>
+        /// <param name="removeFromRecycleBin">If true, any existing site with the same URL will be removed from the recycle bin</param>
+        /// <param name="wait">Wait for the site to be created before continuing processing</param>
         /// <returns></returns>
         public static Guid CreateSiteCollection(this Tenant tenant, string siteFullUrl, string title, string siteOwnerLogin,
                                                         string template, int storageMaximumLevel, int storageWarningLevel,
@@ -140,7 +144,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                     tenant.Context.Load(properties);
-                    tenant.Context.ExecuteQuery();
+                    tenant.Context.ExecuteQueryRetry();
                     ret = properties.Status.Equals(status, StringComparison.OrdinalIgnoreCase);
                 }
                 catch(ServerException ex)
@@ -152,7 +156,7 @@ namespace Microsoft.SharePoint.Client
                             //Let's retry to see if this site collection was recycled
                             var deletedProperties = tenant.GetDeletedSitePropertiesByUrl(siteFullUrl);
                             tenant.Context.Load(deletedProperties);
-                            tenant.Context.ExecuteQuery();
+                            tenant.Context.ExecuteQueryRetry();
                             ret = deletedProperties.Status.Equals(status, StringComparison.OrdinalIgnoreCase);
                         }
                         catch
@@ -165,13 +169,13 @@ namespace Microsoft.SharePoint.Client
             //Judge whether this sub web site is existing or not
             else
             {
-                var subsiteUrl = string.Format(System.Globalization.CultureInfo.CurrentCulture,
+                var subsiteUrl = string.Format(CultureInfo.CurrentCulture,
                             "{0}{1}{2}", siteDomainUrl, managedPath, siteRelativePath.Split('/')[0]);
                 var subsiteRelativeUrl = siteRelativePath.Substring(siteRelativePath.IndexOf('/') + 1);
                 var site = tenant.GetSiteByUrl(subsiteUrl);
                 var subweb = site.OpenWeb(subsiteRelativeUrl);
                 tenant.Context.Load(subweb, w => w.Title);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
                 ret = true;
             }
             return ret;
@@ -213,14 +217,14 @@ namespace Microsoft.SharePoint.Client
                 //Get the site name
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
 
                 // Will cause an exception if site URL is not there. Not optimal, but the way it works.
                 return true;
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
                 {
                     if (ex.Message.IndexOf("Unable to access site") != -1)
                     {
@@ -229,7 +233,7 @@ namespace Microsoft.SharePoint.Client
                         {
                             var deletedProperties = tenant.GetDeletedSitePropertiesByUrl(siteFullUrl);
                             tenant.Context.Load(deletedProperties);
-                            tenant.Context.ExecuteQuery();
+                            tenant.Context.ExecuteQueryRetry();
                             return deletedProperties.Status.Equals("Recycled", StringComparison.OrdinalIgnoreCase);
                         }
                         catch
@@ -263,7 +267,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
                 {
                     return true;
                 }
@@ -292,7 +296,7 @@ namespace Microsoft.SharePoint.Client
                 SpoOperation op = tenant.RemoveSite(siteFullUrl);
                 tenant.Context.Load(tenant);
                 tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
 
                 //check if site creation operation is complete
                 WaitForIsComplete(tenant, op);
@@ -317,7 +321,7 @@ namespace Microsoft.SharePoint.Client
             // To delete Site collection completely, (may take a longer time)
             SpoOperation op2 = tenant.RemoveDeletedSite(siteFullUrl);
             tenant.Context.Load(op2, i => i.IsComplete, i => i.PollingInterval);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
 
             WaitForIsComplete(tenant, op2);
             ret = true;
@@ -337,7 +341,7 @@ namespace Microsoft.SharePoint.Client
             bool ret = false;
             SpoOperation op = tenant.RemoveDeletedSite(siteFullUrl);
             tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
 
             if (wait)
             {
@@ -358,7 +362,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The Guid of a site collection</returns>
         public static Guid GetSiteGuidByUrl(this Tenant tenant, string siteFullUrl)
         {
-            if (!string.IsNullOrEmpty(siteFullUrl))
+            if (string.IsNullOrEmpty(siteFullUrl))
                 throw new ArgumentNullException("siteFullUrl");
 
             return tenant.GetSiteGuidByUrl(new Uri(siteFullUrl));
@@ -377,7 +381,7 @@ namespace Microsoft.SharePoint.Client
             Site site = null;
             site = tenant.GetSiteByUrl(siteFullUrl.OriginalString);
             tenant.Context.Load(site);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
             siteGuid = site.Id;
 
             return siteGuid;
@@ -397,7 +401,7 @@ namespace Microsoft.SharePoint.Client
 
             tenant.Context.Load(templates);
 
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
 
             return templates;
         }
@@ -426,7 +430,7 @@ namespace Microsoft.SharePoint.Client
         {
             var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
             tenant.Context.Load(siteProps);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
             if (siteProps != null)
             {
                 if (allowSelfServiceUpgrade != null)
@@ -445,7 +449,7 @@ namespace Microsoft.SharePoint.Client
                     siteProps.Title = title;
 
                 siteProps.Update();
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
             }
         }
 
@@ -460,7 +464,7 @@ namespace Microsoft.SharePoint.Client
         {
             var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
             tenant.Context.Load(siteProps);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
 
             LoggingUtility.Internal.TraceInformation(0, CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
 
@@ -469,7 +473,7 @@ namespace Microsoft.SharePoint.Client
                 siteProps.LockState = lockState.ToString();
                 SpoOperation op = siteProps.Update();
                 tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
 
                 if (wait)
                 {
@@ -500,7 +504,7 @@ namespace Microsoft.SharePoint.Client
             {
                 var siteUrlString = siteUrl.ToString();
                 tenant.SetSiteAdmin(siteUrlString, admin.LoginName, true);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
                 if (addToOwnersGroup)
                 {
                     // Create a separate context to the web
@@ -509,7 +513,7 @@ namespace Microsoft.SharePoint.Client
                         var spAdmin = clientContext.Web.EnsureUser(admin.LoginName);
                         clientContext.Web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
                         clientContext.Web.AssociatedOwnerGroup.Update();
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
                 }
             }
@@ -528,7 +532,7 @@ namespace Microsoft.SharePoint.Client
 
             var props = tenant.GetSiteProperties(0, true);
             tenant.Context.Load(props);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
 
             foreach (var prop in props)
             {
@@ -597,9 +601,9 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="tenant"></param>
         /// <returns>UserProfileService web service client</returns>
-        public static OfficeDevPnP.Core.UPAWebService.UserProfileService GetUserProfileServiceClient(this Tenant tenant)
+        public static UserProfileService GetUserProfileServiceClient(this Tenant tenant)
         {
-            var client = new OfficeDevPnP.Core.UPAWebService.UserProfileService();
+            var client = new UserProfileService();
 
             client.Url = tenant.Context.Url + "/_vti_bin/UserProfileService.asmx";
             client.UseDefaultCredentials = false;
@@ -623,13 +627,13 @@ namespace Microsoft.SharePoint.Client
         {
             while (!op.IsComplete)
             {
-                System.Threading.Thread.Sleep(op.PollingInterval);
+                Thread.Sleep(op.PollingInterval);
                 op.RefreshLoad();
                 if (!op.IsComplete)
                 {
                     try
                     {
-                        tenant.Context.ExecuteQuery();
+                        tenant.Context.ExecuteQueryRetry();
                     }
                     catch (WebException webEx)
                     {
@@ -664,7 +668,7 @@ namespace Microsoft.SharePoint.Client
             try
             {
                 tenant.CreateSite(newsite);
-                tenant.Context.ExecuteQuery();
+                tenant.Context.ExecuteQueryRetry();
             }
             catch (Exception ex)
             {
@@ -685,7 +689,7 @@ namespace Microsoft.SharePoint.Client
         public static void DeleteSiteCollection(this Tenant tenant, string siteFullUrl)
         {
             tenant.RemoveSite(siteFullUrl);
-            tenant.Context.ExecuteQuery();
+            tenant.Context.ExecuteQueryRetry();
         }
 
 #endif

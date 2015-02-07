@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (list != null)
                 {
@@ -45,7 +45,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                             if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveView0, view.Title), Properties.Resources.Confirm))
                             {
                                 view.DeleteObject();
-                                ClientContext.ExecuteQuery();
+                                ClientContext.ExecuteQueryRetry();
                             }
                         }
                     }

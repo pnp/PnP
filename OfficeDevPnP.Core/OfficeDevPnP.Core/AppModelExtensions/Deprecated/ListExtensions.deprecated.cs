@@ -1,17 +1,10 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -31,14 +24,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="force">If True any event already registered with the same name will be removed first.</param>
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
         [Obsolete("Use List.AddRemoteEventReceiver()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
         {
             return list.AddRemoteEventReceiver(name, url, eventReceiverType, synchronization, force);
         }
 
         [Obsolete("Prefer CreateList()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -53,7 +46,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Please use the CreateDocumentLibrary method")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
         {
             if (string.IsNullOrEmpty(listName))
@@ -67,14 +60,14 @@ namespace Microsoft.SharePoint.Client
         }
 
         [Obsolete("Prefer CreateList()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public static bool AddList(this Web web, int listType, Guid featureID, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
         {
             bool created = false;
 
             ListCollection listCollection = web.Lists;
             web.Context.Load(listCollection, lists => lists.Include(list => list.Title).Where(list => list.Title == listName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (listCollection.Count == 0)
             {
@@ -99,7 +92,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     newList.Update();
                     web.Context.Load(listCol);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
 
                 created = true;

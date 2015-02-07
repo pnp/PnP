@@ -17,13 +17,13 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity != null)
             {
-                var list = this.SelectedWeb.GetList(Identity);
+                var list = SelectedWeb.GetList(Identity);
                 if (list != null)
                 {
                     if (Force || ShouldContinue(Properties.Resources.RemoveList, Properties.Resources.Confirm))
                     {
                         list.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }

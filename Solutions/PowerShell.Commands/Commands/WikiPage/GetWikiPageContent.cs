@@ -1,7 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using Microsoft.SharePoint.Client.WebParts;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -14,7 +12,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            WriteObject(this.SelectedWeb.GetWikiPageContent(ServerRelativePageUrl));
+            WriteObject(SelectedWeb.GetWikiPageContent(ServerRelativePageUrl));
         }
     }
 }

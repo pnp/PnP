@@ -19,7 +19,7 @@ namespace Core.Throttling
 
             using (var ctx = new ClientContext(serverUrl))
             {
-                //Provide acocunt and pwd for connecting to the source
+                //Provide account and pwd for connecting to the source
                 var passWord = new SecureString();
                 foreach (char c in password.ToCharArray()) passWord.AppendChar(c);
                 ctx.Credentials = new SharePointOnlineCredentials(login, passWord);

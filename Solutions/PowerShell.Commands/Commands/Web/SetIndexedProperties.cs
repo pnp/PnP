@@ -1,9 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -17,11 +14,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Keys != null && Keys.Count > 0)
             {
-                this.SelectedWeb.RemovePropertyBagValue("vti_indexedpropertykeys");
+                SelectedWeb.RemovePropertyBagValue("vti_indexedpropertykeys");
 
                 foreach (var key in Keys)
                 {
-                    this.SelectedWeb.AddIndexedPropertyBagKey(key);
+                    SelectedWeb.AddIndexedPropertyBagKey(key);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
@@ -23,7 +24,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(Identity);
+            var list = SelectedWeb.GetList(Identity);
 
             if(list != null)
             {
@@ -31,14 +32,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 {
                     list.BreakRoleInheritance(CopyRoleAssignments, ClearSubscopes);
                     list.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
 
                 if (!string.IsNullOrEmpty(Title))
                 {
                     list.Title = Title;
                     list.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
         }
