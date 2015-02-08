@@ -67,58 +67,58 @@ Command | Description
 :--------|:------------
 **[Connect-SPOnline](Documentation/ConnectSPOnline.md)** | Creates a new connection context to be used by all commands
 **[Disconnect-SPOnline](Documentation/DisconnectSPOnline.md)** | Disconnects the context
-**Execute-SPOQuery** | Convenience command that executes the current query. See **Get-SPOContext**
-**Get-SPOConfiguration** |	Gets the current configuration, alike a local property bag
-**Get-SPOContext** | Returns a ClientContext object for use in your own powershell scripts that use CSOM
-**Get-SPOHealthScore** | Gets the current health score of the server
-**Get-SPOStoredCredential** | Returns a stored credentials from the credential manager as a PowerShell credential
-**Set-SPOConfiguration** | Sets a configuration value, stored locally, alike a local property bag
+**[Execute-SPOQuery](Documentation/ExecuteSPOQuery.md)** | Convenience command that executes the current query. See **Get-SPOContext**
+**[Get-SPOConfiguration](Documentation/GetSPOConfiguration.md)** |	Gets the current configuration, alike a local property bag
+**[Get-SPOContext](Documentation/GetSPOContext.md)** | Returns a ClientContext object for use in your own powershell scripts that use CSOM
+**[Get-SPOHealthScore](Documentation/GetSPOHealthScore.md)** | Gets the current health score of the server
+**[Get-SPOStoredCredential](Documentation/GetSPOStoredCredential.md)** | Returns a stored credentials from the credential manager as a PowerShell credential
+**[Set-SPOConfiguration](Documentation/SetSPOConfiguration.md)** | Sets a configuration value, stored locally, alike a local property bag
 
 #### Tenant Administration Cmdlets ####
 Command | Description
 :--------|:------------
-**Get-SPOTenantSite** | Returns a site from your tenant administration. For this to work you need to connect to your tenant admin first with 
-**Get-SPOTimeZoneId** |	Returns all timezone ids to  be used to create a new site collection in your tenant
-**Get-SPOWebTemplates** | Returns all webtemplates
-**New-SPOTenantSite** | Creates a new site collection in your tenant
-**Remove-SPOTenantSite** | Removes a site from your tenant
-**Set-SPOTenantSite** | Sets properties on an existing tenant site collection
+**[Get-SPOTenantSite](Documentation/GetSPOTenantSite.md)** | Returns a site from your tenant administration. For this to work you need to connect to your tenant admin first with 
+**[Get-SPOTimeZoneId](Documentation/GetSPOTimeZoneId.md)** |	Returns all timezone ids to  be used to create a new site collection in your tenant
+**[Get-SPOWebTemplates](Documentation/GetSPOWebTemplates.md)** | Returns all webtemplates
+**[New-SPOTenantSite](Documentation/NewSPOTenantSite.md)** | Creates a new site collection in your tenant
+**[Remove-SPOTenantSite](Documentation/RemoveSPOTenantSite.md)** | Removes a site from your tenant
+**[Set-SPOTenantSite](Documentation/SetSPOTenantSite.md)** | Sets properties on an existing tenant site collection
 
 #### App Cmdlets ####
 Command | Description
 :--------|:------------
-**Import-SPOAppPackage** | Uploads an app package to a site
-**Get-SPOAppInstance** | Gets an app instance
-**Uninstall-SPOAppInstance** | Removes an app instance from a site
+**[Import-SPOAppPackage](Documentation/ImportSPOAppPackage.md)** | Uploads an app package to a site
+**[Get-SPOAppInstance](Documentation/GetSPOAppInstance.md)** | Gets an app instance
+**[Uninstall-SPOAppInstance](Documentation/UninstallSPOAppInstance.md)** | Removes an app instance from a site
 
 #### App Authentication Cmdlets ####
 Command | Description
 :--------|:------------
-**Get-SPOAuthenticationRealm** | Returns the authentication realm for use for app only authentication. See **Connect-SPOnline -AppId -AppSecret -Realm**
+**[Get-SPOAuthenticationRealm](Documentation/GetSPOAuthenticationRealm.md)** | Returns the authentication realm for use for app only authentication. See **[Connect-SPOnline](Documentation/ConnectSPOnline.md) -AppId -AppSecret -Realm**
 
 #### Content Type Cmdlets ####
 Command | Description
 :--------|:------------
-**Add-SPOContentType** | Creates a new content type
-**Add-SPOContentTypeToList** | Adds an existing content type to a list
-**Add-SPOFieldToContentType** | Adds a field to an existing content type
-**Get-SPOContentType** | Returns a content type
-**Remove-SPOContentType** | Removes a content types
-**Set-SPODefaultContentTypeToList** | Sets the default content type to use for a list
+**[Add-SPOContentType](Documention/AddSPOContentType.md)** | Creates a new content type
+**[Add-SPOContentTypeToList](Documentation/AddSPOContentTypeToList.md)** | Adds an existing content type to a list
+**[Add-SPOFieldToContentType](Documentation/AddSPOFieldToContentType.md)** | Adds a field to an existing content type
+**[Get-SPOContentType](Documentation/GetSPOContentType.md)** | Returns a content type
+**[Remove-SPOContentType](Documentation/RemoveSPOContentType.md)** | Removes a content types
+**[Set-SPODefaultContentTypeToList](Documentation/SetSPODefaultContentTypeToList)** | Sets the default content type to use for a list
 
 #### Event Receiver Cmdlets ####
 Command | Description
 :--------|:------------
-**Add-SPOEventReceiver** |	Registers an event receiver to a site/list
-**Get-SPOEventReceiver** | Returns event receivers
-**Remove-SPOEventReceiver** | Removes an event receiver
+**[Add-SPOEventReceiver](Documentation/AddSPOEventReceiver.md)** |	Registers an event receiver to a site/list
+**[Get-SPOEventReceiver](Documentation/GetSPOEventReceiver.md)** | Returns event receivers
+**[Remove-SPOEventReceiver](Documentation/RemoveSPOEventReceiver.md)** | Removes an event receiver
 
 #### Feature Cmdlets ####
 Command | Description
 :--------|:------------
-**Disable-SPOFeature** | Disables a feature
-**Enable-SPOFeature**| Enables a feature
-**Get-SPOFeature** | Returns features
+**[Disable-SPOFeature](Documentation/DisableSPOFeature.md)** | Disables a feature
+**[Enable-SPOFeature](Documentation/EnableSPOFeature.md)**| Enables a feature
+**[Get-SPOFeature](Documentation/GetSPOFeature.md)** | Returns features
 
 #### Field Cmdlets ####
 Command | Description
