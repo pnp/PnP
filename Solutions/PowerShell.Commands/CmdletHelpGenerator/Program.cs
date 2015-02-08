@@ -261,7 +261,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
                         {
                             docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
-                            docfile.WriteLine("*Topic last generated: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
+                            docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
                             docfile.WriteLine("");
                             docfile.WriteLine(cmdletInfo.Description);
                             docfile.WriteLine("##Syntax");
