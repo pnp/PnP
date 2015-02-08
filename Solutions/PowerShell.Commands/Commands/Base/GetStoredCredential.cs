@@ -13,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, HelpMessage = "The credential to retrieve.")]
         public string Name;
 
-        [Parameter(Mandatory = false, HelpMessage = "The type of credential to retrieve from the Credential Manager. Possible valus are 'O365', 'OnPrem' or 'PSCredential'")]
+        [Parameter(Mandatory = false, HelpMessage = "The object type of the credential to return from the Credential Manager. Possible valus are 'O365', 'OnPrem' or 'PSCredential'")]
         public CredentialType Type = CredentialType.O365;
 
         protected override void ProcessRecord()
