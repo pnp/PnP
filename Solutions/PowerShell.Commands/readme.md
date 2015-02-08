@@ -65,8 +65,8 @@ We are looking to provide more examples to usage of these sooner or later.
 #### Base Cmdlets ####
 Command | Description
 :--------|:------------
-**Connect-SPOnline** | Creates a new connection context to be used by all commands
-**Disconnect-SPOnline** | Disconnects the context
+**[Connect-SPOnline](Documentation/ConnectSPOnline.md)** | Creates a new connection context to be used by all commands
+**[Disconnect-SPOnline](Documentation/DisconnectSPOnline.md)** | Disconnects the context
 **Execute-SPOQuery** | Convenience command that executes the current query. See **Get-SPOContext**
 **Get-SPOConfiguration** |	Gets the current configuration, alike a local property bag
 **Get-SPOContext** | Returns a ClientContext object for use in your own powershell scripts that use CSOM
