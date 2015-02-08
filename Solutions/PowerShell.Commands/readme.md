@@ -123,25 +123,25 @@ Command | Description
 #### Field Cmdlets ####
 Command | Description
 :--------|:------------
-**Add-SPOField** | Adds a new field
-**Add-SPOFieldFromXml** | Adds a new field based on a CAML xml snippet, see http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx
-**Add-SPOTaxonomyField** | Creates a new Taxonomy field
-**Get-SPOField** | Returns a field
-**Remove-SPOField** | Removes a field
+**[Add-SPOField](Documentation/AddSPOField.md)** | Adds a new field
+**[Add-SPOFieldFromXml](Documentation/AddSPOFieldFromXml.md)** | Adds a new field based on a CAML xml snippet, see http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx
+**[Add-SPOTaxonomyField](Documentation/AddSPOTaxonomyField.md)** | Creates a new Taxonomy field
+**[Get-SPOField](Documentation/GetSPOField.md)** | Returns a field
+**[Remove-SPOField](Documentation/RemoveSPOField.md)** | Removes a field
 
 #### List Cmdlets ####
 Command | Description
 :--------|:------------
-**Add-SPOView** | Adds a new view to an existing list
-**Get-SPOList** | Returns a list
-**Get-SPOView** | Returns the views of a list
-**Get-SPOListItem** | Retrieve list items by id, unique id, or CAML. Optionally you can define which fields to load.
-**New-SPOList** | Creates a new list
-**Remove-SPOList** | Removes a list
-**Remove-SPOView** | Removes a view
-**Set-SPODefaultColumnValues** | Sets default column values for a document library
-**Set-SPOList** | Sets list properties
-**Set-SPOListPermission** | Sets list permissions
+**[Add-SPOView](Documentation/AddSPOView.md)** | Adds a new view to an existing list
+**[Get-SPOList](Documentation/GetSPOList.md)** | Returns a list
+**[Get-SPOView](Documentation/GetSPOView.md)** | Returns the views of a list
+**[Get-SPOListItem](Documentation/GetSPOListItem.md)** | Retrieve list items by id, unique id, or CAML. Optionally you can define which fields to load.
+**[New-SPOList](Documentation/NewSPOList.md)** | Creates a new list
+**[Remove-SPOList](Documentation/RemoveSPOList.md)** | Removes a list
+**[Remove-SPOView](Documentation/RemoveSPOView.md)** | Removes a view
+**[Set-SPODefaultColumnValues](Documentation/SetSPODefaultColumnValues.md)** | Sets default column values for a document library
+**[Set-SPOList](Documentation/SetSPOList.md)** | Sets list properties
+**[Set-SPOListPermission](Documentation/SetSPOListPermission.md)** | Sets list permissions
 
 #### User and Group Cmdlets ####
 Command | Description
