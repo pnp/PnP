@@ -192,18 +192,28 @@ namespace Microsoft.SharePoint.Client.Tests
                 web.CreateList(ListTemplateType.GenericList, listName, false);
 
                 var list = web.GetListByTitle(listName);
+
                 var key = "key";
                 var value = "value";
-
                 list.SetPropertyBagValue(key, value);
                 var retrievedValue = list.GetPropertyBagValueString(key);
-
                 Assert.AreEqual(value, retrievedValue);
+
+                var key2 = "key2";
+                var value2 = 123;
+                list.SetPropertyBagValue(key2, value2);
+                var retrievedValue2 = list.GetPropertyBagValueInt(key2);
+                Assert.IsTrue(retrievedValue2.HasValue);
+                Assert.AreEqual(value2, retrievedValue2.Value);
+
+                var retrievedValue3 = list.GetPropertyBagValueInt("nonExisting");
+                Assert.IsFalse(retrievedValue3.HasValue);
 
                 list.DeleteObject();
                 clientContext.ExecuteQueryRetry();
             }
         }
+
         #endregion
     }
 }
