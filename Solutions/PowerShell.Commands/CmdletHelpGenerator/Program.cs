@@ -16,7 +16,17 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             var cmdlets = new List<CmdletInfo>();
             var inFile = args[0];
             var outFile = args[1];
-            var solutionDir = args[2];
+
+            // Specify an additional (third) parameter pointing to the Solution folder to generate Markdown. The markdown 
+            // will be created in the Documentation folder underneath the solution folder.
+            bool generateMarkdown = false;
+            string solutionDir = null;
+            if (args.Length > 2)
+            {
+                solutionDir = args[2];
+                generateMarkdown = true;
+            }
+
             var doc = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
 
             XNamespace ns = "http://msh";
@@ -256,62 +266,65 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     }
                     commandElement.Add(examplesElement);
 
-                    if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
+                    if (generateMarkdown)
                     {
-                        using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
+                        if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
                         {
-                            docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
-                            docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
-                            docfile.WriteLine("");
-                            docfile.WriteLine(cmdletInfo.Description);
-                            docfile.WriteLine("##Syntax");
-                            foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                            using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
                             {
-                                var syntaxText = new StringBuilder();
-                                syntaxText.AppendFormat("    {0}", cmdletInfo.FullCommand);
-                                foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
+                                docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
+                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
+                                docfile.WriteLine("");
+                                docfile.WriteLine(cmdletInfo.Description);
+                                docfile.WriteLine("##Syntax");
+                                foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
                                 {
-                                    syntaxText.Append(" ");
-                                    if (!par.Required)
+                                    var syntaxText = new StringBuilder();
+                                    syntaxText.AppendFormat("    {0}", cmdletInfo.FullCommand);
+                                    foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
                                     {
-                                        syntaxText.Append("[");
+                                        syntaxText.Append(" ");
+                                        if (!par.Required)
+                                        {
+                                            syntaxText.Append("[");
+                                        }
+                                        syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                        if (!par.Required)
+                                        {
+                                            syntaxText.Append("]");
+                                        }
                                     }
-                                    syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
-                                    if (!par.Required)
-                                    {
-                                        syntaxText.Append("]");
-                                    }
+                                    // Add All ParameterSet ones
+                                    docfile.WriteLine(syntaxText);
+                                    docfile.WriteLine("");
+                                    docfile.WriteLine("&nbsp;");
+                                    docfile.WriteLine("");
                                 }
-                                // Add All ParameterSet ones
-                                docfile.WriteLine(syntaxText);
-                                docfile.WriteLine("");
-                                docfile.WriteLine("&nbsp;");
-                                docfile.WriteLine("");
-                            }
 
-                            if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
-                            {
-                                docfile.WriteLine("##Detailed Description");
-                                docfile.WriteLine(cmdletInfo.DetailedDescription);
-                                docfile.WriteLine("");
-                            }
-                            docfile.WriteLine("##Parameters");
-                            docfile.WriteLine("Parameter|Type|Required|Description");
-                            docfile.WriteLine("---------|----|--------|-----------");
-                            foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
-                            {
-                                docfile.WriteLine("{0}|{1}|{2}|{3}", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
-                            }
-                            if(examples.Any())
-                            docfile.WriteLine("##Examples");
-                            var examplesCount = 1;
-                            foreach (var example in examples.OrderBy(e => e.SortOrder))
-                            {
-                                docfile.WriteLine(example.Introduction);
-                                docfile.WriteLine("###Example {0}",examplesCount);
-                                docfile.WriteLine("    {0}",example.Code);
-                                docfile.WriteLine(example.Remarks);
-                                examplesCount++;
+                                if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
+                                {
+                                    docfile.WriteLine("##Detailed Description");
+                                    docfile.WriteLine(cmdletInfo.DetailedDescription);
+                                    docfile.WriteLine("");
+                                }
+                                docfile.WriteLine("##Parameters");
+                                docfile.WriteLine("Parameter|Type|Required|Description");
+                                docfile.WriteLine("---------|----|--------|-----------");
+                                foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
+                                {
+                                    docfile.WriteLine("{0}|{1}|{2}|{3}", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
+                                }
+                                if (examples.Any())
+                                    docfile.WriteLine("##Examples");
+                                var examplesCount = 1;
+                                foreach (var example in examples.OrderBy(e => e.SortOrder))
+                                {
+                                    docfile.WriteLine(example.Introduction);
+                                    docfile.WriteLine("###Example {0}", examplesCount);
+                                    docfile.WriteLine("    {0}", example.Code);
+                                    docfile.WriteLine(example.Remarks);
+                                    examplesCount++;
+                                }
                             }
                         }
                     }
