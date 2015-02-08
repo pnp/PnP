@@ -1,5 +1,5 @@
 #Add-SPOJavascriptLink
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Adds a link to a JavaScript file to a web
 ##Syntax

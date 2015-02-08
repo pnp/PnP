@@ -1,5 +1,5 @@
 #Get-SPOCustomAction
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Returns all or a specific custom action(s)
 ##Syntax

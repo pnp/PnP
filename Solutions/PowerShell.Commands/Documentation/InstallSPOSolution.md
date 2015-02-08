@@ -1,5 +1,5 @@
 #Install-SPOSolution
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Installs a sandboxed solution to a site collection
 ##Syntax

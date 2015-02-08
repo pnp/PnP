@@ -1,5 +1,5 @@
 #Set-SPOList
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 
 ##Syntax

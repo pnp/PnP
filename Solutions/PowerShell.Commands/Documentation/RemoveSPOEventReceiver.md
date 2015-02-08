@@ -1,5 +1,5 @@
 #Remove-SPOEventReceiver
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Removes/unregisters a specific event receiver
 ##Syntax

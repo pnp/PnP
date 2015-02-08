@@ -1,5 +1,5 @@
 #Get-SPOEventReceiver
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Returns all or a specific event receiver
 ##Syntax

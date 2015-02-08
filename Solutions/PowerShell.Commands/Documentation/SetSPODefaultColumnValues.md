@@ -1,5 +1,5 @@
 #Set-SPODefaultColumnValues
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Sets default column values for a document library
 ##Syntax

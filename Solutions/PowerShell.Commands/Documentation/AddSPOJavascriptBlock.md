@@ -1,5 +1,5 @@
 #Add-SPOJavascriptBlock
-*Topic last generated: 2015-02-08*
+*Topic automatically generated on: 2015-02-08*
 
 Adds a link to a JavaScript snippet/block to a web
 ##Syntax
