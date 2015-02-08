@@ -26,8 +26,7 @@ ResourceQuota|Double|False|Specifies the quota for this site collection in Sandb
 ResourceQuotaWarningLevel|Double|False|
 StorageQuota|Int64|False|Specifies the storage quota for this site collection in megabytes. This value must not exceed the company's available quota.
 StorageQuotaWarningLevel|Int64|False|
-Template|String|False|Specifies the site collection template type. Use the Get-SPOWebTemplate cmdlet to get the list of valid
-templates. If no template is specified, one can be added later. The Template and LocaleId parameters must be a valid combination as returned from the Get-SPOnlineWebTemplate cmdlet.
+Template|String|False|Specifies the site collection template type. Use the Get-SPOWebTemplate cmdlet to get the list of valid templates. If no template is specified, one can be added later. The Template and LocaleId parameters must be a valid combination as returned from the Get-SPOnlineWebTemplate cmdlet.
 TimeZone|Int32|True|Use Get-SPOnlineTimeZone to retrieve possible timezone values
 Title|String|True|
 Url|String|True|Specifies the full URL of the new site collection. It must be in a valid managed path in the company's site.
