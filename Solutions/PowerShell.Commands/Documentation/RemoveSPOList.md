@@ -12,4 +12,4 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Force|SwitchParameter|False|
 Identity|ListPipeBind|True|The ID or Title of the list.
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

@@ -12,7 +12,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|GroupPipeBind|True|The group id, group name or group object to add the user to.
 LoginName|String|True|The login name of the user
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

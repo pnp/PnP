@@ -27,4 +27,4 @@ InternalName|String|True|
 List|ListPipeBind|False|
 Required|SwitchParameter|False|
 Type|FieldType|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

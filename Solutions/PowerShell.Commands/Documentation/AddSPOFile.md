@@ -18,7 +18,7 @@ Path|String|True|The local file path.
 Publish|SwitchParameter|False|Will auto publish the file.
 PublishComment|String|False|The comment added to the publish action.
 UseWebDav|SwitchParameter|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

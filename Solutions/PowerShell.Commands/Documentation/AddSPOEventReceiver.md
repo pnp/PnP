@@ -17,7 +17,7 @@ Name|String|True|
 SequenceNumber|Int32|False|
 Synchronization|EventReceiverSynchronization|True|
 Url|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

@@ -12,4 +12,4 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 CustomMasterPageUrl|String|False|
 MasterPageUrl|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

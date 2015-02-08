@@ -21,4 +21,4 @@ MultiValue|SwitchParameter|False|
 Required|SwitchParameter|False|
 TermPathDelimiter|String|False|
 TermSetPath|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

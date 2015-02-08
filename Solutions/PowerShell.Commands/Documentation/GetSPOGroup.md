@@ -26,7 +26,7 @@ AssociatedMemberGroup|SwitchParameter|False|Retrieve the associated member group
 AssociatedOwnerGroup|SwitchParameter|False|Retrieve the associated owner group
 AssociatedVisitorGroup|SwitchParameter|False|Retrieve the associated visitor group
 Identity|GroupPipeBind|False|Get a specific group by name
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

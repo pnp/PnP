@@ -17,4 +17,4 @@ Parameter|Type|Required|Description
 Content|String|False|
 Layout|WikiPageLayout|False|
 ServerRelativePageUrl|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

@@ -11,7 +11,7 @@ Adds a user to the build-in Site User Info List and returns a user object
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 LoginName|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

@@ -17,7 +17,7 @@ Locale|Int32|False|
 Template|String|True|The site definition template to use for the new web, e.g. STS#0
 Title|String|True|The title of the new web
 Url|String|True|The Url of the new web
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

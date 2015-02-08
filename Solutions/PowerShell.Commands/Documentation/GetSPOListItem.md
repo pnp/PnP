@@ -15,7 +15,7 @@ Id|Int32|False|The ID of the item to retrieve
 List|ListPipeBind|True|The list to query
 Query|String|False|The CAML query to execute against the list
 UniqueId|GuidPipeBind|False|The unique id (GUID) of the item to retrieve
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

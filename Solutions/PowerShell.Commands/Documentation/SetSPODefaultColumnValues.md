@@ -17,7 +17,7 @@ Field|FieldPipeBind|True|The internal name, id or a reference to a field
 Folder|String|False|A library relative folder path, if not specified it will set the default column values on the root folder of the library ('/')
 List|ListPipeBind|False|The ID, Name or Url of the list.
 Value|String[]|True|A list of values. In case of a text field the values will be concatenated, separated by a semi-column. In case of a taxonomy field multiple values will added
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

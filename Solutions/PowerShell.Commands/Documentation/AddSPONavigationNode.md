@@ -14,4 +14,4 @@ Header|String|False|
 Location|NavigationNodeType|True|Either 'Top' or 'Quicklaunch'
 Title|String|True|
 Url|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

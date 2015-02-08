@@ -14,4 +14,4 @@ BackgroundImageUrl|String|False|
 ColorPaletteUrl|String|False|
 FontSchemeUrl|String|False|
 ShareGenerated|SwitchParameter|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

@@ -12,4 +12,4 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|ViewPipeBind|False|
 List|ListPipeBind|True|The ID or Url of the list.
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

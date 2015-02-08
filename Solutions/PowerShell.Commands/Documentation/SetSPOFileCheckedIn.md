@@ -13,4 +13,4 @@ Parameter|Type|Required|Description
 CheckinType|CheckinType|False|
 Comment|String|False|
 Url|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

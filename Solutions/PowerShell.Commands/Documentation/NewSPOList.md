@@ -16,7 +16,7 @@ QuickLaunchOptions|QuickLaunchOptions|False|Obsolete
 Template|ListTemplateType|True|The type of list to create.
 Title|String|True|
 Url|String|False|If set, will override the url of the list.
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

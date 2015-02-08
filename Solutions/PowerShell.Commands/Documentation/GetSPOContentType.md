@@ -11,7 +11,7 @@ Retrieves a content type
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|ContentTypePipeBind|False|Name or ID of the content type to retrieve
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

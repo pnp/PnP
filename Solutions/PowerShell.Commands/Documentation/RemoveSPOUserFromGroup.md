@@ -12,7 +12,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 GroupName|String|True|A valid group name
 LoginName|String|True|A valid logon name of a user
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

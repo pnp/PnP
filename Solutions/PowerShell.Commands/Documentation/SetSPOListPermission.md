@@ -19,4 +19,4 @@ Group|GroupPipeBind|True|
 Identity|ListPipeBind|True|
 RemoveRole|String|False|
 User|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

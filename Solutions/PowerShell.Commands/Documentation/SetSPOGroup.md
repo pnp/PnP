@@ -15,4 +15,4 @@ Identity|GroupPipeBind|True|
 RemoveRole|String|False|
 SetAssociatedGroup|AssociatedGroupType|False|
 Title|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

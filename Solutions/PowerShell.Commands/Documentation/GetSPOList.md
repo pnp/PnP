@@ -14,7 +14,7 @@ Returns a list object. Due to limitation of the PowerShell environment the comma
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|ListPipeBind|False|The ID or Url of the list.
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

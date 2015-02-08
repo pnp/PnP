@@ -13,7 +13,7 @@ Parameter|Type|Required|Description
 Force|SwitchParameter|False|
 Identity|GuidPipeBind|True|
 List|ListPipeBind|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

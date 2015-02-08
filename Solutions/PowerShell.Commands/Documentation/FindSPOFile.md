@@ -11,7 +11,7 @@ Finds a file in the virtual file system of the web.
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Match|String|True|Wildcard query
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

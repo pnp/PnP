@@ -14,4 +14,4 @@ PageName|String|True|
 PageTemplateName|String|True|
 Publish|SwitchParameter|False|Publishes the page. Also Approves it if moderation is enabled on the Pages library.
 Title|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

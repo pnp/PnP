@@ -10,4 +10,4 @@
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

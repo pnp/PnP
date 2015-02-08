@@ -11,4 +11,4 @@
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Keys|List`1|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

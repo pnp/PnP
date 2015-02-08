@@ -15,4 +15,4 @@ ClearSubscopes|SwitchParameter|False|
 CopyRoleAssignments|SwitchParameter|False|
 Identity|ListPipeBind|True|
 Title|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

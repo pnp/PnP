@@ -11,7 +11,7 @@ Returns a SharePoint App Instance
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|GuidPipeBind|False|The Id of the App Instance
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

@@ -14,4 +14,4 @@ Identity|GuidPipeBind|True|
 Key|String|True|
 PageUrl|String|True|
 Value|Object|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

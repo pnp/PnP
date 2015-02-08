@@ -11,7 +11,7 @@ Sets the home page of the current web.
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Path|String|True|The root folder relative path of the homepage
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

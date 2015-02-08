@@ -14,7 +14,7 @@ Force|SwitchParameter|False|Will forcibly install the app by activating the app 
 LoadOnly|SwitchParameter|False|Will only upload the app, but not install it
 Locale|Int32|False|Will install the app for the specified locale
 Path|String|False|Path pointing to the .app file
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

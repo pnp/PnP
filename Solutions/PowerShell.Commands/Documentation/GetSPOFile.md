@@ -18,7 +18,7 @@ AsString|SwitchParameter|True|
 Filename|String|False|
 Path|String|False|
 ServerRelativeUrl|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

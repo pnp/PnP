@@ -13,4 +13,4 @@ Parameter|Type|Required|Description
 AlternateCssUrl|String|False|
 SiteLogoUrl|String|False|
 Title|String|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

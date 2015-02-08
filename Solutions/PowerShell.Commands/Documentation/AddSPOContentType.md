@@ -15,7 +15,7 @@ Description|String|False|
 Group|String|False|
 Name|String|True|
 ParentContentType|ContentType|False|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

@@ -16,7 +16,7 @@ Description|String|False|
 Owner|String|False|
 SetAssociatedGroup|AssociatedGroupType|False|
 Title|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1

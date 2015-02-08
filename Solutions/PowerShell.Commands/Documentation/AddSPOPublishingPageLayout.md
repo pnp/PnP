@@ -14,4 +14,4 @@ AssociatedContentTypeID|String|True|
 Description|String|True|
 SourceFilePath|String|True|Full path to the file which will be uploaded
 Title|String|True|
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

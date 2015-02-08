@@ -12,7 +12,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|FeaturePipeBind|False|
 Scope|FeatureScope|False|The scope of the feature. Defaults to Web.
-Web|WebPipeBind|False|
+Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1
