@@ -1,0 +1,16 @@
+#Set-SPOPropertyBagValue
+*Topic last generated: 2015-02-08*
+
+
+##Syntax
+    Set-SPOPropertyBagValue -Key [<String>] -Value [<String>] [-Indexed [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+
+&nbsp;
+
+##Parameters
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+Indexed|SwitchParameter|False|
+Key|String|True|
+Value|String|True|
+Web|WebPipeBind|False|

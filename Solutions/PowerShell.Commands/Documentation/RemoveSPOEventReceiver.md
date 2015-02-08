@@ -1,0 +1,25 @@
+#Remove-SPOEventReceiver
+*Topic last generated: 2015-02-08*
+
+Removes/unregisters a specific event receiver
+##Syntax
+    Remove-SPOEventReceiver [-List [<ListPipeBind>]] -Identity [<GuidPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+
+&nbsp;
+
+##Parameters
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+Force|SwitchParameter|False|
+Identity|GuidPipeBind|True|
+List|ListPipeBind|False|
+Web|WebPipeBind|False|
+##Examples
+
+###Example 1
+    PS:> Remove-SPOEventReceiver -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22
+This will remove an event receiver with id fb689d0e-eb99-4f13-beb3-86692fd39f22 from the current web
+
+###Example 2
+    PS:> Remove-SPOEventReceiver -List ProjectList -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22
+This will remove an event receiver with id fb689d0e-eb99-4f13-beb3-86692fd39f22 from the list with name "ProjectList"

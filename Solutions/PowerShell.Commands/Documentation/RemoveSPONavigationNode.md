@@ -1,0 +1,16 @@
+#Remove-SPONavigationNode
+*Topic last generated: 2015-02-08*
+
+
+##Syntax
+    Remove-SPONavigationNode -Location [<NavigationNodeType>] -Title [<String>] [-Header [<String>]] [-Web [<WebPipeBind>]]
+
+&nbsp;
+
+##Parameters
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+Header|String|False|
+Location|NavigationNodeType|True|Either 'Top' or 'Quicklaunch'
+Title|String|True|
+Web|WebPipeBind|False|

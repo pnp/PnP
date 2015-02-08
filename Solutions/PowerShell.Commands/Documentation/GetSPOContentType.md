@@ -1,0 +1,19 @@
+#Get-SPOContentType
+*Topic last generated: 2015-02-08*
+
+Retrieves a content type
+##Syntax
+    Get-SPOContentType [-Web [<WebPipeBind>]] [-Identity [<ContentTypePipeBind>]]
+
+&nbsp;
+
+##Parameters
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+Identity|ContentTypePipeBind|False|Name or ID of the content type to retrieve
+Web|WebPipeBind|False|
+##Examples
+
+###Example 1
+    PS:> Get-SPOContentType -Identity "Project Document"
+This will add an existing content type to a list and sets it as the default content type

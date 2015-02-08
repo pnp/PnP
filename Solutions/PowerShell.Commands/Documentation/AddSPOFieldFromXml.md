@@ -1,0 +1,15 @@
+#Add-SPOFieldFromXml
+*Topic last generated: 2015-02-08*
+
+
+##Syntax
+    Add-SPOFieldFromXml [-List [<ListPipeBind>]] [-Web [<WebPipeBind>]] -FieldXml [<String>]
+
+&nbsp;
+
+##Parameters
+Parameter|Type|Required|Description
+---------|----|--------|-----------
+FieldXml|String|True|CAML snippet containing the field definition. See http://msdn.microsoft.com/en-us/library/office/ms437580(v=office.15).aspx
+List|ListPipeBind|False|
+Web|WebPipeBind|False|
