@@ -20,12 +20,9 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Description|String|False|
 Lcid|UInt32|False|Specifies the language of this site collection. For more information, see Locale IDs Assigned by Microsoft (http://go.microsoft.com/fwlink/p/?LinkId=242911).
-Owner|String|False|Specifies the user name of the site collection's primary owner. The owner must be a user instead of a security
-group or an email-enabled security group.
+Owner|String|False|Specifies the user name of the site collection's primary owner. The owner must be a user instead of a security group or an email-enabled security group.
 RemoveDeletedSite|SwitchParameter|False|
-ResourceQuota|Double|False|Specifies the quota for this site collection in Sandboxed Solutions units. This value must not exceed the
-company's aggregate available Sandboxed Solutions quota. The default value is 0. For more information, see
-Resource Usage Limits on Sandboxed Solutions in SharePoint 2010 (http://msdn.microsoft.com/en-us/library/gg615462.aspx).
+ResourceQuota|Double|False|Specifies the quota for this site collection in Sandboxed Solutions units. This value must not exceed the company's aggregate available Sandboxed Solutions quota. The default value is 0. For more information, see Resource Usage Limits on Sandboxed Solutions in SharePoint 2010 (http://msdn.microsoft.com/en-us/library/gg615462.aspx).
 ResourceQuotaWarningLevel|Double|False|
 StorageQuota|Int64|False|Specifies the storage quota for this site collection in megabytes. This value must not exceed the company's available quota.
 StorageQuotaWarningLevel|Int64|False|
