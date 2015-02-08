@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
+using System.Text;
 using System.Xml.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
@@ -12,8 +13,10 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
     {
         static void Main(string[] args)
         {
+            var cmdlets = new List<CmdletInfo>();
             var inFile = args[0];
             var outFile = args[1];
+            var solutionDir = args[2];
             var doc = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
 
             XNamespace ns = "http://msh";
@@ -35,6 +38,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             {
                 if (t.BaseType.Name == "SPOCmdlet" || t.BaseType.Name == "PSCmdlet" || t.BaseType.Name == "SPOWebCmdlet" || t.BaseType.Name == "SPOAdminCmdlet")
                 {
+
                     //XElement examples = new XElement(command + "examples");
 
                     var verb = string.Empty;
@@ -74,6 +78,12 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
+                    var cmdletInfo = new CmdletInfo(verb, noun);
+                    cmdletInfo.Description = description;
+                    cmdletInfo.DetailedDescription = detaileddescription;
+                    cmdletInfo.Version = version;
+                    cmdletInfo.Copyright = copyright;
+
                     var commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
                     var detailsElement = new XElement(command + "details");
                     commandElement.Add(detailsElement);
@@ -100,8 +110,20 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             {
                                 var a = (ParameterAttribute)attr;
 
+
                                 if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
                                 {
+                                    var cmdletSyntax = cmdletInfo.Syntaxes.FirstOrDefault(c => c.ParameterSetName == a.ParameterSetName);
+                                    if (cmdletSyntax == null)
+                                    {
+                                        cmdletSyntax = new CmdletSyntax();
+                                        cmdletSyntax.ParameterSetName = a.ParameterSetName;
+                                        cmdletInfo.Syntaxes.Add(cmdletSyntax);
+                                    }
+
+                                    cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+
+
                                     var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
                                     if (syntaxItem == null)
                                     {
@@ -128,6 +150,15 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     {
                                         si.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                     }
+
+                                    if (cmdletInfo.Syntaxes.Count == 0)
+                                    {
+                                        cmdletInfo.Syntaxes.Add(new CmdletSyntax() { ParameterSetName = ParameterAttribute.AllParameterSets });
+                                    }
+                                    foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                                    {
+                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                    }
                                 }
                             }
                         }
@@ -142,6 +173,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         syntaxItemElement.Add(new XElement(maml + "name", string.Format("{0}-{1}", verb, noun)));
                         foreach (var parameter in syntaxItem.Parameters)
                         {
+
                             var parameterElement = new XElement(command + "parameter", new XAttribute("required", parameter.Required), new XAttribute("position", parameter.Position > 0 ? parameter.Position.ToString() : "named"));
 
                             parameterElement.Add(new XElement(maml + "name", parameter.Name));
@@ -163,6 +195,9 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             if (attr is ParameterAttribute)
                             {
                                 var a = (ParameterAttribute)attr;
+
+                                cmdletInfo.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+
                                 var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
 
                                 parameter2Element.Add(new XElement(maml + "name", field.Name));
@@ -220,7 +255,68 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         exampleCount++;
                     }
                     commandElement.Add(examplesElement);
+
+                    if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
+                    {
+                        using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
+                        {
+                            docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
+                            docfile.WriteLine("*Topic last generated: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
+                            docfile.WriteLine("");
+                            docfile.WriteLine(cmdletInfo.Description);
+                            docfile.WriteLine("##Syntax");
+                            foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                            {
+                                var syntaxText = new StringBuilder();
+                                syntaxText.AppendFormat("    {0}", cmdletInfo.FullCommand);
+                                foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
+                                {
+                                    syntaxText.Append(" ");
+                                    if (!par.Required)
+                                    {
+                                        syntaxText.Append("[");
+                                    }
+                                    syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                    if (!par.Required)
+                                    {
+                                        syntaxText.Append("]");
+                                    }
+                                }
+                                // Add All ParameterSet ones
+                                docfile.WriteLine(syntaxText);
+                                docfile.WriteLine("");
+                                docfile.WriteLine("&nbsp;");
+                                docfile.WriteLine("");
+                            }
+
+                            if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
+                            {
+                                docfile.WriteLine("##Detailed Description");
+                                docfile.WriteLine(cmdletInfo.DetailedDescription);
+                                docfile.WriteLine("");
+                            }
+                            docfile.WriteLine("##Parameters");
+                            docfile.WriteLine("Parameter|Type|Required|Description");
+                            docfile.WriteLine("---------|----|--------|-----------");
+                            foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
+                            {
+                                docfile.WriteLine("{0}|{1}|{2}|{3}", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
+                            }
+                            if(examples.Any())
+                            docfile.WriteLine("##Examples");
+                            var examplesCount = 1;
+                            foreach (var example in examples.OrderBy(e => e.SortOrder))
+                            {
+                                docfile.WriteLine(example.Introduction);
+                                docfile.WriteLine("###Example {0}",examplesCount);
+                                docfile.WriteLine("    {0}",example.Code);
+                                docfile.WriteLine(example.Remarks);
+                                examplesCount++;
+                            }
+                        }
+                    }
                 }
+
             }
             doc.Save(outFile);
 
