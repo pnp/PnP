@@ -177,13 +177,12 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Get int typed property bag value. If does not contain, returns default value.
+        /// Get int typed property bag value
         /// </summary>
         /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
-        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as integer</returns>
-        public static int? GetPropertyBagValueInt(this List list, string key, int defaultValue)
+        public static int? GetPropertyBagValueInt(this List list, string key)
         {
             object value = GetPropertyBagValueInternal(list, key);
             if (value != null)
@@ -192,18 +191,17 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                return defaultValue;
+                return null;
             }
         }
 
         /// <summary>
-        /// Get string typed property bag value. If does not contain, returns given default value.
+        /// Get string typed property bag value.
         /// </summary>
         /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
-        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as string</returns>
-        public static string GetPropertyBagValueString(this List list, string key, string defaultValue)
+        public static string GetPropertyBagValueString(this List list, string key)
         {
             object value = GetPropertyBagValueInternal(list, key);
             if (value != null)
