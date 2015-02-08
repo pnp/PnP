@@ -181,5 +181,29 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
+        #region Property bag tests
+        [TestMethod()]
+        public void SetPropertyBagValueTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var listName = "Test_list_" + DateTime.Now.ToFileTime();
+                var web = clientContext.Web;
+                web.CreateList(ListTemplateType.GenericList, listName, false);
+
+                var list = web.GetListByTitle(listName);
+                var key = "key";
+                var value = "value";
+
+                list.SetPropertyBagValue(key, value);
+                var retrievedValue = list.GetPropertyBagValueString(key);
+
+                Assert.AreEqual(value, retrievedValue);
+
+                list.DeleteObject();
+                clientContext.ExecuteQueryRetry();
+            }
+        }
+        #endregion
     }
 }

@@ -259,7 +259,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if in place records management settings are active for this list</returns>
         public static bool IsListRecordSettingDefined(this List list)
         {
-            string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC, "");
+            string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC);
 
             if (!String.IsNullOrEmpty(useListSpecific))
             {
@@ -323,7 +323,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns><see cref="EcmListManualRecordDeclaration"/> enum that defines the manual in place record declaration settings for this list</returns>
         public static EcmListManualRecordDeclaration GetListManualRecordDeclaration(this List list)
         {
-            string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC, "");
+            string useListSpecific = list.GetPropertyBagValueString(ECM_IPR_LIST_USE_LIST_SPECIFIC);
 
             if (!String.IsNullOrEmpty(useListSpecific))
             {
@@ -336,7 +336,7 @@ namespace Microsoft.SharePoint.Client
                    }
                    else
                    {
-                       string manualDeclararion = list.GetPropertyBagValueString(ECM_ALLOW_MANUAL_DECLARATION, "");
+                       string manualDeclararion = list.GetPropertyBagValueString(ECM_ALLOW_MANUAL_DECLARATION);
                        bool manual = false;
                        if (Boolean.TryParse(manualDeclararion, out manual))
                        {
@@ -452,7 +452,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if auto record declaration is active, false otherwise</returns>
         public static bool GetListAutoRecordDeclaration(this List list)
         {
-            string autoDeclare = list.GetPropertyBagValueString(ECM_AUTO_DECLARE_RECORDS, "");
+            string autoDeclare = list.GetPropertyBagValueString(ECM_AUTO_DECLARE_RECORDS);
 
             if (!String.IsNullOrEmpty(autoDeclare))
             {
