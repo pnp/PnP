@@ -17,6 +17,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         public string url;
         public DateTime? PreviousRun;
         public bool? PreviousRunSuccessful;
+        public bool? CurrentRunSuccessful;
         public string PreviousRunVersion;
         public Dictionary<String, String> Properties;
 

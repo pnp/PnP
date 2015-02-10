@@ -1,10 +1,11 @@
-﻿using OfficeDevPnP.Framework.TimerJob.Enums;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Framework.TimerJob.Enums;
+using OfficeDevPnP.Framework.TimerJob.Utilities;
 using System;
 using System.Collections.Generic;
-using OfficeDevPnP.Framework.TimerJob.Utilities;
-using Microsoft.SharePoint.Client;
 using System.Reflection;
-using Microsoft.Online.SharePoint.TenantAdministration;
 using System.Threading;
 using System.Web.Script.Serialization;
 
@@ -54,7 +55,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         private bool expandSubSites = false;
         // Threading
         private static int numerOfThreadsNotYetCompleted;
-        private static ManualResetEvent doneEvent = new ManualResetEvent(false);
+        private static ManualResetEvent doneEvent;
         private bool useThreading = true;
         private int maximumThreads = 5;
         #endregion
@@ -403,7 +404,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                         TimerJobRun timerJobRunProperties = new TimerJobRun()
                         {
                             PreviousRun = DateTime.Now,
-                            PreviousRunSuccessful = e.PreviousRunSuccessful,
+                            PreviousRunSuccessful = e.CurrentRunSuccessful,
                             PreviousRunVersion = this.version,
                             Properties = e.Properties,
                         };
@@ -867,6 +868,8 @@ namespace OfficeDevPnP.Framework.TimerJob
 
                     // Determine the number of threads we'll spin off. Will be less or equal to the maximum number of threads
                     numerOfThreadsNotYetCompleted = expandBatches.Count;
+                    // Prepare the reset event for indicating thread completion
+                    doneEvent = new ManualResetEvent(false);
 
                     Log.Info(LOGGING_SOURCE, "Expand subsites by lanuching a thread per {0} of the work batches", numerOfThreadsNotYetCompleted);
                     foreach (List<string> expandBatch in expandBatches)
