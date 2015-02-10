@@ -85,7 +85,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Jobs\ChainingJob.cs" />
     <Compile Include="Jobs\ExpandJob.cs" />
+    <Compile Include="Jobs\NoThreadingJob.cs" />
+    <Compile Include="Jobs\OverrideJob.cs" />
+    <Compile Include="Jobs\SiteCollectionScopedJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharePointContext.cs" />

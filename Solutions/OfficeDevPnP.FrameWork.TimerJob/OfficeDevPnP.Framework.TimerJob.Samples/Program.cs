@@ -141,7 +141,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             expandJobAppOnly.AddSite("https://bertonline-my.sharepoint.com/personal/*");
             //PrintJobSettingsAndRunJob(expandJobAppOnly);
             
-            // Demo4: Let's use the framework state management capabilities
+            // Demo4: Let's use the framework state management capabilities to optimize performance 
             SiteGovernanceJob governanceJob = new SiteGovernanceJob();
             governanceJob.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
             // set enumeration credentials to allow using search API to find the OD4B sites
@@ -150,14 +150,37 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             governanceJob.UseThreading = false;
             //PrintJobSettingsAndRunJob(governanceJob);
             
-            // overrides
+            // Demo5: Let's override the default site adding and resolving mechanisms and roll our own implementations
+            OverrideJob overrideJob = new OverrideJob();
+            // The provided credentials need access to the site collections you want to use
+            overrideJob.UseOffice365Authentication(Tenant, User, Password);
+            overrideJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
+            //PrintJobSettingsAndRunJob(overrideJob);
+            
+            // Demo6: Let's not do multi-threading
+            NoThreadingJob noThreadingJob = new NoThreadingJob();
+            noThreadingJob.UseOffice365Authentication(Tenant, User, Password);
+            noThreadingJob.AddSite("https://bertonline.sharepoint.com/sites/d*");
+            //PrintJobSettingsAndRunJob(noThreadingJob);
+
+            // Demo7: subsites processing within same thread, but having multiple threads at site collection level
+            SiteCollectionScopedJob siteCollectionScopedJob = new SiteCollectionScopedJob();
+            siteCollectionScopedJob.UseOffice365Authentication(Tenant, User, Password);
+            siteCollectionScopedJob.AddSite("https://bertonline.sharepoint.com/sites/dev*");
+            //PrintJobSettingsAndRunJob(siteCollectionScopedJob);
+
+            // Demo8: Timer jobs can chain other timer jobs in their execution chaining 
+            ChainingJob chainingJob = new ChainingJob();
+            chainingJob.UseOffice365Authentication(Tenant, User, Password);
+            chainingJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
+            PrintJobSettingsAndRunJob(chainingJob);
 
 
-            // chaining 
+            // on-premises
 
 
-            //on-premises
-
+            // logging
+            // docu only
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press <enter> to continue");

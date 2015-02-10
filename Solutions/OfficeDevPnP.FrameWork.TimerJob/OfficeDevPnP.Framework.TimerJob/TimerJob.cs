@@ -48,7 +48,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         private int sharePointVersion = 16;
         private string enumerationUser;
         private string enumerationPassword;
-        private string enumrationDomain;
+        private string enumerationDomain;
         // Site scope variables
         private List<string> requestedSites;
         private List<string> sitesToProcess;
@@ -647,6 +647,27 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
+        /// Takes over the settings from the passed timer job. Is useful when you run multiple jobs in a row or chain 
+        /// job execution. Settings that are taken over are all the authentication, enumeration settings and SharePointVersion
+        /// </summary>
+        /// <param name="job"></param>
+        public void Clone(TimerJob job)
+        {
+            this.tenantName = job.tenantName;
+            this.username = job.username;
+            this.password = job.password;
+            this.domain = job.domain;
+            this.enumerationUser = job.enumerationUser;
+            this.enumerationPassword = job.enumerationPassword;
+            this.enumerationDomain = job.enumerationDomain;
+            this.authenticationType = job.authenticationType;
+            this.realm = job.realm;
+            this.clientId = job.clientId;
+            this.clientSecret = job.clientSecret;
+            this.sharePointVersion = job.sharePointVersion;
+        }
+
+        /// <summary>
         /// Get an AuthenticationManager instance per host url. Needed to make this work properly, else we're getting access denied 
         /// because of Invalid audience Uri
         /// </summary>
@@ -775,7 +796,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         {
             this.enumerationUser = samAccountName;
             this.enumerationPassword = password;
-            this.enumrationDomain = domain;
+            this.enumerationDomain = domain;
             Log.Info(LOGGING_SOURCE, "Enumeration credentials specified for on-premises enumeration with user {0} and demain {1}", samAccountName, domain);
         }
 
