@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Framework.TimerJob.Utilities;
+using OfficeDevPnP.Core.Framework.TimerJobs;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
+namespace Core.TimerJobs.Samples.Jobs
 {
     public class SimpleJob: TimerJob
     {

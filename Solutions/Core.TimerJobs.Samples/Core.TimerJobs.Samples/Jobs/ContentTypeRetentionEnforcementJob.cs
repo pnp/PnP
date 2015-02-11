@@ -1,5 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Framework.TimerJob.Utilities;
+using OfficeDevPnP.Core.Framework.TimerJobs;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
+using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -8,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
+namespace Core.TimerJobs.Samples.Jobs
 {
     public class ContentTypeRetentionEnforcementJob: TimerJob
     {

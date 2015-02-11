@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.TimerJobs;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
+namespace Core.TimerJobs.Samples.Jobs
 {
     public class ChainingJob: TimerJob
     {

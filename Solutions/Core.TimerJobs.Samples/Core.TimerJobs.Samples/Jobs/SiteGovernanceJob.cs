@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using System.Threading;
-using OfficeDevPnP.Framework.TimerJob.Utilities;
+using OfficeDevPnP.Core.Framework.TimerJobs;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
+using OfficeDevPnP.Core.Utilities;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
+
+namespace Core.TimerJobs.Samples.Jobs
 {
     public class SiteGovernanceJob : TimerJob
     {

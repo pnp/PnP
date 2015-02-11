@@ -1,4 +1,4 @@
-﻿using OfficeDevPnP.Framework.TimerJob.Samples.Jobs;
+﻿using Core.TimerJobs.Samples.Jobs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,8 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeDevPnP.Core.Framework.TimerJobs;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples
+namespace Core.TimerJobs.Samples
 {
     public class Program
     {
@@ -142,7 +143,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             simpleJob.UseOffice365Authentication(Tenant, User, Password);
             //simpleJob.UseOffice365Authentication(Tenant, "bertonline");
             simpleJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
-            //PrintJobSettingsAndRunJob(simpleJob);
+            PrintJobSettingsAndRunJob(simpleJob);
 
             // Demo2: use wildcard site urls and have sub sites expanded
             ExpandJob expandJob = new ExpandJob();
@@ -208,7 +209,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             //Stopwatch stopWatch = new Stopwatch();
             //stopWatch.Start();
             //// Enable logging in app.config by uncommenting the debugListener
-            PrintJobSettingsAndRunJob(contentTypeRetentionEnforcementJob);
+            //PrintJobSettingsAndRunJob(contentTypeRetentionEnforcementJob);
             //stopWatch.Stop();
             //Console.WriteLine("Total elapsed time = {0}", stopWatch.Elapsed);
 

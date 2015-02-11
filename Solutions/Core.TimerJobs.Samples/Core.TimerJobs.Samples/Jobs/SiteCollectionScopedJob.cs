@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeDevPnP.Core.Framework.TimerJobs;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
 
-namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
+
+namespace Core.TimerJobs.Samples.Jobs
 {
     public class SiteCollectionScopedJob: TimerJob
     {
