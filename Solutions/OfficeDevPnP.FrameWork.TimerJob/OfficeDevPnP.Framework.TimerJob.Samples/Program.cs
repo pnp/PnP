@@ -140,9 +140,10 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             SimpleJob simpleJob = new SimpleJob();
             // The provided credentials need access to the site collections you want to use
             simpleJob.UseOffice365Authentication(Tenant, User, Password);
+            //simpleJob.UseOffice365Authentication(Tenant, "bertonline");
             simpleJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
             //PrintJobSettingsAndRunJob(simpleJob);
-            
+
             // Demo2: use wildcard site urls and have sub sites expanded
             ExpandJob expandJob = new ExpandJob();
             // The provided credentials need access to the site collections you want to use
@@ -155,6 +156,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             expandJobAppOnly.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
             // set enumeration credentials to allow using search API to find the OD4B sites
             expandJobAppOnly.SetEnumerationCredentials(User, Password);
+            //expandJobAppOnly.SetEnumerationCredentials("bertonline");
             expandJobAppOnly.AddSite("https://bertonline.sharepoint.com/sites/2014*");
             expandJobAppOnly.AddSite("https://bertonline-my.sharepoint.com/personal/*");
             //PrintJobSettingsAndRunJob(expandJobAppOnly);

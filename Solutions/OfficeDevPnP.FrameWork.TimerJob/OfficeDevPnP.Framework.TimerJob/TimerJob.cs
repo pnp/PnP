@@ -1,6 +1,7 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 using OfficeDevPnP.Framework.TimerJob.Enums;
 using OfficeDevPnP.Framework.TimerJob.Utilities;
 using System;
@@ -563,6 +564,37 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
+        /// Prepares the timerjob to operate against Office 365 with user and password credentials which are retrieved via 
+        /// the windows Credential Manager. Also sets AuthenticationType to AuthenticationType.Office365
+        /// </summary>
+        /// <param name="tenantName">Shortname of tenant: bertonline for tenant bertonline.onmicrosoft.com</param>
+        /// <param name="credentialName">Name of the credential manager registration</param>
+        public void UseOffice365Authentication(string tenantName, string credentialName)
+        {
+            if (String.IsNullOrEmpty(tenantName))
+            {
+                throw new ArgumentNullException("tenantName");
+            }
+
+            if (String.IsNullOrEmpty(credentialName))
+            {
+                throw new ArgumentNullException("credentialName");
+            }
+
+            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+
+            if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
+            {
+                UseOffice365Authentication(tenantName, cred.UserName, cred.Password);
+            }
+            else
+            {
+                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
+            }            
+        }
+
+        /// <summary>
         /// Prepares the timerjob to operate against SharePoint on-premises with user name password credentials. Sets AuthenticationType 
         /// to AuthenticationType.NetworkCredentials
         /// </summary>
@@ -592,6 +624,32 @@ namespace OfficeDevPnP.Framework.TimerJob
             this.domain = domain;
 
             Log.Info(LOGGING_SOURCE, "Timer job authentication set to type NetworkCredentials with user {0} in domain {1}", samAccountName, domain);
+        }
+
+        /// <summary>
+        /// Prepares the timerjob to operate against SharePoint on-premises with user name password  credentials which are retrieved via 
+        /// the windows Credential Manager. Sets AuthenticationType to AuthenticationType.NetworkCredentials
+        /// </summary>
+        /// <param name="credentialName">Name of the credential manager registration</param>
+        public void UseNetworkCredentialsAuthentication(string credentialName)
+        {
+            if (String.IsNullOrEmpty(credentialName))
+            {
+                throw new ArgumentNullException("credentialName");
+            }
+
+            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+
+            if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password) && !String.IsNullOrEmpty(cred.Domain))
+            {
+                UseNetworkCredentialsAuthentication(cred.UserName, cred.Password, cred.Domain);
+            }
+            else
+            {
+                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user, password or domain set", credentialName));
+            }            
+
         }
 
         /// <summary>
@@ -798,6 +856,37 @@ namespace OfficeDevPnP.Framework.TimerJob
             this.enumerationPassword = password;
             this.enumerationDomain = domain;
             Log.Info(LOGGING_SOURCE, "Enumeration credentials specified for on-premises enumeration with user {0} and demain {1}", samAccountName, domain);
+        }
+
+        /// <summary>
+        /// Provides the timer job with the enumeration credentials. For SharePoint on-premises username, password and domain are needed
+        /// </summary>
+        /// <param name="credentialName">Name of the credential manager registration</param>
+        public void SetEnumerationCredentials(string credentialName)
+        {
+            if (String.IsNullOrEmpty(credentialName))
+            {
+                throw new ArgumentNullException("credentialName");
+            }
+
+            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+
+            if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
+            {
+                if (String.IsNullOrEmpty(cred.Domain))
+                {
+                    SetEnumerationCredentials(cred.UserName, cred.Password);
+                }
+                else
+                {
+                    SetEnumerationCredentials(cred.UserName, cred.Password, cred.Domain);
+                }
+            }
+            else
+            {
+                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
+            } 
         }
 
         /// <summary>
