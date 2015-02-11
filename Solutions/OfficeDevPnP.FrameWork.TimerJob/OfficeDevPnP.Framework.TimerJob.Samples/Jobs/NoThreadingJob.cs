@@ -20,10 +20,10 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
             // Inline delegate
             TimerJobRun += delegate(object sender, TimerJobRunEventArgs e)
             {
-                e.webClientContext.Load(e.webClientContext.Web, p => p.Title);
-                e.webClientContext.ExecuteQueryRetry();
+                e.WebClientContext.Load(e.WebClientContext.Web, p => p.Title);
+                e.WebClientContext.ExecuteQueryRetry();
                 ThreadingDebugInformation();
-                Console.WriteLine("NoThreadingJob: Site {0} has title {1}", e.url, e.webClientContext.Web.Title);
+                Console.WriteLine("NoThreadingJob: Site {0} has title {1}", e.Url, e.WebClientContext.Web.Title);
             };
         }
 

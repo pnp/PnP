@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace OfficeDevPnP.Framework.TimerJob.Utilities
 {
     /// <summary>
-    /// Singleton class that's responsible for resolving wildcard site url's into a list af site url's
+    /// Singleton class that's responsible for resolving wildcard site Url's into a list af site Url's
     /// </summary>
     internal class SiteEnumeration
     {
@@ -50,8 +50,8 @@ namespace OfficeDevPnP.Framework.TimerJob.Utilities
         /// Builds up a list of site collections that match the passed site wildcard. This method can be used against Office 365
         /// </summary>
         /// <param name="tenant">Tenant object to use for resolving the regular sites</param>
-        /// <param name="siteWildCard">The widcard site url (e.g. https://tenant.sharepoint.com/sites/*) </param>
-        /// <param name="resolvedSites">List of site collections matching the passed wildcard site url</param>
+        /// <param name="siteWildCard">The widcard site Url (e.g. https://tenant.sharepoint.com/sites/*) </param>
+        /// <param name="resolvedSites">List of site collections matching the passed wildcard site Url</param>
         internal void ResolveSite(Tenant tenant, string siteWildCard, List<string> resolvedSites)
         {
             //strip the wildcard
@@ -72,8 +72,8 @@ namespace OfficeDevPnP.Framework.TimerJob.Utilities
         /// Builds up a list of site collections that match the passed site wildcard. This method can be used against on-premises
         /// </summary>
         /// <param name="context">ClientContext object of an arbitrary site collection accessible by the defined enumeration username and password</param>
-        /// <param name="siteWildCard">The widcard site url (e.g. https://tenant.sharepoint.com/sites/*) </param>
-        /// <param name="resolvedSites">List of site collections matching the passed wildcard site url</param>
+        /// <param name="siteWildCard">The widcard site Url (e.g. https://tenant.sharepoint.com/sites/*) </param>
+        /// <param name="resolvedSites">List of site collections matching the passed wildcard site Url</param>
         internal void ResolveSite(ClientContext context, string site, List<string> resolvedSites)
         {
             //strip the wildcard

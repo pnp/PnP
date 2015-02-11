@@ -30,13 +30,13 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
                 string library = "";
 
                 // Get the number of admins
-                var admins = e.webClientContext.Web.GetAdministrators();
+                var admins = e.WebClientContext.Web.GetAdministrators();
 
-                Log.Info("SiteGovernanceJob", "ThreadID = {2} | Site {0} has {1} administrators.", e.url, admins.Count, Thread.CurrentThread.ManagedThreadId);
+                Log.Info("SiteGovernanceJob", "ThreadID = {2} | Site {0} has {1} administrators.", e.Url, admins.Count, Thread.CurrentThread.ManagedThreadId);
 
                 // grab reference to list
                 library = "SiteAssets";
-                List list = e.webClientContext.Web.GetListByUrl(library);
+                List list = e.WebClientContext.Web.GetListByUrl(library);
 
                 if (!e.GetProperty("ScriptFileLoaded").Equals("true", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -46,7 +46,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
                         {
                             // grab reference to list
                             library = "Style%20Library";
-                            list = e.webClientContext.Web.GetListByUrl(library);
+                            list = e.WebClientContext.Web.GetListByUrl(library);
                         }
 
                         if (list != null)
@@ -63,15 +63,15 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
                 if (admins.Count < 2)
                 {
                     // Oops, we need at least 2 site collection administrators
-                    e.webClientContext.Site.AddJsLink(SiteGovernanceJobKey, BuildJavaScriptUrl(e.url, library));
-                    Console.WriteLine("Site {0} marked as incompliant!", e.url);
+                    e.WebClientContext.Site.AddJsLink(SiteGovernanceJobKey, BuildJavaScriptUrl(e.Url, library));
+                    Console.WriteLine("Site {0} marked as incompliant!", e.Url);
                     e.SetProperty("SiteCompliant", "false");
                 }
                 else
                 {
                     // We're all good...let's remove the notification
-                    e.webClientContext.Site.DeleteJsLink(SiteGovernanceJobKey);
-                    Console.WriteLine("Site {0} is compliant", e.url);
+                    e.WebClientContext.Site.DeleteJsLink(SiteGovernanceJobKey);
+                    Console.WriteLine("Site {0} is compliant", e.Url);
                     e.SetProperty("SiteCompliant", "true");
                 }
 

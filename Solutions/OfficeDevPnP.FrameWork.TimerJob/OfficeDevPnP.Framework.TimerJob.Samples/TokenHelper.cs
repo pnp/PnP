@@ -84,7 +84,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// HostedAppHostNameOverride, HostedAppHostName, ClientSecret, and Realm (if it is specified). If HostedAppHostNameOverride is present,
         /// it will be used for validation. Otherwise, if the <paramref name="appHostName"/> is not 
         /// null, it is used for validation instead of the web.config's HostedAppHostName. If the token is invalid, an 
-        /// exception is thrown. If the token is valid, TokenHelper's static STS metadata url is updated based on the token contents
+        /// exception is thrown. If the token is valid, TokenHelper's static STS metadata Url is updated based on the token contents
         /// and a JsonWebSecurityToken based on the context token is returned.
         /// </summary>
         /// <param name="contextTokenString">The context token to validate</param>
@@ -460,7 +460,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// Returns the SharePoint url to which the app should redirect the browser to request consent and get back
+        /// Returns the SharePoint Url to which the app should redirect the browser to request consent and get back
         /// an authorization code.
         /// </summary>
         /// <param name="contextUrl">Absolute Url of the SharePoint site</param>
@@ -478,7 +478,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// Returns the SharePoint url to which the app should redirect the browser to request consent and get back
+        /// Returns the SharePoint Url to which the app should redirect the browser to request consent and get back
         /// an authorization code.
         /// </summary>
         /// <param name="contextUrl">Absolute Url of the SharePoint site</param>
@@ -499,7 +499,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// Returns the SharePoint url to which the app should redirect the browser to request a new context token.
+        /// Returns the SharePoint Url to which the app should redirect the browser to request a new context token.
         /// </summary>
         /// <param name="contextUrl">Absolute Url of the SharePoint site</param>
         /// <param name="redirectUri">Uri to which SharePoint should redirect the browser to with a context token</param>
@@ -620,8 +620,8 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// <summary>
         /// Ensures that the specified URL ends with '/' if it is not null or empty.
         /// </summary>
-        /// <param name="url">The url.</param>
-        /// <returns>The url ending with '/' if it is not null or empty.</returns>
+        /// <param name="Url">The Url.</param>
+        /// <returns>The Url ending with '/' if it is not null or empty.</returns>
         public static string EnsureTrailingSlash(string url)
         {
             if (!string.IsNullOrEmpty(url) && url[url.Length - 1] != '/')

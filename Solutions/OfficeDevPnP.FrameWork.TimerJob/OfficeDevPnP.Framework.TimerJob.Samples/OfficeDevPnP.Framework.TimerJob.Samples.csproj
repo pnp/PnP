@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Jobs\ChainingJob.cs" />
+    <Compile Include="Jobs\ContentTypeRetentionEnforcementJob.cs" />
     <Compile Include="Jobs\ExpandJob.cs" />
     <Compile Include="Jobs\NoThreadingJob.cs" />
     <Compile Include="Jobs\OverrideJob.cs" />

@@ -17,9 +17,9 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
 
         void SimpleJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
         {
-            e.webClientContext.Load(e.webClientContext.Web, p => p.Title);
-            e.webClientContext.ExecuteQueryRetry();
-            Console.WriteLine("Site {0} has title {1}", e.url, e.webClientContext.Web.Title);
+            e.WebClientContext.Load(e.WebClientContext.Web, p => p.Title);
+            e.WebClientContext.ExecuteQueryRetry();
+            Console.WriteLine("Site {0} has title {1}", e.Url, e.WebClientContext.Web.Title);
         }
     }
 }

@@ -19,13 +19,13 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
         void SiteCollectionScopedJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
         {
             // Get all the sub sites in the site we're processing
-            IEnumerable<string> expandedSites = GetAllSubSites(e.siteClientContext.Site);
+            IEnumerable<string> expandedSites = GetAllSubSites(e.SiteClientContext.Site);
 
             // Manually iterate over the content
             foreach (string site in expandedSites)
             {
                 // Clone the existing ClientContext for the sub web
-                using (ClientContext ccWeb = e.siteClientContext.Clone(site))
+                using (ClientContext ccWeb = e.SiteClientContext.Clone(site))
                 {
                     // Here's the timer job logic, but now a single site collection is handled in a single thread which 
                     // allows for further optimization or prevents race conditions

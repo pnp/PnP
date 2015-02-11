@@ -13,18 +13,18 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
         {
             TimerJobRun += delegate(object sender, TimerJobRunEventArgs e)
             {
-                e.webClientContext.Load(e.webClientContext.Web, p => p.Title);
-                e.webClientContext.ExecuteQueryRetry();
-                Console.WriteLine("Site {0} has title {1}", e.url, e.webClientContext.Web.Title);
+                e.WebClientContext.Load(e.WebClientContext.Web, p => p.Title);
+                e.WebClientContext.ExecuteQueryRetry();
+                Console.WriteLine("Site {0} has title {1}", e.Url, e.WebClientContext.Web.Title);
 
                 // Chain another job in this job
                 NoThreadingJob noThreadingJob = new NoThreadingJob();
-                // Threading inside threaded executions is not supported
+                // Threading inside threaded executions is not supported...override the value set in the original job constructor
                 noThreadingJob.UseThreading = false;
                 // Take over authentication settings from calling job
                 noThreadingJob.Clone(this);
-                // Add the site url we're currently processing in this task
-                noThreadingJob.AddSite(e.url);
+                // Add the site Url we're currently processing in this task
+                noThreadingJob.AddSite(e.Url);
                 // Run...
                 noThreadingJob.Run();
 

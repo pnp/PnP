@@ -213,7 +213,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                 this.requestedSites = UpdateAddedSites(requestedSites);
                 Log.Info(LOGGING_SOURCE, "After calling the virtual UpdateAddedSites method. Current count of site url's = {0}", requestedSites.Count);
 
-                // Prepare the list of sites to process. This will resolve the wildcard site url's to a list of actual url's
+                // Prepare the list of sites to process. This will resolve the wildcard site Url's to a list of actual Url's
                 Log.Info(LOGGING_SOURCE, "Before calling the virtual ResolveAddedSites method. Current count of site url's = {0}", requestedSites.Count);
                 this.sitesToProcess = ResolveAddedSites(this.requestedSites);
                 Log.Info(LOGGING_SOURCE, "After calling the virtual ResolveAddedSites method. Current count of site url's = {0}", this.sitesToProcess.Count);
@@ -357,9 +357,9 @@ namespace OfficeDevPnP.Framework.TimerJob
                     // read the properties from the web property bag
                     if (this.manageState)
                     {
-                        props = e.webClientContext.Web.AllProperties;
-                        e.webClientContext.Load(props);
-                        e.webClientContext.ExecuteQueryRetry();
+                        props = e.WebClientContext.Web.AllProperties;
+                        e.WebClientContext.Load(props);
+                        e.WebClientContext.ExecuteQueryRetry();
 
                         s = new JavaScriptSerializer();
 
@@ -371,7 +371,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                             // We should have a value, but you never know...
                             if (!string.IsNullOrEmpty(timerJobProps))
                             {
-                                Log.Info(LOGGING_SOURCE, "Timerjob properties read using key {0} for site {1}", propertyKey, e.url);
+                                Log.Info(LOGGING_SOURCE, "Timerjob properties read using key {0} for site {1}", propertyKey, e.Url);
 
                                 // Deserialize the json string into a TimerJobRun class instance
                                 TimerJobRun timerJobRunProperties = s.Deserialize<TimerJobRun>(timerJobProps);
@@ -384,18 +384,18 @@ namespace OfficeDevPnP.Framework.TimerJob
                                     e.PreviousRunVersion = timerJobRunProperties.PreviousRunVersion;
                                     e.Properties = timerJobRunProperties.Properties;
 
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRun = {0}", e.PreviousRun, e.url);
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunSuccessful = {0}", e.PreviousRunSuccessful, e.url);
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunVersion = {0}", e.PreviousRunVersion, e.url);
+                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRun = {0}", e.PreviousRun, e.Url);
+                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunSuccessful = {0}", e.PreviousRunSuccessful, e.Url);
+                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunVersion = {0}", e.PreviousRunVersion, e.Url);
                                 }
                             }
                         }                        
                     }
 
-                    Log.Info(LOGGING_SOURCE, "Calling the eventhandler for site {0}", e.url);
+                    Log.Info(LOGGING_SOURCE, "Calling the eventhandler for site {0}", e.Url);
                     // trigger the event
                     timerJobRunHandlerThreadCopy(this, e);
-                    Log.Info(LOGGING_SOURCE, "Eventhandler called for site {0}", e.url);
+                    Log.Info(LOGGING_SOURCE, "Eventhandler called for site {0}", e.Url);
 
                     // Update and store the properties to the web property bag
                     if (this.manageState)
@@ -409,14 +409,14 @@ namespace OfficeDevPnP.Framework.TimerJob
                             Properties = e.Properties,
                         };
 
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRun to {0}", timerJobRunProperties.PreviousRun, e.url);
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunSuccessful to {0}", timerJobRunProperties.PreviousRunSuccessful, e.url);
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunVersion to {0}", timerJobRunProperties.PreviousRunVersion, e.url);
+                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRun to {0}", timerJobRunProperties.PreviousRun, e.Url);
+                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunSuccessful to {0}", timerJobRunProperties.PreviousRunSuccessful, e.Url);
+                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunVersion to {0}", timerJobRunProperties.PreviousRunVersion, e.Url);
 
                         // Serialize to json string
                         string timerJobProps = s.Serialize(timerJobRunProperties);
 
-                        props = e.webClientContext.Web.AllProperties;
+                        props = e.WebClientContext.Web.AllProperties;
 
                         // Get the value, if the web properties are already loaded
                         if (props.FieldValues.Count > 0)
@@ -426,16 +426,16 @@ namespace OfficeDevPnP.Framework.TimerJob
                         else
                         {
                             // Load the web properties
-                            e.webClientContext.Load(props);
-                            e.webClientContext.ExecuteQueryRetry();
+                            e.WebClientContext.Load(props);
+                            e.WebClientContext.ExecuteQueryRetry();
 
                             props[propertyKey] = timerJobProps;
                         }
 
                         // Persist the web property bag entries
-                        e.webClientContext.Web.Update();
-                        e.webClientContext.ExecuteQueryRetry();
-                        Log.Info(LOGGING_SOURCE, "Timerjob properties written using key {0} for site {1}", propertyKey, e.url);
+                        e.WebClientContext.Web.Update();
+                        e.WebClientContext.ExecuteQueryRetry();
+                        Log.Info(LOGGING_SOURCE, "Timerjob properties written using key {0} for site {1}", propertyKey, e.Url);
                     }
 
                 }
@@ -443,7 +443,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             catch(Exception ex)
             {
                 // Catch error in this case as we don't want to the whole program to terminate if one single site operation fails
-                Log.Error(LOGGING_SOURCE, "Error during timerjob execution of site {0}. Exception message = {1}", e.url, ex.Message);
+                Log.Error(LOGGING_SOURCE, "Error during timerjob execution of site {0}. Exception message = {1}", e.Url, ex.Message);
             }
         }
 
@@ -668,10 +668,10 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
-        /// Get an AuthenticationManager instance per host url. Needed to make this work properly, else we're getting access denied 
+        /// Get an AuthenticationManager instance per host Url. Needed to make this work properly, else we're getting access denied 
         /// because of Invalid audience Uri
         /// </summary>
-        /// <param name="url">url of the site</param>
+        /// <param name="Url">Url of the site</param>
         /// <returns>An instantiated AuthenticationManager</returns>
         private AuthenticationManager GetAuthenticationManager(string url)
         {
@@ -801,9 +801,9 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
-        /// Adds a site url or wildcard site url to the collection of sites that the timer job will process
+        /// Adds a site Url or wildcard site Url to the collection of sites that the timer job will process
         /// </summary>
-        /// <param name="site">Site url or wildcard site url to be processed by the timer job</param>
+        /// <param name="site">Site Url or wildcard site Url to be processed by the timer job</param>
         public void AddSite(string site)
         {
             if (String.IsNullOrEmpty(site))
@@ -829,7 +829,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
-        /// Clears the list of added site url's and/or wildcard site url's
+        /// Clears the list of added site Url's and/or wildcard site Url's
         /// </summary>
         public void ClearAddedSites()
         {
@@ -841,8 +841,8 @@ namespace OfficeDevPnP.Framework.TimerJob
         /// Virtual method that can be overriden to allow the timer job itself to control the list of sites to operate against.
         /// Scenario is for example timer job that reads this data from a database instead of being fed by the calling program
         /// </summary>
-        /// <param name="addedSites">List of added site url's and/or wildcard site url's</param>
-        /// <returns>List of added site url's and/or wildcard site url's</returns>
+        /// <param name="addedSites">List of added site Url's and/or wildcard site Url's</param>
+        /// <returns>List of added site Url's and/or wildcard site Url's</returns>
         public virtual List<string> UpdateAddedSites(List<string> addedSites)
         {
             // Default behavior is just pass back the given list
@@ -852,7 +852,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         /// <summary>
         /// Virtual method that can be overriden to control the list of resolved sites
         /// </summary>
-        /// <param name="addedSites">List of added site url's and/or wildcard site url's</param>
+        /// <param name="addedSites">List of added site Url's and/or wildcard site Url's</param>
         /// <returns>List of resolved sites</returns>
         public virtual List<string> ResolveAddedSites(List<string> addedSites)
         {
@@ -866,7 +866,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                 if (site.Contains("*"))
                 {
                     Log.Info(LOGGING_SOURCE, "Resolving wildcard site {0}", site);
-                    // get the actual sites matching to the wildcard site url
+                    // get the actual sites matching to the wildcard site Url
                     ResolveSite(site, resolvedSites);
                     Log.Info(LOGGING_SOURCE, "Done resolving wildcard site {0}", site);
                 }
@@ -1029,7 +1029,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         /// <summary>
         /// Creates a ClientContext object based on the set AuthenticationType and the used version of SharePoint
         /// </summary>
-        /// <param name="site">Site url to create a ClientContext for</param>
+        /// <param name="site">Site Url to create a ClientContext for</param>
         /// <returns>The created ClientContext object. Returns null if no ClientContext was created</returns>
         private ClientContext CreateClientContext(string site)
         {
@@ -1060,10 +1060,10 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
-        /// Resolves a wildcard site url into a list of actual site url's
+        /// Resolves a wildcard site Url into a list of actual site Url's
         /// </summary>
-        /// <param name="site">Wildcard site url to resolve</param>
-        /// <param name="resolvedSites">List of resolved site url's</param>
+        /// <param name="site">Wildcard site Url to resolve</param>
+        /// <param name="resolvedSites">List of resolved site Url's</param>
         private void ResolveSite(string site, List<string> resolvedSites)
         {
             if (SharePointVersion == 15)
@@ -1115,9 +1115,9 @@ namespace OfficeDevPnP.Framework.TimerJob
 
         #region Helper methods
         /// <summary>
-        /// Verifies if the passed url has a valid structure
+        /// Verifies if the passed Url has a valid structure
         /// </summary>
-        /// <param name="url">Url to validate</param>
+        /// <param name="Url">Url to validate</param>
         /// <returns>True is valid, false otherwise</returns>
         private bool IsValidUrl(string url)
         {
@@ -1151,10 +1151,10 @@ namespace OfficeDevPnP.Framework.TimerJob
         }
 
         /// <summary>
-        /// Gets the root site for a given site url
+        /// Gets the root site for a given site Url
         /// </summary>
-        /// <param name="site">Site url</param>
-        /// <returns>Root site url of the given site url</returns>
+        /// <param name="site">Site Url</param>
+        /// <returns>Root site Url of the given site Url</returns>
         private string GetRootSite(string site)
         {
             Uri uri = new Uri(site.TrimEnd(new[] { '/' }));

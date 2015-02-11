@@ -20,7 +20,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
         {
             // Let's assume we're not happy with the provided list of sites, so first clear it
             addedSites.Clear();
-            // Manually adding a new wildcard url, without an added URL the timer job will do...nothing 
+            // Manually adding a new wildcard Url, without an added URL the timer job will do...nothing 
             addedSites.Add("https://bertonline.sharepoint.com/sites/d*");
 
             // Return the 
@@ -43,9 +43,9 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
 
         void OverrideJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
         {
-            e.webClientContext.Load(e.webClientContext.Web, p => p.Title);
-            e.webClientContext.ExecuteQueryRetry();
-            Console.WriteLine("Site {0} has title {1}", e.url, e.webClientContext.Web.Title);
+            e.WebClientContext.Load(e.WebClientContext.Web, p => p.Title);
+            e.WebClientContext.ExecuteQueryRetry();
+            Console.WriteLine("Site {0} has title {1}", e.Url, e.WebClientContext.Web.Title);
         }
 
     }

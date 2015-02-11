@@ -20,13 +20,13 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples.Jobs
 
         void ExpandJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
         {
-            e.webClientContext.Load(e.webClientContext.Web, p => p.Title);
-            e.webClientContext.ExecuteQueryRetry();
-            e.siteClientContext.Load(e.siteClientContext.Web, p => p.Title);
-            e.siteClientContext.ExecuteQueryRetry();
+            e.WebClientContext.Load(e.WebClientContext.Web, p => p.Title);
+            e.WebClientContext.ExecuteQueryRetry();
+            e.SiteClientContext.Load(e.SiteClientContext.Web, p => p.Title);
+            e.SiteClientContext.ExecuteQueryRetry();
 
-            Console.WriteLine("Root site of site {0} has title {1}", e.url, e.siteClientContext.Web.Title);
-            Console.WriteLine("Sub site {0} has title {1}", e.url, e.webClientContext.Web.Title);
+            Console.WriteLine("Root site of site {0} has title {1}", e.Url, e.SiteClientContext.Web.Title);
+            Console.WriteLine("Sub site {0} has title {1}", e.Url, e.WebClientContext.Web.Title);
             ThreadingDebugInformation();
         }
 

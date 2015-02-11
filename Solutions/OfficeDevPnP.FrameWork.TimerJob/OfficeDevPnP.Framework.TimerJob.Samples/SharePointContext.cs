@@ -35,10 +35,10 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         protected Tuple<string, DateTime> appOnlyAccessTokenForSPAppWeb;
 
         /// <summary>
-        /// Gets the SharePoint host url from QueryString of the specified HTTP request.
+        /// Gets the SharePoint host Url from QueryString of the specified HTTP request.
         /// </summary>
         /// <param name="httpRequest">The specified HTTP request.</param>
-        /// <returns>The SharePoint host url. Returns <c>null</c> if the HTTP request doesn't contain the SharePoint host url.</returns>
+        /// <returns>The SharePoint host Url. Returns <c>null</c> if the HTTP request doesn't contain the SharePoint host Url.</returns>
         public static Uri GetSPHostUrl(HttpRequestBase httpRequest)
         {
             if (httpRequest == null)
@@ -58,17 +58,17 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// Gets the SharePoint host url from QueryString of the specified HTTP request.
+        /// Gets the SharePoint host Url from QueryString of the specified HTTP request.
         /// </summary>
         /// <param name="httpRequest">The specified HTTP request.</param>
-        /// <returns>The SharePoint host url. Returns <c>null</c> if the HTTP request doesn't contain the SharePoint host url.</returns>
+        /// <returns>The SharePoint host Url. Returns <c>null</c> if the HTTP request doesn't contain the SharePoint host Url.</returns>
         public static Uri GetSPHostUrl(HttpRequest httpRequest)
         {
             return GetSPHostUrl(new HttpRequestWrapper(httpRequest));
         }
 
         /// <summary>
-        /// The SharePoint host url.
+        /// The SharePoint host Url.
         /// </summary>
         public Uri SPHostUrl
         {
@@ -76,7 +76,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// The SharePoint app web url.
+        /// The SharePoint app web Url.
         /// </summary>
         public Uri SPAppWebUrl
         {
@@ -142,8 +142,8 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="spHostUrl">The SharePoint host url.</param>
-        /// <param name="spAppWebUrl">The SharePoint app web url.</param>
+        /// <param name="spHostUrl">The SharePoint host Url.</param>
+        /// <param name="spAppWebUrl">The SharePoint app web Url.</param>
         /// <param name="spLanguage">The SharePoint language.</param>
         /// <param name="spClientTag">The SharePoint client tag.</param>
         /// <param name="spProductNumber">The SharePoint product number.</param>
@@ -258,9 +258,9 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         }
 
         /// <summary>
-        /// Creates a ClientContext with the specified SharePoint site url and the access token.
+        /// Creates a ClientContext with the specified SharePoint site Url and the access token.
         /// </summary>
-        /// <param name="spSiteUrl">The site url.</param>
+        /// <param name="spSiteUrl">The site Url.</param>
         /// <param name="accessToken">The access token.</param>
         /// <returns>A ClientContext instance.</returns>
         private static ClientContext CreateClientContext(Uri spSiteUrl, string accessToken)
@@ -333,7 +333,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// Checks if it is necessary to redirect to SharePoint for user to authenticate.
         /// </summary>
         /// <param name="httpContext">The HTTP context.</param>
-        /// <param name="redirectUrl">The redirect url to SharePoint if the status is ShouldRedirect. <c>Null</c> if the status is Ok or CanNotRedirect.</param>
+        /// <param name="redirectUrl">The redirect Url to SharePoint if the status is ShouldRedirect. <c>Null</c> if the status is Ok or CanNotRedirect.</param>
         /// <returns>Redirection status.</returns>
         public static RedirectionStatus CheckRedirectionStatus(HttpContextBase httpContext, out Uri redirectUrl)
         {
@@ -390,7 +390,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             string returnUrlString = returnUrlBuilder.Uri.AbsoluteUri;
             returnUrlString = returnUrlString.Insert(returnUrlString.IndexOf("?") + 1, StandardTokens + "&");
 
-            // Constructs redirect url.
+            // Constructs redirect Url.
             string redirectUrlString = TokenHelper.GetAppContextTokenRequestUrl(spHostUrl.AbsoluteUri, Uri.EscapeDataString(returnUrlString));
 
             redirectUrl = new Uri(redirectUrlString, UriKind.Absolute);
@@ -402,7 +402,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// Checks if it is necessary to redirect to SharePoint for user to authenticate.
         /// </summary>
         /// <param name="httpContext">The HTTP context.</param>
-        /// <param name="redirectUrl">The redirect url to SharePoint if the status is ShouldRedirect. <c>Null</c> if the status is Ok or CanNotRedirect.</param>
+        /// <param name="redirectUrl">The redirect Url to SharePoint if the status is ShouldRedirect. <c>Null</c> if the status is Ok or CanNotRedirect.</param>
         /// <returns>Redirection status.</returns>
         public static RedirectionStatus CheckRedirectionStatus(HttpContext httpContext, out Uri redirectUrl)
         {
@@ -517,8 +517,8 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
         /// <summary>
         /// Creates a SharePointContext instance.
         /// </summary>
-        /// <param name="spHostUrl">The SharePoint host url.</param>
-        /// <param name="spAppWebUrl">The SharePoint app web url.</param>
+        /// <param name="spHostUrl">The SharePoint host Url.</param>
+        /// <param name="spAppWebUrl">The SharePoint app web Url.</param>
         /// <param name="spLanguage">The SharePoint language.</param>
         /// <param name="spClientTag">The SharePoint client tag.</param>
         /// <param name="spProductNumber">The SharePoint product number.</param>

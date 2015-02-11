@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
     {
         private static string user;
         private static string password;
+        private static string domain;
         private static string tenant;
         private static string clientId;
         private static string realm;
@@ -63,6 +65,22 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
                     password = GetInput("Password", true);
                 }
                 return password;
+            }
+        }
+
+        public static string Domain
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(domain))
+                {
+                    domain = ConfigurationManager.AppSettings["domain"];
+                }
+                if (String.IsNullOrEmpty(domain))
+                {
+                    domain = GetInput("Domain", false);
+                }
+                return domain;
             }
         }
 
@@ -173,14 +191,31 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             ChainingJob chainingJob = new ChainingJob();
             chainingJob.UseOffice365Authentication(Tenant, User, Password);
             chainingJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
-            PrintJobSettingsAndRunJob(chainingJob);
+            //PrintJobSettingsAndRunJob(chainingJob);
 
-
-            // on-premises
-
-
-            // logging
-            // docu only
+            // Demo9: Real life sample (contentType retention enforcement) + performance tweaking + logging and error handling
+            ContentTypeRetentionEnforcementJob contentTypeRetentionEnforcementJob = new ContentTypeRetentionEnforcementJob();
+            contentTypeRetentionEnforcementJob.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
+            // set enumeration credentials to allow using search API to find the OD4B sites
+            contentTypeRetentionEnforcementJob.SetEnumerationCredentials(User, Password);
+            contentTypeRetentionEnforcementJob.AddSite("https://bertonline.sharepoint.com/sites/*");
+            // Turn threading on/off to assess performance gains from running the job multi-threaded
+            contentTypeRetentionEnforcementJob.UseThreading = true;
+            // Play with the thread count to find out the sweet spot
+            contentTypeRetentionEnforcementJob.MaximumThreads = 5;
+            //Stopwatch stopWatch = new Stopwatch();
+            //stopWatch.Start();
+            //// Enable logging in app.config by uncommenting the debugListener
+            //PrintJobSettingsAndRunJob(contentTypeRetentionEnforcementJob);
+            //stopWatch.Stop();
+            //Console.WriteLine("Total elapsed time = {0}", stopWatch.Elapsed);
+            
+            // Demo10: On-premises
+            SimpleJob simpleJob2 = new SimpleJob();
+            // The provided credentials need access to the site collections you want to use
+            simpleJob2.UseNetworkCredentialsAuthentication(User, Password, Domain);
+            simpleJob2.AddSite("https://sp2013.set1.bertonline.info/sites/dev");
+            //PrintJobSettingsAndRunJob(simpleJob2);
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press <enter> to continue");
