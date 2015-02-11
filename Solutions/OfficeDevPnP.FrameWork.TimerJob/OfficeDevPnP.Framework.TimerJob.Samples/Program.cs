@@ -206,23 +206,34 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
             //Stopwatch stopWatch = new Stopwatch();
             //stopWatch.Start();
             //// Enable logging in app.config by uncommenting the debugListener
-            //PrintJobSettingsAndRunJob(contentTypeRetentionEnforcementJob);
+            PrintJobSettingsAndRunJob(contentTypeRetentionEnforcementJob);
             //stopWatch.Stop();
             //Console.WriteLine("Total elapsed time = {0}", stopWatch.Elapsed);
-            
-            // Demo10: On-premises
+
+            /* 
+            // Demo10: On-premises, simple
             SimpleJob simpleJob2 = new SimpleJob();
             // The provided credentials need access to the site collections you want to use
             simpleJob2.UseNetworkCredentialsAuthentication(User, Password, Domain);
             simpleJob2.AddSite("https://sp2013.set1.bertonline.info/sites/dev");
             //PrintJobSettingsAndRunJob(simpleJob2);
 
+            // Demo11: On-premises with app-only
+            ExpandJob expandJobAppOnly2 = new ExpandJob();
+            expandJobAppOnly2.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            // Set enumeration credentials to allow using search API to find the OD4B sites
+            expandJobAppOnly2.SetEnumerationCredentials(User, Password, Domain);
+            expandJobAppOnly2.AddSite("https://sp2013.set1.bertonline.info/sites/2014*");
+            expandJobAppOnly2.AddSite("https://sp2013-my.set1.bertonline.info/personal/*");
+            //PrintJobSettingsAndRunJob(expandJobAppOnly);
+            */
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("Press <enter> to continue");
             Console.ReadLine();
         }
 
-
+        #region Helper methods
         private static void PrintJobSettingsAndRunJob(TimerJob job)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -285,6 +296,7 @@ namespace OfficeDevPnP.Framework.TimerJob.Samples
 
             return strPwd;
         }
+        #endregion
 
     }
 }
