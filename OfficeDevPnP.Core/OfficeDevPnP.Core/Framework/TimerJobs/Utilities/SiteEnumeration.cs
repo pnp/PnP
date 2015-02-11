@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Framework.TimerJob.Utilities
+namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
 {
     /// <summary>
     /// Singleton class that's responsible for resolving wildcard site Url's into a list af site Url's

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Framework.TimerJob
+namespace OfficeDevPnP.Core.Framework.TimerJobs
 {
     /// <summary>
     /// Class that holds the state information that's being stored in the web property bag of web that's being "processed"

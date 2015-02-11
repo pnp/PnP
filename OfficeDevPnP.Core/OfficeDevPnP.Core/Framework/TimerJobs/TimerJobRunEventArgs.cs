@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Framework.TimerJob
+namespace OfficeDevPnP.Core.Framework.TimerJobs
 {
     /// <summary>
     /// Event arguments for the TimerJobRun event

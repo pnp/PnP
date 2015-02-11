@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Framework.TimerJob.Enums
+namespace OfficeDevPnP.Core.Framework.TimerJobs.Enums
 {
     /// <summary>
     /// Type of authentication, supports Office365, NetworkCredentials (on-premises) and AppOnly (both Office 365 as On-premises)

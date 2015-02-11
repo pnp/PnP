@@ -2,15 +2,15 @@
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
-using OfficeDevPnP.Framework.TimerJob.Enums;
-using OfficeDevPnP.Framework.TimerJob.Utilities;
+using OfficeDevPnP.Core.Framework.TimerJobs.Enums;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Web.Script.Serialization;
 
-namespace OfficeDevPnP.Framework.TimerJob
+namespace OfficeDevPnP.Core.Framework.TimerJobs
 {
     #region Delegates
     /// <summary>
