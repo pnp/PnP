@@ -759,9 +759,9 @@ namespace OfficeDevPnP.Framework.TimerJob
         {
             get
             {
-                if (!String.IsNullOrEmpty(this.EnumerationDomain))
+                if (!String.IsNullOrEmpty(this.enumerationDomain))
                 {
-                    return this.EnumerationDomain;
+                    return this.enumerationDomain;
                 }
                 else if (!String.IsNullOrEmpty(this.domain))
                 {
@@ -1014,7 +1014,8 @@ namespace OfficeDevPnP.Framework.TimerJob
             }
             catch (System.Net.WebException ex)
             {
-                if (ex.Message.IndexOf("The remote server returned an error: (500) Internal Server Error") > -1)
+                if (ex.Message.IndexOf("The remote server returned an error: (500) Internal Server Error") > -1 ||
+                    ex.Message.IndexOf("The remote server returned an error: (404) Not Found") > -1)
                 {
                     //eath the exception
                     Log.Warning(LOGGING_SOURCE, "Eating exception {0}", ex.Message);
@@ -1068,8 +1069,8 @@ namespace OfficeDevPnP.Framework.TimerJob
         {
             if (SharePointVersion == 15)
             {
-                //Good we can use search
-                ClientContext ccEnumerate = GetAuthenticationManager(site).GetNetworkCredentialAuthenticatedContext(site, EnumerationUser, EnumerationPassword, EnumerationDomain);
+                //Good we can use search...searching requires a valid client context, so we assume that the top level site exists and is accessible for the passed creds
+                ClientContext ccEnumerate = GetAuthenticationManager(site).GetNetworkCredentialAuthenticatedContext(GetTopLevelSite(site.Replace("*", "")), EnumerationUser, EnumerationPassword, EnumerationDomain);
                 SiteEnumeration.Instance.ResolveSite(ccEnumerate, site, resolvedSites);
             }
             else
@@ -1148,6 +1149,17 @@ namespace OfficeDevPnP.Framework.TimerJob
         private string GetTenantAdminSite()
         {
             return String.Format("https://{0}-admin.sharepoint.com", this.tenantName);
+        }
+
+        /// <summary>
+        /// Gets the top level site for the given url
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
+        private string GetTopLevelSite(string site)
+        {
+            Uri uri = new Uri(site.TrimEnd(new[] { '/' }));
+            return string.Format("{0}://{1}", uri.Scheme, uri.DnsSafeHost);
         }
 
         /// <summary>

@@ -142,6 +142,11 @@ namespace OfficeDevPnP.Framework.TimerJob.Utilities
         /// <param name="context">ClientContext object of an arbitrary site collection accessible by the defined enumeration username and password</param>
         private void FillSitesViaSearch(ClientContext context)
         {
+            if (this.sites == null)
+            {
+                this.sites = new List<string>();
+            }
+
             // Use search api to get the OneDrive and regular sites
             this.sites.AddRange(SiteSearch(context, ""));
         }
