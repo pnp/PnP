@@ -89,7 +89,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             this.version = version;
             this.requestedSites = new List<string>(10);
             this.sharePointVersion = GetSharePointVersion();
-            
+
             // Default authentication model will be Office365
             this.authenticationType = Enums.AuthenticationType.Office365;
             this.authenticationManagers = new Dictionary<string, AuthenticationManager>();
@@ -307,7 +307,7 @@ namespace OfficeDevPnP.Framework.TimerJob
 
             // Get the root site of the passed site
             string rootSite = GetRootSite(site);
-            
+
             // Instantiate the needed ClientContext objects
             ClientContext ccWeb = CreateClientContext(site);
             ClientContext ccSite = null;
@@ -341,7 +341,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         /// Triggers the event to fire and deals with all the pre/post processing needed to automatically manage state
         /// </summary>
         /// <param name="e">TimerJobRunEventArgs event arguments class that will be passed to the event handler</param>
-        private void OnTimerJobRun (TimerJobRunEventArgs e)
+        private void OnTimerJobRun(TimerJobRunEventArgs e)
         {
             try
             {
@@ -390,7 +390,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                                     Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunVersion = {0}", e.PreviousRunVersion, e.Url);
                                 }
                             }
-                        }                        
+                        }
                     }
 
                     Log.Info(LOGGING_SOURCE, "Calling the eventhandler for site {0}", e.Url);
@@ -441,7 +441,7 @@ namespace OfficeDevPnP.Framework.TimerJob
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // Catch error in this case as we don't want to the whole program to terminate if one single site operation fails
                 Log.Error(LOGGING_SOURCE, "Error during timerjob execution of site {0}. Exception message = {1}", e.Url, ex.Message);
@@ -474,7 +474,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             {
                 sitesBatch.Add(this.sitesToProcess[i]);
                 batchCounter++;
-                
+
                 // we've filled one batch, let's create a new one
                 if (batchCounter == batchCount && batchesAdded < numberOfBatches)
                 {
@@ -519,8 +519,8 @@ namespace OfficeDevPnP.Framework.TimerJob
             {
                 return this.sharePointVersion;
             }
-            set 
-            { 
+            set
+            {
                 if (value < 15 || value > 16)
                 {
                     throw new ArgumentException("SharePoint version must be 15 or 16");
@@ -543,8 +543,8 @@ namespace OfficeDevPnP.Framework.TimerJob
             if (String.IsNullOrEmpty(tenantName))
             {
                 throw new ArgumentNullException("tenantName");
-            } 
-            
+            }
+
             if (String.IsNullOrEmpty(userUPN))
             {
                 throw new ArgumentNullException("userName");
@@ -591,7 +591,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             else
             {
                 throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
-            }            
+            }
         }
 
         /// <summary>
@@ -641,6 +641,16 @@ namespace OfficeDevPnP.Framework.TimerJob
             Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
             System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
+            if (!String.IsNullOrEmpty(cred.UserName))
+            {
+                string[] parts = cred.UserName.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 2)
+                {
+                    cred.UserName = parts[1];
+                    cred.Domain = parts[0];
+                }
+            }
+
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password) && !String.IsNullOrEmpty(cred.Domain))
             {
                 UseNetworkCredentialsAuthentication(cred.UserName, cred.Password, cred.Domain);
@@ -648,7 +658,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             else
             {
                 throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user, password or domain set", credentialName));
-            }            
+            }
 
         }
 
@@ -779,7 +789,7 @@ namespace OfficeDevPnP.Framework.TimerJob
                 }
                 else if (!String.IsNullOrEmpty(this.username))
                 {
-                    return this.username;   
+                    return this.username;
                 }
                 else
                 {
@@ -874,6 +884,18 @@ namespace OfficeDevPnP.Framework.TimerJob
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
             {
+
+                if (!String.IsNullOrEmpty(cred.UserName))
+                {
+                    string[] parts = cred.UserName.Split(new string[] { "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length == 2)
+                    {
+                        cred.UserName = parts[1];
+                        cred.Domain = parts[0];
+                    }
+                }
+
+
                 if (String.IsNullOrEmpty(cred.Domain))
                 {
                     SetEnumerationCredentials(cred.UserName, cred.Password);
@@ -886,7 +908,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             else
             {
                 throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
-            } 
+            }
         }
 
         /// <summary>
@@ -914,7 +936,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             {
                 this.requestedSites.Add(site);
                 Log.Info(LOGGING_SOURCE, "Site {0} url/wildcard added", site);
-            }            
+            }
         }
 
         /// <summary>
@@ -950,7 +972,7 @@ namespace OfficeDevPnP.Framework.TimerJob
             List<string> resolvedSites = new List<string>();
 
             // Step 1: obtain the list of all site collections
-            foreach(string site in this.requestedSites)
+            foreach (string site in this.requestedSites)
             {
                 if (site.Contains("*"))
                 {
@@ -1227,7 +1249,7 @@ namespace OfficeDevPnP.Framework.TimerJob
         /// <returns></returns>
         private int GetSharePointVersion()
         {
-            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site)); 
+            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site));
             return asm.GetName().Version.Major;
         }
 
