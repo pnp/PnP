@@ -214,7 +214,7 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                //Get the site name
+                // Get the site name
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
                 tenant.Context.ExecuteQueryRetry();
@@ -224,31 +224,21 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                LoggingUtility.Internal.TraceError((int)EventId.Unknown, ex, ex.Message);
+
+                // Let's retry to see if this site collection was recycled
+                try
                 {
-                    if (ex.Message.IndexOf("Unable to access site") != -1)
-                    {
-                        //Let's retry to see if this site collection was recycled
-                        try
-                        {
-                            var deletedProperties = tenant.GetDeletedSitePropertiesByUrl(siteFullUrl);
-                            tenant.Context.Load(deletedProperties);
-                            tenant.Context.ExecuteQueryRetry();
-                            return deletedProperties.Status.Equals("Recycled", StringComparison.OrdinalIgnoreCase);
-                        }
-                        catch
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    var deletedProperties = tenant.GetDeletedSitePropertiesByUrl(siteFullUrl);
+                    tenant.Context.Load(deletedProperties);
+                    tenant.Context.ExecuteQueryRetry();
+
+                    return deletedProperties.Status.Equals("Recycled", StringComparison.OrdinalIgnoreCase);
                 }
-                else
+                catch (Exception ex1)
                 {
-                    return true;
+                    LoggingUtility.Internal.TraceError((int)EventId.Unknown, ex1, ex1.Message);
+                    return false;
                 }
             }
         }
@@ -679,7 +669,6 @@ namespace Microsoft.SharePoint.Client
                 }
             }
         }
-
 
         /// <summary>
         /// Deletes a site collection
