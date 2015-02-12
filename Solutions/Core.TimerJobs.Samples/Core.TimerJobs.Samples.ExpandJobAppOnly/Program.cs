@@ -139,10 +139,16 @@ namespace Core.TimerJobs.Samples.ExpandJobAppOnly
             
             // specify the needed information to work app only
             expandJobAppOnly.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
-            
+
+            // In case of SharePoint on-premises use
+            //expandJobAppOnly.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+
             // set enumeration credentials to allow using search API to find the OD4B sites
             expandJobAppOnly.SetEnumerationCredentials(User, Password);
-            
+
+            // In case of SharePoint on-premises use
+            //expandJobAppOnly.SetEnumerationCredentials(User, Password, Domain);
+
             // Add one or more sites to operate on            
             expandJobAppOnly.AddSite("https://bertonline.sharepoint.com/sites/2014*");
             expandJobAppOnly.AddSite("https://bertonline-my.sharepoint.com/personal/*");

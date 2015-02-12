@@ -139,7 +139,10 @@ namespace Core.TimerJobs.Samples.ExpandJob
             
             // The provided credentials need access to the site collections you want to use
             expandJob.UseOffice365Authentication(Tenant, User, Password);
-            
+
+            // In case of SharePoint on-premises use
+            //simpleJob.UseNetworkCredentialsAuthentication(User, Password, Domain);
+
             // Add one or more sites to operate on. Sites can contain a * wildcard as last character
             expandJob.AddSite("https://bertonline.sharepoint.com/sites/d*");
 

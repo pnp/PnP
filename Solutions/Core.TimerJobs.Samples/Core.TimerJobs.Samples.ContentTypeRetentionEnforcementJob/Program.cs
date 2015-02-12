@@ -141,8 +141,14 @@ namespace Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob
             // specify the needed information to work app only
             contentTypeRetentionEnforcementJob.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
 
+            // In case of SharePoint on-premises use
+            //contentTypeRetentionEnforcementJob.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+
             // set enumeration credentials to allow using search API to find the OD4B sites
             contentTypeRetentionEnforcementJob.SetEnumerationCredentials(User, Password);
+
+            // In case of SharePoint on-premises use
+            //contentTypeRetentionEnforcementJob.SetEnumerationCredentials(User, Password, Domain);
 
             // Add one or more sites to operate on
             contentTypeRetentionEnforcementJob.AddSite("https://bertonline.sharepoint.com/sites/*");

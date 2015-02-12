@@ -140,6 +140,9 @@ namespace Core.TimerJobs.Samples.NoThreadingJob
             // The provided credentials need access to the site collections you want to use
             noThreadingJob.UseOffice365Authentication(Tenant, User, Password);
 
+            // In case of SharePoint on-premises use
+            //noThreadingJob.UseNetworkCredentialsAuthentication(User, Password, Domain);
+
             // Add one or more sites to operate on
             noThreadingJob.AddSite("https://bertonline.sharepoint.com/sites/d*");
 

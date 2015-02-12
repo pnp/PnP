@@ -139,7 +139,10 @@ namespace Core.TimerJobs.Samples.OverrideJob
             
             // The provided credentials need access to the site collections you want to use
             overrideJob.UseOffice365Authentication(Tenant, User, Password);
-            
+
+            // In case of SharePoint on-premises use
+            //overrideJob.UseNetworkCredentialsAuthentication(User, Password, Domain);
+
             // Add one or more sites to operate on            
             overrideJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
 

@@ -140,6 +140,9 @@ namespace Core.TimerJobs.Samples.SiteCollectionScopedJob
             // The provided credentials need access to the site collections you want to use
             siteCollectionScopedJob.UseOffice365Authentication(Tenant, User, Password);
 
+            // In case of SharePoint on-premises use
+            //siteCollectionScopedJob.UseNetworkCredentialsAuthentication(User, Password, Domain);
+
             // Add one or more sites to operate on
             siteCollectionScopedJob.AddSite("https://bertonline.sharepoint.com/sites/dev*");
 
