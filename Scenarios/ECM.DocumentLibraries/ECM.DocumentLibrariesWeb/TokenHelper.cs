@@ -196,7 +196,7 @@ namespace ECM.DocumentLibrariesWeb
             string resource = GetFormattedPrincipal(targetPrincipalName, targetHost, targetRealm);
             string clientId = GetFormattedPrincipal(ClientId, null, targetRealm);
 
-            // Create request for token. The RedirectUri is null here.  This will fail if redirect uri is registered
+            // Create request for token. The RedirectUri is null here.  This will fail if redirect URL is registered.
             OAuth2AccessTokenRequest oauth2Request =
                 OAuth2MessageFactory.CreateAccessTokenRequestWithAuthorizationCode(
                     clientId,
@@ -205,7 +205,7 @@ namespace ECM.DocumentLibrariesWeb
                     redirectUri,
                     resource);
 
-            // Get token
+            // Get token.
             OAuth2S2SClient client = new OAuth2S2SClient();
             OAuth2AccessTokenResponse oauth2Response;
             try
@@ -251,7 +251,7 @@ namespace ECM.DocumentLibrariesWeb
 
             OAuth2AccessTokenRequest oauth2Request = OAuth2MessageFactory.CreateAccessTokenRequestWithRefreshToken(clientId, ClientSecret, refreshToken, resource);
 
-            // Get token
+            // Get token.
             OAuth2S2SClient client = new OAuth2S2SClient();
             OAuth2AccessTokenResponse oauth2Response;
             try
@@ -297,7 +297,7 @@ namespace ECM.DocumentLibrariesWeb
             OAuth2AccessTokenRequest oauth2Request = OAuth2MessageFactory.CreateAccessTokenRequestWithClientCredentials(clientId, ClientSecret, resource);
             oauth2Request.Resource = resource;
 
-            // Get token
+            // Get token.
             OAuth2S2SClient client = new OAuth2S2SClient();
 
             OAuth2AccessTokenResponse oauth2Response;
@@ -804,7 +804,7 @@ namespace ECM.DocumentLibrariesWeb
                 actorClaims.Add(new JsonWebTokenClaim(TrustedForImpersonationClaimType, "true"));
             }
 
-            // Create token
+            // Create token.
             JsonWebSecurityToken actorToken = new JsonWebSecurityToken(
                 issuer: issuer,
                 audience: audience,
@@ -817,7 +817,7 @@ namespace ECM.DocumentLibrariesWeb
 
             if (appOnly)
             {
-                // App-only token is the same as actor token for delegated case
+                // App-only token is the same as actor token for delegated case.
                 return actorTokenString;
             }
 
@@ -829,7 +829,7 @@ namespace ECM.DocumentLibrariesWeb
             outerClaims.Add(new JsonWebTokenClaim(ActorTokenClaimType, actorTokenString));
 
             JsonWebSecurityToken jsonToken = new JsonWebSecurityToken(
-                nameid, // outer token issuer should match actor token nameid
+                nameid, // Outer token issuer should match actor token nameid.
                 audience,
                 DateTime.UtcNow,
                 DateTime.UtcNow.Add(HighTrustAccessTokenLifetime),
@@ -1192,7 +1192,7 @@ namespace ECM.DocumentLibrariesWeb
                 throw new ArgumentNullException("keyIdentifierClause");
             }
 
-            // Since this is a symmetric token and we do not have IDs to distinguish tokens, we just check for the
+            // Because this is a symmetric token and you do not have IDs to distinguish tokens, just check for the
             // presence of a SymmetricIssuerKeyIdentifier. The actual mapping to the issuer takes place later
             // when the key is matched to the issuer.
             if (keyIdentifierClause is SymmetricIssuerKeyIdentifierClause)
