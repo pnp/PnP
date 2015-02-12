@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{E35D5C00-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.SimpleJob", "Core.TimerJobs.Samples.SimpleJob\Core.TimerJobs.Samples.SimpleJob.csproj", "{D29E4419-65FE-4BCF-AE53-00767C0A81D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,14 @@ Global
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.Build.0 = Release15|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release15|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

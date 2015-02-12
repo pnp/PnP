@@ -136,14 +136,13 @@ namespace Core.TimerJobs.Samples
 
         public static void Main(string[] args)
         {
-            
             // Demo1: most simple timer job
             SimpleJob simpleJob = new SimpleJob();
             // The provided credentials need access to the site collections you want to use
             simpleJob.UseOffice365Authentication(Tenant, User, Password);
             //simpleJob.UseOffice365Authentication(Tenant, "bertonline");
             simpleJob.AddSite("https://bertonline.sharepoint.com/sites/dev");
-            PrintJobSettingsAndRunJob(simpleJob);
+            //PrintJobSettingsAndRunJob(simpleJob);
 
             // Demo2: use wildcard site urls and have sub sites expanded
             ExpandJob expandJob = new ExpandJob();
@@ -160,7 +159,7 @@ namespace Core.TimerJobs.Samples
             //expandJobAppOnly.SetEnumerationCredentials("bertonline");
             expandJobAppOnly.AddSite("https://bertonline.sharepoint.com/sites/2014*");
             expandJobAppOnly.AddSite("https://bertonline-my.sharepoint.com/personal/*");
-            //PrintJobSettingsAndRunJob(expandJobAppOnly);
+            PrintJobSettingsAndRunJob(expandJobAppOnly);
             
             // Demo4: Let's use the framework state management capabilities to optimize performance 
             SiteGovernanceJob governanceJob = new SiteGovernanceJob();
