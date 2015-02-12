@@ -42,7 +42,7 @@ namespace ECM.DocumentLibrariesWeb
         /// <param name="library">The Library to create</param>
         public void CreateContosoDocumentLibrary(ClientContext ctx, Library library)
         {
-            //Check the fields
+            // Check the fields.
             if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID)){
                 ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID, 
                                             FLD_CLASSIFICATION_INTERNAL_NAME, 
@@ -52,14 +52,14 @@ namespace ECM.DocumentLibrariesWeb
                                             TAXONOMY_TERMSET_CLASSIFICATION_NAME);
             }
             
-            //check the content type
+            // Check the content type.
             if (!ctx.Web.ContentTypeExistsById(CONTOSODOCUMENT_CT_ID)){
                 ctx.Web.CreateContentType(CONTOSODOCUMENT_CT_NAME, 
                                           CT_DESC, CONTOSODOCUMENT_CT_ID, 
                                           CT_GROUP);
             }
 
-            //associate fields to content types
+            // Associate fields to content types.
             if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME)){
                 ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID, 
                                                   FLD_CLASSIFICATION_ID.ToString(), 
@@ -76,7 +76,7 @@ namespace ECM.DocumentLibrariesWeb
         /// <param name="library">The Library  to create</param>
         public void CreateITDocumentLibrary(ClientContext ctx, Library library)
         {
-            //Check the fields
+            // Check the fields.
             if (!ctx.Web.FieldExistsById(FLD_BUSINESS_UNIT_ID)){
                 ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID, 
                                     FLD_BUSINESS_UNIT_INTERNAL_NAME, 
@@ -84,12 +84,12 @@ namespace ECM.DocumentLibrariesWeb
                                     FLD_BUSINESS_UNIT_DISPLAY_NAME, 
                                     FIELDS_GROUP_NAME);
             }
-            //check the content type
+            // Check the content type.
             if (!ctx.Web.ContentTypeExistsById(ITDOCUMENT_CT_ID)) {
                 ctx.Web.CreateContentType(ITDOCUMENT_CT_NAME, CT_DESC, ITDOCUMENT_CT_ID, CT_GROUP);
             }
 
-            //associate fields to content types
+            // Associate fields to content types.
             if (!ctx.Web.FieldExistsByNameInContentType(ITDOCUMENT_CT_NAME, FLD_BUSINESS_UNIT_INTERNAL_NAME)){
                 ctx.Web.AddFieldToContentTypeById(ITDOCUMENT_CT_ID, FLD_BUSINESS_UNIT_ID.ToString(), false);
             }
@@ -131,7 +131,7 @@ namespace ECM.DocumentLibrariesWeb
                 _list.ContentTypesEnabled = true;
                 _list.Update();
                 ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
-                //we are going to remove the default Document Content Type
+                // Remove the default Document Content Type.
                 _list.RemoveContentTypeByName(ContentTypeManager.DEFAULT_DOCUMENT_CT_NAME);
                 ctx.Web.Context.ExecuteQuery();
             }
