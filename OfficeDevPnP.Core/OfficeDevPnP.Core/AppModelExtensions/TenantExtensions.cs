@@ -214,7 +214,7 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                //Get the site name
+                // Get the site name
                 var properties = tenant.GetSitePropertiesByUrl(siteFullUrl, false);
                 tenant.Context.Load(properties);
                 tenant.Context.ExecuteQueryRetry();
@@ -228,7 +228,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     if (ex.Message.IndexOf("Unable to access site") != -1)
                     {
-                        //Let's retry to see if this site collection was recycled
+                        // Let's retry to see if this site collection was recycled
                         try
                         {
                             var deletedProperties = tenant.GetDeletedSitePropertiesByUrl(siteFullUrl);
@@ -248,7 +248,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    return true;
+                    return false;
                 }
             }
         }
