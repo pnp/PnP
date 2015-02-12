@@ -1441,9 +1441,6 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQueryRetry();
         }
 
-
-
-
         /// <summary>
         /// Can be used to create taxonomy field remotely to web.
         /// </summary>
@@ -1495,9 +1492,68 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by internal name
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="internalName">Internal name of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldByInternalName(this Web web, string internalName)
+        {
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            web.Context.ExecuteQuery();
 
+            Field field = fields.FirstOrDefault(f => f.InternalName == internalName);
 
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQuery();
 
+                string id = field.Id.ToString();
+                string hiddenFieldName = id.ToLower().Replace("-", string.Empty).Replace("{", string.Empty).Replace("}", string.Empty).Substring(1);
+                field = fields.FirstOrDefault(f => f.InternalName.EndsWith(hiddenFieldName));
+                if (field != null)
+                {
+                    field.DeleteObject();
+                    web.Update();
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by id
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="id">String representing the guid of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldById(this Web web, string id)
+        {
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id));
+            web.Context.ExecuteQuery();
+
+            Guid fieldGuid = new Guid(id);
+
+            Field field = fields.FirstOrDefault(f => f.Id == fieldGuid);
+
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQuery();
+
+                string hiddenFieldName = id.ToLower().Replace("-", string.Empty).Replace("{", string.Empty).Replace("}", string.Empty).Substring(1);
+                field = fields.FirstOrDefault(f => f.InternalName.EndsWith(hiddenFieldName));
+                if (field != null)
+                {
+                    field.DeleteObject();
+                    web.Update();
+                    web.Context.ExecuteQuery();
+                }
+            }
+        }
 
         /// <summary>
         /// Can be used to create taxonomy field remotely in a list. 
@@ -1548,7 +1604,6 @@ namespace Microsoft.SharePoint.Client
                 throw;
             }
         }
-
 
         /// <summary>
         /// Wires up MMS field to the specified term set.
