@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -39,11 +41,16 @@ namespace Microsoft.SharePoint.Client
         {
             int retryAttempts = 0;
             int backoffInterval = delay;
+
             if (retryCount <= 0)
+            {
                 throw new ArgumentException("Provide a retry count greater than zero.");
+            }
 
             if (delay <= 0)
+            {
                 throw new ArgumentException("Provide a delay greater than zero.");
+            }
 
             // Do while retry attempt is less than retry count
             while (retryAttempts < retryCount)
@@ -57,16 +64,18 @@ namespace Microsoft.SharePoint.Client
                 catch (WebException wex)
                 {
                     var response = wex.Response as HttpWebResponse;
+
                     // Check if request was throttled - http status code 429
                     // Check is request failed due to server unavailable - http status code 503
                     if (response != null && (response.StatusCode == (HttpStatusCode)429 || response.StatusCode == (HttpStatusCode)503))
                     {
                         Debug.WriteLine("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", backoffInterval);
+                        LoggingUtility.Internal.TraceInformation((int)EventId.Unknown, CoreResources.ClientContextExtensions_RetryException, backoffInterval);
 
-                        //Add delay for retry
+                        // Add delay for retry
                         Thread.Sleep(backoffInterval);
 
-                        //Add to retry count and increase delay.
+                        // Add to retry count and increase delay.
                         retryAttempts++;
                         backoffInterval = backoffInterval * 2;
                     }
@@ -74,6 +83,21 @@ namespace Microsoft.SharePoint.Client
                     {
                         throw;
                     }
+                }
+                catch (System.Net.Sockets.SocketException socketEx)
+                {
+                    // Catch the exception: An existing connection was forcibly closed by the remote host.
+                    LoggingUtility.Internal.TraceInformation((int)EventId.Unknown, socketEx.Message);
+
+                    Debug.WriteLine("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", backoffInterval);
+                    LoggingUtility.Internal.TraceInformation((int)EventId.Unknown, CoreResources.ClientContextExtensions_RetryException, backoffInterval);
+
+                    // Add delay for retry
+                    Thread.Sleep(backoffInterval);
+
+                    // Add to retry count and increase delay.
+                    retryAttempts++;
+                    backoffInterval = backoffInterval * 2;
                 }
             }
             throw new MaximumRetryAttemptedException(string.Format("Maximum retry attempts {0}, has be attempted.", retryCount));
@@ -103,7 +127,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                //Take over the form digest handling setting
+                // Take over the form digest handling setting
                 clonedClientContext.FormDigestHandlingEnabled = (clientContext as ClientContext).FormDigestHandlingEnabled;
 
                 // In case of app only or SAML
