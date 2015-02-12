@@ -14,26 +14,9 @@ namespace Core.TimerJobs.Samples.SiteCollectionScopedJob
         private static string user;
         private static string password;
         private static string domain;
-        private static string tenant;
         private static string clientId;
         private static string realm;
         private static string clientSecret;
-
-        public static string Tenant
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = ConfigurationManager.AppSettings["tenant"];
-                }
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = GetInput("Tenant (short name)", false);
-                }
-                return tenant;
-            }
-        }
 
         public static string User
         {
@@ -138,7 +121,7 @@ namespace Core.TimerJobs.Samples.SiteCollectionScopedJob
             SiteCollectionScopedJob siteCollectionScopedJob = new SiteCollectionScopedJob();
 
             // The provided credentials need access to the site collections you want to use
-            siteCollectionScopedJob.UseOffice365Authentication(Tenant, User, Password);
+            siteCollectionScopedJob.UseOffice365Authentication(User, Password);
 
             // In case of SharePoint on-premises use
             //siteCollectionScopedJob.UseNetworkCredentialsAuthentication(User, Password, Domain);

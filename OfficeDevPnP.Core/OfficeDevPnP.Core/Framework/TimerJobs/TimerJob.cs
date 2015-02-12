@@ -35,11 +35,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         // property management information
         private bool manageState = false;
         // Logging related variables
-        private const string LOGGING_SOURCE = "Core.TimerJobs";
+        private const string LOGGING_SOURCE = "OfficeDevPnP.TimerJobs";
         // Authentication related variables
         private Dictionary<string, AuthenticationManager> authenticationManagers;
         private AuthenticationType authenticationType;
-        private string tenantName;
         private string username;
         private string password;
         private string domain;
@@ -535,16 +534,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Prepares the timerjob to operate against Office 365 with user and password credentials. Sets AuthenticationType 
         /// to AuthenticationType.Office365
         /// </summary>
-        /// <param name="tenantName">Shortname of tenant: bertonline for tenant bertonline.onmicrosoft.com</param>
         /// <param name="username">UPN of the user that will be used to operate the timer job work</param>
         /// <param name="password">Password of the user that will be used to operate the timer job work</param>
-        public void UseOffice365Authentication(string tenantName, string userUPN, string password)
+        public void UseOffice365Authentication(string userUPN, string password)
         {
-            if (String.IsNullOrEmpty(tenantName))
-            {
-                throw new ArgumentNullException("tenantName");
-            }
-
             if (String.IsNullOrEmpty(userUPN))
             {
                 throw new ArgumentNullException("userName");
@@ -556,7 +549,6 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             this.authenticationType = Enums.AuthenticationType.Office365;
-            this.tenantName = tenantName;
             this.username = userUPN;
             this.password = password;
 
@@ -567,15 +559,9 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Prepares the timerjob to operate against Office 365 with user and password credentials which are retrieved via 
         /// the windows Credential Manager. Also sets AuthenticationType to AuthenticationType.Office365
         /// </summary>
-        /// <param name="tenantName">Shortname of tenant: bertonline for tenant bertonline.onmicrosoft.com</param>
         /// <param name="credentialName">Name of the credential manager registration</param>
-        public void UseOffice365Authentication(string tenantName, string credentialName)
+        public void UseOffice365Authentication(string credentialName)
         {
-            if (String.IsNullOrEmpty(tenantName))
-            {
-                throw new ArgumentNullException("tenantName");
-            }
-
             if (String.IsNullOrEmpty(credentialName))
             {
                 throw new ArgumentNullException("credentialName");
@@ -586,7 +572,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
             {
-                UseOffice365Authentication(tenantName, cred.UserName, cred.Password);
+                UseOffice365Authentication(cred.UserName, cred.Password);
             }
             else
             {
@@ -687,31 +673,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             this.authenticationType = Enums.AuthenticationType.AppOnly;
-            this.tenantName = "";
             this.realm = realm;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
 
             Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_AppOnly, clientId, realm);
-        }
-
-        /// <summary>
-        /// Prepares the timerjob to operate against Office 365 with app-only credentials. Sets AuthenticationType 
-        /// to AuthenticationType.AppOnly
-        /// </summary>
-        /// <param name="tenantName">Shortname of tenant: bertonline for tenant bertonline.onmicrosoft.com</param>
-        /// <param name="realm">Realm of the ACS tenant</param>
-        /// <param name="clientId">Client ID of the app</param>
-        /// <param name="clientSecret">Client Secret of the app</param>
-        public void UseAppOnlyAuthentication(string tenantName, string realm, string clientId, string clientSecret)
-        {
-            UseAppOnlyAuthentication(realm, clientId, clientSecret);
-
-            if (String.IsNullOrEmpty(tenantName))
-            {
-                throw new ArgumentNullException("tenantName");
-            }
-            this.tenantName = tenantName;
         }
 
         /// <summary>
@@ -721,7 +687,6 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="job"></param>
         public void Clone(TimerJob job)
         {
-            this.tenantName = job.tenantName;
             this.username = job.username;
             this.password = job.password;
             this.domain = job.domain;
@@ -1189,7 +1154,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             else
             {
                 //Good, we can use search for user profile and tenant API enumeration for regular sites
-                ClientContext ccEnumerate = GetAuthenticationManager(site).GetSharePointOnlineAuthenticatedContextTenant(GetTenantAdminSite(), EnumerationUser, EnumerationPassword);
+                ClientContext ccEnumerate = GetAuthenticationManager(site).GetSharePointOnlineAuthenticatedContextTenant(GetTenantAdminSite(site), EnumerationUser, EnumerationPassword);
                 Tenant tenant = new Tenant(ccEnumerate);
                 SiteEnumeration.Instance.ResolveSite(tenant, site, resolvedSites);
             }
@@ -1259,9 +1224,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Gets the tenant admin site based on the tenant name provided when setting the authentication details
         /// </summary>
         /// <returns>The tenant admin site</returns>
-        private string GetTenantAdminSite()
+        private string GetTenantAdminSite(string site)
         {
-            return String.Format("https://{0}-admin.sharepoint.com", this.tenantName);
+            Uri u = new Uri(GetTopLevelSite(site.Replace("*", "")));
+            string tenantName = u.DnsSafeHost.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)[0];
+            return String.Format("https://{0}-admin.sharepoint.com", tenantName);
         }
 
         /// <summary>

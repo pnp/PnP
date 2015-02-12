@@ -14,26 +14,9 @@ namespace Core.TimerJobs.Samples.ExpandJobAppOnly
         private static string user;
         private static string password;
         private static string domain;
-        private static string tenant;
         private static string clientId;
         private static string realm;
         private static string clientSecret;
-
-        public static string Tenant
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = ConfigurationManager.AppSettings["tenant"];
-                }
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = GetInput("Tenant (short name)", false);
-                }
-                return tenant;
-            }
-        }
 
         public static string User
         {
@@ -138,10 +121,7 @@ namespace Core.TimerJobs.Samples.ExpandJobAppOnly
             ExpandJob expandJobAppOnly = new ExpandJob();
             
             // specify the needed information to work app only
-            expandJobAppOnly.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
-
-            // In case of SharePoint on-premises use
-            //expandJobAppOnly.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            expandJobAppOnly.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
 
             // set enumeration credentials to allow using search API to find the OD4B sites
             expandJobAppOnly.SetEnumerationCredentials(User, Password);

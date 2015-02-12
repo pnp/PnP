@@ -14,26 +14,9 @@ namespace Core.TimerJobs.Samples.GovernanceJob
         private static string user;
         private static string password;
         private static string domain;
-        private static string tenant;
         private static string clientId;
         private static string realm;
         private static string clientSecret;
-
-        public static string Tenant
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = ConfigurationManager.AppSettings["tenant"];
-                }
-                if (String.IsNullOrEmpty(tenant))
-                {
-                    tenant = GetInput("Tenant (short name)", false);
-                }
-                return tenant;
-            }
-        }
 
         public static string User
         {
@@ -138,10 +121,7 @@ namespace Core.TimerJobs.Samples.GovernanceJob
             SiteGovernanceJob governanceJob = new SiteGovernanceJob();
 
             // specify the needed information to work app only
-            governanceJob.UseAppOnlyAuthentication(Tenant, Realm, ClientId, ClientSecret);
-
-            // In case of SharePoint on-premises use
-            //governanceJob.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            governanceJob.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
 
             // set enumeration credentials to allow using search API to find the OD4B sites
             governanceJob.SetEnumerationCredentials(User, Password);
