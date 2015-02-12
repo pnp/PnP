@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.SimpleJob", "Core.TimerJobs.Samples.SimpleJob\Core.TimerJobs.Samples.SimpleJob.csproj", "{D29E4419-65FE-4BCF-AE53-00767C0A81D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.ExpandJob", "Core.TimerJobs.Samples.ExpandJob\Core.TimerJobs.Samples.ExpandJob.csproj", "{5043EF31-25AE-4767-BC5F-6D7615DD6953}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,14 @@ Global
 		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{D29E4419-65FE-4BCF-AE53-00767C0A81D8}.Release15|Any CPU.Build.0 = Release|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{5043EF31-25AE-4767-BC5F-6D7615DD6953}.Release15|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
