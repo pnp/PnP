@@ -610,7 +610,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timer job authentication set to type App-Only with realm {1} and clientId {0}.
+        ///   Looks up a localized string similar to Timer job authentication set to type App-Only with clientId {0}.
         /// </summary>
         internal static string TimerJob_Authentication_AppOnly {
             get {
@@ -912,6 +912,15 @@ namespace OfficeDevPnP.Core {
         internal static string TimerJob_OnTimerJobRun_PropertiesSet {
             get {
                 return ResourceManager.GetString("TimerJob_OnTimerJobRun_PropertiesSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Realm set to {0}.
+        /// </summary>
+        internal static string TimerJob_Realm {
+            get {
+                return ResourceManager.GetString("TimerJob_Realm", resourceCulture);
             }
         }
         

@@ -319,7 +319,7 @@
     <value>Site url ({0}) contains invalid characters</value>
   </data>
   <data name="TimerJob_Authentication_AppOnly" xml:space="preserve">
-    <value>Timer job authentication set to type App-Only with realm {1} and clientId {0}</value>
+    <value>Timer job authentication set to type App-Only with clientId {0}</value>
   </data>
   <data name="TimerJob_Authentication_Network" xml:space="preserve">
     <value>Timer job authentication set to type NetworkCredentials with user {0} in domain {1}</value>
@@ -494,5 +494,8 @@
   </data>
   <data name="TimerJob_UseThreading" xml:space="preserve">
     <value>UseThreading set to {0}</value>
+  </data>
+  <data name="TimerJob_Realm" xml:space="preserve">
+    <value>Realm set to {0}</value>
   </data>
 </root>

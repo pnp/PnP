@@ -121,7 +121,7 @@ namespace Core.TimerJobs.Samples.ExpandJobAppOnly
             ExpandJob expandJobAppOnly = new ExpandJob();
             
             // specify the needed information to work app only
-            expandJobAppOnly.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            expandJobAppOnly.UseAppOnlyAuthentication(ClientId, ClientSecret);
 
             // set enumeration credentials to allow using search API to find the OD4B sites
             expandJobAppOnly.SetEnumerationCredentials(User, Password);

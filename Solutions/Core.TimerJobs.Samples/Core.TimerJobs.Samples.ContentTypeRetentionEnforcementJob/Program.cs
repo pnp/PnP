@@ -122,7 +122,7 @@ namespace Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob
             ContentTypeRetentionEnforcementJob contentTypeRetentionEnforcementJob = new ContentTypeRetentionEnforcementJob();
 
             // specify the needed information to work app only
-            contentTypeRetentionEnforcementJob.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            contentTypeRetentionEnforcementJob.UseAppOnlyAuthentication(ClientId, ClientSecret);
 
             // set enumeration credentials to allow using search API to find the OD4B sites
             contentTypeRetentionEnforcementJob.SetEnumerationCredentials(User, Password);

@@ -121,7 +121,7 @@ namespace Core.TimerJobs.Samples.GovernanceJob
             SiteGovernanceJob governanceJob = new SiteGovernanceJob();
 
             // specify the needed information to work app only
-            governanceJob.UseAppOnlyAuthentication(Realm, ClientId, ClientSecret);
+            governanceJob.UseAppOnlyAuthentication(ClientId, ClientSecret);
 
             // set enumeration credentials to allow using search API to find the OD4B sites
             governanceJob.SetEnumerationCredentials(User, Password);

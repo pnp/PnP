@@ -213,6 +213,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 this.requestedSites = UpdateAddedSites(requestedSites);
                 Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_AfterUpdateAddedSites, requestedSites.Count);
 
+                if (String.IsNullOrEmpty(this.realm) && this.authenticationType == Enums.AuthenticationType.AppOnly && requestedSites.Count > 0)
+                {
+                    this.realm = TokenHelper.GetRealmFromTargetUrl(new Uri(GetTopLevelSite(requestedSites[0].Replace("*", ""))));
+                }
+
                 // Prepare the list of sites to process. This will resolve the wildcard site Url's to a list of actual Url's
                 Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_BeforeResolveAddedSites, requestedSites.Count);
                 this.sitesToProcess = ResolveAddedSites(this.requestedSites);
@@ -531,6 +536,23 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         }
 
         /// <summary>
+        /// Realm will be automatically defined, but there's an option to manually specify it which may 
+        /// be needed when did an override of ResolveAddedSites and specify your sites.
+        /// </summary>
+        public string Realm
+        {
+            get
+            {
+                return this.realm;
+            }
+            set
+            {
+                this.realm = value;
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Realm, this.realm);
+            }
+        }
+
+        /// <summary>
         /// Prepares the timerjob to operate against Office 365 with user and password credentials. Sets AuthenticationType 
         /// to AuthenticationType.Office365
         /// </summary>
@@ -652,16 +674,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Prepares the timerjob to operate against SharePoint on-premises with app-only credentials. Sets AuthenticationType 
         /// to AuthenticationType.AppOnly
         /// </summary>
-        /// <param name="realm">Realm of the ACS tenant</param>
         /// <param name="clientId">Client ID of the app</param>
         /// <param name="clientSecret">Client Secret of the app</param>
-        public void UseAppOnlyAuthentication(string realm, string clientId, string clientSecret)
+        public void UseAppOnlyAuthentication(string clientId, string clientSecret)
         {
-            if (String.IsNullOrEmpty(realm))
-            {
-                throw new ArgumentNullException("realm");
-            }
-
             if (String.IsNullOrEmpty(clientId))
             {
                 throw new ArgumentNullException("clientId");
@@ -673,11 +689,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             this.authenticationType = Enums.AuthenticationType.AppOnly;
-            this.realm = realm;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
 
-            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_AppOnly, clientId, realm);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_AppOnly, clientId);
         }
 
         /// <summary>
