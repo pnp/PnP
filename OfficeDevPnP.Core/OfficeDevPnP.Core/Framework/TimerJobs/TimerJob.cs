@@ -55,7 +55,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         private List<string> sitesToProcess;
         private bool expandSubSites = false;
         // Threading
-        private static int numerOfThreadsNotYetCompleted;
+        private static int numberOfThreadsNotYetCompleted;
         private static ManualResetEvent doneEvent;
         private bool useThreading = true;
         private int maximumThreads = 5;
@@ -94,7 +94,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.authenticationType = Enums.AuthenticationType.Office365;
             this.authenticationManagers = new Dictionary<string, AuthenticationManager>();
 
-            Log.Info(LOGGING_SOURCE, "Timer job constructed with name {0}, version {1}", this.name, this.version);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Constructor, this.name, this.version);
         }
         #endregion
 
@@ -134,7 +134,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             set
             {
                 this.manageState = value;
-                Log.Info(LOGGING_SOURCE, "Manage state set to {0}", this.manageState);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ManageState, this.manageState);
             }
         }
 
@@ -161,7 +161,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             set
             {
                 this.useThreading = value;
-                Log.Info(LOGGING_SOURCE, "UseThreading set to {0}", this.useThreading);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_UseThreading, this.useThreading);
             }
         }
 
@@ -178,53 +178,53 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (value > 100)
                 {
-                    throw new ArgumentException("You cannot use more than 100 threads.");
+                    throw new ArgumentException(CoreResources.TimerJob_MaxThread100);
                 }
 
                 if (value == 1)
                 {
-                    throw new ArgumentException("If you only want 1 thread then set the UseThreading property to false.");
+                    throw new ArgumentException(CoreResources.TimerJob_MaxThread1);
                 }
                 else if (value < 1)
                 {
-                    throw new ArgumentException("Number of threads must be between 2 and 100.");
+                    throw new ArgumentException(CoreResources.TimerJob_MaxThreadLessThan1);
                 }
 
                 this.maximumThreads = value;
-                Log.Info(LOGGING_SOURCE, "MaximumThreads set to {0}", this.maximumThreads);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_MaxThreadSet, this.maximumThreads);
             }
         }
         #endregion
 
         #region Run job
-        /// <summary>
+        /// <summary>   
         /// Triggers the timer job to start running
         /// </summary>
         public void Run()
         {
             try
             {
-                Log.Info(LOGGING_SOURCE, "Run of timer job has started");
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_Started);
 
                 //mark the job as running
                 this.isRunning = true;
 
                 // This method call doesn't do anything but allows the inheriting task to override the passed list of requested sites
-                Log.Info(LOGGING_SOURCE, "Before calling the virtual UpdateAddedSites method. Current count of site url's = {0}", requestedSites.Count);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_BeforeUpdateAddedSites, requestedSites.Count);
                 this.requestedSites = UpdateAddedSites(requestedSites);
-                Log.Info(LOGGING_SOURCE, "After calling the virtual UpdateAddedSites method. Current count of site url's = {0}", requestedSites.Count);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_AfterUpdateAddedSites, requestedSites.Count);
 
                 // Prepare the list of sites to process. This will resolve the wildcard site Url's to a list of actual Url's
-                Log.Info(LOGGING_SOURCE, "Before calling the virtual ResolveAddedSites method. Current count of site url's = {0}", requestedSites.Count);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_BeforeResolveAddedSites, requestedSites.Count);
                 this.sitesToProcess = ResolveAddedSites(this.requestedSites);
-                Log.Info(LOGGING_SOURCE, "After calling the virtual ResolveAddedSites method. Current count of site url's = {0}", this.sitesToProcess.Count);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_AfterResolveAddedSites, this.sitesToProcess.Count);
 
                 // No sites to process...we're done
                 if (this.sitesToProcess.Count == 0)
                 {
                     // Job ended, so set isrunning accordingly
                     this.isRunning = false;
-                    Log.Warning(LOGGING_SOURCE, "Job does not have sites to process, bailing out.");
+                    Log.Warning(LOGGING_SOURCE, CoreResources.TimerJob_Run_NoSites);
                     return;
                 }
 
@@ -235,40 +235,40 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                     List<List<string>> batchWork = CreateWorkBatches();
 
                     // Determine the number of threads we'll spin off. Will be less or equal to the set maximum number of threads
-                    numerOfThreadsNotYetCompleted = batchWork.Count;
+                    numberOfThreadsNotYetCompleted = batchWork.Count;
                     // Prepare the reset event for indicating thread completion
                     doneEvent = new ManualResetEvent(false);
 
-                    Log.Info(LOGGING_SOURCE, "Ready to start a thread for each of the {0} work batches.", batchWork.Count);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_BeforeStartWorkBatches, batchWork.Count);
                     // execute an thread per batch
                     foreach (List<string> batch in batchWork)
                     {
                         // add thread to queue 
                         ThreadPool.QueueUserWorkItem(o => DoWorkBatch(batch));
-                        Log.Info(LOGGING_SOURCE, "Thread launched for processing {0} sites", batch.Count);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_ThreadLaunched, batch.Count);
                     }
 
                     // Wait for all threads to finish
                     doneEvent.WaitOne();
-                    Log.Info(LOGGING_SOURCE, "Done processing the {0} work batches", batchWork.Count);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_DoneProcessingWorkBatches, batchWork.Count);
                 }
                 else
                 {
 
-                    Log.Info(LOGGING_SOURCE, "Ready to process each of the {0} sites in a sequential manner.", this.sitesToProcess.Count);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_ProcessSequentially, this.sitesToProcess.Count);
                     // No threading, just execute an event per site
                     foreach (string site in this.sitesToProcess)
                     {
                         DoWork(site);
                     }
-                    Log.Info(LOGGING_SOURCE, "Done with processing each of the {0} sites.", this.sitesToProcess.Count);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_ProcessSequentiallyDone, this.sitesToProcess.Count);
                 }
             }
             finally
             {
                 // Job ended, so set isrunning accordingly
                 this.isRunning = false;
-                Log.Info(LOGGING_SOURCE, "Run of timer job has ended");
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Run_Done);
             }
         }
 
@@ -289,7 +289,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             finally
             {
                 // Decrement counter in a thread safe manner
-                if (Interlocked.Decrement(ref numerOfThreadsNotYetCompleted) == 0)
+                if (Interlocked.Decrement(ref numberOfThreadsNotYetCompleted) == 0)
                 {
                     // we're done, all threads have ended, signal that this was the last thread that ended
                     doneEvent.Set();
@@ -303,7 +303,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="site">Url of the site to process</param>
         private void DoWork(string site)
         {
-            Log.Info(LOGGING_SOURCE, "Doing work for site {0}.", site);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_DoWork_Start, site);
 
             // Get the root site of the passed site
             string rootSite = GetRootSite(site);
@@ -331,10 +331,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
             else
             {
-                Log.Warning(LOGGING_SOURCE, "No event receiver connected to the TimerJobRun event.");
+                Log.Warning(LOGGING_SOURCE, CoreResources.TimerJob_DoWork_NoEventHandler);
             }
 
-            Log.Info(LOGGING_SOURCE, "Work for site {0} done.", site);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_DoWork_Done, site);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                             // We should have a value, but you never know...
                             if (!string.IsNullOrEmpty(timerJobProps))
                             {
-                                Log.Info(LOGGING_SOURCE, "Timerjob properties read using key {0} for site {1}", propertyKey, e.Url);
+                                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PropertiesRead, propertyKey, e.Url);
 
                                 // Deserialize the json string into a TimerJobRun class instance
                                 TimerJobRun timerJobRunProperties = s.Deserialize<TimerJobRun>(timerJobProps);
@@ -385,18 +385,18 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                                     e.PreviousRunVersion = timerJobRunProperties.PreviousRunVersion;
                                     e.Properties = timerJobRunProperties.Properties;
 
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRun = {0}", e.PreviousRun, e.Url);
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunSuccessful = {0}", e.PreviousRunSuccessful, e.Url);
-                                    Log.Info(LOGGING_SOURCE, "Timerjob for site {1}, PreviousRunVersion = {0}", e.PreviousRunVersion, e.Url);
+                                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunRead, e.PreviousRun, e.Url);
+                                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunSuccessRead, e.PreviousRunSuccessful, e.Url);
+                                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunVersionRead, e.PreviousRunVersion, e.Url);
                                 }
                             }
                         }
                     }
 
-                    Log.Info(LOGGING_SOURCE, "Calling the eventhandler for site {0}", e.Url);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_CallEventHandler, e.Url);
                     // trigger the event
                     timerJobRunHandlerThreadCopy(this, e);
-                    Log.Info(LOGGING_SOURCE, "Eventhandler called for site {0}", e.Url);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_CallEventHandlerDone, e.Url);
 
                     // Update and store the properties to the web property bag
                     if (this.manageState)
@@ -410,9 +410,9 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                             Properties = e.Properties,
                         };
 
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRun to {0}", timerJobRunProperties.PreviousRun, e.Url);
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunSuccessful to {0}", timerJobRunProperties.PreviousRunSuccessful, e.Url);
-                        Log.Info(LOGGING_SOURCE, "Set Timerjob for site {1}, PreviousRunVersion to {0}", timerJobRunProperties.PreviousRunVersion, e.Url);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunSet, timerJobRunProperties.PreviousRun, e.Url);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunSuccessSet, timerJobRunProperties.PreviousRunSuccessful, e.Url);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PrevRunVersionSet, timerJobRunProperties.PreviousRunVersion, e.Url);
 
                         // Serialize to json string
                         string timerJobProps = s.Serialize(timerJobRunProperties);
@@ -436,7 +436,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                         // Persist the web property bag entries
                         e.WebClientContext.Web.Update();
                         e.WebClientContext.ExecuteQueryRetry();
-                        Log.Info(LOGGING_SOURCE, "Timerjob properties written using key {0} for site {1}", propertyKey, e.Url);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_PropertiesSet, propertyKey, e.Url);
                     }
 
                 }
@@ -444,7 +444,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             catch (Exception ex)
             {
                 // Catch error in this case as we don't want to the whole program to terminate if one single site operation fails
-                Log.Error(LOGGING_SOURCE, "Error during timerjob execution of site {0}. Exception message = {1}", e.Url, ex.Message);
+                Log.Error(LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_Error, e.Url, ex.Message);
             }
         }
 
@@ -523,11 +523,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (value < 15 || value > 16)
                 {
-                    throw new ArgumentException("SharePoint version must be 15 or 16");
+                    throw new ArgumentException(CoreResources.TimerJob_SharePointVersion_Versions);
                 }
 
                 this.sharePointVersion = value;
-                Log.Info(LOGGING_SOURCE, "SharePointVersion set to {0}", this.sharePointVersion);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_SharePointVersion, this.sharePointVersion);
             }
         }
 
@@ -560,7 +560,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.username = userUPN;
             this.password = password;
 
-            Log.Info(LOGGING_SOURCE, "Timer job authentication set to type Office 365 with user {0}", userUPN);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_O365, userUPN);
         }
 
         /// <summary>
@@ -581,7 +581,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("credentialName");
             }
 
-            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
             System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
@@ -590,7 +590,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
             else
             {
-                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
+                throw new Exception(String.Format(CoreResources.TimerJob_Authentication_RetrieveFromCredManFailed, credentialName));
             }
         }
 
@@ -623,7 +623,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.password = password;
             this.domain = domain;
 
-            Log.Info(LOGGING_SOURCE, "Timer job authentication set to type NetworkCredentials with user {0} in domain {1}", samAccountName, domain);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_Network, samAccountName, domain);
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("credentialName");
             }
 
-            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
             System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (!String.IsNullOrEmpty(cred.UserName))
@@ -657,7 +657,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
             else
             {
-                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user, password or domain set", credentialName));
+                throw new Exception(String.Format(CoreResources.TimerJob_Authentication_RetrieveFromCredManFailed, credentialName));
             }
 
         }
@@ -692,7 +692,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.clientId = clientId;
             this.clientSecret = clientSecret;
 
-            Log.Info(LOGGING_SOURCE, "Timer job authentication set to type App-Only with realm {1} and clientId {0}", clientId, realm);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_AppOnly, clientId, realm);
         }
 
         /// <summary>
@@ -733,6 +733,8 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.clientId = job.clientId;
             this.clientSecret = job.clientSecret;
             this.sharePointVersion = job.sharePointVersion;
+
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Clone, job.Name, this.Name);
         }
 
         /// <summary>
@@ -772,7 +774,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             set
             {
                 this.expandSubSites = value;
-                Log.Info(LOGGING_SOURCE, "ExpandSubSites set to {0}", this.expandSubSites);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ExpandSubSites, this.expandSubSites);
             }
         }
 
@@ -793,7 +795,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 }
                 else
                 {
-                    throw new Exception("No user specified that can be used for site enumeration. Use the SetEnumeration... method to provide credentials as app-only does not work with search.");
+                    throw new Exception(CoreResources.TimerJob_Enumeration_NoUser);
                 }
             }
         }
@@ -815,7 +817,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 }
                 else
                 {
-                    throw new Exception("No password specified that can be used for site enumeration. Use the SetEnumeration... method to provide credentials as app-only does not work with search.");
+                    throw new Exception(CoreResources.TimerJob_Enumeration_NoPassword);
                 }
             }
         }
@@ -837,7 +839,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 }
                 else
                 {
-                    throw new Exception("No domain specified that can be used for site enumeration. Use the SetEnumerationNetworkCredentials method to provide credentials as app-only does not work with search.");
+                    throw new Exception(CoreResources.TimerJob_Enumeration_NoDomain);
                 }
             }
         }
@@ -851,7 +853,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         {
             this.enumerationUser = userUPN;
             this.enumerationPassword = password;
-            Log.Info(LOGGING_SOURCE, "Enumeration credentials specified for Office 365 enumeration with user {0}", userUPN);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_O365, userUPN);
         }
 
         /// <summary>
@@ -865,7 +867,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.enumerationUser = samAccountName;
             this.enumerationPassword = password;
             this.enumerationDomain = domain;
-            Log.Info(LOGGING_SOURCE, "Enumeration credentials specified for on-premises enumeration with user {0} and demain {1}", samAccountName, domain);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_Network, samAccountName, domain);
         }
 
         /// <summary>
@@ -879,7 +881,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("credentialName");
             }
 
-            Log.Info(LOGGING_SOURCE, "Retrieving credetials with name {0} from the Windows Credential Manager", credentialName);
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
             System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
@@ -907,7 +909,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
             else
             {
-                throw new Exception(String.Format("Failed to retrieve credential manager credentials with name {0} or retrieved credentials don't have user or password set", credentialName));
+                throw new Exception(String.Format(CoreResources.TimerJob_Authentication_RetrieveFromCredManFailed, credentialName));
             }
         }
 
@@ -928,14 +930,14 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (!IsValidUrl(site))
                 {
-                    throw new ArgumentException(string.Format("Site url ({0}) contains invalid characters", site), "site");
+                    throw new ArgumentException(string.Format(CoreResources.TimerJob_AddSite_Done, site), "site");
                 }
             }
 
             if (!requestedSites.Contains(site))
             {
                 this.requestedSites.Add(site);
-                Log.Info(LOGGING_SOURCE, "Site {0} url/wildcard added", site);
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_AddSite_InvalidUrl, site);
             }
         }
 
@@ -945,7 +947,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         public void ClearAddedSites()
         {
             this.requestedSites.Clear();
-            Log.Info(LOGGING_SOURCE, "All added sites are cleared.");
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ClearAddedSites);
         }
 
         /// <summary>
@@ -967,7 +969,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <returns>List of resolved sites</returns>
         public virtual List<string> ResolveAddedSites(List<string> addedSites)
         {
-            Log.Info(LOGGING_SOURCE, "Resolving sites started");
+            Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_Started);
 
             List<string> resolvedSites = new List<string>();
 
@@ -976,10 +978,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (site.Contains("*"))
                 {
-                    Log.Info(LOGGING_SOURCE, "Resolving wildcard site {0}", site);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_ResolveSite, site);
                     // get the actual sites matching to the wildcard site Url
                     ResolveSite(site, resolvedSites);
-                    Log.Info(LOGGING_SOURCE, "Done resolving wildcard site {0}", site);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_ResolveSiteDone, site);
                 }
                 else
                 {
@@ -999,39 +1001,39 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                     List<List<string>> expandBatches = CreateExpandBatches(resolvedSites);
 
                     // Determine the number of threads we'll spin off. Will be less or equal to the maximum number of threads
-                    numerOfThreadsNotYetCompleted = expandBatches.Count;
+                    numberOfThreadsNotYetCompleted = expandBatches.Count;
                     // Prepare the reset event for indicating thread completion
                     doneEvent = new ManualResetEvent(false);
 
-                    Log.Info(LOGGING_SOURCE, "Expand subsites by lanuching a thread per {0} of the work batches", numerOfThreadsNotYetCompleted);
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_LaunchThreadPerBatch, numberOfThreadsNotYetCompleted);
                     foreach (List<string> expandBatch in expandBatches)
                     {
                         // Launch a thread per batch of sites to expand
                         ThreadPool.QueueUserWorkItem(o => DoExpandBatch(expandBatch, resolvedSitesAndSubSites));
-                        Log.Info(LOGGING_SOURCE, "Thread started to expand a batch of {0} sites", expandBatch.Count);
+                        Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_ThreadLaunched, expandBatch.Count);
                     }
 
                     // Wait for all threads to finish
                     doneEvent.WaitOne();
-                    Log.Info(LOGGING_SOURCE, "Done waiting for all site expanding threads");
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_ThreadsAreDone);
                 }
                 else
                 {
-                    Log.Info(LOGGING_SOURCE, "Start sequentially expanding all sites");
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_StartSequentialExpand);
                     // When no threading just sequentially expand the sub sites for each site collection
                     for (int i = 0; i < resolvedSites.Count; i++)
                     {
                         ExpandSite(resolvedSitesAndSubSites, resolvedSites[i]);
                     }
-                    Log.Info(LOGGING_SOURCE, "Done sequentially expanding all sites");
+                    Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_SequentialExpandDone);
                 }
 
-                Log.Info(LOGGING_SOURCE, "Resolving sites done, sub sites have been expanded");
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_Done);
                 return resolvedSitesAndSubSites;
             }
             else
             {
-                Log.Info(LOGGING_SOURCE, "Resolving sites done, no expansion needed");
+                Log.Info(LOGGING_SOURCE, CoreResources.TimerJob_ResolveSites_DoneNoExpansionNeeded);
                 // no sub site resolving was needed, so just return the original list of resolved sites
                 return resolvedSites;
             }
@@ -1055,7 +1057,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             finally
             {
                 // Decrement counter in a thread safe manner
-                if (Interlocked.Decrement(ref numerOfThreadsNotYetCompleted) == 0)
+                if (Interlocked.Decrement(ref numberOfThreadsNotYetCompleted) == 0)
                 {
                     // we're done, all threads have ended, signal that this was the last thread that ended
                     doneEvent.Set();
@@ -1129,7 +1131,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                     ex.Message.IndexOf("The remote server returned an error: (404) Not Found") > -1)
                 {
                     //eath the exception
-                    Log.Warning(LOGGING_SOURCE, "Eating exception {0}", ex.Message);
+                    Log.Warning(LOGGING_SOURCE, CoreResources.TimerJob_ExpandSite_EatException, ex.Message, site);
                 }
                 else
                 {
