@@ -79,7 +79,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not determine lease for appOnlyAccessToken..
+        ///   Looks up a localized string similar to Could not determine lease for appOnlyAccessToken. Error = {0}.
         /// </summary>
         internal static string AuthenticationManger_ProblemDeterminingTokenLease {
             get {
@@ -214,7 +214,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Problem with activation for feature id {0}..
+        ///   Looks up a localized string similar to Problem with activation for feature id {0}. Error = {1}.
         /// </summary>
         internal static string FeatureExtensions_FeatureActivationProblem {
             get {
@@ -349,7 +349,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mail message could not be sent. SMTP exception attempting to send..
+        ///   Looks up a localized string similar to Mail message could not be sent. SMTP exception attempting to send. Error = {0}.
         /// </summary>
         internal static string MailUtility_SendException {
             get {
@@ -367,7 +367,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mail message could not be sent. Send completed with error..
+        ///   Looks up a localized string similar to Mail message could not be sent. Send completed with error {0}..
         /// </summary>
         internal static string MailUtility_SendFailed {
             get {
@@ -385,7 +385,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error provisioning module &apos;{0}&apos; file &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Error provisioning module &apos;{0}&apos; file &apos;{1}&apos;. Error = {2}.
         /// </summary>
         internal static string ProvisioningExtensions_ErrorProvisioningModule0File1 {
             get {
@@ -484,7 +484,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1})..
+        ///   Looks up a localized string similar to Error setting description for term group &apos;{0}&apos; ({1}). Error = {2}.
         /// </summary>
         internal static string TaxonomyExtension_ExceptionUpdateDescriptionGroup01 {
             get {
@@ -493,7 +493,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error setting description for term set &apos;{0}&apos; ({1})..
+        ///   Looks up a localized string similar to Error setting description for term set &apos;{0}&apos; ({1}). Error = {2}.
         /// </summary>
         internal static string TaxonomyExtension_ExceptionUpdateDescriptionSet01 {
             get {
@@ -502,7 +502,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error encountered during import when attempting to delete invalid term with id {0} on line {1}..
+        ///   Looks up a localized string similar to Error encountered during import when attempting to delete invalid term with id {0} on line {1}. Error = {2}.
         /// </summary>
         internal static string TaxonomyExtension_ImportErrorDeleteId0Line1 {
             get {
@@ -565,7 +565,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object..
+        ///   Looks up a localized string similar to ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object. Error = {0}.
         /// </summary>
         internal static string TenantExtensions_ClosedContextWarning {
             get {
@@ -583,7 +583,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not determine if site exists in tenant..
+        ///   Looks up a localized string similar to Could not determine if site exists in tenant. Error = {0}.
         /// </summary>
         internal static string TenantExtensions_UnknownExceptionAccessingSite {
             get {
@@ -1186,7 +1186,7 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Site search error..
+        ///   Looks up a localized string similar to Site search error. Error = {0}.
         /// </summary>
         internal static string WebExtensions_SiteSearchUnhandledException {
             get {

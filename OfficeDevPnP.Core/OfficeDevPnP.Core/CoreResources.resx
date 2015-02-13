@@ -124,7 +124,7 @@
     <value>Tenant user '{0}'</value>
   </data>
   <data name="AuthenticationManger_ProblemDeterminingTokenLease" xml:space="preserve">
-    <value>Could not determine lease for appOnlyAccessToken.</value>
+    <value>Could not determine lease for appOnlyAccessToken. Error = {0}</value>
   </data>
   <data name="BrandingExtension_CreateComposedLook" xml:space="preserve">
     <value>Creating composed look '{0}' in '{1}'</value>
@@ -166,7 +166,7 @@
     <value>Deactivating feature {0} in web.</value>
   </data>
   <data name="FeatureExtensions_FeatureActivationProblem" xml:space="preserve">
-    <value>Problem with activation for feature id {0}.</value>
+    <value>Problem with activation for feature id {0}. Error = {1}</value>
   </data>
   <data name="FieldAndContentTypeExtensions_AddField0ToContentType1" xml:space="preserve">
     <value>Adding field ({0}) to content type ({1}).</value>
@@ -205,19 +205,19 @@
     <value>Mail message was canceled.</value>
   </data>
   <data name="MailUtility_SendFailed" xml:space="preserve">
-    <value>Mail message could not be sent. Send completed with error.</value>
+    <value>Mail message could not be sent. Send completed with error {0}.</value>
   </data>
   <data name="MailUtility_SendException" xml:space="preserve">
-    <value>Mail message could not be sent. SMTP exception attempting to send.</value>
+    <value>Mail message could not be sent. SMTP exception attempting to send. Error = {0}</value>
   </data>
   <data name="MailUtility_SendExceptionRethrow0" xml:space="preserve">
     <value>Mail message could not be sent. Exception attempting to send email, rethrowing. Exception: {0}</value>
   </data>
   <data name="TenantExtensions_ClosedContextWarning" xml:space="preserve">
-    <value>ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object.</value>
+    <value>ClientContext gets closed after action is completed. Calling ExecuteQuery again returns an error. Verify that you have an open ClientContext object. Error = {0}</value>
   </data>
   <data name="TenantExtensions_UnknownExceptionAccessingSite" xml:space="preserve">
-    <value>Could not determine if site exists in tenant.</value>
+    <value>Could not determine if site exists in tenant. Error = {0}</value>
   </data>
   <data name="WebExtensions_CreateWeb" xml:space="preserve">
     <value>Creating web '{0}' with template '{1}'.</value>
@@ -232,7 +232,7 @@
     <value>Removing app '{0}' instance {1}.</value>
   </data>
   <data name="WebExtensions_SiteSearchUnhandledException" xml:space="preserve">
-    <value>Site search error.</value>
+    <value>Site search error. Error = {0}</value>
   </data>
   <data name="WebExtensions_UninstallSolution" xml:space="preserve">
     <value>Removing sandbox solution '{0}'.</value>
@@ -247,13 +247,13 @@
     <value>Creating term set '{0}' in term group '{1}'.</value>
   </data>
   <data name="TaxonomyExtension_ExceptionUpdateDescriptionGroup01" xml:space="preserve">
-    <value>Error setting description for term group '{0}' ({1}).</value>
+    <value>Error setting description for term group '{0}' ({1}). Error = {2}</value>
   </data>
   <data name="TaxonomyExtension_ExceptionUpdateDescriptionSet01" xml:space="preserve">
-    <value>Error setting description for term set '{0}' ({1}).</value>
+    <value>Error setting description for term set '{0}' ({1}). Error = {2}</value>
   </data>
   <data name="TaxonomyExtension_ImportErrorDeleteId0Line1" xml:space="preserve">
-    <value>Error encountered during import when attempting to delete invalid term with id {0} on line {1}.</value>
+    <value>Error encountered during import when attempting to delete invalid term with id {0} on line {1}. Error = {2}</value>
   </data>
   <data name="TaxonomyExtension_ImportErrorDescription0Line1" xml:space="preserve">
     <value>Error encountered during import. The description '{0}' on line {1} is not valid.</value>
@@ -298,7 +298,7 @@
     <value>Creating folder '{0}' under {1} '{2}'.</value>
   </data>
   <data name="ProvisioningExtensions_ErrorProvisioningModule0File1" xml:space="preserve">
-    <value>Error provisioning module '{0}' file '{1}'.</value>
+    <value>Error provisioning module '{0}' file '{1}'. Error = {2}</value>
   </data>
   <data name="ProvisioningExtensions_ProvisionElementFile0" xml:space="preserve">
     <value>Provisioning Elements file '{0}'.</value>

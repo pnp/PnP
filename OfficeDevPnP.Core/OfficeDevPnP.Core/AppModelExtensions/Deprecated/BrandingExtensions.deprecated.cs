@@ -30,7 +30,7 @@ namespace Microsoft.SharePoint.Client
 
         private static void DeployThemeToWebImplementation(Web web, Web rootWeb, string themeName, string colorFilePath, string fontFilePath, string backgroundImagePath, string masterPageName)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployTheme, CoreResources.BrandingExtension_DeployTheme, themeName, web.Context.Url);
+            Log.Info(CoreResources.BrandingExtension_DeployTheme, themeName, web.Context.Url);
 
             // Deploy files one by one to proper location
             if (!string.IsNullOrEmpty(colorFilePath) && System.IO.File.Exists(colorFilePath))
