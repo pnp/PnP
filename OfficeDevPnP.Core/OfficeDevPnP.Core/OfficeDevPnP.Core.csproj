@@ -280,7 +280,7 @@
     <Compile Include="WebAPI\WebAPIContextFilterAttribute.cs" />
     <Compile Include="WebAPI\WebAPIHelper.cs" />
     <Compile Include="Utilities\Caml.cs" />
-    <Compile Include="Utilities\LoggingUtility.cs" />
+    <Compile Include="Utilities\Deprecated\LoggingUtility.deprecated.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>
     </Compile>
