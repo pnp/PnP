@@ -2,37 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
 
 namespace Microsoft.SharePoint.Client
 {
-    public enum NavigationType
-    {
-        TopNavigationBar,
-        QuickLaunch,
-        SearchNav
-    }
 
     /// <summary>
     /// This class holds navigation related methods
     /// </summary>
-    public static class NavigationExtensions
+    public static partial class NavigationExtensions
     {
         #region Navigation elements - quicklaunch, top navigation, search navigation
-
-        /// <summary>
-        /// Add a node to quickLaunch or top navigation bar
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="nodeTitle">the title of node to add</param>
-        /// <param name="nodeUri">the url of node to add</param>
-        /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
-        /// <param name="isQuickLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
-        [Obsolete("Use public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType)")]
-        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, bool isQuickLaunch)
-        {
-            AddNavigationNode(web, nodeTitle, nodeUri, parentNodeTitle, isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
-        }
-
         /// <summary>
         /// Add a node to quick launch, top navigation bar or search navigation. The node will be added as the last node in the
         /// collection.
@@ -64,7 +44,10 @@ namespace Microsoft.SharePoint.Client
                         return;
                     }
                     NavigationNode parentNode = quickLaunch.SingleOrDefault(n => n.Title == parentNodeTitle);
-                    if (parentNode != null) parentNode.Children.Add(node);
+                    if (parentNode != null)
+                    {
+                        parentNode.Children.Add(node);
+                    }
                 }
                 else if (navigationType == NavigationType.TopNavigationBar)
                 {
@@ -81,19 +64,6 @@ namespace Microsoft.SharePoint.Client
             {
                 web.Context.ExecuteQueryRetry();
             }
-        }
-
-        /// <summary>
-        /// Deletes a navigation node from the quickLaunch or top navigation bar
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="nodeTitle">the title of node to delete</param>
-        /// <param name="parentNodeTitle">if string.Empty, then will delete this node as top level node</param>
-        /// <param name="isQuickLaunch">true: delete from quickLaunch; otherwise, delete from top navigation bar</param>
-        [Obsolete("Use: DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, NavigationType navigationType)")]
-        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, bool isQuickLaunch)
-        {
-            DeleteNavigationNode(web, nodeTitle, parentNodeTitle, isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
         }
 
         /// <summary>
@@ -121,7 +91,11 @@ namespace Microsoft.SharePoint.Client
                     {
                         foreach (var nodeInfo in quickLaunch)
                         {
-                            if (nodeInfo.Title != parentNodeTitle) continue;
+                            if (nodeInfo.Title != parentNodeTitle)
+                            {
+                                continue;
+                            }
+
                             web.Context.Load(nodeInfo.Children);
                             web.Context.ExecuteQueryRetry();
                             deleteNode = nodeInfo.Children.SingleOrDefault(n => n.Title == nodeTitle);
@@ -178,6 +152,11 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
         }
 
+        /// <summary>
+        /// Loads the search navigation nodes
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <returns>Collection of NavigationNode instances</returns>
         public static NavigationNodeCollection LoadSearchNavigation(this Web web)
         {
             var searchNav = web.Navigation.GetNodeById(1040); // 1040 is the id of the search navigation            
@@ -187,11 +166,9 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
             return nodeCollection;
         }
-
         #endregion
 
         #region Custom actions
-
         /// <summary>
         /// Adds custom action to a web. If the CustomAction exists the item will be updated.
         /// Setting CustomActionEntity.Remove == true will delete the CustomAction.

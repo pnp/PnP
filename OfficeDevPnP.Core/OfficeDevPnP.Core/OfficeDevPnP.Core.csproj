@@ -190,6 +190,7 @@
     <Compile Include="AppModelExtensions\Deprecated\FieldAndContentTypeExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\FileFolderExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\ListExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\NavigationExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\SecurityExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\TaxonomyExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\TenantExtensions.deprecated.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
+    <Compile Include="Enums\NavigationType.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />

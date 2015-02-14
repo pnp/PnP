@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Enums;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
