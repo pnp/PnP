@@ -10,6 +10,7 @@ using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Utilities;
+using Microsoft.SharePoint.Client.WebParts;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -513,6 +514,38 @@ namespace Microsoft.SharePoint.Client
             taxField.Update();
 
             web.Context.ExecuteQueryRetry();
+        }
+
+        /// <summary>
+        /// Apply JS link customization to list form
+        /// </summary>
+        /// <param name="list">SharePoint List</param>
+        /// <param name="pageType">Type of Form</param>
+        /// <param name="jslink">JSLink to apply on Form. 
+        /// Specify multiple values separated by pipe symbol. For e.g.: ~sitecollection/_catalogs/masterpage/jquery-2.1.0.min.js|~sitecollection/_catalogs/masterpage/custom.js
+        /// </param>
+        public static void ApplyJSLinkCustomizations(this List list, PageType pageType, string jslink)
+        {
+            // Get the list form to apply the JS link
+            Form listForm = list.Forms.GetByPageType(pageType);
+            list.Context.Load(listForm, nf => nf.ServerRelativeUrl);
+            list.Context.ExecuteQueryRetry();
+
+            Microsoft.SharePoint.Client.File file = list.ParentWeb.GetFileByServerRelativeUrl(listForm.ServerRelativeUrl);
+            LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+
+            list.Context.Load(wpm.WebParts, wps => wps.Include(wp => wp.WebPart.Title));
+            list.Context.ExecuteQueryRetry();
+
+            // Set the JS link for all web parts
+            foreach (WebPartDefinition wpd in wpm.WebParts)
+            {
+                WebPart wp = wpd.WebPart;
+                wp.Properties["JSLink"] = jslink;
+                wpd.SaveWebPartChanges();
+
+                list.Context.ExecuteQueryRetry();
+            }
         }
 
 #if !CLIENTSDKV15
