@@ -517,14 +517,14 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Apply JS link customization to list form
+        /// Sets JS link customization for a list form
         /// </summary>
-        /// <param name="list">SharePoint List</param>
-        /// <param name="pageType">Type of Form</param>
-        /// <param name="jslink">JSLink to apply on Form. 
+        /// <param name="list">SharePoint list</param>
+        /// <param name="pageType">Type of form</param>
+        /// <param name="jslink">JSLink to set to the form. Set to empty string to remove the set JSLink customization.
         /// Specify multiple values separated by pipe symbol. For e.g.: ~sitecollection/_catalogs/masterpage/jquery-2.1.0.min.js|~sitecollection/_catalogs/masterpage/custom.js
         /// </param>
-        public static void ApplyJSLinkCustomizations(this List list, PageType pageType, string jslink)
+        public static void SetJSLinkCustomizations(this List list, PageType pageType, string jslink)
         {
             // Get the list form to apply the JS link
             Form listForm = list.Forms.GetByPageType(pageType);
@@ -533,7 +533,6 @@ namespace Microsoft.SharePoint.Client
 
             Microsoft.SharePoint.Client.File file = list.ParentWeb.GetFileByServerRelativeUrl(listForm.ServerRelativeUrl);
             LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
-
             list.Context.Load(wpm.WebParts, wps => wps.Include(wp => wp.WebPart.Title));
             list.Context.ExecuteQueryRetry();
 
