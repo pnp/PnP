@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -13,9 +15,21 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public GuidPipeBind Identity;
 
+        [Parameter(Mandatory = false)]
+        public CustomActionScope Scope = CustomActionScope.Web;
+
         protected override void ExecuteCmdlet()
         {
-            var actions = SelectedWeb.GetCustomActions();
+            List<UserCustomAction> actions = null;
+
+            if (Scope == CustomActionScope.Web)
+            {
+                actions = SelectedWeb.GetCustomActions().ToList();
+            }
+            else
+            {
+                actions = ClientContext.Site.GetCustomActions().ToList();
+            }
 
             if (Identity != null)
             {
