@@ -199,7 +199,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     return false;
                 }
-                LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
+                Log.Error(CoreResources.TenantExtensions_UnknownExceptionAccessingSite, ex.Message);
                 throw;
             }
         }
@@ -466,7 +466,7 @@ namespace Microsoft.SharePoint.Client
             tenant.Context.Load(siteProps);
             tenant.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceInformation(0, CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
+            Log.Info(CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
 
             if (siteProps.LockState != lockState.ToString())
             {
@@ -639,7 +639,7 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
+                        Log.Warning(CoreResources.TenantExtensions_ClosedContextWarning, webEx.Message);
                     }
                 }
             }

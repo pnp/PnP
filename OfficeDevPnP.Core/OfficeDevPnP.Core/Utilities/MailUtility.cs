@@ -55,11 +55,11 @@ namespace OfficeDevPnP.Core.Utilities
                     {
                         if (args.Error != null)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.MailSendFailed, args.Error, CoreResources.MailUtility_SendFailed);
+                            Log.Error(Constants.LOGGING_SOURCE, CoreResources.MailUtility_SendFailed, args.Error.Message);
                         }
                         else if (args.Cancelled)
                         {
-                            LoggingUtility.Internal.TraceInformation((int)EventId.SendMailCancelled, CoreResources.MailUtility_SendMailCancelled);
+                            Log.Info(Constants.LOGGING_SOURCE, CoreResources.MailUtility_SendMailCancelled);
                         }
                     };
                     server.SendAsync(mail, asyncUserToken);
@@ -69,11 +69,11 @@ namespace OfficeDevPnP.Core.Utilities
             }
             catch (SmtpException smtpEx)
             {
-                LoggingUtility.Internal.TraceError((int)EventId.MailSendException, smtpEx, CoreResources.MailUtility_SendException);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.MailUtility_SendException, smtpEx.Message);
             }
             catch (Exception ex)
             {
-                LoggingUtility.Internal.TraceVerbose(CoreResources.MailUtility_SendExceptionRethrow0, ex);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.MailUtility_SendExceptionRethrow0, ex);
                 throw;
             }
         }

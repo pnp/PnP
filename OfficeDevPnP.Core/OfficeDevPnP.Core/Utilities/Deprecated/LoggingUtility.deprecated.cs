@@ -7,6 +7,7 @@ using System.Linq;
 namespace OfficeDevPnP.Core.Utilities 
 {
 
+    [Obsolete("Please use the Log.Debug, Log.Info, Log.Warning, Log.Error and Log.Fatal methods. This deprecated enum will be removed in the May release.")]
     public enum EventId
     {
         // Format: ABXX
@@ -101,8 +102,9 @@ namespace OfficeDevPnP.Core.Utilities
     /// <summary>
     /// Logging event categories enumeration
     /// </summary>
-    [Obsolete("Use specific EventId instead.")]
-    public enum EventCategory {
+    [Obsolete("Please use the Log.Debug, Log.Info, Log.Warning, Log.Error and Log.Fatal methods. This deprecated enum will be removed in the May release.")]
+    public enum EventCategory
+    {
         Unknown,
         Mail,
         Authorization,
@@ -115,8 +117,9 @@ namespace OfficeDevPnP.Core.Utilities
     /// <summary>
     /// Logging event severity level enumeration
     /// </summary>
-    [Obsolete("Use System.Diagnostics.TraceEventType instead.")]
-    public enum EventLevel {
+    [Obsolete("Please use the Log.Debug, Log.Info, Log.Warning, Log.Error and Log.Fatal methods. This deprecated enum will be removed in the May release.")]
+    public enum EventLevel
+    {
         Information,
         Warning,
         Error,
@@ -148,6 +151,7 @@ namespace OfficeDevPnP.Core.Utilities
     ///   Install-Package Essential.Diagnostics.Config
     /// </code>
     /// </remarks>
+    [Obsolete("Please use the Log.Debug, Log.Info, Log.Warning, Log.Error and Log.Fatal methods. This deprecated class will be removed in the May release.")]
     public sealed partial class LoggingUtility 
     {
         const int InitializeBehaviourEventId = 100;

@@ -19,7 +19,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to activate</param>
         public static void ActivateFeature(this Web web, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.ActivateWebFeature, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
             web.ProcessFeature(featureID, true);
         }
 
@@ -31,7 +31,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to activate</param>
         public static void ActivateFeature(this Site site, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.ActivateSiteCollectionFeature, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
             site.ProcessFeature(featureID, true);
         }
 
@@ -42,7 +42,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to deactivate</param>
         public static void DeactivateFeature(this Web web, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeactivateWebFeature, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
             web.ProcessFeature(featureID, false);
         }
 
@@ -53,7 +53,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to deactivate</param>
         public static void DeactivateFeature(this Site site, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeactivateSiteCollectionFeature, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
             site.ProcessFeature(featureID, false);
         }
 
@@ -177,7 +177,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.Internal.TraceError((int)EventId.FeatureActivationProblem, ex, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID);
+                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID, ex.Message);
                 }
             }
         }
