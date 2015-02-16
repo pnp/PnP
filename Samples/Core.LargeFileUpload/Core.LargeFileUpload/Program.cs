@@ -49,10 +49,12 @@ namespace Contoso.Core.LargeFileUpload
             // These should both work as expected.
             try
             {
-                // Alternate 1 for uploading large files 
+                // Alternative 1 for uploading large files 
                 new FileUploadService().SaveBinaryDirect(ctx, "Docs", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SP2013_LargeFile1.pptx"));
-                // Alternate 2 for uploading large files
+                // Alternative 2 for uploading large files
                 new FileUploadService().UploadDocumentContentStream(ctx, "Docs", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SP2013_LargeFile2.pptx"));
+                // Alternative 3 for uploading large files: slice per slice which allows you to stop and resume a download
+                new FileUploadService().UploadFileSlicePerSlice(ctx, "Docs", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SP2013_LargeFile3.pptx"), 1);
             }
             catch (Exception ex)
             {
@@ -62,7 +64,7 @@ namespace Contoso.Core.LargeFileUpload
             }
             // Just to see what we have in console
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("All good with two big files uploaded to the Office365, press enter to continue.");
+            Console.WriteLine("All good with three big files uploaded to the Office365, press enter to continue.");
             Console.Read();
         }
 
