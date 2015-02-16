@@ -191,6 +191,7 @@ private void UploadFileSlice(ClientContext cc, Guid uploadId, Byte[] sliceConten
 ```
 
 The important elements in above sample are:
+
 1. For the **first** slice first create an empty file and then use the `StartUpload` method. Store the bytesuploaded as that will the insertion point for the next slice of data.
 2. For **all next but the last slice** call the `ContinueUpload` method. Store the bytesuploaded as that will the insertion point for the next slice of data.
 3. For the **last** slice call the `FinishUpload` method
