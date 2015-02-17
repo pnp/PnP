@@ -14,7 +14,7 @@
         <div style="left: 40px; position: absolute;">
             <h1>Scenario 4: Localize content type and site column</h1>
             In this scenario you'll learn how to localize content types and site columns.
-            <div style="color: #FF0000">This scenario and code is still under development and will be resolved in the next release.</div>
+            <div style="color: #FF0000">Notice that there seems to be a bug related on the list level translation capability.</div>
             <br />
             <i>Notice that there's no automatic cleaning with these scenarios.</i>
             <ul style="list-style-type: square;">
