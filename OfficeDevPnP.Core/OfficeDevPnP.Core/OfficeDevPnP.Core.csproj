@@ -201,6 +201,7 @@
     <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\ProvisioningExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\SearchExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
     <Compile Include="AppModelExtensions\WorkflowExtensions.cs" />
