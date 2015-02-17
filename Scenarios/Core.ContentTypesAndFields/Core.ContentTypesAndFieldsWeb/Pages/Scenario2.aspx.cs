@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core.Entities;
 
 namespace Core.ContentTypesAndFieldsWeb.Pages
 {
@@ -48,6 +49,7 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
         {
             // Taxonomy field to host web - Note that this requires that group and taxonomy set exists when the code is executed.
             var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
+            // Notice that you can assign the guid if needed - in here we randomize it for demo purposes
             var taxFieldId = Guid.NewGuid();
 
             using (var ctx = spContext.CreateUserClientContextForSPHost())
@@ -58,8 +60,25 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
 
                 if (!ctx.Web.FieldExistsByName(taxFieldName))
                 {
-                    ctx.Web.CreateTaxonomyField(taxFieldId, taxFieldName, "Contoso Taxonomy Sample", "Contoso Fields", groupName, termSetName);
-                    lblStatus2.Text = "Created new taxonomy field with name of 'Contoso Taxonomy Sample'. Move to host web and test the functionality.";
+                    // Get access to the right term set
+                    TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(ctx.Web.Context);
+                    TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+                    TermGroup termGroup = termStore.Groups.GetByName(groupName);
+                    TermSet termSet = termGroup.TermSets.GetByName(termSetName);
+                    ctx.Web.Context.Load(termStore);
+                    ctx.Web.Context.Load(termSet);
+                    ctx.Web.Context.ExecuteQueryRetry();
+
+                    TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                    {
+                        Id = taxFieldId,
+                        InternalName = taxFieldName,
+                        DisplayName = "Contoso Taxonomy Sample",
+                        Group = "Contoso Fields",
+                        TaxonomyItem = termSet,
+                    };
+                    ctx.Web.CreateTaxonomyField(fieldCI);
+                    lblStatus2.Text = string.Format("Created new taxonomy field with name of 'Contoso Taxonomy Sample'. Move to <a href='{0}'>host web</a> and test the functionality.", spContext.SPHostUrl.ToString());
                 }
                 else
                 {
