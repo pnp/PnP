@@ -1,9 +1,6 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Entities
 {
@@ -14,18 +11,19 @@ namespace OfficeDevPnP.Core.Entities
         public string InternalName { get; set; }
         public bool AddToDefaultView { get; set;}
         public IEnumerable<KeyValuePair<string, string>> AdditionalAttributes { get; set; }
-        public string FieldType { get; private set; }
+        public string FieldType { get; protected set; }
         public string Group { get; set; }
+        public bool Required { get; set; }
 
 
         public FieldCreationInformation(string fieldType)
         {
-            this.FieldType = fieldType;
+            FieldType = fieldType;
         }
 
         public FieldCreationInformation(FieldType fieldType)
         {
-            this.FieldType = fieldType.ToString();
+            FieldType = fieldType.ToString();
         }
     }
 

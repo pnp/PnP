@@ -1,8 +1,5 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using Microsoft.SharePoint.Client.WebParts;
-using OfficeDevPnP.Core;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -28,12 +25,12 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 case "WithTitle":
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title, publish: Publish);
+                        SelectedWeb.AddPublishingPage(PageName, PageTemplateName, Title, publish: Publish);
                         break;
                     }
                 default:
                     {
-                        this.SelectedWeb.AddPublishingPage(PageName, PageTemplateName, publish: Publish);
+                        SelectedWeb.AddPublishingPage(PageName, PageTemplateName, publish: Publish);
                         break;
                     }
             }

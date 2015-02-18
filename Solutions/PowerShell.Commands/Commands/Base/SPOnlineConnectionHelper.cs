@@ -1,5 +1,6 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Management.Automation;
 using System.Management.Automation.Host;
@@ -15,7 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string realm, string clientId, string clientSecret, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
-            OfficeDevPnP.Core.AuthenticationManager authManager = new OfficeDevPnP.Core.AuthenticationManager();
+            Core.AuthenticationManager authManager = new Core.AuthenticationManager();
             if (realm == null)
             {
                 realm = GetRealmFromTargetUrl(url);
@@ -25,19 +26,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             context.ApplicationName = Properties.Resources.ApplicationName;
             context.RequestTimeout = requestTimeout;
 
-            var connectionType = SPOnlineConnection.ConnectionTypes.OnPrem;
+            var connectionType = ConnectionType.OnPrem;
             if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
-                connectionType = SPOnlineConnection.ConnectionTypes.O365;
+                connectionType = ConnectionType.O365;
             }
             if (skipAdminCheck == false)
             {
                 if (IsTenantAdminSite(context))
                 {
-                    connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
+                    connectionType = ConnectionType.TenantAdmin;
                 }
             }
-            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null);
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
@@ -50,33 +51,33 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 try
                 {
                     SharePointOnlineCredentials onlineCredentials = new SharePointOnlineCredentials(credentials.UserName, credentials.Password);
-                    context.Credentials = (ICredentials)onlineCredentials;
+                    context.Credentials = onlineCredentials;
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
-                    catch (Microsoft.SharePoint.Client.ClientRequestException)
+                    catch (ClientRequestException)
                     {
-                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                        context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     }
-                    catch (Microsoft.SharePoint.Client.ServerException)
+                    catch (ServerException)
                     {
-                        context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                        context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     }
                 }
                 catch (ArgumentException)
                 {
                     // OnPrem?
-                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
-                    catch (Microsoft.SharePoint.Client.ClientRequestException ex)
+                    catch (ClientRequestException ex)
                     {
                         throw new Exception("Error establishing a connection", ex);
                     }
-                    catch (Microsoft.SharePoint.Client.ServerException ex)
+                    catch (ServerException ex)
                     {
                         throw new Exception("Error establishing a connection", ex);
                     }
@@ -87,22 +88,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 if (credentials != null)
                 {
-                    context.Credentials = new System.Net.NetworkCredential(credentials.UserName, credentials.Password);
+                    context.Credentials = new NetworkCredential(credentials.UserName, credentials.Password);
                 }
             }
-            var connectionType = SPOnlineConnection.ConnectionTypes.OnPrem;
+            var connectionType = ConnectionType.OnPrem;
             if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
-                connectionType = SPOnlineConnection.ConnectionTypes.O365;
+                connectionType = ConnectionType.O365;
             }
             if (skipAdminCheck == false)
             {
                 if (IsTenantAdminSite(context))
                 {
-                    connectionType = SPOnlineConnection.ConnectionTypes.TenantAdmin;
+                    connectionType = ConnectionType.TenantAdmin;
                 }
             }
-            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials);
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, url.ToString());
         }
 
         public static string GetRealmFromTargetUrl(Uri targetApplicationUri)
@@ -157,15 +158,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
             try
             {
-                Tenant tenant = new Tenant((ClientRuntimeContext)clientContext);
-                clientContext.ExecuteQuery();
+                var tenant = new Tenant(clientContext);
+                clientContext.ExecuteQueryRetry();
                 return true;
             }
-            catch (Microsoft.SharePoint.Client.ClientRequestException)
+            catch (ClientRequestException)
             {
                 return false;
             }
-            catch (Microsoft.SharePoint.Client.ServerException)
+            catch (ServerException)
             {
                 return false;
             }

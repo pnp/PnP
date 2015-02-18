@@ -185,6 +185,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppModelExtensions\ClientContextExtensions.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\BrandingExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\FieldAndContentTypeExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\FileFolderExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\ListExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\NavigationExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\SecurityExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\TaxonomyExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\TenantExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\WebExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
@@ -202,6 +212,7 @@
     <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
     <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
+    <Compile Include="Entities\TaxonomyFieldCreationInformation.cs" />
     <Compile Include="Entities\FieldCreationInformation.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\SitePolicyEntity.cs" />
@@ -215,34 +226,41 @@
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
+    <Compile Include="Enums\NavigationType.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs">
+    <Compile Include="Extensions\Deprecated\DateTimeExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\EnumerationExtensions.cs" />
-    <Compile Include="Extensions\HttpVariablesExtensions.cs">
+    <Compile Include="Extensions\Deprecated\HttpVariablesExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\RequestMessageExtensions.cs" />
+    <Compile Include="Extensions\Deprecated\RequestMessageExtensions.deprecated.cs" />
     <Compile Include="Extensions\SafeConvertExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringExtensions.cs">
+    <Compile Include="Extensions\Deprecated\StringExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringHtmlExtensions.cs">
+    <Compile Include="Extensions\Deprecated\StringHtmlExtensions.deprecated.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\SystemWebUIExtensions.cs" />
+    <Compile Include="Extensions\Deprecated\SystemWebUIExtensions.deprecated.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
     <Compile Include="CoreResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJob.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJobRunEventArgs.cs" />
+    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Framework\TimerJobs\Utilities\SiteEnumeration.cs" />
     <Compile Include="IdentityModel\TokenProviders\ADFS\BaseProvider.cs" />
     <Compile Include="IdentityModel\TokenProviders\ADFS\UsernameMixed.cs" />
     <Compile Include="IdentityModel\WSTrustBindings\UserNameWSTrustBinding.cs" />
@@ -252,6 +270,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\CredentialManager.cs" />
     <Compile Include="Web References\UPAWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -263,7 +282,7 @@
     <Compile Include="WebAPI\WebAPIContextFilterAttribute.cs" />
     <Compile Include="WebAPI\WebAPIHelper.cs" />
     <Compile Include="Utilities\Caml.cs" />
-    <Compile Include="Utilities\LoggingUtility.cs" />
+    <Compile Include="Utilities\Deprecated\LoggingUtility.deprecated.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>
     </Compile>

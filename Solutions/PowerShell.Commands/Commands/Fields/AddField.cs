@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
+using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -64,51 +65,61 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                List list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
+                Field f;
+                var fieldCI = new FieldCreationInformation(Type)
+                {
+                    Id = Id.Id,
+                    InternalName = InternalName,
+                    DisplayName = DisplayName,
+                    Group = Group,
+                    AddToDefaultView = AddToDefaultView
+                };
 
-                Field f = null;
                 if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    string choicesCAML = GetChoicesCAML(context.Choices);
-
-                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                    f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
-
-                    //f = list.CreateField(fieldXml);
+                    f = list.CreateField<FieldChoice>(fieldCI);
+                    ((FieldChoice)f).Choices = context.Choices;
+                    f.Update();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
-                    f = list.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
+                    f = list.CreateField(fieldCI);
 
-                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                    //f = list.CreateField(fieldXml);
                 }
                 if (Required)
                 {
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 WriteObject(f);
             }
             else
             {
-                Field f = null;
+                Field f;
+
+                var fieldCI = new FieldCreationInformation(Type)
+                {
+                    Id = Id.Id,
+                    InternalName = InternalName,
+                    DisplayName = DisplayName,
+                    Group = Group,
+                    AddToDefaultView = AddToDefaultView
+                };
+
                 if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    var choicesCAML = GetChoicesCAML(context.Choices);
-
-                    f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group, choicesCAML);
-
-                    //var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, context.Choices, Group);
-                    //f = this.SelectedWeb.CreateField(fieldXml);
+                    f = SelectedWeb.CreateField<FieldChoice>(fieldCI);
+                    ((FieldChoice)f).Choices = context.Choices;
+                    f.Update();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
-                    f = this.SelectedWeb.CreateField(Id.Id, InternalName, Type, DisplayName, Group);
-                    //  var fieldXml = GetFieldCAML(DisplayName, InternalName, StaticName, Type, Id.Id, Required, group: Group);
-                    //  f = this.SelectedWeb.CreateField(fieldXml);
+                    f = SelectedWeb.CreateField(fieldCI);
                 }
 
                 if (Required)
@@ -116,7 +127,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                
                 WriteObject(f);
@@ -132,17 +143,6 @@ namespace OfficeDevPnP.PowerShell.Commands
                 set { choices = value; }
             }
             private string[] choices;
-        }
-
-        private static string GetChoicesCAML(string[] choices)
-        {
-            var fieldXml = "<CHOICES>";
-            foreach (var choice in choices)
-            {
-                fieldXml += string.Format("<CHOICE>{0}</CHOICE>", choice);
-            }
-            fieldXml += "</CHOICES>";
-            return fieldXml;
         }
 
     }

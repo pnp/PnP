@@ -1,8 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using System;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -23,20 +21,20 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!string.IsNullOrEmpty(SiteLogoUrl))
             {
-                this.SelectedWeb.SiteLogoUrl = SiteLogoUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.SiteLogoUrl = SiteLogoUrl;
+                SelectedWeb.Update();
             }
             if (!string.IsNullOrEmpty(AlternateCssUrl))
             {
-                this.SelectedWeb.AlternateCssUrl = AlternateCssUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.AlternateCssUrl = AlternateCssUrl;
+                SelectedWeb.Update();
             }
             if(!string.IsNullOrEmpty(Title))
             {
-                this.SelectedWeb.Title = Title;
-                this.SelectedWeb.Update();
+                SelectedWeb.Title = Title;
+                SelectedWeb.Update();
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 

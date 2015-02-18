@@ -1,94 +1,161 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.SharePoint.Client;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfficeDevPnP.Core.Tests;
-using OfficeDevPnP.Core.Entities;
 using System.Configuration;
-using Microsoft.Online.SharePoint.TenantAdministration;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Tests;
+
 namespace Microsoft.SharePoint.Client.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class SecurityExtensionsTests
     {
+        private readonly string _testGroupName = "Group_" + Guid.NewGuid();
         private string _userLogin;
-        [TestInitialize()]
+
+        #region Test initialize and cleanup
+        [TestInitialize]
         public void Initialize()
         {
+
+            #if !CLIENTSDKV15
             _userLogin = ConfigurationManager.AppSettings["SPOUserName"];
+            #else
+            _userLogin = String.Format(@"{0}\{1}", ConfigurationManager.AppSettings["OnPremDomain"], ConfigurationManager.AppSettings["OnPremUserName"]);            
+            #endif
+
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.AddGroup(_testGroupName, "", true, true);
+            }
         }
-        [TestMethod()]
+
+        [TestCleanup]
+        public void CleanUp()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                clientContext.Web.RemoveGroup(_testGroupName);
+            }
+        }
+        #endregion
+
+        #region Administrator tests
+        [TestMethod]
         public void GetAdministratorsTest()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 Assert.IsTrue(clientContext.Web.GetAdministrators().Any(), "No administrators returned");
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void AddAdministratorsTest()
         {
             // Difficult to test on a developer (MSDN) tenant, as there is only one user allowed.
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 // Count admins
-                var initialCount = clientContext.Web.GetAdministrators().Count;
-                var userEntity = new UserEntity() { LoginName = _userLogin, Email = _userLogin };
-                clientContext.Web.AddAdministrators(new List<UserEntity>() { userEntity }, false);
+                int initialCount = clientContext.Web.GetAdministrators().Count;
+                #if !CLIENTSDKV15
+                var userEntity = new UserEntity {LoginName = _userLogin, Email = _userLogin};
+                #else
+                var userEntity = new UserEntity { LoginName = _userLogin };
+                #endif
+                clientContext.Web.AddAdministrators(new List<UserEntity> {userEntity}, false);
 
-                var newCount = clientContext.Web.GetAdministrators().Count;
-                Assert.IsTrue(initialCount == newCount); // Assumes that we're on a dev tenant, and that the existing sitecol admin is the same as the user being added.
+                List<UserEntity> admins = clientContext.Web.GetAdministrators();
+                bool found = false;
+                foreach(var admin in admins) 
+                {                    
+                    string adminLoginName = admin.LoginName;
+                    String[] parts = adminLoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
 
+                    if (parts.Length > 1)
+                    {
+                        adminLoginName = parts[2];
+                    }
+                    
+                    if (adminLoginName.Equals(_userLogin, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                Assert.IsTrue(found);
+
+                // Assumes that we're on a dev tenant, and that the existing sitecol admin is the same as the user being added.
                 clientContext.Web.RemoveAdministrator(userEntity);
             }
         }
+        #endregion
 
-        [TestMethod()]
+        #region Group tests
+        [TestMethod]
         public void AddGroupTest()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 // Test
-                var group = clientContext.Web.AddGroup("Test Group", "Test Description", true);
-                Assert.IsInstanceOfType(group, typeof(Group), "Group object returned not of correct type");
+                Group group = clientContext.Web.AddGroup("Test Group", "Test Description", true);
+                Assert.IsInstanceOfType(group, typeof (Group), "Group object returned not of correct type");
                 Assert.IsTrue(group.Title == "Test Group", "Group not created with correct title");
 
                 // Cleanup
                 if (group != null)
+                {
                     clientContext.Web.RemoveGroup(group);
+                }
             }
         }
+        #endregion
 
-        [TestMethod()]
+        #region Permission level tests
+        [TestMethod]
         public void AddPermissionLevelToGroupTest()
         {
-
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
-                // Setup
-                var group = clientContext.Web.AddGroup("Test Group", "Test Description", true);
-
                 // Test
-                clientContext.Web.AddPermissionLevelToGroup("Test Group", RoleType.Contributor, false);
+                clientContext.Web.AddPermissionLevelToGroup(_testGroupName, RoleType.Contributor, false);
 
-                // Cleanup
+                //Get Group
+                Group group = clientContext.Web.SiteGroups.GetByName(_testGroupName);
+                clientContext.ExecuteQueryRetry();
 
-                clientContext.Web.RemoveGroup("Test Group");
+                //Assert
+                Assert.IsTrue(CheckPermissionOnPrinciple(clientContext.Web, group, RoleType.Contributor));
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
+        public void AddPermissionLevelByRoleDefToGroupTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                // Test
+                clientContext.Web.AddPermissionLevelToGroup(_testGroupName, "Approve", false);
+
+                //Get Group
+                Group group = clientContext.Web.SiteGroups.GetByName(_testGroupName);
+                clientContext.ExecuteQueryRetry();
+
+                //Assert 
+                Assert.IsTrue(CheckPermissionOnPrinciple(clientContext.Web, group, "Approve"));
+            }
+        }
+
+        [TestMethod]
         public void AddPermissionLevelToUserTest()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 Web web = clientContext.Web;
 
-                RoleType roleType = RoleType.Contributor;
+                var roleType = RoleType.Contributor;
 
                 //Setup: Make sure permission does not already exist
                 web.RemovePermissionLevelFromUser(_userLogin, roleType);
@@ -98,35 +165,48 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Get User
                 User user = web.EnsureUser(_userLogin);
-                clientContext.ExecuteQuery();
-
-                //Get Roles for the User
-                RoleDefinitionBindingCollection roleDefinitionBindingCollection = web.RoleAssignments.GetByPrincipal(user).RoleDefinitionBindings;
-                clientContext.Load(roleDefinitionBindingCollection);
-                clientContext.ExecuteQuery();
-
-                //Check if assigned role is found
-                bool roleExists = false;
-                foreach (RoleDefinition rd in roleDefinitionBindingCollection)
-                {
-                    if (rd.RoleTypeKind == roleType)
-                    {
-                        roleExists = true;
-                    }
-                }
+                clientContext.ExecuteQueryRetry();
 
                 //Assert
-                Assert.IsTrue(roleExists);
+                Assert.IsTrue(CheckPermissionOnPrinciple(web, user, roleType));
 
                 //Teardown: Expicitly remove given permission. 
                 web.RemovePermissionLevelFromUser(_userLogin, roleType);
             }
         }
 
-        [TestMethod()]
-        public void AddReaderAccessTest()
+        [TestMethod]
+        public void AddPermissionLevelToUserTestByRoleDefTest()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                Web web = clientContext.Web;
+
+                //Setup: Make sure permission does not already exist
+                web.RemovePermissionLevelFromUser(_userLogin, "Approve");
+
+                //Add Permission
+                web.AddPermissionLevelToUser(_userLogin, "Approve");
+
+                //Get User
+                User user = web.EnsureUser(_userLogin);
+                clientContext.ExecuteQueryRetry();
+
+                //Assert
+                Assert.IsTrue(CheckPermissionOnPrinciple(web, user, "Approve"));
+
+                //Teardown: Expicitly remove given permission. 
+                web.RemovePermissionLevelFromUser(_userLogin, "Approve");
+            }
+        }
+        #endregion
+
+        #region Reader access tests
+#if !CLIENTSDKV15
+        [TestMethod]
+        public void AddReaderAccessToEveryoneExceptExternalsTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 // Setup
                 User userIdentity = null;
@@ -135,45 +215,90 @@ namespace Microsoft.SharePoint.Client.Tests
                 userIdentity = clientContext.Web.AddReaderAccess();
 
                 Assert.IsNotNull(userIdentity, "No user added");
-                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity.LoginName);
-                
+                User existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity.LoginName);
+
                 Assert.IsNotNull(existingUser, "No user returned");
-                Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
+                Assert.IsInstanceOfType(existingUser, typeof (User), "Object returned not of correct type");
 
                 // Cleanup
                 if (existingUser != null)
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
+#endif
 
-        [TestMethod()]
-        public void AddReaderAccessTest1()
+        [TestMethod]
+        public void AddReaderAccessToEveryoneTest()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
                 // Setup
-                var userIdentity = "c:0(.s|true";
+                string userIdentity = "c:0(.s|true";
 
                 // Test
-                clientContext.Web.AddReaderAccess(OfficeDevPnP.Core.Enums.BuiltInIdentity.Everyone);
+                clientContext.Web.AddReaderAccess(BuiltInIdentity.Everyone);
 
-                var existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity);
+                User existingUser = clientContext.Web.AssociatedVisitorGroup.Users.GetByLoginName(userIdentity);
                 Assert.IsNotNull(existingUser, "No user returned");
-                Assert.IsInstanceOfType(existingUser, typeof(User), "Object returned not of correct type");
+                Assert.IsInstanceOfType(existingUser, typeof (User), "Object returned not of correct type");
 
                 // Cleanup
                 if (existingUser != null)
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
+        #endregion
 
+        #region helper methods
+        private bool CheckPermissionOnPrinciple(Web web, Principal principle, RoleType roleType)
+        {
+            //Get Roles for the User
+            RoleDefinitionBindingCollection roleDefinitionBindingCollection =
+                web.RoleAssignments.GetByPrincipal(principle).RoleDefinitionBindings;
+            web.Context.Load(roleDefinitionBindingCollection);
+            web.Context.ExecuteQueryRetry();
+
+            //Check if assigned role is found
+            bool roleExists = false;
+            foreach (RoleDefinition rd in roleDefinitionBindingCollection)
+            {
+                if (rd.RoleTypeKind == roleType)
+                {
+                    roleExists = true;
+                }
+            }
+
+            return roleExists;
+        }
+
+        private bool CheckPermissionOnPrinciple(Web web, Principal principle, string roleDefinitionName)
+        {
+            //Get Roles for the User
+            RoleDefinitionBindingCollection roleDefinitionBindingCollection =
+                web.RoleAssignments.GetByPrincipal(principle).RoleDefinitionBindings;
+            web.Context.Load(roleDefinitionBindingCollection);
+            web.Context.ExecuteQueryRetry();
+
+            //Check if assigned role is found
+            bool roleExists = false;
+            foreach (RoleDefinition rd in roleDefinitionBindingCollection)
+            {
+                if (rd.Name == roleDefinitionName)
+                {
+                    roleExists = true;
+                }
+            }
+
+            return roleExists;
+        }
+        #endregion
     }
 }

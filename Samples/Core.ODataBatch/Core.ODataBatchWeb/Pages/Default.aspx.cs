@@ -85,7 +85,7 @@ namespace Core.ODataBatchWeb
             }
             
             // Create the parent request
-            var batchRequest = new BatchODataRequest(sharepointUrl + "_api/"); // ctor adds "$batch"
+            var batchRequest = new BatchODataRequest(String.Format("{0}/_api/", sharepointUrl)); // ctor adds "$batch"
             batchRequest.SetHeader("Authorization", "Bearer " + accessToken);
             
             using (var oDataMessageWriter = new ODataMessageWriter(batchRequest))
@@ -95,11 +95,11 @@ namespace Core.ODataBatchWeb
 
                // Create the two child query operations.
                oDataBatchWriter.CreateOperationRequestMessage(
-                    "GET", new Uri(sharepointUrl.ToString() + "_api/Web/lists/getbytitle('Composed Looks')/items?$select=Title"));
+                    "GET", new Uri(sharepointUrl.ToString() + "/_api/Web/lists/getbytitle('Composed Looks')/items?$select=Title"));
                 listRetrievalCount++;
 
                 oDataBatchWriter.CreateOperationRequestMessage(
-                   "GET", new Uri(sharepointUrl.ToString() + "_api/Web/lists/getbytitle('User Information List')/items?$select=Title"));
+                   "GET", new Uri(sharepointUrl.ToString() + "/_api/Web/lists/getbytitle('User Information List')/items?$select=Title"));
                 listRetrievalCount++;
                 
                 oDataBatchWriter.WriteEndBatch();
@@ -183,7 +183,7 @@ namespace Core.ODataBatchWeb
             }
 
             // Create the parent request
-            var batchRequest = new BatchODataRequest(sharepointUrl + "_api/"); // ctor adds "$batch"
+            var batchRequest = new BatchODataRequest(String.Format("{0}/_api/", sharepointUrl)); // ctor adds "$batch"
             batchRequest.SetHeader("Authorization", "Bearer " + accessToken);
 
             using (var oDataMessageWriter = new ODataMessageWriter(batchRequest))
@@ -195,7 +195,7 @@ namespace Core.ODataBatchWeb
 
                 // Create the list adding operation
                 var addListOperation = oDataBatchWriter.CreateOperationRequestMessage(
-                    "POST", new Uri(sharepointUrl.ToString() + "_api/lists"));
+                    "POST", new Uri(sharepointUrl.ToString() + "/_api/lists"));
                 addListOperation.SetHeader("Content-Type", "application/json;odata=verbose");
 
                 // Write the body of the operation
@@ -223,7 +223,7 @@ namespace Core.ODataBatchWeb
 
                 // Create the query operation
                 var queryOperationMessage3 = oDataBatchWriter.CreateOperationRequestMessage(
-                    "GET", new Uri(sharepointUrl.ToString() + "_api/Web/lists"));
+                    "GET", new Uri(sharepointUrl.ToString() + "/_api/Web/lists"));
                 operationCount++;
 
                 oDataBatchWriter.WriteEndBatch();
@@ -315,7 +315,7 @@ namespace Core.ODataBatchWeb
             }
 
             // Create the parent request
-            var batchRequest = new BatchODataRequest(sharepointUrl + "_api/"); // ctor adds "$batch"
+            var batchRequest = new BatchODataRequest(String.Format("{0}/_api/", sharepointUrl)); // ctor adds "$batch"
             batchRequest.SetHeader("Authorization", "Bearer " + accessToken);
 
             using (var oDataMessageWriter = new ODataMessageWriter(batchRequest))
@@ -327,7 +327,7 @@ namespace Core.ODataBatchWeb
 
                 // Create the list deleting operation
                 var deleteOperation = oDataBatchWriter.CreateOperationRequestMessage(
-                    "DELETE", new Uri(sharepointUrl.ToString() + "_api/Web/lists/getbytitle(\'" +OldList.Text+ "\')"));
+                    "DELETE", new Uri(sharepointUrl.ToString() + "/_api/Web/lists/getbytitle(\'" +OldList.Text+ "\')"));
                 deleteOperation.SetHeader("If-Match", "\"1\"");
 
                 oDataBatchWriter.WriteEndChangeset();
@@ -335,7 +335,7 @@ namespace Core.ODataBatchWeb
 
                 // Create the query operation
                 var queryOperationMessage3 = oDataBatchWriter.CreateOperationRequestMessage(
-                    "GET", new Uri(sharepointUrl.ToString() + "_api/Web/lists"));
+                    "GET", new Uri(sharepointUrl.ToString() + "/_api/Web/lists"));
                 operationCount++;
 
                 oDataBatchWriter.WriteEndBatch();

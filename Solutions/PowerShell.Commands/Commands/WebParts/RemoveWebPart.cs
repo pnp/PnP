@@ -1,9 +1,7 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
+﻿using System.Linq;
 using System.Management.Automation;
-using System.Linq;
-
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -24,16 +22,16 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "NAME")
             {
-                this.SelectedWeb.DeleteWebPart(PageUrl, Name);
+                SelectedWeb.DeleteWebPart(PageUrl, Name);
             }
             else
             {
-                var wps = this.SelectedWeb.GetWebParts(PageUrl);
+                var wps = SelectedWeb.GetWebParts(PageUrl);
                 var wp = from w in wps where w.Id == Identity.Id select w;
                 if(wp.Any())
                 {
                     wp.FirstOrDefault().DeleteWebPart();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
         }

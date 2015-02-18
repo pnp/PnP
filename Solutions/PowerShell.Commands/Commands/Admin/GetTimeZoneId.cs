@@ -38,7 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             var zones = AllZones();
 
-            var results = zones.Where(x => x.Description.ToLower().IndexOf(match.ToLower()) > -1 || x.Identifier.ToLower().Contains(match.ToLower()));
+            var results = zones.Where(x => x.Description.ToLower().IndexOf(match.ToLower(), StringComparison.Ordinal) > -1 || x.Identifier.ToLower().Contains(match.ToLower()));
 
             return results;
         }
@@ -47,7 +47,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         public IEnumerable<Zone> AllZones()
         {
-            foreach (var zone in Enum.GetValues(typeof(OfficeDevPnP.Core.Enums.TimeZone)))
+            foreach (var zone in Enum.GetValues(typeof(Core.Enums.TimeZone)))
             {
                 var description = zone.ToString();
                 var identifier = description.Split('_')[0];
@@ -72,9 +72,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             public Zone(int id, string identifier, string description)
             {
-                this.Id = id;
-                this.Identifier = identifier;
-                this.Description = description;
+                Id = id;
+                Identifier = identifier;
+                Description = description;
             }
         }
     }

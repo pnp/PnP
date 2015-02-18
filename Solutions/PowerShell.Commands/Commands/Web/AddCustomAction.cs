@@ -1,9 +1,8 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -34,26 +33,19 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            BasePermissions permissions = new BasePermissions();
-            foreach (PermissionKind kind in Rights)
+            var permissions = new BasePermissions();
+            foreach (var kind in Rights)
             {
                 permissions.Set(kind);
             }
-            CustomActionEntity ca = new CustomActionEntity();
-            ca.Description = Description;
-            ca.Location = Location;
-            ca.Group = Group;
-            ca.Sequence = Sequence;
-            ca.Title = Title;
-            ca.Url = Url;
-            ca.Rights = new BasePermissions();
+            var ca = new CustomActionEntity {Description = Description, Location = Location, Group = Group, Sequence = Sequence, Title = Title, Url = Url, Rights = new BasePermissions()};
 
             foreach(var permission in Rights)
             {
                 ca.Rights.Set(permission);
             }
 
-            this.SelectedWeb.AddCustomAction(ca);
+            SelectedWeb.AddCustomAction(ca);
         }
     }
 }

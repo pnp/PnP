@@ -20,14 +20,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (Identity != null)
             {
-                ContentType ct = null;
+                ContentType ct;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
-                    ct = this.SelectedWeb.GetContentTypeById(Identity.Id);
+                    ct = SelectedWeb.GetContentTypeById(Identity.Id);
                 }
                 else
                 {
-                    ct = this.SelectedWeb.GetContentTypeByName(Identity.Name);
+                    ct = SelectedWeb.GetContentTypeByName(Identity.Name);
                 }
                 if (ct != null)
                 {
@@ -37,8 +37,8 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                var cts = ClientContext.LoadQuery(this.SelectedWeb.ContentTypes);
-                ClientContext.ExecuteQuery();
+                var cts = ClientContext.LoadQuery(SelectedWeb.ContentTypes);
+                ClientContext.ExecuteQueryRetry();
     
                 WriteObject(cts, true);
             }

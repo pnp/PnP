@@ -22,17 +22,17 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             ContentType ct = null;
-            List list = this.SelectedWeb.GetList(List);
+            List list = SelectedWeb.GetList(List);
 
             if (ContentType.ContentType == null)
             {
                 if (ContentType.Id != null)
                 {
-                    ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                    ct = SelectedWeb.GetContentTypeById(ContentType.Id,true);
                 }
                 else if (ContentType.Name != null)
                 {
-                    ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                    ct = SelectedWeb.GetContentTypeByName(ContentType.Name,true);
                 }
             }
             else
@@ -41,7 +41,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (ct != null)
             {
-                this.SelectedWeb.SetDefaultContentTypeToList(list, ct);
+                SelectedWeb.SetDefaultContentTypeToList(list, ct);
             }
         }
 

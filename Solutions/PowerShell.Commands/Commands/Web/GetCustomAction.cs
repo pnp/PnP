@@ -1,10 +1,10 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -15,18 +15,30 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public GuidPipeBind Identity;
 
+        [Parameter(Mandatory = false)]
+        public CustomActionScope Scope = CustomActionScope.Web;
+
         protected override void ExecuteCmdlet()
         {
-            var actions = this.SelectedWeb.GetCustomActions();
+            List<UserCustomAction> actions = null;
 
-            if (Identity != null)
+            if (Scope == CustomActionScope.Web)
             {
-                var foundAction = actions.Where(x => x.Id == Identity.Id).FirstOrDefault();
-                WriteObject(foundAction);
+                actions = SelectedWeb.GetCustomActions().ToList();
             }
             else
             {
-                WriteObject(actions);
+                actions = ClientContext.Site.GetCustomActions().ToList();
+            }
+
+            if (Identity != null)
+            {
+                var foundAction = actions.FirstOrDefault(x => x.Id == Identity.Id);
+                WriteObject(foundAction, true);
+            }
+            else
+            {
+                WriteObject(actions,true);
             }
         }
     }

@@ -1,7 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -22,7 +21,7 @@ PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing S
 
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
+            SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
         }
     }
 }

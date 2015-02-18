@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a51f943d-5d3f-4cbd-8c94-8b5f62c177a6" solutionId="a51f943d-5d3f-4cbd-8c94-8b5f62c177a6" resetWebServer="false" sharePointProductVersion="16.0" name="Core.DisplayCalendarEvents" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="91612b51-fcaf-4f89-b21b-cdbd35c1ba8d" />
+  </features>
+</package>

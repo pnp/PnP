@@ -1,10 +1,6 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -23,7 +19,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(site);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return site;
         }
@@ -41,7 +37,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(web);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return web;
         }

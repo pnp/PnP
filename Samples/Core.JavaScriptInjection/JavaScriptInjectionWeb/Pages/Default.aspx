@@ -16,15 +16,15 @@
         <h1>JavaScript Injection</h1>
         <ul style="list-style-type: square;">
             <li><b>Step 1:</b> "Inject" the JavaScript file to your current site using the button in the Demo section</li>
-            <li><b>Step 2:</b> Check out the changes by clicking on "Back to Site" in the top navigation followed by:
+            <li><b>Step 2:</b> Check out the changes by selecting "Back to Site" in the top navigation followed by:
                 <ul style="list-style-type: square;">
-                    <li>Check that every page shows a customized status message</li>
-                    <li>Check that the create a sub site link has disappeared (via Site Actions --> Site Contents)</li>
+                    <li>Verifying that every page shows a customized status message</li>
+                    <li>Verifying the create a subsite link has disappeared (select Site Actions > Site Contents)</li>
                 </ul>
             </li>
         </ul>
         <br />
-        Click the buttons below to "inject" or remove JavaScript file to your current site. 
+        Click the buttons to inject or remove a JavaScript file on your current site. 
         <br />
         <br />
         <asp:Button runat="server" ID="btnSubmit" Text="Inject customization" OnClick="btnSubmit_Click"/>

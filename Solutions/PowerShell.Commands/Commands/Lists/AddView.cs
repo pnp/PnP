@@ -36,7 +36,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             List list = null;
             if (List != null)
             {
-                list = this.SelectedWeb.GetList(List);
+                list = SelectedWeb.GetList(List);
             }
             if (list != null)
             {

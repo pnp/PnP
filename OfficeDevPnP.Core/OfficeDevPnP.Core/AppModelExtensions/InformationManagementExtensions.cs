@@ -1,11 +1,8 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.InformationPolicy;
-using OfficeDevPnP.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.InformationPolicy;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client {
 
@@ -23,7 +20,7 @@ namespace Microsoft.SharePoint.Client {
         public static bool HasSitePolicyApplied(this Web web)
         {
             ClientResult<bool> hasSitePolicyApplied = ProjectPolicy.DoesProjectHavePolicy(web.Context, web);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return hasSitePolicyApplied.Value;
         }
 
@@ -37,7 +34,7 @@ namespace Microsoft.SharePoint.Client {
             if (web.HasSitePolicyApplied())
             {
                 ClientResult<DateTime> expirationDate = ProjectPolicy.GetProjectExpirationDate(web.Context, web);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return expirationDate.Value;
             }
             else
@@ -56,7 +53,7 @@ namespace Microsoft.SharePoint.Client {
             if (web.HasSitePolicyApplied())
             {
                 ClientResult<DateTime> closeDate = ProjectPolicy.GetProjectCloseDate(web.Context, web);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return closeDate.Value;
             }
             else
@@ -74,7 +71,7 @@ namespace Microsoft.SharePoint.Client {
         {
             ClientObjectList<ProjectPolicy> sitePolicies = ProjectPolicy.GetProjectPolicies(web.Context, web);
             web.Context.Load(sitePolicies);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             List<SitePolicyEntity> policies = new List<SitePolicyEntity>();
 
@@ -112,7 +109,7 @@ namespace Microsoft.SharePoint.Client {
                              p => p.EmailSubject,
                              p => p.EmailBody,
                              p => p.EmailBodyWithTeamMailbox);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 return new SitePolicyEntity
                     {
                         Name = policy.Name,
@@ -140,7 +137,7 @@ namespace Microsoft.SharePoint.Client {
 
             if (policies.Count > 0)
             {
-                SitePolicyEntity policy = policies.Where(p => p.Name == sitePolicy).FirstOrDefault();
+                SitePolicyEntity policy = policies.FirstOrDefault(p => p.Name == sitePolicy);
                 return policy;
             }
             else
@@ -161,16 +158,16 @@ namespace Microsoft.SharePoint.Client {
             
             ClientObjectList<ProjectPolicy> sitePolicies = ProjectPolicy.GetProjectPolicies(web.Context, web);
             web.Context.Load(sitePolicies);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (sitePolicies != null && sitePolicies.Count > 0)
             {
-                ProjectPolicy policyToApply = sitePolicies.Where(p => p.Name == sitePolicy).FirstOrDefault();
+                ProjectPolicy policyToApply = sitePolicies.FirstOrDefault(p => p.Name == sitePolicy);
                                 
                 if (policyToApply != null)
                 {
                     ProjectPolicy.ApplyProjectPolicy(web.Context, web, policyToApply);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     result = true;
                 }
             }

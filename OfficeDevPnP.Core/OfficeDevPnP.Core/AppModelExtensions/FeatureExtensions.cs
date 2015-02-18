@@ -1,11 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Linq;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -23,7 +19,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to activate</param>
         public static void ActivateFeature(this Web web, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.ActivateWebFeature, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
             web.ProcessFeature(featureID, true);
         }
 
@@ -35,7 +31,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to activate</param>
         public static void ActivateFeature(this Site site, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.ActivateSiteCollectionFeature, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
             site.ProcessFeature(featureID, true);
         }
 
@@ -46,7 +42,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to deactivate</param>
         public static void DeactivateFeature(this Web web, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeactivateWebFeature, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
             web.ProcessFeature(featureID, false);
         }
 
@@ -57,7 +53,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="featureID">ID of the feature to deactivate</param>
         public static void DeactivateFeature(this Site site, Guid featureID)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeactivateSiteCollectionFeature, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_DeactivateWebFeature, featureID);
             site.ProcessFeature(featureID, false);
         }
 
@@ -94,11 +90,11 @@ namespace Microsoft.SharePoint.Client
             bool featureIsActive = false;
 
             features.Context.Load(features);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             Feature iprFeature = features.GetById(featureID);
             features.Context.Load(iprFeature, f => f.DefinitionId);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && !iprFeature.ServerObjectIsNull.Value && iprFeature.DefinitionId.Equals(featureID))
             {
@@ -143,7 +139,7 @@ namespace Microsoft.SharePoint.Client
         private static void ProcessFeatureInternal(FeatureCollection features, Guid featureID, bool activate)
         {
             features.Context.Load(features);
-            features.Context.ExecuteQuery();
+            features.Context.ExecuteQueryRetry();
 
             // The original number of active features...use this to track if the feature activation went OK
             int oldCount = features.Count();
@@ -154,11 +150,11 @@ namespace Microsoft.SharePoint.Client
 
                 // FeatureDefinitionScope defines how the features have been deployed. All OOB features are farm deployed
                 features.Add(featureID, true, FeatureDefinitionScope.Farm);
-                features.Context.ExecuteQuery();
+                features.Context.ExecuteQueryRetry();
 
                 // retry logic needed to make this more bulletproof :-(
                 features.Context.Load(features);
-                features.Context.ExecuteQuery();
+                features.Context.ExecuteQueryRetry();
 
                 int tries = 0;
                 int currentCount = features.Count();
@@ -166,9 +162,9 @@ namespace Microsoft.SharePoint.Client
                 {
                     tries++;
                     features.Add(featureID, true, FeatureDefinitionScope.Farm);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                     features.Context.Load(features);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                     currentCount = features.Count();
                 }
             }
@@ -177,11 +173,11 @@ namespace Microsoft.SharePoint.Client
                 try
                 {
                     features.Remove(featureID, false);
-                    features.Context.ExecuteQuery();
+                    features.Context.ExecuteQueryRetry();
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.Internal.TraceError((int)EventId.FeatureActivationProblem, ex, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID);
+                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_FeatureActivationProblem, featureID, ex.Message);
                 }
             }
         }

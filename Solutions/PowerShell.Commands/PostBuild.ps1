@@ -34,7 +34,7 @@ if($ConfigurationName -like "Debug*")
 		New-Item -Path "$distDir" -ItemType Directory -Force >$null # Suppress output
 	}
 	# Copy files to 'dist' folder
-	Write-Host "Copying files from $TargetDir to $dirDir"
+	Write-Host "Copying files from $TargetDir to $distDir"
 	Copy-Item "$TargetDir\*.dll" -Destination "$distDir"
 	Copy-Item "$TargetDir\*help.xml" -Destination "$distDir"
 	Copy-Item "$TargetDir\ModuleFiles\*.psd1" -Destination  "$distDir"

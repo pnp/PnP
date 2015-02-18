@@ -1,8 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Linq;
-using System.Collections.Generic;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -14,8 +12,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var webs = ClientContext.LoadQuery(this.SelectedWeb.Webs);
-            ClientContext.ExecuteQuery();
+            var webs = ClientContext.LoadQuery(SelectedWeb.Webs);
+            ClientContext.ExecuteQueryRetry();
             WriteObject(webs, true);
 
         }

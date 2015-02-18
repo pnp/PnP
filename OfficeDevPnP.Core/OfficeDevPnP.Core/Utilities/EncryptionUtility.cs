@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -50,7 +47,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Decrypt a piece of text based on a given certificate
         /// </summary>
-        /// <param name="stringToEncrypt">Text to decrypt</param>
+        /// <param name="stringToDecrypt">Text to decrypt</param>
         /// <param name="thumbPrint">Thumbprint of the certificate to use</param>
         /// <returns>Decrypted text</returns>
         public static string Decrypt(string stringToDecrypt, string thumbPrint)

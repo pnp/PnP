@@ -5,9 +5,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class WebPipeBind
     {
-        private Guid _id;
-        private string _url;
-        private Web _web;
+        private readonly Guid _id;
+        private readonly string _url;
+        private readonly Web _web;
 
         public WebPipeBind()
         {
@@ -18,20 +18,20 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         public WebPipeBind(Guid guid)
         {
-            this._id = guid;
+            _id = guid;
         }
 
         public WebPipeBind(string id)
         {
             if (!Guid.TryParse(id, out _id))
             {
-                this._url = id;
+                _url = id;
             }
         }
 
         public WebPipeBind(Web web)
         {
-            this._web = web;
+            _web = web;
         }
 
         public Guid Id

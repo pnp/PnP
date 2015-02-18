@@ -21,9 +21,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
-                Field f = Identity.Field;
+                var f = Identity.Field;
                 if (list != null)
                 {
                     if (f == null)
@@ -38,41 +38,41 @@ namespace OfficeDevPnP.PowerShell.Commands
                         }
                     }
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     if (f != null && f.IsPropertyAvailable("InternalName"))
                     {
                         if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
                         {
                             f.DeleteObject();
-                            ClientContext.ExecuteQuery();
+                            ClientContext.ExecuteQueryRetry();
                         }
                     }
                 }
             } 
             else
             {
-                Field f = Identity.Field;
+                var f = Identity.Field;
 
                 if (f == null)
                 {
                     if (Identity.Id != Guid.Empty)
                     {
-                        f = this.SelectedWeb.Fields.GetById(Identity.Id);
+                        f = SelectedWeb.Fields.GetById(Identity.Id);
                     }
                     else if (!string.IsNullOrEmpty(Identity.Name))
                     {
-                        f = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
+                        f = SelectedWeb.Fields.GetByInternalNameOrTitle(Identity.Name);
                     }
                 }
                 ClientContext.Load(f);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
 
                 if (f != null && f.IsPropertyAvailable("InternalName"))
                 {
                     if (Force || ShouldContinue(string.Format(Properties.Resources.DeleteField0, f.InternalName), Properties.Resources.Confirm))
                     {
                         f.DeleteObject();
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                 }
             }

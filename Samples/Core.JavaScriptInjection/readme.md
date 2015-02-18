@@ -19,7 +19,7 @@ none
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.Cloud.Async | Vesa Juvonen, Bert Jansen, Frank Marasco (Microsoft)
+Core.JavaScriptInjection | Vesa Juvonen, Bert Jansen, Frank Marasco (Microsoft)
 
 ### Version history ###
 Version  | Date | Comments

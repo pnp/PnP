@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -74,7 +69,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <summary>
         /// Decrypts data based on the RSACryptoServiceProvider
         /// </summary>
-        /// <param name="plainData">Bytes to decrypt</param>
+        /// <param name="encryptedData">Bytes to decrypt</param>
         /// <param name="fOAEP"> true to perform direct System.Security.Cryptography.RSA decryption using OAEP padding</param>
         /// <param name="certificate">Certificate to use</param>
         /// <returns>Decrypted bytes</returns>

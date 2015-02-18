@@ -1,42 +1,25 @@
-﻿using Microsoft.SharePoint.Client;
-using Microsoft.SharePoint.Client.Taxonomy;
-using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Utilities;
+using Microsoft.SharePoint.Client.WebParts;
 
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
     /// Class that provides generic list creation and manipulation methods
     /// </summary>
-    public static class ListExtensions
+    public static partial class ListExtensions
     {
         #region Event Receivers
-        /// <summary>
-        /// Registers a remote event receiver
-        /// </summary>
-        /// <param name="list">The list to process</param>
-        /// <param name="name">The name of the event receiver (needs to be unique among the event receivers registered on this list)</param>
-        /// <param name="url">The URL of the remote WCF service that handles the event</param>
-        /// <param name="eventReceiverType"></param>
-        /// <param name="synchronization"></param>
-        /// <param name="force">If True any event already registered with the same name will be removed first.</param>
-        /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
-        [Obsolete("Use List.AddRemoteEventReceiver()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static EventReceiverDefinition RegisterRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, bool force)
-        {
-            return list.AddRemoteEventReceiver(name, url, eventReceiverType, synchronization, force);
-        }
 
         /// <summary>
         /// Registers a remote event receiver
@@ -61,7 +44,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="url">The URL of the remote WCF service that handles the event</param>
         /// <param name="eventReceiverType"></param>
         /// <param name="synchronization"></param>
-        /// <param name "sequenceNumber"></param>
+        /// <param name="sequenceNumber"></param>
         /// <param name="force">If True any event already registered with the same name will be removed first.</param>
         /// <returns>Returns an EventReceiverDefinition if succeeded. Returns null if failed.</returns>
         public static EventReceiverDefinition AddRemoteEventReceiver(this List list, string name, string url, EventReceiverType eventReceiverType, EventReceiverSynchronization synchronization, int sequenceNumber, bool force)
@@ -71,14 +54,14 @@ namespace Microsoft.SharePoint.Client
                         where receiver.ReceiverName == name
                         select receiver;
             var receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             var receiverExists = receivers.Any();
             if (receiverExists && force)
             {
                 var receiver = receivers.FirstOrDefault();
                 receiver.DeleteObject();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
                 receiverExists = false;
             }
             EventReceiverDefinition def = null;
@@ -93,7 +76,7 @@ namespace Microsoft.SharePoint.Client
                 receiver.Synchronization = synchronization;
                 def = list.EventReceivers.Add(receiver);
                 list.Context.Load(def);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
             return def;
         }
@@ -113,7 +96,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -127,8 +110,8 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
+        /// <param name="list">The list to process</param>
         /// <param name="name"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverByName(this List list, string name)
         {
@@ -139,7 +122,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = list.Context.LoadQuery(query);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -156,7 +139,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the web property bag
         /// </summary>
-        /// <param name="web">Web that will hold the property bag entry</param>
+        /// <param name="list">The list to process</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">Integer value for the property bag entry</param>
         public static void SetPropertyBagValue(this List list, string key, int value)
@@ -168,7 +151,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the list property bag
         /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="list">List that will hold the property bag entry</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">String value for the property bag entry</param>
         public static void SetPropertyBagValue(this List list, string key, string value)
@@ -180,25 +163,26 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Sets a key/value pair in the list property bag
         /// </summary>
-        /// <param name="web">List that will hold the property bag entry</param>
+        /// <param name="list">List that will hold the property bag entry</param>
         /// <param name="key">Key for the property bag entry</param>
         /// <param name="value">Value for the property bag entry</param>
         private static void SetPropertyBagValueInternal(List list, string key, object value)
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             props[key] = value;
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as integer</returns>
         public static int? GetPropertyBagValueInt(this List list, string key, int defaultValue)
         {
@@ -216,8 +200,9 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Get string typed property bag value. If does not contain, returns given default value.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as string</returns>
         public static string GetPropertyBagValueString(this List list, string key, string defaultValue)
         {
@@ -235,14 +220,14 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Type independent implementation of the property gettter.
         /// </summary>
-        /// <param name="web">List to read the property bag value from</param>
+        /// <param name="list">List to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
         /// <returns>Value of the property bag entry</returns>
         private static object GetPropertyBagValueInternal(List list, string key)
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return props.FieldValues[key];
@@ -256,14 +241,14 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Checks if the given property bag entry exists
         /// </summary>
-        /// <param name="web">List to be processed</param>
+        /// <param name="list">List to be processed</param>
         /// <param name="key">Key of the property bag entry to check</param>
         /// <returns>True if the entry exists, false otherwise</returns>
         public static bool PropertyBagContainsKey(this List list, string key)
         {
             var props = list.RootFolder.Properties;
             list.Context.Load(props);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return true;
@@ -296,44 +281,15 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(_cts);
 
             IEnumerable<ContentType> _results = list.Context.LoadQuery<ContentType>(_cts.Where(item => item.Name == contentTypeName));
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             ContentType _ct = _results.FirstOrDefault();
             if (_ct != null)
             {
                 _ct.DeleteObject();
                 list.Update();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
-        }
-
-        [Obsolete("Prefer CreateList()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void AddList(this Web web, ListTemplateType listType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
-        {
-            if (string.IsNullOrEmpty(listName))
-            {
-                throw (listName == null)
-                  ? new ArgumentNullException("listName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
-            }
-
-            // Call actual implementation
-            CreateListInternal(web, null, (int)listType, listName, enableVersioning, updateAndExecuteQuery, urlPath);
-        }
-
-        [Obsolete("Please use the CreateDocumentLibrary method")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static void AddDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
-        {
-            if (string.IsNullOrEmpty(listName))
-            {
-                throw (listName == null)
-                  ? new ArgumentNullException("listName")
-                  : new ArgumentException(CoreResources.Exception_Message_EmptyString_Arg, "listName");
-            }
-            // Call actual implementation
-            CreateListInternal(web, null, (int)ListTemplateType.DocumentLibrary, listName, enableVersioning, urlPath: urlPath);
         }
 
         /// <summary>
@@ -342,6 +298,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">Name of the library</param>
         /// <param name="enableVersioning">Enable versioning on the list</param>
+        /// <param name="urlPath"></param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
         public static List CreateDocumentLibrary(this Web web, string listName, bool enableVersioning = false, string urlPath = "")
@@ -375,7 +332,7 @@ namespace Microsoft.SharePoint.Client
 
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             List existingList = results.FirstOrDefault();
 
             if (existingList != null)
@@ -384,48 +341,6 @@ namespace Microsoft.SharePoint.Client
             }
 
             return false;
-        }
-
-        [Obsolete("Prefer CreateList()")]
-        [EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static bool AddList(this Web web, int listType, Guid featureID, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "")
-        {
-            bool created = false;
-
-            ListCollection listCollection = web.Lists;
-            web.Context.Load(listCollection, lists => lists.Include(list => list.Title).Where(list => list.Title == listName));
-            web.Context.ExecuteQuery();
-
-            if (listCollection.Count == 0)
-            {
-                ListCollection listCol = web.Lists;
-                ListCreationInformation lci = new ListCreationInformation();
-                lci.Title = listName;
-                lci.TemplateFeatureId = featureID;
-                lci.TemplateType = listType;
-
-                if (!string.IsNullOrEmpty(urlPath))
-                    lci.Url = urlPath;
-
-                List newList = listCol.Add(lci);
-
-                if (enableVersioning)
-                {
-                    newList.EnableVersioning = true;
-                    newList.EnableMinorVersions = true;
-                }
-
-                if (updateAndExecuteQuery)
-                {
-                    newList.Update();
-                    web.Context.Load(listCol);
-                    web.Context.ExecuteQuery();
-                }
-
-                created = true;
-            }
-
-            return created;
         }
 
         /// <summary>
@@ -463,7 +378,7 @@ namespace Microsoft.SharePoint.Client
 
         private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateList, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+            Log.Info(CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
 
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
@@ -493,7 +408,7 @@ namespace Microsoft.SharePoint.Client
             {
                 newList.Update();
                 web.Context.Load(listCol);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return newList;
@@ -505,7 +420,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listName">List to operate on</param>
         /// <param name="enableVersioning">True to enable versioning, false to disable</param>
-        /// <param name="enableMinorversioning">Enable/Disable minor versioning</param>
+        /// <param name="enableMinorVersioning">Enable/Disable minor versioning</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         /// <exception cref="System.ArgumentException">Thrown when listName is a zero-length string or contains only white space</exception>
         /// <exception cref="System.ArgumentNullException">listName is null</exception>
@@ -525,7 +440,7 @@ namespace Microsoft.SharePoint.Client
             if (updateAndExecuteQuery)
             {
                 listToUpdate.Update();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -534,7 +449,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">List to be processed</param>
         /// <param name="enableVersioning">True to enable versioning, false to disable</param>
-        /// <param name="enableMinorversioning">Enable/Disable minor versioning</param>
+        /// <param name="enableMinorVersioning">Enable/Disable minor versioning</param>
         /// <param name="updateAndExecuteQuery">Perform list update and executequery, defaults to true</param>
         public static void UpdateListVersioning(this List list, bool enableVersioning, bool enableMinorVersioning = true, bool updateAndExecuteQuery = true)
         {
@@ -544,7 +459,7 @@ namespace Microsoft.SharePoint.Client
             if (updateAndExecuteQuery)
             {
                 list.Update();
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
             }
         }
 
@@ -566,14 +481,14 @@ namespace Microsoft.SharePoint.Client
             var terms = termSet.Terms;
             var term = web.Context.LoadQuery(termSet.Terms.Where(t => t.Name == termName));
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var foundTerm = term.First();
 
             var list = web.GetListByTitle(listName);
 
             var fields = web.Context.LoadQuery(list.Fields.Where(f => f.InternalName == fieldInternalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var taxField = web.Context.CastTo<TaxonomyField>(fields.First());
 
@@ -588,7 +503,7 @@ namespace Microsoft.SharePoint.Client
             item.SetTaxonomyFieldValue(taxField.Id, foundTerm.Name, foundTerm.Id);
 
             web.Context.Load(item);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             dynamic val = item[fieldInternalName];
 
@@ -598,7 +513,38 @@ namespace Microsoft.SharePoint.Client
             taxField.DefaultValue = string.Format("{0};#{1}|{2}", val.WssId, val.Label, val.TermGuid);
             taxField.Update();
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
+        }
+
+        /// <summary>
+        /// Sets JS link customization for a list form
+        /// </summary>
+        /// <param name="list">SharePoint list</param>
+        /// <param name="pageType">Type of form</param>
+        /// <param name="jslink">JSLink to set to the form. Set to empty string to remove the set JSLink customization.
+        /// Specify multiple values separated by pipe symbol. For e.g.: ~sitecollection/_catalogs/masterpage/jquery-2.1.0.min.js|~sitecollection/_catalogs/masterpage/custom.js
+        /// </param>
+        public static void SetJSLinkCustomizations(this List list, PageType pageType, string jslink)
+        {
+            // Get the list form to apply the JS link
+            Form listForm = list.Forms.GetByPageType(pageType);
+            list.Context.Load(listForm, nf => nf.ServerRelativeUrl);
+            list.Context.ExecuteQueryRetry();
+
+            Microsoft.SharePoint.Client.File file = list.ParentWeb.GetFileByServerRelativeUrl(listForm.ServerRelativeUrl);
+            LimitedWebPartManager wpm = file.GetLimitedWebPartManager(PersonalizationScope.Shared);
+            list.Context.Load(wpm.WebParts, wps => wps.Include(wp => wp.WebPart.Title));
+            list.Context.ExecuteQueryRetry();
+
+            // Set the JS link for all web parts
+            foreach (WebPartDefinition wpd in wpm.WebParts)
+            {
+                WebPart wp = wpd.WebPart;
+                wp.Properties["JSLink"] = jslink;
+                wpd.SaveWebPartChanges();
+
+                list.Context.ExecuteQueryRetry();
+            }
         }
 
 #if !CLIENTSDKV15
@@ -607,7 +553,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="listName">Title of the list </param>
+        /// <param name="listTitle">Title of the list</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
         /// <param name="descriptionResource">Localized Description string</param>
@@ -654,7 +600,6 @@ namespace Microsoft.SharePoint.Client
         /// </example>
         /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="list">List to be processed </param>
-        /// <param name="listName">Title of the list </param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
         /// <param name="descriptionResource">Localized Description string</param>
@@ -663,7 +608,7 @@ namespace Microsoft.SharePoint.Client
             list.TitleResource.SetValueForUICulture(cultureName, titleResource);
             list.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             list.Update();
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 #endif
 
@@ -685,7 +630,7 @@ namespace Microsoft.SharePoint.Client
 
             List listToQuery = web.Lists.GetByTitle(listName);
             web.Context.Load(listToQuery, l => l.Id);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return listToQuery.Id;
         }
@@ -708,7 +653,7 @@ namespace Microsoft.SharePoint.Client
             }
             ListCollection lists = web.Lists;
             IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == listTitle));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return results.FirstOrDefault();
         }
 
@@ -726,7 +671,7 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsObjectPropertyInstantiated("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             var listServerRelativeUrl = UrlUtility.Combine(web.ServerRelativeUrl, webRelativeUrl);
 
@@ -734,7 +679,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(foundList, l => l.DefaultViewUrl, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.RootFolder);
             try
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             catch (ServerException se)
             {
@@ -750,6 +695,71 @@ namespace Microsoft.SharePoint.Client
 
             return foundList;
         }
+
+        #region List Permissions
+
+        /// <summary>
+        /// Set custom permission to the list
+        /// </summary>
+        /// <param name="list">List on which permission to be set</param>
+        /// <param name="user">Built in user</param>
+        /// <param name="roleType">Role type</param>
+        public static void SetListPermission(this List list, BuiltInIdentity user, RoleType roleType)
+        {
+            Principal permissionEntity = null;
+
+            // Get the web for list
+            Web web = list.ParentWeb;
+            list.Context.Load(web);
+            list.Context.ExecuteQueryRetry();
+
+            switch (user)
+            {
+                case BuiltInIdentity.Everyone:
+                    {
+                        permissionEntity = web.EnsureUser("c:0(.s|true");
+                        break;
+                    }
+                case BuiltInIdentity.EveryoneButExternalUsers:
+                    {
+                        string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
+                        permissionEntity = web.EnsureUser(userIdentity);
+                        break;
+                    }
+            }
+
+            list.SetListPermission(permissionEntity, roleType);
+        }
+
+        /// <summary>
+        /// Set custom permission to the list
+        /// </summary>
+        /// <param name="list">List on which permission to be set</param>
+        /// <param name="principal">SharePoint Group or User</param>
+        /// <param name="roleType">Role type</param>
+        public static void SetListPermission(this List list, Principal principal, RoleType roleType)
+        {
+            // Get the web for list
+            Web web = list.ParentWeb;
+            list.Context.Load(web);
+            list.Context.ExecuteQueryRetry();
+
+            // Stop inheriting permissions
+            list.BreakRoleInheritance(true, false);
+
+            // Get role type
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(roleType);
+            RoleDefinitionBindingCollection rdbColl = new RoleDefinitionBindingCollection(web.Context);
+            rdbColl.Add(roleDefinition);
+
+            // Set custom permission to the list
+            list.RoleAssignments.Add(principal, rdbColl);
+            list.Context.ExecuteQueryRetry();
+        }
+
+        #endregion
+
+        #region List view
 
         /// <summary>
         /// Creates list views based on specific xml structure from file
@@ -806,7 +816,7 @@ namespace Microsoft.SharePoint.Client
             // Get instances to the list
             List list = web.GetList(listUrl);
             web.Context.Load(list);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             // Execute the actual xml based creation
             list.CreateViewsFromXML(xmlDoc);
@@ -823,7 +833,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("filePath");
 
             if (!System.IO.File.Exists(filePath))
-                throw new System.IO.FileNotFoundException(filePath);
+                throw new FileNotFoundException(filePath);
 
             XmlDocument xd = new XmlDocument();
             xd.Load(filePath);
@@ -911,7 +921,7 @@ namespace Microsoft.SharePoint.Client
 
             View view = list.Views.Add(viewCreationInformation);
             list.Context.Load(view);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return view;
         }
@@ -931,10 +941,11 @@ namespace Microsoft.SharePoint.Client
                 var view = list.Views.GetById(id);
 
                 list.Context.Load(view);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 return view;
-            } catch (ServerException)
+            }
+            catch (ServerException)
             {
                 return null;
             }
@@ -955,7 +966,7 @@ namespace Microsoft.SharePoint.Client
                 var view = list.Views.GetByTitle(name);
 
                 list.Context.Load(view);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 return view;
             }
@@ -966,40 +977,7 @@ namespace Microsoft.SharePoint.Client
 
         }
 
-        /// <summary>
-        /// <para>Sets default values for column values.</para>
-        /// <para>In order to for instance set the default Enterprise Metadata keyword field to a term, add the enterprise metadata keyword to a library (internal name "TaxKeyword")</para>
-        /// <para> </para>
-        /// <para>Column values are defined by the DefaultColumnValue class that has 3 properties:</para>
-        /// <para>RelativeFolderPath : / to set a default value for the root of the document library, or /foldername to specify a subfolder</para>
-        /// <para>FieldInternalName : The name of the field to set. For instance "TaxKeyword" to set the Enterprise Metadata field</para>
-        /// <para>TermPaths : A collection of string values to set in the shape of TermGroup|TermSet|Term </para>
-        /// </summary>
-        /// <param name="list"></param>
-        /// <param name="columnValues"></param>
-        [Obsolete("Use SetDefaultColumnValues(IEnumerable<IDefaultColumnValue> columnValues) instead")]
-        public static void SetDefaultColumnValues(this List list, IEnumerable<DefaultColumnTermPathValue> columnValues)
-        {
-            using (var clientContext = list.Context as ClientContext)
-            {
-                List<DefaultColumnTermValue> newValues = new List<DefaultColumnTermValue>();
-                foreach (var value in columnValues)
-                {
-
-                    DefaultColumnTermValue newValue = new DefaultColumnTermValue();
-                    newValue.FieldInternalName = value.FieldInternalName;
-                    newValue.FolderRelativePath = value.FolderRelativePath;
-
-                    foreach (var termpath in value.TermPaths)
-                    {
-                        var term = clientContext.Site.GetTaxonomyItemByPath(termpath) as Term;
-                        newValue.Terms.Add(term);
-                    }
-                    newValues.Add(newValue);
-                }
-                list.SetDefaultColumnValues(newValues);
-            }
-        }
+        #endregion
 
         private static void SetDefaultColumnValuesImplementation(this List list, IEnumerable<IDefaultColumnValue> columnValues)
         {
@@ -1011,7 +989,7 @@ namespace Microsoft.SharePoint.Client
 
                     clientContext.Load(list.RootFolder);
                     clientContext.Load(list.RootFolder.Folders);
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
 
                     var xMetadataDefaults = new XElement("MetadataDefaults");
 
@@ -1051,7 +1029,7 @@ namespace Microsoft.SharePoint.Client
                                     if (!term.IsPropertyAvailable("Id") || !term.IsPropertyAvailable("Name"))
                                     {
                                         clientContext.Load(term, t => t.Id, t => t.Name);
-                                        clientContext.ExecuteQuery();
+                                        clientContext.ExecuteQueryRetry();
                                     }
                                     var wssId = list.ParentWeb.GetWssIdForTerm(term);
                                     fieldStringBuilder.AppendFormat("{0};#{1}|{2};#", wssId, term.Name, term.Id);
@@ -1094,7 +1072,7 @@ namespace Microsoft.SharePoint.Client
 
                         objFileInfo.Overwrite = true;
                         formsFolder.Files.Add(objFileInfo);
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
 
                     // Add the event receiver if not already there
@@ -1112,7 +1090,7 @@ namespace Microsoft.SharePoint.Client
 
                         list.Update();
 
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                     }
                 }
                 catch (Exception ex)
@@ -1140,7 +1118,7 @@ namespace Microsoft.SharePoint.Client
             {
                 clientContext.Load(list.RootFolder);
                 clientContext.Load(list.RootFolder.Folders);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 // Check if default values file is present
                 var formsFolder = list.RootFolder.Folders.FirstOrDefault(x => x.Name == "Forms");
@@ -1153,7 +1131,7 @@ namespace Microsoft.SharePoint.Client
                     bool fileExists = false;
                     try
                     {
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                         fileExists = true;
                     }
                     catch { }
@@ -1161,7 +1139,7 @@ namespace Microsoft.SharePoint.Client
                     if (fileExists)
                     {
                         var streamResult = configFile.OpenBinaryStream();
-                        clientContext.ExecuteQuery();
+                        clientContext.ExecuteQueryRetry();
                         XDocument document = XDocument.Load(streamResult.Value);
                         var values = from a in document.Descendants("a") select a;
 
@@ -1179,7 +1157,7 @@ namespace Microsoft.SharePoint.Client
 
                                 var field = list.Fields.GetByInternalNameOrTitle(fieldName);
                                 clientContext.Load(field);
-                                clientContext.ExecuteQuery();
+                                clientContext.ExecuteQueryRetry();
                                 if (field.FieldTypeKind == FieldType.Text)
                                 {
                                     var textValue = defaultValue.Value;
@@ -1203,7 +1181,7 @@ namespace Microsoft.SharePoint.Client
                                         var termIdString = terms[q].Split(new char[] { '|' })[1];
                                         var term = taxSession.GetTerm(new Guid(termIdString));
                                         clientContext.Load(term, t => t.Id, t => t.Name);
-                                        clientContext.ExecuteQuery();
+                                        clientContext.ExecuteQueryRetry();
                                         existingTerms.Add(term);
                                         q++; // Skip one
                                     }
@@ -1233,9 +1211,9 @@ namespace Microsoft.SharePoint.Client
         {
             public bool Equals(IDefaultColumnValue x, IDefaultColumnValue y)
             {
-                if (Object.ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, y)) return true;
 
-                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
                     return false;
 
                 return x.FieldInternalName == y.FieldInternalName && x.FolderRelativePath == y.FolderRelativePath;
@@ -1243,7 +1221,7 @@ namespace Microsoft.SharePoint.Client
 
             public int GetHashCode(IDefaultColumnValue defaultValue)
             {
-                if (Object.ReferenceEquals(defaultValue, null)) return 0;
+                if (ReferenceEquals(defaultValue, null)) return 0;
 
                 int hashFolder = defaultValue.FolderRelativePath == null ? 0 : defaultValue.FolderRelativePath.GetHashCode();
 

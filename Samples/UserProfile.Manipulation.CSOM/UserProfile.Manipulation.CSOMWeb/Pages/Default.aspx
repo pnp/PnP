@@ -18,8 +18,8 @@
             In this scenario you'll learn how to get user profile properties.
             <br />
             <ul style="list-style-type: square;">
-                <li>How to create new content types usign CSOM.</li>
-                <li>How to add site columsn to the newly added content type using CSOM.</li>
+                <li>How to access the user profile</li>
+                <li>How to use CSOM to to return all user profile properities</li>
             </ul>
             Click
             <asp:HyperLink ID="hplScenario1" runat="server" Text="here" />

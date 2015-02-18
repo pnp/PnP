@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core.DisplayCalendarEvents</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body data-ng-app="App">
+
+    <div class="container body-content" data-ng-controller="IndexController" data-ng-cloak>
+
+        <h1 class="page-header">Core.DisplayCalendarEvents</h1>
+        <p>Events from multiple calendar lists overlayed on a single calendar</p>
+
+        <div>
+            <ul class="list list-inline">
+                <li ng-repeat="list in lists" class="list">
+                    <button class="btn btn-info" ng-click="toggleVisibility(list)" ng-style="{'background-color': list.color, 'border-color': list.color }"><span class="glyphicon" ng-class="list.checked ? 'glyphicon-check' : 'glyphicon-unchecked'"></span> {{list.title}}</button>
+                </li>
+            </ul>
+        </div>
+        <p>&nbsp;</p>
+        <div class="calendar" ng-model="eventSources" calendar="fullCallendarInstance" ui-calendar="uiConfig.calendar"></div>
+    </div>
+
+    @Scripts.Render("~/bundles/js")
+</body>
+</html>

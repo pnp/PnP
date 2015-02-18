@@ -14,6 +14,147 @@ namespace Contoso.Core.LargeFileUpload
     /// </summary>
     public class FileUploadService
     {
+        private long fileoffset;
+
+        /// <summary>
+        /// Uploads a large file slice per slice
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name="libraryName"></param>
+        /// <param name="fileName"></param>
+        /// <param name="fileChunkSizeInMB"></param>
+        public void UploadFileSlicePerSlice(ClientContext ctx, string libraryName, string fileName, int fileChunkSizeInMB = 3)
+        {
+
+            // Each sliced upload requires a unique id
+            Guid uploadId = Guid.NewGuid();
+
+            // Get the name of the file
+            string uniqueFileName = Path.GetFileName(fileName);
+
+            // Set fileoffset to 0
+            fileoffset = 0;
+
+            // Ensure that target library exists, create if is missing
+            if (!LibraryExists(ctx, ctx.Web, libraryName))
+            {
+                CreateLibrary(ctx, ctx.Web, libraryName);
+            }
+            // Get to folder to upload into 
+            List docs = ctx.Web.Lists.GetByTitle(libraryName);
+            ctx.Load(docs, l => l.RootFolder);
+            // Get the information about the folder that will hold the file
+            ctx.Load(docs.RootFolder, f => f.ServerRelativeUrl);
+            ctx.ExecuteQuery();
+
+            // **Important**: below sample code is for educational purposes. In a 
+            // real life implementation one would read the "slices" of slice 
+            // per slice from the filesystem instead of reading and dividing
+            // the whole file in memory
+
+            // Read the file data in bytes array
+            byte[] fileData = System.IO.File.ReadAllBytes(fileName);
+
+            // Prepare for splitting the fileData in chunks
+            List<byte[]> sliceData = new List<byte[]>();
+            int lengthToSplit = fileChunkSizeInMB * 1024 * 1024;
+            int arrayLength = fileData.Length;
+            int byteCount = 0;
+
+            // Split the binary data in chunks
+            for (int i = 0; i < arrayLength; i = i + lengthToSplit)
+            {
+                if (byteCount + lengthToSplit > arrayLength)
+                {
+                    lengthToSplit = arrayLength - byteCount;
+                }
+
+                byte[] val = new byte[lengthToSplit];
+
+                if (arrayLength < i + lengthToSplit)
+                {
+                    lengthToSplit = arrayLength - i;
+                }
+
+                Array.Copy(fileData, i, val, 0, lengthToSplit);
+                sliceData.Add(val);
+                byteCount = byteCount + lengthToSplit;
+            }
+
+            // How many slices do we have
+            int sliceCount = sliceData.Count;
+
+            // **Important**: below sample code is for educational purposes. In a 
+            // real life implementation one would store the state after each successful
+            // slice upload so that the upload can be restarted from the last slice that 
+            // was successfully uploaded
+
+            // upload slice per slice. They'll need to be uploaded in the correct order
+            int sliceNumber = 0;
+            foreach (byte[] slice in sliceData)
+            {
+                UploadFileSlice(ctx, uploadId, slice, docs.RootFolder, uniqueFileName, sliceNumber, sliceCount);
+                sliceNumber++;
+            }
+        }
+
+        private void UploadFileSlice(ClientContext cc, Guid uploadId, Byte[] sliceContent, Folder folder, string uniqueFilename, int sliceNumber, int totalSlices)
+        {
+            // Is this the last slice
+            bool isFinalSlice = sliceNumber == totalSlices - 1;
+
+            Microsoft.SharePoint.Client.File uploadFile;
+            ClientResult<long> bytesUploaded = null;
+
+            if (sliceNumber == 0)
+            {
+                // First slice
+                using (MemoryStream contentStream = new MemoryStream())
+                {
+                    // Add an empty file.
+                    FileCreationInformation fileInfo = new FileCreationInformation();
+                    fileInfo.ContentStream = contentStream;
+                    fileInfo.Url = uniqueFilename;
+                    fileInfo.Overwrite = true;
+
+                    uploadFile = folder.Files.Add(fileInfo);
+
+                    // Start upload by uploading the first slice. 
+                    using (MemoryStream s = new MemoryStream(sliceContent))
+                    {
+                        // Call the start upload method on the first slice
+                        bytesUploaded = uploadFile.StartUpload(uploadId, s);
+                        cc.ExecuteQuery();
+                        // fileoffset is the pointer where the next slice will be added
+                        fileoffset = bytesUploaded.Value;
+                    }
+                }
+            }
+            else
+            {
+                // Get a reference to our file
+                uploadFile = cc.Web.GetFileByServerRelativeUrl(folder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFilename);
+                using (MemoryStream s = new MemoryStream(sliceContent))
+                {
+                    if (isFinalSlice)
+                    {
+                        // End sliced upload by calling FinishUpload
+                        uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
+                        cc.ExecuteQuery();
+                    }
+                    else
+                    {
+                        // Continue sliced upload
+                        bytesUploaded = uploadFile.ContinueUpload(uploadId, fileoffset, s);
+                        cc.ExecuteQuery();
+                        // update fileoffset for the next slice
+                        fileoffset = bytesUploaded.Value;
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// This has limitation of roughly 2 MB as the file size due the way information is sent to the server
         /// </summary>
@@ -58,9 +199,15 @@ namespace Contoso.Core.LargeFileUpload
                 CreateLibrary(ctx, web, libraryName);
             }
 
+            List docs = ctx.Web.Lists.GetByTitle(libraryName);
+            ctx.Load(docs, l => l.RootFolder);
+            // Get the information about the folder that will hold the file
+            ctx.Load(docs.RootFolder, f => f.ServerRelativeUrl);
+            ctx.ExecuteQuery();
+
             using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
-                Microsoft.SharePoint.Client.File.SaveBinaryDirect(ctx, string.Format("/{0}/{1}", libraryName, System.IO.Path.GetFileName(filePath)), fs, true);
+                Microsoft.SharePoint.Client.File.SaveBinaryDirect(ctx, string.Format("{0}/{1}", docs.RootFolder.ServerRelativeUrl, System.IO.Path.GetFileName(filePath)), fs, true);
             }
 
         }

@@ -1,9 +1,6 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -24,17 +21,17 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (!Indexed)
             {
                 // If it is already an indexed property we still have to add it back to the indexed properties
-                Indexed = !string.IsNullOrEmpty(this.SelectedWeb.GetIndexedPropertyBagKeys().Where(k => k == Key).FirstOrDefault());
+                Indexed = !string.IsNullOrEmpty(SelectedWeb.GetIndexedPropertyBagKeys().FirstOrDefault(k => k == Key));
             }
 
-            this.SelectedWeb.SetPropertyBagValue(Key, Value);
+            SelectedWeb.SetPropertyBagValue(Key, Value);
             if(Indexed)
             {
-                this.SelectedWeb.AddIndexedPropertyBagKey(Key);
+                SelectedWeb.AddIndexedPropertyBagKey(Key);
             }
             else
             {
-                this.SelectedWeb.RemoveIndexedPropertyBagKey(Key);
+                SelectedWeb.RemoveIndexedPropertyBagKey(Key);
             }
         }
     }

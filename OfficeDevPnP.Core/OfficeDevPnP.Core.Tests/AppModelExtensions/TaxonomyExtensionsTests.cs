@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Tests;
 using Microsoft.SharePoint.Client.Taxonomy;
 using System.Linq;
 using System.Collections.Generic;
+using OfficeDevPnP.Core.Entities;
 
 namespace Microsoft.SharePoint.Client.Tests
 {
@@ -26,6 +27,7 @@ namespace Microsoft.SharePoint.Client.Tests
         private Guid UpdateTermSetId = new Guid("{35585956-83E4-4A44-8FC5-AC50942E3187}");
         private Guid GuidTermSetId = new Guid("{90FD4208-8281-40CC-872E-DD85F33B50AB}");
 
+        #region Test initialize and cleanup
         [TestInitialize]
         public void Initialize()
         {
@@ -41,16 +43,16 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var termGroup = termStore.CreateGroup(_termGroupName, _termGroupId);
                 clientContext.Load(termGroup);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Termset
                 var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Term
                 termSet.CreateTerm(_termName, 1033, _termId);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // List
                 ListCreationInformation listCI = new ListCreationInformation();
@@ -58,7 +60,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 listCI.Title = "Test_List_" + DateTime.Now.ToFileTime();
                 var list = clientContext.Web.Lists.Add(listCI);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 _listId = list.Id;
             }
         }
@@ -75,31 +77,33 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termGroup = termStore.GetGroup(_termGroupId);
                 var termSets = termGroup.TermSets;
                 clientContext.Load(termSets);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 foreach (var termSet in termSets)
                 {
                     termSet.DeleteObject();
                 }
                 termGroup.DeleteObject(); // Will delete underlying termset
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var field in testFields)
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
+        #endregion
 
+        #region Create taxonomy field tests
         [TestMethod()]
         public void CreateTaxonomyFieldTest()
         {
@@ -109,20 +113,23 @@ namespace Microsoft.SharePoint.Client.Tests
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Get Test TermSet
 
                 var web = clientContext.Web;
                 var fieldName = "Test_" + DateTime.Now.ToFileTime();
                 var fieldId = Guid.NewGuid();
-                var field = web.CreateTaxonomyField(
-                    fieldId,
-                    fieldName,
-                    fieldName,
-                    "Test Fields Group",
-                    termSet
-                    );
+
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = fieldId,
+                    DisplayName = fieldName,
+                    InternalName = fieldName,
+                    Group = "Test Fields Group",
+                    TaxonomyItem = termSet
+                };
+                var field = web.CreateTaxonomyField(fieldCI);
 
                 Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
                 Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
@@ -139,21 +146,24 @@ namespace Microsoft.SharePoint.Client.Tests
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Get Test TermSet
 
                 var web = clientContext.Web;
                 var fieldName = "Test_" + DateTime.Now.ToFileTime();
                 var fieldId = Guid.NewGuid();
-                var field = web.CreateTaxonomyField(
-                    fieldId,
-                    fieldName,
-                    fieldName,
-                    "Test Fields Group",
-                    termSet,
-                    true
-                    );
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = fieldId,
+                    DisplayName = fieldName,
+                    InternalName = fieldName,
+                    Group = "Test Fields Group",
+                    TaxonomyItem = termSet,
+                    MultiValue = true
+                };
+                var field = web.CreateTaxonomyField(fieldCI);
+
 
                 Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
                 Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
@@ -162,9 +172,9 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void SetTaxonomyFieldValueByTermPathTest()
+        public void SetTaxonomyFieldValueTest()
         {
-            var fieldName = "Test_" + DateTime.Now.ToFileTime();
+            var fieldName = "Test2_" + DateTime.Now.ToFileTime();
 
             var fieldId = Guid.NewGuid();
 
@@ -173,23 +183,24 @@ namespace Microsoft.SharePoint.Client.Tests
                 // Retrieve list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Retrieve Termset
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
                 var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Create taxonomyfield first
-
-                var field = list.CreateTaxonomyField(
-                    fieldId,
-                    fieldName,
-                    fieldName,
-                    "Test Fields Group",
-                    termSet
-                    );
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = fieldId,
+                    DisplayName = fieldName,
+                    InternalName = fieldName,
+                    Group = "Test Fields Group",
+                    TaxonomyItem = termSet
+                };
+                var field = list.CreateTaxonomyField(fieldCI);
 
                 // Create Item
                 ListItemCreationInformation itemCi = new ListItemCreationInformation();
@@ -197,12 +208,12 @@ namespace Microsoft.SharePoint.Client.Tests
                 var item = list.AddItem(itemCi);
                 item.Update();
                 clientContext.Load(item);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
-                item.SetTaxonomyFieldValueByTermPath(_termGroupName + "|" + _termSetName + "|" + _termName, fieldId);
+                item.SetTaxonomyFieldValue(fieldId, _termName, _termId);
 
                 clientContext.Load(item, i => i[fieldName]);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 var value = item[fieldName] as TaxonomyFieldValue;
 
@@ -210,6 +221,79 @@ namespace Microsoft.SharePoint.Client.Tests
             }
         }
 
+        [TestMethod()]
+        public void CreateTaxonomyFieldLinkedToTermSetTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Retrieve Termset
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
+                clientContext.Load(termSet);
+                clientContext.ExecuteQueryRetry();
+
+                var list = clientContext.Web.Lists.GetById(_listId);
+                clientContext.Load(list);
+                clientContext.ExecuteQueryRetry();
+
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                var fieldId = Guid.NewGuid();
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = fieldId,
+                    DisplayName = fieldName,
+                    InternalName = fieldName,
+                    Group = "Test Fields Group",
+                    TaxonomyItem = termSet
+                };
+                var field = list.CreateTaxonomyField(fieldCI);
+
+                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
+                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
+                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
+            }
+        }
+
+        [TestMethod()]
+        public void CreateTaxonomyFieldLinkedToTermTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                // Retrieve Termset and Term
+                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
+                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
+                var anchorTerm = termSet.GetTerm(_termId);
+                clientContext.Load(termSet);
+                clientContext.Load(anchorTerm);
+                clientContext.ExecuteQueryRetry();
+
+                // Retrieve List
+                var list = clientContext.Web.Lists.GetById(_listId);
+                clientContext.Load(list);
+                clientContext.ExecuteQueryRetry();
+
+                // Create field
+                var fieldId = Guid.NewGuid();
+                var fieldName = "Test_" + DateTime.Now.ToFileTime();
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = fieldId,
+                    DisplayName = fieldName,
+                    InternalName = fieldName,
+                    Group = "Test Fields Group",
+                    TaxonomyItem = anchorTerm
+                };
+                var field = list.CreateTaxonomyField(fieldCI);
+
+
+                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
+                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
+                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
+            }
+        }
+        #endregion
+
+        #region Get taxonomy object tests
         [TestMethod()]
         public void GetTaxonomySessionTest()
         {
@@ -292,6 +376,27 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
+        public void GetTaxonomyItemByPathTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var site = clientContext.Site;
+                var path = _termGroupName + "|" + _termSetName;
+                var taxonomyItem = site.GetTaxonomyItemByPath(path);
+                Assert.IsInstanceOfType(taxonomyItem, typeof(TaxonomyItem));
+                Assert.AreEqual(_termSetName, taxonomyItem.Name, "Did not return correct termset");
+
+                path = _termGroupName + "|" + _termSetName + "|" + _termName;
+                taxonomyItem = site.GetTaxonomyItemByPath(path);
+
+                Assert.IsInstanceOfType(taxonomyItem, typeof(TaxonomyItem));
+                Assert.AreEqual(_termName, taxonomyItem.Name, "Did not return correct term");
+            }
+        }
+        #endregion
+
+        #region Add term tests
+        [TestMethod()]
         public void AddTermToTermsetTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
@@ -305,7 +410,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void AddTermToTermsetTest1()
+        public void AddTermToTermsetWithTermIdTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -319,7 +424,9 @@ namespace Microsoft.SharePoint.Client.Tests
 
             }
         }
+        #endregion
 
+        #region Import terms tests
         [TestMethod()]
         public void ImportTermsTest()
         {
@@ -343,7 +450,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var term2 = termSet.Terms.GetByName(termName2);
                 clientContext.Load(term1);
                 clientContext.Load(term2);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsNotNull(term1);
                 Assert.IsNotNull(term2);
@@ -351,7 +458,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void ImportTermsTest2()
+        public void ImportTermsToTermStoreTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -375,7 +482,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var term2 = termSet.Terms.GetByName(termName2);
                 clientContext.Load(term1);
                 clientContext.Load(term2);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsNotNull(term1);
                 Assert.IsNotNull(term2);
@@ -383,7 +490,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void ImportTermSetSampleShouldCreateSet()
+        public void ImportTermSetSampleShouldCreateSetTest()
         {
             var importSetId = Guid.NewGuid();
             using (var clientContext = TestCommon.CreateClientContext())
@@ -406,7 +513,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
                 clientContext.Load(rootCollection, ts => ts.Include(t=> t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Political Geography", createdSet.Name);
                 Assert.AreEqual("A sample term set, describing a simple political geography.", createdSet.Description);
@@ -421,14 +528,14 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void ImportTermSetShouldUpdateSet()
+        public void ImportTermSetShouldUpdateSetTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 clientContext.Load(termStore, s => s.DefaultLanguage);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var lcid = termStore.DefaultLanguage;
 
                 var termGroup = termStore.GetGroup(_termGroupId);
@@ -444,7 +551,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 delete2.SetDescription("Term to delete", lcid);
                 var delete3 = delete2.CreateTerm("Delete3", lcid, Guid.NewGuid());
                 delete3.SetDescription("Child term to delete", lcid);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
             using (var clientContext = TestCommon.CreateClientContext())
@@ -467,7 +574,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 clientContext.Load(createdSet);
                 clientContext.Load(allTerms);
                 clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Updated term set description", createdSet.Description);
                 Assert.IsTrue(createdSet.IsOpenForTermCreation);
@@ -476,7 +583,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var retain1Collection = rootCollection.First(t => t.Name == "Retain1").Terms;
                 clientContext.Load(retain1Collection, ts => ts.Include(t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.IsTrue(retain1Collection.Any(t => t.Name == "New2"));
                 Assert.IsFalse(retain1Collection.Any(t => t.Name == "Delete2"));
@@ -486,7 +593,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void ImportTermSetShouldUpdateByGuid()
+        public void ImportTermSetShouldUpdateByGuidTest()
         {
             var addedTermId = new Guid("{B564BD6F-21FF-4B60-9474-5E33F726DC6C}");
             var changedTermId = new Guid("{73DF85EE-313C-4485-A7B3-0FC3C17A7454}");
@@ -496,7 +603,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 clientContext.Load(termStore, s => s.DefaultLanguage);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var lcid = termStore.DefaultLanguage;
 
                 var termGroup = termStore.GetGroup(_termGroupId);
@@ -506,7 +613,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 retain1.SetDescription("Retained term description", lcid);
                 var toUpdate1 = termSet.CreateTerm("ToUpdate1", lcid, changedTermId);
                 toUpdate1.SetDescription("Inital term description", lcid);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
             using (var clientContext = TestCommon.CreateClientContext())
@@ -527,7 +634,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 var rootCollection = createdSet.Terms;
                 clientContext.Load(createdSet);
                 clientContext.Load(rootCollection, ts => ts.Include(t => t.Name, t => t.Id));
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 Assert.AreEqual("Updated Guids", createdSet.Name);
                 Assert.AreEqual("Updated Test Guid term set description", createdSet.Description);
@@ -539,7 +646,9 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.AreEqual("Changed1", rootCollection.First(t => t.Id == changedTermId).Name);
             }
         }
+        #endregion
 
+        #region Export term tests
         [TestMethod()]
         public void ExportTermSetTest()
         {
@@ -552,7 +661,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void ExportTermSetTest2()
+        public void ExportTermSetFromTermstoreTest()
         {
             using (var clientContext = TestCommon.CreateClientContext())
             {
@@ -575,309 +684,6 @@ namespace Microsoft.SharePoint.Client.Tests
                 Assert.IsTrue(lines.Any(), "No lines returned");
             }
         }
-
-        [TestMethod()]
-        public void GetTaxonomyItemByPathTest()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                var site = clientContext.Site;
-                var path = _termGroupName + "|" + _termSetName;
-                var taxonomyItem = site.GetTaxonomyItemByPath(path);
-                Assert.IsInstanceOfType(taxonomyItem, typeof(TaxonomyItem));
-                Assert.AreEqual(_termSetName, taxonomyItem.Name, "Did not return correct termset");
-
-                path = _termGroupName + "|" + _termSetName + "|" + _termName;
-                taxonomyItem = site.GetTaxonomyItemByPath(path);
-
-                Assert.IsInstanceOfType(taxonomyItem, typeof(TaxonomyItem));
-                Assert.AreEqual(_termName, taxonomyItem.Name, "Did not return correct term");
-            }
-
-        }
-
-        [TestMethod()]
-        public void SetTaxonomyFieldValueTest()
-        {
-            var fieldName = "Test2_" + DateTime.Now.ToFileTime();
-
-            var fieldId = Guid.NewGuid();
-
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Retrieve Termset
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
-
-                // Create taxonomyfield first
-
-                var field = list.CreateTaxonomyField(
-                    fieldId,
-                    fieldName,
-                    fieldName,
-                    "Test Fields Group",
-                    termSet
-                    );
-
-                // Create Item
-                ListItemCreationInformation itemCi = new ListItemCreationInformation();
-
-                var item = list.AddItem(itemCi);
-                item.Update();
-                clientContext.Load(item);
-                clientContext.ExecuteQuery();
-
-                item.SetTaxonomyFieldValue(fieldId, _termName, _termId);
-
-                clientContext.Load(item, i => i[fieldName]);
-                clientContext.ExecuteQuery();
-
-                var value = item[fieldName] as TaxonomyFieldValue;
-
-                Assert.AreEqual(_termId.ToString(), value.TermGuid, "Term not set correctly");
-            }
-        }
-
-        [TestMethod()]
-        public void CreateTaxonomyFieldTest1()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                var web = clientContext.Web;
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = web.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        _termSetName);
-
-                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
-                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
-                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
-            }
-
-        }
-
-        [TestMethod()]
-        public void CreateTaxonomyFieldTest2()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve Termset
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
-
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var fieldId = Guid.NewGuid();
-                var field = list.CreateTaxonomyField(
-                    fieldId,
-                    fieldName,
-                    fieldName,
-                    "Test Fields Group",
-                    termSet
-                    );
-
-                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
-                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
-                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
-            }
-        }
-
-        [TestMethod()]
-        public void CreateTaxonomyFieldTest3()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-
-
-                // Retrieve List
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Create field
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = list.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        _termSetName);
-
-                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
-                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
-                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
-            }
-
-        }
-
-        [TestMethod()]
-        public void CreateTaxonomyFieldTest4()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve Termset and Term
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                var anchorTerm = termSet.GetTerm(_termId);
-                clientContext.Load(termSet);
-                clientContext.Load(anchorTerm);
-                clientContext.ExecuteQuery();
-
-                // Retrieve List
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Create field
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = list.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        anchorTerm);
-
-                Assert.AreEqual(fieldId, field.Id, "Field IDs do not match.");
-                Assert.AreEqual(fieldName, field.InternalName, "Field internal names do not match.");
-                Assert.AreEqual("TaxonomyFieldType", field.TypeAsString, "Failed to create a TaxonomyField object.");
-            }
-
-        }
-
-
-        [TestMethod()]
-        public void WireUpTaxonomyFieldTest()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve Termset
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
-
-                // Retrieve list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Create Field
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = list.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        _termSetName);
-
-                list.WireUpTaxonomyField(field, termSet);
-
-                field = list.Fields.GetById(fieldId);
-                clientContext.Load(field);
-                clientContext.ExecuteQuery();
-                var taxField = clientContext.CastTo<TaxonomyField>(field);
-                Assert.IsTrue(taxField.IsTermSetValid);
-                Assert.AreEqual(_termSetId, taxField.TermSetId);
-            }
-        }
-
-        [TestMethod()]
-        public void WireUpTaxonomyFieldTest1()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve Termset
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
-
-                // Retrieve list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Create Field
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = list.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        _termSetName);
-
-                list.WireUpTaxonomyField(field, _termGroupName, _termSetName);
-
-                field = list.Fields.GetById(fieldId);
-                clientContext.Load(field);
-                clientContext.ExecuteQuery();
-                var taxField = clientContext.CastTo<TaxonomyField>(field);
-                Assert.IsTrue(taxField.IsTermSetValid);
-                Assert.AreEqual(_termSetId, taxField.TermSetId);
-            }
-        }
-
-        [TestMethod()]
-        public void WireUpTaxonomyFieldTest2()
-        {
-            using (var clientContext = TestCommon.CreateClientContext())
-            {
-                // Retrieve Termset
-                TaxonomySession session = TaxonomySession.GetTaxonomySession(clientContext);
-                var termSet = session.GetDefaultSiteCollectionTermStore().GetTermSet(_termSetId);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
-
-                // Retrieve list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                clientContext.Load(list);
-                clientContext.ExecuteQuery();
-
-                // Create Field
-                var fieldId = Guid.NewGuid();
-                var fieldName = "Test_" + DateTime.Now.ToFileTime();
-                var field = list.CreateTaxonomyField(
-                        fieldId,
-                        fieldName,
-                        fieldName,
-                        "Test Fields Group",
-                        _termGroupName,
-                        _termSetName);
-
-                list.WireUpTaxonomyField(fieldId, _termGroupName, _termSetName);
-
-                field = list.Fields.GetById(fieldId);
-                clientContext.Load(field);
-                clientContext.ExecuteQuery();
-                var taxField = clientContext.CastTo<TaxonomyField>(field);
-                Assert.IsTrue(taxField.IsTermSetValid);
-                Assert.AreEqual(_termSetId, taxField.TermSetId);
-            }
-        }
-
+        #endregion
     }
 }
