@@ -178,7 +178,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="backgroundServerRelativeUrl">Override background image file URL to use</param>
         /// <param name="masterServerRelativeUrl">Override master page file URL to use</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
-        public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false)
+        public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false, bool updateRootOnly = true)
         {
             var paletteUrl = default(string);
             var fontUrl = default(string);
@@ -244,12 +244,9 @@ namespace Microsoft.SharePoint.Client
                 masterUrl = masterServerRelativeUrl;
             }
 
-            // Save as 'current'
-            web.CreateComposedLookByUrl(CurrentLookName, paletteUrl, fontUrl, backgroundUrl, masterUrl, displayOrder: 0);
-
-            web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit);
-            web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit);
-            web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit);
+            web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+            web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+            web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit, updateRootOnly);
         }
 
         /// <summary>
