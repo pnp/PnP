@@ -36,7 +36,7 @@ Below documentation describes each sample and focuses on the unique elements in 
 
 Each sample documentation first explain the timer job itself and next the hosting and running of the timer job is discussed.
 
-# Sample 1: Core.TimerJobs.Samples.SimpleJob #
+# Sample 1: SimpleJob #
 ## Goal ##
 Hello world type sample...it can't really be any simpler :-)
 
@@ -90,7 +90,7 @@ static void Main(string[] args)
 }
 ```
 
-# Sample 2: Core.TimerJobs.Samples.ExpandJob #
+# Sample 2: ExpandJob #
 ## Goal ##
 Shows how you have the timer job framework expand sub sites for you. This is useful when your timer job logic needs to apply to all sub sites.
 
@@ -134,7 +134,7 @@ expandJob.AddSite("https://bertonline.sharepoint.com/sites/d*");
 
 The net result of this is that the timer framework will enumerate the existing sites and match the resulting list with the wild card.
 
-# Sample 3: Core.TimerJobs.Samples.ExpandJobAppOnly #
+# Sample 3: ExpandJobAppOnly #
 ## Goal ##
 Similar to sample 2, but now using app-only authentication
 
@@ -159,7 +159,7 @@ expandJobAppOnly.AddSite("https://bertonline.sharepoint.com/sites/2014*");
 expandJobAppOnly.AddSite("https://bertonline-my.sharepoint.com/personal/*");
 ```
 
-# Sample 4: Core.TimerJobs.Samples.CredentialManagerJob #
+# Sample 4: CredentialManagerJob #
 ## Goal ##
 Providing either user credentials or a clientId/clientSecret combination means that you would need to secure this data. Simply adding it the app.config works, but if the app.config gets compromised so are your credentials. The Windows Credential Manager can be a solution here assuming your timer job runs on a Windows Server. This method will not work for an Azure WebJob.
 
@@ -177,7 +177,7 @@ Below code will read the **bertonline** generic credential from the Windows Cred
 simpleJob.UseOffice365Authentication("bertonline");
 ```
 
-# Sample 5: Core.TimerJobs.Samples.GovernanceJob #
+# Sample 5: GovernanceJob #
 ## Goal ##
 This shows a real life scenario where the company wants to enforce that all site collections have 2 admins. The timer job will iterate the site collections and if not compliant it will add a custom action that triggers a JavaScript which on it's turn shows a "your site is not compliant" warning to the user. 
 
@@ -262,7 +262,7 @@ void SiteGovernanceJob_TimerJobRun(object o, TimerJobRunEventArgs e)
 ## Timer job host implementation ##
 Nothing specific here, it's using app-only like the previous sample.
 
-# Sample 6: Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob #
+# Sample 6: ContentTypeRetentionEnforcementJob #
 ## Goal ##
 This sample implements the [Governance.ContentTypeEnforceRetention](https://github.com/OfficeDev/PnP/tree/master/Solutions/Governance.ContentTypeEnforceRetention) solution using the timer job model. When you compare this exising solution with the timer job equivalent you'll notice how easy it is to port existing code into the new model.
 
@@ -283,7 +283,7 @@ stopWatch.Stop();
 Console.WriteLine("Total elapsed time = {0}", stopWatch.Elapsed); 
 ```
 
-# Sample 7: Core.TimerJobs.Samples.OverrideJob #
+# Sample 7: OverrideJob #
 ## Goal ##
 This sample explains how the timer job implementation can fully control the sites that are typically being fed by the timer job host. This is useful when the timer job gets the sites from another location (e.g. SQL database, config file,...) or when you want to *update* the provided list of sites.
 
@@ -335,7 +335,7 @@ public override List<string> ResolveAddedSites(List<string> addedSites)
 Identical to sample 1.
 
 
-# Sample 8: Core.TimerJobs.Samples.NoThreadingJob #
+# Sample 8: NoThreadingJob #
 ## Goal ##
 Simple sample to show how to not use multi-threading
 
@@ -363,7 +363,7 @@ public NoThreadingJob(): base("NoThreadingJob")
 ## Timer job host implementation ##
 Identical to sample 1.
 
-# Sample 9: Core.TimerJobs.Samples.SiteCollectionScopedJob #
+# Sample 9: SiteCollectionScopedJob #
 ## Goal ##
 When you've opted to expand sub sites and you use multi-threading the timer framework will have built up a list of site and sub sites which will be evenly split in work batches (one per thread). This means that thread A can process the first set of sub sites of site collection 1 and thread B will process the remaining. If the timer job logic is dealing with sub site settings only that's fine, but if the timer job logic is also working with the root web (using the `SiteClientContext`) then there might be a potential concurrency issue given that both thread A and B will be updating the same root web.
 
@@ -405,7 +405,7 @@ public class SiteCollectionScopedJob: TimerJob
 ## Timer job host implementation ##
 Identical to sample 1.
 
-# Sample 10: Core.TimerJobs.Samples.ChainingJob #
+# Sample 10: ChainingJob #
 ## Goal ##
 A more theoretical example, but still might be valuable...showing how you can call another timer job from an existig one.
 
