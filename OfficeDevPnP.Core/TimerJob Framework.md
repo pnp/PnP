@@ -175,7 +175,10 @@ To configure the job for app-only authentication the following method needs to b
 public void UseAppOnlyAuthentication(string clientId, string clientSecret)
 ```
 
-As you can see the same method can be used for either Office 365 as SharePoint on-premises which makes timer jobs using app-only better transportable between environments.
+As you can see the same method can be used for either Office 365 as SharePoint on-premises which makes timer jobs using app-only better transportable between environments. 
+
+**Note:**
+When you use app-only your timer job logic will fail when API's are used that do not work with App-Only. Typical samples are the Search API, writing to the taxonomy store and using the user profile API.
 
 ### Sites to operate on ###
 When a timer job runs it needs one or more sites to run against. To add sites to a timer job you can use the below set of methods.
@@ -367,38 +370,38 @@ The timer job framework by default is using threading to parallelize the work. T
 The fact that the timer job does threading combined with the typical resource intensive operations that are used in timer jobs means that a timer job run could be throttled. In order to correctly deal with throttling the timer job framework and the whole of PnP Core uses the `ExecuteQueryRetry` method instead of the default `ExecuteQuery`method. **It's important that you also use `ExecuteQueryRetry` in your actual timer job implementation code.**
 
 #### Concurrency issues - process all sub sites of a site collection in the same thread####
-When you've opted to expand sub sites and you use threading the timer framework will have built up a list of site and sub sites which will be evenly split in work batches (one per thread). This means that thread A can process the first set of sub sites of site collection 1 and thread B will process the remaining. If the timer job logic is dealing with sub site settings only that's fine, but if the timer job logic is also working with the root web (using the `SiteClientContext`) then there might be a potential concurrency issue given that both thread A and B will be updating the same root web. To avoid this you can perform the sub site expanding in your timer job implementation instead of having the framework do it for you. To make this easy the timer job framework exposes the **GetAllSubSites** method. Below code snippet shows how you can use this:
+When you've opted to expand sub sites and you use multi-threading the timer framework will have built up a list of site and sub sites which will be evenly split in work batches (one per thread). This means that thread A can process the first set of sub sites of site collection 1 and thread B will process the remaining. If the timer job logic is dealing with sub site settings only that's fine, but if the timer job logic is also working with the root web (using the `SiteClientContext`) then there might be a potential concurrency issue given that both thread A and B will be updating the same root web. To avoid this you can perform the sub site expanding in your timer job implementation instead of having the framework do it for you. To make this easy the timer job framework exposes the **GetAllSubSites** method. Below code snippet shows how you can use this:
 
 ```C#
-    public class SiteCollectionScopedJob: TimerJob
+public class SiteCollectionScopedJob: TimerJob
+{
+    public SiteCollectionScopedJob() : base("SiteCollectionScopedJob")
     {
-        public SiteCollectionScopedJob() : base("SiteCollectionScopedJob")
-        {
-            // ExpandSites *must* be false as we'll deal with that at TimerJobEvent level
-            ExpandSubSites = false;
-            TimerJobRun += SiteCollectionScopedJob_TimerJobRun;
-        }
+        // ExpandSites *must* be false as we'll deal with that at TimerJobEvent level
+        ExpandSubSites = false;
+        TimerJobRun += SiteCollectionScopedJob_TimerJobRun;
+    }
 
-        void SiteCollectionScopedJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
-        {
-            // Get all the sub sites in the site we're processing
-            IEnumerable<string> expandedSites = GetAllSubSites(e.SiteClientContext.Site);
+    void SiteCollectionScopedJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
+    {
+        // Get all the sub sites in the site we're processing
+        IEnumerable<string> expandedSites = GetAllSubSites(e.SiteClientContext.Site);
 
-            // Manually iterate over the content
-            foreach (string site in expandedSites)
+        // Manually iterate over the content
+        foreach (string site in expandedSites)
+        {
+            // Clone the existing ClientContext for the sub web
+            using (ClientContext ccWeb = e.SiteClientContext.Clone(site))
             {
-                // Clone the existing ClientContext for the sub web
-                using (ClientContext ccWeb = e.SiteClientContext.Clone(site))
-                {
-                    // Here's the timer job logic, but now a single site collection is handled in a single thread which 
-                    // allows for further optimization or prevents race conditions
-                    ccWeb.Load(ccWeb.Web, s => s.Title);
-                    ccWeb.ExecuteQueryRetry();
-                    Console.WriteLine("Here: {0} - {1}", site, ccWeb.Web.Title);
-                }
+                // Here's the timer job logic, but now a single site collection is handled in a single thread which 
+                // allows for further optimization or prevents race conditions
+                ccWeb.Load(ccWeb.Web, s => s.Title);
+                ccWeb.ExecuteQueryRetry();
+                Console.WriteLine("Here: {0} - {1}", site, ccWeb.Web.Title);
             }
         }
     }
+}
 ```
 
 ### Logging ###
