@@ -69,24 +69,21 @@ namespace Microsoft.SharePoint.Client
             var backgroundUrl = default(string);
             var masterUrl = default(string);
 
-            using (var innerContext = web.Context.Clone(web.Context.Url))
-            {
-                var rootWeb = innerContext.Site.RootWeb;
-                Utility.EnsureWeb(innerContext, rootWeb, "ServerRelativeUrl");
+            Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
 
-                if (!string.IsNullOrEmpty(paletteFileName))
-                {
-                    paletteUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(paletteFileName)));
-                }
-                if (!string.IsNullOrEmpty(fontFileName))
-                {
-                    fontUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
-                }
-                if (!string.IsNullOrEmpty(backgroundFileName))
-                {
-                    backgroundUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
-                }
+            if (!string.IsNullOrEmpty(paletteFileName))
+            {
+                paletteUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(paletteFileName)));
             }
+            if (!string.IsNullOrEmpty(fontFileName))
+            {
+                fontUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
+            }
+            if (!string.IsNullOrEmpty(backgroundFileName))
+            {
+                backgroundUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
+            }
+
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
