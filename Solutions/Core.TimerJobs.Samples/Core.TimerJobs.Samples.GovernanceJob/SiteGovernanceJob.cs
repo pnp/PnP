@@ -41,25 +41,21 @@ namespace Core.TimerJobs.Samples.GovernanceJob
                 library = "SiteAssets";
                 List list = e.WebClientContext.Web.GetListByUrl(library);
 
-                if (!e.GetProperty("ScriptFileLoaded").Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                if (!e.GetProperty("ScriptFileVersion").Equals("1.0", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (!e.GetProperty("ScriptFileVersion").Equals("1.0", StringComparison.InvariantCultureIgnoreCase))
+                    if (list == null)
                     {
-                        if (list == null)
-                        {
-                            // grab reference to list
-                            library = "Style%20Library";
-                            list = e.WebClientContext.Web.GetListByUrl(library);
-                        }
+                        // grab reference to list
+                        library = "Style%20Library";
+                        list = e.WebClientContext.Web.GetListByUrl(library);
+                    }
 
-                        if (list != null)
-                        {
-                            // upload js file to list
-                            list.RootFolder.UploadFile("sitegovernance.js", "sitegovernance.js", true);
+                    if (list != null)
+                    {
+                        // upload js file to list
+                        list.RootFolder.UploadFile("sitegovernance.js", "sitegovernance.js", true);
 
-                            e.SetProperty("ScriptFileLoaded", "true");
-                            e.SetProperty("ScriptFileVersion", "1.0");
-                        }
+                        e.SetProperty("ScriptFileVersion", "1.0");
                     }
                 }
 
@@ -83,6 +79,7 @@ namespace Core.TimerJobs.Samples.GovernanceJob
             }
             catch(Exception ex)
             {
+                Log.Error("SiteGovernanceJob", "Error while processing site {0}. Error = {1}", e.Url, ex.Message);
                 e.CurrentRunSuccessful = false;
                 e.SetProperty("LastError", ex.Message);
             }
