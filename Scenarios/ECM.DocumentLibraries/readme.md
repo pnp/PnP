@@ -1,7 +1,7 @@
 # ECM.DocumentLibraries #
 
 ### Summary ###
-This sample scenario shows how one can implement Document Library templates using a provider hosted application instead of the feature framework or sandbox solutionsT.
+This sample scenario shows how one can implement Document Library templates using a provider hosted application instead of the feature framework or sandbox solutions.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
