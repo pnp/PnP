@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOJavascriptLink")]
-    [CmdletHelp("Adds a link to a JavaScript file to a web")]
+    [CmdletHelp("Adds a link to a JavaScript file to a web or sitecollection")]
     public class AddJavaScriptLink : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -13,10 +13,21 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         [Parameter(Mandatory = true)]
         public string[] Url = null;
-       
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter AddToSite;
+
         protected override void ExecuteCmdlet()
         {
-            SelectedWeb.AddJsLink(Key, Url);
+            if (!AddToSite)
+            {
+                SelectedWeb.AddJsLink(Key, Url);
+            }
+            else
+            {
+                var site = ClientContext.Site;
+                site.AddJsLink(Key, Url);
+            }
         }
     }
 }
