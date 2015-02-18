@@ -140,7 +140,7 @@ namespace Core.TimerJobs.Samples.CredentialManagerJob
             // The provided credentials need access to the site collections you want to use
             // Use generic credential stored in the windows credential manager (control panel -> credential manager)
             // This makes is possible to safely store the username + password when running on Windows Server
-            simpleJob.UseOffice365Authentication(Tenant, "bertonline");
+            simpleJob.UseOffice365Authentication("bertonline");
 
             // In case of SharePoint on-premises use
             //simpleJob.UseNetworkCredentialsAuthentication("bertonline");
