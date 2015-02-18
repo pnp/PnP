@@ -994,14 +994,11 @@
 
         outHtml += '<ul class="cam-taxpicker-treenode-ul" ' + addlStyle + '></ul>';
 
-        //var batchCounter = 0;
-
         var defs = [];
 
         termList.forEach(function (term) {
             var deferred = $.Deferred();
             defs.push(deferred);
-                //var tHtml = term.toHtmlLabel().html();
             (function (cb) {
                 var addlClass = (term.Children.length > 0) ? 'collapsed' : '';
                 var tHtml = "";
