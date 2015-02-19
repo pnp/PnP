@@ -142,7 +142,7 @@ namespace Microsoft.SharePoint.Client
         {
             var ns = xDocument.Root.Name.Namespace;
 
-            var fields = from f in xDocument.Elements(ns + "Field") select f;
+            var fields = from f in xDocument.Descendants(ns + "Field") select f;
 
             foreach (var field in fields)
             {
@@ -1057,7 +1057,7 @@ namespace Microsoft.SharePoint.Client
             ContentType returnCT = null;
             var ns = xDocument.Root.Name.Namespace;
 
-            var contentTypes = from cType in xDocument.Elements(ns + "ContentType") select cType;
+            var contentTypes = from cType in xDocument.Descendants(ns + "ContentType") select cType;
 
             foreach (var ct in contentTypes)
             {
