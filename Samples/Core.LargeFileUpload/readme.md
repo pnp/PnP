@@ -28,11 +28,23 @@ Version  | Date | Comments
 
 ----------
 
-# UPLOAD LARGE FILES TO SHAREPOINT USING CSOM 1 #
+# WHAT UPLOAD METHOD TO USE? #
+This sample shows 4 different ways to upload files to SharePoint...but which method should you use and the "why" is captured in below table
+
+Approach | Limitations | When to use | Platform
+-------- | ----------- | ----------- | --------
+**Content** property on the `FileCreationInformation` class | Max 2 MB file size, security time-out after 30 minutes | **Not recommended** to use this due to file size limitations | V15 on-premises + v16 (MT)
+**ContentStream** property on the `FileCreationInformation` class | No file size limitations, but there's a security time-out after 30 minutes | **Recommended** for all v15 on-premises scenarios and for files < 10 MB in v16 (MT) | V15 on-premises + v16 (MT)
+**SaveBinaryDirect** method on the `File` class | No file size limitations, but there's a security time-out after 30 minutes | **Not recommended** to use this because it does not work with app-only authentication | V15 on-premises + v16 (MT)
+**StartUpload, ContinueUpload and FinishUpload** methods on the `File` class | No file size limitations, but there's a security time-out after 30 minutes. If each data slice gets uploaded within 30 minutes there's no problem | **Recommended** for all v16 (MT) scenarios that deal with files > 10 MB | v16 (MT)
+
+In the remaining chapters you'll find more details on above approaches
+
+# UPLOAD LARGE FILES TO SHAREPOINT USING CSOM#
 This scenario shows how to upload large files to SharePoint using CSOM. There are different approaches which has size limitations.
 
-## FILE SIZE LIMIT APPROACH ##
-When using this approach you will receive an exception if file size is larger than 2 MB (2097152 bytes). This is due to the way the information is sent from client to the server.  The issue is caused by the fact that we are using the Content property of the *FileCreationInformation* object.
+## FILE SIZE LIMIT APPROACH (Content) ##
+When using this approach you will receive an **exception if file size is larger than 2 MB** (2097152 bytes). This is due to the way the information is sent from client to the server.  The issue is caused by the fact that we are using the Content property of the *FileCreationInformation* object.
 
 ```C#
 public void UploadDocumentContent(ClientContext ctx, string libraryName, string filePath)
@@ -56,11 +68,10 @@ public void UploadDocumentContent(ClientContext ctx, string libraryName, string 
     ctx.Load(uploadFile);
     ctx.ExecuteQuery();
 }
-
 ```
 
 ## LARGE FILE HANDLING – OPTION 1 (ContentStream) ##
-This alternative method, uses the *ContentStream* property of the *FileCreationInformation* object. This is valid approach for uploading large files sizes to SharePoint. 
+This alternative method, uses the *ContentStream* property of the *FileCreationInformation* object. This is valid approach for uploading large files sizes to SharePoint and the recommended approach when your on-premises. If you're in Office 365 this approach is recommended for files < 10 MB. Once you go beyond 10 MB using the new sliced upload (option 3 in this article) will be more reliable. This method will result in a security timeout after 30 minutes which you'll hit once you upload really large files. The sliced upload properly deals with this.
 
 ```C#
 public void UploadDocumentContentStream(ClientContext ctx, string libraryName, string filePath)
@@ -93,7 +104,7 @@ public void UploadDocumentContentStream(ClientContext ctx, string libraryName, s
 ```
 
 ## LARGE FILE HANDLING – OPTION 2 (SaveBinaryDirect) ##
-This is an alternative method, which uses *SaveBinaryDirect* method File object. This is a valid approach for uploading large file sizes to SharePoint.
+This is an alternative method, which uses *SaveBinaryDirect* method File object. This is a valid approach for uploading large file sizes to SharePoint, but not a recommended one. This approach **does not support app-only authentication** and will result in a security timeout after 30 minutes which you'll hit once you upload really large files. The sliced upload (option 3 in this article) properly deals with this.
 
 ```C#
 public void SaveBinaryDirect(ClientContext ctx, string libraryName, string filePath)
@@ -118,76 +129,112 @@ public void SaveBinaryDirect(ClientContext ctx, string libraryName, string fileP
 }
 ```
 
-## LARGE FILE HANDLING - OPTION 3 (sliced upload) ##
-This alternative uses the sliced upload capability of SharePoint: you can "chop" a large file in smaller slices of data and upload slice per slice. If somehow the upload get's stopped due to a network issue or a simply a user canceling an upload this API allows to "restart" the upload as of the last successfully uploaded slice. The **sample shown here deliberately is a "simple" one** to focus on the API: in a real life example you would read the bytes in a chunked way from the file system and you would persist state after each slice was uploaded. Below code shows a snippet from the `UploadFileSlicePerSlice`method: this method will read the file bytes in memory and then create a list of 'slices" e.g. a 2.5 MB file would mean 3 slices if the slice size is 1 MB.
+## LARGE FILE HANDLING - OPTION 3 (StartUpload, ContinueUpload and FinishUpload) ##
+This alternative uses the sliced upload capability of SharePoint: you can "chop" a large file in smaller slices of data and upload slice per slice. If somehow the upload get's stopped due to a network issue or a simply a user canceling an upload this API allows to "restart" the upload as of the last successfully uploaded slice. The **sample shown here deliberately is a "simple" one** to focus on the API: in a real life example you would persist state after each slice was uploaded and have a *retry* mechanism. Below code shows a snippet from the `UploadFileSlicePerSlice`method: this method will read the file in the specified blocksize and then upload this block to SharePoint. 
+
+> Note that the method will fall back to the ContentStream approach (option 1) whenever the file is smaller then the defined blocksize.
+
+The below snippet show the essential part of the sliced upload:
 
 ```C#
-// upload slice per slice. They'll need to be uploaded in the correct order
-int sliceNumber = 0;
-foreach (byte[] slice in sliceData)
+// Use large file upload approach
+ClientResult<long> bytesUploaded = null;
+
+FileStream fs = null;
+try
 {
-    UploadFileSlice(ctx, uploadId, slice, docs.RootFolder, uniqueFileName, sliceNumber, sliceCount);
-    sliceNumber++;
-}
-```
-
-These slices are fed into the `UploadFileSlice` method:
-```C#
-private void UploadFileSlice(ClientContext cc, Guid uploadId, Byte[] sliceContent, Folder folder, string uniqueFilename, int sliceNumber, int totalSlices)
-{
-    // Is this the last slice
-    bool isFinalSlice = sliceNumber == totalSlices - 1;
-
-    Microsoft.SharePoint.Client.File uploadFile;
-    ClientResult<long> bytesUploaded = null;
-
-    if (sliceNumber == 0)
+    fs = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+    using (BinaryReader br = new BinaryReader(fs))
     {
-        // First slice
-        using (MemoryStream contentStream = new MemoryStream())
+        byte[] buffer = new byte[blockSize];
+        Byte[] lastBuffer = null;
+        long fileoffset = 0;
+        long totalBytesRead = 0;
+        int bytesRead;
+        bool first = true;
+        bool last = false;
+
+        // Read data from filesystem in blocks 
+        while ((bytesRead = br.Read(buffer, 0, buffer.Length)) > 0)
         {
-            // Add an empty file.
-            FileCreationInformation fileInfo = new FileCreationInformation();
-            fileInfo.ContentStream = contentStream;
-            fileInfo.Url = uniqueFilename;
-            fileInfo.Overwrite = true;
+            totalBytesRead = totalBytesRead + bytesRead;
 
-            uploadFile = folder.Files.Add(fileInfo);
-
-            // Start upload by uploading the first slice. 
-            using (MemoryStream s = new MemoryStream(sliceContent))
+            // We've reached the end of the file
+            if (totalBytesRead == fileSize)
             {
-                // Call the start upload method on the first slice
-                bytesUploaded = uploadFile.StartUpload(uploadId, s);
-                cc.ExecuteQuery();
-                // fileoffset is the pointer where the next slice will be added
-                fileoffset = bytesUploaded.Value;
+                last = true;
+                // Copy to a new buffer that has the correct size
+                lastBuffer = new byte[bytesRead];
+                Array.Copy(buffer, 0, lastBuffer, 0, bytesRead);
             }
-        }
-    }
-    else
-    {
-        // Get a reference to our file
-        uploadFile = cc.Web.GetFileByServerRelativeUrl(folder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFilename);
-        using (MemoryStream s = new MemoryStream(sliceContent))
-        {
-            if (isFinalSlice)
+
+            if (first)
             {
-                // End sliced upload by calling FinishUpload
-                uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
-                cc.ExecuteQuery();
+                using (MemoryStream contentStream = new MemoryStream())
+                {
+                    // Add an empty file.
+                    FileCreationInformation fileInfo = new FileCreationInformation();
+                    fileInfo.ContentStream = contentStream;
+                    fileInfo.Url = uniqueFileName;
+                    fileInfo.Overwrite = true;
+                    uploadFile = docs.RootFolder.Files.Add(fileInfo);
+
+                    // Start upload by uploading the first slice. 
+                    using (MemoryStream s = new MemoryStream(buffer))
+                    {
+                        // Call the start upload method on the first slice
+                        bytesUploaded = uploadFile.StartUpload(uploadId, s);
+                        ctx.ExecuteQuery();
+                        // fileoffset is the pointer where the next slice will be added
+                        fileoffset = bytesUploaded.Value;
+                    }
+
+                    // we can only start the upload once
+                    first = false;
+                }
             }
             else
             {
-                // Continue sliced upload
-                bytesUploaded = uploadFile.ContinueUpload(uploadId, fileoffset, s);
-                cc.ExecuteQuery();
-                // update fileoffset for the next slice
-                fileoffset = bytesUploaded.Value;
+                // Get a reference to our file
+                uploadFile = ctx.Web.GetFileByServerRelativeUrl(docs.RootFolder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFileName);
+
+                if (last)
+                {
+                    // Is this the last slice of data?
+                    using (MemoryStream s = new MemoryStream(lastBuffer))
+                    {
+                        // End sliced upload by calling FinishUpload
+                        uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
+                        ctx.ExecuteQuery();
+
+                        // return the file object for the uploaded file
+                        return uploadFile;
+                    }
+                }
+                else
+                {
+                    using (MemoryStream s = new MemoryStream(buffer))
+                    {
+                        // Continue sliced upload
+                        bytesUploaded = uploadFile.ContinueUpload(uploadId, fileoffset, s);
+                        ctx.ExecuteQuery();
+                        // update fileoffset for the next slice
+                        fileoffset = bytesUploaded.Value;
+                    }
+                }
             }
-        }
+
+        } // while ((bytesRead = br.Read(buffer, 0, buffer.Length)) > 0)
     }
 }
+finally
+{
+    if (fs != null)
+    {
+        fs.Dispose();
+    }
+}
+
 ```
 
 The important elements in above sample are:
@@ -196,6 +243,10 @@ The important elements in above sample are:
 2. For **all next but the last slice** call the `ContinueUpload` method. Store the bytesuploaded as that will the insertion point for the next slice of data.
 3. For the **last** slice call the `FinishUpload` method
 
-
+When using the sliced upload you'll need to be aware of:
+- Internal testing has shown that a **slice size of 8 MB works best**, but off course this depends on the network connection you're using
+- When an upload is interupted or stopped the server has an **unfinished file**. This file will be **cleaned up by the server after 6 to 24 hours**...this model is meant to immediately restart a failed upload, not restart it the day after. Keep in mind that that the current cleanup interval can be changed without upfront notice.
+- Slices of data have to be **uploaded in the right order**, doing a parallel multi-threaded upload will not work
+- When an upload starts the **file gets locked for 15 minutes**...if there's no new slice of data within that timeframe someone else can start an upload for that same file and your upload will be cancelled. Keep in mind that that the current file lock interval can be changed without upfront notice.
 
 

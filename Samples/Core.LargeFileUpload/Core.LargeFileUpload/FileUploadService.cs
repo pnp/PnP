@@ -14,26 +14,22 @@ namespace Contoso.Core.LargeFileUpload
     /// </summary>
     public class FileUploadService
     {
-        private long fileoffset;
 
         /// <summary>
-        /// Uploads a large file slice per slice
+        /// Uploads a file using the sliced upload if the file is bigger then the block size, if not the ContentStream approach is used
         /// </summary>
         /// <param name="ctx"></param>
         /// <param name="libraryName"></param>
         /// <param name="fileName"></param>
         /// <param name="fileChunkSizeInMB"></param>
-        public void UploadFileSlicePerSlice(ClientContext ctx, string libraryName, string fileName, int fileChunkSizeInMB = 3)
+        /// <returns></returns>
+        public Microsoft.SharePoint.Client.File UploadFileSlicePerSlice(ClientContext ctx, string libraryName, string fileName, int fileChunkSizeInMB = 3)
         {
-
             // Each sliced upload requires a unique id
             Guid uploadId = Guid.NewGuid();
 
             // Get the name of the file
             string uniqueFileName = Path.GetFileName(fileName);
-
-            // Set fileoffset to 0
-            fileoffset = 0;
 
             // Ensure that target library exists, create if is missing
             if (!LibraryExists(ctx, ctx.Web, libraryName))
@@ -47,113 +43,139 @@ namespace Contoso.Core.LargeFileUpload
             ctx.Load(docs.RootFolder, f => f.ServerRelativeUrl);
             ctx.ExecuteQuery();
 
-            // **Important**: below sample code is for educational purposes. In a 
-            // real life implementation one would read the "slices" of slice 
-            // per slice from the filesystem instead of reading and dividing
-            // the whole file in memory
-
-            // Read the file data in bytes array
-            byte[] fileData = System.IO.File.ReadAllBytes(fileName);
-
-            // Prepare for splitting the fileData in chunks
-            List<byte[]> sliceData = new List<byte[]>();
-            int lengthToSplit = fileChunkSizeInMB * 1024 * 1024;
-            int arrayLength = fileData.Length;
-            int byteCount = 0;
-
-            // Split the binary data in chunks
-            for (int i = 0; i < arrayLength; i = i + lengthToSplit)
-            {
-                if (byteCount + lengthToSplit > arrayLength)
-                {
-                    lengthToSplit = arrayLength - byteCount;
-                }
-
-                byte[] val = new byte[lengthToSplit];
-
-                if (arrayLength < i + lengthToSplit)
-                {
-                    lengthToSplit = arrayLength - i;
-                }
-
-                Array.Copy(fileData, i, val, 0, lengthToSplit);
-                sliceData.Add(val);
-                byteCount = byteCount + lengthToSplit;
-            }
-
-            // How many slices do we have
-            int sliceCount = sliceData.Count;
-
-            // **Important**: below sample code is for educational purposes. In a 
-            // real life implementation one would store the state after each successful
-            // slice upload so that the upload can be restarted from the last slice that 
-            // was successfully uploaded
-
-            // upload slice per slice. They'll need to be uploaded in the correct order
-            int sliceNumber = 0;
-            foreach (byte[] slice in sliceData)
-            {
-                UploadFileSlice(ctx, uploadId, slice, docs.RootFolder, uniqueFileName, sliceNumber, sliceCount);
-                sliceNumber++;
-            }
-        }
-
-        private void UploadFileSlice(ClientContext cc, Guid uploadId, Byte[] sliceContent, Folder folder, string uniqueFilename, int sliceNumber, int totalSlices)
-        {
-            // Is this the last slice
-            bool isFinalSlice = sliceNumber == totalSlices - 1;
-
+            // File object 
             Microsoft.SharePoint.Client.File uploadFile;
-            ClientResult<long> bytesUploaded = null;
 
-            if (sliceNumber == 0)
+            // Calculate block size in bytes
+            int blockSize = fileChunkSizeInMB * 1024 * 1024;
+
+            // Get the information about the folder that will hold the file
+            ctx.Load(docs.RootFolder, f => f.ServerRelativeUrl);
+            ctx.ExecuteQuery();
+
+
+            // Get the size of the file
+            long fileSize = new FileInfo(fileName).Length;
+
+            if (fileSize <= blockSize)
             {
-                // First slice
-                using (MemoryStream contentStream = new MemoryStream())
+                // Use regular approach
+                using (FileStream fs = new FileStream(fileName, FileMode.Open))
                 {
-                    // Add an empty file.
                     FileCreationInformation fileInfo = new FileCreationInformation();
-                    fileInfo.ContentStream = contentStream;
-                    fileInfo.Url = uniqueFilename;
+                    fileInfo.ContentStream = fs;
+                    fileInfo.Url = uniqueFileName;
                     fileInfo.Overwrite = true;
-
-                    uploadFile = folder.Files.Add(fileInfo);
-
-                    // Start upload by uploading the first slice. 
-                    using (MemoryStream s = new MemoryStream(sliceContent))
-                    {
-                        // Call the start upload method on the first slice
-                        bytesUploaded = uploadFile.StartUpload(uploadId, s);
-                        cc.ExecuteQuery();
-                        // fileoffset is the pointer where the next slice will be added
-                        fileoffset = bytesUploaded.Value;
-                    }
+                    uploadFile = docs.RootFolder.Files.Add(fileInfo);
+                    ctx.Load(uploadFile);
+                    ctx.ExecuteQuery();
+                    // return the file object for the uploaded file
+                    return uploadFile;
                 }
             }
             else
             {
-                // Get a reference to our file
-                uploadFile = cc.Web.GetFileByServerRelativeUrl(folder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFilename);
-                using (MemoryStream s = new MemoryStream(sliceContent))
+                // Use large file upload approach
+                ClientResult<long> bytesUploaded = null;
+
+                FileStream fs = null;
+                try
                 {
-                    if (isFinalSlice)
+                    fs = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using (BinaryReader br = new BinaryReader(fs))
                     {
-                        // End sliced upload by calling FinishUpload
-                        uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
-                        cc.ExecuteQuery();
+                        byte[] buffer = new byte[blockSize];
+                        Byte[] lastBuffer = null;
+                        long fileoffset = 0;
+                        long totalBytesRead = 0;
+                        int bytesRead;
+                        bool first = true;
+                        bool last = false;
+
+                        // Read data from filesystem in blocks 
+                        while ((bytesRead = br.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            totalBytesRead = totalBytesRead + bytesRead;
+
+                            // We've reached the end of the file
+                            if (totalBytesRead == fileSize)
+                            {
+                                last = true;
+                                // Copy to a new buffer that has the correct size
+                                lastBuffer = new byte[bytesRead];
+                                Array.Copy(buffer, 0, lastBuffer, 0, bytesRead);
+                            }
+
+                            if (first)
+                            {
+                                using (MemoryStream contentStream = new MemoryStream())
+                                {
+                                    // Add an empty file.
+                                    FileCreationInformation fileInfo = new FileCreationInformation();
+                                    fileInfo.ContentStream = contentStream;
+                                    fileInfo.Url = uniqueFileName;
+                                    fileInfo.Overwrite = true;
+                                    uploadFile = docs.RootFolder.Files.Add(fileInfo);
+
+                                    // Start upload by uploading the first slice. 
+                                    using (MemoryStream s = new MemoryStream(buffer))
+                                    {
+                                        // Call the start upload method on the first slice
+                                        bytesUploaded = uploadFile.StartUpload(uploadId, s);
+                                        ctx.ExecuteQuery();
+                                        // fileoffset is the pointer where the next slice will be added
+                                        fileoffset = bytesUploaded.Value;
+                                    }
+
+                                    // we can only start the upload once
+                                    first = false;
+                                }
+                            }
+                            else
+                            {
+                                // Get a reference to our file
+                                uploadFile = ctx.Web.GetFileByServerRelativeUrl(docs.RootFolder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFileName);
+
+                                if (last)
+                                {
+                                    // Is this the last slice of data?
+                                    using (MemoryStream s = new MemoryStream(lastBuffer))
+                                    {
+                                        // End sliced upload by calling FinishUpload
+                                        uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
+                                        ctx.ExecuteQuery();
+
+                                        // return the file object for the uploaded file
+                                        return uploadFile;
+                                    }
+                                }
+                                else
+                                {
+                                    using (MemoryStream s = new MemoryStream(buffer))
+                                    {
+                                        // Continue sliced upload
+                                        bytesUploaded = uploadFile.ContinueUpload(uploadId, fileoffset, s);
+                                        ctx.ExecuteQuery();
+                                        // update fileoffset for the next slice
+                                        fileoffset = bytesUploaded.Value;
+                                    }
+                                }
+                            }
+
+                        } // while ((bytesRead = br.Read(buffer, 0, buffer.Length)) > 0)
                     }
-                    else
+                }
+                finally
+                {
+                    if (fs != null)
                     {
-                        // Continue sliced upload
-                        bytesUploaded = uploadFile.ContinueUpload(uploadId, fileoffset, s);
-                        cc.ExecuteQuery();
-                        // update fileoffset for the next slice
-                        fileoffset = bytesUploaded.Value;
+                        fs.Dispose();
                     }
                 }
             }
-        }
 
+            return null;
+        }
 
         /// <summary>
         /// This has limitation of roughly 2 MB as the file size due the way information is sent to the server
