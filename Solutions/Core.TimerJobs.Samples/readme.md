@@ -42,6 +42,7 @@ Hello world type sample...it can't really be any simpler :-)
 
 ## Timer job implementation ##
 This job will simply request the site title and display it. When you create your timer job you'll need to follow 3 simple steps:
+
 1. Have your timer job class inherit from the `TimerJob` abstract base class
 2. Provide a name for your timer job in the constructor
 2. Create an event handler for the `TimerJobRun` event and add your timer logic in that event handler
@@ -65,6 +66,7 @@ This job will simply request the site title and display it. When you create your
 
 ## Timer job host implementation ##
 For this first sample all the steps are shown and explained:
+
 1. Instantiate your timer job
 2. A timer job needs credentials: this sample uses Office 365 as target platform and a user and password is provided
 3. You need to tell the job on which sites it needs to work: in this simple sample it's just on one single site added via the `AddSite` method
@@ -411,6 +413,7 @@ A more theoretical example, but still might be valuable...showing how you can ca
 
 ## Timer job implementation ##
 In the `TimerJobRun` event handler you can call another timer job. To do this you'll need to take in account the following 3 steps:
+
 1. Set the **UseThreading** of the job being called to false. Threaded jobs spawning again threaded jobs is not working well and also doesn't make any sense as you're typically processing a single site anyway
 2. Use the **Clone** method to copy the existing jobs authentication settings to the timer job you want to call
 3. Add a site to the called timer job. Typically this will be the site the current timer job is processing

@@ -57,6 +57,7 @@ namespace Core.TimerJobs.Samples.SimpleJob
 
 ### Step 3: Update the console program.cs to use the timer job ###
 The timer job we created in the previous step still needs to be executed. To do so you'll need to update the `program` of the console application using the four steps explained below:
+
 1. Instantiate your timer job class
 2. Provide the authentication details for the timer job. Here we're using user name and password to authenticate against SharePoint Online
 3. Add one ore more sites the timer job code should be run against. This sample shows a wild card url: the timer job code will be fired for all sites that match this wild card url
@@ -100,6 +101,7 @@ Before you can deploy a timer job you'll need to ensure that the job can run wit
 Once that's done test by running your timer job from Visual Studio: it should now run and end without any user interaction. 
 
 The actual deployment to Azure is based on Azure Web Jobs. We've an [excellent guidance article](https://github.com/OfficeDev/PnP-Guidance/blob/master/articles/Getting-Started-with-building-Azure-WebJobs-for-your-Office365-sites.md) that describes all the needed steps in great detail, but a short summary is added here as well.
+
 1. Right click your project in Visual Studio and choose **Publish as Azure WebJob...**
 2. Provide a schedule for your timer job and click **OK**
 3. Select **Microsoft Azure Websites** as a publish target. You'll be asked to login to Azure and select the Azure Web Site that will host your timer job (you can also create a new one if that would be needed)
@@ -110,6 +112,7 @@ The actual deployment to Azure is based on Azure Web Jobs. We've an [excellent g
 
 ### Deploying timer jobs to Windows Server using the Windows Schedular ###
 Just like in the Azure WebJobs guidance you'll first need to ensure your timer job can run without user interaction. Once that's done you copy the release version of your job to the server you want it to run on. **Important:** copy all the relevant assemblies, the .exe and the .config file to ensure the job can run on the server without installing additional bits on the server. Final step is scheduling the execution of your timer job and for this we recommend to rely on the built in [Windows Schedular functionality](https://technet.microsoft.com/en-us/library/cc721871.aspx). In short the steps are:
+
 1. Open the task schedular (Control Panel -> Task Schedular)
 2. Click on **Create Task** and specify a name and an account that will execute the task
 3. Click on **Triggers** and add a new trigger. Specify the schedule you want for your timer job
@@ -134,11 +137,13 @@ Most properties and methods will be explained in more detail in the coming chapt
 - **Version** property: get you the version of the timer job. The version is initially set in the timer job constructor or defaults to 1.0 when not set via the constructor
 
 To prepare for a timer job run you need to first **configure** it:
+
 1. Provide **authentication** settings
 2. Provide a **scope** (= list of sites)
 3. Optionally set **timer job properties** 
 
 From an execution perspective the following big steps are taken when a timer job run is started:
+
 1. **Resolve sites**: wild card site urls (e.g. https://tenant.sharepoint.com/sites/d*) are resolved into an actual list of existing sites. If sub site expanding was requested then the resolved sites list is expanded with all sub sites
 2. **Create batches of work** based on the current treading settings and create a thread per batch
 3. The **threads execute work batches** and call the `TimerJobRun` event for each site in the list
