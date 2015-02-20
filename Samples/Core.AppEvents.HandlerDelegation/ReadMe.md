@@ -1,7 +1,7 @@
 # SharePoint App Event Handler with Rollback Logic and Handler Delegation #
 
 ### Summary ###
-This sample shows how to implement handlers for the **ApInstalled** and **AppUninstalling** events that:
+This sample shows how to implement handlers for the **AppInstalled** and **AppUninstalling** events that:
 - Incorporate rollback logic if the handler encounters an error.
 - Incorporate "already done" logic to accommodate the fact that SharePoint retries the handler up to three more times if it fails or takes more than 30 seconds to complete.
 - Use the *handler delegation* strategy to minimize calls from the handler web service to SharePoint.
@@ -9,7 +9,9 @@ This sample shows how to implement handlers for the **ApInstalled** and **AppUni
 
 
 ### Applies to ###
--  SharePoint Online and SharePoint 2013 on-premises
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
 
 ### Prerequisites ###
 None.
@@ -62,7 +64,5 @@ An exception in the **TryCreateList()** method should leave neither the **Core.A
 
 * [Handling events in apps for SharePoint](https://msdn.microsoft.com/en-us/library/office/jj220048.aspx) and it's child articles.
 
-### Copyright ###
 
-Copyright (c) Microsoft. All rights reserved.
 
