@@ -224,9 +224,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is ServerException &&
-                    (ex.Message.IndexOf("Unable to access site") != -1 ||
-                     ex.Message.IndexOf("Cannot get site") != -1))
+                if (IsUnableToAccessSiteException(ex) || IsCannotGetSiteException(ex))
                 {
                     // Site exists, but you don't have access .. not sure if this is really valid
                     // (I guess if checking if URL is already taken, e.g. want to create a new site
@@ -237,6 +235,43 @@ namespace Microsoft.SharePoint.Client
             return exists;
         }
 
+        private static bool IsCannotGetSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -1 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.Online.SharePoint.Common.SpoNoSiteException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsUnableToAccessSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2147024809 && ((ServerException)ex).ServerErrorTypeName.Equals("System.ArgumentException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         #region Apps and sandbox solutions
