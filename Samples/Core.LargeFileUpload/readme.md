@@ -35,7 +35,7 @@ Approach | Limitations | When to use | Platform
 -------- | ----------- | ----------- | --------
 **Content** property on the `FileCreationInformation` class | Max 2 MB file size, security time-out after 30 minutes | **Not recommended** to use this due to file size limitations | V15 on-premises + v16 (MT)
 **ContentStream** property on the `FileCreationInformation` class | No file size limitations, but there's a security time-out after 30 minutes | **Recommended** for all v15 on-premises scenarios and for files < 10 MB in v16 (MT) | V15 on-premises + v16 (MT)
-**SaveBinaryDirect** method on the `File` class | No file size limitations, but there's a security time-out after 30 minutes | **Not recommended** to use this because it does not work with app-only authentication | V15 on-premises + v16 (MT)
+**SaveBinaryDirect** method on the `File` class | No file size limitations, but there's a security time-out after 30 minutes | **Not recommended** to use this because it does not work when used in apps or with app-only authentication | V15 on-premises + v16 (MT)
 **StartUpload, ContinueUpload and FinishUpload** methods on the `File` class | No file size limitations, but there's a security time-out after 30 minutes. If each data slice gets uploaded within 30 minutes there's no problem | **Recommended** for all v16 (MT) scenarios that deal with files > 10 MB | v16 (MT)
 
 In the remaining chapters you'll find more details on above approaches
@@ -104,7 +104,7 @@ public void UploadDocumentContentStream(ClientContext ctx, string libraryName, s
 ```
 
 ## LARGE FILE HANDLING – OPTION 2 (SaveBinaryDirect) ##
-This is an alternative method, which uses *SaveBinaryDirect* method File object. This is a valid approach for uploading large file sizes to SharePoint, but not a recommended one. This approach **does not support app-only authentication** and will result in a security timeout after 30 minutes which you'll hit once you upload really large files. The sliced upload (option 3 in this article) properly deals with this.
+This is an alternative method, which uses *SaveBinaryDirect* method File object. This is a valid approach for uploading large file sizes to SharePoint, but not a recommended one. This approach **does not work when used from an app, nor does it support app-only authentication** and will result in a security timeout after 30 minutes which you'll hit once you upload really large files. The sliced upload (option 3 in this article) properly deals with this.
 
 ```C#
 public void SaveBinaryDirect(ClientContext ctx, string libraryName, string filePath)

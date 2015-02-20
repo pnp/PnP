@@ -1105,8 +1105,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
             catch (System.Net.WebException ex)
             {
-                if (ex.Message.IndexOf("The remote server returned an error: (500) Internal Server Error") > -1 ||
-                    ex.Message.IndexOf("The remote server returned an error: (404) Not Found") > -1)
+                if (IsInternalServerErrorException(ex) || IsNotFoundException(ex))
                 {
                     //eath the exception
                     Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TimerJob_ExpandSite_EatException, ex.Message, site);
@@ -1321,6 +1320,54 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         {
             return timerJobName.Replace(" ", "_");
         }
+
+        /// <summary>
+        /// Returns true if the exception was a "The remote server returned an error: (500) Internal Server Error"
+        /// </summary>
+        /// <param name="ex">Exception to examine</param>
+        /// <returns>True if "The remote server returned an error: (500) Internal Server Error" exception, false otherwise</returns>
+        private bool IsInternalServerErrorException(Exception ex)
+        {
+            if (ex is System.Net.WebException)
+            {
+                if (ex.HResult == -2146233079 && ex.Message.IndexOf("(500)") > -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the exception was a "The remote server returned an error: (404) Not Found"
+        /// </summary>
+        /// <param name="ex">Exception to examine</param>
+        /// <returns>True if "The remote server returned an error: (404) Not Found" exception, false otherwise</returns>
+        private bool IsNotFoundException(Exception ex)
+        {
+            if (ex is System.Net.WebException)
+            {
+                if (ex.HResult == -2146233079 && ex.Message.IndexOf("(404)") > -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }        
         #endregion
     }
 }

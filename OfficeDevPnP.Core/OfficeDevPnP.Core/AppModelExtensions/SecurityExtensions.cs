@@ -995,7 +995,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to operate against</param>
         /// <param name="groupName">Name of the group</param>
         /// <returns>True if the group exists, false otherwise</returns>
-        [SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         public static bool GroupExists(this Web web, string groupName)
         {
             if (string.IsNullOrEmpty(groupName))
@@ -1015,7 +1014,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (ServerException ex)
             {
-                if (ex.Message.IndexOf("Group cannot be found", StringComparison.InvariantCultureIgnoreCase) > -1)
+                if (IsGroupCannotBeFoundException(ex))
                 {
                     //eat the exception
                 }
@@ -1029,6 +1028,24 @@ namespace Microsoft.SharePoint.Client
             return result;
         }
 
+        private static bool IsGroupCannotBeFoundException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2146232832 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.SharePoint.SPException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         public static Guid GetAuthenticationRealm(this Web web)
