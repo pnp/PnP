@@ -313,8 +313,6 @@
                     t.Name = terms[i].Name;
                     this._selectedTerms.push(t);
                 }
-
-                //refresh the html in the editor control
                 this._editor.html(this.selectedTermsToHtml());
             }
 
@@ -862,10 +860,8 @@
                     var dlgBodyContainer = $('<div class="cam-taxpicker-dialog-tree-container"></div>');
 
                     //build the termset hierarchy
-                    this._dlgCurrTermNode = $('<span class="cam-taxpicker-treenode-title root selected">' + this.TermSet.Name + '</span>');
-                    var root = $('<li class="cam-taxpicker-treenode-li"></li>').append($('<div class="cam-taxpicker-treenode"></div>').append('<div class="cam-taxpicker-expander expanded"></div>').append('<img src="../styles/images/EMMTermSet.png" alt=""/>').append(this._dlgCurrTermNode));
 
-                    dlgBodyContainer.append($('<ul id="rootNode" class="cam-taxpicker-treenode-ul root" style="height: 100%;"></ul>').append(root));
+                    dlgBodyContainer.append($('<ul id="rootNode" class="cam-taxpicker-treenode-ul root" style="height: 100%;"></ul>'));
 
                     //build the dialog editor area
                     //TODO: convert the dlgEditor with contenteditable="true" just like the main editor (Enhancement)
@@ -889,9 +885,28 @@
                 //add the dialog to the body
                 $('body').append(this._dialog);
 
+                var termName = this.TermSet.Name;
+
+                var that = this;
+
                 var outHtml = buildTermSetTreeLevel(this.TermSet.Terms, true, "", function (html) {
-                    document.getElementById('rootNode').innerHTML = '<ul id="rootNode" class="cam-taxpicker-treenode-ul root" style="height: 100%;">' + html + '</ul>'
+                    document.getElementById('rootNode').innerHTML =
+                                       '<li class="cam-taxpicker-treenode-li">' +
+                                           '<div class="cam-taxpicker-treenode">' +
+                                               '<div class="cam-taxpicker-expander expanded">' + '</div>' +
+                                               '<img src="../styles/images/EMMTermSet.png" alt=""/>' +
+                                               '<span id="currNode" class="cam-taxpicker-treenode-title root selected">' + termName + '</span>' +
+                                            '</div>' +
+                                            '<ul class="cam-taxpicker-treenode-ul" style="display: block;">' +
+                                               html +
+                                            '</ul>' +
+                                       '</li>' +
+                                    '</ul>' +
+                                '</div>';
+
+                    that._dlgCurrTermNode = $("#currNode");
                 });
+
 
                 //wire events all the dialog events
                 $('.cam-taxpicker-expander').click(function () {
@@ -992,35 +1007,34 @@
 
         var addlStyle = (show) ? 'style="display: block;"' : '';
 
-        outHtml += '<ul class="cam-taxpicker-treenode-ul" ' + addlStyle + '></ul>';
-
         var defs = [];
 
         termList.forEach(function (term) {
             var deferred = $.Deferred();
             defs.push(deferred);
-            (function (cb) {
-                var addlClass = (term.Children.length > 0) ? 'collapsed' : '';
-                var tHtml = "";
-                tHtml += '<li class="cam-taxpicker-treenode-li"><div class="cam-taxpicker-treenode"><div class="cam-taxpicker-expander ' + addlClass + '"></div><img src="../styles/images/EMMTerm.png" alt=""/><span class="cam-taxpicker-treenode-title"  data-item="' + term.Name + '|' + term.Id + '">' + term.Name + '</span></div>';
 
-                //add children if they exist
-                if (term.Children.length > 0) {
-                    buildTermSetTreeLevel(term.Children, false, "", function (html) {
-                        tHtml += '<ul class="cam-taxpicker-treenode-ul">' + html + "</ul></li>";
-                    });
-                }
-                else {
-                    //add empty UL for future elements
-                    tHtml += '</li>'
-                    tHtml += '<ul class="cam-taxpicker-treenode-ul"></ul>';
-                }
+            var addlClass = (term.Children.length > 0) ? 'collapsed' : '';
+            var tHtml = "";
+            tHtml += '<li class="cam-taxpicker-treenode-li">' +
+                         '<div class="cam-taxpicker-treenode">' +
+                             '<div class="cam-taxpicker-expander ' + addlClass + '">' +
+                             '</div>' +
+                             '<img src="../styles/images/EMMTerm.png" alt=""/>' +
+                             '<span class="cam-taxpicker-treenode-title"  data-item="' + term.Name + '|' + term.Id + '">' + term.Name + '</span>' +
+                         '</div>';
 
-                cb(deferred, tHtml);
-            })(function (deferred, html) {
-                outHtml += html;
-                deferred.resolve();
-            });
+            //add children if they exist
+            if (term.Children.length > 0) {
+                buildTermSetTreeLevel(term.Children, false, "", function (html) {
+                    tHtml += '<ul class="cam-taxpicker-treenode-ul">' + html + "</ul></li>";
+                });
+            }
+            else {
+                tHtml += '</li>'
+            }
+
+            outHtml += tHtml;
+            deferred.resolve();
         });
 
         $.when($, defs).done(function () {
