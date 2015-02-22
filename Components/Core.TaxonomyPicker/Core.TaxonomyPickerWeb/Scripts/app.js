@@ -34,6 +34,7 @@ $(document).ready(function () {
                                 function () {
                                     //binf the taxonomy picker to the default keywords termset
                                     $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
+                                    //$('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, termSetId: 'ab483129-7fc6-4b43-8156-8c5ff39cf767' }, context);
                                 });
                         });
                 });
