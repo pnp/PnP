@@ -37,7 +37,9 @@ The App has several sample components:
 Sample interface:
 ![](http://i.imgur.com/fffDVVu.png)
 
+
 Sample menu:
+
 ![](http://i.imgur.com/WavCqoC.png)
 
 Most calls can only be performed with Site Collection permissions, however some require access to the tenant. Review the code to follow the required tenant permissions calls.

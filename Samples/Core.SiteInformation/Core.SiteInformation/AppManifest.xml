@@ -9,6 +9,7 @@
   <Properties>
     <Title>Core.SiteInformation</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+    <InstalledEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</InstalledEventEndpoint>
   </Properties>
 
   <AppPrincipal>
