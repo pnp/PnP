@@ -1440,63 +1440,71 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQueryRetry();
         }
 
-
-
-
+        private static void CleanupTaxonomyHiddenField(Web web, FieldCollection fields, TaxonomyFieldCreationInformation fieldCreationInformation)
+        {
+            // if the Guid is empty then we'll have no issue
+            if (fieldCreationInformation.Id != Guid.Empty)
+            {
+                FieldCollection _fields = fields;
+                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName, f => f.Hidden));
+                web.Context.ExecuteQueryRetry();
+                var _field = _fields.FirstOrDefault(f => f.InternalName.Equals(fieldCreationInformation.InternalName));
+                // if the field does not exist we assume the possiblity that it was created earlier then deleted and the hidden field was left behind
+                // if the field does exist then return and let the calling process exception out when attempting to create it
+                // this does not appear to be an issue with lists, just site columns, but it doesnt hurt to check
+                if (_field == null)
+                {
+                    // The hidden field format is the id of the field itself with hyphens removed and the first character replaced
+                    // with a random character, so get everything to the right of the first character and remove hyphens
+                    var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "").Substring(1);
+                    _field = _fields.FirstOrDefault(f => f.InternalName.EndsWith(_hiddenField));
+                    if (_field != null)
+                    {
+                        if (_field.Hidden)
+                        {
+                            // just in case the field itself is hidden, make sure it is not because depending on the current CU hidden fields may not be deletable
+                            _field.Hidden = false;
+                            _field.Update();
+                        }
+                        _field.DeleteObject();
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Can be used to create taxonomy field remotely to web.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="fieldCreationInformation">Creation Information of the field</param>
         /// <returns>New taxonomy field</returns>
+        
         public static Field CreateTaxonomyField(this Web web, TaxonomyFieldCreationInformation fieldCreationInformation)
         {
             fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
-
+            
+            CleanupTaxonomyHiddenField(web, web.Fields, fieldCreationInformation);
+            
             if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
 
-            try
-            {
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-                var _field = web.CreateField(fieldCreationInformation);
+            var _field = web.CreateField(fieldCreationInformation);
 
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
 
-                web.Context.ExecuteQueryRetry();
+            web.Context.ExecuteQueryRetry();
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                // If there is an exception the hidden field might be present
-                FieldCollection _fields = web.Fields;
-                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQueryRetry();
-                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
-
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.DeleteObject();
-                    web.Context.ExecuteQueryRetry();
-                }
-                throw;
-
-            }
+            return _field;
 
         }
-
-
-
-
 
         /// <summary>
         /// Can be used to create taxonomy field remotely in a list. 
@@ -1510,42 +1518,23 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
+            CleanupTaxonomyHiddenField(list.ParentWeb, list.Fields, fieldCreationInformation);
+
             if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
-            try
-            {
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-                var _field = list.CreateField(fieldCreationInformation);
+            var _field = list.CreateField(fieldCreationInformation);
 
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
 
-                list.Context.ExecuteQueryRetry();
+            list.Context.ExecuteQueryRetry();
 
-                return _field;
-            }
-            catch (Exception)
-            {
-                // If there is an exception the hidden field might be present
-                FieldCollection _fields = list.Fields;
-                list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                list.Context.ExecuteQueryRetry();
-                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
-
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
-                {
-                    _field.Hidden = false; // Cannot delete a hidden column
-                    _field.Update();
-                    _field.DeleteObject();
-                    list.Context.ExecuteQueryRetry();
-                }
-                throw;
-            }
+            return _field;
         }
 
 

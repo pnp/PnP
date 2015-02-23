@@ -52,14 +52,14 @@ public static ContentType CreateContentType(this Web web, string name,
   // Load the current collection of content types
   ContentTypeCollection contentTypes = web.ContentTypes;
   web.Context.Load(contentTypes);
-  web.Context.ExecuteQuery();
+  web.Context.ExecuteQueryRetry();
   ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
   // Set the properties for the content type
   newCt.Name = name;
   newCt.Id = id;
   newCt.Group = group;
   ContentType myContentType = contentTypes.Add(newCt);
-  web.Context.ExecuteQuery();
+  web.Context.ExecuteQueryRetry();
 
   //Return the content type object
   return myContentType;
@@ -141,7 +141,7 @@ The terms *Web* and *SiteCollection* are preferred.
 If the term Site is used, it should always refer to the Site Collection; never use Site to refer to a Web.
 
 ## App Model Extensions ##
-Classes derived from ClientObject have a Context property that can be used for operations, such as ExecuteQuery.
+Classes derived from ClientObject have a Context property that can be used for operations, such as ExecuteQueryRetry.
 
 The App Model Extensions API should extend from the relevant entity object, e.g. creating a new List should extended from the Web where it should be created, adding an existing Content Type to a List should extend from a List.
 
