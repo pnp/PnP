@@ -26,8 +26,17 @@ namespace Core.SiteInformationWeb.Services
                     clientContext.Load(clientContext.Web);
                     clientContext.ExecuteQuery();
 
-                    RemoveQuickLaunchNode(clientContext);
-                    AddSiteInformationJsLink(clientContext);
+                    switch (properties.EventType)
+                    {
+                        case SPRemoteEventType.AppInstalled:
+                            RemoveQuickLaunchNode(clientContext);
+                            AddSiteInformationJsLink(clientContext);
+                            result.Status = SPRemoteEventServiceStatus.Continue;
+                            break;
+                        case SPRemoteEventType.AppUninstalling:
+                            RemoveQuickLaunchNode(clientContext);
+                            break;
+                    }
                 }
             }
 
