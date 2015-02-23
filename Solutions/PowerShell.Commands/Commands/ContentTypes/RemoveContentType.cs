@@ -36,7 +36,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     }
                     else if (!string.IsNullOrEmpty(Identity.Name))
                     {
-                        ct = SelectedWeb.GetContentTypeByName(Identity.Id);
+                        ct = SelectedWeb.GetContentTypeByName(Identity.Name);
                     }
                 }
                 if(ct != null)
