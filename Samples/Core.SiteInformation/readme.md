@@ -5,13 +5,16 @@ This sample is a ready-built app that shows information about the current site c
 
 The interface will load in a dialog box, showing info such as: site collection admins, storage quota & usage, the Webs count, last content modified date, sharing settings, etc. It is a useful starting point if you want to build something similiar for your users.
 
-The sample also shows how to add a custom action under the Settings menu.
+The sample also shows how to add a custom action under the Settings menu. It makes use of the App Installed Event Receiver to add the custom action. For this reason it requires a publically addressable URL if installing to Office 365, or Azure ServiceBus. See below for more details.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
 
 ### Prerequisites ###
 The complete solution requires app registration with tenant permissions. Refer to AppRegNew.aspx and AppInv.aspx
+In order to test the app without deploying the Core.SiteInformationWeb project to a publicly available URL, Azure ServiceBus with ACS authentication is required. See http://msdn.microsoft.com/en-us/library/office/dn275975(v=office.15).aspx for more information.
 
 ### Solution ###
 Solution | Author(s)
@@ -45,7 +48,7 @@ Sample menu:
 Most calls can only be performed with Site Collection permissions, however some require access to the tenant. Review the code to follow the required tenant permissions calls.
 
 ## Application Settings ##
-Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web app project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
+Because the solution has two interface, application settings need to be configured in the web.config of the web site application project.
 
 ```XML
 <appSettings>
