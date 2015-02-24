@@ -7,8 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Contoso.Core.JavaScriptInjectionWeb
-{      
+namespace Core.EmbedJavaScriptWeb {
+    
+    
     public partial class Default {
         
         /// <summary>

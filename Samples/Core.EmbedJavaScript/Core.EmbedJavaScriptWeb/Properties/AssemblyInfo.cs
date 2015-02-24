@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Core.JavaScriptInjection.WeekNumbersWeb")]
+[assembly: AssemblyTitle("Core.EmbedJavaScriptWeb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Core.JavaScriptInjection.WeekNumbersWeb")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyProduct("Core.EmbedJavaScriptWeb")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ffba4d6f-eaa8-42c9-8001-5bad05a03282")]
+[assembly: Guid("b729597f-040f-4d09-bc05-5856c95d61ef")]
 
 // Version information for an assembly consists of the following four values:
 //

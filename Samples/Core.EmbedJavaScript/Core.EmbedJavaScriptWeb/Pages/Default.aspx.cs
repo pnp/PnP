@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Contoso.Core.JavaScriptInjectionWeb
+namespace Core.EmbedJavaScriptWeb
 {
     public partial class Default : System.Web.UI.Page
     {
@@ -75,7 +75,7 @@ namespace Contoso.Core.JavaScriptInjectionWeb
 
         public void AddJsLink(ClientContext ctx, Web web)
         {
-            string scenarioUrl = String.Format("{0}://{1}:{2}/Scripts", this.Request.Url.Scheme, 
+            string scenarioUrl = String.Format("{0}://{1}:{2}/Scripts", this.Request.Url.Scheme,
                                                 this.Request.Url.DnsSafeHost, this.Request.Url.Port);
             string revision = Guid.NewGuid().ToString().Replace("-", "");
             string jsLink = string.Format("{0}/{1}?rev={2}", scenarioUrl, "scenario1.js", revision);

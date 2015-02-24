@@ -3,13 +3,13 @@
 // Is MDS enabled?
 if ("undefined" != typeof g_MinimalDownload && g_MinimalDownload && (window.location.pathname.toLowerCase()).endsWith("/_layouts/15/start.aspx") && "undefined" != typeof asyncDeltaManager) {
     // Register script for MDS if possible
-    RegisterModuleInit("scenario1.js", RemoteManager_Inject); //MDS registration
-    RemoteManager_Inject(); //non MDS run
+    RegisterModuleInit("scenario1.js", JavaScript_Embed); //MDS registration
+    JavaScript_Embed(); //non MDS run
 } else {
-    RemoteManager_Inject();
+    JavaScript_Embed();
 }
 
-function RemoteManager_Inject() {
+function JavaScript_Embed() {
 
     loadScript(jQuery, function () {
         $(document).ready(function () {

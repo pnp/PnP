@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{87E0172D-A7C1-474E-8976-B5E40B8F0857}</ProjectGuid>
+    <ProjectGuid>{28ADC5AD-1E82-49EF-81B8-9AADBB8649F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core.JavaScriptInjection.WeekNumbers</RootNamespace>
-    <AssemblyName>Core.JavaScriptInjection.WeekNumbers</AssemblyName>
+    <RootNamespace>Core.EmbedJavaScript</RootNamespace>
+    <AssemblyName>Core.EmbedJavaScript</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetOfficeVersion>16.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
@@ -17,11 +17,11 @@
     <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
-    <AppFeaturePartId>{8c13c8ab-b624-4021-82f6-c115324fa986}</AppFeaturePartId>
-    <WspPartId>{399944d3-b248-4f33-90a2-8ee96ef15fef}</WspPartId>
-    <WorkflowPartId>{d66d0fd4-4552-48c5-9d6c-03d70cf10de6}</WorkflowPartId>
-    <CspkgPartId>{3b6477f9-7993-45c0-984b-e4db3d5c1b8e}</CspkgPartId>
-    <SqlPackagePartId>{a7af98c6-4357-44af-b75f-dc38852631c0}</SqlPackagePartId>
+    <AppFeaturePartId>{6cf5da10-4577-49f4-a93f-c5598b4b4c53}</AppFeaturePartId>
+    <WspPartId>{32aaf238-7715-4105-8c1f-461576868da6}</WspPartId>
+    <WorkflowPartId>{3c0171c4-a6a4-4788-821a-0154657ba24d}</WorkflowPartId>
+    <CspkgPartId>{a8037718-0b79-4ace-a93a-ea294d93f0b8}</CspkgPartId>
+    <SqlPackagePartId>{db1fc55a-fda3-4f99-8747-cf9aed2221f4}</SqlPackagePartId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,13 +53,13 @@
     </AppManifestFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core.JavaScriptInjection.WeekNumbersWeb\Core.JavaScriptInjection.WeekNumbersWeb.csproj">
-      <Project>{F5898B6F-82AB-45C5-A19F-3210676D213B}</Project>
-      <Name>Core.JavaScriptInjection.WeekNumbersWeb</Name>
+    <ProjectReference Include="..\Core.EmbedJavaScriptWeb\Core.EmbedJavaScriptWeb.csproj">
+      <Project>{2F75143A-A37D-4741-83B3-618515A27B0F}</Project>
+      <Name>Core.EmbedJavaScriptWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
       <OutputItemType>SharePointWebProjectOutput</OutputItemType>
-      <RoleName>Core.JavaScriptInjection.WeekNumbersWeb</RoleName>
+      <RoleName>Core.EmbedJavaScriptWeb</RoleName>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
