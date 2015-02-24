@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Core.JavaScriptInjection.WeekNumbersWeb {
+namespace Core.EmbedJavaScript.WeekNumbersWeb {
     
     
     public partial class Default {

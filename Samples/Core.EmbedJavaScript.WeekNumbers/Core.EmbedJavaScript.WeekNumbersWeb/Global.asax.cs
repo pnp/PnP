@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace Contoso.Core.JavaScriptInjectionWeb
+namespace Core.EmbedJavaScript.WeekNumbersWeb
 {
     public class Global : System.Web.HttpApplication
     {
