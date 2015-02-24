@@ -69,7 +69,11 @@ namespace Microsoft.SharePoint.Client
             var backgroundUrl = default(string);
             var masterUrl = default(string);
 
-            Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQueryRetry();
+            }
 
             if (!string.IsNullOrEmpty(paletteFileName))
             {
@@ -84,11 +88,6 @@ namespace Microsoft.SharePoint.Client
                 backgroundUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
             }
 
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
-            {
-                web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQueryRetry();
-            }
             if (!string.IsNullOrEmpty(masterFileName))
             {
                 masterUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterFileName)));
