@@ -7,7 +7,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Configuration;
 
-namespace Core.JavaScriptInjection.WeekNumbersWeb
+namespace Core.EmbedJavaScript.WeekNumbersWeb
 {
     /// <summary>
     /// Encapsulates all the information from SharePoint.

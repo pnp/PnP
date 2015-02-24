@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace Core.JavaScriptInjection.WeekNumbersWeb
+namespace Core.EmbedJavaScript.WeekNumbersWeb
 {
     public partial class Default : System.Web.UI.Page
     {

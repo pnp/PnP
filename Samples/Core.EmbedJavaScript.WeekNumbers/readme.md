@@ -1,7 +1,9 @@
-# Core.JavaScriptInjection.WeekNumbers #
+# Core.EmbedJavaScript.WeekNumbers #
 
 ### Summary ###
-In some parts of the world it's important to have week numbers on calendar views. In SharePoint week numbers can be activated on the date picker. There is however no built in function for displaying week numbers in a calendar's monthly view. This sample injects some JavaScript code that adds week numbers. The code works both with minimum download strategy turned on and off.
+In some parts of the world it's important to have week numbers on calendar views. In SharePoint week numbers can be 
+activated on the date picker. There is however no built in function for displaying week numbers in a calendar's monthly view. 
+This sample embeds some JavaScript code that adds week numbers. The code works both with minimum download strategy turned on and off.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -14,7 +16,7 @@ A calendar on the host web.
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.JavaScriptInjection.WeekNumbers | Johan Skårman (**Microsoft**)
+Core.EmbedJavaScript.WeekNumbers | Johan Skårman (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -31,12 +33,12 @@ Version  | Date | Comments
 The code basically has two main parts. First we need to intercept the client side calls that the calendar view does in SharePoint 2013. Thanks to this post for showing how to do that.
 
 ```JavaScript
-    Core.JavaScriptInjection.WeekNumbers.InterceptCalendarEvent = function () {
+    Core.EmbedJavaScript.WeekNumbers.InterceptCalendarEvent = function () {
         ExecuteOrDelayUntilScriptLoaded(function () {
             var onItemsSucceed = SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed;
             SP.UI.ApplicationPages.CalendarStateHandler.prototype.onItemsSucceed = function ($p0, $p1) {
                 onItemsSucceed.call(this, $p0, $p1);
-                Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers();
+                Core.EmbedJavaScript.WeekNumbers.AddWeekNumbers();
             };
         }, "SP.UI.ApplicationPages.Calendar.js");
     }
@@ -45,7 +47,7 @@ The code basically has two main parts. First we need to intercept the client sid
 Secondly using JQuery we can find all TH elements and add week numbers.
 
 ```JavaScript
-    Core.JavaScriptInjection.WeekNumbers.AddWeekNumbers = function () {
+    Core.EmbedJavaScript.WeekNumbers.AddWeekNumbers = function () {
         $(".ms-acal-month > TBODY > TR > TH[evtid='week']").each(function () {
             var firstDay = new Date($(this).attr("date"));
             if (firstDay.toString() != "NaN" && firstDay.toString() != "Invalid Date") {

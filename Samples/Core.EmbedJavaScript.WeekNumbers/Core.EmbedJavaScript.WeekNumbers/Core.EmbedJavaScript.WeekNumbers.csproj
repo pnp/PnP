@@ -4,23 +4,24 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4782C667-EC7A-47C6-8747-F324D02BD269}</ProjectGuid>
+    <ProjectGuid>{636AD3D5-58FE-4F83-8393-6958619DD943}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Core.JavaScriptInjection</RootNamespace>
-    <AssemblyName>Contoso.Core.JavaScriptInjection</AssemblyName>
+    <RootNamespace>Core.EmbedJavaScript.WeekNumbers</RootNamespace>
+    <AssemblyName>Core.EmbedJavaScript.WeekNumbers</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <TargetOfficeVersion>16.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
-    <AppFeaturePartId>{f4a4fa32-398f-43d1-8ad0-a426ccb3ffa3}</AppFeaturePartId>
-    <WspPartId>{c40dcfda-fcc4-41f4-99dc-76707002cdb2}</WspPartId>
-    <WorkflowPartId>{d7913829-d0e9-453d-9864-4a842cc81368}</WorkflowPartId>
-    <CspkgPartId>{f58a69e8-ca39-4248-82ec-f4c15ac9276f}</CspkgPartId>
-    <SqlPackagePartId>{2c285b31-bcc0-49af-8eaf-8be616a636b2}</SqlPackagePartId>
-    <ActivePublishProfile>msjsinjection</ActivePublishProfile>
+    <AppFeaturePartId>{140ecc47-3692-4d52-aa2a-5ae179e94423}</AppFeaturePartId>
+    <WspPartId>{c0a11659-afb2-4d2f-8c86-1613fc4ee62b}</WspPartId>
+    <WorkflowPartId>{8875b7f0-b491-4f39-a7d8-8e1da5dd0528}</WorkflowPartId>
+    <CspkgPartId>{7ee4dee4-3073-403c-8a07-966779f053f2}</CspkgPartId>
+    <SqlPackagePartId>{22f6ace6-84d0-40e8-9149-9617be541d16}</SqlPackagePartId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,13 +53,13 @@
     </AppManifestFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JavaScriptInjectionWeb\JavaScriptInjectionWeb.csproj">
-      <Project>{C776DC0C-707D-4EF2-93FD-93A35AA012E0}</Project>
-      <Name>JavaScriptInjectionWeb</Name>
+    <ProjectReference Include="..\Core.EmbedJavaScript.WeekNumbersWeb\Core.EmbedJavaScript.WeekNumbersWeb.csproj">
+      <Project>{ADFDEB13-926B-42A4-A1FA-9C67B38D9E42}</Project>
+      <Name>Core.EmbedJavaScript.WeekNumbersWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
       <OutputItemType>SharePointWebProjectOutput</OutputItemType>
-      <RoleName>JavaScriptInjectionWeb</RoleName>
+      <RoleName>Core.EmbedJavaScript.WeekNumbersWeb</RoleName>
       <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
