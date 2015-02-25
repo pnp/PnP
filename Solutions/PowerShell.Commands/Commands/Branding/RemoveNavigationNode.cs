@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Remove, "SPONavigationNode")]
     public class RemoveNavigationNode : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, HelpMessage = "Either 'Top' or 'Quicklaunch'")]
+        [Parameter(Mandatory = true)]
         public NavigationType Location;
 
         [Parameter(Mandatory = true)]
