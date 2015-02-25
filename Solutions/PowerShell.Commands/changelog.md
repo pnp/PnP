@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-02-25**
+* Updated Location parameter in Add-/Remove-SPONavigationNode
+
 **2015-01-07**
 * Introduced new Cmdlet: Get-SPOWebPartProperty to return webpart properties
 * Updated Set-SPOWebPartProperty cmdlet to support int values
