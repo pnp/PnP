@@ -27,7 +27,7 @@ namespace Core.SiteClassification.Common.impl
                     this.CreateSiteClassificationList(ctx); 
                 }
             }
-            catch(Exception _ex)
+            catch(Exception)
             {
 
             }
@@ -88,20 +88,25 @@ namespace Core.SiteClassification.Common.impl
                 _titleFieldLink.Required = false;
                 _contentType.Update(false);
 
-                
-
                 //Key Field
-                ctx.Web.CreateField(SiteClassificationFields.FLD_KEY_ID, 
-                    SiteClassificationFields.FLD_KEY_INTERNAL_NAME, 
-                    FieldType.Text, 
-                    SiteClassificationFields.FLD_KEY_DISPLAY_NAME, 
-                    SiteClassificationFields.FIELDS_GROUPNAME);
+                FieldCreationInformation fldCreate = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = SiteClassificationFields.FLD_KEY_ID,
+                    InternalName = SiteClassificationFields.FLD_KEY_INTERNAL_NAME,
+                    DisplayName = SiteClassificationFields.FLD_KEY_DISPLAY_NAME,
+                    Group = SiteClassificationFields.FIELDS_GROUPNAME,
+                };
+                ctx.Web.CreateField(fldCreate);
+
                 //value field
-                ctx.Web.CreateField(SiteClassificationFields.FLD_VALUE_ID, 
-                    SiteClassificationFields.FLD_VALUE_INTERNAL_NAME, 
-                    FieldType.Text, 
-                    SiteClassificationFields.FLD_VALUE_DISPLAY_NAME, 
-                    SiteClassificationFields.FIELDS_GROUPNAME);
+                fldCreate = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = SiteClassificationFields.FLD_VALUE_ID,
+                    InternalName = SiteClassificationFields.FLD_VALUE_INTERNAL_NAME,
+                    DisplayName = SiteClassificationFields.FLD_VALUE_DISPLAY_NAME,
+                    Group = SiteClassificationFields.FIELDS_GROUPNAME,
+                };
+                ctx.Web.CreateField(fldCreate);
 
                 //Add Key Field to content type
                 ctx.Web.AddFieldToContentTypeById(SiteClassificationContentType.SITEINFORMATION_CT_ID, 
