@@ -65,7 +65,7 @@ namespace Provisioning.CreateSiteWeb.Pages
 
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
-                if (ctx.Web.SubSiteExistsWithUrl(txtUrl.Text))
+                if (ctx.Web.WebExists(txtUrl.Text))
                 {
                     lblStatus1.Text = "URL has been already taken for sub site.";
                 }
@@ -83,17 +83,17 @@ namespace Provisioning.CreateSiteWeb.Pages
 
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
-                if (!ctx.Web.SubSiteExistsWithUrl(txtUrl.Text))
+                if (!ctx.Web.WebExists(txtUrl.Text))
                 {
                     // Create the sub site
-                    Web newWeb = ctx.Web.CreateSite(txtName.Text, txtUrl.Text, "Description", drpContentTypes.SelectedValue, 1033);
+                    Web newWeb = ctx.Web.CreateWeb(txtName.Text, txtUrl.Text, "Description", drpContentTypes.SelectedValue, 1033);
 
                     // Let's add two document libraries to the site 
                     newWeb.CreateDocumentLibrary("Specifications");
                     newWeb.CreateDocumentLibrary("Presentations");
 
                     // Let's also apply theme to the site to demonstrate how easy this is
-                    newWeb.SetThemeToSubWeb(ctx.Web, "Characters");
+                    newWeb.SetComposedLookByUrl("Characters");
 
                     string newUrl = ctx.Web.Url + "/" + txtUrl.Text;
                     lblStatus1.Text = string.Format("New sub site created. Check the site from <a href='{0}'>here</a>", newUrl);
