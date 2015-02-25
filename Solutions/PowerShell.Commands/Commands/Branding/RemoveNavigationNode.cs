@@ -1,14 +1,15 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
+using OfficeDevPnP.Core.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPONavigationNode")]
     public class RemoveNavigationNode : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, HelpMessage="Either 'Top' or 'Quicklaunch'")]
-        public NavigationNodeType Location;
+        [Parameter(Mandatory = true, HelpMessage = "Either 'Top' or 'Quicklaunch'")]
+        public NavigationType Location;
 
         [Parameter(Mandatory = true)]
         public string Title;
@@ -18,10 +19,10 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            SelectedWeb.DeleteNavigationNode(Title, Header, Location == NavigationNodeType.QuickLaunch);
+            SelectedWeb.DeleteNavigationNode(Title, Header, Location);
         }
 
     }
 
-    
+
 }
