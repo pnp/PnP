@@ -80,7 +80,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <p>&copy; <%: DateTime.Now.Year %> - <a href="https://github.com/OfficeDev/PnP/" target="_blank">Office 365 Developers Patterns and Practices</a></p>
             </footer>
         </div>
     </form>

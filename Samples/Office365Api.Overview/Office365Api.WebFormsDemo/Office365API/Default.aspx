@@ -2,43 +2,43 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
+<div class="jumbotron">
     <h2><%: Title %>.</h2>
-    <h3>Let's play with the Office 365 API!</h3>
+    <p class="lead">This page shows you some results from the Office 365 API.</p>
+</div>
 
-    <p>
+    <div class="row">
         <div class="row">
-            <div class="row">
-                <h2>List of TOP 10 My Files in OneDrive for Business</h2>
-                <p></p>
-                <p><asp:button ID="ListFilesCommand" runat="server" Text="List My Files" CssClass="btn btn-default" OnClick="ListFilesCommand_Click" /></p>
-            </div>
-            <div class="row">
-                <h2>List of TOP 10 Contacts</h2>
-                <p></p>
-                <p><asp:button ID="ListContactsCommand" runat="server" Text="List Contacts" CssClass="btn btn-default" OnClick="ListContactsCommand_Click" /></p>
-            </div>
-            <div class="row">
-                <h2>List of TOP 10 emails in Inbox</h2>
-                <p></p>
-                <p><asp:Button ID="ListEmailsCommand" runat="server" Text="List Messages" CssClass="btn btn-default" OnClick="ListEmailsCommand_Click" /></p>
-            </div>
-            <div class="row">
-                <h2>Send a mail Message as Current User</h2>
-                <p>To: <asp:TextBox ID="TargetEmail" runat="server" Text="[target-email]" Columns="30" /></p>
-                <p><asp:Button ID="SendMailCommand" runat="server" Text="Send Mail" CssClass="btn btn-default" OnClick="SendMailCommand_Click" /></p>
-            </div>
-            <div class="row">
-                <asp:Label ID="commandResult" runat="server" />
-                <br />
-                <ul>
-                    <asp:ListView ID="resultsList" runat="server">
-                        <ItemTemplate>
-                            <li><asp:Label runat="server" Text='<%# Container.DataItem %>' /></li>
-                        </ItemTemplate>
-                    </asp:ListView>
-                </ul>
-            </div>
+            <h2>List of TOP 10 My Files in OneDrive for Business</h2>
+            <p></p>
+            <p><asp:button ID="ListFilesCommand" runat="server" Text="List My Files" CssClass="btn btn-default" OnClick="ListFilesCommand_Click" /></p>
         </div>
-    </p>
+        <div class="row">
+            <h2>List of TOP 10 Contacts</h2>
+            <p></p>
+            <p><asp:button ID="ListContactsCommand" runat="server" Text="List Contacts" CssClass="btn btn-default" OnClick="ListContactsCommand_Click" /></p>
+        </div>
+        <div class="row">
+            <h2>List of TOP 10 emails in Inbox</h2>
+            <p></p>
+            <p><asp:Button ID="ListEmailsCommand" runat="server" Text="List Messages" CssClass="btn btn-default" OnClick="ListEmailsCommand_Click" /></p>
+        </div>
+        <div class="row">
+            <h2>Send a mail Message as Current User</h2>
+            <p>To: <asp:TextBox ID="TargetEmail" runat="server" Text="[target-email]" Columns="30" /></p>
+            <p><asp:Button ID="SendMailCommand" runat="server" Text="Send Mail" CssClass="btn btn-default" OnClick="SendMailCommand_Click" /></p>
+        </div>
+        <div class="row">
+            <asp:Label ID="commandResult" runat="server" />
+            <br />
+            <ul>
+                <asp:ListView ID="resultsList" runat="server">
+                    <ItemTemplate>
+                        <li><asp:Label runat="server" Text='<%# Container.DataItem %>' /></li>
+                    </ItemTemplate>
+                </asp:ListView>
+            </ul>
+        </div>
+    </div>
 
 </asp:Content>

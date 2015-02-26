@@ -14,7 +14,7 @@ namespace Office365Api.WebFormsDemo
             : base("DefaultConnection")
         {
             Database.SetInitializer<ApplicationADALDbContext>(
-                new CreateDatabaseIfNotExists<ApplicationADALDbContext>());
+                new DropCreateDatabaseAlways<ApplicationADALDbContext>());
         }
 
         public DbSet<UserTokenCache> UserTokenCacheList { get; set; }
