@@ -230,6 +230,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Office365API\Default.aspx" />
+    <Content Include="Onboarding\OnBoarding.aspx" />
+    <Content Include="Onboarding\ProcessCode.aspx" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -425,6 +427,20 @@
     </Compile>
     <Compile Include="Office365API\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Onboarding\OnBoarding.aspx.cs">
+      <DependentUpon>OnBoarding.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Onboarding\OnBoarding.aspx.designer.cs">
+      <DependentUpon>OnBoarding.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Onboarding\ProcessCode.aspx.cs">
+      <DependentUpon>ProcessCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Onboarding\ProcessCode.aspx.designer.cs">
+      <DependentUpon>ProcessCode.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
