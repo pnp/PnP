@@ -1030,7 +1030,11 @@
                 });
             }
             else {
-                tHtml += '</li>'
+                //TODO We should not add these nodes here. Adds to much overhead on large termsets.
+                //These could be created at inserttime as I don't see any case where
+                //we have several parents in the containing div. It should be as the commented line below
+                //tHtml += '</li>'
+                tHtml += '<ul class="cam-taxpicker-treenode-ul"></ul></li>';
             }
 
             outHtml += tHtml;
