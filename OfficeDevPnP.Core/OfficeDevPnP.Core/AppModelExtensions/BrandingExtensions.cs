@@ -478,7 +478,10 @@ namespace Microsoft.SharePoint.Client
             if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
             {
                 uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
-                listItem.File.Publish(string.Empty);
+                if (masterPageGallery.EnableModeration)
+                {
+                    listItem.File.Publish(string.Empty);
+                }
             }
             web.Context.ExecuteQueryRetry();
 
