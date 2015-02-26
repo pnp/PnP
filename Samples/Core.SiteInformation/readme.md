@@ -9,8 +9,6 @@ The sample also shows how to add a custom action under the Settings menu. It mak
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
 
 ### Prerequisites ###
 The complete solution requires app registration with tenant permissions. Refer to AppRegNew.aspx and AppInv.aspx
@@ -19,7 +17,7 @@ In order to test the app without deploying the Core.SiteInformationWeb project t
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.SiteInformation | Radi Atanassov (OneBit Software)
+Core.SiteInformation | Radi Atanassov (**OneBit Software**)
 
 ### Version history ###
 Version  | Date | Comments
