@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using System.Configuration;
+using System.ServiceModel.Channels;
+using System.ServiceModel;
 
 namespace Core.SiteInformationWeb.Services
 {
@@ -35,6 +37,10 @@ namespace Core.SiteInformationWeb.Services
                             break;
                         case SPRemoteEventType.AppUninstalling:
                             RemoveQuickLaunchNode(clientContext);
+                            Web web = clientContext.Web;
+                            clientContext.Load(web, w => w.UserCustomActions, w => w.Url, w => w.AppInstanceId);
+                            clientContext.ExecuteQuery();
+                            DeleteExistingActions(clientContext, web);
                             break;
                     }
                 }
@@ -90,10 +96,20 @@ namespace Core.SiteInformationWeb.Services
             userCustomAction.Rights = perms;
             userCustomAction.Sequence = 100;
             userCustomAction.Title = "Site Information";
+            userCustomAction.Name = "SiteInformationApp";
 
             string realm = TokenHelper.GetRealmFromTargetUrl(new Uri(clientContext.Url));
 
-            var appPageUrl = string.Format("https://{0}/Pages/Default.aspx?{{StandardTokens}}", System.Web.HttpContext.Current.Request.Url.Authority);
+            string host = "";
+            foreach (Uri u in OperationContext.Current.Host.BaseAddresses)
+            {
+                if (u.Scheme.Equals("https", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    host = u.Authority;
+                }
+            }
+
+            var appPageUrl = string.Format("https://{0}/Pages/Default.aspx?{{StandardTokens}}", host);
             string url = "javascript:LaunchApp('{0}', 'i:0i.t|ms.sp.ext|{1}@{2}','{3}', {{width:600,height:400,title:'Site Information'}});";
             url = string.Format(url, Guid.NewGuid().ToString(), issuerId, realm, appPageUrl);
 
@@ -104,11 +120,9 @@ namespace Core.SiteInformationWeb.Services
 
         private void DeleteExistingActions(Microsoft.SharePoint.Client.ClientContext clientContext, Web web)
         {
-            string issuerId = ConfigurationManager.AppSettings.Get("ClientId");
-
             for (int i = 0; i < web.UserCustomActions.Count - 1; i++)
             {
-                if (web.UserCustomActions[i].Url != null && web.UserCustomActions[i].Url.ToLowerInvariant().Contains(issuerId.ToLowerInvariant()))
+                if (!String.IsNullOrEmpty(web.UserCustomActions[i].Name) && web.UserCustomActions[i].Name.Equals("SiteInformationApp", StringComparison.InvariantCultureIgnoreCase))
                 {
                     web.UserCustomActions[i].DeleteObject();
                 }
