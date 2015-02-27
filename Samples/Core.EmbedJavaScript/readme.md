@@ -5,7 +5,7 @@ This code sample demonstrates how to embed JavaScript on a SharePoint site to up
 
 ### Resources ###
 
-MSDN article - [Localize UI elements sample app for SharePoint](https://msdn.microsoft.com/library/office/dn894689.aspx)
+MSDN article - [Customize your SharePoint site UI by using JavaScript](https://msdn.microsoft.com/EN-US/library/office/dn913116.aspx)
 Channel 9 video - [http://channel9.msdn.com/Blogs/Office-365-Dev/JavaScript-injection-in-SharePoint-Online-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/JavaScript-injection-in-SharePoint-Online-Office-365-Developer-Patterns-and-Practices)
 
 ### Applies to ###
