@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Owin;
 using Office365Api.WebFormsDemo.Models;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace Office365Api.WebFormsDemo.Account
 {

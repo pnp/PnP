@@ -5,6 +5,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using Office365Api.WebFormsDemo.Models;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.OpenIdConnect;
 
 namespace Office365Api.WebFormsDemo.Account
 {
@@ -12,6 +14,16 @@ namespace Office365Api.WebFormsDemo.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Skip all the classic code for managing login and account
+            // focus on OpenId Connect only, because this is an Office365 API demo only
+
+            if (!Request.IsAuthenticated)
+            {
+                HttpContext.Current.GetOwinContext().Authentication.Challenge(
+                    new AuthenticationProperties { RedirectUri = "/" },
+                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
+            }
+
             RegisterHyperLink.NavigateUrl = "Register";
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
