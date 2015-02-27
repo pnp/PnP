@@ -25,10 +25,6 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Office 365 API", "UseOffice365API", "Home")</li>
-                    @if (!Request.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Sign Up", "SignUp", "Onboarding")</li>
-                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
