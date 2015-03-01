@@ -107,50 +107,54 @@ private void CreateSiteClassificationList(ClientContext ctx)
 {
     var _newList = new ListCreationInformation()
     {
-       Title = SiteClassificationList.SiteClassificationListTitle,
-       Description = SiteClassificationList.SiteClassificationDesc,
-       TemplateType = (int)ListTemplateType.GenericList,
-       Url = SiteClassificationList.SiteClassificationUrl,
-       QuickLaunchOption = QuickLaunchOptions.Off
+        Title = SiteClassificationList.SiteClassificationListTitle,
+        Description = SiteClassificationList.SiteClassificationDesc,
+        TemplateType = (int)ListTemplateType.GenericList,
+        Url = SiteClassificationList.SiteClassificationUrl,
+        QuickLaunchOption = QuickLaunchOptions.Off
     };
 
     if(!ctx.Web.ContentTypeExistsById(SiteClassificationContentType.SITEINFORMATION_CT_ID))
     {
-       ContentType _contentType = ctx.Web.CreateContentType(SiteClassificationContentType.SITEINFORMATION_CT_NAME,
-                    SiteClassificationContentType.SITEINFORMATION_CT_DESC,
-                    SiteClassificationContentType.SITEINFORMATION_CT_ID,
-                    SiteClassificationContentType.SITEINFORMATION_CT_GROUP);
+        //ct
+        ContentType _contentType = ctx.Web.CreateContentType(SiteClassificationContentType.SITEINFORMATION_CT_NAME,
+            SiteClassificationContentType.SITEINFORMATION_CT_DESC,
+            SiteClassificationContentType.SITEINFORMATION_CT_ID,
+            SiteClassificationContentType.SITEINFORMATION_CT_GROUP);
 
-       FieldLink _titleFieldLink = _contentType.FieldLinks.GetById(new Guid("fa564e0f-0c70-4ab9-b863-0177e6ddd247"));
-       _titleFieldLink.Required = false;
-       _contentType.Update(false);
+        FieldLink _titleFieldLink = _contentType.FieldLinks.GetById(new Guid("fa564e0f-0c70-4ab9-b863-0177e6ddd247"));
+        _titleFieldLink.Required = false;
+        _contentType.Update(false);
 
-       
+        //Key Field
+        FieldCreationInformation fldCreate = new FieldCreationInformation(FieldType.Text)
+        {
+            Id = SiteClassificationFields.FLD_KEY_ID,
+            InternalName = SiteClassificationFields.FLD_KEY_INTERNAL_NAME,
+            DisplayName = SiteClassificationFields.FLD_KEY_DISPLAY_NAME,
+            Group = SiteClassificationFields.FIELDS_GROUPNAME,
+        };
+        ctx.Web.CreateField(fldCreate);
 
-       //Key Field
-       ctx.Web.CreateField(SiteClassificationFields.FLD_KEY_ID, 
-           SiteClassificationFields.FLD_KEY_INTERNAL_NAME, 
-           FieldType.Text, 
-           SiteClassificationFields.FLD_KEY_DISPLAY_NAME, 
-           SiteClassificationFields.FIELDS_GROUPNAME);
-       //value field
-       ctx.Web.CreateField(SiteClassificationFields.FLD_VALUE_ID, 
-           SiteClassificationFields.FLD_VALUE_INTERNAL_NAME, 
-           FieldType.Text, 
-           SiteClassificationFields.FLD_VALUE_DISPLAY_NAME, 
-           SiteClassificationFields.FIELDS_GROUPNAME);
+        //value field
+        fldCreate = new FieldCreationInformation(FieldType.Text)
+        {
+            Id = SiteClassificationFields.FLD_VALUE_ID,
+            InternalName = SiteClassificationFields.FLD_VALUE_INTERNAL_NAME,
+            DisplayName = SiteClassificationFields.FLD_VALUE_DISPLAY_NAME,
+            Group = SiteClassificationFields.FIELDS_GROUPNAME,
+        };
+        ctx.Web.CreateField(fldCreate);
 
-       //Add Key Field to content type
-       ctx.Web.AddFieldToContentTypeById(SiteClassificationContentType.SITEINFORMATION_CT_ID, 
-           SiteClassificationFields.FLD_KEY_ID.ToString(), 
-           true);
-
-       //Add Value Field to content type
-       ctx.Web.AddFieldToContentTypeById(SiteClassificationContentType.SITEINFORMATION_CT_ID,
-           SiteClassificationFields.FLD_VALUE_ID.ToString(),
-           true);
+        //Add Key Field to content type
+        ctx.Web.AddFieldToContentTypeById(SiteClassificationContentType.SITEINFORMATION_CT_ID, 
+            SiteClassificationFields.FLD_KEY_ID.ToString(), 
+            true);
+        //Add Value Field to content type
+        ctx.Web.AddFieldToContentTypeById(SiteClassificationContentType.SITEINFORMATION_CT_ID,
+            SiteClassificationFields.FLD_VALUE_ID.ToString(),
+            true);
     }
-
     var _list = ctx.Web.Lists.Add(_newList);
     _list.Hidden = true;
     _list.ContentTypesEnabled = true;
@@ -159,7 +163,9 @@ private void CreateSiteClassificationList(ClientContext ctx)
     this.CreateCustomPropertiesInList(_list);
     ctx.ExecuteQuery();
     this.RemoveFromQuickLaunch(ctx, SiteClassificationList.SiteClassificationListTitle);
+
 }
+
 ```
 
 By default, when you create list either using out-of-box or if you are using CSOM, the list will be available in the Recent menu. Now, we don’t want that right? It’s supposed to be hidden. We need some simple code to remove the item from the recent menu. 

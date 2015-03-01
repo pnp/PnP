@@ -184,14 +184,13 @@ namespace Provisioning.PublishingFeaturesWeb
             {
                 Web web = clientContext.Web;
                 // Let's first upload the contoso theme to host web, if it does not exist there
-                web.DeployThemeToWeb("Garage",
-                                HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/Garage/garagewhite.spcolor")),
-                                null,
-                                HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/Garage/garagebg.jpg")),
-                                string.Empty);
+                var colorFile = web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/Garage/garagewhite.spcolor")));
+                var backgroundFile = web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/Garage/garagebg.jpg")));
+                web.CreateComposedLookByUrl("Garage", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
 
                 // Setting the Contoos theme to host web
-                web.SetThemeToWeb("Garage");
+                web.SetComposedLookByUrl("Garage");
+
                 lblStatus2.Text = string.Format("Custom theme called 'Garage' has been uploaded and applied to the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
@@ -206,7 +205,7 @@ namespace Provisioning.PublishingFeaturesWeb
                 clientContext.Web.SetMasterPageByName("seattle.master");
 
                 // Set theme as Office
-                clientContext.Web.SetThemeToWeb("Office");
+                clientContext.Web.SetComposedLookByUrl("Office");
                 lblStatus2.Text = string.Format("Master page set as seattle and out of the box 'Office' theme has been uploaded and applied to the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
@@ -248,7 +247,7 @@ namespace Provisioning.PublishingFeaturesWeb
                 // Let's clear the filters, whcih will remove filtering
                 clientContext.Web.ClearAvailableWebTemplates();
                 // Clear page layout filter
-                clientContext.Web.ClearAvailablePageLayouts();
+                clientContext.Web.AllowAllPageLayouts();
 
             }
             lblStatus3.Text = string.Format("Sub site and page layout optiosn have been cleared. Check the settings from <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString() + "/_layouts/15/AreaTemplateSettings.aspx");

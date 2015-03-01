@@ -90,8 +90,8 @@ namespace CorporateEvents.SharePointWeb.Models {
 
                 _isInitializing = false;
             }
-            catch {
-                // enable the configuration to run again if the initializer fails
+            catch(Exception ex) {
+                // enable the configuration to run again if the initializer fails               
                 _isInitializing = false;
                 throw;
             }
@@ -130,6 +130,9 @@ namespace CorporateEvents.SharePointWeb.Models {
             #region Create Registration Site Columns
 
             // Build site columns for event registration list
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("ReadOnly", "TRUE"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Registration.FIELD_DATE,
                 FormatField(
                 new Guid("{E08894EF-5770-4DC4-936C-B9ED1E901F85}"),
@@ -137,8 +140,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.DateTime,
                 "Registration Date",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "ReadOnly='TRUE' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "50"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Registration.FIELD_FIRST_NAME,
                 FormatField(
                 new Guid("{16059CB2-353A-4FF3-A8CE-9E43C3D56C7D}"),
@@ -146,8 +153,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "First Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Required='TRUE' Customization=''"));
+                true,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "50"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Registration.FIELD_LAST_NAME,
                 FormatField(
                 new Guid("{14C25003-ABC4-48CE-A4FB-3C7631CF4FBC}"),
@@ -155,8 +166,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Last Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Required='TRUE' Customization=''"));
+                true,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "25"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Registration.FIELD_USER_ID,
                 FormatField(
                 new Guid("{695DE7E3-2BAD-4CA2-A10B-DCF4DED6626B}"),
@@ -164,8 +179,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "User Id",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='25' Required='TRUE' Customization=''"));
+                true,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Registration.FIELD_USER_EMAIL,
                 FormatField(
                 new Guid("{07042CA2-49D9-4C31-A932-47AF619EF8E5}"),
@@ -173,7 +191,8 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Email",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Required='TRUE' Customization=''"));
+                true,
+                additionalAttributes));
 
             TryCreateFields(web, fields, fieldsXml);
 
@@ -184,7 +203,7 @@ namespace CorporateEvents.SharePointWeb.Models {
             #endregion
 
             return fields;
-        }
+        }   
 
          private static IEnumerable<Field> CreateEventsSiteColumns(Web web) {
             var fields = new List<Field>();
@@ -193,6 +212,11 @@ namespace CorporateEvents.SharePointWeb.Models {
 
             #region Create Events List Site Columns
             // Build site columns for events list
+
+
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string,string>("NumLines", "6"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_DESCRIPTION,
                 FormatField(
                 new Guid("{A385CEFA-8C4D-49EF-A586-C35E9C539CC5}"),
@@ -200,8 +224,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Note,
                 "Event Description",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "NumLines='6' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_REGISTERED_EVENT_ID,
                 FormatField(
                 Event.RegisteredEventFieldId,
@@ -209,8 +236,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Event ID",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_DATE,
                 FormatField(
                 new Guid("{E71EE5E4-FD31-4478-A8B0-1839607D5419}"),
@@ -218,8 +249,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.DateTime,
                 "Event Date",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_LOCATION,
                 FormatField(
                 new Guid("{B74D15A6-A30A-4499-8085-23D8620BE7C2}"),
@@ -227,8 +261,12 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Event Location",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "255"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_CONTACT_EMAIL,
                 FormatField(
                 new Guid("{6E6F0A1F-0BB2-4A95-AC62-EF8EF54FE137}"),
@@ -236,8 +274,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Text,
                 "Event Contact",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='255' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_IMAGE_URL,
                 FormatField(
                 new Guid("{4B2A0C31-CDB9-44C9-A0E1-B8F3D3A505B4}"),
@@ -245,8 +286,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.URL,
                 "Event Image",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_CATEGORY,
                 FormatField(
                 new Guid("{C94EF074-B098-4E6F-A945-C24E4C24DA0F}"),
@@ -254,8 +298,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Choice,
                 "Event Category",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Event.FIELD_STATUS,
                 FormatField(
                 new Guid("{A2B81C4E-6B17-4BD7-B7AF-F6CB2A0697CE}"),
@@ -263,7 +310,8 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Choice,
                 "Event Status",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
             TryCreateFields(web, fields, fieldsXml);
 
@@ -289,6 +337,9 @@ namespace CorporateEvents.SharePointWeb.Models {
             var fieldsXml = new Dictionary<string,string>();
 
             #region Create Sessions List Site Columns
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("NumLines", "6"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
 
             // Build site columns for event sessions list    
             fieldsXml.Add(Session.FIELD_DESCRIPTION,
@@ -298,8 +349,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Note,
                 "Session Description",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "NumLines='6' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Session.FIELD_DATE,
                 FormatField(
                 new Guid("{3C40CB12-D533-4AB1-9D69-43306D8A7D41}"),
@@ -307,8 +361,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.DateTime,
                 "Session Date",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Session.FIELD_ID,
                 FormatField(
                 new Guid("{3779D32B-35DF-46AB-84E4-AA969D165AF1}"),
@@ -316,8 +373,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Number,
                 "Session ID",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Session.FIELD_IMAGEURL,
                 FormatField(
                 new Guid("{918CAE08-D4B0-43BC-B5D7-118FEA8586E3}"),
@@ -325,8 +385,11 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.URL,
                 "Session Image",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Session.FIELD_STATUS,
                 FormatField(
                 new Guid("{D6AF68B1-BEC2-4E98-9425-FC7E27ADA302}"),
@@ -334,7 +397,8 @@ namespace CorporateEvents.SharePointWeb.Models {
                 FieldType.Choice,
                 "Session Status",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
             
             TryCreateFields(web, fields, fieldsXml);
 
@@ -354,37 +418,52 @@ namespace CorporateEvents.SharePointWeb.Models {
             #region Create Speakers List Site Columns
 
             // Build site columns for event speakers list
+            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "50"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", "")); 
             fieldsXml.Add(Speaker.FIELD_FIRSTNAME, FormatField(
                 new Guid("{063EA18D-F9A1-482C-960F-34BACFD3F824}"),
                 Speaker.FIELD_FIRSTNAME,
                 FieldType.Text,
                 "Speaker First Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "50"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Speaker.FIELD_LASTNAME,FormatField(
                 new Guid("{EDA5E263-5CED-4D80-BF8B-1292FA968A4E}"),
                 Speaker.FIELD_LASTNAME,
                 FieldType.Text,
                 "Speaker Last Name",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='50' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("MaxLength", "100"));
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Speaker.FIELD_EMAIL,FormatField(
                 new Guid("{4CCF3CAE-83B0-459B-9D35-29BF1014EDDA}"),
                 Speaker.FIELD_EMAIL,
                 FieldType.Text,
                 "Speaker Email",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "MaxLength='100' Customization=''"));
+                false,
+                additionalAttributes));
 
+            additionalAttributes = new List<KeyValuePair<string, string>>();
+            additionalAttributes.Add(new KeyValuePair<string, string>("Customization", ""));
             fieldsXml.Add(Speaker.FIELD_ID,FormatField(
                 new Guid("{46255703-8E66-4CC8-892E-CA6DBE7750C0}"),
                 Speaker.FIELD_ID,
                 FieldType.Text,
                 "Speaker ID",
                 ListDetails.CorporateEventsSiteColumnsGroup,
-                "Customization=''"));
+                false,
+                additionalAttributes));
 
             TryCreateFields(web, fields, fieldsXml);
             #endregion
@@ -393,8 +472,20 @@ namespace CorporateEvents.SharePointWeb.Models {
         } 
         #endregion
 
-        static string FormatField(Guid fieldId, string internalName, FieldType fieldType, string displayName, string groupName, string attributes) {
-            return FieldAndContentTypeExtensions.FormatFieldXml(fieldId, internalName, fieldType.ToString(), displayName, groupName, attributes);
+        static string FormatField(Guid fieldId, string internalName, FieldType fieldType, string displayName, string groupName, bool required, IEnumerable<KeyValuePair<string, string>> attributes)
+        {
+
+            FieldCreationInformation fldCreate = new FieldCreationInformation(fieldType)
+            {
+                Id = fieldId,
+                InternalName = internalName,
+                DisplayName = displayName,
+                Group = groupName,    
+                AdditionalAttributes = attributes,
+                Required = required,
+            };
+
+            return FieldAndContentTypeExtensions.FormatFieldXml(fldCreate);
         }
 
         private static void TryCreateFields(Web web, List<Field> fields, Dictionary<string, string> fieldsXml) {
@@ -437,20 +528,6 @@ namespace CorporateEvents.SharePointWeb.Models {
             web.Context.Load(list);
             web.Context.ExecuteQuery();
             return list.Id.ToString();
-        }
-
-        static TField CreateField<TField>(Web web, Guid fieldId, string internalName, FieldType fieldType, string displayName, string groupName, string attributes, bool executeQuery = true) where TField : Field{
-            if (!web.Fields.ServerObjectIsNull.HasValue ||
-                web.Fields.ServerObjectIsNull.Value) {
-                web.Context.Load(web.Fields);
-                web.Context.ExecuteQuery();
-            }
-
-            var field = web.Fields.FirstOrDefault(f => f != null && f.StaticName == internalName);
-            if (field == null)
-                field = web.CreateField<TField>(fieldId, internalName, fieldType, true, displayName, groupName, attributes, executeQuery);
-
-            return web.Context.CastTo<TField>(field);
         }
         
         private string CreateContentType(Web web, string name, string description, string group, string id) {

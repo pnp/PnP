@@ -97,7 +97,7 @@ namespace Core.XMLBasedFieldsAndContentTypesWeb
                 list.AddContentTypeToListByName("ContosoWorkspaceDocument");
 
                 // Create views for document library
-                list.CreateListVewsFromXMLFile(System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/ListViews.xml")));
+                list.CreateViewsFromXMLFile(System.Web.Hosting.HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/ListViews.xml")));
 
                 lblStatus3.Text = string.Format("Document library called <a href='{0}'>{1}</a> was created with few custom views.",
                                                 spContext.SPHostUrl.ToString() + "/" + txtDocLib.Text, txtDocLib.Text);

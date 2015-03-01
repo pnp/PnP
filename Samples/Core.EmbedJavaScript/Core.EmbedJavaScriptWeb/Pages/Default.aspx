@@ -13,21 +13,20 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="True" />
     <div id="divSPChrome"></div>
     <div style="left: 40px; position: absolute;">
-        <h1>JavaScript Embedding</h1>
+        <h1>Embed JavaScript</h1>
         <ul style="list-style-type: square;">
-            <li><b>Step 1:</b> "Embed" the JavaScript file to your current site using the button in the demo section</li>
-            <li><b>Step 2:</b> Check out the changes by selecting "Back to Site" in the top navigation followed by:
+            <li><b>Step 1:</b> Embed or remove a JavaScript file on your current site using the buttons.</li>
+            <li><b>Step 2:</b> Check out the changes by selecting <b>Back to Site</b> followed by:
                 <ul style="list-style-type: square;">
                     <li>Verifying that every page shows a customized status message</li>
-                    <li>Verifying the create a sub site link has disappeared (select Site Actions > Site Contents)</li>
+                    <li>Verifying the new subsite link has disappeared (select Site Actions > Site Contents)</li>
                 </ul>
             </li>
         </ul>
+        <br />        
         <br />
-        Click the buttons to inject or remove a JavaScript file on your current site. 
         <br />
-        <br />
-        <asp:Button runat="server" ID="btnSubmit" Text="Inject customization" OnClick="btnSubmit_Click"/>
+        <asp:Button runat="server" ID="btnSubmit" Text="Embed customization" OnClick="btnSubmit_Click"/>
         <asp:Button runat="server" ID="btnRemove" Text="Remove customization" OnClick="btnRemove_Click" />  
         <br />
     </div>

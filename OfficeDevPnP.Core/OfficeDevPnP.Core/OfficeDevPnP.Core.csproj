@@ -201,8 +201,10 @@
     <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\ProvisioningExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\SearchExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
+    <Compile Include="AppModelExtensions\VariationExtensions.cs" />
     <Compile Include="AppModelExtensions\WorkflowExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
@@ -218,6 +220,8 @@
     <Compile Include="Entities\SitePolicyEntity.cs" />
     <Compile Include="Entities\ThemeEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Entities\VariationInformation.cs" />
+    <Compile Include="Entities\VariationLabelEntity.cs" />
     <Compile Include="Entities\WebPartEntity.cs" />
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
