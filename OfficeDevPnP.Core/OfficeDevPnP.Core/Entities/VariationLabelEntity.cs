@@ -9,7 +9,7 @@ namespace OfficeDevPnP.Core.Entities
     /// <summary>
     /// Class represents variation label
     /// </summary>
-    public class VariationLabel
+    public class VariationLabelEntity
     {
         /// <summary>
         /// The variation label title

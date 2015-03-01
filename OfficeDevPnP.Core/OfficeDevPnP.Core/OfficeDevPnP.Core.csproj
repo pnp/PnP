@@ -221,6 +221,7 @@
     <Compile Include="Entities\ThemeEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
     <Compile Include="Entities\VariationInformation.cs" />
+    <Compile Include="Entities\VariationLabelEntity.cs" />
     <Compile Include="Entities\WebPartEntity.cs" />
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />

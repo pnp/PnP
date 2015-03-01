@@ -117,7 +117,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="sourceVariationLabel">Source variation label</param>
-        public static void ProvisionSourceVariationLabel(this ClientContext context, VariationLabel sourceVariationLabel)
+        public static void ProvisionSourceVariationLabel(this ClientContext context, VariationLabelEntity sourceVariationLabel)
         {
             if (sourceVariationLabel == null)
             {
@@ -125,7 +125,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
             }
 
             // Compose the parameters
-            List<VariationLabel> sourceVariations = new List<VariationLabel>();
+            List<VariationLabelEntity> sourceVariations = new List<VariationLabelEntity>();
             sourceVariations.Add(sourceVariationLabel);
 
             // Create source variation label
@@ -139,7 +139,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="variationLabels">Variation labels</param>
-        public static void ProviosionTargetVariationLabels(this ClientContext context, List<VariationLabel> variationLabels)
+        public static void ProviosionTargetVariationLabels(this ClientContext context, List<VariationLabelEntity> variationLabels)
         {
             if (variationLabels == null)
             {
@@ -147,7 +147,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
             }
 
             // Get the target variation labels
-            List<VariationLabel> targetVariations = variationLabels.Where(x => x.IsSource == false).ToList();
+            List<VariationLabelEntity> targetVariations = variationLabels.Where(x => x.IsSource == false).ToList();
 
             // Create target variation labels
             if ((targetVariations != null) && (targetVariations.Count > 0))
@@ -161,7 +161,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="variationLabel">Variation label</param>
-        public static void WaitForVariationLabelCreation(this ClientContext context, VariationLabel variationLabel)
+        public static void WaitForVariationLabelCreation(this ClientContext context, VariationLabelEntity variationLabel)
         {
             if (variationLabel == null)
             {
@@ -182,7 +182,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="variationLabels">Variation labels</param>
-        private static void CreateVariationLabels(this ClientContext context, List<VariationLabel> variationLabels)
+        private static void CreateVariationLabels(this ClientContext context, List<VariationLabelEntity> variationLabels)
         {
             // Get current web
             Web web = context.Web;
@@ -210,7 +210,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
 
                 if (variationLabelsList != null)
                 {
-                    foreach (VariationLabel label in variationLabels)
+                    foreach (VariationLabelEntity label in variationLabels)
                     {
                         // Check if variation label already exists
                         var varLabel = collListItems.FirstOrDefault(x => x["Language"].ToString() == label.Language);
@@ -245,7 +245,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="variationLabel">Variation label</param>
         /// <returns>True, if hierarchy is created for the variation label</returns>
-        private static bool CheckForHierarchyCreation(this ClientContext context, VariationLabel variationLabel)
+        private static bool CheckForHierarchyCreation(this ClientContext context, VariationLabelEntity variationLabel)
         {
             bool hierarchyIsCreated = false;
 
