@@ -11,8 +11,8 @@ namespace OfficeDevPnP.Core.AppModelExtensions
     /// </summary>
     public static partial class VariationExtensions
     {
-        const string VariationRelationShipsListId = "_VarRelationshipsListId";
-        const string VariationLabelsListId = "_VarLabelsListId";
+        const string VARIATIONRELATIONSHIPSLISTID = "_VarRelationshipsListId";
+        const string VARIATIONLABELSLISTID = "_VarLabelsListId";
 
         /// <summary>
         /// Configures the variation settings
@@ -24,13 +24,18 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// <param name="variationSettings">Variation settings</param>
         public static void ConfigureVariationsSettings(this ClientContext context, VariationInformation variationSettings)
         {
+            if (variationSettings == null)
+            {
+                throw new ArgumentException("variationSettings");
+            }
+
             // Get current web
             Web web = context.Web;
             context.Load(web, w => w.ServerRelativeUrl);
             context.ExecuteQueryRetry();
 
             // Try to get _VarRelationshipsListId property from web property bag
-            string variationListId = web.GetPropertyBagValueString(VariationRelationShipsListId, string.Empty);
+            string variationListId = web.GetPropertyBagValueString(VARIATIONRELATIONSHIPSLISTID, string.Empty);
 
             if (!string.IsNullOrEmpty(variationListId))
             {
@@ -114,6 +119,11 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// <param name="sourceVariationLabel">Source variation label</param>
         public static void ProvisionSourceVariationLabel(this ClientContext context, VariationLabel sourceVariationLabel)
         {
+            if (sourceVariationLabel == null)
+            {
+                throw new ArgumentException("sourceVariationLabel");
+            }
+
             // Compose the parameters
             List<VariationLabel> sourceVariations = new List<VariationLabel>();
             sourceVariations.Add(sourceVariationLabel);
@@ -131,6 +141,11 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// <param name="variationLabels">Variation labels</param>
         public static void ProviosionTargetVariationLabels(this ClientContext context, List<VariationLabel> variationLabels)
         {
+            if (variationLabels == null)
+            {
+                throw new ArgumentException("variationLabels");
+            }
+
             // Get the target variation labels
             List<VariationLabel> targetVariations = variationLabels.Where(x => x.IsSource == false).ToList();
 
@@ -148,6 +163,11 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// <param name="variationLabel">Variation label</param>
         public static void WaitForVariationLabelCreation(this ClientContext context, VariationLabel variationLabel)
         {
+            if (variationLabel == null)
+            {
+                throw new ArgumentException("variationLabel");
+            }
+
             while (!CheckForHierarchyCreation(context, variationLabel))
             {
                 // Wait for 60 seconds and then try again
@@ -170,7 +190,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
             context.ExecuteQueryRetry();
 
             // Try to get _VarLabelsListId property from web property bag
-            string variationLabelsListId = web.GetPropertyBagValueString(VariationLabelsListId, string.Empty);
+            string variationLabelsListId = web.GetPropertyBagValueString(VARIATIONLABELSLISTID, string.Empty);
 
             if (!string.IsNullOrEmpty(variationLabelsListId))
             {
@@ -235,7 +255,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
             context.ExecuteQueryRetry();
 
             // Try to get _VarLabelsListId property from web property bag
-            string variationLabelsListId = web.GetPropertyBagValueString(VariationLabelsListId, string.Empty);
+            string variationLabelsListId = web.GetPropertyBagValueString(VARIATIONLABELSLISTID, string.Empty);
 
             if (!string.IsNullOrEmpty(variationLabelsListId))
             {
