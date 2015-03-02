@@ -570,7 +570,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-      
+
 
         private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
         {
@@ -1478,7 +1478,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="fieldCreationInformation">Creation Information of the field</param>
         /// <returns>New taxonomy field</returns>
-        
+
         public static Field CreateTaxonomyField(this Web web, TaxonomyFieldCreationInformation fieldCreationInformation)
         {
             fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
@@ -1486,23 +1486,34 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
             CleanupTaxonomyHiddenField(web, web.Fields, fieldCreationInformation);
-            
+
             if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
 
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+            var showFieldAttribute = new KeyValuePair<string, string>();
+            if (fieldCreationInformation.AdditionalAttributes != null)
+            {
+                showFieldAttribute = fieldCreationInformation.AdditionalAttributes.FirstOrDefault(a => a.Key == "ShowField");
+            }
+            if (showFieldAttribute.Key == null)
+            {
+                if (fieldCreationInformation.AdditionalAttributes == null)
+                {
+                    fieldCreationInformation.AdditionalAttributes = new List<KeyValuePair<string, string>>();
+                }
+                ((List<KeyValuePair<string, string>>)fieldCreationInformation.AdditionalAttributes).Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+            }
 
-                var _field = web.CreateField(fieldCreationInformation);
+            var _field = web.CreateField(fieldCreationInformation);
 
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
 
-                web.Context.ExecuteQueryRetry();
+            web.Context.ExecuteQueryRetry();
 
-                return _field;
+            return _field;
 
         }
 
@@ -1525,7 +1536,7 @@ namespace Microsoft.SharePoint.Client
                 web.Update();
                 web.Context.ExecuteQuery();
 
-                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() {Id = field.Id, InternalName = field.InternalName});
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() { Id = field.Id, InternalName = field.InternalName });
 
             }
         }
@@ -1550,7 +1561,7 @@ namespace Microsoft.SharePoint.Client
                 web.Update();
                 web.Context.ExecuteQueryRetry();
 
-                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() {Id = id, InternalName = field.InternalName});
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() { Id = id, InternalName = field.InternalName });
             }
         }
 
@@ -1572,18 +1583,28 @@ namespace Microsoft.SharePoint.Client
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
-
-                var _field = list.CreateField(fieldCreationInformation);
-
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
-
-                list.Context.ExecuteQueryRetry();
-
-                return _field;
+            var showFieldAttribute = new KeyValuePair<string, string>();
+            if (fieldCreationInformation.AdditionalAttributes != null)
+            {
+                showFieldAttribute = fieldCreationInformation.AdditionalAttributes.FirstOrDefault(a => a.Key == "ShowField");
             }
+            if (showFieldAttribute.Key == null)
+            {
+                if (fieldCreationInformation.AdditionalAttributes == null)
+                {
+                    fieldCreationInformation.AdditionalAttributes = new List<KeyValuePair<string, string>>();
+                }
+                ((List<KeyValuePair<string, string>>)fieldCreationInformation.AdditionalAttributes).Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+            }
+            var _field = list.CreateField(fieldCreationInformation);
+
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
+
+            list.Context.ExecuteQueryRetry();
+
+            return _field;
+        }
 
         /// <summary>
         /// Wires up MMS field to the specified term set.
