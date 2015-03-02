@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
-    /// This class holds navigation related methods
+    /// This class holds deprecated navigation related methods
     /// </summary>
     public static partial class NavigationExtensions
     {
+        #region Will be deprecated in May 2015 release
         /// <summary>
         /// Add a node to quickLaunch or top navigation bar
         /// </summary>
@@ -38,7 +39,6 @@ namespace Microsoft.SharePoint.Client
         {
             DeleteNavigationNode(web, nodeTitle, parentNodeTitle, isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
         }
-
-
+        #endregion
     }
 }

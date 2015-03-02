@@ -8,7 +8,7 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// Class that deals with feature activation and deactivation
     /// </summary>
-    public static class FeatureExtensions
+    public static partial class FeatureExtensions
     {
         const string MSG_PROBLEM_REMOVING = "Problem removing feature [{0}].";
 

@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace OfficeDevPnP.Core.Utilities 
+namespace OfficeDevPnP.Core.Utilities
 {
+    #region Will be deprecated in May 2015 release
 
     [Obsolete("Please use the Log.Debug, Log.Info, Log.Warning, Log.Error and Log.Fatal methods. This deprecated enum will be removed in the May release.")]
     public enum EventId
@@ -343,4 +344,6 @@ namespace OfficeDevPnP.Core.Utilities
         }
 
     }
+
+#endregion
 }
