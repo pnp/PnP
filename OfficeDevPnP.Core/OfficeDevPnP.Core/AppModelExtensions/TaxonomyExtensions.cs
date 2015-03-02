@@ -1484,7 +1484,7 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
-            
+
             CleanupTaxonomyHiddenField(web, web.Fields, fieldCreationInformation);
             
             if (fieldCreationInformation.Id == Guid.Empty)
@@ -1492,18 +1492,66 @@ namespace Microsoft.SharePoint.Client
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
 
-            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-            additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-            var _field = web.CreateField(fieldCreationInformation);
+                var _field = web.CreateField(fieldCreationInformation);
 
-            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-            _field.Update();
+                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+                _field.Update();
 
+                web.Context.ExecuteQueryRetry();
+
+                return _field;
+
+        }
+
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by internal name
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="internalName">Internal name of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldByInternalName(this Web web, string internalName)
+        {
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            web.Context.ExecuteQuery();
+
+            Field field = fields.FirstOrDefault(f => f.InternalName == internalName);
+
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQuery();
+
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() {Id = field.Id, InternalName = field.InternalName});
+
+            }
+        }
+
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by id
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="id">Guid representing the id of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldById(this Web web, Guid id)
+        {
+
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQueryRetry();
 
-            return _field;
+            Field field = fields.FirstOrDefault(f => f.Id == id);
 
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQueryRetry();
+
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() {Id = id, InternalName = field.InternalName});
+            }
         }
 
         /// <summary>
@@ -1524,19 +1572,18 @@ namespace Microsoft.SharePoint.Client
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
-            List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-            additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
+                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
+                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
 
-            var _field = list.CreateField(fieldCreationInformation);
+                var _field = list.CreateField(fieldCreationInformation);
 
-            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-            _field.Update();
+                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+                _field.Update();
 
-            list.Context.ExecuteQueryRetry();
+                list.Context.ExecuteQueryRetry();
 
-            return _field;
-        }
-
+                return _field;
+            }
 
         /// <summary>
         /// Wires up MMS field to the specified term set.
