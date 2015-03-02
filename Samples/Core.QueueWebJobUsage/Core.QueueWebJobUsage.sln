@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage", "Core.QueueWebJobUsage\Core.QueueWebJobUsage.csproj", "{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsageWeb", "Core.QueueWebJobUsageWeb\Core.QueueWebJobUsageWeb.csproj", "{6BF6B1A6-B695-432D-9C5C-06BBC633452F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0FB68674-2E93-471D-831E-A5A18E66E617}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Common", "Core.QueueWebJobUsage.Common\Core.QueueWebJobUsage.Common.csproj", "{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Project", "Helper Project", "{5700E885-C51B-4012-B760-62FAF97EE5B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Console.SendMessage", "Core.QueueWebJobUsage.Console.SendMessage\Core.QueueWebJobUsage.Console.SendMessage.csproj", "{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Job", "Core.QueueWebJobUsage.Job\Core.QueueWebJobUsage.Job.csproj", "{99C051BB-60CB-4EDE-BF2E-9CB2130E2595}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6BF6B1A6-B695-432D-9C5C-06BBC633452F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BF6B1A6-B695-432D-9C5C-06BBC633452F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BF6B1A6-B695-432D-9C5C-06BBC633452F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BF6B1A6-B695-432D-9C5C-06BBC633452F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C051BB-60CB-4EDE-BF2E-9CB2130E2595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C051BB-60CB-4EDE-BF2E-9CB2130E2595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C051BB-60CB-4EDE-BF2E-9CB2130E2595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C051BB-60CB-4EDE-BF2E-9CB2130E2595}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F} = {5700E885-C51B-4012-B760-62FAF97EE5B2}
+	EndGlobalSection
+EndGlobal
