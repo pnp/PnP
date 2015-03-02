@@ -11,6 +11,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using System.Configuration;
+using Microsoft.Online.SharePoint.TenantAdministration;
 
 namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
 {
@@ -210,8 +211,8 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                     UserCodeWarningLevel = properties.UserCodeWarningLevel,
                 };
 
-                this.AppOnlyClientContext.Web.AddSiteCollectionTenant(newSite);
-
+                Tenant tenant = new Tenant(this.AppOnlyClientContext);
+                tenant.CreateSiteCollection(newSite);
                 InstantiateCreatedSiteClientContext(newSite.Url);
             }
         }
