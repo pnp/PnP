@@ -11,7 +11,7 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// File-based (CAML) provisioning extensions
     /// </summary>
-    public static class ProvisioningExtensions
+    public static partial class ProvisioningExtensions
     {
         const string SharePointNamespaceName = "http://schemas.microsoft.com/sharepoint/";
 

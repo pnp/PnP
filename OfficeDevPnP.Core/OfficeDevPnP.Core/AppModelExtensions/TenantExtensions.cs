@@ -15,6 +15,9 @@ namespace Microsoft.SharePoint.Client
 {
     public static partial class TenantExtensions
     {
+        const string SITE_STATUS_ACTIVE = "Active"; 
+        const string SITE_STATUS_CREATING = "Creating"; 
+        const string SITE_STATUS_RECYCLED = "Recycled"; 
 
 #if !CLIENTSDKV15
         #region Site collection creation

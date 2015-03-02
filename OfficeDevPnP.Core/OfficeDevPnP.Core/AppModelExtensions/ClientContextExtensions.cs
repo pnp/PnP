@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static class ClientContextExtensions
+    public static partial class ClientContextExtensions
     {
         /// <summary>
         /// Clones a ClientContext object while "taking over" the security context of the existing ClientContext instance

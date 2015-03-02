@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
+using System.Xml.Linq;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
-    /// Class that holds the deprecated file and folder methods
+    /// File-based (CAML) deprecated provisioning extensions
     /// </summary>
-    public static partial class FileFolderExtensions
+    public static partial class ProvisioningExtensions
     {
-
+        
     }
 }
