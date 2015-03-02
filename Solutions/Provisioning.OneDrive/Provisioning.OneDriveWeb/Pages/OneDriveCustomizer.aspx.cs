@@ -56,14 +56,12 @@ namespace Provisioning.OneDriveWeb.Pages
                     if (rootWeb.GetPropertyBagValueInt(OneDriveCustomizer.OneDriveMarkerBagID, 0) < 2)
                     {
                         // Let's first upload the contoso theme to host web, if it does not exist there
-                        rootWeb.DeployThemeToWeb("SPC",
-                                        HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")),
-                                        string.Empty,
-                                        HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")),
-                                        string.Empty);
-
-                        // Setting the SPC theme to host web
-                        rootWeb.SetThemeToWeb("SPC");
+                        var colorFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
+                        var backgroundFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
+                        rootWeb.CreateComposedLookByUrl("SPC", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
+                        
+                        // Setting the Contoos theme to host web
+                        rootWeb.SetComposedLookByUrl("SPC");
 
                         // Add additional JS injection with the policy statement to the site
                         rootWeb.AddJsLink("OneDriveCustomJS", BuildJavaScriptUrl());
