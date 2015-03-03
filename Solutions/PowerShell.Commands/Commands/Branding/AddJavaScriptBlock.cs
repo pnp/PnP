@@ -15,11 +15,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Script = null;
 
         [Parameter(Mandatory = false)]
-        public SwitchParameter AddToSite;
+        [Alias("AddToSite")]
+        public SwitchParameter SiteScoped;
 
         protected override void ExecuteCmdlet()
         {
-            if (!AddToSite)
+            if (!SiteScoped)
             {
                 SelectedWeb.AddJsBlock(Key, Script);
             }
