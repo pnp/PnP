@@ -10,37 +10,6 @@ namespace OfficeDevPnP.Core.Utilities
 {
     public class MailUtility
     {
-#if CLIENTSDKV15
-
-        /// <summary>
-        /// Sends an email
-        /// </summary>
-        /// <param name="context">Context for SharePoint objects and operations</param>
-        /// <param name="to">List of TO addresses.</param>
-        /// <param name="cc">List of CC addresses.</param>
-        /// <param name="subject">Subject of the mail.</param>
-        /// <param name="body">HTML body of the mail.</param>
-        public static void SendEmail(ClientContext context, IEnumerable<String> to, IEnumerable<String> cc, string subject, string body)
-        {
-            EmailProperties properties = new EmailProperties();
-            properties.To = to;
-
-            if (cc != null)
-            {
-                properties.CC = cc;
-            }
-
-            properties.Subject = subject;
-            properties.Body = body;
-
-            Microsoft.SharePoint.Client.Utilities.Utility.SendEmail(context, properties);
-            context.ExecuteQueryRetry();
-        }
-
-#endif
-
-#if !CLIENTSDKV15
-
         /// <summary>
         /// Sends an email via Office 365 SMTP
         /// </summary>
@@ -79,6 +48,21 @@ namespace OfficeDevPnP.Core.Utilities
         /// <param name="asyncUserToken">The user token that is used to correlate the asynchronous email message.</param>
         public static void SendEmail(string servername, string fromAddress, SecureString fromUserPassword, IEnumerable<String> to, IEnumerable<String> cc, string subject, string body, bool sendAsync = false, object asyncUserToken = null)
         {
+            if (String.IsNullOrEmpty(servername))
+            {
+                throw new ArgumentException("servername");
+            }
+
+            if (String.IsNullOrEmpty(fromAddress))
+            {
+                throw new ArgumentException("fromAddress");
+            }
+
+            if (fromUserPassword == null || fromUserPassword.Length == 0)
+            {
+                throw new ArgumentException("fromUserPassword");
+            }
+
             SmtpClient server = new SmtpClient(servername);
             server.Port = 587;
             server.EnableSsl = true;
@@ -138,6 +122,30 @@ namespace OfficeDevPnP.Core.Utilities
             }
         }
 
-#endif
+        /// <summary>
+        /// Sends an email using the SharePoint SendEmail method
+        /// </summary>
+        /// <param name="context">Context for SharePoint objects and operations</param>
+        /// <param name="to">List of TO addresses.</param>
+        /// <param name="cc">List of CC addresses.</param>
+        /// <param name="subject">Subject of the mail.</param>
+        /// <param name="body">HTML body of the mail.</param>
+        public static void SendEmail(ClientContext context, IEnumerable<String> to, IEnumerable<String> cc, string subject, string body)
+        {
+            EmailProperties properties = new EmailProperties();
+            properties.To = to;
+
+            if (cc != null)
+            {
+                properties.CC = cc;
+            }
+
+            properties.Subject = subject;
+            properties.Body = body;
+
+            Microsoft.SharePoint.Client.Utilities.Utility.SendEmail(context, properties);
+            context.ExecuteQueryRetry();
+        }
+
     }
 }
