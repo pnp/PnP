@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.Workflow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.WorkflowWeb", "Provisioning.Cloud.WorkflowWeb\Provisioning.Cloud.WorkflowWeb.csproj", "{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{166D9D33-42F4-4DCC-8CE0-1220B0074001}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

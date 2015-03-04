@@ -59,9 +59,9 @@
     </AppManifestFile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SiteProvisioningWorkflowWeb\Provisioning.Cloud.Workflow.Web.csproj">
+    <ProjectReference Include="..\Provisioning.Cloud.WorkflowWeb\Provisioning.Cloud.WorkflowWeb.csproj">
       <Project>{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}</Project>
-      <Name>Provisioning.Cloud.Workflow.Web</Name>
+      <Name>Provisioning.Cloud.WorkflowWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
       <OutputItemType>SharePointWebProjectOutput</OutputItemType>
