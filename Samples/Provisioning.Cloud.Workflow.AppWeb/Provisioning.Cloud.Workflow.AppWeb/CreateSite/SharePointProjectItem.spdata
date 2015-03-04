@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.RemoteEventReceiver" DefaultFile="CreateSite.cs" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="CreateSite\" Type="ElementManifest" />
+  </Files>
+  <ExtensionData>
+    <ExtensionDataItem Key="RemoteEventReceiverCategory" Value="ItemEventReceiver" />
+    <ExtensionDataItem Key="WcfServiceRelativePath" Value="Services\CreateSite.svc" />
+  </ExtensionData>
+</ProjectItem>
