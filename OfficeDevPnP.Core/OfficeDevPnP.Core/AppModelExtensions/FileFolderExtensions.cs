@@ -43,12 +43,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="comment">Message to be recorded with the approval</param>
         public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
         {
-            File file = web.GetFileByServerRelativeUrl(url);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            var file = web.GetFileByServerRelativeUrl(url);
+            web.Context.Load(file, f => f.Exists);
             web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
+                web.Context.Load(file, f => f.CheckOutType);
+                web.Context.ExecuteQueryRetry();
+
                 if (file.CheckOutType != CheckOutType.None)
                 {
                     file.CheckIn(comment, checkinType);
@@ -64,12 +67,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="serverRelativeUrl">The server rrelative url of the file to checkout</param>
         public static void CheckOutFile(this Web web, string serverRelativeUrl)
         {
-            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+            web.Context.Load(file, f => f.Exists);
             web.Context.ExecuteQueryRetry();
 
             if (file.Exists)
             {
+                web.Context.Load(file, x => x.CheckOutType);
+                web.Context.ExecuteQueryRetry();
                 if (file.CheckOutType == CheckOutType.None)
                 {
                     file.CheckOut();
