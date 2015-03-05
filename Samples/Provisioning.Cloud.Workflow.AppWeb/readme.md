@@ -14,6 +14,10 @@ Learn how to use a workflow to provision a SharePoint site by using the remote p
 - A SharePoint 2013 development environment
 - Create on the host web an approval workflow and associated list identical to the ones deployed to the app web
 
+### Solution ###
+Solution | Author(s)
+---------|----------
+Provisioning.Cloud.Workflow.AppWeb | Jim Crowley (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
