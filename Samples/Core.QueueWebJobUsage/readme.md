@@ -12,7 +12,7 @@ Typical use cases for long lasting asynchronous operations would be for example 
 
 See exact details on the model from blog post from Vesa Juvonen
 
-- [Using Azure storage queues and WebJobs for async actions in Office 365](http://blogs.msdn.com/vesku)
+- [Using Azure storage queues and WebJobs for async actions in Office 365](http://blogs.msdn.com/b/vesku/archive/2015/03/02/using-azure-storage-queues-and-webjobs-for-async-actions-in-office-365.aspx)
 
 
 ### Applies to ###
