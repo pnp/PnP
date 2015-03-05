@@ -1,7 +1,7 @@
 # Asynchronous site collection creation with WebJob #
 
 ### Summary ###
-Solution demonstrating how to build asynchronious self-service site collection provisioning solution using Azure Storage Queues and Azure WebJobs. 
+Solution demonstrating how to build asynchronous self-service site collection provisioning solution using Azure Storage Queues and Azure WebJobs. 
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -17,7 +17,7 @@ Provisioning.Cloud.Async.WebJob | Vesa Juvonen
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | February 23rd 2014 | Initial release
+1.0  | March 4th 2015 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -26,4 +26,12 @@ Version  | Date | Comments
 ----------
 
 # Introduction #
-Documentation and configuration steps updated shortly
+See detailed documentation from following blog post
+
+- [Hybrid site collection provisioning from Azure to on-premises SharePoint](http://blogs.msdn.com/b/vesku/archive/2015/03/05/hybrid-site-collection-provisioning-from-azure-to-on-premises-sharepoint.aspx)
+
+You can also check following video at PnP Channel 9 section for demo
+
+- [Self service site collection provisioning to Office 365 with Azure WebJob](http://channel9.msdn.com/blogs/OfficeDevPnP/Self-service-site-collection-provisioning-to-Office-365-with-Azure-WebJob)
+
+
