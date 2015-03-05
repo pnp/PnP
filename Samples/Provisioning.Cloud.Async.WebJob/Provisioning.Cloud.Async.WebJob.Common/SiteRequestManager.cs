@@ -53,7 +53,7 @@ namespace Provisioning.Cloud.Async.WebJob.Common
             foreach (SiteProperties sp in spp)
             {
                 if (sp.Url.ToLowerInvariant() == fullSiteUrl.ToLowerInvariant())
-                { 
+                {
                     return true;
                 }
             }
@@ -93,7 +93,11 @@ namespace Provisioning.Cloud.Async.WebJob.Common
                 adminCtx.ExecuteQuery();
             }
 
-            ApplyTemplateForCreatedSiteCollection(webFullUrl, provisionData);
+            // Apply branding if theme information is provided
+            if (!string.IsNullOrEmpty(provisionData.BrandingData.ThemeName))
+            {
+                ApplyTemplateForCreatedSiteCollection(webFullUrl, provisionData);
+            }
 
             return webFullUrl;
         }
