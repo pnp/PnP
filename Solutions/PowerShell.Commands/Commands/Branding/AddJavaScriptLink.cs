@@ -15,11 +15,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string[] Url = null;
 
         [Parameter(Mandatory = false)]
-        public SwitchParameter AddToSite;
+        [Alias("AddToSite")]
+        public SwitchParameter SiteScoped;
 
         protected override void ExecuteCmdlet()
         {
-            if (!AddToSite)
+            if (!SiteScoped)
             {
                 SelectedWeb.AddJsLink(Key, Url);
             }

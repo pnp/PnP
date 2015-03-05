@@ -277,8 +277,20 @@
             });
 
             //load translation files
-            var resourcesFile = scriptUrl + '_resources.' + this.Language.substring(0, 2).toLowerCase() + '.js';
-            $.getScript(resourcesFile);
+            if (typeof CAMControl.resourceLoaded == 'undefined') {
+                CAMControl.resourceLoaded = false;
+                var resourceFileName = scriptUrl + '_resources.' + this.Language.substring(0, 2).toLowerCase() + '.js';
+
+                jQuery.ajax({
+                    dataType: "script",
+                    cache: true,
+                    url: resourceFileName
+                }).done(function () {
+                    CAMControl.resourceLoaded = true;
+                }).fail(function () {
+                    alert('Could not load the resource file ' + resourceFileName);
+                });
+            }
 
             //create a new wrapper for the control using a div
             this._control = $('<div class="cam-taxpicker"></div>');

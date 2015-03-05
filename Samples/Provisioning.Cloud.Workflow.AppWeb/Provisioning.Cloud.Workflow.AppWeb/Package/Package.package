@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b7627680-c7d1-4790-a2ea-26b12593e632" solutionId="b7627680-c7d1-4790-a2ea-26b12593e632" resetWebServer="false" sharePointProductVersion="15.0" name="SiteProvisioningWorkflowAppWeb" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="9cd2463e-20d0-46dc-8042-3d1a34bf48bb" />
+  </features>
+</package>
