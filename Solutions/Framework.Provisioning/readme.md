@@ -4,7 +4,8 @@
  
 This is the initial release of a reference architecture that demonstrates how to provision sites collections in SharePoint Online and SharePoint 2013 on-premises based on a custom XML Template. You're probably familiar with the default site templates, such as Team Site, Project Site, and Communities Site. SharePoint site templates are prebuilt definitions designed around a particular business need. This reference sample take your site provisioning to the next level.  You can use these XML templates to create your own SharePoint site, that defines Fields, Content Types, libraries, lists, views, branding via Compose looks, logos, and other elements that you require for your business needs needs. This XML template servers as blueprint for site which always you to quickly apply to other SharePoint environments and even use the template as the basis for a business solution. 
 
-We are currently working on better documentation which will include logical components, extensibility, XML Schema Definition for the XML Template, a more pleasant User Interface for your users and many more enhancements.  
+### NOTE ###
+We are currently working on better documentation which will include logical diagrams, how to use the provider call  XML Schema Definition for the XML Template, a more pleasant User Interface for your users and many more enhancements. 
 
 ### Applies to ###
 - Office 365 Dedicated (D)
@@ -39,17 +40,18 @@ Version  | Date | Comments
 
 ## Framework.Provisioning.Job ##
 Primary Remote Timer Job that creates the site collection. This solution processes incoming messages from the Azure Queue. 
+
 ## Framework.Provisioning.SiteRequest.Job ##
-This project is used to read from a the Site Request list that resides in your site that hosts the Provisioning App and is responsible for processing Site Requests and adding messages to the Azure Queues.
+This project is used to read from a Site Request list that resides in your site that hosts the Provisioning App and is responsible for processing Site Requests and adding messages to the Azure Queues. 
 
 ## Framework.Provisioning.SPApp ##
-SharePoint App Project
+SharePoint App Project. During install of the application will create the Site Request list in your hosting site collection.
 
 ## Framework.Provisioning.SPAppWeb ##
-This is the actual provider hosted app which is hosted in Microsoft Azure. In this release we provide a simple User interface to test the solution.
+This is the actual provider hosted app which is hosted in Microsoft Azure. In this release we provide a simple User interface to test the solution. 
 
 ## Framework.Provisioning.Azure ##
-Helper Library for working with Azure Queues
+Helper Library for working with Azure Queues and Service Bus.
 
 ## Framework.Provisioning.Core ##
 Primary Engine Component that implements the custom XML Template
