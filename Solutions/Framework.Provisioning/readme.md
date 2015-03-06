@@ -4,7 +4,7 @@
  
 This is the initial release of a reference architecture that demonstrates how to provision sites collections in SharePoint Online and SharePoint 2013 on-premises based on a custom XML Template. You're probably familiar with the default site templates, such as Team Site, Project Site, and Communities Site. SharePoint site templates are prebuilt definitions designed around a particular business need. This reference sample take your site provisioning to the next level.  You can use these XML templates to create your own SharePoint site, that defines Fields, Content Types, libraries, lists, views, branding via Compose looks, logos, and other elements that you require for your business needs needs. This XML template servers as blueprint for site which always you to quickly apply to other SharePoint environments and even use the template as the basis for a business solution. 
 
-We are currently working on more documentation which will include logical components, extensibility, schemas for the XML Template,a more pleasant User Interface for your users and many more enhancements.  
+We are currently working on better documentation which will include logical components, extensibility, XML Schema Definition for the XML Template, a more pleasant User Interface for your users and many more enhancements.  
 
 ### Applies to ###
 - Office 365 Dedicated (D)
