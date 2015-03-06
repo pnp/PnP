@@ -49,16 +49,20 @@ SharePoint App Project
 This is the actual provider hosted app which is hosted in Microsoft Azure. In this release we provide a simple User interface to test the solution.
 
 ## Framework.Provisioning.Azure ##
-Helper component for working with Azure Queues
+Helper Library for working with Azure Queues
 
 ## Framework.Provisioning.Core ##
 Primary Engine Component that implements the custom XML Template
 
 ## Framework.Provisioning.Extensiblity.Designer ##
-Sample Provider that is used to demonstrate the extensibility of the engine by implementing a provider call out. This is just another way to introduce customization post processing of the site collection request.
+Sample Provider that is used to demonstrate the extensibility of the engine by implementing a provider call out. This is just another way to introduce customizations during post processing of the site collection creation.
 
 ## OfficeDevPnP.Core ##
 Office 365 Developer PnP Core Component is extension component which encapsulates commonly used remote CSOM/REST operations as reusable extension methods towards out of the box CSOM objects 
 
 ## Framework.ProvisionTests ##
-Integrate Tests which helps us test the Framework.Provisioning.Core component
+Unit Test project which helps us test the Framework.Provisioning.Core component
+
+## Comments and Feedback ##
+With this initial release the PnP team is very interested in your feedback and any issues that is discovered. Please visit us at  Patterns and Practices Yammer Group - http://aka.ms/officedevpnpYammer or post your issues at https://github.com/OfficeDev/PnP/issues and tag the issue as FrameworkProvisioning.
+
