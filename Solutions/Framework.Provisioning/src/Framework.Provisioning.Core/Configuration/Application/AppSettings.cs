@@ -37,22 +37,25 @@ namespace Framework.Provisioning.Core.Configuration
         /// </summary>
         public bool AutoApprove { get; internal set; }
 
-        //TODO
+        /// <summary>
+        /// Flag to Indicate if you are running on on-prem bits or MT bits.
+        /// </summary>
         public bool SharePointOnPremises { get; internal set; }
 
         /// <summary>
-        /// TODO
+        /// The Tenant Admin Account if you want to use a Service Account
         /// </summary>
         public string TenantAdminAccount { get; internal set; }
 
         /// <summary>
-        /// TODO - SHOULD BE ENCRYPTED
+        /// The Tenant Admin Account Password
         /// </summary>
         public string TenantAdminAccountPwd { get; internal set; }
 
         public string MysiteTenantAdminUrl { get; set; }
+        
         /// <summary>
-        /// TODO
+        /// Defines which assembly to invoke for your Site Request Repostory
         /// </summary>
         public string RepositoryManager { get; internal set; }
     }

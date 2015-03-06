@@ -37,7 +37,7 @@ namespace Framework.Provisioning.Core
 
         #region Properties
         /// <summary>
-        /// TODO
+        /// <seealso cref="Framework.Provisioning.Core.Authentication.IAuthentication"/>
         /// </summary>
         public IAuthentication Authentication
         {
@@ -90,7 +90,7 @@ namespace Framework.Provisioning.Core
         }
 
         /// <summary>
-        /// TODO
+        /// Used to Set user Profile Property of a user. This only works in SharePoint Online
         /// </summary>
         /// <param name="accountName"></param>
         /// <param name="property"></param>
@@ -109,7 +109,7 @@ namespace Framework.Provisioning.Core
         }
 
         /// <summary>
-        /// TODO
+        /// Used to Set user Profile Property of a user. This only works in SharePoint Online
         /// </summary>
         /// <param name="accountName"></param>
         /// <param name="property"></param>

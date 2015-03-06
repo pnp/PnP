@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace Framework.Provisioning.Job
 {
     /// <summary>
-    /// TODO
+    /// Site Provisioning Job to which handles processing new site requests in the Azure Queue
     /// </summary>
     public class SiteProvisioningJob
     {
