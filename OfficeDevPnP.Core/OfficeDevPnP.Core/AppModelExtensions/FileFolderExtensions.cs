@@ -38,22 +38,25 @@ namespace Microsoft.SharePoint.Client
         /// Checks in a file
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="url">The server relative url of the file to checkin</param>
+        /// <param name="serverRelativeUrl">The server relative url of the file to checkin</param>
         /// <param name="checkinType">The type of the checkin</param>
         /// <param name="comment">Message to be recorded with the approval</param>
-        public static void CheckInFile(this Web web, string url, CheckinType checkinType, string comment)
+        public static void CheckInFile(this Web web, string serverRelativeUrl, CheckinType checkinType, string comment)
         {
-            File file = web.GetFileByServerRelativeUrl(url);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            var scope = new ConditionalScope(web.Context, () => file.ServerObjectIsNull.Value != true && file.Exists && file.CheckOutType != CheckOutType.None);
+
+            using (scope.StartScope())
+            {
+                web.Context.Load(file);
+            }
             web.Context.ExecuteQueryRetry();
 
-            if (file.Exists)
+            if(scope.TestResult.Value)
             {
-                if (file.CheckOutType != CheckOutType.None)
-                {
-                    file.CheckIn(comment, checkinType);
-                    web.Context.ExecuteQueryRetry();
-                }
+                file.CheckIn(comment, checkinType);
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -61,20 +64,23 @@ namespace Microsoft.SharePoint.Client
         /// Checks out a file
         /// </summary>
         /// <param name="web">The web to process</param>
-        /// <param name="serverRelativeUrl">The server rrelative url of the file to checkout</param>
+        /// <param name="serverRelativeUrl">The server relative url of the file to checkout</param>
         public static void CheckOutFile(this Web web, string serverRelativeUrl)
         {
-            File file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
-            web.Context.Load(file, x => x.Exists, x => x.CheckOutType);
+            var file = web.GetFileByServerRelativeUrl(serverRelativeUrl);
+
+            var scope = new ConditionalScope(web.Context, () => file.ServerObjectIsNull.Value != true && file.Exists && file.CheckOutType == CheckOutType.None);
+
+            using (scope.StartScope())
+            {
+                web.Context.Load(file);
+            }
             web.Context.ExecuteQueryRetry();
 
-            if (file.Exists)
+            if (scope.TestResult.Value)
             {
-                if (file.CheckOutType == CheckOutType.None)
-                {
-                    file.CheckOut();
-                    web.Context.ExecuteQueryRetry();
-                }
+                file.CheckOut();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -666,19 +672,19 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFile(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
         {
-           if (fileName == null) 
+            if (fileName == null)
             {
-                throw new ArgumentNullException("fileName"); 
+                throw new ArgumentNullException("fileName");
             }
 
-            if (stream == null) 
+            if (stream == null)
             {
-                throw new ArgumentNullException("stream"); 
+                throw new ArgumentNullException("stream");
             }
 
-            if (string.IsNullOrWhiteSpace(fileName)) 
+            if (string.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentException("Destination file name is required.", "fileName"); 
+                throw new ArgumentException("Destination file name is required.", "fileName");
             }
 
             if (Regex.IsMatch(fileName, REGEX_INVALID_FILE_NAME_CHARS))
@@ -742,19 +748,19 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The uploaded File, so that additional operations (such as setting properties) can be done.</returns>
         public static File UploadFileWebDav(this Folder folder, string fileName, Stream stream, bool overwriteIfExists)
         {
-            if (fileName == null) 
+            if (fileName == null)
             {
-                throw new ArgumentNullException("fileName"); 
+                throw new ArgumentNullException("fileName");
             }
 
-            if (stream == null) 
+            if (stream == null)
             {
-                throw new ArgumentNullException("stream"); 
+                throw new ArgumentNullException("stream");
             }
 
-            if (string.IsNullOrWhiteSpace(fileName)) 
+            if (string.IsNullOrWhiteSpace(fileName))
             {
-                throw new ArgumentException("Destination file name is required.", "fileName"); 
+                throw new ArgumentException("Destination file name is required.", "fileName");
             }
 
             if (Regex.IsMatch(fileName, REGEX_INVALID_FILE_NAME_CHARS))
@@ -805,8 +811,8 @@ namespace Microsoft.SharePoint.Client
                     folder.Context.ExecuteQueryRetry();
                 }
 
-                var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);                
-                var web = folder.ListItemAllFields.ParentList.ParentWeb;                
+                var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
+                var web = folder.ListItemAllFields.ParentList.ParentWeb;
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
