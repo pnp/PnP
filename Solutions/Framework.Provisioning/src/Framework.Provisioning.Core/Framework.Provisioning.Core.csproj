@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{77447711-3AB3-4390-A22C-75BB5A97BB95}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Framework.Provisioning.Core</RootNamespace>
+    <AssemblyName>Framework.Provisioning.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Client.Policy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\16\Microsoft.Office.Client.Policy.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+      <HintPath>..\..\..\..\..\pnp\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\16\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractProvisioningService.cs" />
+    <Compile Include="Authentication\AppOnlyAuthenticationTenant.cs" />
+    <Compile Include="Authentication\AppOnlyAuthenticationSite.cs" />
+    <Compile Include="Authentication\IAuthentication.cs" />
+    <Compile Include="Authentication\TenantAccountAuthentication.cs" />
+    <Compile Include="Configuration\ConfigurationFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\IConfigurationFactory.cs" />
+    <Compile Include="Configuration\ITemplateFactory.cs" />
+    <Compile Include="Configuration\Template\AdditionalAdministrator.cs" />
+    <Compile Include="Configuration\Template\ContentType.cs" />
+    <Compile Include="Configuration\Template\ContentTypeBinding.cs" />
+    <Compile Include="Configuration\Template\CustomAction.cs" />
+    <Compile Include="Configuration\Template\CustomActions.cs" />
+    <Compile Include="Configuration\Template\Features.cs" />
+    <Compile Include="Configuration\Template\Field.cs" />
+    <Compile Include="Configuration\Template\File.cs" />
+    <Compile Include="Configuration\Template\Impl\XMLTemplateManager.cs" />
+    <Compile Include="Configuration\Template\ListInstance.cs" />
+    <Compile Include="Configuration\Template\Member.cs" />
+    <Compile Include="Configuration\Template\Owner.cs" />
+    <Compile Include="Configuration\Template\Provider.cs" />
+    <Compile Include="Configuration\Template\SiteFeature.cs" />
+    <Compile Include="Configuration\Template\SiteTemplate.cs" />
+    <Compile Include="Configuration\Template\SiteTemplateManager.cs" />
+    <Compile Include="Configuration\Template\TemplateManager.cs" />
+    <Compile Include="Configuration\Template\BrandingPackage.cs" />
+    <Compile Include="Configuration\Template\User.cs" />
+    <Compile Include="Configuration\Template\SiteSecurity.cs" />
+    <Compile Include="Configuration\Template\Template.cs" />
+    <Compile Include="Configuration\ConfigurationHelper.cs" />
+    <Compile Include="Configuration\IAppSettingsManager.cs" />
+    <Compile Include="Configuration\Application\AppSetttingsManager.cs" />
+    <Compile Include="Configuration\Application\AppSettings.cs" />
+    <Compile Include="Configuration\Template\Vistor.cs" />
+    <Compile Include="Configuration\Template\WebFeature.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Data\DataStoreException.cs" />
+    <Compile Include="Data\Impl\SPSiteRequestManagerImpl.cs" />
+    <Compile Include="Data\ISiteRequestFactory.cs" />
+    <Compile Include="Data\ISiteRequestManager.cs" />
+    <Compile Include="Data\SiteRequestFactory.cs" />
+    <Compile Include="Data\SiteRequestFields.cs" />
+    <Compile Include="Data\SiteRequestList.cs" />
+    <Compile Include="Extensibility\PostProvisioningManager.cs" />
+    <Compile Include="Extensibility\IPostProvisioningProvider.cs" />
+    <Compile Include="IProvisioningService.cs" />
+    <Compile Include="ISharePointService.cs" />
+    <Compile Include="Mail\EmailConfig.cs" />
+    <Compile Include="Mail\EmailHelper.cs" />
+    <Compile Include="Mail\FailureEmailMessage.cs" />
+    <Compile Include="Mail\SuccessEmailMessage.cs" />
+    <Compile Include="Mail\FileSizeFormatProvider.cs" />
+    <Compile Include="Office365ProvisioningService.cs" />
+    <Compile Include="ProfileService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PCResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\Template\TemplateConfiguration.cs" />
+    <Compile Include="OnPremProvisioningService.cs" />
+    <Compile Include="SharePointContext.cs" />
+    <Compile Include="SharePointUser.cs" />
+    <Compile Include="SiteRequestInformation.cs" />
+    <Compile Include="SiteRequestStatus.cs" />
+    <Compile Include="TokenHelper.cs" />
+    <Compile Include="Utilities\PathHelper.cs" />
+    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\XmlSerializerHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PCResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PCResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

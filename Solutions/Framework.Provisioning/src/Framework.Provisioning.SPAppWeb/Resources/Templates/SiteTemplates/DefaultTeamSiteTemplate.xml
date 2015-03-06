@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SiteTemplate Version='1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <Security>
+    <AdditionalAdministrators>
+    </AdditionalAdministrators>
+    <AdditionalOwners>
+    </AdditionalOwners>
+    <AdditionalMembers>
+    </AdditionalMembers>
+    <AdditionalVistors>
+    </AdditionalVistors>
+  </Security>
+  <SiteFields>
+  </SiteFields>
+  <ContentTypes>
+  </ContentTypes>
+  <Lists>
+  </Lists>
+  <Features>
+    <SiteFeatures>
+    </SiteFeatures>
+    <WebFeatures>
+    </WebFeatures>
+  </Features>
+  <CustomActions>
+  </CustomActions>
+</SiteTemplate>
+
