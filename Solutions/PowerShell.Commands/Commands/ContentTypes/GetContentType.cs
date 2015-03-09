@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp("Retrieves a content type")]
     [CmdletExample(
      Code = @"PS:> Get-SPOContentType -Identity ""Project Document""",
-     Remarks = @"This will add an existing content type to a list and sets it as the default content type", SortOrder = 1)]
+     Remarks = @"This will get a listing of content types within the current context", SortOrder = 1)]
     public class GetContentType : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true, HelpMessage="Name or ID of the content type to retrieve")]
