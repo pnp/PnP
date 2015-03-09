@@ -846,7 +846,15 @@
         //used to check if focus is lost from the control (invalidate and hide suggestions)
         checkExternalClick: function (event) {
             //check if the target is outside the picker
-            if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog != null && !$.contains(this._dialog[0], event.target)) {
+            if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog == null) {
+                var rawText = this._editor.text(); //the raw text in the editor (html stripped out)
+                if (rawText) {
+                    var textValidation = this.validateText(rawText); //get the text validation
+                    var html = this.markInvalidTerms(textValidation); //mark invalid terms
+                    this._editor.html(html); //set the editor
+                    this._suggestionContainer.hide(); //hide suggestions
+                }
+            } else if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog != null && !$.contains(this._dialog[0], event.target)) {
                 var rawText = this._editor.text(); //the raw text in the editor (html stripped out)
                 var textValidation = this.validateText(rawText); //get the text validation
                 var html = this.markInvalidTerms(textValidation); //mark invalid terms
