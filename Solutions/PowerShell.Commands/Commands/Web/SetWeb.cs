@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(SiteLogoUrl))
+            if (SiteLogoUrl != null)
             {
                 SelectedWeb.SiteLogoUrl = SiteLogoUrl;
                 SelectedWeb.Update();

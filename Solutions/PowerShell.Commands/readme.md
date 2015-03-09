@@ -193,6 +193,7 @@ Command | Description
 **[Remove-SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** | Removes a custom action from a web
 **[Remove-SPONavigationNode](Documentation/RemoveSPONavigationNode.md)** | Removes a link from the quicklaunch or top navigation
 **[Remove-SPOPropertyBagValue](Documentation/RemoveSPOPropertyBagValue.md)** | Removes a property bag entry
+**[Remove-SPOFile](Documentation/RemoveSPOFile.md)** | Removes a file
 **[Request-SPOReIndexWeb](Documentation/RequestSPOReIndexWeb)** |	Requests a site to fully crawled the next incremental crawl
 **[Set-SPOFileCheckedIn](Documentation/SetSPOFileCheckedIn.md)** | Checks in a file
 **[Set-SPOFileCheckedOut](Documentation/SetSPOFileCheckedOut.md)** | Checks out a file
