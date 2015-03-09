@@ -25,11 +25,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ContentType ct;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
-                    ct = (InSiteHierarchy.IsPresent) ? SelectedWeb.GetContentTypeById(Identity.Id, true) : SelectedWeb.GetContentTypeById(Identity.Id);
+                    ct = SelectedWeb.GetContentTypeById(Identity.Id, InSiteHierarchy.IsPresent);
                 }
                 else
                 {
-                    ct = (InSiteHierarchy.IsPresent) ? SelectedWeb.GetContentTypeByName(Identity.Name, true) : SelectedWeb.GetContentTypeByName(Identity.Name);
+                    ct = SelectedWeb.GetContentTypeByName(Identity.Name, InSiteHierarchy.IsPresent);
                 }
                 if (ct != null)
                 {
