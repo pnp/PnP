@@ -100,13 +100,17 @@ Any hidden input element can be converted to a Taxonomy Picker.  This includes r
 **Client-side example:**
 
 ```HTML
-	<input type="hidden" id="taxPickerContinent" />
+	<div class="ms-core-form-line" style="margin-bottom: 0px;">
+	     <input type="hidden" id="taxPickerContinent" />
+	</div>
 ```
 
 **Server-side example:**
 
 ```ASPX
-	<asp:HiddenField runat="server" ID="taxPickerContinent" />
+	<div class="ms-core-form-line" style="margin-bottom: 0px;">
+		<asp:HiddenField runat="server" ID="taxPickerContinent" />
+	</div>
 ```
 
 ## Transforming the HTML into a Taxonomy Picker Control ##
