@@ -107,7 +107,13 @@
                         this.FilteredFlatTerms.push(this.FlatTerms[i]);
                         var term = this.FlatTerms[i];
                         var path = term.PathOfTerm.split(';');
+
+                        // used when "filterTermId" option is provided
                         if ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) || (this.FilterTermId != null && filterTerm && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)) {
+                            this.FlatTermsForSuggestion.push(term);
+                        }
+                        // if no "filterTermId" option is provided add the terms accordingly to the suggestions list
+                        else if (!this.FilterTermId && path.length <= this.LevelToShowTerms) {
                             this.FlatTermsForSuggestion.push(term);
                         }
                     }
