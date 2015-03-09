@@ -47,7 +47,7 @@
         this.IsOpenForTermCreation = false; //bool indicating if the termset is open for new term creation
         this.NewTerm = null; //the new term being added
         this.FilterTermId = options.filterTermId; // To support filter terms based on Id
-        this.LevelToShowTerms = options.levelToShowTerms; // show terms only till the specified level
+        this.LevelToShowTerms = options.levelToShowTerms || 7; // show terms only till the specified level
         this.UseTermSetasRootNode = options.useTermSetasRootNode //bool indicating if termset to be shown as root node or not
     }
     $.extend(TermSet.prototype, {
