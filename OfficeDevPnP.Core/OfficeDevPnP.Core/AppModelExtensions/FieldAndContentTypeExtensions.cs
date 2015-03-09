@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client.Taxonomy;
+﻿using System.Web.UI.WebControls;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -1172,6 +1173,88 @@ namespace Microsoft.SharePoint.Client
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Removes content type from list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listTitle">Title of the list</param>
+        /// <param name="contentTypeName">The name of the content type</param>
+        public static void RemoveContentTypeFromListByName(this Web web, string listTitle, string contentTypeName)
+        {
+
+            // Get list instances
+            List list = web.GetListByTitle(listTitle);
+            // Get content type instance
+            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            // Remove content type from list
+            RemoveContentTypeFromList(web, list, contentType);
+
+        }
+
+        /// <summary>
+        /// Removes content type from list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="list">The List</param>
+        /// <param name="contentTypeName">The name of the content type</param>
+        public static void RemoveContentTypeFromListByName(this Web web, List list, string contentTypeName)
+        {
+            if (string.IsNullOrEmpty(contentTypeName))
+                throw new ArgumentNullException("contentTypeName");
+            // Get content type instance
+            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            // Remove content type from list
+           RemoveContentTypeFromList(web, list, contentType);
+
+        }
+
+        /// <summary>
+        /// Removes content type from a list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listTitle">Title of the list</param>
+        /// <param name="contentType">The Content Type</param>
+        public static void RemoveContentTypeFromListById(this Web web, string listTitle, ContentType contentType)
+        {
+            // Get list instances
+            List list = web.GetListByTitle(listTitle);
+            // Remove content type from list
+            RemoveContentTypeFromList(web, list, contentType);
+        }
+
+        /// <summary>
+        /// Removes content type from a list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="list">The List</param>
+        /// <param name="contentTypeID">Complete ID for the content type</param>
+        public static void RemoveContentTypeFromListById(this Web web, List list, string contentTypeId)
+        {
+            if (string.IsNullOrEmpty(contentTypeId))
+                throw new ArgumentNullException("contentTypeId");
+            ContentType contentType = GetContentTypeById(web, contentTypeId);
+            // Remove content type from list
+            RemoveContentTypeFromList(web, list, contentType);
+        }
+
+        /// <summary>
+        /// Removes content type from a list
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="list">The List</param>
+        /// <param name="contentType">The Content Type</param>
+        public static void RemoveContentTypeFromList(this Web web, List list, ContentType contentType)
+        {
+            if (contentType == null)
+                throw new ArgumentNullException("contentType");
+
+            if (!list.ContentTypeExistsById(contentType.Id.StringValue))
+                return;
+
+            list.ContentTypes.First(x => x.StringId.Equals(contentType.Id.StringValue)).DeleteObject();
+            list.Context.ExecuteQuery();
         }
 
         /// <summary>
