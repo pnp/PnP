@@ -107,7 +107,7 @@
                         this.FilteredFlatTerms.push(this.FlatTerms[i]);
                         var term = this.FlatTerms[i];
                         var path = term.PathOfTerm.split(';');
-                        if ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) || (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)) {
+                        if ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) || (this.FilterTermId != null && filterTerm && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)) {
                             this.FlatTermsForSuggestion.push(term);
                         }
                     }
