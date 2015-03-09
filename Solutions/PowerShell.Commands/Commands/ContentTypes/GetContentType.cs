@@ -14,6 +14,8 @@ namespace OfficeDevPnP.PowerShell.Commands
     {
         [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true, HelpMessage="Name or ID of the content type to retrieve")]
         public ContentTypePipeBind Identity;
+        [Parameter(Mandatory = false, Position = 1, ValueFromPipeline = false, HelpMessage = "Search site hierarchy for content types")]
+        public SwitchParameter InSiteHierarchy;
 
         protected override void ExecuteCmdlet()
         {
@@ -23,11 +25,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                 ContentType ct;
                 if (!string.IsNullOrEmpty(Identity.Id))
                 {
-                    ct = SelectedWeb.GetContentTypeById(Identity.Id);
+                    ct = (InSiteHierarchy.IsPresent) ? SelectedWeb.GetContentTypeById(Identity.Id, true) : SelectedWeb.GetContentTypeById(Identity.Id);
                 }
                 else
                 {
-                    ct = SelectedWeb.GetContentTypeByName(Identity.Name);
+                    ct = (InSiteHierarchy.IsPresent) ? SelectedWeb.GetContentTypeByName(Identity.Name, true) : SelectedWeb.GetContentTypeByName(Identity.Name);
                 }
                 if (ct != null)
                 {
@@ -37,7 +39,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                var cts = ClientContext.LoadQuery(SelectedWeb.ContentTypes);
+                var cts = (InSiteHierarchy.IsPresent) ? ClientContext.LoadQuery(SelectedWeb.AvailableContentTypes) : ClientContext.LoadQuery(SelectedWeb.ContentTypes);
                 ClientContext.ExecuteQueryRetry();
     
                 WriteObject(cts, true);
