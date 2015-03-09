@@ -1,9 +1,9 @@
-#Remove-SPOContentType
+#Remove-SPOFile
 *Topic automatically generated on: 2015-03-10*
 
-Removes a content type
+Removes a file.
 ##Syntax
-    Remove-SPOContentType [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ContentTypePipeBind>]
+    Remove-SPOFile [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
 
 &nbsp;
 
@@ -11,10 +11,11 @@ Removes a content type
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Force|SwitchParameter|False|
-Identity|ContentTypePipeBind|True|The name or ID of the content type to remove
+ServerRelativeUrl|String|True|
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1
-    PS:> Remove-SPOContentType -Identity "Project Document"
+    
+PS:>Remove-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor
 

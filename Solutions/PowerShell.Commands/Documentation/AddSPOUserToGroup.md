@@ -1,5 +1,5 @@
 #Add-SPOUserToGroup
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-10*
 
 Adds a user to a group
 ##Syntax
@@ -17,12 +17,12 @@ Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the cu
 
 ###Example 1
     
-    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
-    
-Add the specified user to the group with Id 5
-
-###Example 2
-    
     PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'
     
 
+
+###Example 2
+    
+    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
+    
+Add the specified user to the group with Id 5
