@@ -11,7 +11,7 @@
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      >
   <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
     <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate  EmbedCab="yes" />
@@ -67,7 +67,7 @@
   </Product>
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="ProgramFiles64Folder">
         <Directory Id="APPFOLDER" Name="OfficeDevPnP">
           <Directory Id="PowerShell" Name="PowerShell">
             <Directory Id="Modules" Name="Modules">
@@ -81,13 +81,14 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <WixVariable Id="WixUILicenseRtf" Value="Apache License Version 2.rtf" />
     <WixVariable Id="WixUIDialogBmp" Value="officedevpnp.bmp"/>
+    <WixVariable Id="WixUIBannerBmp" Value="setupbanner.png"/>
     <UIRef Id="WixUI_Minimal" />
 
   </Fragment>
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="PowerShellCommands" Guid="ee934ac8-fca6-42b0-8203-69ce050c1c06">
+      <Component Id="PowerShellCommands" Guid="{EEA67F1A-E19F-4CF5-A1AA-193D780CEC9F}" Win64="yes">
         <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)" />
         <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
         <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>

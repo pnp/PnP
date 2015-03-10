@@ -79,7 +79,6 @@ namespace Provisioning.Cloud.Async.WebJobWeb
                 {
                     timeZone.Items.Add(new System.Web.UI.WebControls.ListItem(item.Description, item.Id.ToString()));
                 }
-                timeZone.SelectedValue = "10";
 
                 // Add wanted languages for creation list
                 language.Items.Add(new System.Web.UI.WebControls.ListItem(new CultureInfo(1033).DisplayName, "1033"));
@@ -87,7 +86,11 @@ namespace Provisioning.Cloud.Async.WebJobWeb
                 language.Items.Add(new System.Web.UI.WebControls.ListItem(new CultureInfo(1036).DisplayName, "1036"));
                 language.Items.Add(new System.Web.UI.WebControls.ListItem(new CultureInfo(1053).DisplayName, "1053"));
 
-                txtUrl.Text = Guid.NewGuid().ToString().Replace("-", "");
+                if (!Page.IsPostBack)
+                {
+                    txtUrl.Text = Guid.NewGuid().ToString().Replace("-", "");
+                    timeZone.SelectedValue = "10";
+                }
             }
         }
 

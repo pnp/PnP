@@ -1,5 +1,5 @@
 #Get-SPOContentType
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-10*
 
 Retrieves a content type
 ##Syntax

@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="ProvisioningCloudAsyncWebJob"
      ProductID="{b5f0a960-d5ec-4b48-9fe7-119bd8c35a21}"
-     Version="1.0.0.1"
+     Version="1.0.0.0"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>

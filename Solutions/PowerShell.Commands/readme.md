@@ -99,7 +99,7 @@ Command | Description
 #### Content Type Cmdlets ####
 Command | Description
 :--------|:------------
-**[Add-SPOContentType](Documention/AddSPOContentType.md)** | Creates a new content type
+**[Add-SPOContentType](Documentation/AddSPOContentType.md)** | Creates a new content type
 **[Add-SPOContentTypeToList](Documentation/AddSPOContentTypeToList.md)** | Adds an existing content type to a list
 **[Add-SPOFieldToContentType](Documentation/AddSPOFieldToContentType.md)** | Adds a field to an existing content type
 **[Get-SPOContentType](Documentation/GetSPOContentType.md)** | Returns a content type
@@ -193,6 +193,7 @@ Command | Description
 **[Remove-SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** | Removes a custom action from a web
 **[Remove-SPONavigationNode](Documentation/RemoveSPONavigationNode.md)** | Removes a link from the quicklaunch or top navigation
 **[Remove-SPOPropertyBagValue](Documentation/RemoveSPOPropertyBagValue.md)** | Removes a property bag entry
+**[Remove-SPOFile](Documentation/RemoveSPOFile.md)** | Removes a file
 **[Request-SPOReIndexWeb](Documentation/RequestSPOReIndexWeb)** |	Requests a site to fully crawled the next incremental crawl
 **[Set-SPOFileCheckedIn](Documentation/SetSPOFileCheckedIn.md)** | Checks in a file
 **[Set-SPOFileCheckedOut](Documentation/SetSPOFileCheckedOut.md)** | Checks out a file
@@ -200,7 +201,7 @@ Command | Description
 **[Set-SPOIndexedProperties](Documentation/SetSPOIndexedProperties.md)** |Sets what property of the propertybag should be indexed by search
 **[Set-SPOMasterPage](Documentation/SetSPOMasterPage.md)** | Sets the masterpage
 **[Set-SPOMinimalDownloadStrategy](Documentation/SetSPOMinimalDownloadStrategy.md)** | Turns MDS on or off
-**[Set-SPOPropertyBagValue](Documentation/SetSPropertyBagValue.md)** | Sets a property bag value
+**[Set-SPOPropertyBagValue](Documentation/SetSPOPropertyBagValue.md)** | Sets a property bag value
 **[Set-SPOTheme](Documentation/SetSPOTheme.md)** | Sets the current theme
 
 #### Web Part Cmdlets ####

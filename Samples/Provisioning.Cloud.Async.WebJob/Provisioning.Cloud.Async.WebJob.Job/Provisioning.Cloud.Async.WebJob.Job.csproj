@@ -107,6 +107,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\vesaj-async-webjob.pubxml" />
+    <None Include="Properties\PublishProfiles\vesaj-pnpsitecolasyncwebjob.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
   </ItemGroup>
   <ItemGroup>

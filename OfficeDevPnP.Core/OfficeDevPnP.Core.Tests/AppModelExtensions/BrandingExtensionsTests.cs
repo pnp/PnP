@@ -490,16 +490,16 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
                 context.ExecuteQueryRetry();
-                var webToChange1 = webCollection.First(w => w.Title == testWebName);
+                var webToChangeRoot = webCollection.First(w => w.Title == testWebName);
 
-                var webCollection2 = webToChange1.Webs;
+                var webCollection2 = webToChangeRoot.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title));
                 context.ExecuteQueryRetry();
                 var webToChangeA = webCollection2.First(w => w.Title == "A");
 
                 // Act
                 webToChangeA.SetComposedLookByUrl(builtInLookBlossom);
-                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: true);
+                webToChangeRoot.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: true, updateRootOnly:false);
             }
 
             using (var context = TestCommon.CreateClientContext())
@@ -507,9 +507,9 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
                 context.ExecuteQueryRetry();
-                var webToCheck1 = webCollection.First(w => w.Title == testWebName);
+                var webToCheckRoot = webCollection.First(w => w.Title == testWebName);
 
-                var webCollection2 = webToCheck1.Webs;
+                var webCollection2 = webToCheckRoot.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl));
                 context.ExecuteQueryRetry();
                 var webToCheckA = webCollection2.First(w => w.Title == "A");

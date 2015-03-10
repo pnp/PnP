@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-03-10**
+* Added Remove-SPOFile cmdlet
+
 **2015-02-25**
 * Updated Location parameter in Add-/Remove-SPONavigationNode
 
