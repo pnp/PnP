@@ -1,9 +1,9 @@
 #Get-SPOCustomAction
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-10*
 
 Returns all or a specific custom action(s)
 ##Syntax
-    Get-SPOCustomAction [-Identity [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
+    Get-SPOCustomAction [-Identity [<GuidPipeBind>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 
@@ -11,4 +11,5 @@ Returns all or a specific custom action(s)
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|GuidPipeBind|False|
+Scope|CustomActionScope|False|
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

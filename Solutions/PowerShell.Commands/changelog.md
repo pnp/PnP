@@ -1,5 +1,9 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-03-10**
+* Added Sequence parameter to Add-SPOJavaScriptLink and Add-SPOJavaScriptBlock cmdlets
+* Added Remove-SPOFile cmdlet
+
 **2015-02-25**
 * Updated Location parameter in Add-/Remove-SPONavigationNode
 

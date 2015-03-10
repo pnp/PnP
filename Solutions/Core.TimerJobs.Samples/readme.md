@@ -36,6 +36,11 @@ Below documentation describes each sample and focuses on the unique elements in 
 
 Each sample documentation first explain the timer job itself and next the hosting and running of the timer job is discussed.
 
+## Videos on the timer job framework ##
+On the Office 365 Developer Patterns & Practices video channel (aka.ms/officedevpnpvideos) there are the following videos available:
+- [Introduction to the timer job framework](http://channel9.msdn.com/blogs/OfficeDevPnP/Introduction-to-the-PnP-timer-job-framework): this video explains about the "why" and "what" of the timer job framework and shows a simple demo.
+
+
 # Sample 1: SimpleJob #
 ## Goal ##
 Hello world type sample...it can't really be any simpler :-)

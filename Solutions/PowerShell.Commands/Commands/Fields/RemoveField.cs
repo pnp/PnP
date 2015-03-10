@@ -5,7 +5,7 @@ using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOField")]
+    [Cmdlet(VerbsCommon.Remove, "SPOField", SupportsShouldProcess = true)]
     public class RemoveField : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
