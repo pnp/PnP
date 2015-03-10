@@ -515,37 +515,63 @@ namespace Microsoft.SharePoint.Client
 
         #region Site enumeration
         /// <summary>
-        /// Returns all site collections in the current Tenant
+        /// Returns all site collections in the current Tenant. Use this with care for large tenants.
         /// </summary>
         /// <param name="tenant"></param>
-        /// <returns></returns>
+        /// <returns>An IList of SiteEntity objects</returns>
         public static IList<SiteEntity> GetSiteCollections(this Tenant tenant)
+        {
+            return GetSiteCollections(tenant, 0);
+        }
+
+        /// <summary>
+        /// Returns all site collections in the current Tenant based on a startIndex.
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>An IList of SiteEntity objects</returns>
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex)
+        {
+            return GetSiteCollections(tenant, startIndex, true);
+        }
+
+        /// <summary>
+        /// Returns all site collections in the current Tenant based on a startIndex. IncludeDetail
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns>An IList of SiteEntity objects</returns>
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex, bool includeDetail)
         {
             var sites = new List<SiteEntity>();
 
-            var props = tenant.GetSiteProperties(0, true);
-            tenant.Context.Load(props);
-            tenant.Context.ExecuteQueryRetry();
-
-            foreach (var prop in props)
+            for (int i = startIndex; i < 10000; i += 300)
             {
-                var siteEntity = new SiteEntity();
-                siteEntity.Lcid = prop.Lcid;
-                siteEntity.SiteOwnerLogin = prop.Owner;
-                siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
-                siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
-                siteEntity.Template = prop.Template;
-                siteEntity.TimeZoneId = prop.TimeZoneId;
-                siteEntity.Title = prop.Title;
-                siteEntity.Url = prop.Url;
-                siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
-                siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
-                siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
-                siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
-                siteEntity.StorageUsage = prop.StorageUsage;
-                siteEntity.WebsCount = prop.WebsCount;
-                sites.Add(siteEntity);
+                var props = tenant.GetSiteProperties(i, includeDetail);
+                tenant.Context.Load(props);
+                tenant.Context.ExecuteQueryRetry();
+
+                foreach (var prop in props)
+                {
+                    var siteEntity = new SiteEntity();
+                    siteEntity.Lcid = prop.Lcid;
+                    siteEntity.SiteOwnerLogin = prop.Owner;
+                    siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
+                    siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
+                    siteEntity.Template = prop.Template;
+                    siteEntity.TimeZoneId = prop.TimeZoneId;
+                    siteEntity.Title = prop.Title;
+                    siteEntity.Url = prop.Url;
+                    siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
+                    siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                    siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
+                    siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
+                    siteEntity.StorageUsage = prop.StorageUsage;
+                    siteEntity.WebsCount = prop.WebsCount;
+                    sites.Add(siteEntity);
+                }
+
+                if (props.Count < 300) break; //exit for loop if there are no more site collections
             }
+
             return sites;
         }
 

@@ -5,7 +5,7 @@ using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOView")]
+    [Cmdlet(VerbsCommon.Remove, "SPOView", SupportsShouldProcess = true)]
     public class RemoveView : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Title of the list.")]
