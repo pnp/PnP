@@ -269,6 +269,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Navigation Node &apos;{0}&apos;.
+        /// </summary>
+        internal static string RemoveNavigationNode0 {
+            get {
+                return ResourceManager.GetString("RemoveNavigationNode0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove propertybag value.
         /// </summary>
         internal static string RemovePropertyBagValue {

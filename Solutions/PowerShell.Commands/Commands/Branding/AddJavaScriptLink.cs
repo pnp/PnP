@@ -15,6 +15,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string[] Url = null;
 
         [Parameter(Mandatory = false)]
+        public int Sequence = 0;
+
+        [Parameter(Mandatory = false)]
         [Alias("AddToSite")]
         public SwitchParameter SiteScoped;
 
@@ -22,12 +25,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!SiteScoped)
             {
-                SelectedWeb.AddJsLink(Key, Url);
+                SelectedWeb.AddJsLink(Key, Url, Sequence);
             }
             else
             {
                 var site = ClientContext.Site;
-                site.AddJsLink(Key, Url);
+                site.AddJsLink(Key, Url, Sequence);
             }
         }
     }
