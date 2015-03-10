@@ -15,6 +15,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Script = null;
 
         [Parameter(Mandatory = false)]
+        public int Sequence = 0;
+
+        [Parameter(Mandatory = false)]
         [Alias("AddToSite")]
         public SwitchParameter SiteScoped;
 
@@ -22,12 +25,12 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!SiteScoped)
             {
-                SelectedWeb.AddJsBlock(Key, Script);
+                SelectedWeb.AddJsBlock(Key, Script, Sequence);
             }
             else
             {
                 var site = ClientContext.Site;
-                site.AddJsBlock(Key, Script);
+                site.AddJsBlock(Key, Script, Sequence);
             }
         }
     }
