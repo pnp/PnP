@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOEventReceiver")]
+    [Cmdlet(VerbsCommon.Remove, "SPOEventReceiver", SupportsShouldProcess = true)]
     [CmdletHelp("Removes/unregisters a specific event receiver")]
     [CmdletExample(
       Code = @"PS:> Remove-SPOEventReceiver -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22",
