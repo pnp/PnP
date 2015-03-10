@@ -531,7 +531,8 @@ namespace Microsoft.SharePoint.Client
         /// <returns>An IList of SiteEntity objects</returns>
         public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex)
         {
-            return GetSiteCollections(tenant, startIndex, true);
+            //O365 Tenant Site Collection limit is 10000, and the GetSiteProperties returns 300.
+            return GetSiteCollections(tenant, startIndex, true, 10000);
         }
 
         /// <summary>
@@ -539,11 +540,12 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="tenant"></param>
         /// <returns>An IList of SiteEntity objects</returns>
-        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex, bool includeDetail)
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex, bool includeDetail, int endIndex)
         {
             var sites = new List<SiteEntity>();
 
-            for (int i = startIndex; i < 10000; i += 300)
+            //O365 Tenant Site Collection limit is 10000, and the GetSiteProperties returns 300.
+            for (int i = startIndex; i < endIndex; i += 300)
             {
                 var props = tenant.GetSiteProperties(i, includeDetail);
                 tenant.Context.Load(props);
