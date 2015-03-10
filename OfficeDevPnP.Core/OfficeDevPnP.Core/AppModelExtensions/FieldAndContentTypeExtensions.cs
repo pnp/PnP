@@ -1215,11 +1215,12 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list</param>
-        /// <param name="contentType">The Content Type</param>
-        public static void RemoveContentTypeFromListById(this Web web, string listTitle, ContentType contentType)
+        /// <param name="contentTypeId">Complete ID for the content type</param>
+        public static void RemoveContentTypeFromListById(this Web web, string listTitle, string contentTypeId)
         {
             // Get list instances
             List list = web.GetListByTitle(listTitle);
+            ContentType contentType = GetContentTypeById(web, contentTypeId);
             // Remove content type from list
             RemoveContentTypeFromList(web, list, contentType);
         }
@@ -1229,7 +1230,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="list">The List</param>
-        /// <param name="contentTypeID">Complete ID for the content type</param>
+        /// <param name="contentTypeId">Complete ID for the content type</param>
         public static void RemoveContentTypeFromListById(this Web web, List list, string contentTypeId)
         {
             if (string.IsNullOrEmpty(contentTypeId))
@@ -1250,10 +1251,9 @@ namespace Microsoft.SharePoint.Client
             if (contentType == null)
                 throw new ArgumentNullException("contentType");
 
-            if (!list.ContentTypeExistsById(contentType.Id.StringValue))
+            if (!list.ContentTypeExistsByName(contentType.Name))
                 return;
-
-            list.ContentTypes.First(x => x.StringId.Equals(contentType.Id.StringValue)).DeleteObject();
+            list.RemoveContentTypeByName(contentType.Name);
             list.Context.ExecuteQuery();
         }
 
