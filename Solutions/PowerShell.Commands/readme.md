@@ -101,7 +101,14 @@ Command | Description
 **Add-SPOFieldToContentType** | Adds a field to an existing content type
 **Get-SPOContentType** | Returns a content type
 **Remove-SPOContentType** | Removes a content types
+**Remove-SPOContentTypeFromList** | Removes an existing content type from a list
 **Set-SPODefaultContentTypeToList** | Sets the default content type to use for a list
+
+Examples (Note: The associated content type in the example is the "Welcome Page" built in content type)
+
+```powershell
+Remove-SPOContentTypeFromList -List "Title of list" -ContentType "Name of content type"
+```
 
 #### Event Receiver Cmdlets ####
 Command | Description
