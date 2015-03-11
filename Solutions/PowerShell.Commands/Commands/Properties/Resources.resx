@@ -174,8 +174,8 @@
   <data name="RemoveEventReceiver" xml:space="preserve">
     <value>Remove event receiver?</value>
   </data>
-  <data name="RemoveJavaScript" xml:space="preserve">
-    <value>Remove JavaScript?</value>
+  <data name="RemoveJavaScript0" xml:space="preserve">
+    <value>Remove JavaScript ('{0}')?</value>
   </data>
   <data name="RemoveKeyAndValueFromPropertyBag" xml:space="preserve">
     <value>Remove key and value from property bag?</value>
