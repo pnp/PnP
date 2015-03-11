@@ -7,15 +7,14 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOTimeZoneId")]
-    [CmdletHelp("Adds a SharePoint App to a site",
-        Details = "This commands requires that you have an app package to deploy")]
+    [CmdletHelp("Returns a time zone ID")]
     [CmdletExample(
-        Code = @"PS:> Add-SPOnlineApp -Path c:\files\demo.app -LoadOnly",
-        Remarks = @"This will load the app in the demo.app package, but will not install it to the site.
+        Code = @"PS:> Get-SPOTimeZoneId",
+        Remarks = @"This will return all time zone IDs in use by Office 365.
  ")]
     [CmdletExample(
-        Code = @"PS:> Add-SPOnlineApp -Path c:\files\demo.app -Force",
-        Remarks = @"This load first activate the app sideloading feature, upload and install the app, and deactivate the app sideloading feature.
+        Code = @"PS:> Get-SPOTimeZoneId -Match Stockholm",
+        Remarks = @"This will return the time zone IDs for Stockholm
     ")]
     public class GetTimeZoneId : PSCmdlet
     {

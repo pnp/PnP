@@ -11,6 +11,7 @@ Further in this article you will find more details around timer job deployment t
 In this chapter you'll see how to create a very simple timer job: the goal of this sample is to provide the reader a quick view, later on we'll provide a more detailed explanation of the timer job framework. 
 
 **Note:**
+- There a [PnP video](http://channel9.msdn.com/blogs/OfficeDevPnP/Introduction-to-the-PnP-timer-job-framework) that provides an introduction to timer jobs and shows a demo of the below simple timer job sample. 
 - There's a PnP solution that shows 10 individual timer job samples. See https://github.com/OfficeDev/PnP/tree/dev/Solutions/Core.TimerJobs.Samples to learn more about these 10 timer job samples. Samples range from "Hello world" type samples up to real life content expiration jobs.
 
 ### Step 1: Create a Console project and reference PnP Core ###

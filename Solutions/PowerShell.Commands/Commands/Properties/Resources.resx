@@ -207,4 +207,7 @@
   <data name="GetTenantSite_ExecuteCmdlet_This_request_can_take_a_long_time_to_execute__Continue_" xml:space="preserve">
     <value>This request can take a long time to execute. Continue?</value>
   </data>
+  <data name="RemoveNavigationNode0" xml:space="preserve">
+    <value>Remove Navigation Node '{0}'</value>
+  </data>
 </root>

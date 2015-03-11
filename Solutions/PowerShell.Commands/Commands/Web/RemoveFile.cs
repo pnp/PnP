@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOFile")]
+    [Cmdlet(VerbsCommon.Remove, "SPOFile", SupportsShouldProcess = true)]
     [CmdletHelp("Removes a file.")]
     [CmdletExample(Code = @"
 PS:>Remove-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor", SortOrder = 1)]
