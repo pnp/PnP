@@ -164,6 +164,7 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Branding\GetJavaScriptLink.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
@@ -261,8 +262,8 @@
     <Compile Include="Web\GetSubwebs.cs" />
     <Compile Include="Web\FindFile.cs" />
     <Compile Include="Web\RemoveCustomAction.cs" />
-    <Compile Include="Web\GetCustomAction.cs" />
-    <Compile Include="Web\AddCustomAction.cs" />
+    <Compile Include="Branding\GetCustomAction.cs" />
+    <Compile Include="Branding\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
     <Compile Include="Branding\RemoveNavigationNode.cs">
       <SubType>Code</SubType>

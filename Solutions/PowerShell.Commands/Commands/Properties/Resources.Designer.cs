@@ -242,11 +242,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove JavaScript?.
+        ///   Looks up a localized string similar to Remove JavaScript (&apos;{0}&apos;)?.
         /// </summary>
-        internal static string RemoveJavaScript {
+        internal static string RemoveJavaScript0 {
             get {
-                return ResourceManager.GetString("RemoveJavaScript", resourceCulture);
+                return ResourceManager.GetString("RemoveJavaScript0", resourceCulture);
             }
         }
         
