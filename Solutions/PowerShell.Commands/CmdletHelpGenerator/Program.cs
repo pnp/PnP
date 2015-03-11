@@ -120,28 +120,29 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             {
                                 var a = (ParameterAttribute)attr;
 
-
-                                if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
+                                if (!a.DontShow)
                                 {
-                                    var cmdletSyntax = cmdletInfo.Syntaxes.FirstOrDefault(c => c.ParameterSetName == a.ParameterSetName);
-                                    if (cmdletSyntax == null)
+                                    if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
                                     {
-                                        cmdletSyntax = new CmdletSyntax();
-                                        cmdletSyntax.ParameterSetName = a.ParameterSetName;
-                                        cmdletInfo.Syntaxes.Add(cmdletSyntax);
+                                        var cmdletSyntax = cmdletInfo.Syntaxes.FirstOrDefault(c => c.ParameterSetName == a.ParameterSetName);
+                                        if (cmdletSyntax == null)
+                                        {
+                                            cmdletSyntax = new CmdletSyntax();
+                                            cmdletSyntax.ParameterSetName = a.ParameterSetName;
+                                            cmdletInfo.Syntaxes.Add(cmdletSyntax);
+                                        }
+
+                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                     }
 
-                                    cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                    var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
+                                    if (syntaxItem == null)
+                                    {
+                                        syntaxItem = new SyntaxItem(a.ParameterSetName);
+                                        syntaxItems.Add(syntaxItem);
+                                    }
+                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                 }
-
-                                var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
-                                if (syntaxItem == null)
-                                {
-                                    syntaxItem = new SyntaxItem(a.ParameterSetName);
-                                    syntaxItems.Add(syntaxItem);
-                                }
-                                syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
-
                             }
                         }
                     }
@@ -154,20 +155,23 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             if (attr is ParameterAttribute)
                             {
                                 var a = (ParameterAttribute)attr;
-                                if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
+                                if (!a.DontShow)
                                 {
-                                    foreach (var si in syntaxItems)
+                                    if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
                                     {
-                                        si.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
-                                    }
+                                        foreach (var si in syntaxItems)
+                                        {
+                                            si.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                        }
 
-                                    if (cmdletInfo.Syntaxes.Count == 0)
-                                    {
-                                        cmdletInfo.Syntaxes.Add(new CmdletSyntax() { ParameterSetName = ParameterAttribute.AllParameterSets });
-                                    }
-                                    foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
-                                    {
-                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                        if (cmdletInfo.Syntaxes.Count == 0)
+                                        {
+                                            cmdletInfo.Syntaxes.Add(new CmdletSyntax() {ParameterSetName = ParameterAttribute.AllParameterSets});
+                                        }
+                                        foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                                        {
+                                            cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                        }
                                     }
                                 }
                             }
@@ -205,24 +209,26 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             if (attr is ParameterAttribute)
                             {
                                 var a = (ParameterAttribute)attr;
+                                if (!a.DontShow)
+                                {
+                                    cmdletInfo.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
 
-                                cmdletInfo.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                    var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
 
-                                var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
+                                    parameter2Element.Add(new XElement(maml + "name", field.Name));
 
-                                parameter2Element.Add(new XElement(maml + "name", field.Name));
+                                    parameter2Element.Add(new XElement(maml + "description", new XElement(maml + "para", a.HelpMessage)));
+                                    var parameterValueElement = new XElement(command + "parameterValue", field.FieldType.Name, new XAttribute("required", a.Mandatory));
+                                    parameter2Element.Add(parameterValueElement);
 
-                                parameter2Element.Add(new XElement(maml + "description", new XElement(maml + "para", a.HelpMessage)));
-                                var parameterValueElement = new XElement(command + "parameterValue", field.FieldType.Name, new XAttribute("required", a.Mandatory));
-                                parameter2Element.Add(parameterValueElement);
+                                    var devElement = new XElement(dev + "type");
+                                    devElement.Add(new XElement(maml + "name", field.FieldType.Name));
+                                    devElement.Add(new XElement(maml + "uri"));
 
-                                var devElement = new XElement(dev + "type");
-                                devElement.Add(new XElement(maml + "name", field.FieldType.Name));
-                                devElement.Add(new XElement(maml + "uri"));
+                                    parameter2Element.Add(devElement);
 
-                                parameter2Element.Add(devElement);
-
-                                parametersElement.Add(parameter2Element);
+                                    parametersElement.Add(parameter2Element);
+                                }
                                 break;
 
                             }
