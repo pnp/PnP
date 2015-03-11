@@ -1,9 +1,9 @@
-#Add-SPOJavascriptLink
-*Topic automatically generated on: 2015-03-10*
+#Add-SPOJavaScriptLink
+*Topic automatically generated on: 2015-03-11*
 
 Adds a link to a JavaScript file to a web or sitecollection
 ##Syntax
-    Add-SPOJavascriptLink -Key [<String>] -Url [<String[]>] [-SiteScoped [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+    Add-SPOJavaScriptLink -Key [<String>] -Url [<String[]>] [-Sequence [<Int32>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 
@@ -11,6 +11,8 @@ Adds a link to a JavaScript file to a web or sitecollection
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Key|String|True|
+Scope|CustomActionScope|False|
+Sequence|Int32|False|
 SiteScoped|SwitchParameter|False|
 Url|String[]|True|
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
