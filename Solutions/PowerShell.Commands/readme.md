@@ -96,6 +96,21 @@ Command | Description
 :--------|:------------
 **[Get-SPOAuthenticationRealm](Documentation/GetSPOAuthenticationRealm.md)** | Returns the authentication realm for use for app only authentication. See **[Connect-SPOnline](Documentation/ConnectSPOnline.md) -AppId -AppSecret -Realm**
 
+#### Branding Cmdlets ####
+Command | Description
+:--------|:------------
+**[Add-SPOCustomAction](Documentation/AddSPOCustomAction.md)** | Adds a custom action to a site
+**[AddJavaScriptBlock](Documentation/AddSPOJavaScriptBlock.md)** | Adds a JavaScript snippet to a web or site as a custom action
+**[AddJavaScriptLink](Documentation/AddSPOJavaScriptLink.md)** | Adds a link to a JavaScript file to a web or site as a custom action
+**[Get-SPOCustomAction](Documentation/GetSPOCustomAction.md)** | Returns an existing custom action
+**[Get-SPOJavasScriptLink](Documentation/GetSPOJavaScriptLink.md)** | Returns all javascript snippets and links
+**[Remove-SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** | Removes a custom action from a web
+**[Add-SPONavigationNode](Documentation/AddSPONavigationNode.md)** | Adds a new link to the quicklaunch or top navigation
+**[Remove-SPONavigationNode](Documentation/RemoveSPONavigationNode.md)** | Removes a link from the quicklaunch or top navigation
+**[Set-SPOHomePage](Documentation/SetSPOHomepage.md)** | Sets the current homepage
+**[Set-SPOMasterPage](Documentation/SetSPOMasterPage.md)** | Sets the masterpage
+**[Set-SPOTheme](Documentation/SetSPOTheme.md)** | Sets the current theme
+
 #### Content Type Cmdlets ####
 Command | Description
 :--------|:------------
@@ -176,12 +191,9 @@ Command | Description
 #### Web Cmdlets ####
 Command | Description
 :--------|:------------
-**[Add-SPOCustomAction](Documentation/AddSPOCustomAction.md)** | Adds a custom action to a site
 **[Add-SPOFile](Documentation/AddSPOFile.md)** | Uploads a file to a site
 **[Add-SPOFolder](Documentation/AddSPOFolder.md)** | Creates a folder in a site
-**[Add-SPONavigationNode](Documentation/AddSPONavigationNode.md)** | Adds a new link to the quicklaunch or top navigation
 **[Find-SPOFile](Documentation/FindSPOFile.md)** | Finds a file in the current site
-**[Get-SPOCustomAction](Documentation/GetSPOCustomAction.md)** | Returns an existing custom action
 **[Get-SPOFile](Documentation/GetSPOFile.md)** | Returns a file
 **[Get-SPOHomePage](Documentation/GetSPOHomePage.md)** | Returns the url of the current homepage
 **[Get-SPOMasterPage](Documentation/GetSPOMasterPage.md)** | Returns the urls of the current assigned masterpages
@@ -190,19 +202,14 @@ Command | Description
 **[Get-SPOWeb](Documentation/GetSPOWeb.md)** | Returns the current web
 **[Get-SPOIndexedPropertyKeys](Documentation/GetSPOIndexedPropertyKeys.md)** | Returns all keys in the property bag set for indexing
 **[New-SPOWeb](Documentation/NewSPOWeb.md)** | Creates a new web
-**[Remove-SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** | Removes a custom action from a web
-**[Remove-SPONavigationNode](Documentation/RemoveSPONavigationNode.md)** | Removes a link from the quicklaunch or top navigation
 **[Remove-SPOPropertyBagValue](Documentation/RemoveSPOPropertyBagValue.md)** | Removes a property bag entry
 **[Remove-SPOFile](Documentation/RemoveSPOFile.md)** | Removes a file
 **[Request-SPOReIndexWeb](Documentation/RequestSPOReIndexWeb)** |	Requests a site to fully crawled the next incremental crawl
 **[Set-SPOFileCheckedIn](Documentation/SetSPOFileCheckedIn.md)** | Checks in a file
 **[Set-SPOFileCheckedOut](Documentation/SetSPOFileCheckedOut.md)** | Checks out a file
-**[Set-SPOHomePage](Documentation/SetSPOHomepage.md)** | Sets the current homepage
 **[Set-SPOIndexedProperties](Documentation/SetSPOIndexedProperties.md)** |Sets what property of the propertybag should be indexed by search
-**[Set-SPOMasterPage](Documentation/SetSPOMasterPage.md)** | Sets the masterpage
 **[Set-SPOMinimalDownloadStrategy](Documentation/SetSPOMinimalDownloadStrategy.md)** | Turns MDS on or off
 **[Set-SPOPropertyBagValue](Documentation/SetSPOPropertyBagValue.md)** | Sets a property bag value
-**[Set-SPOTheme](Documentation/SetSPOTheme.md)** | Sets the current theme
 
 #### Web Part Cmdlets ####
 Command | Description
