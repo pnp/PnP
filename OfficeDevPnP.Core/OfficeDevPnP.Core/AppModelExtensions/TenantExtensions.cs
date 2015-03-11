@@ -515,32 +515,11 @@ namespace Microsoft.SharePoint.Client
 
         #region Site enumeration
         /// <summary>
-        /// Returns all site collections in the current Tenant. Use this with care for large tenants.
+        /// Returns all site collections in the current Tenant based on a startIndex. IncludeDetail adds additional properties to the SPSite object. EndIndex is the maximum number based on chunkcs of 300.
         /// </summary>
         /// <param name="tenant"></param>
         /// <returns>An IList of SiteEntity objects</returns>
-        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant)
-        {
-            return GetSiteCollections(tenant, 0);
-        }
-
-        /// <summary>
-        /// Returns all site collections in the current Tenant based on a startIndex.
-        /// </summary>
-        /// <param name="tenant"></param>
-        /// <returns>An IList of SiteEntity objects</returns>
-        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex)
-        {
-            //O365 Tenant Site Collection limit is 10000, and the GetSiteProperties returns 300.
-            return GetSiteCollections(tenant, startIndex, true, 10000);
-        }
-
-        /// <summary>
-        /// Returns all site collections in the current Tenant based on a startIndex. IncludeDetail
-        /// </summary>
-        /// <param name="tenant"></param>
-        /// <returns>An IList of SiteEntity objects</returns>
-        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex, bool includeDetail, int endIndex)
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex = 0, bool includeDetail = true, int endIndex = 10000)
         {
             var sites = new List<SiteEntity>();
 
