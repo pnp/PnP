@@ -1,5 +1,5 @@
 #Add-SPOContentType
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Adds a new content type
 ##Syntax

@@ -1,9 +1,9 @@
 #Add-SPOCustomAction
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Adds a custom action to a web
 ##Syntax
-    Add-SPOCustomAction -Title [<String>] -Description [<String>] -Group [<String>] -Location [<String>] -Sequence [<Int32>] -Url [<String>] [-Rights [<List`1>]] [-Web [<WebPipeBind>]]
+    Add-SPOCustomAction -Title [<String>] -Description [<String>] -Group [<String>] -Location [<String>] -Sequence [<Int32>] -Url [<String>] [-Rights [<List`1>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 
@@ -14,6 +14,7 @@ Description|String|True|
 Group|String|True|
 Location|String|True|
 Rights|List`1|False|
+Scope|CustomActionScope|False|
 Sequence|Int32|True|
 Title|String|True|
 Url|String|True|

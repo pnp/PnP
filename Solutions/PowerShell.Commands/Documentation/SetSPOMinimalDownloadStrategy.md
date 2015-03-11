@@ -1,5 +1,5 @@
 #Set-SPOMinimalDownloadStrategy
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Activates or deactivates the minimal downloading strategy.
 ##Syntax

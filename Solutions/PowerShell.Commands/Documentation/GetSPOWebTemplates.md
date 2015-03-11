@@ -1,5 +1,5 @@
 #Get-SPOWebTemplates
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Office365 only: Returns the available web templates
 

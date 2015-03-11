@@ -1,5 +1,5 @@
 #Get-SPOListItem
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Retrieves list items
 ##Syntax

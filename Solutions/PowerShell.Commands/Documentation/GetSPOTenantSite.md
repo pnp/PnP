@@ -1,5 +1,5 @@
 #Get-SPOTenantSite
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Office365 only: Uses the tenant API to retrieve site information.
 
@@ -21,10 +21,10 @@ Url|String|False|The URL of the site
 
 ###Example 1
     
-PS:> Get-SPOTenantSite
-Returns all site collections
+PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects
+Returns information about the project site.
 
 ###Example 2
     
-PS:> Get-SPOTenantSite -Identity http://tenant.sharepoint.com/sites/projects
-Returns information about the project site.
+PS:> Get-SPOTenantSite
+Returns all site collections

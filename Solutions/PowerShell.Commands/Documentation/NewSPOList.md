@@ -1,9 +1,9 @@
 #New-SPOList
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Creates a new list
 ##Syntax
-    New-SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-QuickLaunchOptions [<QuickLaunchOptions>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+    New-SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 

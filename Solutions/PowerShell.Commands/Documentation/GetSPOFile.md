@@ -1,13 +1,13 @@
 #Get-SPOFile
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Downloads a file.
 ##Syntax
-    Get-SPOFile [-Path [<String>]] [-Filename [<String>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
+    Get-SPOFile -AsString [<SwitchParameter>] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
 
 &nbsp;
 
-    Get-SPOFile -AsString [<SwitchParameter>] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
+    Get-SPOFile [-Path [<String>]] [-Filename [<String>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
 
 &nbsp;
 

@@ -1,7 +1,7 @@
 #Get-SPOTimeZoneId
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
-Adds a SharePoint App to a site
+Returns a time zone ID
 ##Syntax
     Get-SPOTimeZoneId [-Match [<String>]]
 
@@ -14,11 +14,11 @@ Match|String|False|
 ##Examples
 
 ###Example 1
-    PS:> Add-SPOnlineApp -Path c:\files\demo.app -Force
-This load first activate the app sideloading feature, upload and install the app, and deactivate the app sideloading feature.
+    PS:> Get-SPOTimeZoneId -Match Stockholm
+This will return the time zone IDs for Stockholm
     
 
 ###Example 2
-    PS:> Add-SPOnlineApp -Path c:\files\demo.app -LoadOnly
-This will load the app in the demo.app package, but will not install it to the site.
+    PS:> Get-SPOTimeZoneId
+This will return all time zone IDs in use by Office 365.
  
