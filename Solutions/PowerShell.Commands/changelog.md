@@ -1,5 +1,11 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-03-11**
+* Added Get-SPOJavaScript link cmdlet
+* Refactored JavaScript related cmdlets to use -Name parameter instead of -Key (-Key still works for backwards compatibility reasons)
+* Refactored JavaScript related cmdlets to use -Scope [Web|Site] parameter instead of -FromSite, -SiteScoped and -AddToSite parameters. The old parameters still work for backwards compatibility reasons.
+* Fixed an issue in cmdlet help generation where the syntax would not be shown for cmdlets with only one parameter set.
+
 **2015-03-10**
 * Added Sequence parameter to Add-SPOJavaScriptLink and Add-SPOJavaScriptBlock cmdlets
 * Added Remove-SPOFile cmdlet
