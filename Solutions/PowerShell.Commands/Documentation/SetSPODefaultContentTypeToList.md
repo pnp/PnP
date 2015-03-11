@@ -1,5 +1,5 @@
 #Set-SPODefaultContentTypeToList
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Sets the default content type for a list
 ##Syntax

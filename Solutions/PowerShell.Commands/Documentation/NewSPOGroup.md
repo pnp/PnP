@@ -1,9 +1,9 @@
 #New-SPOGroup
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Adds a user to the build-in Site User Info List and returns a user object
 ##Syntax
-    New-SPOGroup -Title [<String>] [-Description [<String>]] [-Owner [<String>]] [-AllowRequestToJoinLeave [<SwitchParameter>]] [-AutoAcceptRequestToJoinLeave [<SwitchParameter>]] [-SetAssociatedGroup [<AssociatedGroupType>]] [-Web [<WebPipeBind>]]
+    New-SPOGroup -Title [<String>] [-Description [<String>]] [-Owner [<String>]] [-AllowRequestToJoinLeave [<SwitchParameter>]] [-AutoAcceptRequestToJoinLeave [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 

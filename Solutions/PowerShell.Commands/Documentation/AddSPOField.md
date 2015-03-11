@@ -1,17 +1,17 @@
 #Add-SPOField
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 
 ##Syntax
-    Add-SPOField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
+    Add-SPOField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 
-    Add-SPOField -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
+    Add-SPOField -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 
-    Add-SPOField [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
+    Add-SPOField [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
 
 &nbsp;
 

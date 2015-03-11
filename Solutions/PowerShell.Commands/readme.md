@@ -100,10 +100,10 @@ Command | Description
 Command | Description
 :--------|:------------
 **[Add-SPOCustomAction](Documentation/AddSPOCustomAction.md)** | Adds a custom action to a site
-**[AddJavaScriptBlock](Documentation/AddSPOJavaScriptBlock.md)** | Adds a JavaScript snippet to a web or site as a custom action
-**[AddJavaScriptLink](Documentation/AddSPOJavaScriptLink.md)** | Adds a link to a JavaScript file to a web or site as a custom action
+**[Add-SPOJavaScriptBlock](Documentation/AddSPOJavaScriptBlock.md)** | Adds a JavaScript snippet to a web or site as a custom action
+**[Add-SPOJavaScriptLink](Documentation/AddSPOJavascriptLink.md)** | Adds a link to a JavaScript file to a web or site as a custom action
 **[Get-SPOCustomAction](Documentation/GetSPOCustomAction.md)** | Returns an existing custom action
-**[Get-SPOJavasScriptLink](Documentation/GetSPOJavaScriptLink.md)** | Returns all javascript snippets and links
+**[Get-SPOJavaScriptLink](Documentation/GetSPOJavaScriptLink.md)** | Returns all javascript snippets and links
 **[Remove-SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** | Removes a custom action from a web
 **[Add-SPONavigationNode](Documentation/AddSPONavigationNode.md)** | Adds a new link to the quicklaunch or top navigation
 **[Remove-SPONavigationNode](Documentation/RemoveSPONavigationNode.md)** | Removes a link from the quicklaunch or top navigation

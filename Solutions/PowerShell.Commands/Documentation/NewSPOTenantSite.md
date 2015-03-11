@@ -1,5 +1,5 @@
 #New-SPOTenantSite
-*Topic automatically generated on: 2015-03-10*
+*Topic automatically generated on: 2015-03-11*
 
 Office365 only: Creates a new site collection for the current tenant
 ##Syntax
