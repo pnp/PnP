@@ -132,16 +132,16 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     }
 
                                     cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
-
-
-                                    var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
-                                    if (syntaxItem == null)
-                                    {
-                                        syntaxItem = new SyntaxItem(a.ParameterSetName);
-                                        syntaxItems.Add(syntaxItem);
-                                    }
-                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                 }
+
+                                var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
+                                if (syntaxItem == null)
+                                {
+                                    syntaxItem = new SyntaxItem(a.ParameterSetName);
+                                    syntaxItems.Add(syntaxItem);
+                                }
+                                syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+
                             }
                         }
                     }
