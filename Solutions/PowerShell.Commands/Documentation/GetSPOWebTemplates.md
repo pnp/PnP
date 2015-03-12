@@ -19,9 +19,9 @@ Lcid|UInt32|False|
 ##Examples
 
 ###Example 1
-    PS:> Get-SPOWebTemplates -LCID 1033
-Returns all webtemplates for the Locale with ID 1033 (English)
-
-###Example 2
     PS:> Get-SPOWebTemplates
 
+
+###Example 2
+    PS:> Get-SPOWebTemplates -LCID 1033
+Returns all webtemplates for the Locale with ID 1033 (English)

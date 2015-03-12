@@ -21,9 +21,9 @@ Scope|FeatureScope|False|
 
 
 ###Example 2
-    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
 
 ###Example 3
-    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
+    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 

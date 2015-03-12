@@ -137,7 +137,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
-    <Compile Include="Authentication\GetAuthenticationRealm.cs" />
+    <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />

@@ -1,7 +1,7 @@
 #Send&#8209;SPOMail
 *Topic automatically generated on: 2015-03-12*
 
-
+Sends an email using the Office 365 SMTP Service
 ##Syntax
 ```powershell
 Send&#8209;SPOMail [-Server [<String>]] -From [<String>] -Password [<String>] -To [<String[]>] [-Cc [<String[]>]] -Subject [<String>] -Body [<String>] [-Web [<WebPipeBind>]]

@@ -17,13 +17,13 @@ Scope|FeatureScope|False|
 ##Examples
 
 ###Example 1
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
-
-
-###Example 2
     PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
-###Example 3
+###Example 2
     PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
+
+
+###Example 3
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 

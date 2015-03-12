@@ -6,15 +6,6 @@ Get-Help Connect-SPOnline -Detailed
 ```
 
 
-##
-Cmdlet|Description
-:-----|:----------
-**[Get&#8209;SPOAuthenticationRealm](Documentation/GetSPOAuthenticationRealm.md)** |Gets the authentication realm for the current web
-##
-Cmdlet|Description
-:-----|:----------
-**[Remove&#8209;SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** |
-**[Send&#8209;SPOMail](Documentation/SendSPOMail.md)** |
 ##Apps
 Cmdlet|Description
 :-----|:----------
@@ -24,6 +15,7 @@ Cmdlet|Description
 ##Base Cmdlets
 Cmdlet|Description
 :-----|:----------
+**[Get&#8209;SPOAuthenticationRealm](Documentation/GetSPOAuthenticationRealm.md)** |Gets the authentication realm for the current web
 **[Set&#8209;SPOConfiguration](Documentation/SetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOConfiguration](Documentation/GetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOContext](Documentation/GetSPOContext.md)** |Returns a Client Side Object Model context
@@ -35,6 +27,7 @@ Cmdlet|Description
 ##Branding
 Cmdlet|Description
 :-----|:----------
+**[Remove&#8209;SPOCustomAction](Documentation/RemoveSPOCustomAction.md)** |Removes a custom action
 **[Get&#8209;SPOCustomAction](Documentation/GetSPOCustomAction.md)** |Returns all or a specific custom action(s)
 **[Add&#8209;SPOCustomAction](Documentation/AddSPOCustomAction.md)** |Adds a custom action to a web
 **[Set&#8209;SPOHomePage](Documentation/SetSPOHomePage.md)** |Sets the home page of the current web.
@@ -136,10 +129,10 @@ Cmdlet|Description
 :-----|:----------
 **[New&#8209;SPOPersonalSite](Documentation/NewSPOPersonalSite.md)** |Office365 only: Creates a personal / OneDrive For Business site
 **[Get&#8209;SPOUserProfileProperty](Documentation/GetSPOUserProfileProperty.md)** |Office365 only: Uses the tenant API to retrieve site information.  You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command.  
-##Web
+##Utilities
 Cmdlet|Description
 :-----|:----------
-**[Set&#8209;SPOWeb](Documentation/SetSPOWeb.md)** |Sets properties on a web
+**[Send&#8209;SPOMail](Documentation/SendSPOMail.md)** |Sends an email using the Office 365 SMTP Service
 ##Web Parts
 Cmdlet|Description
 :-----|:----------
@@ -171,6 +164,7 @@ Cmdlet|Description
 **[Get&#8209;SPOSubWebs](Documentation/GetSPOSubWebs.md)** |Returns the subwebs
 **[Get&#8209;SPOWeb](Documentation/GetSPOWeb.md)** |Returns the current web object
 **[New&#8209;SPOWeb](Documentation/NewSPOWeb.md)** |Creates a new subweb to the current web
+**[Set&#8209;SPOWeb](Documentation/SetSPOWeb.md)** |Sets properties on a web
 ##Workflows
 Cmdlet|Description
 :-----|:----------

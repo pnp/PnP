@@ -20,13 +20,13 @@ TermStoreName|String|False|
 ##Examples
 
 ###Example 1
-    PS:> Export-SPOTaxonomy -Path c:\output.txt -TermSet f6f43025-7242-4f7a-b739-41fa32847254 
-Exports the term set with the specified id
-
-###Example 2
     PS:> Export-SPOTaxonomy
 Exports the full taxonomy to the standard output
 
-###Example 3
+###Example 2
     PS:> Export-SPOTaxonomy -Path c:\output.txt
 Exports the full taxonomy the file output.txt
+
+###Example 3
+    PS:> Export-SPOTaxonomy -Path c:\output.txt -TermSet f6f43025-7242-4f7a-b739-41fa32847254 
+Exports the term set with the specified id
