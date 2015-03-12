@@ -515,37 +515,44 @@ namespace Microsoft.SharePoint.Client
 
         #region Site enumeration
         /// <summary>
-        /// Returns all site collections in the current Tenant
+        /// Returns all site collections in the current Tenant based on a startIndex. IncludeDetail adds additional properties to the SPSite object. EndIndex is the maximum number based on chunkcs of 300.
         /// </summary>
         /// <param name="tenant"></param>
-        /// <returns></returns>
-        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant)
+        /// <returns>An IList of SiteEntity objects</returns>
+        public static IList<SiteEntity> GetSiteCollections(this Tenant tenant, int startIndex = 0, bool includeDetail = true, int endIndex = 10000)
         {
             var sites = new List<SiteEntity>();
 
-            var props = tenant.GetSiteProperties(0, true);
-            tenant.Context.Load(props);
-            tenant.Context.ExecuteQueryRetry();
-
-            foreach (var prop in props)
+            //O365 Tenant Site Collection limit is 10000, and the GetSiteProperties returns 300.
+            for (int i = startIndex; i < endIndex; i += 300)
             {
-                var siteEntity = new SiteEntity();
-                siteEntity.Lcid = prop.Lcid;
-                siteEntity.SiteOwnerLogin = prop.Owner;
-                siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
-                siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
-                siteEntity.Template = prop.Template;
-                siteEntity.TimeZoneId = prop.TimeZoneId;
-                siteEntity.Title = prop.Title;
-                siteEntity.Url = prop.Url;
-                siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
-                siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
-                siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
-                siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
-                siteEntity.StorageUsage = prop.StorageUsage;
-                siteEntity.WebsCount = prop.WebsCount;
-                sites.Add(siteEntity);
+                var props = tenant.GetSiteProperties(i, includeDetail);
+                tenant.Context.Load(props);
+                tenant.Context.ExecuteQueryRetry();
+
+                foreach (var prop in props)
+                {
+                    var siteEntity = new SiteEntity();
+                    siteEntity.Lcid = prop.Lcid;
+                    siteEntity.SiteOwnerLogin = prop.Owner;
+                    siteEntity.StorageMaximumLevel = prop.StorageMaximumLevel;
+                    siteEntity.StorageWarningLevel = prop.StorageWarningLevel;
+                    siteEntity.Template = prop.Template;
+                    siteEntity.TimeZoneId = prop.TimeZoneId;
+                    siteEntity.Title = prop.Title;
+                    siteEntity.Url = prop.Url;
+                    siteEntity.UserCodeMaximumLevel = prop.UserCodeMaximumLevel;
+                    siteEntity.UserCodeWarningLevel = prop.UserCodeWarningLevel;
+                    siteEntity.CurrentResourceUsage = prop.CurrentResourceUsage;
+                    siteEntity.LastContentModifiedDate = prop.LastContentModifiedDate;
+                    siteEntity.StorageUsage = prop.StorageUsage;
+                    siteEntity.WebsCount = prop.WebsCount;
+                    sites.Add(siteEntity);
+                }
+
+                if (props.Count < 300) break; //exit for loop if there are no more site collections
             }
+
             return sites;
         }
 
