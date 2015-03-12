@@ -1,10 +1,11 @@
-#Set-SPOPropertyBagValue
-*Topic automatically generated on: 2015-03-11*
+#Set&#8209;SPOPropertyBagValue
+*Topic automatically generated on: 2015-03-12*
 
-
+Sets a property bag value
 ##Syntax
-    Set-SPOPropertyBagValue -Key [<String>] -Value [<String>] [-Indexed [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPOPropertyBagValue -Key [<String>] -Value [<String>] [-Indexed [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

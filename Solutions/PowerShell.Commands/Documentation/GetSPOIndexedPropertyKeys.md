@@ -1,10 +1,11 @@
-#Get-SPOIndexedPropertyKeys
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOIndexedPropertyKeys
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns the keys of the property bag values that have been marked for indexing by search
 ##Syntax
-    Get-SPOIndexedPropertyKeys [-Web [<WebPipeBind>]]
-
+```powershell
+Get&#8209;SPOIndexedPropertyKeys [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

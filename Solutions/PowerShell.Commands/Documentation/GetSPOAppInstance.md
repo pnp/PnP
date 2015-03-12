@@ -1,10 +1,11 @@
-#Get-SPOAppInstance
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOAppInstance
+*Topic automatically generated on: 2015-03-12*
 
 Returns a SharePoint App Instance
 ##Syntax
-    Get-SPOAppInstance [-Web [<WebPipeBind>]] [-Identity [<GuidPipeBind>]]
-
+```powershell
+Get&#8209;SPOAppInstance [-Web [<WebPipeBind>]] [-Identity [<GuidPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

@@ -2,11 +2,13 @@
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOWebPartToWikiPage")]
+    [CmdletHelp("Adds a webpart to a wiki page in a specified table row and column", Category = "Web Parts")]
     public class AddWebPartToWikiPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

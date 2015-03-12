@@ -1,10 +1,11 @@
-#Get-SPOWorkflowSubscription
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOWorkflowSubscription
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns a workflow subscriptions from a list
 ##Syntax
-    Get-SPOWorkflowSubscription [-Web [<WebPipeBind>]] [-Name [<String>]] [-List [<ListPipeBind>]]
-
+```powershell
+Get&#8209;SPOWorkflowSubscription [-Web [<WebPipeBind>]] [-Name [<String>]] [-List [<ListPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

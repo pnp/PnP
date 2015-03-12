@@ -1,5 +1,5 @@
-#Disconnect-SPOnline
-*Topic automatically generated on: 2015-03-11*
+#Disconnect&#8209;SPOnline
+*Topic automatically generated on: 2015-03-12*
 
 Disconnects the context
 ##Syntax

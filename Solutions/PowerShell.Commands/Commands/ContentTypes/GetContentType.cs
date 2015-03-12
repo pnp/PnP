@@ -6,7 +6,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOContentType")]
-    [CmdletHelp("Retrieves a content type")]
+    [CmdletHelp("Retrieves a content type", Category = "Content Types")]
     [CmdletExample(
      Code = @"PS:> Get-SPOContentType -Identity ""Project Document""",
      Remarks = @"This will get a listing of content types within the current context", SortOrder = 1)]

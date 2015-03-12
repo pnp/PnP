@@ -1,10 +1,11 @@
-#Get-SPOFeature
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOFeature
+*Topic automatically generated on: 2015-03-12*
 
 Returns all or a specific feature
 ##Syntax
-    Get-SPOFeature [-Scope [<FeatureScope>]] [-Web [<WebPipeBind>]] [-Identity [<FeaturePipeBind>]]
-
+```powershell
+Get&#8209;SPOFeature [-Scope [<FeatureScope>]] [-Web [<WebPipeBind>]] [-Identity [<FeaturePipeBind>]]
+```
 &nbsp;
 
 ##Parameters
@@ -24,9 +25,9 @@ This will return all web scoped features
 This will return all site scoped features
 
 ###Example 3
-    PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site
-This will return a specific site scoped feature
-
-###Example 4
     PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22
 This will return a specific web scoped feature
+
+###Example 4
+    PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site
+This will return a specific site scoped feature

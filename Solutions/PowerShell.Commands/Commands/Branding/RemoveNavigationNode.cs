@@ -2,11 +2,13 @@
 using OfficeDevPnP.PowerShell.Commands.Enums;
 using System.Management.Automation;
 using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPONavigationNode", SupportsShouldProcess = true)]
+    [CmdletHelp("Removes a menu item from either the quicklaunch or top navigation", Category = "Branding")]
     public class RemoveNavigationNode : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

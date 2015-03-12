@@ -1,10 +1,11 @@
-#Get-SPOMasterPage
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOMasterPage
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns the URLS of the default Master Page and the custom Master Page.
 ##Syntax
-    Get-SPOMasterPage [-Web [<WebPipeBind>]]
-
+```powershell
+Get&#8209;SPOMasterPage [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

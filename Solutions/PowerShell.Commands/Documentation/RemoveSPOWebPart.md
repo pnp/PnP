@@ -1,14 +1,16 @@
-#Remove-SPOWebPart
-*Topic automatically generated on: 2015-03-11*
+#Remove&#8209;SPOWebPart
+*Topic automatically generated on: 2015-03-12*
 
-
+Removes a webpart from a page
 ##Syntax
-    Remove-SPOWebPart -Identity [<GuidPipeBind>] -PageUrl [<String>] [-Web [<WebPipeBind>]]
-
+```powershell
+Remove&#8209;SPOWebPart -Identity [<GuidPipeBind>] -PageUrl [<String>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
-    Remove-SPOWebPart -Name [<String>] -PageUrl [<String>] [-Web [<WebPipeBind>]]
-
+```powershell
+Remove&#8209;SPOWebPart -Name [<String>] -PageUrl [<String>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

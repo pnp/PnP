@@ -1,10 +1,11 @@
-#Remove-SPOFile
-*Topic automatically generated on: 2015-03-11*
+#Remove&#8209;SPOFile
+*Topic automatically generated on: 2015-03-12*
 
 Removes a file.
 ##Syntax
-    Remove-SPOFile [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
-
+```powershell
+Remove&#8209;SPOFile [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
+```
 &nbsp;
 
 ##Parameters

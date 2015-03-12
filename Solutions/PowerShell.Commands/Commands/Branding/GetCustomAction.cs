@@ -9,7 +9,7 @@ using OfficeDevPnP.PowerShell.Commands.Enums;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOCustomAction")]
-    [CmdletHelp("Returns all or a specific custom action(s)")]
+    [CmdletHelp("Returns all or a specific custom action(s)", Category = "Branding")]
     public class GetCustomAction : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

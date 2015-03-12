@@ -219,9 +219,9 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
-    <Compile Include="PublishingPage\AddPublishingPage.cs" />
-    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
-    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPage.cs" />
+    <Compile Include="Publishing\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
@@ -261,7 +261,7 @@
     <Compile Include="Web\GetWeb.cs" />
     <Compile Include="Web\GetSubwebs.cs" />
     <Compile Include="Web\FindFile.cs" />
-    <Compile Include="Web\RemoveCustomAction.cs" />
+    <Compile Include="Branding\RemoveCustomAction.cs" />
     <Compile Include="Branding\GetCustomAction.cs" />
     <Compile Include="Branding\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
@@ -287,10 +287,10 @@
     <Compile Include="Branding\SetTheme.cs" />
     <Compile Include="Base\SPOWebCmdlet.cs" />
     <Compile Include="Web\SetWeb.cs" />
-    <Compile Include="WikiPage\RemoveWikiPage.cs" />
-    <Compile Include="WikiPage\AddWikiPage.cs" />
-    <Compile Include="WikiPage\GetWikiPageContent.cs" />
-    <Compile Include="WikiPage\SetWikiPageContent.cs" />
+    <Compile Include="Publishing\RemoveWikiPage.cs" />
+    <Compile Include="Publishing\AddWikiPage.cs" />
+    <Compile Include="Publishing\GetWikiPageContent.cs" />
+    <Compile Include="Publishing\SetWikiPageContent.cs" />
     <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -320,7 +320,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml" "$(SolutionDir)
 
 C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>

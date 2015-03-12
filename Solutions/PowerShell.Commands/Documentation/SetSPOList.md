@@ -1,10 +1,11 @@
-#Set-SPOList
-*Topic automatically generated on: 2015-03-11*
+#Set&#8209;SPOList
+*Topic automatically generated on: 2015-03-12*
 
-
+Updates list settings
 ##Syntax
-    Set-SPOList -Identity [<ListPipeBind>] [-BreakRoleInheritance [<SwitchParameter>]] [-CopyRoleAssignments [<SwitchParameter>]] [-ClearSubscopes [<SwitchParameter>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPOList -Identity [<ListPipeBind>] [-BreakRoleInheritance [<SwitchParameter>]] [-CopyRoleAssignments [<SwitchParameter>]] [-ClearSubscopes [<SwitchParameter>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

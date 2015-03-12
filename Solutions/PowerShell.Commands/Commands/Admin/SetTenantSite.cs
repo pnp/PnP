@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.")]
+", Details = "Requires a connection to a SharePoint Tenant Admin site.", Category = "Tenant Administration")]
     public class SetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]

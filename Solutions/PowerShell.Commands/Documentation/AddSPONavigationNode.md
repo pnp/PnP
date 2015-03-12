@@ -1,10 +1,11 @@
-#Add-SPONavigationNode
-*Topic automatically generated on: 2015-03-11*
+#Add&#8209;SPONavigationNode
+*Topic automatically generated on: 2015-03-12*
 
-
+Adds a menu item to either the quicklaunch or top navigation
 ##Syntax
-    Add-SPONavigationNode -Location [<NavigationType>] -Title [<String>] [-Url [<String>]] [-Header [<String>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Add&#8209;SPONavigationNode -Location [<NavigationType>] -Title [<String>] [-Url [<String>]] [-Header [<String>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

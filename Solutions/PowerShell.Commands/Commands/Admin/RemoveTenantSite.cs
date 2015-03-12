@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp("Office365 only: Removes a site collection from the current tenant", DetailedDescription = @"
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Office365 only")]
+", Details = "Office365 only", Category = "Tenant Administration")]
     public class RemoveSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]

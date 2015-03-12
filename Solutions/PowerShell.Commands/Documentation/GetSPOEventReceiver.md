@@ -1,10 +1,11 @@
-#Get-SPOEventReceiver
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOEventReceiver
+*Topic automatically generated on: 2015-03-12*
 
 Returns all or a specific event receiver
 ##Syntax
-    Get-SPOEventReceiver [-List [<ListPipeBind>]] [-Identity [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Get&#8209;SPOEventReceiver [-List [<ListPipeBind>]] [-Identity [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

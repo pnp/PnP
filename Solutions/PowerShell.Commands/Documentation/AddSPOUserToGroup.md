@@ -1,10 +1,11 @@
-#Add-SPOUserToGroup
-*Topic automatically generated on: 2015-03-11*
+#Add&#8209;SPOUserToGroup
+*Topic automatically generated on: 2015-03-12*
 
 Adds a user to a group
 ##Syntax
-    Add-SPOUserToGroup -LoginName [<String>] -Identity [<GroupPipeBind>] [-Web [<WebPipeBind>]]
-
+```powershell
+Add&#8209;SPOUserToGroup -LoginName [<String>] -Identity [<GroupPipeBind>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

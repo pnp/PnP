@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("Set", "SPOGroup")]
+    [CmdletHelp("Updates a group", Category = "User and group management")]
     public class SetGroup : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

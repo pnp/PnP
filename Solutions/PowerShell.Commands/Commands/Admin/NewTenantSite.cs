@@ -12,7 +12,7 @@ The New-SPOTenantSite cmdlet creates a new site collection for the current compa
 Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Office365 only")]
+", Details = "Office365 only", Category = "Tenant Administration")]
     public class NewTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = true)]

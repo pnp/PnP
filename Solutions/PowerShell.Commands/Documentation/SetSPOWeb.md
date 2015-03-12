@@ -1,10 +1,11 @@
-#Set-SPOWeb
-*Topic automatically generated on: 2015-03-11*
+#Set&#8209;SPOWeb
+*Topic automatically generated on: 2015-03-12*
 
 Sets properties on a web
 ##Syntax
-    Set-SPOWeb [-SiteLogoUrl [<String>]] [-AlternateCssUrl [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPOWeb [-SiteLogoUrl [<String>]] [-AlternateCssUrl [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

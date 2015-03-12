@@ -1,9 +1,11 @@
 ﻿using Microsoft.SharePoint.Client;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPOPropertyBagValue", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.High)]
+    [CmdletHelp("Removes a value from the property bag", Category = "Webs")]
     public class RemovePropertyBagValue : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]

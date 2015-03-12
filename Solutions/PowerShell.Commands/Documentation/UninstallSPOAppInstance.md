@@ -1,10 +1,11 @@
-#Uninstall-SPOAppInstance
-*Topic automatically generated on: 2015-03-11*
+#Uninstall&#8209;SPOAppInstance
+*Topic automatically generated on: 2015-03-12*
 
 Removes an app from a site
 ##Syntax
-    Uninstall-SPOAppInstance -Identity [<AppPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Uninstall&#8209;SPOAppInstance -Identity [<AppPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

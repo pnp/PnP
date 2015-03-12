@@ -1,10 +1,11 @@
-#Uninstall-SPOSolution
-*Topic automatically generated on: 2015-03-11*
+#Uninstall&#8209;SPOSolution
+*Topic automatically generated on: 2015-03-12*
 
 Uninstalls a sandboxed solution from a site collection
 ##Syntax
-    Uninstall-SPOSolution -PackageId [<GuidPipeBind>] -PackageName [<String>] [-MajorVersion [<Int32>]] [-MinorVersion [<Int32>]]
-
+```powershell
+Uninstall&#8209;SPOSolution -PackageId [<GuidPipeBind>] -PackageName [<String>] [-MajorVersion [<Int32>]] [-MinorVersion [<Int32>]]
+```
 &nbsp;
 
 ##Parameters

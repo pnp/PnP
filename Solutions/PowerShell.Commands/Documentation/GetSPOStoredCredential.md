@@ -1,10 +1,11 @@
-#Get-SPOStoredCredential
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOStoredCredential
+*Topic automatically generated on: 2015-03-12*
 
 Returns a stored credential from the Windows Credential Manager
 ##Syntax
-    Get-SPOStoredCredential -Name [<String>] [-Type [<CredentialType>]]
-
+```powershell
+Get&#8209;SPOStoredCredential -Name [<String>] [-Type [<CredentialType>]]
+```
 &nbsp;
 
 ##Parameters

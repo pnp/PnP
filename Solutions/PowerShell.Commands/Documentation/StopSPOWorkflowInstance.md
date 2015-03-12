@@ -1,10 +1,11 @@
-#Stop-SPOWorkflowInstance
-*Topic automatically generated on: 2015-03-11*
+#Stop&#8209;SPOWorkflowInstance
+*Topic automatically generated on: 2015-03-12*
 
-
+Stops a workflow instance
 ##Syntax
-    Stop-SPOWorkflowInstance [-Web [<WebPipeBind>]] -Identity [<WorkflowInstancePipeBind>]
-
+```powershell
+Stop&#8209;SPOWorkflowInstance [-Web [<WebPipeBind>]] -Identity [<WorkflowInstancePipeBind>]
+```
 &nbsp;
 
 ##Parameters

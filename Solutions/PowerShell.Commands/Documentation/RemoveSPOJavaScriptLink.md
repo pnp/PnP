@@ -1,17 +1,17 @@
-#Remove-SPOJavaScriptLink
-*Topic automatically generated on: 2015-03-11*
+#Remove&#8209;SPOJavaScriptLink
+*Topic automatically generated on: 2015-03-12*
 
 Removes a JavaScript link or block from a web or sitecollection
 ##Syntax
-    Remove-SPOJavaScriptLink [-Force [<SwitchParameter>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]] -Name [<String>]
-
+```powershell
+Remove&#8209;SPOJavaScriptLink [-Force [<SwitchParameter>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]] -Name [<String>]
+```
 &nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Force|SwitchParameter|False|
-FromSite|SwitchParameter|False|
 Name|String|True|Name of the Javascript link. Omit this parameter to retrieve all script links
 Scope|CustomActionScope|False|
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.

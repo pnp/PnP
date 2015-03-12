@@ -1,10 +1,11 @@
-#Remove-SPOContentType
-*Topic automatically generated on: 2015-03-11*
+#Remove&#8209;SPOContentType
+*Topic automatically generated on: 2015-03-12*
 
 Removes a content type
 ##Syntax
-    Remove-SPOContentType [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ContentTypePipeBind>]
-
+```powershell
+Remove&#8209;SPOContentType [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ContentTypePipeBind>]
+```
 &nbsp;
 
 ##Parameters

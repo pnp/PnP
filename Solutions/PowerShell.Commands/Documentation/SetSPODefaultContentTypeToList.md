@@ -1,10 +1,11 @@
-#Set-SPODefaultContentTypeToList
-*Topic automatically generated on: 2015-03-11*
+#Set&#8209;SPODefaultContentTypeToList
+*Topic automatically generated on: 2015-03-12*
 
 Sets the default content type for a list
 ##Syntax
-    Set-SPODefaultContentTypeToList -List [<ListPipeBind>] -ContentType [<ContentTypePipeBind>] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPODefaultContentTypeToList -List [<ListPipeBind>] -ContentType [<ContentTypePipeBind>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

@@ -1,10 +1,11 @@
-#Remove-SPOTenantSite
-*Topic automatically generated on: 2015-03-11*
+#Remove&#8209;SPOTenantSite
+*Topic automatically generated on: 2015-03-12*
 
 Office365 only: Removes a site collection from the current tenant
 ##Syntax
-    Remove-SPOTenantSite [-SkipRecycleBin [<SwitchParameter>]] [-FromRecycleBin [<SwitchParameter>]] [-Force [<SwitchParameter>]] -Url [<String>]
-
+```powershell
+Remove&#8209;SPOTenantSite [-SkipRecycleBin [<SwitchParameter>]] [-FromRecycleBin [<SwitchParameter>]] [-Force [<SwitchParameter>]] -Url [<String>]
+```
 &nbsp;
 
 ##Detailed Description
@@ -20,4 +21,3 @@ Force|SwitchParameter|False|Do not ask for confirmation.
 FromRecycleBin|SwitchParameter|False|If specified, will search for the site in the Recycle Bin and remove it from there.
 SkipRecycleBin|SwitchParameter|False|Do not add to the trashcan if selected.
 Url|String|True|
-Wait|SwitchParameter|False|OBSOLETE: If true, will wait for the site to be deleted before processing continues

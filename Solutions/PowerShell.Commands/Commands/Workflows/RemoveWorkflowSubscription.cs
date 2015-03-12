@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
     [Cmdlet(VerbsCommon.Remove, "SPOWorkflowSubscription")]
+    [CmdletHelp("Removes a workflow subscription", Category = "Workflows")]
+
     public class RemoveWorkflowSubscription : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "The subscription to remove", Position = 0)]

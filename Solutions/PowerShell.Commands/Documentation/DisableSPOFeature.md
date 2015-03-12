@@ -1,10 +1,11 @@
-#Disable-SPOFeature
-*Topic automatically generated on: 2015-03-11*
+#Disable&#8209;SPOFeature
+*Topic automatically generated on: 2015-03-12*
 
 Disables a feature
 ##Syntax
-    Disable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
-
+```powershell
+Disable&#8209;SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
+```
 &nbsp;
 
 ##Parameters

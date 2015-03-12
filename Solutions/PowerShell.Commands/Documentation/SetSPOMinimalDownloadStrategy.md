@@ -1,14 +1,16 @@
-#Set-SPOMinimalDownloadStrategy
-*Topic automatically generated on: 2015-03-11*
+#Set&#8209;SPOMinimalDownloadStrategy
+*Topic automatically generated on: 2015-03-12*
 
 Activates or deactivates the minimal downloading strategy.
 ##Syntax
-    Set-SPOMinimalDownloadStrategy -On [<SwitchParameter>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPOMinimalDownloadStrategy -On [<SwitchParameter>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
-    Set-SPOMinimalDownloadStrategy -Off [<SwitchParameter>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set&#8209;SPOMinimalDownloadStrategy -Off [<SwitchParameter>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

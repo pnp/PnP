@@ -6,7 +6,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsLifecycle.Uninstall, "SPOAppInstance", SupportsShouldProcess = true)]
-    [CmdletHelp("Removes an app from a site")]
+    [CmdletHelp("Removes an app from a site", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Uninstall-SPOAppInstance -Identity $appinstance")]
     [CmdletExample(

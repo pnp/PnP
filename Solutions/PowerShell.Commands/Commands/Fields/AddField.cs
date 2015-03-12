@@ -3,10 +3,15 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOField")]
+    [CmdletHelp("Adds a field to a list or as a site column", Category = "Fields")]
+    [CmdletExample(
+     Code = @"PS:> Add-SPOField -List ""Demo list"" -DisplayName ""Location"" -InternalName ""SPSLocation"" -Type Choice -Group ""Demo Group"" -AddToDefaultView -Choices ""Stockholm"",""Helsinki"",""Oslo""",
+     Remarks = @"This will add field of type Choice to a the list ""Demo List"".", SortOrder = 1)]
     public class AddField : SPOWebCmdlet, IDynamicParameters
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListPara")]

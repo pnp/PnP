@@ -1,10 +1,11 @@
-#Get-SPOSubWebs
-*Topic automatically generated on: 2015-03-11*
+#Get&#8209;SPOSubWebs
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns the subwebs
 ##Syntax
-    Get-SPOSubWebs [-Web [<WebPipeBind>]] [-Identity [<WebPipeBind>]]
-
+```powershell
+Get&#8209;SPOSubWebs [-Web [<WebPipeBind>]] [-Identity [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

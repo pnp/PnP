@@ -1,9 +1,11 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOPropertyBag")]
+    [CmdletHelp("Returns the property bag values.", Category = "Webs")]
     public class GetPropertyBag : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]

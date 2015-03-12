@@ -27,9 +27,11 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
         {
             get
             {
-                return string.Format("{0}-{1}", Verb, Noun);
+                return string.Format("{0}&#8209;{1}", Verb, Noun);
             }
         }
+
+        public string Category { get; set; }
 
         public CmdletInfo(string verb, string noun)
         {
