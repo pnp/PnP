@@ -198,7 +198,7 @@ Command | Description
 **[Get-SPOHomePage](Documentation/GetSPOHomePage.md)** | Returns the url of the current homepage
 **[Get-SPOMasterPage](Documentation/GetSPOMasterPage.md)** | Returns the urls of the current assigned masterpages
 **[Get-SPOPropertyBag](Documentation/GetSPOPropertyBag.md)** | Returns the propertybag
-**[Get-SPOSubWebs](Documentation/GetSPOSubwebs.md)** | Returns the subwebs
+**[Get-SPOSubWebs](Documentation/GetSPOSubWebs.md)** | Returns the subwebs
 **[Get-SPOWeb](Documentation/GetSPOWeb.md)** | Returns the current web
 **[Get-SPOIndexedPropertyKeys](Documentation/GetSPOIndexedPropertyKeys.md)** | Returns all keys in the property bag set for indexing
 **[New-SPOWeb](Documentation/NewSPOWeb.md)** | Creates a new web
