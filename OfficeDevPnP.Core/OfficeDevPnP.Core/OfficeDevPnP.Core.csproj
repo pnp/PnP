@@ -187,21 +187,34 @@
   <ItemGroup>
     <Compile Include="AppModelExtensions\ClientContextExtensions.cs" />
     <Compile Include="AppModelExtensions\Deprecated\BrandingExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\ClientContextExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\FeatureExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\FieldAndContentTypeExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\FileFolderExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\InformationManagementExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\JavaScriptExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\ListExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\NavigationExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\PageExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\ProvisioningExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\RecordsManagementExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\SearchExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\SecurityExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\TaxonomyExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\TenantExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\VariationExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\Deprecated\WebExtensions.deprecated.cs" />
+    <Compile Include="AppModelExtensions\Deprecated\WorkflowExtensions.deprecated.cs" />
     <Compile Include="AppModelExtensions\FieldAndContentTypeExtensions.cs" />
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\ListExtensions.cs" />
     <Compile Include="AppModelExtensions\ProvisioningExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
+    <Compile Include="AppModelExtensions\SearchExtensions.cs" />
     <Compile Include="AppModelExtensions\TaxonomyExtensions.cs" />
     <Compile Include="AppModelExtensions\TenantExtensions.cs" />
+    <Compile Include="AppModelExtensions\VariationExtensions.cs" />
     <Compile Include="AppModelExtensions\WorkflowExtensions.cs" />
     <Compile Include="AuthenticationManager.cs" />
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
@@ -217,6 +230,8 @@
     <Compile Include="Entities\SitePolicyEntity.cs" />
     <Compile Include="Entities\ThemeEntity.cs" />
     <Compile Include="Entities\UserEntity.cs" />
+    <Compile Include="Entities\VariationInformation.cs" />
+    <Compile Include="Entities\VariationLabelEntity.cs" />
     <Compile Include="Entities\WebPartEntity.cs" />
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
@@ -225,34 +240,27 @@
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
+    <Compile Include="Enums\NavigationType.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Extensions\EnumerationExtensions.cs" />
-    <Compile Include="Extensions\HttpVariablesExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\RequestMessageExtensions.cs" />
     <Compile Include="Extensions\SafeConvertExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions\StringExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\StringHtmlExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Extensions\SystemWebUIExtensions.cs" />
     <Compile Include="Extensions\ValidationExtensions.cs" />
     <Compile Include="CoreResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJob.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
+    <Compile Include="Framework\TimerJobs\TimerJobRunEventArgs.cs" />
+    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Framework\TimerJobs\Utilities\SiteEnumeration.cs" />
     <Compile Include="IdentityModel\TokenProviders\ADFS\BaseProvider.cs" />
     <Compile Include="IdentityModel\TokenProviders\ADFS\UsernameMixed.cs" />
     <Compile Include="IdentityModel\WSTrustBindings\UserNameWSTrustBinding.cs" />
@@ -262,6 +270,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\CredentialManager.cs" />
     <Compile Include="Web References\UPAWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -273,7 +282,7 @@
     <Compile Include="WebAPI\WebAPIContextFilterAttribute.cs" />
     <Compile Include="WebAPI\WebAPIHelper.cs" />
     <Compile Include="Utilities\Caml.cs" />
-    <Compile Include="Utilities\LoggingUtility.cs" />
+    <Compile Include="Utilities\Deprecated\LoggingUtility.deprecated.cs" />
     <Compile Include="Utilities\UrlUtility.cs">
       <SubType>Code</SubType>
     </Compile>

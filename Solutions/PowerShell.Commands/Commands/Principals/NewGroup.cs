@@ -1,13 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
 using OfficeDevPnP.PowerShell.Commands.Enums;
-using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("New", "SPOGroup")]
-    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object")]
+    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> New-SPOUser -LogonName user@company.com
 ")]
@@ -33,18 +32,16 @@ PS:> New-SPOUser -LogonName user@company.com
 
         protected override void ExecuteCmdlet()
         {
-            var web = this.SelectedWeb;
+            var web = SelectedWeb;
 
-            GroupCreationInformation groupCI = new GroupCreationInformation();
-            groupCI.Title = Title;
-            groupCI.Description = Description;
+            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
 
             var group = web.SiteGroups.Add(groupCI);
 
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
-            ClientContext.ExecuteQuery();
-            bool dirty = false;
+            ClientContext.ExecuteQueryRetry();
+            var dirty = false;
             if (AllowRequestToJoinLeave)
             {
                 group.AllowRequestToJoinLeave = true;
@@ -59,27 +56,27 @@ PS:> New-SPOUser -LogonName user@company.com
             if (dirty)
             {
                 group.Update();
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
 
 
             if (!string.IsNullOrEmpty(Owner))
             {
-                Principal groupOwner = null;
+                Principal groupOwner;
 
                 try
                 {
                     groupOwner = web.EnsureUser(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 catch
                 {
                     groupOwner = web.SiteGroups.GetByName(Owner);
                     group.Owner = groupOwner;
                     group.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
 
@@ -105,7 +102,7 @@ PS:> New-SPOUser -LogonName user@company.com
                         }
                 }
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(group);
         }
     }

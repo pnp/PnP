@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Provisioning.Cloud.WorkflowWeb.Services.AppEventReceiver" CodeBehind="AppEventReceiver.svc.cs" %>

@@ -6,22 +6,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet("Disconnect", "SPOnline")]
 
-    [CmdletHelp("Disconnects the context")]
+    [CmdletHelp("Disconnects the context", Category = "Base Cmdlets")]
     [CmdletExample(
         Code = @"PS:> Disconnect-SPOnline")]
     public class DisconnectSPOnline : PSCmdlet
     {
         protected override void ProcessRecord()
         {
-            if (!DisconnectSPOnline.DisconnectCurrentService())
-                throw new InvalidOperationException(OfficeDevPnP.PowerShell.Commands.Properties.Resources.NoConnectionToDisconnect);
+            if (!DisconnectCurrentService())
+                throw new InvalidOperationException(Properties.Resources.NoConnectionToDisconnect);
         }
 
         internal static bool DisconnectCurrentService()
         {
             if (SPOnlineConnection.CurrentConnection == null)
                 return false;
-            SPOnlineConnection.CurrentConnection = (SPOnlineConnection)null;
+            SPOnlineConnection.CurrentConnection = null;
             return true;
         }
     }

@@ -1,13 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet(VerbsCommon.Get, "SPOGroup",DefaultParameterSetName="All")]
-    [CmdletHelp("Returns a specific group or all groups.")]
+    [CmdletHelp("Returns a specific group or all groups.", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> Get-SPOGroup
 ", SortOrder = 1)]
@@ -36,11 +35,11 @@ PS:> Get-SPOGroup -Name 'Site Members'
                 Group group = null;
                 if(Identity.Id != -1)
                 {
-                    group = this.SelectedWeb.SiteGroups.GetById(Identity.Id);
+                    group = SelectedWeb.SiteGroups.GetById(Identity.Id);
                 }
                 else if(!string.IsNullOrEmpty(Identity.Name))
                 {
-                    group = this.SelectedWeb.SiteGroups.GetByName(Identity.Name);
+                    group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
                 } else if (Identity.Group != null)
                 {
                     group = Identity.Group;
@@ -49,35 +48,35 @@ PS:> Get-SPOGroup -Name 'Site Members'
                 ClientContext.Load(group);
                 ClientContext.Load(group.Users);
 
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
 
                 WriteObject(group);
             }
             else if (ParameterSetName == "Members")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedMemberGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedMemberGroup.Users);
-                ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedMemberGroup);
+                ClientContext.Load(SelectedWeb.AssociatedMemberGroup);
+                ClientContext.Load(SelectedWeb.AssociatedMemberGroup.Users);
+                ClientContext.ExecuteQueryRetry();
+                WriteObject(SelectedWeb.AssociatedMemberGroup);
             }
             else if (ParameterSetName == "Visitors")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedVisitorGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedVisitorGroup.Users);
-                ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedVisitorGroup);
+                ClientContext.Load(SelectedWeb.AssociatedVisitorGroup);
+                ClientContext.Load(SelectedWeb.AssociatedVisitorGroup.Users);
+                ClientContext.ExecuteQueryRetry();
+                WriteObject(SelectedWeb.AssociatedVisitorGroup);
             }
             else if (ParameterSetName == "Owners")
             {
-                ClientContext.Load(this.SelectedWeb.AssociatedOwnerGroup);
-                ClientContext.Load(this.SelectedWeb.AssociatedOwnerGroup.Users);
-                ClientContext.ExecuteQuery();
-                WriteObject(this.SelectedWeb.AssociatedOwnerGroup);
+                ClientContext.Load(SelectedWeb.AssociatedOwnerGroup);
+                ClientContext.Load(SelectedWeb.AssociatedOwnerGroup.Users);
+                ClientContext.ExecuteQueryRetry();
+                WriteObject(SelectedWeb.AssociatedOwnerGroup);
             }
             else if (ParameterSetName == "All")
             {
-                var groups = ClientContext.LoadQuery(this.SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
-                ClientContext.ExecuteQuery();
+                var groups = ClientContext.LoadQuery(SelectedWeb.SiteGroups.IncludeWithDefaultProperties(g => g.Users));
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(groups,true);
             }
 

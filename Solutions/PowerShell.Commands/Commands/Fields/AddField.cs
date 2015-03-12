@@ -3,10 +3,15 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOField")]
+    [CmdletHelp("Adds a field to a list or as a site column", Category = "Fields")]
+    [CmdletExample(
+     Code = @"PS:> Add-SPOField -List ""Demo list"" -DisplayName ""Location"" -InternalName ""SPSLocation"" -Type Choice -Group ""Demo Group"" -AddToDefaultView -Choices ""Stockholm"",""Helsinki"",""Oslo""",
+     Remarks = @"This will add field of type Choice to a the list ""Demo List"".", SortOrder = 1)]
     public class AddField : SPOWebCmdlet, IDynamicParameters
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, ParameterSetName = "ListPara")]
@@ -65,8 +70,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                List list = this.SelectedWeb.GetList(List);
-                Field f = null;
+                var list = SelectedWeb.GetList(List);
+                Field f;
                 var fieldCI = new FieldCreationInformation(Type)
                 {
                     Id = Id.Id,
@@ -81,7 +86,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f = list.CreateField<FieldChoice>(fieldCI);
                     ((FieldChoice)f).Choices = context.Choices;
                     f.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
@@ -93,13 +98,13 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 WriteObject(f);
             }
             else
             {
-                Field f = null;
+                Field f;
 
                 var fieldCI = new FieldCreationInformation(Type)
                 {
@@ -112,14 +117,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 
                 if (Type == FieldType.Choice || Type == FieldType.MultiChoice)
                 {
-                    f = this.SelectedWeb.CreateField<FieldChoice>(fieldCI);
+                    f = SelectedWeb.CreateField<FieldChoice>(fieldCI);
                     ((FieldChoice)f).Choices = context.Choices;
                     f.Update();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 else
                 {
-                    f = this.SelectedWeb.CreateField(fieldCI);
+                    f = SelectedWeb.CreateField(fieldCI);
                 }
 
                 if (Required)
@@ -127,7 +132,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     f.Required = true;
                     f.Update();
                     ClientContext.Load(f);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                
                 WriteObject(f);

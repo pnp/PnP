@@ -52,7 +52,7 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 }
                 if (!ctx.Web.ListExists(txtListName.Text))
                 {
-                    ctx.Web.AddList(ListTemplateType.DocumentLibrary, txtListName.Text, false);
+                    ctx.Web.CreateList(ListTemplateType.DocumentLibrary, txtListName.Text, false);
                     // Enable content types in list
                     List list = ctx.Web.GetListByTitle(txtListName.Text);
                     list.ContentTypesEnabled = true;
@@ -66,6 +66,8 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 
                 // Set the content type as default content type to the TestLib list
                 ctx.Web.SetDefaultContentTypeToList(txtListName.Text, contentTypeId);
+
+                lblStatus3.Text = string.Format("Created new list called '{0}' and asscoated document type called 'LitwareDoc' to it'. Move to <a href='{1}'>host web</a> and test the functionality.", txtListName.Text, spContext.SPHostUrl.ToString());
             }
         }
     }

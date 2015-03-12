@@ -12,7 +12,7 @@ var cookiesEnabled;
 // This code runs when the DOM is ready and creates a context object which is needed to use the SharePoint object model
 $(document).ready(function () {
 
-    // Perform test to se if cookies are enabled
+    // Perform test to see if cookies are enabled
     setCookie("Test", "None", "", "/", "", "");
 
     var testCookie = getCookie("Test");

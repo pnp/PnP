@@ -1,10 +1,9 @@
 ﻿#if !CLIENTSDKV15
+using System.Management.Automation;
+using Microsoft.Online.SharePoint.TenantManagement;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
@@ -12,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.")]
+", Details = "Requires a connection to a SharePoint Tenant Admin site.", Category = "Tenant Administration")]
     public class SetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]
@@ -21,26 +20,26 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
         [Parameter(Mandatory = false)]
         public string Title;
         [Parameter(Mandatory = false)]
-        public Nullable<Microsoft.Online.SharePoint.TenantManagement.SharingCapabilities> Sharing = null;
+        public SharingCapabilities? Sharing = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<long> StorageMaximumLevel = null;
+        public long? StorageMaximumLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<long> StorageWarningLevel = null;
+        public long? StorageWarningLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<double> UserCodeMaximumLevel = null;
+        public double? UserCodeMaximumLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<double> UserCodeWarningLevel = null;
+        public double? UserCodeWarningLevel = null;
 
         [Parameter(Mandatory = false)]
-        public Nullable<SwitchParameter> AllowSelfServiceUpgrade = null;
+        public SwitchParameter? AllowSelfServiceUpgrade = null;
 
         protected override void ExecuteCmdlet()
         {
-            this.Tenant.SetSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
+            Tenant.SetSiteProperties(Url, title:Title, sharingCapability: Sharing, storageMaximumLevel: StorageMaximumLevel, allowSelfServiceUpgrade: AllowSelfServiceUpgrade, userCodeMaximumLevel: UserCodeMaximumLevel, userCodeWarningLevel: UserCodeWarningLevel);
         }
     }
 

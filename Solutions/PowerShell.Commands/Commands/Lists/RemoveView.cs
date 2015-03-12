@@ -2,10 +2,12 @@
 using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOView")]
+    [Cmdlet(VerbsCommon.Remove, "SPOView", SupportsShouldProcess = true)]
+    [CmdletHelp("Deletes a view from a list", Category = "Lists")]
     public class RemoveView : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Title of the list.")]
@@ -21,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (list != null)
                 {
@@ -45,7 +47,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                             if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveView0, view.Title), Properties.Resources.Confirm))
                             {
                                 view.DeleteObject();
-                                ClientContext.ExecuteQuery();
+                                ClientContext.ExecuteQueryRetry();
                             }
                         }
                     }

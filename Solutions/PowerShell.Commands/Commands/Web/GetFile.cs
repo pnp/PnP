@@ -1,14 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOFile")]
-    [CmdletHelp("Downloads a file.")]
+    [CmdletHelp("Downloads a file.", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor",Remarks="Downloads the file and saves it to the current folder", SortOrder = 1)]
     [CmdletExample(Code = @"
@@ -39,11 +37,11 @@ PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.s
                 {
                     Path = Directory.GetCurrentDirectory();
                 }
-                this.SelectedWeb.SaveFileToLocal(ServerRelativeUrl, Path, Filename);
+                SelectedWeb.SaveFileToLocal(ServerRelativeUrl, Path, Filename);
             }
             else
             {
-                WriteObject(this.SelectedWeb.GetFileAsString(ServerRelativeUrl));
+                WriteObject(SelectedWeb.GetFileAsString(ServerRelativeUrl));
             }
 
         }

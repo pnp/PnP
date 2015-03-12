@@ -1,14 +1,13 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
+﻿using System;
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOTaxonomyFieldValue")]
-    [CmdletHelp("Sets a taxonomy term value in a listitem field")]
+    [CmdletHelp("Sets a taxonomy term value in a listitem field",Category = "Taxonomy")]
     [CmdletExample(Code = @"
 PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -Label 'HR'
     ")]
@@ -36,7 +35,7 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
         {
             Field field = ListItem.ParentList.Fields.GetByInternalNameOrTitle(InternalFieldName);
             ClientContext.Load(field);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             switch (ParameterSetName)
             {

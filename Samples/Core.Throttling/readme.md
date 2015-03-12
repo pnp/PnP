@@ -38,7 +38,7 @@ Following picture explains the key elements in the throttling.
 2. If there are too many requests coming from one account in certain time period, request could get throttled. During this time all requests will fail with http status 429. 
 
 Please check more information from following MSDN article:
-- [How to avoid getting throttled on SharePoint Online](#)
+- [How to avoid getting throttled on SharePoint Online](https://msdn.microsoft.com/en-us/library/dn878981.aspx)
 
 
 # Handling the throttling in the code #
@@ -56,7 +56,7 @@ static void Main(string[] args)
 
     using (var ctx = new ClientContext(serverUrl))
     {
-        //Provide acocunt and pwd for connecting to the source
+        //Provide account and pwd for connecting to the source
         var passWord = new SecureString();
         foreach (char c in password.ToCharArray()) passWord.AppendChar(c);
         ctx.Credentials = new SharePointOnlineCredentials(login, passWord);

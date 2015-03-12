@@ -26,8 +26,8 @@ namespace OD4B.Configuration.Async.Console.Reset
             using (var ctx = TokenHelper.GetClientContextWithAccessToken(url.ToString(), token))
             {
                 // Uncomment the one you need for testing/reset
-                Apply(ctx, url);
-               // Reset(ctx);
+                // Apply(ctx, url);
+                 Reset(ctx);
             }
         }
 

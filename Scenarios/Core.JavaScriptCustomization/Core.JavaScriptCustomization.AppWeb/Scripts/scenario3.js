@@ -1,13 +1,9 @@
-﻿// Register script for MDS if possible
-RegisterModuleInit("scenario3.js", RemoteManager_Inject); //MDS registration
-RemoteManager_Inject(); //non MDS run
-
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("scenario3.js");
+﻿if ("undefined" != typeof g_MinimalDownload && g_MinimalDownload && (window.location.pathname.toLowerCase()).endsWith("/_layouts/15/start.aspx") && "undefined" != typeof asyncDeltaManager) {
+    // Register script for MDS if possible
+    RegisterModuleInit("scenario3.js", RemoteManager_Inject); //MDS registration
+    RemoteManager_Inject(); //non MDS run
+} else {
+    RemoteManager_Inject();
 }
 
 //Variables used to control the asynchronous requests

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
 {
-    [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Struct,
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct,
                       AllowMultiple = true)]
     public sealed class CmdletExampleAttribute : Attribute
     {
@@ -15,6 +11,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
         public string Introduction { get; set; }
         public string Remarks { get; set; }
         public int SortOrder { get; set; }
+        
         public CmdletExampleAttribute()
         {
            

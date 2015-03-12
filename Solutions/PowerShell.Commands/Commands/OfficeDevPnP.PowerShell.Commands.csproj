@@ -137,7 +137,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
-    <Compile Include="Authentication\GetAuthenticationRealm.cs" />
+    <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
@@ -164,10 +164,13 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Branding\GetJavaScriptLink.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
     <Compile Include="Enums\ConnectionType.cs" />
+    <Compile Include="Enums\CredentialType.cs" />
+    <Compile Include="Enums\CustomActionScope.cs" />
     <Compile Include="Enums\FeatureScope.cs" />
     <Compile Include="Enums\NavigationNodeTypeEnum.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
@@ -196,10 +199,12 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
-    <Compile Include="Web\RemoveJavaScriptLink.cs" />
-    <Compile Include="Web\AddJavaScriptLink.cs" />
-    <Compile Include="Web\AddJavaScriptBlock.cs" />
+    <Compile Include="WebParts\GetWebPartProperty.cs" />
+    <Compile Include="Branding\RemoveJavaScriptLink.cs" />
+    <Compile Include="Branding\AddJavaScriptLink.cs" />
+    <Compile Include="Branding\AddJavaScriptBlock.cs" />
     <Compile Include="Web\AddFolder.cs" />
+    <Compile Include="Web\RemoveFile.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
@@ -214,9 +219,9 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
-    <Compile Include="PublishingPage\AddPublishingPage.cs" />
-    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
-    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPage.cs" />
+    <Compile Include="Publishing\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
@@ -245,7 +250,7 @@
     <Compile Include="Utilities\SendMail.cs" />
     <Compile Include="WebParts\AddWebPartToWebPartPage.cs" />
     <Compile Include="WebParts\AddWebPartToWikiPage.cs" />
-    <Compile Include="Web\AddNavigationNode.cs" />
+    <Compile Include="Branding\AddNavigationNode.cs" />
     <Compile Include="WebParts\SetWebPartProperty.cs" />
     <Compile Include="WebParts\RemoveWebPart.cs" />
     <Compile Include="WebParts\GetWebPart.cs" />
@@ -256,11 +261,11 @@
     <Compile Include="Web\GetWeb.cs" />
     <Compile Include="Web\GetSubwebs.cs" />
     <Compile Include="Web\FindFile.cs" />
-    <Compile Include="Web\RemoveCustomAction.cs" />
-    <Compile Include="Web\GetCustomAction.cs" />
-    <Compile Include="Web\AddCustomAction.cs" />
+    <Compile Include="Branding\RemoveCustomAction.cs" />
+    <Compile Include="Branding\GetCustomAction.cs" />
+    <Compile Include="Branding\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
-    <Compile Include="Web\RemoveNavigationNode.cs">
+    <Compile Include="Branding\RemoveNavigationNode.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Web\RemovePropertyBagValue.cs" />
@@ -268,7 +273,7 @@
     <Compile Include="Web\GetMasterPage.cs" />
     <Compile Include="Web\GetHomepage.cs" />
     <Compile Include="Web\SetMDS.cs" />
-    <Compile Include="Web\SetHomepage.cs" />
+    <Compile Include="Branding\SetHomepage.cs" />
     <Compile Include="Web\SetPropertyBagValue.cs" />
     <Compile Include="Web\SetIndexedProperties.cs" />
     <Compile Include="Web\SetFileCheckedIn.cs" />
@@ -278,14 +283,14 @@
     <Compile Include="Features\EnableFeature.cs" />
     <Compile Include="Web\NewWeb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web\SetMasterPage.cs" />
-    <Compile Include="Web\SetTheme.cs" />
+    <Compile Include="Branding\SetMasterPage.cs" />
+    <Compile Include="Branding\SetTheme.cs" />
     <Compile Include="Base\SPOWebCmdlet.cs" />
     <Compile Include="Web\SetWeb.cs" />
-    <Compile Include="WikiPage\RemoveWikiPage.cs" />
-    <Compile Include="WikiPage\AddWikiPage.cs" />
-    <Compile Include="WikiPage\GetWikiPageContent.cs" />
-    <Compile Include="WikiPage\SetWikiPageContent.cs" />
+    <Compile Include="Publishing\RemoveWikiPage.cs" />
+    <Compile Include="Publishing\AddWikiPage.cs" />
+    <Compile Include="Publishing\GetWikiPageContent.cs" />
+    <Compile Include="Publishing\SetWikiPageContent.cs" />
     <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>

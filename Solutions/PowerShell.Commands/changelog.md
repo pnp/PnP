@@ -1,8 +1,27 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-03-11**
+* Added Get-SPOJavaScript link cmdlet
+* Refactored JavaScript related cmdlets to use -Name parameter instead of -Key (-Key still works for backwards compatibility reasons)
+* Refactored JavaScript related cmdlets to use -Scope [Web|Site] parameter instead of -FromSite, -SiteScoped and -AddToSite parameters. The old parameters still work for backwards compatibility reasons.
+* Fixed an issue in cmdlet help generation where the syntax would not be shown for cmdlets with only one parameter set.
+
+**2015-03-10**
+* Added Sequence parameter to Add-SPOJavaScriptLink and Add-SPOJavaScriptBlock cmdlets
+* Added Remove-SPOFile cmdlet
+
+**2015-02-25**
+* Updated Location parameter in Add-/Remove-SPONavigationNode
+
+**2015-01-07**
+* Introduced new Cmdlet: Get-SPOWebPartProperty to return webpart properties
+* Updated Set-SPOWebPartProperty cmdlet to support int values
+
 **2015-01-02**
 * Removed SetAssociatedGroup parameter from new-spogroup cmdlet and moved it to a separate cmdlet: Set-SPOGroup
 * Introduced new Cmdlet: Set-SPOGroup to set the group as an associated group and optionally add or remove role assignments
+* Introduced new Cmdlet: Set-SPOList to set list properties
+* Introduced new Cmdlet: Set-SPOListPermission to set list permissions
 
 **2014-12-30**
 * Changed New-SPOWeb to return the actual web as an object instead of a success message.

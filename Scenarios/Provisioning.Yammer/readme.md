@@ -73,26 +73,27 @@ Notice also that since this configuration is dynamically applied during provisio
 Actual provisioning logic and site modifications are using [PnP Core component](https://github.com/OfficeDev/PnP/tree/master/OfficeDevPnP.Core) extension methods. As you can see we can perform the required actions with only few lines of code due the encapsulated reusable methods from the core component.
 
 ```C#
-public void CreateSubSite(Web hostWeb, string url, string template, 
-                          string title, string description, string yammerGroupName)
+public void CreateSubSite(Web hostWeb, string url, string template,
+                            string title, string description, string feedType, string yammerGroupName)
 {
     // Create new sub site
-    Web newWeb = hostWeb.CreateSite(title, url, description, template, 1033);
+    Web newWeb = hostWeb.CreateWeb(title, url, description, template, 1033);
 
-    // Set theme for the site
-    newWeb.SetThemeToSubWeb(hostWeb, "Orange");
-
-    //Remove the "NewsFeed" web part
+    //Remove the out of the box "NewsFeed" web part
     newWeb.DeleteWebPart("SitePages", "Site feed", "home.aspx");
 
-    // Get Yammer Group - Creates if does not exist
-    YammerGroup group = 
-        YammerUtility.CreateYammerGroup(yammerGroupName, true, ConfigurationManager.AppSettings["YammerAccessToken"]);
+    // Let's first get the details on the Yammer network using the access token
+    WebPartEntity wpYammer;
+    YammerUser user = YammerUtility.GetYammerUser(ConfigurationManager.AppSettings["YammerAccessToken"]);
 
-    // Get Yammer web part
-    WebPartEntity wpYammer = YammerUtility.GetYammerGroupDiscussionPart(group.network_name, group.id, false, false);
+    // Created Yammer web part with needed configuration
+    wpYammer = CreateYammerWebPart(feedType, user, yammerGroupName, title);
+
     // Add Yammer web part to the page
     newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
+
+    // Add theme to the site and apply that
+    ApplyThemeToSite(hostWeb, newWeb);
 }
 ```
 

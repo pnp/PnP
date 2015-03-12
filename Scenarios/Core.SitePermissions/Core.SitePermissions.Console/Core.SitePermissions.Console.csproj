@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+      <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>

@@ -1,13 +1,13 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOTaxonomy", SupportsShouldProcess = true)]
-    [CmdletHelp("Imports a taxonomy from either a string array or a file")]
+    [CmdletHelp("Imports a taxonomy from either a string array or a file", Category = "Taxonomy")]
     [CmdletExample(Code = @"
 PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'",
            Remarks = "Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'")]
@@ -24,7 +24,7 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         public string Path;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
-        public int LCID = 1033;
+        public int Lcid = 1033;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string TermStoreName;
@@ -32,12 +32,15 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public string Delimiter = "|";
 
+        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "If specified, terms that exist in the termset, but are not in the imported data will be removed.")]
+        public SwitchParameter SynchronizeDeletions;
+
         protected override void ExecuteCmdlet()
         {
-            string[] lines = null;
+            string[] lines;
             if (ParameterSetName == "File")
             {
-                lines = System.IO.File.ReadAllLines(Path);
+                lines = File.ReadAllLines(Path);
             }
             else
             {
@@ -47,11 +50,11 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
             {
                 var taxSession = TaxonomySession.GetTaxonomySession(ClientContext);
                 var termStore = taxSession.TermStores.GetByName(TermStoreName);
-                ClientContext.Site.ImportTerms(lines, LCID, termStore, Delimiter);
+                ClientContext.Site.ImportTerms(lines, Lcid, termStore, Delimiter, SynchronizeDeletions);
             }
             else
             {
-                ClientContext.Site.ImportTerms(lines, LCID, Delimiter);
+                ClientContext.Site.ImportTerms(lines, Lcid, Delimiter, SynchronizeDeletions);
             }
         }
 

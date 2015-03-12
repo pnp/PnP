@@ -1,13 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
+﻿using System;
 using System.Management.Automation;
-using System;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOFolder")]
-    [CmdletHelp("Creates a folder within a parent folder")]
+    [CmdletHelp("Creates a folder within a parent folder", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder")]
     public class AddFolder : SPOWebCmdlet
@@ -20,15 +19,15 @@ PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder")]
 
         protected override void ExecuteCmdlet()
         {
-            if (!this.SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
+            if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                ClientContext.Load(this.SelectedWeb, w => w.ServerRelativeUrl);
-                ClientContext.ExecuteQuery();
+                ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
+                ClientContext.ExecuteQueryRetry();
             }
 
-            Folder folder = this.SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(this.SelectedWeb.ServerRelativeUrl, Folder));
+            Folder folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
             ClientContext.Load(folder, f => f.ServerRelativeUrl);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
             folder.CreateFolder(Name);
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,10 @@ namespace Contoso.Provisioning.Hybrid.Core
 
             bool validUrl = false;
 
+            Tenant tenant = new Tenant(web.Context);
             while (!validUrl)
             {
-
-                if (!web.DoesSiteExistInTenant(nextUrl))
+                if (!tenant.SiteExists(nextUrl))
                 {
                     validUrl = true;
                 }

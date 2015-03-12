@@ -24,3 +24,22 @@
     border-width: 1px;
     border-color: red;
 }
+
+/* Suite bar styling */
+.o365cst.o365cs-base .ms-bgc-tp, .o365cst.o365cs-base .ms-bgc-tp-h:hover, .ms-bgc-tp.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+.o365cst.o365cs-base .ms-bgc-tp, .o365cst.o365cs-base .ms-bgc-tp-h:hover, .ms-bgc-tp.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+.o365cst.o365cs-base .o365cs-topnavLinkBackground-2 {
+    background-color: #ff0000 !important;
+}
+
+.o365cs-topnavBGColor-2.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+
+.o365cs-topnavBGColor-2.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}

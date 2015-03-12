@@ -1,12 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Linq;
-using System.Collections.Generic;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOSubWebs")]
+    [CmdletHelp("Returns the subwebs", Category = "Webs")]
     public class GetSubWebs : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline=true, Position=0)]
@@ -14,8 +14,8 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var webs = ClientContext.LoadQuery(this.SelectedWeb.Webs);
-            ClientContext.ExecuteQuery();
+            var webs = ClientContext.LoadQuery(SelectedWeb.Webs);
+            ClientContext.ExecuteQueryRetry();
             WriteObject(webs, true);
 
         }

@@ -48,16 +48,16 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var termGroup = termStore.CreateGroup(_termGroupName,_termGroupId);
                 clientContext.Load(termGroup);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Termset
                 var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Term
                 termSet.CreateTerm(_termName, 1033, _termId);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // List
 
@@ -82,7 +82,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 list.Update();
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 _listId = list.Id;
             }
@@ -99,28 +99,28 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termGroup = termStore.GetGroup(_termGroupId);
                 var termSets = termGroup.TermSets;
                 clientContext.Load(termSets);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 foreach (var termSet in termSets)
                 {
                     termSet.DeleteObject();
                 }
                 termGroup.DeleteObject(); // Will delete underlying termset
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var field in testFields)
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
         #endregion
@@ -145,7 +145,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Delete List
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
         #endregion

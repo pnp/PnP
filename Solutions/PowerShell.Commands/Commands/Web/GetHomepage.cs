@@ -1,21 +1,29 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOHomePage")]
+    [CmdletHelp("Returns the URL to the home page", Category = "Webs")]
     public class GetHomePage : SPOWebCmdlet
     {
         protected override void ExecuteCmdlet()
         {
-            Folder folder = this.SelectedWeb.RootFolder;
+            var folder = SelectedWeb.RootFolder;
 
             ClientContext.Load(folder, f => f.WelcomePage);
 
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
 
-            WriteObject(folder.WelcomePage);
+            if (string.IsNullOrEmpty(folder.WelcomePage))
+            {
+                WriteObject("default.aspx");
+            }
+            else
+            {
+                WriteObject(folder.WelcomePage);
+            }
         }
     }
 }

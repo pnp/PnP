@@ -4,11 +4,39 @@
         Title="Office 365 API Demo" Height="800" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="34"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="285*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="btnGo" Content="Run demo" Margin="10,4" Click="Button_Click"/>
-        <ScrollViewer x:Name="scrollViewerOutput" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" LayoutUpdated="ScrollViewer_LayoutUpdated">
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="700*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Authority:" FontSize="16" VerticalAlignment="Center" Margin="10,0" />
+            <TextBox Name="Authority" Grid.Row="0" Grid.Column="1" Text="https://login.windows.net/Common/" FontSize="16" VerticalAlignment="Center" />
+            <Label Grid.Row="1" Grid.Column="0" Content="SharePoint Online Tenant URI:" FontSize="16" VerticalAlignment="Center" Margin="10,0" />
+            <TextBox Name="SharePointTenantUri" Grid.Row="1" Grid.Column="1" Text="https://piasysdev.sharepoint.com/" FontSize="16" VerticalAlignment="Center" />
+            <Label Grid.Row="2" Grid.Column="0" Content="SharePoint Online SiteCollection:" FontSize="16" VerticalAlignment="Center" Margin="10,0" />
+            <TextBox Name="SiteCollectionUri" Grid.Row="2" Grid.Column="1" Text="https://piasysdev.sharepoint.com/sites/20150107/" FontSize="16" VerticalAlignment="Center" />
+            <Label Grid.Row="3" Grid.Column="0" Content="Mail To Address:" FontSize="16" VerticalAlignment="Center" Margin="10,0" />
+            <TextBox Name="MailAddressTo" Grid.Row="3" Grid.Column="1" Text="paolo@pialorsi.com" FontSize="16" VerticalAlignment="Center" />
+            <Label Grid.Row="4" Grid.Column="0" Content="File to Upload:" FontSize="16" VerticalAlignment="Center" Margin="10,0" />
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <TextBox Name="FileToUploadPath" Text="" FontSize="16" VerticalAlignment="Center" Width="600" IsReadOnly="True" />
+                <Label Content="" />
+                <Button Name="BrowseFileToUploadPath" Content="..." FontSize="16" VerticalAlignment="Center" Width="40" Height="25" Click="BrowseFileToUploadPath_Click" />
+            </StackPanel>
+        </Grid>
+        <Button x:Name="btnGo" Content="Run demo" Grid.Row="1" Margin="10,4" FontSize="16" Click="Button_Click"/>
+        <ScrollViewer x:Name="scrollViewerOutput" Grid.Row="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" LayoutUpdated="ScrollViewer_LayoutUpdated">
             <TextBlock x:Name="txtOutput" Grid.Row="1" TextWrapping="NoWrap" FontSize="18" FontFamily="Consolas" Margin="0" Padding="10,10,0,0"/>
         </ScrollViewer>
     </Grid>

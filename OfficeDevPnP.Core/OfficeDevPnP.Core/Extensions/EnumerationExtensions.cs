@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace System
+﻿namespace System
 {
     /// <summary>
     /// Extension methods to make working with Enum values easier. Copied from http://hugoware.net/blog/enumeration-extensions-2-0.
@@ -89,7 +83,7 @@ namespace System
         /// </summary>
         public static bool Missing<T>(this Enum obj, T value)
         {
-            return !EnumerationExtensions.Has<T>(obj, value);
+            return !Has<T>(obj, value);
         }
 
         #endregion
@@ -103,11 +97,11 @@ namespace System
         {
 
             //cached comparisons for tye to use
-            private static Type _UInt64 = typeof(ulong);
-            private static Type _UInt32 = typeof(long);
+            private static readonly Type _UInt64 = typeof(ulong);
+            private static readonly Type _UInt32 = typeof(long);
 
-            public long? Signed;
-            public ulong? Unsigned;
+            public readonly long? Signed;
+            public readonly ulong? Unsigned;
 
             public _Value(object value, Type type)
             {
@@ -123,14 +117,14 @@ namespace System
 
                 //if this is an unsigned long then the only
                 //value that can hold it would be a ulong
-                if (compare.Equals(_Value._UInt32) || compare.Equals(_Value._UInt64))
+                if (compare.Equals(_UInt32) || compare.Equals(_UInt64))
                 {
-                    this.Unsigned = Convert.ToUInt64(value);
+                    Unsigned = Convert.ToUInt64(value);
                 }
                 //otherwise, a long should cover anything else
                 else
                 {
-                    this.Signed = Convert.ToInt64(value);
+                    Signed = Convert.ToInt64(value);
                 }
 
             }

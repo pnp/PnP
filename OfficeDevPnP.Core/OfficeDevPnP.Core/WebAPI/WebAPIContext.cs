@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OfficeDevPnP.Core.WebAPI
+﻿namespace OfficeDevPnP.Core.WebAPI
 {
     /// <summary>
     /// This class holds the information that's passed from the SharePoint app to the "Register" WebAPI service call

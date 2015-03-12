@@ -1,5 +1,7 @@
 ﻿using ECM.DocumentLibrariesWeb.Models;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,12 +46,25 @@ namespace ECM.DocumentLibrariesWeb
         {
             //Check the fields
             if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID)){
-                ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID, 
-                                            FLD_CLASSIFICATION_INTERNAL_NAME, 
-                                            FLD_CLASSIFICATION_DISPLAY_NAME, 
-                                            FIELDS_GROUP_NAME, 
-                                            TAXONOMY_GROUP, 
-                                            TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+
+                // Get access to the right term set
+                TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(ctx.Web.Context);
+                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+                TermGroup termGroup = termStore.Groups.GetByName(TAXONOMY_GROUP);
+                TermSet termSet = termGroup.TermSets.GetByName(TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+                ctx.Web.Context.Load(termStore);
+                ctx.Web.Context.Load(termSet);
+                ctx.Web.Context.ExecuteQueryRetry();
+
+                TaxonomyFieldCreationInformation fieldCI = new TaxonomyFieldCreationInformation()
+                {
+                    Id = FLD_CLASSIFICATION_ID,
+                    InternalName = FLD_CLASSIFICATION_INTERNAL_NAME,
+                    DisplayName = FLD_CLASSIFICATION_DISPLAY_NAME,
+                    Group = FIELDS_GROUP_NAME,
+                    TaxonomyItem = termSet
+                };
+                ctx.Web.CreateTaxonomyField(fieldCI);
             }
             
             //check the content type
@@ -61,9 +76,8 @@ namespace ECM.DocumentLibrariesWeb
 
             //associate fields to content types
             if (!ctx.Web.FieldExistsByNameInContentType(CONTOSODOCUMENT_CT_NAME, FLD_CLASSIFICATION_INTERNAL_NAME)){
-                ctx.Web.AddFieldToContentTypeById(CONTOSODOCUMENT_CT_ID, 
-                                                  FLD_CLASSIFICATION_ID.ToString(), 
-                                                  false);
+                ctx.Web.AddFieldToContentTypeByName(CONTOSODOCUMENT_CT_NAME, 
+                                                    FLD_CLASSIFICATION_ID);
             }
             CreateLibrary(ctx, library, CONTOSODOCUMENT_CT_ID);
           
@@ -78,11 +92,14 @@ namespace ECM.DocumentLibrariesWeb
         {
             //Check the fields
             if (!ctx.Web.FieldExistsById(FLD_BUSINESS_UNIT_ID)){
-                ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID, 
-                                    FLD_BUSINESS_UNIT_INTERNAL_NAME, 
-                                    FieldType.Text, 
-                                    FLD_BUSINESS_UNIT_DISPLAY_NAME, 
-                                    FIELDS_GROUP_NAME);
+                FieldCreationInformation field = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = FLD_BUSINESS_UNIT_ID,
+                    InternalName = FLD_BUSINESS_UNIT_INTERNAL_NAME,
+                    DisplayName = FLD_BUSINESS_UNIT_DISPLAY_NAME,
+                    Group = FIELDS_GROUP_NAME
+                };
+                ctx.Web.CreateField(field);
             }
             //check the content type
             if (!ctx.Web.ContentTypeExistsById(ITDOCUMENT_CT_ID)) {
@@ -91,7 +108,7 @@ namespace ECM.DocumentLibrariesWeb
 
             //associate fields to content types
             if (!ctx.Web.FieldExistsByNameInContentType(ITDOCUMENT_CT_NAME, FLD_BUSINESS_UNIT_INTERNAL_NAME)){
-                ctx.Web.AddFieldToContentTypeById(ITDOCUMENT_CT_ID, FLD_BUSINESS_UNIT_ID.ToString(), false);
+                ctx.Web.AddFieldToContentTypeByName(ITDOCUMENT_CT_NAME, FLD_BUSINESS_UNIT_ID);
             }
             CreateLibrary(ctx, library, ITDOCUMENT_CT_ID);
         }
@@ -118,7 +135,7 @@ namespace ECM.DocumentLibrariesWeb
         {
             if (!ctx.Web.ListExists(library.Title))
             {
-                ctx.Web.AddList(ListTemplateType.DocumentLibrary, library.Title, false);
+                ctx.Web.CreateList(ListTemplateType.DocumentLibrary, library.Title, false);
                 List _list = ctx.Web.GetListByTitle(library.Title);
                 if(!string.IsNullOrEmpty(library.Description)) {
                     _list.Description = library.Description;
@@ -130,9 +147,10 @@ namespace ECM.DocumentLibrariesWeb
 
                 _list.ContentTypesEnabled = true;
                 _list.Update();
-                ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID, true);
-                //we are going to remove the default Document Content Type
-                _list.RemoveContentTypeByName(ContentTypeManager.DEFAULT_DOCUMENT_CT_NAME);
+                // Add content type tot eh list
+                ctx.Web.AddContentTypeToListById(library.Title, associateContentTypeID);
+                //Set default content type as with the one which we jus added
+                ctx.Web.SetDefaultContentTypeToList(library.Title, associateContentTypeID);
                 ctx.Web.Context.ExecuteQuery();
             }
             else

@@ -79,8 +79,10 @@ namespace Contoso.Provisioning.Pages.AppWeb
 
         protected void btnScenario2_Click(object sender, EventArgs e)
         {
-            if (cc.Web.AddList(170, new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), "Links", false))
+            if (!cc.Web.ListExists("Links"))
             {
+                cc.Web.CreateList(new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), 170, "Links", false);
+
                 AddPromotedSiteLink(cc, cc.Web, "Links", "Office 365 Dev PnP", "http://aka.ms/officedevpnp");
                 AddPromotedSiteLink(cc, cc.Web, "Links", "Bing", "http://www.bing.com");
             }            

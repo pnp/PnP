@@ -7,10 +7,10 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOWebTemplates")]
-    [CmdletHelp(@"Office365 only: Returns the available web templates
+    [CmdletHelp(@"Office365 only: Returns the available web templates.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-")]
+", Category = "Tenant Administration")]
     [CmdletExample(
         Code = @"PS:> Get-SPOWebTemplates")]
     [CmdletExample(
@@ -20,14 +20,14 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
     public class GetWebTemplates : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false)]
-        public uint LCID;
+        public uint Lcid;
 
         [Parameter(Mandatory = false)]
         public int CompatibilityLevel;
 
         protected override void ProcessRecord()
         {
-            WriteObject(this.Tenant.GetWebTemplates(LCID, CompatibilityLevel));
+            WriteObject(Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
         }
     }
 }

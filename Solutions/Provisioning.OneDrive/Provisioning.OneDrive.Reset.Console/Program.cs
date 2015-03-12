@@ -62,7 +62,7 @@ namespace Provisioning.OneDrive.Reset
                 cc.Web.SetPropertyBagValue(OneDriveMarkerBagID, 0);
 
                 Console.WriteLine("Set the theme back to the default Office theme.");
-                cc.Web.SetThemeToWeb("Office");
+                cc.Web.SetComposedLookByUrl("Office");
 
                 Console.WriteLine("Remove the {0} JavaScript injection.", OneDriveCustomJS);
                 cc.Web.DeleteJsLink(OneDriveCustomJS);

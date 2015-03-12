@@ -1,17 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsLifecycle.Uninstall, "SPOSolution")]
-    [CmdletHelp("Uninstalls a sandboxed solution from a site collection")]
+    [CmdletHelp("Uninstalls a sandboxed solution from a site collection", Category = "Sites")]
     public class UninstallSolution : SPOCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage="ID of the solution, from the solution manifest")]

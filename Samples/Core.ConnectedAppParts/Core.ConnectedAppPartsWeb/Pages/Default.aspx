@@ -12,15 +12,15 @@
     <form id="form1" runat="server">
         <div id="divSPChrome"></div>
         <div style="left: 40px; position: absolute;">
-            Sample to demonstrate server side connectivity with app parts from provider hosted app using <a href="http://www.asp.net/signalr" target="_blank">SignalR</a>. <br />
-            This is pretty easy implementation pattern for app parts to communicate between each other without any changes to the SharePoint or more speficifcally to the host web.
+            This code sample demonstrates server side connectivity using app parts and a provider hosted app using <a href="http://www.asp.net/signalr" target="_blank">SignalR</a>. <br />
+            Using this pattern with your app parts allows them to communicate with each other without any changes to SharePoint, or more specifically the host web.
         <br />
             <ul style="list-style-type: square;">
-                <li><b>Step 1:</b> Deploy this app to the Office365 tenant</li>
-                <li><b>Step 2:</b> Move to host web</li>
-                <li><b>Step 3:</b> Add both app parts (Connected Part One & Two) to page. Technically these could be on two different pages as well cross the site.</li>
-                <li><b>Step 4:</b> Add text to one of the text boxes in app parts and click Send </li>
-                <li><i>Note. You can open up second browser and put the second web part to completely different page and the connectivity would still work, since connection is done on server side.</i></li>
+                <li><b>Step 1:</b> Deploy this app to the Office365 tenant.</li>
+                <li><b>Step 2:</b> Click <b>Back to Site</b>.</li>
+                <li><b>Step 3:</b> Add both app parts (Connected Part One & Two) to a page. Technically these could be on two different pages or in two different sites.</li>
+                <li><b>Step 4:</b> Add text to one of the text boxes in app parts and click Send. </li>
+                <li><i>Note: You can open up a second browser and include a second web part on a different page and the app part will receive messages from the chat hub because there is a connection to the same server.</i></li>
             </ul>
             <br />
             <br />

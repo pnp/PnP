@@ -55,6 +55,7 @@
   <ItemGroup>
     <Content Include="Apache License Version 2.rtf" />
     <Content Include="officedevpnp.bmp" />
+    <Content Include="setupbanner.png" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUtilExtension">

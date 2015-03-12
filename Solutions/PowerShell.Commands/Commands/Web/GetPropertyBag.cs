@@ -1,12 +1,11 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOPropertyBag")]
+    [CmdletHelp("Returns the property bag values.", Category = "Webs")]
     public class GetPropertyBag : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
@@ -15,19 +14,19 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (!string.IsNullOrEmpty(Key))
             {
-                WriteObject(this.SelectedWeb.GetPropertyBagValueString(Key, string.Empty));
+                WriteObject(SelectedWeb.GetPropertyBagValueString(Key, string.Empty));
             }
             else
             {
-                if (this.SelectedWeb.IsPropertyAvailable("AllProperties"))
+                if (SelectedWeb.IsPropertyAvailable("AllProperties"))
                 {
                     WriteObject(SelectedWeb.AllProperties.FieldValues);
                 }
                 else
                 {
-                    PropertyValues values = this.SelectedWeb.AllProperties;
+                    var values = SelectedWeb.AllProperties;
                     ClientContext.Load(values);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(values.FieldValues);
                 }
             }

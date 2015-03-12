@@ -173,14 +173,11 @@ namespace Provisioning.YammerWeb
         private void ApplyThemeToSite(Web hostWeb, Web newWeb)
         {
             // Let's first upload the contoso theme to host web, if it does not exist there
-            newWeb.DeployThemeToSubWeb(hostWeb, "TechEd",
-                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/teched.spcolor")),
-                            null,
-                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/bg.jpg")),
-                            string.Empty);
-
+            var colorFile = hostWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/teched.spcolor")));
+            var backgroundFile = hostWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/TechEd/bg.jpg")));
+            newWeb.CreateComposedLookByUrl("TechEd", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
             // Setting the Contoos theme to host web
-            newWeb.SetThemeToWeb("TechEd");
+            newWeb.SetComposedLookByUrl("TechEd");
 
             // Instance to site assets. Notice that this is using hard coded list name which only works in 1033 sites
             List assetLibrary = newWeb.Lists.GetByTitle("Site Assets");

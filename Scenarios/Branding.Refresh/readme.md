@@ -102,27 +102,73 @@ if (!String.IsNullOrEmpty(themeName))
 }
 ```
 
-The code actually update the theme is pretty straightforward and based on OfficeDevPnP Core methods:
+The code actually update the theme is pretty straightforward and based on OfficeDevPnP Core methods. Note that 2 approaches are shown to connect the theme files to the composed look:
 ```C#
-string themeRoot = Path.Combine(AppRootPath, String.Format(@"Themes\{0}", themeName));
-string spColorFile = Path.Combine(themeRoot, string.Format("{0}.spcolor", themeName));
-string spFontFile = Path.Combine(themeRoot, string.Format("{0}.spfont", themeName));
-string backgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", themeName));
-string logoFile = Path.Combine(themeRoot, string.Format("{0}logo.png", themeName));
+private static void DeployTheme(ClientContext cc, string themeName)
+{
+    string themeRoot = Path.Combine(AppRootPath, String.Format(@"Themes\{0}", themeName));
+    string spColorFile = Path.Combine(themeRoot, string.Format("{0}.spcolor", themeName));
+    if (!System.IO.File.Exists(spColorFile))
+    {
+        spColorFile = null;
+    }
+    string spFontFile = Path.Combine(themeRoot, string.Format("{0}.spfont", themeName));
+    if (!System.IO.File.Exists(spFontFile))
+    {
+        spFontFile = null;
+    }
+    string spBackgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", themeName));
+    if (!System.IO.File.Exists(spBackgroundFile))
+    {
+        spBackgroundFile = null;
+    }
+    string logoFile = Path.Combine(themeRoot, string.Format("{0}logo.png", themeName));
 
-if (IsThisASubSite(cc.Url))
-{
-  // Retrieve the context of the root site of the site collection
-  using (ClientContext ccParent = new ClientContext(GetRootSite(cc.Url)))
-  {
-    ccParent.Credentials = cc.Credentials;
-    cc.Web.DeployThemeToSubWeb(ccParent.Web, themeName, spColorFile, spFontFile, backgroundFile, "");
-    cc.Web.SetThemeToSubWeb(ccParent.Web, themeName);
-  }
-}
-else
-{
-  cc.Web.DeployThemeToWeb(themeName, spColorFile, spFontFile, backgroundFile, "");
-  cc.Web.SetThemeToWeb(themeName);
+    if (IsThisASubSite(cc))
+    {
+        // Retrieve the context of the root site of the site collection
+        using (ClientContext ccParent = cc.Clone(GetRootSite(cc)))
+        {
+            
+            // Show the approach that uses the relative paths to the theme files. Works for sub site composed look setting as well as for root site composed look settings
+            string colorFileRelativePath = "";
+            string fontFileRelativePath = "";
+            string backgroundFileRelativePath = "";
+            if (!String.IsNullOrEmpty(spColorFile))
+            {
+                colorFileRelativePath = ccParent.Web.UploadThemeFile(spColorFile).ServerRelativeUrl;
+            }
+            if (!String.IsNullOrEmpty(spFontFile))
+            {
+                fontFileRelativePath = ccParent.Web.UploadThemeFile(spFontFile).ServerRelativeUrl;
+            }
+            if (!String.IsNullOrEmpty(spBackgroundFile))
+            {
+                backgroundFileRelativePath = ccParent.Web.UploadThemeFile(spBackgroundFile).ServerRelativeUrl;
+            }
+
+            cc.Web.CreateComposedLookByUrl(themeName, colorFileRelativePath, fontFileRelativePath, backgroundFileRelativePath, null, replaceContent: true);
+            cc.Web.SetComposedLookByUrl(themeName);
+        }
+    }
+    else
+    {
+        // Use the absolute paths to the theme files, works for the root site only
+        if (!String.IsNullOrEmpty(spColorFile))
+        {
+            cc.Web.UploadThemeFile(spColorFile);
+        }
+        if (!String.IsNullOrEmpty(spFontFile))
+        {
+            cc.Web.UploadThemeFile(spFontFile);
+        }
+        if (!String.IsNullOrEmpty(spBackgroundFile))
+        {
+            cc.Web.UploadThemeFile(spBackgroundFile);
+        }
+
+        cc.Web.CreateComposedLookByName(themeName, spColorFile, spFontFile, spBackgroundFile, null, replaceContent: true);
+        cc.Web.SetComposedLookByUrl(themeName);
+    }
 }
 ```

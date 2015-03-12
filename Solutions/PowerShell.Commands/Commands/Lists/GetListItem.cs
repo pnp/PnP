@@ -1,22 +1,19 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
     [Cmdlet(VerbsCommon.Get, "SPOListItem")]
-    [CmdletHelp("Retrieves list items")]
+    [CmdletHelp("Retrieves list items", Category = "Lists")]
     [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks", Remarks = "Retrieves all list items from the tasks lists", SortOrder = 1)]
     [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -Id 1", Remarks = "Retrieves the list item with ID 1 from from the tasks lists. This parameter is ignored if the Query parameter is specified.", SortOrder = 2)]
     [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -UniqueId bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3", Remarks = "Retrieves the list item with unique id bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3 from from the tasks lists. This parameter is ignored if the Query parameter is specified.", SortOrder = 3)]
     [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -Fields \"Title\",\"GUID\"", Remarks = "Retrieves all list items, but only includes the Title and GUID fields. This parameter is ignored if the Query parameter is specified.", SortOrder = 4)]
-    [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -Query \"<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3</Value></Contains></Where></Query></View>\"", Remarks = "Retrieves all list items based on the CAML query specified.", SortOrder = 5)]
+    [CmdletExample(Code = "PS:> Get-SPOListItem -List Tasks -Query \"<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>bd6c5b3b-d960-4ee7-a02c-85dc6cd78cc3</Value></Eq></Where></Query></View>\"", Remarks = "Retrieves all list items based on the CAML query specified.", SortOrder = 5)]
     public class GetListItem : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "The list to query", Position = 0)]
@@ -36,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 
         protected override void ExecuteCmdlet()
         {
-            var list = this.SelectedWeb.GetList(List);
+            var list = SelectedWeb.GetList(List);
 
             if (Id != -1)
             {
@@ -52,7 +49,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 {
                     ClientContext.Load(listItem);
                 }
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItem);
             }
             else if (UniqueId != null && UniqueId.Id != Guid.Empty)
@@ -71,23 +68,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 query.ViewXml = string.Format("<View><Query><Where><Eq><FieldRef Name='GUID'/><Value Type='Guid'>{0}</Value></Eq></Where></Query>{1}</View>", UniqueId.Id, viewFieldsStringBuilder);
                 var listItem = list.GetItems(query);
                 ClientContext.Load(listItem);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItem);
             }
             else if (Query != null)
             {
-                CamlQuery query = new CamlQuery();
-                query.ViewXml = Query;
+                CamlQuery query = new CamlQuery {ViewXml = Query};
                 var listItems = list.GetItems(query);
                 ClientContext.Load(listItems);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItems, true);
             }
             else
             {
                 var listItems = list.GetItems(CamlQuery.CreateAllItemsQuery());
                 ClientContext.Load(listItems);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(listItems, true);
             }
         }
