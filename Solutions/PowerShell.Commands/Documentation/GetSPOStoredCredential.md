@@ -1,10 +1,10 @@
-#Get&#8209;SPOStoredCredential
+#Get-SPOStoredCredential
 *Topic automatically generated on: 2015-03-12*
 
 Returns a stored credential from the Windows Credential Manager
 ##Syntax
 ```powershell
-Get&#8209;SPOStoredCredential -Name [<String>] [-Type [<CredentialType>]]
+Get-SPOStoredCredential -Name [<String>] [-Type [<CredentialType>]]
 ```
 &nbsp;
 

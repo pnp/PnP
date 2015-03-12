@@ -1,10 +1,10 @@
-#Add&#8209;SPOContentTypeToList
+#Add-SPOContentTypeToList
 *Topic automatically generated on: 2015-03-12*
 
 Adds a new content type to a list
 ##Syntax
 ```powershell
-Add&#8209;SPOContentTypeToList -List [<ListPipeBind>] -ContentType [<ContentTypePipeBind>] [-DefaultContentType [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOContentTypeToList -List [<ListPipeBind>] -ContentType [<ContentTypePipeBind>] [-DefaultContentType [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

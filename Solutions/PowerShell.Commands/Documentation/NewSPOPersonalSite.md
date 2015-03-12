@@ -1,10 +1,10 @@
-#New&#8209;SPOPersonalSite
+#New-SPOPersonalSite
 *Topic automatically generated on: 2015-03-12*
 
 Office365 only: Creates a personal / OneDrive For Business site
 ##Syntax
 ```powershell
-New&#8209;SPOPersonalSite -Email [<String[]>]
+New-SPOPersonalSite -Email [<String[]>]
 ```
 &nbsp;
 

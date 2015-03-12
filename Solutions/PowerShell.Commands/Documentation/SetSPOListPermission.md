@@ -1,15 +1,15 @@
-#Set&#8209;SPOListPermission
+#Set-SPOListPermission
 *Topic automatically generated on: 2015-03-12*
 
 Sets list permissions
 ##Syntax
 ```powershell
-Set&#8209;SPOListPermission -Group [<GroupPipeBind>] -Identity [<ListPipeBind>] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Web [<WebPipeBind>]]
+Set-SPOListPermission -Group [<GroupPipeBind>] -Identity [<ListPipeBind>] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Set&#8209;SPOListPermission -User [<String>] -Identity [<ListPipeBind>] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Web [<WebPipeBind>]]
+Set-SPOListPermission -User [<String>] -Identity [<ListPipeBind>] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

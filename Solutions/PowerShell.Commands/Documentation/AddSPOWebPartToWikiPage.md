@@ -1,15 +1,15 @@
-#Add&#8209;SPOWebPartToWikiPage
+#Add-SPOWebPartToWikiPage
 *Topic automatically generated on: 2015-03-12*
 
 Adds a webpart to a wiki page in a specified table row and column
 ##Syntax
 ```powershell
-Add&#8209;SPOWebPartToWikiPage -Xml [<String>] -PageUrl [<String>] -Row [<Int32>] -Column [<Int32>] [-AddSpace [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOWebPartToWikiPage -Xml [<String>] -PageUrl [<String>] -Row [<Int32>] -Column [<Int32>] [-AddSpace [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Add&#8209;SPOWebPartToWikiPage -Path [<String>] -PageUrl [<String>] -Row [<Int32>] -Column [<Int32>] [-AddSpace [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOWebPartToWikiPage -Path [<String>] -PageUrl [<String>] -Row [<Int32>] -Column [<Int32>] [-AddSpace [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

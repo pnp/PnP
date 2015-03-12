@@ -1,10 +1,10 @@
-#Add&#8209;SPOJavaScriptLink
+#Add-SPOJavaScriptLink
 *Topic automatically generated on: 2015-03-12*
 
 Adds a link to a JavaScript file to a web or sitecollection
 ##Syntax
 ```powershell
-Add&#8209;SPOJavaScriptLink -Key [<String>] -Url [<String[]>] [-Sequence [<Int32>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
+Add-SPOJavaScriptLink -Key [<String>] -Url [<String[]>] [-Sequence [<Int32>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

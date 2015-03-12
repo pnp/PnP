@@ -1,10 +1,10 @@
-#Remove&#8209;SPOWikiPage
+#Remove-SPOWikiPage
 *Topic automatically generated on: 2015-03-12*
 
 Removes a wiki page
 ##Syntax
 ```powershell
-Remove&#8209;SPOWikiPage [-Web [<WebPipeBind>]] -ServerRelativePageUrl [<String>]
+Remove-SPOWikiPage [-Web [<WebPipeBind>]] -ServerRelativePageUrl [<String>]
 ```
 &nbsp;
 

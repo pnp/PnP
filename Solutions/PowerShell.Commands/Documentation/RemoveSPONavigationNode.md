@@ -1,10 +1,10 @@
-#Remove&#8209;SPONavigationNode
+#Remove-SPONavigationNode
 *Topic automatically generated on: 2015-03-12*
 
 Removes a menu item from either the quicklaunch or top navigation
 ##Syntax
 ```powershell
-Remove&#8209;SPONavigationNode -Location [<NavigationType>] -Title [<String>] [-Header [<String>]] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Remove-SPONavigationNode -Location [<NavigationType>] -Title [<String>] [-Header [<String>]] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

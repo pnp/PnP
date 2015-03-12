@@ -1,10 +1,10 @@
-#Remove&#8209;SPOEventReceiver
+#Remove-SPOEventReceiver
 *Topic automatically generated on: 2015-03-12*
 
 Removes/unregisters a specific event receiver
 ##Syntax
 ```powershell
-Remove&#8209;SPOEventReceiver [-List [<ListPipeBind>]] -Identity [<GuidPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Remove-SPOEventReceiver [-List [<ListPipeBind>]] -Identity [<GuidPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

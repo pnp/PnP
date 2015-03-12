@@ -1,10 +1,10 @@
-#Add&#8209;SPOFolder
+#Add-SPOFolder
 *Topic automatically generated on: 2015-03-12*
 
 Creates a folder within a parent folder
 ##Syntax
 ```powershell
-Add&#8209;SPOFolder -Name [<String>] -Folder [<String>] [-Web [<WebPipeBind>]]
+Add-SPOFolder -Name [<String>] -Folder [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

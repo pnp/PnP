@@ -1,15 +1,15 @@
-#Add&#8209;SPOWikiPage
+#Add-SPOWikiPage
 *Topic automatically generated on: 2015-03-12*
 
 Adds a wiki page
 ##Syntax
 ```powershell
-Add&#8209;SPOWikiPage [-Content [<String>]] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
+Add-SPOWikiPage [-Content [<String>]] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Add&#8209;SPOWikiPage [-Layout [<WikiPageLayout>]] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
+Add-SPOWikiPage [-Layout [<WikiPageLayout>]] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

@@ -1,10 +1,10 @@
-#Add&#8209;SPOFieldToContentType
+#Add-SPOFieldToContentType
 *Topic automatically generated on: 2015-03-12*
 
 Adds an existing site column to a content type
 ##Syntax
 ```powershell
-Add&#8209;SPOFieldToContentType -Field [<FieldPipeBind>] -ContentType [<ContentTypePipeBind>] [-Required [<SwitchParameter>]] [-Hidden [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOFieldToContentType -Field [<FieldPipeBind>] -ContentType [<ContentTypePipeBind>] [-Required [<SwitchParameter>]] [-Hidden [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

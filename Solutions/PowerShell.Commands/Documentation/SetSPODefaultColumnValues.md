@@ -1,10 +1,10 @@
-#Set&#8209;SPODefaultColumnValues
+#Set-SPODefaultColumnValues
 *Topic automatically generated on: 2015-03-12*
 
 Sets default column values for a document library
 ##Syntax
 ```powershell
-Set&#8209;SPODefaultColumnValues -Field [<FieldPipeBind>] -Value [<String[]>] [-Folder [<String>]] [-Web [<WebPipeBind>]] [-List [<ListPipeBind>]]
+Set-SPODefaultColumnValues -Field [<FieldPipeBind>] -Value [<String[]>] [-Folder [<String>]] [-Web [<WebPipeBind>]] [-List [<ListPipeBind>]]
 ```
 &nbsp;
 

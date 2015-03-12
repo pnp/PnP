@@ -1,15 +1,15 @@
-#Add&#8209;SPOWebPartToWebPartPage
+#Add-SPOWebPartToWebPartPage
 *Topic automatically generated on: 2015-03-12*
 
 Adds a webpart to a web part page in a specified zone
 ##Syntax
 ```powershell
-Add&#8209;SPOWebPartToWebPartPage -Xml [<String>] -PageUrl [<String>] -ZoneId [<String>] -ZoneIndex [<Int32>] [-Web [<WebPipeBind>]]
+Add-SPOWebPartToWebPartPage -Xml [<String>] -PageUrl [<String>] -ZoneId [<String>] -ZoneIndex [<Int32>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Add&#8209;SPOWebPartToWebPartPage -Path [<String>] -PageUrl [<String>] -ZoneId [<String>] -ZoneIndex [<Int32>] [-Web [<WebPipeBind>]]
+Add-SPOWebPartToWebPartPage -Path [<String>] -PageUrl [<String>] -ZoneId [<String>] -ZoneIndex [<Int32>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

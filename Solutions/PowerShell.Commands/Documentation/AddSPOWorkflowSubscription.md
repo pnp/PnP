@@ -1,10 +1,10 @@
-#Add&#8209;SPOWorkflowSubscription
+#Add-SPOWorkflowSubscription
 *Topic automatically generated on: 2015-03-12*
 
 Adds a workflow subscription to a list
 ##Syntax
 ```powershell
-Add&#8209;SPOWorkflowSubscription -Name [<String>] -DefinitionName [<String>] -List [<ListPipeBind>] [-StartManually [<SwitchParameter>]] [-StartOnCreated [<SwitchParameter>]] [-StartOnChanged [<SwitchParameter>]] -HistoryListName [<String>] -TaskListName [<String>] [-AssociationValues [<Dictionary`2>]] [-Web [<WebPipeBind>]]
+Add-SPOWorkflowSubscription -Name [<String>] -DefinitionName [<String>] -List [<ListPipeBind>] [-StartManually [<SwitchParameter>]] [-StartOnCreated [<SwitchParameter>]] [-StartOnChanged [<SwitchParameter>]] -HistoryListName [<String>] -TaskListName [<String>] [-AssociationValues [<Dictionary`2>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

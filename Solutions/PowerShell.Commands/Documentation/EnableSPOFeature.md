@@ -1,10 +1,10 @@
-#Enable&#8209;SPOFeature
+#Enable-SPOFeature
 *Topic automatically generated on: 2015-03-12*
 
 Enables a feature
 ##Syntax
 ```powershell
-Enable&#8209;SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
+Enable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
 ```
 &nbsp;
 

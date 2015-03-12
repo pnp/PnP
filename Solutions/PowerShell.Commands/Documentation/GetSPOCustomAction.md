@@ -1,10 +1,10 @@
-#Get&#8209;SPOCustomAction
+#Get-SPOCustomAction
 *Topic automatically generated on: 2015-03-12*
 
 Returns all or a specific custom action(s)
 ##Syntax
 ```powershell
-Get&#8209;SPOCustomAction [-Identity [<GuidPipeBind>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
+Get-SPOCustomAction [-Identity [<GuidPipeBind>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

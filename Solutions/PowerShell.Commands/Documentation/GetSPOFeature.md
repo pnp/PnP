@@ -1,10 +1,10 @@
-#Get&#8209;SPOFeature
+#Get-SPOFeature
 *Topic automatically generated on: 2015-03-12*
 
 Returns all or a specific feature
 ##Syntax
 ```powershell
-Get&#8209;SPOFeature [-Scope [<FeatureScope>]] [-Web [<WebPipeBind>]] [-Identity [<FeaturePipeBind>]]
+Get-SPOFeature [-Scope [<FeatureScope>]] [-Web [<WebPipeBind>]] [-Identity [<FeaturePipeBind>]]
 ```
 &nbsp;
 

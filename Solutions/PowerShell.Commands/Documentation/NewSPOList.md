@@ -1,10 +1,10 @@
-#New&#8209;SPOList
+#New-SPOList
 *Topic automatically generated on: 2015-03-12*
 
 Creates a new list
 ##Syntax
 ```powershell
-New&#8209;SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+New-SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

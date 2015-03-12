@@ -1,10 +1,10 @@
-#Add&#8209;SPOEventReceiver
+#Add-SPOEventReceiver
 *Topic automatically generated on: 2015-03-12*
 
 Adds a new event receiver
 ##Syntax
 ```powershell
-Add&#8209;SPOEventReceiver -List [<ListPipeBind>] -Name [<String>] -Url [<String>] -EventReceiverType [<EventReceiverType>] -Synchronization [<EventReceiverSynchronization>] [-SequenceNumber [<Int32>]] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOEventReceiver -List [<ListPipeBind>] -Name [<String>] -Url [<String>] -EventReceiverType [<EventReceiverType>] -Synchronization [<EventReceiverSynchronization>] [-SequenceNumber [<Int32>]] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

@@ -1,15 +1,15 @@
-#Connect&#8209;SPOnline
+#Connect-SPOnline
 *Topic automatically generated on: 2015-03-12*
 
 Connects to a SharePoint site and creates an in-memory context
 ##Syntax
 ```powershell
-Connect&#8209;SPOnline [-Credentials [<CredentialPipeBind>]] [-CurrentCredentials [<SwitchParameter>]] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
+Connect-SPOnline [-Credentials [<CredentialPipeBind>]] [-CurrentCredentials [<SwitchParameter>]] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
 ```
 &nbsp;
 
 ```powershell
-Connect&#8209;SPOnline [-Realm [<String>]] -AppId [<String>] -AppSecret [<String>] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
+Connect-SPOnline [-Realm [<String>]] -AppId [<String>] -AppSecret [<String>] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
 ```
 &nbsp;
 

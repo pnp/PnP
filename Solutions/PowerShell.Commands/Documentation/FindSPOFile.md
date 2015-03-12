@@ -1,10 +1,10 @@
-#Find&#8209;SPOFile
+#Find-SPOFile
 *Topic automatically generated on: 2015-03-12*
 
 Finds a file in the virtual file system of the web.
 ##Syntax
 ```powershell
-Find&#8209;SPOFile -Match [<String>] [-Web [<WebPipeBind>]]
+Find-SPOFile -Match [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

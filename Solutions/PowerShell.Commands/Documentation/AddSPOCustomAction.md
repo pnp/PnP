@@ -1,10 +1,10 @@
-#Add&#8209;SPOCustomAction
+#Add-SPOCustomAction
 *Topic automatically generated on: 2015-03-12*
 
 Adds a custom action to a web
 ##Syntax
 ```powershell
-Add&#8209;SPOCustomAction -Title [<String>] -Description [<String>] -Group [<String>] -Location [<String>] -Sequence [<Int32>] -Url [<String>] [-Rights [<List`1>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
+Add-SPOCustomAction -Title [<String>] -Description [<String>] -Group [<String>] -Location [<String>] -Sequence [<Int32>] -Url [<String>] [-Rights [<List`1>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

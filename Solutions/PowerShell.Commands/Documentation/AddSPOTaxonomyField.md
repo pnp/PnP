@@ -1,10 +1,10 @@
-#Add&#8209;SPOTaxonomyField
+#Add-SPOTaxonomyField
 *Topic automatically generated on: 2015-03-12*
 
 Adds a taxonomy field to a list or as a site column.
 ##Syntax
 ```powershell
-Add&#8209;SPOTaxonomyField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -TermSetPath [<String>] [-TermPathDelimiter [<String>]] [-Group [<String>]] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-MultiValue [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
+Add-SPOTaxonomyField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -TermSetPath [<String>] [-TermPathDelimiter [<String>]] [-Group [<String>]] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-MultiValue [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

@@ -1,4 +1,4 @@
-#Disconnect&#8209;SPOnline
+#Disconnect-SPOnline
 *Topic automatically generated on: 2015-03-12*
 
 Disconnects the context

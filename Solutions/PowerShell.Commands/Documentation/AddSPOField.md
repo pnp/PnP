@@ -1,20 +1,20 @@
-#Add&#8209;SPOField
+#Add-SPOField
 *Topic automatically generated on: 2015-03-12*
 
 Adds a field to a list or as a site column
 ##Syntax
 ```powershell
-Add&#8209;SPOField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
+Add-SPOField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Add&#8209;SPOField -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
+Add-SPOField -DisplayName [<String>] -InternalName [<String>] -Type [<FieldType>] [-Id [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Add&#8209;SPOField [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
+Add-SPOField [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

@@ -1,10 +1,10 @@
-#Get&#8209;SPOConfiguration
+#Get-SPOConfiguration
 *Topic automatically generated on: 2015-03-12*
 
 To be deprecated
 ##Syntax
 ```powershell
-Get&#8209;SPOConfiguration [-Key [<String>]]
+Get-SPOConfiguration [-Key [<String>]]
 ```
 &nbsp;
 

@@ -1,10 +1,10 @@
-#Remove&#8209;SPOPropertyBagValue
+#Remove-SPOPropertyBagValue
 *Topic automatically generated on: 2015-03-12*
 
 Removes a value from the property bag
 ##Syntax
 ```powershell
-Remove&#8209;SPOPropertyBagValue [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Key [<String>]
+Remove-SPOPropertyBagValue [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Key [<String>]
 ```
 &nbsp;
 

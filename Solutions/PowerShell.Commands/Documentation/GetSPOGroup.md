@@ -1,25 +1,25 @@
-#Get&#8209;SPOGroup
+#Get-SPOGroup
 *Topic automatically generated on: 2015-03-12*
 
 Returns a specific group or all groups.
 ##Syntax
 ```powershell
-Get&#8209;SPOGroup [-Web [<WebPipeBind>]] [-Identity [<GroupPipeBind>]]
+Get-SPOGroup [-Web [<WebPipeBind>]] [-Identity [<GroupPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Get&#8209;SPOGroup [-AssociatedMemberGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Get-SPOGroup [-AssociatedMemberGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Get&#8209;SPOGroup [-AssociatedVisitorGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Get-SPOGroup [-AssociatedVisitorGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Get&#8209;SPOGroup [-AssociatedOwnerGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Get-SPOGroup [-AssociatedOwnerGroup [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

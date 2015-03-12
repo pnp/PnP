@@ -1,10 +1,10 @@
-#Add&#8209;SPOView
+#Add-SPOView
 *Topic automatically generated on: 2015-03-12*
 
 Adds a view to a list
 ##Syntax
 ```powershell
-Add&#8209;SPOView -Title [<String>] [-Query [<String>]] -Fields [<String[]>] [-ViewType [<ViewType>]] [-RowLimit [<UInt32>]] [-Personal [<SwitchParameter>]] [-SetAsDefault [<SwitchParameter>]] [-Web [<WebPipeBind>]] [-List [<ListPipeBind>]]
+Add-SPOView -Title [<String>] [-Query [<String>]] -Fields [<String[]>] [-ViewType [<ViewType>]] [-RowLimit [<UInt32>]] [-Personal [<SwitchParameter>]] [-SetAsDefault [<SwitchParameter>]] [-Web [<WebPipeBind>]] [-List [<ListPipeBind>]]
 ```
 &nbsp;
 

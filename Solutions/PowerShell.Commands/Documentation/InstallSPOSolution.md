@@ -1,10 +1,10 @@
-#Install&#8209;SPOSolution
+#Install-SPOSolution
 *Topic automatically generated on: 2015-03-12*
 
 Installs a sandboxed solution to a site collection
 ##Syntax
 ```powershell
-Install&#8209;SPOSolution -PackageId [<GuidPipeBind>] -SourceFilePath [<String>] [-MajorVersion [<Int32>]] [-MinorVersion [<Int32>]]
+Install-SPOSolution -PackageId [<GuidPipeBind>] -SourceFilePath [<String>] [-MajorVersion [<Int32>]] [-MinorVersion [<Int32>]]
 ```
 &nbsp;
 

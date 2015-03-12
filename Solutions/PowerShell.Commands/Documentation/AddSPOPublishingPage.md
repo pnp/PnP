@@ -1,10 +1,10 @@
-#Add&#8209;SPOPublishingPage
+#Add-SPOPublishingPage
 *Topic automatically generated on: 2015-03-12*
 
 Adds a publishing page
 ##Syntax
 ```powershell
-Add&#8209;SPOPublishingPage [-Title [<String>]] -PageName [<String>] -PageTemplateName [<String>] [-Publish [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Add-SPOPublishingPage [-Title [<String>]] -PageName [<String>] -PageTemplateName [<String>] [-Publish [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

@@ -1,10 +1,10 @@
-#Set&#8209;SPOTheme
+#Set-SPOTheme
 *Topic automatically generated on: 2015-03-12*
 
 Sets the theme of the current web.
 ##Syntax
 ```powershell
-Set&#8209;SPOTheme [-ColorPaletteUrl [<String>]] [-FontSchemeUrl [<String>]] [-BackgroundImageUrl [<String>]] [-ShareGenerated [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+Set-SPOTheme [-ColorPaletteUrl [<String>]] [-FontSchemeUrl [<String>]] [-BackgroundImageUrl [<String>]] [-ShareGenerated [<SwitchParameter>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

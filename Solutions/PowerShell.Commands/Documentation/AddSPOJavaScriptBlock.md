@@ -1,10 +1,10 @@
-#Add&#8209;SPOJavaScriptBlock
+#Add-SPOJavaScriptBlock
 *Topic automatically generated on: 2015-03-12*
 
 Adds a link to a JavaScript snippet/block to a web or site collection
 ##Syntax
 ```powershell
-Add&#8209;SPOJavaScriptBlock -Name [<String>] -Script [<String>] [-Sequence [<Int32>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
+Add-SPOJavaScriptBlock -Name [<String>] -Script [<String>] [-Sequence [<Int32>]] [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

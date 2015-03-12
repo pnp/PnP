@@ -1,10 +1,10 @@
-#Get&#8209;SPOList
+#Get-SPOList
 *Topic automatically generated on: 2015-03-12*
 
 Returns a List object
 ##Syntax
 ```powershell
-Get&#8209;SPOList [-Web [<WebPipeBind>]] [-Identity [<ListPipeBind>]]
+Get-SPOList [-Web [<WebPipeBind>]] [-Identity [<ListPipeBind>]]
 ```
 &nbsp;
 

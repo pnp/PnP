@@ -1,4 +1,4 @@
-#Get&#8209;SPOWebTemplates
+#Get-SPOWebTemplates
 *Topic automatically generated on: 2015-03-12*
 
 Office365 only: Returns the available web templates.
@@ -7,7 +7,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
 ##Syntax
 ```powershell
-Get&#8209;SPOWebTemplates [-Lcid [<UInt32>]] [-CompatibilityLevel [<Int32>]]
+Get-SPOWebTemplates [-Lcid [<UInt32>]] [-CompatibilityLevel [<Int32>]]
 ```
 &nbsp;
 

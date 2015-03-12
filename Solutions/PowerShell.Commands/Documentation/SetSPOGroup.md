@@ -1,10 +1,10 @@
-#Set&#8209;SPOGroup
+#Set-SPOGroup
 *Topic automatically generated on: 2015-03-12*
 
 Updates a group
 ##Syntax
 ```powershell
-Set&#8209;SPOGroup -Identity [<GroupPipeBind>] [-SetAssociatedGroup [<AssociatedGroupType>]] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
+Set-SPOGroup -Identity [<GroupPipeBind>] [-SetAssociatedGroup [<AssociatedGroupType>]] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

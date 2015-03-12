@@ -1,10 +1,10 @@
-#New&#8209;SPOUser
+#New-SPOUser
 *Topic automatically generated on: 2015-03-12*
 
 Adds a user to the build-in Site User Info List and returns a user object
 ##Syntax
 ```powershell
-New&#8209;SPOUser -LoginName [<String>] [-Web [<WebPipeBind>]]
+New-SPOUser -LoginName [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

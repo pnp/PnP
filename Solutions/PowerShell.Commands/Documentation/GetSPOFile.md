@@ -1,15 +1,15 @@
-#Get&#8209;SPOFile
+#Get-SPOFile
 *Topic automatically generated on: 2015-03-12*
 
 Downloads a file.
 ##Syntax
 ```powershell
-Get&#8209;SPOFile [-Path [<String>]] [-Filename [<String>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
+Get-SPOFile [-Path [<String>]] [-Filename [<String>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
 ```
 &nbsp;
 
 ```powershell
-Get&#8209;SPOFile -AsString [<SwitchParameter>] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
+Get-SPOFile -AsString [<SwitchParameter>] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
 ```
 &nbsp;
 

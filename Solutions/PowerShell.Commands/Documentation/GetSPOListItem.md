@@ -1,10 +1,10 @@
-#Get&#8209;SPOListItem
+#Get-SPOListItem
 *Topic automatically generated on: 2015-03-12*
 
 Retrieves list items
 ##Syntax
 ```powershell
-Get&#8209;SPOListItem [-Id [<Int32>]] [-UniqueId [<GuidPipeBind>]] [-Query [<String>]] [-Fields [<String[]>]] [-Web [<WebPipeBind>]] -List [<ListPipeBind>]
+Get-SPOListItem [-Id [<Int32>]] [-UniqueId [<GuidPipeBind>]] [-Query [<String>]] [-Fields [<String[]>]] [-Web [<WebPipeBind>]] -List [<ListPipeBind>]
 ```
 &nbsp;
 

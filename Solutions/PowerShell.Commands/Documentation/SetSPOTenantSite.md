@@ -1,4 +1,4 @@
-#Set&#8209;SPOTenantSite
+#Set-SPOTenantSite
 *Topic automatically generated on: 2015-03-12*
 
 Office365 only: Uses the tenant API to set site information.
@@ -7,7 +7,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
 ##Syntax
 ```powershell
-Set&#8209;SPOTenantSite [-Title [<String>]] [-Sharing [<Nullable`1>]] [-StorageMaximumLevel [<Nullable`1>]] [-StorageWarningLevel [<Nullable`1>]] [-UserCodeMaximumLevel [<Nullable`1>]] [-UserCodeWarningLevel [<Nullable`1>]] [-AllowSelfServiceUpgrade [<Nullable`1>]] [-Url [<String>]]
+Set-SPOTenantSite [-Title [<String>]] [-Sharing [<Nullable`1>]] [-StorageMaximumLevel [<Nullable`1>]] [-StorageWarningLevel [<Nullable`1>]] [-UserCodeMaximumLevel [<Nullable`1>]] [-UserCodeWarningLevel [<Nullable`1>]] [-AllowSelfServiceUpgrade [<Nullable`1>]] [-Url [<String>]]
 ```
 &nbsp;
 

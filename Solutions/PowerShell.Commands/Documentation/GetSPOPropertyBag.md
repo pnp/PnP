@@ -1,10 +1,10 @@
-#Get&#8209;SPOPropertyBag
+#Get-SPOPropertyBag
 *Topic automatically generated on: 2015-03-12*
 
 Returns the property bag values.
 ##Syntax
 ```powershell
-Get&#8209;SPOPropertyBag [-Web [<WebPipeBind>]] [-Key [<String>]]
+Get-SPOPropertyBag [-Web [<WebPipeBind>]] [-Key [<String>]]
 ```
 &nbsp;
 

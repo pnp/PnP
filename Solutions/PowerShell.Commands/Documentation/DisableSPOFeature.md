@@ -1,10 +1,10 @@
-#Disable&#8209;SPOFeature
+#Disable-SPOFeature
 *Topic automatically generated on: 2015-03-12*
 
 Disables a feature
 ##Syntax
 ```powershell
-Disable&#8209;SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
+Disable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
 ```
 &nbsp;
 

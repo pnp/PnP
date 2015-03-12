@@ -1,10 +1,10 @@
-#Remove&#8209;SPOField
+#Remove-SPOField
 *Topic automatically generated on: 2015-03-12*
 
 Removes a field from a list or a site
 ##Syntax
 ```powershell
-Remove&#8209;SPOField [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<FieldPipeBind>] [-List [<ListPipeBind>]]
+Remove-SPOField [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<FieldPipeBind>] [-List [<ListPipeBind>]]
 ```
 &nbsp;
 

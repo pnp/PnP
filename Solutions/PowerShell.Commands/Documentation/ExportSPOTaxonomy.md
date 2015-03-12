@@ -1,10 +1,10 @@
-#Export&#8209;SPOTaxonomy
+#Export-SPOTaxonomy
 *Topic automatically generated on: 2015-03-12*
 
 Exports a taxonomy to either the output or to a file.
 ##Syntax
 ```powershell
-Export&#8209;SPOTaxonomy [-TermSetId [<GuidPipeBind>]] [-TermStoreName [<String>]] [-IncludeID [<SwitchParameter>]] [-Path [<String>]] [-Force [<SwitchParameter>]] [-Delimiter [<String>]]
+Export-SPOTaxonomy [-TermSetId [<GuidPipeBind>]] [-TermStoreName [<String>]] [-IncludeID [<SwitchParameter>]] [-Path [<String>]] [-Force [<SwitchParameter>]] [-Delimiter [<String>]]
 ```
 &nbsp;
 

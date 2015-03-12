@@ -1,10 +1,10 @@
-#Get&#8209;SPOWebPartProperty
+#Get-SPOWebPartProperty
 *Topic automatically generated on: 2015-03-12*
 
 Returns a web part property
 ##Syntax
 ```powershell
-Get&#8209;SPOWebPartProperty -PageUrl [<String>] -Identity [<GuidPipeBind>] [-Web [<WebPipeBind>]]
+Get-SPOWebPartProperty -PageUrl [<String>] -Identity [<GuidPipeBind>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

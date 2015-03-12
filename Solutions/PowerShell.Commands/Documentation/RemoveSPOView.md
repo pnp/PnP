@@ -1,10 +1,10 @@
-#Remove&#8209;SPOView
+#Remove-SPOView
 *Topic automatically generated on: 2015-03-12*
 
 Deletes a view from a list
 ##Syntax
 ```powershell
-Remove&#8209;SPOView [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ViewPipeBind>] -List [<ListPipeBind>]
+Remove-SPOView [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ViewPipeBind>] -List [<ListPipeBind>]
 ```
 &nbsp;
 

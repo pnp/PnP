@@ -1,10 +1,10 @@
-#Add&#8209;SPOFieldFromXml
+#Add-SPOFieldFromXml
 *Topic automatically generated on: 2015-03-12*
 
 Adds a field to a list or as a site column based upon a CAML/XML field definition
 ##Syntax
 ```powershell
-Add&#8209;SPOFieldFromXml [-List [<ListPipeBind>]] [-Web [<WebPipeBind>]] -FieldXml [<String>]
+Add-SPOFieldFromXml [-List [<ListPipeBind>]] [-Web [<WebPipeBind>]] -FieldXml [<String>]
 ```
 &nbsp;
 

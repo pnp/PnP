@@ -1,4 +1,4 @@
-#Get&#8209;SPOTenantSite
+#Get-SPOTenantSite
 *Topic automatically generated on: 2015-03-12*
 
 Office365 only: Uses the tenant API to retrieve site information.
@@ -7,7 +7,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
 ##Syntax
 ```powershell
-Get&#8209;SPOTenantSite [-Detailed [<SwitchParameter>]] [-IncludeOneDriveSites [<SwitchParameter>]] [-Force [<SwitchParameter>]] [-Url [<String>]]
+Get-SPOTenantSite [-Detailed [<SwitchParameter>]] [-IncludeOneDriveSites [<SwitchParameter>]] [-Force [<SwitchParameter>]] [-Url [<String>]]
 ```
 &nbsp;
 

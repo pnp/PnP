@@ -1,10 +1,10 @@
-#Set&#8209;SPOHomePage
+#Set-SPOHomePage
 *Topic automatically generated on: 2015-03-12*
 
 Sets the home page of the current web.
 ##Syntax
 ```powershell
-Set&#8209;SPOHomePage [-Web [<WebPipeBind>]] -Path [<String>]
+Set-SPOHomePage [-Web [<WebPipeBind>]] -Path [<String>]
 ```
 &nbsp;
 

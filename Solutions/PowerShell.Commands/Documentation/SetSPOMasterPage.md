@@ -1,10 +1,10 @@
-#Set&#8209;SPOMasterPage
+#Set-SPOMasterPage
 *Topic automatically generated on: 2015-03-12*
 
 Sets the default master page of the current web.
 ##Syntax
 ```powershell
-Set&#8209;SPOMasterPage [-MasterPageUrl [<String>]] [-CustomMasterPageUrl [<String>]] [-Web [<WebPipeBind>]]
+Set-SPOMasterPage [-MasterPageUrl [<String>]] [-CustomMasterPageUrl [<String>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

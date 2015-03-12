@@ -1,10 +1,10 @@
-#Add&#8209;SPOHtmlPublishingPageLayout
+#Add-SPOHtmlPublishingPageLayout
 *Topic automatically generated on: 2015-03-12*
 
 Adds a HTML based publishing page layout
 ##Syntax
 ```powershell
-Add&#8209;SPOHtmlPublishingPageLayout -SourceFilePath [<String>] -Title [<String>] -Description [<String>] -AssociatedContentTypeID [<String>] [-Web [<WebPipeBind>]]
+Add-SPOHtmlPublishingPageLayout -SourceFilePath [<String>] -Title [<String>] -Description [<String>] -AssociatedContentTypeID [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 

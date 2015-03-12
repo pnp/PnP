@@ -1,15 +1,15 @@
-#Set&#8209;SPOWikiPageContent
+#Set-SPOWikiPageContent
 *Topic automatically generated on: 2015-03-12*
 
 Sets the contents of a wikipage
 ##Syntax
 ```powershell
-Set&#8209;SPOWikiPageContent -Content [<String>] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
+Set-SPOWikiPageContent -Content [<String>] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
 ```powershell
-Set&#8209;SPOWikiPageContent -Path [<String>] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
+Set-SPOWikiPageContent -Path [<String>] -ServerRelativePageUrl [<String>] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
 
