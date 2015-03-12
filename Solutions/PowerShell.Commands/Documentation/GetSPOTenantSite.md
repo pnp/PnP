@@ -1,13 +1,14 @@
 #Get-SPOTenantSite
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Office365 only: Uses the tenant API to retrieve site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
 
 ##Syntax
-    Get-SPOTenantSite [-Detailed [<SwitchParameter>]] [-IncludeOneDriveSites [<SwitchParameter>]] [-Force [<SwitchParameter>]] [-Url [<String>]]
-
+```powershell
+Get-SPOTenantSite [-Detailed [<SwitchParameter>]] [-IncludeOneDriveSites [<SwitchParameter>]] [-Force [<SwitchParameter>]] [-Url [<String>]]
+```
 &nbsp;
 
 ##Parameters

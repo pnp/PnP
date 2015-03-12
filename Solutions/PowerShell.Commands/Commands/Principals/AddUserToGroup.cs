@@ -6,7 +6,7 @@ using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet(VerbsCommon.Add, "SPOUserToGroup")]
-    [CmdletHelp("Adds a user to a group")]
+    [CmdletHelp("Adds a user to a group", Category = "User and group management")]
     [CmdletExample(Code = @"
     PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'
     ")]

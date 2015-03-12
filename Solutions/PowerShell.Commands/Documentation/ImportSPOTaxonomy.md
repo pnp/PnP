@@ -1,14 +1,16 @@
 #Import-SPOTaxonomy
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Imports a taxonomy from either a string array or a file
 ##Syntax
-    Import-SPOTaxonomy [-Terms [<String[]>]] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-
+```powershell
+Import-SPOTaxonomy [-Terms [<String[]>]] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
+```
 &nbsp;
 
-    Import-SPOTaxonomy -Path [<String>] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-
+```powershell
+Import-SPOTaxonomy -Path [<String>] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
+```
 &nbsp;
 
 ##Parameters

@@ -1,10 +1,11 @@
 #Remove-SPOCustomAction
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
-
+Removes a custom action
 ##Syntax
-    Remove-SPOCustomAction [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<GuidPipeBind>]
-
+```powershell
+Remove-SPOCustomAction [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<GuidPipeBind>]
+```
 &nbsp;
 
 ##Parameters

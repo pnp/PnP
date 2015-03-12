@@ -1,10 +1,11 @@
 #Set-SPOConfiguration
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
-
+To be deprecated
 ##Syntax
-    Set-SPOConfiguration -Key [<String>] [-Value [<String>]]
-
+```powershell
+Set-SPOConfiguration -Key [<String>] [-Value [<String>]]
+```
 &nbsp;
 
 ##Parameters

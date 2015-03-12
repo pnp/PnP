@@ -1,10 +1,11 @@
 #Get-SPOView
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns one or all views from a list
 ##Syntax
-    Get-SPOView [-Identity [<ViewPipeBind>]] [-Web [<WebPipeBind>]] -List [<ListPipeBind>]
-
+```powershell
+Get-SPOView [-Identity [<ViewPipeBind>]] [-Web [<WebPipeBind>]] -List [<ListPipeBind>]
+```
 &nbsp;
 
 ##Parameters

@@ -1,10 +1,11 @@
 #Get-SPOContentType
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Retrieves a content type
 ##Syntax
-    Get-SPOContentType [-Web [<WebPipeBind>]] [-Identity [<ContentTypePipeBind>]] [-InSiteHierarchy [<SwitchParameter>]]
-
+```powershell
+Get-SPOContentType [-Web [<WebPipeBind>]] [-Identity [<ContentTypePipeBind>]] [-InSiteHierarchy [<SwitchParameter>]]
+```
 &nbsp;
 
 ##Parameters

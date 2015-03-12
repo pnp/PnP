@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("New", "SPOUser")]
-    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object")]
+    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> New-SPOUser -LogonName user@company.com
 ")]

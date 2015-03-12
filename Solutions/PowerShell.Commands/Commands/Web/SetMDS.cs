@@ -7,7 +7,7 @@ using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOMinimalDownloadStrategy")]
-    [CmdletHelp("Activates or deactivates the minimal downloading strategy.")]
+    [CmdletHelp("Activates or deactivates the minimal downloading strategy.", Category = "Webs")]
     public class SetMDS : SPOWebCmdlet
     {
         [Parameter(ParameterSetName = "On", Mandatory = true)]

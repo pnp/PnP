@@ -1,10 +1,11 @@
 #Get-SPOJavaScriptLink
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Returns all or a specific custom action(s) with location type ScriptLink
 ##Syntax
-    Get-SPOJavaScriptLink [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]] [-Name [<String>]]
-
+```powershell
+Get-SPOJavaScriptLink [-Scope [<CustomActionScope>]] [-Web [<WebPipeBind>]] [-Name [<String>]]
+```
 &nbsp;
 
 ##Parameters

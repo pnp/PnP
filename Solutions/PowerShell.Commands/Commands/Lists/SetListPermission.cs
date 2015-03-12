@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
     [Cmdlet(VerbsCommon.Set, "SPOListPermission")]
+    [CmdletHelp("Sets list permissions", Category = "Lists")]
     public class SetListPermission : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ParameterSetName = ParameterAttribute.AllParameterSets)]

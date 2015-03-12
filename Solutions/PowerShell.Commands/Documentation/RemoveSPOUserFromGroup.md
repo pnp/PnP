@@ -1,10 +1,11 @@
 #Remove-SPOUserFromGroup
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Removes a user from a group
 ##Syntax
-    Remove-SPOUserFromGroup -LoginName [<String>] -GroupName [<String>] [-Web [<WebPipeBind>]]
-
+```powershell
+Remove-SPOUserFromGroup -LoginName [<String>] -GroupName [<String>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

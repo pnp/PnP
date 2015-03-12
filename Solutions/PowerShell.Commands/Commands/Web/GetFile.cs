@@ -6,7 +6,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOFile")]
-    [CmdletHelp("Downloads a file.")]
+    [CmdletHelp("Downloads a file.", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor",Remarks="Downloads the file and saves it to the current folder", SortOrder = 1)]
     [CmdletExample(Code = @"
