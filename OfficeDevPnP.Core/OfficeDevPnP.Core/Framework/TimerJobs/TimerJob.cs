@@ -7,6 +7,7 @@ using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security;
 using System.Threading;
 using System.Web.Script.Serialization;
 
@@ -38,14 +39,14 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         private Dictionary<string, AuthenticationManager> authenticationManagers;
         private AuthenticationType authenticationType;
         private string username;
-        private string password;
+        private SecureString password;
         private string domain;
         private string realm;
         private string clientId;
         private string clientSecret;
         private int sharePointVersion = 16;
         private string enumerationUser;
-        private string enumerationPassword;
+        private SecureString enumerationPassword;
         private string enumerationDomain;
         // Site scope variables
         private List<string> requestedSites;
@@ -558,12 +559,23 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="password">Password of the user that will be used to operate the timer job work</param>
         public void UseOffice365Authentication(string userUPN, string password)
         {
+            UseOffice365Authentication(userUPN, EncryptionUtility.ToSecureString(password));
+        }
+
+        /// <summary>
+        /// Prepares the timerjob to operate against Office 365 with user and password credentials. Sets AuthenticationType 
+        /// to AuthenticationType.Office365
+        /// </summary>
+        /// <param name="username">UPN of the user that will be used to operate the timer job work</param>
+        /// <param name="password">Password of the user that will be used to operate the timer job work</param>
+        public void UseOffice365Authentication(string userUPN, SecureString password)
+        {
             if (String.IsNullOrEmpty(userUPN))
             {
                 throw new ArgumentNullException("userName");
             }
 
-            if (String.IsNullOrEmpty(password))
+            if (password == null || password.Length == 0)
             {
                 throw new ArgumentNullException("password");
             }
@@ -609,12 +621,24 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="domain">NT domain of the windows user</param>
         public void UseNetworkCredentialsAuthentication(string samAccountName, string password, string domain)
         {
+            UseNetworkCredentialsAuthentication(samAccountName, EncryptionUtility.ToSecureString(password), domain);
+        }
+
+        /// <summary>
+        /// Prepares the timerjob to operate against SharePoint on-premises with user name password credentials. Sets AuthenticationType 
+        /// to AuthenticationType.NetworkCredentials
+        /// </summary>
+        /// <param name="samAccountName">samAccontName of the windows user</param>
+        /// <param name="password">Password of the windows user</param>
+        /// <param name="domain">NT domain of the windows user</param>
+        public void UseNetworkCredentialsAuthentication(string samAccountName, SecureString password, string domain)
+        {
             if (String.IsNullOrEmpty(samAccountName))
             {
                 throw new ArgumentNullException("userName");
             }
 
-            if (String.IsNullOrEmpty(password))
+            if (password == null || password.Length == 0)
             {
                 throw new ArgumentNullException("password");
             }
@@ -781,15 +805,15 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Returns the password of the user account used for enumaration. Enumeration is done using search and the search API requires a user context
         /// </summary>
-        private string EnumerationPassword
+        private SecureString EnumerationPassword
         {
             get
             {
-                if (!String.IsNullOrEmpty(this.enumerationPassword))
+                if (this.enumerationPassword != null && this.enumerationPassword.Length > 0)
                 {
                     return this.enumerationPassword;
                 }
-                else if (!String.IsNullOrEmpty(this.password))
+                else if (this.password != null && this.password.Length > 0)
                 {
                     return this.password;
                 }
@@ -830,6 +854,18 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         public void SetEnumerationCredentials(string userUPN, string password)
         {
             this.enumerationUser = userUPN;
+            this.enumerationPassword = EncryptionUtility.ToSecureString(password);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_O365, userUPN);
+        }
+
+        /// <summary>
+        /// Provides the timer job with the enumeration credentials. For Office 365 username and password is sufficient
+        /// </summary>
+        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="password">Password of the enumeration user</param>
+        public void SetEnumerationCredentials(string userUPN, SecureString password)
+        {
+            this.enumerationUser = userUPN;
             this.enumerationPassword = password;
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_O365, userUPN);
         }
@@ -841,6 +877,20 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="password">Password of the enumeration user</param>
         /// <param name="domain">Domain of the enumeration user</param>
         public void SetEnumerationCredentials(string samAccountName, string password, string domain)
+        {
+            this.enumerationUser = samAccountName;
+            this.enumerationPassword = EncryptionUtility.ToSecureString(password);
+            this.enumerationDomain = domain;
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_Network, samAccountName, domain);
+        }
+
+        /// <summary>
+        /// Provides the timer job with the enumeration credentials. For SharePoint on-premises username, password and domain are needed
+        /// </summary>
+        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="password">Password of the enumeration user</param>
+        /// <param name="domain">Domain of the enumeration user</param>
+        public void SetEnumerationCredentials(string samAccountName, SecureString password, string domain)
         {
             this.enumerationUser = samAccountName;
             this.enumerationPassword = password;
