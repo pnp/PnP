@@ -365,7 +365,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         foreach (var cmdletInfo in toc.Where(c => c.Category == category).OrderBy(c => c.Noun))
                         {
                             var description = cmdletInfo.Description.Replace("\r\n", " ");
-                            readme.WriteLine("**[{0}](Documentation/{1}{2}.md)** |{3}", cmdletInfo.FullCommand, cmdletInfo.Verb, cmdletInfo.Noun, description);
+                            readme.WriteLine("**[{0}]({1}{2}.md)** |{3}", cmdletInfo.FullCommand, cmdletInfo.Verb, cmdletInfo.Noun, description);
                         }
                     }
                 }
