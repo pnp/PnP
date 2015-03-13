@@ -1,14 +1,15 @@
 #Get-SPOList
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
 Returns a List object
 ##Syntax
-    Get-SPOList [-Web [<WebPipeBind>]] [-Identity [<ListPipeBind>]]
-
+```powershell
+Get-SPOList [-Web [<WebPipeBind>]] [-Identity [<ListPipeBind>]]
+```
 &nbsp;
 
 ##Detailed Description
-Returns a list object. Due to limitation of the PowerShell environment the command does not return a full Client List object. In order to access the full client list, use the ContextObject property of the return lists.
+Returns a list object.
 
 ##Parameters
 Parameter|Type|Required|Description

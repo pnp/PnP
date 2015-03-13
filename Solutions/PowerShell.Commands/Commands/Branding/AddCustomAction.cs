@@ -3,11 +3,12 @@ using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOCustomAction")]
-    [CmdletHelp("Adds a custom action to a web")]
+    [CmdletHelp("Adds a custom action to a web", Category =  "Branding")]
     public class AddCustomAction : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -31,6 +32,10 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public List<PermissionKind> Rights = new List<PermissionKind>();
 
+        [Parameter(Mandatory = false)]
+        public CustomActionScope Scope = CustomActionScope.Web;
+
+
         protected override void ExecuteCmdlet()
         {
             var permissions = new BasePermissions();
@@ -38,14 +43,21 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 permissions.Set(kind);
             }
-            var ca = new CustomActionEntity {Description = Description, Location = Location, Group = Group, Sequence = Sequence, Title = Title, Url = Url, Rights = new BasePermissions()};
+            var ca = new CustomActionEntity { Description = Description, Location = Location, Group = Group, Sequence = Sequence, Title = Title, Url = Url, Rights = new BasePermissions() };
 
-            foreach(var permission in Rights)
+            foreach (var permission in Rights)
             {
                 ca.Rights.Set(permission);
             }
 
-            SelectedWeb.AddCustomAction(ca);
+            if (Scope == CustomActionScope.Web)
+            {
+                SelectedWeb.AddCustomAction(ca);
+            }
+            else
+            {
+                ClientContext.Site.AddCustomAction(ca);
+            }
         }
     }
 }

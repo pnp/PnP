@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOPropertyBagValue")]
+    [CmdletHelp("Sets a property bag value", Category = "Webs")]
     public class SetPropertyBagValue : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

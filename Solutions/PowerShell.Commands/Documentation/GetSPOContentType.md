@@ -1,19 +1,21 @@
 #Get-SPOContentType
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
 Retrieves a content type
 ##Syntax
-    Get-SPOContentType [-Web [<WebPipeBind>]] [-Identity [<ContentTypePipeBind>]]
-
+```powershell
+Get-SPOContentType [-Web [<WebPipeBind>]] [-Identity [<ContentTypePipeBind>]] [-InSiteHierarchy [<SwitchParameter>]]
+```
 &nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|ContentTypePipeBind|False|Name or ID of the content type to retrieve
+InSiteHierarchy|SwitchParameter|False|Search site hierarchy for content types
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 
 ###Example 1
     PS:> Get-SPOContentType -Identity "Project Document"
-This will add an existing content type to a list and sets it as the default content type
+This will get a listing of content types within the current context

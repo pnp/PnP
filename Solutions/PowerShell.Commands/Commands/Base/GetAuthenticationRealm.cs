@@ -6,7 +6,7 @@ using System.Net;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOAuthenticationRealm")]
-    [CmdletHelp("Gets the authentication realm for the current web")]
+    [CmdletHelp("Gets the authentication realm for the current web", Category = "Base Cmdlets")]
     [CmdletExample(Code = @"
 PS:> Get-SPOAuthenticationRealm -Url https://contoso.sharepoint.com", SortOrder = 1)]
     public class GetAuthenticationRealm : SPOCmdlet

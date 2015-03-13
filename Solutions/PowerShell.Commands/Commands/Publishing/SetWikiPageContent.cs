@@ -1,11 +1,13 @@
 ﻿using System.IO;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOWikiPageContent")]
+    [CmdletHelp("Sets the contents of a wikipage", Category = "Publishing")]
     public class SetWikiPageContent : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ParameterSetName = "STRING")]

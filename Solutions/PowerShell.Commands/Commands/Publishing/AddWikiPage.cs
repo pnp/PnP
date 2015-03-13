@@ -1,10 +1,12 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOWikiPage")]
+    [CmdletHelp("Adds a wiki page", Category = "Publishing")]
     public class AddWikiPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

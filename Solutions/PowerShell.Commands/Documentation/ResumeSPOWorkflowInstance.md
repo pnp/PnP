@@ -1,10 +1,11 @@
 #Resume-SPOWorkflowInstance
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
-
+Resumes a previously stopped workflow instance
 ##Syntax
-    Resume-SPOWorkflowInstance [-Web [<WebPipeBind>]] -Identity [<WorkflowInstancePipeBind>]
-
+```powershell
+Resume-SPOWorkflowInstance [-Web [<WebPipeBind>]] -Identity [<WorkflowInstancePipeBind>]
+```
 &nbsp;
 
 ##Parameters

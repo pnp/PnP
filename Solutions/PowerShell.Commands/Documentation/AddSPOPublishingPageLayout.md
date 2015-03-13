@@ -1,10 +1,11 @@
 #Add-SPOPublishingPageLayout
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
-
+Adds a publishing page layout
 ##Syntax
-    Add-SPOPublishingPageLayout -SourceFilePath [<String>] -Title [<String>] -Description [<String>] -AssociatedContentTypeID [<String>] [-Web [<WebPipeBind>]]
-
+```powershell
+Add-SPOPublishingPageLayout -SourceFilePath [<String>] -Title [<String>] -Description [<String>] -AssociatedContentTypeID [<String>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

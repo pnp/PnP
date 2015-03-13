@@ -1,4 +1,5 @@
 ﻿#if !CLIENTSDKV15
+using System.ComponentModel;
 using System.Linq;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
@@ -10,11 +11,11 @@ using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 namespace OfficeDevPnP.PowerShell.Commands
 {
 
-    [Cmdlet(VerbsCommon.Get, "SPOTenantSite")]
+    [Cmdlet(VerbsCommon.Get, "SPOTenantSite", SupportsShouldProcess = true)]
     [CmdletHelp(@"Office365 only: Uses the tenant API to retrieve site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.")]
+", Details = "Requires a connection to a SharePoint Tenant Admin site.", Category = "Tenant Administration")]
     [CmdletExample(Code = @"
 PS:> Get-SPOTenantSite", Remarks = "Returns all site collections")]
     [CmdletExample(Code = @"

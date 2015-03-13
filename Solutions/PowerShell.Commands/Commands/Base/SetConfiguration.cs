@@ -3,10 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Xml.Linq;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet(VerbsCommon.Set, "SPOConfiguration")]
+    [CmdletHelp("To be deprecated", Category = "Base Cmdlets")]
     public class SetConfiguration : PSCmdlet
     {
         [Parameter(Mandatory = true)]

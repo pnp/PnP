@@ -35,7 +35,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         // property management information
         private bool manageState = false;
         // Authentication related variables
-        private Dictionary<string, AuthenticationManager> authenticationManagers;
+        private System.Collections.Concurrent.ConcurrentDictionary<string, AuthenticationManager> authenticationManagers;
         private AuthenticationType authenticationType;
         private string username;
         private string password;
@@ -89,7 +89,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
 
             // Default authentication model will be Office365
             this.authenticationType = Enums.AuthenticationType.Office365;
-            this.authenticationManagers = new Dictionary<string, AuthenticationManager>();
+            this.authenticationManagers = new System.Collections.Concurrent.ConcurrentDictionary<string, AuthenticationManager>();
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Constructor, this.name, this.version);
         }
@@ -733,7 +733,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             else
             {
                 AuthenticationManager am = new AuthenticationManager();
-                this.authenticationManagers.Add(uri.Host, am);
+                this.authenticationManagers.TryAdd(uri.Host, am);
                 return am;
             }
         }

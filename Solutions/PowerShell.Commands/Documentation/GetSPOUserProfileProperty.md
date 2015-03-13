@@ -1,13 +1,14 @@
 #Get-SPOUserProfileProperty
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
 Office365 only: Uses the tenant API to retrieve site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
 
 ##Syntax
-    Get-SPOUserProfileProperty -Account [<String[]>]
-
+```powershell
+Get-SPOUserProfileProperty -Account [<String[]>]
+```
 &nbsp;
 
 ##Parameters

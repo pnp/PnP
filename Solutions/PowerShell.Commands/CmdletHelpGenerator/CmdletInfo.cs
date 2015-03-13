@@ -31,6 +31,8 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             }
         }
 
+        public string Category { get; set; }
+
         public CmdletInfo(string verb, string noun)
         {
             Verb = verb;

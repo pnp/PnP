@@ -1,10 +1,11 @@
 #Get-SPOTaxonomyItem
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns a taxonomy item
 ##Syntax
-    Get-SPOTaxonomyItem -Term [<String>]
-
+```powershell
+Get-SPOTaxonomyItem -Term [<String>]
+```
 &nbsp;
 
 ##Parameters
