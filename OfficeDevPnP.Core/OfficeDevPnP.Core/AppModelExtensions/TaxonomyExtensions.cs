@@ -1513,6 +1513,9 @@ namespace Microsoft.SharePoint.Client
 
             web.Context.ExecuteQueryRetry();
 
+            //Field is ready, now update field with default value
+            UpdateTaxonomyFieldDefaultValue(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.DefaultValue);
+
             return _field;
 
         }
@@ -1602,6 +1605,9 @@ namespace Microsoft.SharePoint.Client
             _field.Update();
 
             list.Context.ExecuteQueryRetry();
+
+            //Field is ready, now update field with default value
+            UpdateTaxonomyFieldDefaultValue(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.DefaultValue);
 
             return _field;
         }
@@ -1813,6 +1819,57 @@ namespace Microsoft.SharePoint.Client
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Sets the default value for a managed metadata field
+        /// </summary>
+        /// <param name="field">Field to be wired up</param>
+        /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
+        /// <param name="defaultValue">default value for the field</param>
+        private static void UpdateTaxonomyFieldDefaultValue(Field field, TaxonomyItem taxonomyItem, string defaultValue)
+        {
+            var clientContext = field.Context as ClientContext;
+
+            taxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
+
+            var anchorTerm = taxonomyItem as Term;
+
+            if (anchorTerm != default(Term) && !anchorTerm.IsPropertyAvailable("TermSet"))
+            {
+                clientContext.Load(anchorTerm.TermSet);
+                clientContext.ExecuteQueryRetry();
+            }
+
+            var termSet = taxonomyItem is Term ? anchorTerm.TermSet : taxonomyItem as TermSet;
+
+            if (termSet == default(TermSet))
+                throw new ArgumentException("Bound TaxonomyItem must be either a TermSet or a Term");
+
+
+            // set the SSP ID and Term Set ID on the taxonomy field
+            var taxField = clientContext.CastTo<TaxonomyField>(field);
+
+            if (!string.IsNullOrEmpty(defaultValue))
+            {
+
+                if (!termSet.IsPropertyAvailable("Terms"))
+                {
+                    clientContext.Load(termSet.Terms);
+                    clientContext.ExecuteQueryRetry();
+                }
+
+                Term defaultValTermSet = termSet.Terms.GetByName(defaultValue);
+                if (defaultValTermSet != null)
+                {
+                    clientContext.Load(defaultValTermSet);
+                    clientContext.ExecuteQueryRetry();
+
+                    taxField.DefaultValue = string.Format("-1;#{0}{1}{2}", defaultValTermSet.Name, TaxonomyGuidLabelDelimiter, defaultValTermSet.Id);
+                }
+            }
+            taxField.Update();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
     }
