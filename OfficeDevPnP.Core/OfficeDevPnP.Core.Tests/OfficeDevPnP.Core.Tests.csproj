@@ -197,6 +197,7 @@
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
+    <Compile Include="Utilities\EncryptionUtilityTests.cs" />
     <Compile Include="Utilities\UrlUtilityTests.cs" />
     <Compile Include="AppModelExtensions\WebExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\PageExtensionsTests.cs" />

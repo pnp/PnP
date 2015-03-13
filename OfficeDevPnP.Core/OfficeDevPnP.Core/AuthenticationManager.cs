@@ -29,13 +29,26 @@ namespace OfficeDevPnP.Core
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
+            var spoPassword = EncryptionUtility.ToSecureString(tenantUserPassword);
+           
+            return GetSharePointOnlineAuthenticatedContextTenant(siteUrl, tenantUser, spoPassword);
+        }
+
+        /// <summary>
+        /// Returns a SharePointOnline ClientContext object 
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="tenantUser">User to be used to instantiate the ClientContext object</param>
+        /// <param name="tenantUserPassword">Password of the user used to instantiate the ClientContext object</param>
+        /// <returns>ClientContext to be used by CSOM code</returns>
+        public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, SecureString tenantUserPassword)
+        {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.AuthenticationManager_GetContext, siteUrl);
             Log.Debug(Constants.LOGGING_SOURCE, CoreResources.AuthenticationManager_TenantUser, tenantUser);
 
             if (sharepointOnlineCredentials == null)
             {
-                var spoPassword = GetSecureString(tenantUserPassword);
-                sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, spoPassword);
+                sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, tenantUserPassword);
             }
 
             var ctx = new ClientContext(siteUrl);
@@ -44,17 +57,6 @@ namespace OfficeDevPnP.Core
             return ctx;
         }
 
-        private SecureString GetSecureString(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-                throw new ArgumentException("Input string is empty and cannot be made into a SecureString", "input");
-
-            var secureString = new SecureString();
-            foreach (char c in input.ToCharArray())
-                secureString.AppendChar(c);
-
-            return secureString;
-        }
         /// <summary>
         /// Returns an app only ClientContext object
         /// </summary>
@@ -79,6 +81,21 @@ namespace OfficeDevPnP.Core
         /// <param name="domain">Domain of the user used to instantiate the ClientContext object</param>
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, string password, string domain)
+        {
+            ClientContext clientContext = new ClientContext(siteUrl);
+            clientContext.Credentials = new NetworkCredential(user, password, domain);
+            return clientContext;
+        }
+
+        /// <summary>
+        /// Returns a SharePoint on-premises / SharePoint Online Dedicated ClientContext object
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="user">User to be used to instantiate the ClientContext object</param>
+        /// <param name="password">Password of the user used to instantiate the ClientContext object</param>
+        /// <param name="domain">Domain of the user used to instantiate the ClientContext object</param>
+        /// <returns>ClientContext to be used by CSOM code</returns>
+        public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, SecureString password, string domain)
         {
             ClientContext clientContext = new ClientContext(siteUrl);
             clientContext.Credentials = new NetworkCredential(user, password, domain);
