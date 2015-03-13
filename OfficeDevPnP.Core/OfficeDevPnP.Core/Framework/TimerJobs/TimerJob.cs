@@ -559,6 +559,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="password">Password of the user that will be used to operate the timer job work</param>
         public void UseOffice365Authentication(string userUPN, string password)
         {
+            if (String.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException("password");
+            } 
+            
             UseOffice365Authentication(userUPN, EncryptionUtility.ToSecureString(password));
         }
 
@@ -621,6 +626,11 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="domain">NT domain of the windows user</param>
         public void UseNetworkCredentialsAuthentication(string samAccountName, string password, string domain)
         {
+            if (String.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException("password");
+            }
+
             UseNetworkCredentialsAuthentication(samAccountName, EncryptionUtility.ToSecureString(password), domain);
         }
 
@@ -853,9 +863,12 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="password">Password of the enumeration user</param>
         public void SetEnumerationCredentials(string userUPN, string password)
         {
-            this.enumerationUser = userUPN;
-            this.enumerationPassword = EncryptionUtility.ToSecureString(password);
-            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_O365, userUPN);
+            if (String.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            SetEnumerationCredentials(userUPN, EncryptionUtility.ToSecureString(password));
         }
 
         /// <summary>
@@ -865,6 +878,16 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="password">Password of the enumeration user</param>
         public void SetEnumerationCredentials(string userUPN, SecureString password)
         {
+            if (String.IsNullOrEmpty(userUPN))
+            {
+                throw new ArgumentNullException("userUPN");
+            }
+
+            if (password == null || password.Length == 0)
+            {
+                throw new ArgumentNullException("password");
+            }
+
             this.enumerationUser = userUPN;
             this.enumerationPassword = password;
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_O365, userUPN);
@@ -878,10 +901,12 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="domain">Domain of the enumeration user</param>
         public void SetEnumerationCredentials(string samAccountName, string password, string domain)
         {
-            this.enumerationUser = samAccountName;
-            this.enumerationPassword = EncryptionUtility.ToSecureString(password);
-            this.enumerationDomain = domain;
-            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Enumeration_Network, samAccountName, domain);
+            if (String.IsNullOrEmpty(password))
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            SetEnumerationCredentials(samAccountName, EncryptionUtility.ToSecureString(password), domain);
         }
 
         /// <summary>
@@ -892,6 +917,21 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="domain">Domain of the enumeration user</param>
         public void SetEnumerationCredentials(string samAccountName, SecureString password, string domain)
         {
+            if (String.IsNullOrEmpty(samAccountName))
+            {
+                throw new ArgumentNullException("samAccountName");
+            }
+
+            if (password == null || password.Length == 0)
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            if (String.IsNullOrEmpty(domain))
+            {
+                throw new ArgumentNullException("domain");
+            }
+
             this.enumerationUser = samAccountName;
             this.enumerationPassword = password;
             this.enumerationDomain = domain;

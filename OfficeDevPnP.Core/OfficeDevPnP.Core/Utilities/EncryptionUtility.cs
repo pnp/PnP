@@ -80,6 +80,11 @@ namespace OfficeDevPnP.Core.Utilities
             return decryptedString;
         }
 
+        /// <summary>
+        /// Encrypts a string using the machine's DPAPI
+        /// </summary>
+        /// <param name="input">String (SecureString) to encrypt</param>
+        /// <returns>Encrypted string</returns>
         public static string EncryptStringWithDPAPI(System.Security.SecureString input)
         {
             byte[] encryptedData = System.Security.Cryptography.ProtectedData.Protect(
@@ -88,6 +93,11 @@ namespace OfficeDevPnP.Core.Utilities
             return Convert.ToBase64String(encryptedData);
         }
 
+        /// <summary>
+        /// Decrypts a DPAPI encryped string
+        /// </summary>
+        /// <param name="encryptedData">Encrypted string</param>
+        /// <returns>Decrypted (SecureString)string</returns>
         public static SecureString DecryptStringWithDPAPI(string encryptedData)
         {
             try
@@ -104,6 +114,11 @@ namespace OfficeDevPnP.Core.Utilities
             }
         }
 
+        /// <summary>
+        /// Converts a string to a SecureString
+        /// </summary>
+        /// <param name="input">String to convert</param>
+        /// <returns>SecureString representation of the passed in string</returns>
         public static SecureString ToSecureString(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -118,6 +133,11 @@ namespace OfficeDevPnP.Core.Utilities
             return secure;
         }
 
+        /// <summary>
+        /// Converts a SecureString to a "regular" string
+        /// </summary>
+        /// <param name="input">SecureString to convert</param>
+        /// <returns>A "regular" string representation of the passed SecureString</returns>
         public static string ToInsecureString(SecureString input)
         {
             string returnValue = string.Empty;

@@ -39,7 +39,7 @@ namespace OfficeDevPnP.Core
         /// </summary>
         /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
         /// <param name="tenantUser">User to be used to instantiate the ClientContext object</param>
-        /// <param name="tenantUserPassword">Password of the user used to instantiate the ClientContext object</param>
+        /// <param name="tenantUserPassword">Password (SecureString) of the user used to instantiate the ClientContext object</param>
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, SecureString tenantUserPassword)
         {
@@ -92,7 +92,7 @@ namespace OfficeDevPnP.Core
         /// </summary>
         /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
         /// <param name="user">User to be used to instantiate the ClientContext object</param>
-        /// <param name="password">Password of the user used to instantiate the ClientContext object</param>
+        /// <param name="password">Password (SecureString) of the user used to instantiate the ClientContext object</param>
         /// <param name="domain">Domain of the user used to instantiate the ClientContext object</param>
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, SecureString password, string domain)
