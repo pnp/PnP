@@ -33,6 +33,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         private string name;
         private string version;
         private bool isRunning = false;
+        private string configurationData;
         // property management information
         private bool manageState = false;
         // Authentication related variables
@@ -76,17 +77,23 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         {
         }
 
+        public TimerJob(string name, string version)
+            : this(name, version, "")
+        {
+        }
+
         /// <summary>
         /// Default constructor for timer job
         /// </summary>
         /// <param name="name">Name of the timer job</param>
         /// <param name="version">Version of the timer job</param>
-        public TimerJob(string name, string version)
+        public TimerJob(string name, string version, string configurationData)
         {
             this.name = name;
             this.version = version;
             this.requestedSites = new List<string>(10);
             this.sharePointVersion = GetSharePointVersion();
+            this.configurationData = configurationData;
 
             // Default authentication model will be Office365
             this.authenticationType = Enums.AuthenticationType.Office365;
@@ -116,6 +123,21 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             get
             {
                 return this.version;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets additional timer job configuration data
+        /// </summary>
+        public string ConfigurationData
+        {
+            get
+            {
+                return this.configurationData;
+            }
+            set
+            {
+                this.configurationData = value;
             }
         }
 
@@ -325,7 +347,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             // Prepare the timerjob callback event arguments
-            TimerJobRunEventArgs e = new TimerJobRunEventArgs(site, ccSite, ccWeb, null, null, "", new Dictionary<string, string>());
+            TimerJobRunEventArgs e = new TimerJobRunEventArgs(site, ccSite, ccWeb, null, null, "", new Dictionary<string, string>(), this.ConfigurationData);
 
             // Trigger the event to fire, but only when there's an event handler connected
             if (TimerJobRun != null)
