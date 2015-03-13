@@ -7,7 +7,7 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOTimeZoneId")]
-    [CmdletHelp("Returns a time zone ID")]
+    [CmdletHelp("Returns a time zone ID", Category = "Tenant Administration")]
     [CmdletExample(
         Code = @"PS:> Get-SPOTimeZoneId",
         Remarks = @"This will return all time zone IDs in use by Office 365.

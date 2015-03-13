@@ -1,10 +1,11 @@
 #Get-SPOTimeZoneId
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Returns a time zone ID
 ##Syntax
-    Get-SPOTimeZoneId [-Match [<String>]]
-
+```powershell
+Get-SPOTimeZoneId [-Match [<String>]]
+```
 &nbsp;
 
 ##Parameters

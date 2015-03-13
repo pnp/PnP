@@ -1,10 +1,11 @@
 #Set-SPOFileCheckedIn
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
-
+Checks in a file
 ##Syntax
-    Set-SPOFileCheckedIn [-CheckinType [<CheckinType>]] [-Comment [<String>]] [-Web [<WebPipeBind>]] -Url [<String>]
-
+```powershell
+Set-SPOFileCheckedIn [-CheckinType [<CheckinType>]] [-Comment [<String>]] [-Web [<WebPipeBind>]] -Url [<String>]
+```
 &nbsp;
 
 ##Parameters

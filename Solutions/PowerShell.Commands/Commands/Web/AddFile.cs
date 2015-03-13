@@ -7,7 +7,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOFile")]
-    [CmdletHelp("Uploads a file to Web")]
+    [CmdletHelp("Uploads a file to Web", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
     public class AddFile : SPOWebCmdlet

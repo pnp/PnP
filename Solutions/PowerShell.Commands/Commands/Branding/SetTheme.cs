@@ -1,9 +1,15 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOTheme")]
+    [CmdletHelp("Sets the theme of the current web.", Category = "Branding")]
+    [CmdletExample(
+        Code = @"
+    PS:> Set-SPOTheme -ColorPaletteUrl /_catalogs/theme/15/company.spcolor
+")]
     public class SetTheme : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

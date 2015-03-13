@@ -8,7 +8,7 @@ using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPOJavaScriptLink", SupportsShouldProcess = true)]
-    [CmdletHelp("Removes a JavaScript link or block from a web or sitecollection")]
+    [CmdletHelp("Removes a JavaScript link or block from a web or sitecollection", Category = "Branding")]
     public class RemoveJavaScriptLink : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "Name of the Javascript link. Omit this parameter to retrieve all script links")]

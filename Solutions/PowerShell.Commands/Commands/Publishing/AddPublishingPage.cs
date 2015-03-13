@@ -1,9 +1,12 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOPublishingPage")]
+    [CmdletHelp("Adds a publishing page",
+      Category = "Publishing")]
     public class AddPublishingPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

@@ -1,10 +1,11 @@
 #Export-SPOTaxonomy
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Exports a taxonomy to either the output or to a file.
 ##Syntax
-    Export-SPOTaxonomy [-TermSetId [<GuidPipeBind>]] [-TermStoreName [<String>]] [-IncludeID [<SwitchParameter>]] [-Path [<String>]] [-Force [<SwitchParameter>]] [-Delimiter [<String>]]
-
+```powershell
+Export-SPOTaxonomy [-TermSetId [<GuidPipeBind>]] [-TermStoreName [<String>]] [-IncludeID [<SwitchParameter>]] [-Path [<String>]] [-Force [<SwitchParameter>]] [-Delimiter [<String>]]
+```
 &nbsp;
 
 ##Parameters
@@ -23,9 +24,9 @@ TermStoreName|String|False|
 Exports the full taxonomy to the standard output
 
 ###Example 2
-    PS:> Export-SPOTaxonomy -Path c:\output.txt -TermSet f6f43025-7242-4f7a-b739-41fa32847254 
-Exports the term set with the specified id
-
-###Example 3
     PS:> Export-SPOTaxonomy -Path c:\output.txt
 Exports the full taxonomy the file output.txt
+
+###Example 3
+    PS:> Export-SPOTaxonomy -Path c:\output.txt -TermSet f6f43025-7242-4f7a-b739-41fa32847254 
+Exports the term set with the specified id

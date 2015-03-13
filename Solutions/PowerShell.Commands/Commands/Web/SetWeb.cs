@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOWeb")]
-    [CmdletHelp("Sets properties on a web")]
+    [CmdletHelp("Sets properties on a web", Category = "Webs")]
     public class SetWeb : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

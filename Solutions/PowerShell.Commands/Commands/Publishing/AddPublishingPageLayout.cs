@@ -1,13 +1,16 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.PageLayout
 {
- [Cmdlet(VerbsCommon.Add, "SPOPublishingPageLayout")]
+    [Cmdlet(VerbsCommon.Add, "SPOPublishingPageLayout")]
+    [CmdletHelp("Adds a publishing page layout",
+      Category = "Publishing")]
     public class AddPublishingPageLayout : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "Full path to the file which will be uploaded")]
-         public string SourceFilePath = string.Empty;
+        public string SourceFilePath = string.Empty;
 
         [Parameter(Mandatory = true)]
         public string Title = string.Empty;
@@ -17,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
 
         [Parameter(Mandatory = true)]
         public string AssociatedContentTypeID;
-     
+
         protected override void ExecuteCmdlet()
         {
             SelectedWeb.DeployPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);

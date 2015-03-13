@@ -1,10 +1,11 @@
 #Remove-SPOWorkflowSubscription
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
-
+Removes a workflow subscription
 ##Syntax
-    Remove-SPOWorkflowSubscription [-Web [<WebPipeBind>]] -Identity [<WorkflowSubscriptionPipeBind>]
-
+```powershell
+Remove-SPOWorkflowSubscription [-Web [<WebPipeBind>]] -Identity [<WorkflowSubscriptionPipeBind>]
+```
 &nbsp;
 
 ##Parameters

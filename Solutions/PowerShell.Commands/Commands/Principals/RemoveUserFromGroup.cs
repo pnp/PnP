@@ -5,7 +5,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet(VerbsCommon.Remove, "SPOUserFromGroup")]
-    [CmdletHelp("Removes a user from a group")]
+    [CmdletHelp("Removes a user from a group", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'
 ")]

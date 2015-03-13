@@ -11,6 +11,8 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
         public string DetailedDescription { get; set; }
         public string Copyright { get; set; }
         public string Version { get; set; }
+
+        public string Category { get; set; }
         public CmdletHelpAttribute(string description)
         {
             this.description = description;

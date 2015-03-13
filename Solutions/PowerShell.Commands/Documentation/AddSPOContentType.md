@@ -1,10 +1,11 @@
 #Add-SPOContentType
-*Topic automatically generated on: 2015-03-11*
+*Topic automatically generated on: 2015-03-12*
 
 Adds a new content type
 ##Syntax
-    Add-SPOContentType -Name [<String>] [-ContentTypeId [<String>]] [-Description [<String>]] [-Group [<String>]] [-ParentContentType [<ContentType>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Add-SPOContentType -Name [<String>] [-ContentTypeId [<String>]] [-Description [<String>]] [-Group [<String>]] [-ParentContentType [<ContentType>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

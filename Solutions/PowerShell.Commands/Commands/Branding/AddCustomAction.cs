@@ -8,7 +8,7 @@ using OfficeDevPnP.PowerShell.Commands.Enums;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOCustomAction")]
-    [CmdletHelp("Adds a custom action to a web")]
+    [CmdletHelp("Adds a custom action to a web", Category =  "Branding")]
     public class AddCustomAction : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
