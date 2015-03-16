@@ -117,11 +117,19 @@ namespace Provisioning.Hybrid.Simple.WebJob
                 // Set the time out as high as possible
                 newWebContext.RequestTimeout = int.MaxValue;
 
+                // Get the rootpath for the resources. If you deploy this as a web job to Azure the root is the Azure web site root,
+                // If you simply run from VS (to debug/test) the rootpath is the current folder
+                String rootPath = Environment.GetEnvironmentVariable("WEBROOT_PATH");
+                if (rootPath == null)
+                {
+                    rootPath = ".";
+                }
+
                 // Let's first upload the custom theme to host web
                 DeployThemeToWeb(newWebContext.Web, "Garage",
-                                Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources/garagewhite.spcolor"),
+                                Path.Combine(rootPath, "Resources/garagewhite.spcolor"),
                                 string.Empty,
-                                Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources/garagebg.jpg"),
+                                Path.Combine(rootPath, "Resources/garagebg.jpg"),
                                 "seattle.master");
 
                 // Apply theme. We could upload a custom one as well or apply any other changes to newly created site
