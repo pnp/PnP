@@ -158,8 +158,14 @@ namespace Provisioning.Hybrid.Simple.WebJob
             List assetLibrary = web.Lists.GetByTitle("Site Assets");
             web.Context.Load(assetLibrary, l => l.RootFolder);
 
+            String rootPath = Environment.GetEnvironmentVariable("WEBROOT_PATH");
+            if (rootPath == null)
+            {
+                rootPath = ".";
+            }
+
             // Get the path to the file which we are about to deploy
-            string logoFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagelogo.png");
+            string logoFile = Path.Combine(rootPath, "Resources/garagelogo.png");
 
             // Use CSOM to uplaod the file in
             FileCreationInformation newFile = new FileCreationInformation();
