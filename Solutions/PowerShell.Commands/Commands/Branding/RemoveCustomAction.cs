@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
@@ -14,6 +15,9 @@ namespace OfficeDevPnP.PowerShell.Commands
         public GuidPipeBind Identity;
 
         [Parameter(Mandatory = false)]
+        public CustomActionScope Scope = CustomActionScope.Web;
+
+        [Parameter(Mandatory = false)]
         public SwitchParameter Force;
 
         protected override void ExecuteCmdlet()
@@ -22,7 +26,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Force || ShouldContinue(Resources.RemoveCustomAction, Resources.Confirm))
                 {
-                    SelectedWeb.DeleteCustomAction(Identity.Id);
+                    if (Scope == CustomActionScope.Web)
+                    {
+                        SelectedWeb.DeleteCustomAction(Identity.Id);
+                    }
+                    else
+                    {
+                        ClientContext.Site.DeleteCustomAction(Identity.Id);
+                    }
                 }
             }
         }

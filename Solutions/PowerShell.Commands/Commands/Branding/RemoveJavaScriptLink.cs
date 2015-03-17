@@ -39,7 +39,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                 setScope = Scope;
             }
 
-            var action = !FromSite ? SelectedWeb.GetCustomActions().FirstOrDefault(c => c.Name == Name) : ClientContext.Site.GetCustomActions().FirstOrDefault(c => c.Name == Name);
+            var action = setScope == CustomActionScope.Web ? SelectedWeb.GetCustomActions().FirstOrDefault(c => c.Name == Name) : ClientContext.Site.GetCustomActions().FirstOrDefault(c => c.Name == Name);
             if (action != null)
             {
                 if (Force || ShouldContinue(string.Format(Resources.RemoveJavaScript0,action.Name), Resources.Confirm))
