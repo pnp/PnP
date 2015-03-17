@@ -970,5 +970,32 @@ namespace Microsoft.SharePoint.Client
 #endif
         #endregion
 
+        #region Output Cache
+
+        /// <summary>
+        /// Sets output cache on publishing web. The settings can be maintained from UI by visiting url /_layouts/15/sitecachesettings.aspx
+        /// </summary>
+        /// <param name="web">SharePoint web</param>
+        /// <param name="enableOutputCache">Specify true to enable output cache. False otherwise.</param>
+        /// <param name="anonymousCacheProfileId">Applies for anonymous users access for a site in Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="authenticatedCacheProfileId">Applies for authenticated users access for a site in the Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="debugCacheInformation">Specify true to enable the display of additional cache information on pages in this site collection. False otherwise.</param>
+        public static void SetPageOutputCache(this Web web, bool enableOutputCache, int anonymousCacheProfileId, int authenticatedCacheProfileId, bool debugCacheInformation)
+        {
+            const string cacheProfileUrl = "Cache Profiles/{0}_.000";
+
+            string publishingWebValue = web.GetPropertyBagValueString("__PublishingFeatureActivated", string.Empty);
+            if (string.IsNullOrEmpty(publishingWebValue))
+            {
+                throw new Exception("Page output cache can be set only on publishing sites.");
+            }
+
+            web.SetPropertyBagValue("EnableCache", enableOutputCache.ToString());
+            web.SetPropertyBagValue("AnonymousPageCacheProfileUrl", string.Format(cacheProfileUrl, anonymousCacheProfileId));
+            web.SetPropertyBagValue("AuthenticatedPageCacheProfileUrl", string.Format(cacheProfileUrl, authenticatedCacheProfileId));
+            web.SetPropertyBagValue("EnableDebuggingOutput", debugCacheInformation.ToString());
+        }
+
+        #endregion
     }
 }
