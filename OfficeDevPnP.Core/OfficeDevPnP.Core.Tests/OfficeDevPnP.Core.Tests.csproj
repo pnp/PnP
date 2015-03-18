@@ -170,6 +170,8 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -196,6 +198,7 @@
     <Compile Include="AppModelExtensions\Tenant15ExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
+    <Compile Include="ProvisioningTemplates\DomainModelTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
     <Compile Include="Utilities\EncryptionUtilityTests.cs" />
     <Compile Include="Utilities\UrlUtilityTests.cs" />
@@ -226,6 +229,9 @@
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\HelloWorldApp15.app" />
     <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\Templates\ProvisioningTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>

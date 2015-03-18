@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SiteTemplate ID="SPECIALTEAM" Version='1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+<SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <SitePolicy>HBI</SitePolicy>
+  <PropertyBags>
+    <PropertyBag Key="KEY1" value="value1" />
+    <PropertyBag Key="KEY2" value ="value2" />
+  </PropertyBags>
   <Security>
     <AdditionalAdministrators>
       <User Name="user@contoso.com"/>
@@ -103,4 +107,4 @@
             <Configuration><![CDATA[<test>Hello World</test>]]></Configuration>
       </Provider>
     </Providers>
-</SiteTemplate>
+</SharePointProvisioningTemplate>
