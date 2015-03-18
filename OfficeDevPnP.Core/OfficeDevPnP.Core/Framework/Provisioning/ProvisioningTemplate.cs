@@ -19,29 +19,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning
         [XmlAttribute]
         public string ID { get; set; }
 
-        [XmlIgnore]
-        public int? Version { get; set; }
+        [XmlAttribute]
+        public double Version { get; set; }
 
-        [XmlAttribute("Version")]
-        public object VersionValue
-        {
-            get { return this.Version; }
-            set
-            {
-                if (value == null)
-                {
-                    this.Version = null;
-                }
-                else if (value is int || value is int?)
-                {
-                    this.Version = (int)value;
-                }
-                else
-                {
-                    this.Version = int.Parse(value.ToString());
-                }
-            }
-        }
         [XmlElement]
         public string DefaultSitePolicy { get; set; }
 
