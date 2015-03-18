@@ -1081,7 +1081,11 @@ namespace Microsoft.SharePoint.Client
                         EventReceiverDefinitionCreationInformation eventCi = new EventReceiverDefinitionCreationInformation();
                         eventCi.Synchronization = EventReceiverSynchronization.DefaultSynchronization;
                         eventCi.EventType = EventReceiverType.ItemAdded;
+#if !CLIENTSDKV15
+                        eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+#else
                         eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+#endif
                         eventCi.ReceiverClass = "Microsoft.Office.DocumentManagement.LocationBasedMetadataDefaultsReceiver";
                         eventCi.ReceiverName = "LocationBasedMetadataDefaultsReceiver ItemAdded";
                         eventCi.SequenceNumber = 1000;
