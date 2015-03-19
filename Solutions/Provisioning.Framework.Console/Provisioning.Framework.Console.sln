@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5FD6A96D-4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core.Tests", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core.Tests\OfficeDevPnP.Core.Tests.csproj", "{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,20 +35,11 @@ Global
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.Build.0 = Release15|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Debug15|Any CPU.Build.0 = Debug15|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD}.Release15|Any CPU.Build.0 = Release15|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {5FD6A96D-476C-42E1-8515-705A6C12C3E0}
-		{251C9DE3-A549-4530-8CAD-2EF3FF79A4CD} = {5FD6A96D-476C-42E1-8515-705A6C12C3E0}
 	EndGlobalSection
 EndGlobal
