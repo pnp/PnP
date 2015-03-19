@@ -15,6 +15,9 @@ namespace Microsoft.SharePoint.Client
 {
     public static partial class TenantExtensions
     {
+        const string SITE_STATUS_ACTIVE = "Active"; 
+        const string SITE_STATUS_CREATING = "Creating"; 
+        const string SITE_STATUS_RECYCLED = "Recycled"; 
 
 #if !CLIENTSDKV15
         #region Site collection creation
@@ -48,25 +51,14 @@ namespace Microsoft.SharePoint.Client
             newsite.UserCodeWarningLevel = properties.UserCodeWarningLevel;
             newsite.Lcid = properties.Lcid;
 
-            try
-            {
-                SpoOperation op = tenant.CreateSite(newsite);
-                tenant.Context.Load(tenant);
-                tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
-                tenant.Context.ExecuteQueryRetry();
+            SpoOperation op = tenant.CreateSite(newsite);
+            tenant.Context.Load(tenant);
+            tenant.Context.Load(op, i => i.IsComplete, i => i.PollingInterval);
+            tenant.Context.ExecuteQueryRetry();
 
-                if (wait)
-                {
-                    WaitForIsComplete(tenant, op);
-                }
-            }
-            catch (Exception ex)
+            if (wait)
             {
-                // Eat the siteSubscription exception to make the same code work for MT as on-prem April 2014 CU+
-                if (ex.Message.IndexOf("Parameter name: siteSubscription") == -1)
-                {
-                    throw;
-                }
+                WaitForIsComplete(tenant, op);
             }
 
             // Get site guid and return. If we create the site asynchronously, return an empty guid as we cannot retrieve the site by URL yet.
@@ -149,7 +141,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 catch(ServerException ex)
                 {
-                    if (ex.Message.IndexOf("Unable to access site") > -1)
+                    if (IsUnableToAccessSiteException(ex))
                     {
                         try
                         {
@@ -195,11 +187,12 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex.Message.StartsWith("Cannot get site"))
+                if (IsCannotGetSiteException(ex))
                 {
                     return false;
                 }
-                LoggingUtility.Internal.TraceError((int)EventId.UnknownExceptionAccessingSite, ex, CoreResources.TenantExtensions_UnknownExceptionAccessingSite);
+
+                Log.Error(CoreResources.TenantExtensions_UnknownExceptionAccessingSite, ex.Message);
                 throw;
             }
         }
@@ -224,9 +217,9 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (IsCannotGetSiteException(ex) || IsUnableToAccessSiteException(ex))
                 {
-                    if (ex.Message.IndexOf("Unable to access site") != -1)
+                    if (IsUnableToAccessSiteException(ex))
                     {
                         //Let's retry to see if this site collection was recycled
                         try
@@ -267,7 +260,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is ServerException && (ex.Message.IndexOf("Unable to access site") != -1 || ex.Message.IndexOf("Cannot get site") != -1))
+                if (IsCannotGetSiteException(ex) || IsUnableToAccessSiteException(ex))
                 {
                     return true;
                 }
@@ -303,7 +296,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch(ServerException ex)
             {
-                if (!useRecycleBin && ex.Message.IndexOf("Cannot remove site") > -1 && ex.Message.IndexOf("because the site is not available") > -1)
+                if (!useRecycleBin && IsCannotRemoveSiteException(ex))
                 {
                     //eat exception as the site might be in the recycle bin and we allowed deletion from recycle bin 
                 }
@@ -466,7 +459,7 @@ namespace Microsoft.SharePoint.Client
             tenant.Context.Load(siteProps);
             tenant.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceInformation(0, CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
+            Log.Info(CoreResources.TenantExtensions_SetLockState, siteProps.LockState, lockState);
 
             if (siteProps.LockState != lockState.ToString())
             {
@@ -639,9 +632,66 @@ namespace Microsoft.SharePoint.Client
                     {
                         // Context connection gets closed after action completed.
                         // Calling ExecuteQuery again returns an error which can be ignored
-                        LoggingUtility.Internal.TraceWarning((int)EventId.ClosedContextWarning, webEx, CoreResources.TenantExtensions_ClosedContextWarning);
+                        Log.Warning(CoreResources.TenantExtensions_ClosedContextWarning, webEx.Message);
                     }
                 }
+            }
+        }
+
+        private static bool IsCannotGetSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -1 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.Online.SharePoint.Common.SpoNoSiteException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsUnableToAccessSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2147024809 && ((ServerException)ex).ServerErrorTypeName.Equals("System.ArgumentException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsCannotRemoveSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -1 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.Online.SharePoint.Common.SpoException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         #endregion

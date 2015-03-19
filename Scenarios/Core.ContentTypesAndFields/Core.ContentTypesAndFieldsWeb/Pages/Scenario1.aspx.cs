@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Entities;
 
 namespace Core.ContentTypesAndFieldsWeb.Pages
 {
@@ -67,7 +68,14 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 }
                 if (!ctx.Web.FieldExistsByName("ContosoFieldText"))
                 {
-                    ctx.Web.CreateField(fieldId, "ContosoFieldText", FieldType.Text, "Contoso Field Text", "Contoso Fields");
+                    FieldCreationInformation field = new FieldCreationInformation(FieldType.Text)
+                    {
+                        Id = fieldId,
+                        InternalName = "ContosoFieldText",
+                        DisplayName = "Contoso Field Text",
+                        Group = "Contoso Fields"
+                    };
+                    ctx.Web.CreateField(field);
                 }
                 // This will never be true for this sample, but shows the pattern
                 if (!ctx.Web.FieldExistsByNameInContentType(txtContentTypeName.Text, "ContosoFieldText"))

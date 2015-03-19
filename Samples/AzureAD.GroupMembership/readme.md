@@ -45,6 +45,22 @@ The use case for this sample is showing how you can leverage your AD information
 
 An example use to leverage the Azure AD could be a provisioning app that depending on the group membership of a user provisions a site collection using additional elements.
 
+## Transitive vs Intransitive operations ##
+When using Group Membership to authorize operations, be aware of differing behaviors of the MemberOf and CheckMemberGroup operations. 
+> The operation is intransitive, that is, it will only return groups that the object is a direct member of. This is unlike the isMemberOf function of the directory service, which is transitive and which will return true if the object being tested is a member of a group either directly or through the object's membership in another group.
+> 
+> [MSDN](https://msdn.microsoft.com/en-us/library/azure/dn151667.aspx)
+
+Given the scenario:
+ 
+Group Name | Members
+-----------|---------
+East | Jill
+West | Jack
+All  | East, West
+
+Calling the CheckMemberGroups operation on the user "Jill" will return True despite the fact that calling the MemberOf operation on the user "Jill" will return only the group "East" and not group "All."
+
 # Configuration Options #
 Version 1.0 (and setup Option 1) was released with a configuration option that uses the Azure Management Portal to register the Application ID. You need an Azure subscription for the management portal - something you do not get with Office 365. (You can always register a trial subscription if you haven't already.)
 

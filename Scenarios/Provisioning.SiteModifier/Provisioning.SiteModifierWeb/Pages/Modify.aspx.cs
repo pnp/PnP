@@ -81,7 +81,7 @@ namespace Provisioning.SiteModifierWeb
 
                 if (ApplyTheme.Checked)
                 {
-                    clientContext.Web.SetThemeToWeb("Blossom");
+                    clientContext.Web.SetComposedLookByUrl("Blossom");
                 }
 
             }

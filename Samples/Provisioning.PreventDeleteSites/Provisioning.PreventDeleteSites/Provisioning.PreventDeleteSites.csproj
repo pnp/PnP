@@ -86,6 +86,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>
+    <IsDebugging>false</IsDebugging>
+    <PostBuildEventDependsOn>$(PostBuildEventDependsOn);CreatePackage</PostBuildEventDependsOn>
     <PostBuildEvent>copy "$(TargetDir)$(TargetName).wsp" "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

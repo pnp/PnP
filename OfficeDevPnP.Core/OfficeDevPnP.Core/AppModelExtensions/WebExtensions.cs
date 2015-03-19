@@ -57,7 +57,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
             WebCreationInformation creationInfo = new WebCreationInformation()
             {
                 Url = leafUrl,
@@ -102,14 +102,14 @@ namespace Microsoft.SharePoint.Client
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
-                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
                 existingWeb.DeleteObject();
                 parentWeb.Context.ExecuteQueryRetry();
                 deleted = true;
             }
             else
             {
-                LoggingUtility.Internal.TraceVerbose("Delete requested but web '{0}' not found, nothing to do.", serverRelativeUrl);
+                Log.Debug(Constants.LOGGING_SOURCE, "Delete requested but web '{0}' not found, nothing to do.", serverRelativeUrl);
             }
             return deleted;
         }
@@ -224,9 +224,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                if (ex is ServerException &&
-                    (ex.Message.IndexOf("Unable to access site") != -1 ||
-                     ex.Message.IndexOf("Cannot get site") != -1))
+                if (IsUnableToAccessSiteException(ex) || IsCannotGetSiteException(ex))
                 {
                     // Site exists, but you don't have access .. not sure if this is really valid
                     // (I guess if checking if URL is already taken, e.g. want to create a new site
@@ -237,6 +235,43 @@ namespace Microsoft.SharePoint.Client
             return exists;
         }
 
+        private static bool IsCannotGetSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -1 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.Online.SharePoint.Common.SpoNoSiteException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsUnableToAccessSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2147024809 && ((ServerException)ex).ServerErrorTypeName.Equals("System.ArgumentException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         #region Apps and sandbox solutions
@@ -273,14 +308,14 @@ namespace Microsoft.SharePoint.Client
                 if (string.Equals(app.Title, appTitle, StringComparison.OrdinalIgnoreCase))
                 {
                     removed = true;
-                    LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
                     app.Uninstall();
                     web.Context.ExecuteQueryRetry();
                 }
             }
             if (!removed)
             {
-                LoggingUtility.Internal.TraceVerbose("Requested to remove app '{0}', but no instances found; nothing to remove.", appTitle);
+                Log.Debug(Constants.LOGGING_SOURCE, "Requested to remove app '{0}', but no instances found; nothing to remove.", appTitle);
             }
             return removed;
         }
@@ -296,7 +331,7 @@ namespace Microsoft.SharePoint.Client
         public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
         {
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
 
             var rootWeb = site.RootWeb;
             var sourceFileName = Path.GetFileName(sourceFilePath);
@@ -315,27 +350,13 @@ namespace Microsoft.SharePoint.Client
                 MinorVersion = minorVersion,
             };
 
-            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
+            Log.Debug(Constants.LOGGING_SOURCE, "Uninstalling package '{0}'", packageInfo.PackageName);
             DesignPackage.UnInstall(site.Context, site, packageInfo);
-            try
-            {
-                site.Context.ExecuteQueryRetry();
-            }
-            catch (ServerException ex)
-            {
-                // The execute query fails is the package does not already exist; would be better if we could test beforehand
-                if (ex.Message.Contains("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}"))
-                {
-                    LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            site.Context.ExecuteQueryRetry();
+
 
             var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
-            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+            Log.Debug(Constants.LOGGING_SOURCE, "Installing package '{0}'", packageInfo.PackageName);
 
             // NOTE: The lines below (in OfficeDev PnP) wipe/clear all items in the composed looks aka design catalog (_catalogs/design, list template 124).
             // The solution package should be loaded into the solutions catalog (_catalogs/solutions, list template 121).
@@ -359,7 +380,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
         public static void UninstallSolution(this Site site, Guid packageGuid, string fileName, int majorVersion = 1, int minorVersion = 0)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.UninstallSolution, CoreResources.WebExtensions_UninstallSolution, packageGuid);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_UninstallSolution, packageGuid);
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
@@ -389,17 +410,7 @@ namespace Microsoft.SharePoint.Client
                 };
 
                 DesignPackage.UnInstall(site.Context, site, packageInfo);
-                try
-                {
-                    site.Context.ExecuteQueryRetry();
-                }
-                catch (ServerException ex)
-                {
-                    if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
-                    {
-                        LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
-                    }
-                }
+                site.Context.ExecuteQueryRetry();
             }
         }
 
@@ -441,7 +452,7 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                LoggingUtility.Internal.TraceVerbose("Site search '{0}'", keywordQueryValue);
+                Log.Debug(Constants.LOGGING_SOURCE, "Site search '{0}'", keywordQueryValue);
 
                 List<SiteEntity> sites = new List<SiteEntity>();
 
@@ -471,7 +482,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, CoreResources.WebExtensions_SiteSearchUnhandledException);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_SiteSearchUnhandledException, ex.Message);
                 // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
                 throw;
             }

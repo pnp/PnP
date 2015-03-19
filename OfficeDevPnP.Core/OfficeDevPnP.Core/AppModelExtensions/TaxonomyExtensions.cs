@@ -65,7 +65,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     groupId = Guid.NewGuid();
                 }
-                LoggingUtility.Internal.TraceInformation((int)EventId.CreateTermGroup, CoreResources.TaxonomyExtension_CreateTermGroup0InStore1, groupName, termStore.Name);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_CreateTermGroup0InStore1, groupName, termStore.Name);
                 termGroup = termStore.CreateGroup(groupName, groupId);
                 site.Context.Load(termGroup, g => g.Name, g => g.Id, g => g.Description);
                 site.Context.ExecuteQueryRetry();
@@ -75,7 +75,7 @@ namespace Microsoft.SharePoint.Client
                 // Check ID (if retrieved by name and ID is different)
                 if (groupId != Guid.Empty && termGroup.Id != groupId)
                 {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2, termGroup.Name, termGroup.Id, groupId);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_TermGroup0Id1DoesNotMatchSpecifiedId2, termGroup.Name, termGroup.Id, groupId);
                 }
             }
             // Apply name (if retrieved by ID and name has changed)
@@ -95,13 +95,12 @@ namespace Microsoft.SharePoint.Client
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionGroup01, termGroup.Name, termGroup.Id);
-                    //errorMessage = string.Format("Error setting description for taxonomy group '{0}': {1}", termGroup.Name, ex);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionGroup01, termGroup.Name, termGroup.Id, ex.Message);
                 }
             }
             if (changed)
             {
-                LoggingUtility.Internal.TraceVerbose("Updating term group");
+                Log.Debug(Constants.LOGGING_SOURCE, "Updating term group");
                 site.Context.ExecuteQueryRetry();
                 //termStore.CommitAll();
             }
@@ -163,7 +162,7 @@ namespace Microsoft.SharePoint.Client
                     parentGroup.Context.ExecuteQueryRetry();
                     lcid = termStore.DefaultLanguage;
                 }
-                LoggingUtility.Internal.TraceInformation((int)EventId.CreateTermSet, CoreResources.TaxonomyExtension_CreateTermSet0InGroup1, termSetName, parentGroup.Name);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_CreateTermSet0InGroup1, termSetName, parentGroup.Name);
                 termSet = parentGroup.CreateTermSet(termSetName, termSetId, lcid.Value);
                 parentGroup.Context.Load(termSet, g => g.Name, g => g.Id, g => g.Description, g => g.IsOpenForTermCreation, g => g.Contact, g => g.Owner);
                 parentGroup.Context.ExecuteQueryRetry();
@@ -172,7 +171,7 @@ namespace Microsoft.SharePoint.Client
             {
                 if (termSetId != Guid.Empty && termSet.Id != termSetId)
                 {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyIdMismatch, CoreResources.TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2, termSet.Name, termSet.Id, termSetId);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_TermSet0Id1DoesNotMatchSpecifiedId2, termSet.Name, termSet.Id, termSetId);
                 }
             }
             // Apply name (if retrieved by ID and name has changed)
@@ -192,7 +191,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ProvisionTaxonomyUpdateException, ex, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionSet01, termSet.Name, termSet.Id);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionSet01, termSet.Name, termSet.Id, ex.Message);
                 }
             }
             // Other settings
@@ -224,7 +223,7 @@ namespace Microsoft.SharePoint.Client
             if (changed)
             {
                 //Diagnostics.TraceVerbose("Committing term set creation");
-                LoggingUtility.Internal.TraceVerbose("Updating term set");
+                Log.Debug(Constants.LOGGING_SOURCE, "Updating term set");
                 parentGroup.Context.ExecuteQueryRetry();
             }
             return termSet;
@@ -571,7 +570,7 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-      
+
 
         private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
         {
@@ -708,7 +707,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (termSetData == null) { throw new ArgumentNullException("termSetData"); }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.ImportTermSet, CoreResources.TaxonomyExtension_ImportTermSet);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportTermSet);
 
             TermSet termSet = null;
             var importedTermIds = new Dictionary<Guid, object>();
@@ -737,7 +736,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("reader");
             }
 
-            LoggingUtility.Internal.TraceVerbose("Begin import term set");
+            Log.Debug(Constants.LOGGING_SOURCE, "Begin import term set");
 
             TermSet termSet = null;
 
@@ -819,7 +818,7 @@ namespace Microsoft.SharePoint.Client
                         string.Format("Exception on line {0}: {1}", lineIndex + 1, ex.Message),
                         ex);
                 }
-                LoggingUtility.Internal.TraceVerbose("End ImportTermSet");
+                Log.Debug(Constants.LOGGING_SOURCE, "End ImportTermSet");
                 return termSet;
             }
         }
@@ -879,7 +878,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (ArgumentNullException)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
 						{
 							termName,
 							lineNumber
@@ -889,7 +888,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (ArgumentException)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorName, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorName0Line1, new object[]
 						{
 							termName,
 							lineNumber
@@ -930,7 +929,7 @@ namespace Microsoft.SharePoint.Client
                         {
                             termId = Guid.NewGuid();
                         }
-                        LoggingUtility.Internal.TraceInformation((int)EventId.CreateTerm, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, parentTermSetItem.Name);
+                        Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_CreateTerm01UnderParent2, termName, termId, parentTermSetItem.Name);
                         term = parentTermSetItem.CreateTerm(termName, lcid, termId);
                         parentTermSetItem.Context.Load(parentTermSetItem, i => i.Terms.Include(t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging));
                         parentTermSetItem.Context.Load(term, t => t.Id, t => t.Name, t => t.Description, t => t.IsAvailableForTagging);
@@ -956,14 +955,14 @@ namespace Microsoft.SharePoint.Client
                             var isAvailableForTagging = bool.Parse(entries[3]);
                             if (term.IsAvailableForTagging != isAvailableForTagging)
                             {
-                                LoggingUtility.Internal.TraceVerbose("Setting IsAvailableForTagging = {1} for term '{0}'.", term.Name, isAvailableForTagging);
+                                Log.Debug(Constants.LOGGING_SOURCE, "Setting IsAvailableForTagging = {1} for term '{0}'.", term.Name, isAvailableForTagging);
                                 term.IsAvailableForTagging = isAvailableForTagging;
                                 changed = true;
                             }
                         }
                         else
                         {
-                            LoggingUtility.Internal.TraceVerbose("The available for tagging entry on line {0} is null or empty.", new object[]
+                            Log.Debug(Constants.LOGGING_SOURCE, "The available for tagging entry on line {0} is null or empty.", new object[]
 							{
 								lineNumber
 							});
@@ -971,7 +970,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (ArgumentNullException)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorTagging, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
 						{
 							lineNumber
 						});
@@ -979,7 +978,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (FormatException)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorTagging, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorTaggingLine0, new object[]
 						{
 							lineNumber
 						});
@@ -997,14 +996,14 @@ namespace Microsoft.SharePoint.Client
                             ValidateDescription(description, "description");
                             if (term.Description != description)
                             {
-                                LoggingUtility.Internal.TraceVerbose("Updating description for term '{0}'.", term.Name);
+                                Log.Debug(Constants.LOGGING_SOURCE, "Updating description for term '{0}'.", term.Name);
                                 term.SetDescription(description, lcid);
                                 changed = true;
                             }
                         }
                         catch (ArgumentException)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorDescription, CoreResources.TaxonomyExtension_ImportErrorDescription0Line1, new object[]
+                            Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorDescription0Line1, new object[]
 							{
 								description,
 								lineNumber
@@ -1014,7 +1013,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     if (term.Name != termName)
                     {
-                        LoggingUtility.Internal.TraceVerbose("Updating name for term '{0}'.", term.Name);
+                        Log.Debug(Constants.LOGGING_SOURCE, "Updating name for term '{0}'.", term.Name);
                         term.Name = termName;
                         changed = true;
                     }
@@ -1024,22 +1023,22 @@ namespace Microsoft.SharePoint.Client
                         Guid id = term.Id;
                         try
                         {
-                            LoggingUtility.Internal.TraceVerbose("Was an issue; deleting");
+                            Log.Debug(Constants.LOGGING_SOURCE, "Was an issue; deleting");
                             term.DeleteObject();
                             changed = true;
                         }
                         catch (Exception ex)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.ProvisionTaxonomyImportErrorDelete, ex, CoreResources.TaxonomyExtension_ImportErrorDeleteId0Line1, new object[]
+                            Log.Error(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ImportErrorDeleteId0Line1, new object[]
 							{
 								id,
 								lineNumber
-							});
+							}, ex.Message);
                         }
                     }
                     if (changed)
                     {
-                        LoggingUtility.Internal.TraceVerbose("Updating term {0}", term.Id);
+                        Log.Debug(Constants.LOGGING_SOURCE, "Updating term {0}", term.Id);
                         parentTermSetItem.Context.ExecuteQueryRetry();
                     }
                 }
@@ -1111,7 +1110,7 @@ namespace Microsoft.SharePoint.Client
 
         private static void ImportTermSetRemoveExtraTerms(TermSet termSet, IDictionary<Guid, object> importedTermIds)
         {
-            LoggingUtility.Internal.TraceVerbose("Removing extra terms");
+            Log.Debug(Constants.LOGGING_SOURCE, "Removing extra terms");
             var termsToDelete = new List<Term>();
             var allTerms = termSet.GetAllTerms();
             termSet.Context.Load(allTerms, at => at.Include(t => t.Id, t => t.Name));
@@ -1127,7 +1126,7 @@ namespace Microsoft.SharePoint.Client
             {
                 try
                 {
-                    LoggingUtility.Internal.TraceInformation((int)EventId.DeleteTerm, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_DeleteTerm01, termToDelete.Name, termToDelete.Id);
                     termToDelete.DeleteObject();
                     termSet.Context.ExecuteQueryRetry();
                 }
@@ -1136,7 +1135,7 @@ namespace Microsoft.SharePoint.Client
                     if (ex.Message.StartsWith("Taxonomy item instantiation failed."))
                     {
                         // This is a sucky way to check if the term was already deleted
-                        LoggingUtility.Internal.TraceVerbose("Term id {0} already deleted.", termToDelete.Id);
+                        Log.Debug(Constants.LOGGING_SOURCE, "Term id {0} already deleted.", termToDelete.Id);
                     }
                     else
                     {
@@ -1441,63 +1440,130 @@ namespace Microsoft.SharePoint.Client
             clientContext.ExecuteQueryRetry();
         }
 
-
-
-
+        private static void CleanupTaxonomyHiddenField(Web web, FieldCollection fields, TaxonomyFieldCreationInformation fieldCreationInformation)
+        {
+            // if the Guid is empty then we'll have no issue
+            if (fieldCreationInformation.Id != Guid.Empty)
+            {
+                FieldCollection _fields = fields;
+                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName, f => f.Hidden));
+                web.Context.ExecuteQueryRetry();
+                var _field = _fields.FirstOrDefault(f => f.InternalName.Equals(fieldCreationInformation.InternalName));
+                // if the field does not exist we assume the possiblity that it was created earlier then deleted and the hidden field was left behind
+                // if the field does exist then return and let the calling process exception out when attempting to create it
+                // this does not appear to be an issue with lists, just site columns, but it doesnt hurt to check
+                if (_field == null)
+                {
+                    // The hidden field format is the id of the field itself with hyphens removed and the first character replaced
+                    // with a random character, so get everything to the right of the first character and remove hyphens
+                    var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "").Substring(1);
+                    _field = _fields.FirstOrDefault(f => f.InternalName.EndsWith(_hiddenField));
+                    if (_field != null)
+                    {
+                        if (_field.Hidden)
+                        {
+                            // just in case the field itself is hidden, make sure it is not because depending on the current CU hidden fields may not be deletable
+                            _field.Hidden = false;
+                            _field.Update();
+                        }
+                        _field.DeleteObject();
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Can be used to create taxonomy field remotely to web.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="fieldCreationInformation">Creation Information of the field</param>
         /// <returns>New taxonomy field</returns>
+
         public static Field CreateTaxonomyField(this Web web, TaxonomyFieldCreationInformation fieldCreationInformation)
         {
             fieldCreationInformation.InternalName.ValidateNotNullOrEmpty("internalName");
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
+            CleanupTaxonomyHiddenField(web, web.Fields, fieldCreationInformation);
+
             if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
 
-            try
+            var showFieldAttribute = new KeyValuePair<string, string>();
+            if (fieldCreationInformation.AdditionalAttributes != null)
             {
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
-
-                var _field = web.CreateField(fieldCreationInformation);
-
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
-
-                web.Context.ExecuteQueryRetry();
-
-                return _field;
+                showFieldAttribute = fieldCreationInformation.AdditionalAttributes.FirstOrDefault(a => a.Key == "ShowField");
             }
-            catch (Exception)
+            if (showFieldAttribute.Key == null)
             {
-                // If there is an exception the hidden field might be present
-                FieldCollection _fields = web.Fields;
-                web.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                web.Context.ExecuteQueryRetry();
-                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
-
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
+                if (fieldCreationInformation.AdditionalAttributes == null)
                 {
-                    _field.DeleteObject();
-                    web.Context.ExecuteQueryRetry();
+                    fieldCreationInformation.AdditionalAttributes = new List<KeyValuePair<string, string>>();
                 }
-                throw;
-
+                ((List<KeyValuePair<string, string>>)fieldCreationInformation.AdditionalAttributes).Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
             }
+
+            var _field = web.CreateField(fieldCreationInformation);
+
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
+
+            web.Context.ExecuteQueryRetry();
+
+            return _field;
 
         }
 
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by internal name
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="internalName">Internal name of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldByInternalName(this Web web, string internalName)
+        {
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            web.Context.ExecuteQuery();
 
+            Field field = fields.FirstOrDefault(f => f.InternalName == internalName);
 
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQuery();
 
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() { Id = field.Id, InternalName = field.InternalName });
+
+            }
+        }
+
+        /// <summary>
+        /// Removes a taxonomy field (site column) and its associated hidden field by id
+        /// </summary>
+        /// <param name="web">Web object were the field (site column) exists</param>
+        /// <param name="id">Guid representing the id of the taxonomy field (site column) to be removed</param>
+        public static void RemoveTaxonomyFieldById(this Web web, Guid id)
+        {
+
+            FieldCollection fields = web.Fields;
+            web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
+            web.Context.ExecuteQueryRetry();
+
+            Field field = fields.FirstOrDefault(f => f.Id == id);
+
+            if (field != null)
+            {
+                field.DeleteObject();
+                web.Update();
+                web.Context.ExecuteQueryRetry();
+
+                CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() { Id = id, InternalName = field.InternalName });
+            }
+        }
 
         /// <summary>
         /// Can be used to create taxonomy field remotely in a list. 
@@ -1511,44 +1577,34 @@ namespace Microsoft.SharePoint.Client
             fieldCreationInformation.DisplayName.ValidateNotNullOrEmpty("displayName");
             fieldCreationInformation.TaxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
 
+            CleanupTaxonomyHiddenField(list.ParentWeb, list.Fields, fieldCreationInformation);
+
             if (fieldCreationInformation.Id == Guid.Empty)
             {
                 fieldCreationInformation.Id = Guid.NewGuid();
             }
-            try
+            var showFieldAttribute = new KeyValuePair<string, string>();
+            if (fieldCreationInformation.AdditionalAttributes != null)
             {
-                List<KeyValuePair<string, string>> additionalAttributes = new List<KeyValuePair<string, string>>();
-                additionalAttributes.Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
-
-                var _field = list.CreateField(fieldCreationInformation);
-
-                WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
-                _field.Update();
-
-                list.Context.ExecuteQueryRetry();
-
-                return _field;
+                showFieldAttribute = fieldCreationInformation.AdditionalAttributes.FirstOrDefault(a => a.Key == "ShowField");
             }
-            catch (Exception)
+            if (showFieldAttribute.Key == null)
             {
-                // If there is an exception the hidden field might be present
-                FieldCollection _fields = list.Fields;
-                list.Context.Load(_fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-                list.Context.ExecuteQueryRetry();
-                var _hiddenField = fieldCreationInformation.Id.ToString().Replace("-", "");
-
-                var _field = _fields.FirstOrDefault(f => f.InternalName == _hiddenField);
-                if (_field != null)
+                if (fieldCreationInformation.AdditionalAttributes == null)
                 {
-                    _field.Hidden = false; // Cannot delete a hidden column
-                    _field.Update();
-                    _field.DeleteObject();
-                    list.Context.ExecuteQueryRetry();
+                    fieldCreationInformation.AdditionalAttributes = new List<KeyValuePair<string, string>>();
                 }
-                throw;
+                ((List<KeyValuePair<string, string>>)fieldCreationInformation.AdditionalAttributes).Add(new KeyValuePair<string, string>("ShowField", "Term1033"));
             }
-        }
+            var _field = list.CreateField(fieldCreationInformation);
 
+            WireUpTaxonomyFieldInternal(_field, fieldCreationInformation.TaxonomyItem, fieldCreationInformation.MultiValue);
+            _field.Update();
+
+            list.Context.ExecuteQueryRetry();
+
+            return _field;
+        }
 
         /// <summary>
         /// Wires up MMS field to the specified term set.

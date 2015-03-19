@@ -11,7 +11,7 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// File-based (CAML) provisioning extensions
     /// </summary>
-    public static class ProvisioningExtensions
+    public static partial class ProvisioningExtensions
     {
         const string SharePointNamespaceName = "http://schemas.microsoft.com/sharepoint/";
 
@@ -25,7 +25,7 @@ namespace Microsoft.SharePoint.Client
             if (path == null) { throw new ArgumentNullException("path"); }
             if (string.IsNullOrWhiteSpace(path)) { throw new ArgumentException("Path to the element file is required", "path"); }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.ProvisionElementFile, CoreResources.ProvisioningExtensions_ProvisionElementFile0, path);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.ProvisioningExtensions_ProvisionElementFile0, path);
 
             var baseFolder = Path.GetDirectoryName(path);
             using (var sr = System.IO.File.OpenText(path))
@@ -80,7 +80,7 @@ namespace Microsoft.SharePoint.Client
             var modulePath = moduleXml.Attribute("Path").Value;
             var moduleBaseFolder = Path.Combine(baseFolder, modulePath);
 
-            LoggingUtility.Internal.TraceVerbose("Provisioning module '{0}'", name);
+            Log.Debug(Constants.LOGGING_SOURCE, "Provisioning module '{0}'", name);
 
             foreach (var child in moduleXml.Elements())
             {
@@ -93,7 +93,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (Exception ex)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionModuleFileError, ex, CoreResources.ProvisioningExtensions_ErrorProvisioningModule0File1, name, filePath);
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.ProvisioningExtensions_ErrorProvisioningModule0File1, name, filePath, ex.Message);
                     }
                 }
                 else
@@ -137,7 +137,7 @@ namespace Microsoft.SharePoint.Client
                     var propertyName = child.Attribute("Name").Value;
                     if (skipProperties.Contains(propertyName, StringComparer.OrdinalIgnoreCase))
                     {
-                        LoggingUtility.Internal.TraceVerbose("Skipping property known to cause issues '{0}'", propertyName);
+                        Log.Debug(Constants.LOGGING_SOURCE, "Skipping property known to cause issues '{0}'", propertyName);
                         //Console.WriteLine("Skipping property '{0}'", propertyName);
                     }
                     else

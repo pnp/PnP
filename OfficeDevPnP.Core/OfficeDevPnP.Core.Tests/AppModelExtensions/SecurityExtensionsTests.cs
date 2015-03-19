@@ -111,6 +111,20 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void GroupExistsTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                bool groupExists = clientContext.Web.GroupExists(_testGroupName);
+                Assert.IsTrue(groupExists);
+
+                groupExists = clientContext.Web.GroupExists(_testGroupName + "987654321654367");
+                Assert.IsFalse(groupExists);
+            }
+        }
+
         #endregion
 
         #region Permission level tests

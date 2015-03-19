@@ -5,7 +5,7 @@ using Microsoft.SharePoint.Client.WorkflowServices;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static class WorkflowExtensions
+    public static partial class WorkflowExtensions
     {
         #region Subscriptions
         /// <summary>
@@ -292,6 +292,25 @@ namespace Microsoft.SharePoint.Client
             workflowInstanceService.ResumeWorkflow(instance);
             clientContext.ExecuteQueryRetry();
         }
+        #endregion
+
+        #region Messaging
+
+        /// <summary>
+        /// Publish a custom event to a target workflow instance
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="eventName">The name of the target event</param>
+        /// <param name="payload">The payload that will be sent to the event</param>
+        public static void PublishCustomEvent(this WorkflowInstance instance, String eventName, String payload)
+        {
+            var clientContext = instance.Context as ClientContext;
+            var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
+            var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
+            workflowInstanceService.PublishCustomEvent(instance, eventName, payload);
+            clientContext.ExecuteQueryRetry();
+        }
+
         #endregion
     }
 }

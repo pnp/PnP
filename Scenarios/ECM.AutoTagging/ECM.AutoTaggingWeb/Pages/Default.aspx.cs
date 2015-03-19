@@ -80,7 +80,7 @@ namespace ECM.AutoTaggingWeb
                     EventReceiverDefinitionCreationInformation _rec = ReceiverHelper.CreateEventReciever(ScenarioHandler.AUTOTAGGING_ITEM_ADDING_RERNAME, EventReceiverType.ItemAdding);
                     ReceiverHelper.AddEventReceiver(ctx, _list, _rec);
                 }
-                catch(Exception _ex)
+                catch(Exception)
                 {
 
                 }
@@ -109,7 +109,7 @@ namespace ECM.AutoTaggingWeb
                     EventReceiverDefinitionCreationInformation _rec = ReceiverHelper.CreateEventReciever(ScenarioHandler.AUTOTAGGING_ITEM_ADDED_RERNAME, EventReceiverType.ItemAdded);
                     ReceiverHelper.AddEventReceiver(ctx, _list, _rec);
                 }
-                catch (Exception _ex)
+                catch (Exception)
                 {
 
                 }
@@ -135,7 +135,7 @@ namespace ECM.AutoTaggingWeb
                         ReceiverHelper.RemoveEventReceiver(ctx, _list, ScenarioHandler.AUTOTAGGING_ITEM_ADDING_RERNAME);
                     }
                 }
-                catch (Exception _ex)
+                catch (Exception)
                 {
 
                 }
@@ -160,7 +160,7 @@ namespace ECM.AutoTaggingWeb
                         ReceiverHelper.RemoveEventReceiver(ctx, _list, ScenarioHandler.AUTOTAGGING_ITEM_ADDED_RERNAME);
                     }
                 }
-                catch (Exception _ex)
+                catch (Exception)
                 {
 
                 }

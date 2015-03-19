@@ -276,11 +276,30 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
             }
 
             // Deploy theme files to root web, if they are not there and set it as active theme for the site
-            newWeb.DeployThemeToSubWeb(rootWeb, theme,
-                                       colorFile, fontFile, backgroundImage, masterPage);
+            string themeColorFileString = "";
+            string themeFontFileString = "";
+            string themeBackgroundImageString = "";
+
+            if (!String.IsNullOrEmpty(colorFile))
+            {
+                themeColorFileString = rootWeb.UploadThemeFile(colorFile).ServerRelativeUrl;
+
+            }
+            if (!String.IsNullOrEmpty(fontFile))
+            {
+                themeFontFileString = rootWeb.UploadThemeFile(fontFile).ServerRelativeUrl;
+            }
+
+            if (!String.IsNullOrWhiteSpace(backgroundImage))
+            {
+                themeBackgroundImageString = rootWeb.UploadThemeFile(backgroundImage).ServerRelativeUrl;
+            }
+
+            masterPage = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/masterpage/{0}", masterPage));
+            newWeb.CreateComposedLookByUrl(theme, themeColorFileString, themeFontFileString, themeBackgroundImageString, masterPage);
 
             // Setting the theme to new web
-            newWeb.SetThemeToSubWeb(rootWeb, theme);
+            newWeb.SetComposedLookByUrl(theme);
         }
 
         private XElement SolveUsedThemeConfigElementFromXML(string theme, XDocument configuration)

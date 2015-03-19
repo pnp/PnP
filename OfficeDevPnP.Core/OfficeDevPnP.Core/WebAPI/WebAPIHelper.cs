@@ -91,14 +91,14 @@ namespace OfficeDevPnP.Core.WebAPI
                     cacheItem.AccessToken = accessToken;
                     //update the cache
                     WebAPIContextCache.Instance.Put(cacheKey, cacheItem);
-                    LoggingUtility.Internal.TraceInformation((int)EventId.ServicesTokenRefreshed, CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
+                    Log.Info(CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
                 }
                  
                 return TokenHelper.GetClientContextWithAccessToken(cacheItem.SharePointServiceContext.HostWebUrl, cacheItem.AccessToken.AccessToken);
             }
             else
             {
-                LoggingUtility.Internal.TraceWarning((int)EventId.ServicesNoCachedItem, CoreResources.Services_CookieWithCachKeyNotFound);
+                Log.Warning(Constants.LOGGING_SOURCE, CoreResources.Services_CookieWithCachKeyNotFound);
                 throw new Exception("The cookie with the cachekey was not found...nothing can be retrieved from cache, so no clientcontext can be created.");
             }            
         }
@@ -212,11 +212,11 @@ namespace OfficeDevPnP.Core.WebAPI
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.ServicesRegistrationFailed, CoreResources.Service_RegistrationFailed, apiRequest, serviceEndPoint.ToString(), cacheKey);
+                            Log.Error(CoreResources.Service_RegistrationFailed, apiRequest, serviceEndPoint.ToString(), cacheKey);
                             throw new Exception(String.Format("Service registration failed: {0}", response.StatusCode));
                         }
 
-                        LoggingUtility.Internal.TraceInformation((int)EventId.ServicesRegistered, CoreResources.Services_Registered, apiRequest, serviceEndPoint.ToString(), cacheKey);
+                        Log.Info(CoreResources.Services_Registered, apiRequest, serviceEndPoint.ToString(), cacheKey);
 
                     }
                 }

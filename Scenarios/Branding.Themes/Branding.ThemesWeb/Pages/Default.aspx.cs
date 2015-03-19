@@ -63,7 +63,7 @@ namespace Contoso.Branding.ThemesWeb
                 {
                     Web web = clientContext.Web;
                     string selectedTheme = drpThemes.SelectedValue;
-                    web.SetThemeToWeb(selectedTheme);
+                    web.SetComposedLookByUrl(selectedTheme);
                     lblStatus1.Text = string.Format("Theme '{0}' has been applied to the <a href='{1}'>host web</a>.", selectedTheme, spContext.SPHostUrl.ToString());
                 }
             }
@@ -77,16 +77,21 @@ namespace Contoso.Branding.ThemesWeb
             {
                 if (clientContext != null)
                 {
+                    clientContext.Web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
+                    clientContext.Web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
+
                     Web web = clientContext.Web;
+                    clientContext.Load(clientContext.Web, w => w.AllProperties, w => w.ServerRelativeUrl);
+                    clientContext.ExecuteQuery();
                     // Let's first upload the contoso theme to host web, if it does not exist there
-                    web.DeployThemeToWeb("SPC",
-                                    HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")),
+                    web.CreateComposedLookByName("SPC",
+                                    clientContext.Web.ServerRelativeUrl + "/_catalogs/theme/15/SPCTheme.spcolor",
                                     null,
-                                    HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")),
+                                    clientContext.Web.ServerRelativeUrl + "/_catalogs/theme/15/SPCbg.jpg",
                                     string.Empty);
 
                     // Setting the Contoos theme to host web
-                    web.SetThemeToWeb("SPC");
+                    web.SetComposedLookByUrl("SPC");
                     lblStatus2.Text = string.Format("Custom theme called 'SPC' has been uploaded and applied to the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
                 }
             }

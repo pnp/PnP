@@ -77,7 +77,7 @@ namespace Microsoft.SharePoint.Client
             string id = fieldNode.Attribute("ID").Value;
             string name = fieldNode.Attribute("Name").Value;
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields);
@@ -142,7 +142,7 @@ namespace Microsoft.SharePoint.Client
         {
             var ns = xDocument.Root.Name.Namespace;
 
-            var fields = from f in xDocument.Elements(ns + "Field") select f;
+            var fields = from f in xDocument.Descendants(ns + "Field") select f;
 
             foreach (var field in fields)
             {
@@ -152,7 +152,7 @@ namespace Microsoft.SharePoint.Client
                 // If field already existed, let's move on
                 if (web.FieldExistsByName(name))
                 {
-                    LoggingUtility.Internal.TraceWarning((int)EventId.FieldAlreadyExists, CoreResources.FieldAndContentTypeExtensions_Field01AlreadyExists, name, id);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_Field01AlreadyExists, name, id);
                 }
                 else
                 {
@@ -363,7 +363,7 @@ namespace Microsoft.SharePoint.Client
 
             string newFieldCAML = FormatFieldXml(fieldCreationInformation);
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateField, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
             field = fields.AddFieldAsXml(newFieldCAML, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
 
@@ -419,7 +419,7 @@ namespace Microsoft.SharePoint.Client
             string id = fieldNode.Attribute("ID").Value;
             string name = fieldNode.Attribute("Name").Value;
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateListField, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
             Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
@@ -748,7 +748,7 @@ namespace Microsoft.SharePoint.Client
                 web.Context.ExecuteQueryRetry();
             }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.AddFieldToContentType, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_AddField0ToContentType1, field.Id, contentType.Id);
 
             // Get the field if already exists in content type, else add field to content type
             // This will help to customize (required or hidden) any pre-existing field, also to handle existing field of Parent Content type
@@ -809,7 +809,7 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(contentTypes);
             list.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceVerbose("Checking {0} content types in list for best match", contentTypes.Count);
+            Log.Debug(Constants.LOGGING_SOURCE, "Checking {0} content types in list for best match", contentTypes.Count);
 
             var shortestMatchLength = int.MaxValue;
             ContentTypeId bestMatchId = null;
@@ -818,12 +818,12 @@ namespace Microsoft.SharePoint.Client
             {
                 if (contentType.StringId.StartsWith(baseContentTypeId, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    LoggingUtility.Internal.TraceVerbose("Found match {0}", contentType.StringId);
+                    Log.Debug(Constants.LOGGING_SOURCE, "Found match {0}", contentType.StringId);
                     if (contentType.StringId.Length < shortestMatchLength)
                     {
                         bestMatchId = contentType.Id;
                         shortestMatchLength = contentType.StringId.Length;
-                        LoggingUtility.Internal.TraceVerbose(" - Is best match. Best match length now {0}", shortestMatchLength);
+                        Log.Debug(Constants.LOGGING_SOURCE, " - Is best match. Best match length now {0}", shortestMatchLength);
                     }
                 }
             }
@@ -1057,7 +1057,7 @@ namespace Microsoft.SharePoint.Client
             ContentType returnCT = null;
             var ns = xDocument.Root.Name.Namespace;
 
-            var contentTypes = from cType in xDocument.Elements(ns + "ContentType") select cType;
+            var contentTypes = from cType in xDocument.Descendants(ns + "ContentType") select cType;
 
             foreach (var ct in contentTypes)
             {
@@ -1067,7 +1067,7 @@ namespace Microsoft.SharePoint.Client
                 if (web.ContentTypeExistsByName(name))
                 {
                     // Skip
-                    LoggingUtility.Internal.TraceWarning((int)EventId.ContentTypeAlreadyExists, CoreResources.FieldAndContentTypeExtensions_ContentType01AlreadyExists, name, ctid);
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_ContentType01AlreadyExists, name, ctid);
                 }
                 else
                 {
@@ -1120,7 +1120,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The created content type</returns>
         public static ContentType CreateContentType(this Web web, string name, string description, string id, string group, ContentType parentContentType = null)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateContentType, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
 
             // Load the current collection of content types
             ContentTypeCollection contentTypes = web.ContentTypes;

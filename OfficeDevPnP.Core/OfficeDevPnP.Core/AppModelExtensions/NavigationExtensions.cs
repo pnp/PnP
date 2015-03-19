@@ -2,57 +2,68 @@
 using System.Collections.Generic;
 using System.Linq;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
 
 namespace Microsoft.SharePoint.Client
 {
+
     /// <summary>
     /// This class holds navigation related methods
     /// </summary>
-    public static class NavigationExtensions
+    public static partial class NavigationExtensions
     {
-        #region Navigation elements  - quicklaunch and top navigation
+        #region Navigation elements - quicklaunch, top navigation, search navigation
         /// <summary>
-        /// Add a node to quickLaunch or top navigation bar
+        /// Add a node to quick launch, top navigation bar or search navigation. The node will be added as the last node in the
+        /// collection.
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="nodeTitle">the title of node to add</param>
         /// <param name="nodeUri">the url of node to add</param>
         /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
-        /// <param name="isQuickLaunch">true: add to quickLaunch; otherwise, add to top navigation bar</param>
-        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, bool isQuickLaunch)
+        /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
+        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
             web.Context.ExecuteQueryRetry();
-            NavigationNodeCreationInformation node = new NavigationNodeCreationInformation();
-            node.AsLastNode = true;
-            node.Title = nodeTitle;
-            node.Url = nodeUri != null ? nodeUri.OriginalString : "";
-
-            if (isQuickLaunch)
+            NavigationNodeCreationInformation node = new NavigationNodeCreationInformation
             {
-                var quickLaunch = web.Navigation.QuickLaunch;
-                if (string.IsNullOrEmpty(parentNodeTitle))
+                AsLastNode = true,
+                Title = nodeTitle,
+                Url = nodeUri != null ? nodeUri.OriginalString : string.Empty
+            };
+
+            try
+            {
+                if (navigationType == NavigationType.QuickLaunch)
                 {
-                    quickLaunch.Add(node);
-                }
-                else
-                {
-                    foreach (var nodeInfo in quickLaunch)
+                    var quickLaunch = web.Navigation.QuickLaunch;
+                    if (string.IsNullOrEmpty(parentNodeTitle))
                     {
-                        if (nodeInfo.Title == parentNodeTitle)
-                        {
-                            nodeInfo.Children.Add(node);
-                            break;
-                        }
+                        quickLaunch.Add(node);
+                        return;
+                    }
+                    NavigationNode parentNode = quickLaunch.SingleOrDefault(n => n.Title == parentNodeTitle);
+                    if (parentNode != null)
+                    {
+                        parentNode.Children.Add(node);
                     }
                 }
+                else if (navigationType == NavigationType.TopNavigationBar)
+                {
+                    var topLink = web.Navigation.TopNavigationBar;
+                    topLink.Add(node);
+                }
+                else if (navigationType == NavigationType.SearchNav)
+                {
+                    var searchNavigation = web.LoadSearchNavigation();
+                    searchNavigation.Add(node);
+                }
             }
-            else
+            finally
             {
-                var topLink = web.Navigation.TopNavigationBar;
-                topLink.Add(node);
+                web.Context.ExecuteQueryRetry();
             }
-            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -61,63 +72,54 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="nodeTitle">the title of node to delete</param>
         /// <param name="parentNodeTitle">if string.Empty, then will delete this node as top level node</param>
-        /// <param name="isQuickLaunch">true: delete from quickLaunch; otherwise, delete from top navigation bar</param>
-        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, bool isQuickLaunch)
+        /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
+        public static void DeleteNavigationNode(this Web web, string nodeTitle, string parentNodeTitle, NavigationType navigationType)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
             web.Context.ExecuteQueryRetry();
-
-            if (isQuickLaunch)
+            NavigationNode deleteNode = null;
+            try
             {
-                var quickLaunch = web.Navigation.QuickLaunch;
-                if (string.IsNullOrEmpty(parentNodeTitle))
+                if (navigationType == NavigationType.QuickLaunch)
                 {
-                    foreach (var nodeInfo in quickLaunch)
+                    var quickLaunch = web.Navigation.QuickLaunch;
+                    if (string.IsNullOrEmpty(parentNodeTitle))
                     {
-                        if (nodeInfo.Title == nodeTitle)
-                        {
-                            nodeInfo.DeleteObject();
-                            web.Context.ExecuteQueryRetry();
-                            break;
-                        }
+                        deleteNode = quickLaunch.SingleOrDefault(n => n.Title == nodeTitle);
                     }
-                }
-                else
-                {
-                    bool done = false;
-                    foreach (var nodeInfo in quickLaunch)
+                    else
                     {
-                        if (nodeInfo.Title == parentNodeTitle)
+                        foreach (var nodeInfo in quickLaunch)
                         {
+                            if (nodeInfo.Title != parentNodeTitle)
+                            {
+                                continue;
+                            }
+
                             web.Context.Load(nodeInfo.Children);
                             web.Context.ExecuteQueryRetry();
-                            foreach (var nodeInfo2 in nodeInfo.Children)
-                            {
-                                if (nodeInfo2.Title == nodeTitle)
-                                {
-                                    nodeInfo2.DeleteObject();
-                                    web.Context.ExecuteQueryRetry();
-                                    done = true;
-                                    break;
-                                }
-                            }
-                            if (done) break;
+                            deleteNode = nodeInfo.Children.SingleOrDefault(n => n.Title == nodeTitle);
                         }
                     }
                 }
-            }
-            else
-            {
-                var topLink = web.Navigation.TopNavigationBar;
-                foreach (var nodeInfo in topLink)
+                else if (navigationType == NavigationType.TopNavigationBar)
                 {
-                    if (nodeInfo.Title == nodeTitle)
-                    {
-                        nodeInfo.DeleteObject();
-                        web.Context.ExecuteQueryRetry();
-                        break;
-                    }
+                    var topLink = web.Navigation.TopNavigationBar;
+                    deleteNode = topLink.SingleOrDefault(n => n.Title == nodeTitle);
                 }
+                else if (navigationType == NavigationType.SearchNav)
+                {
+                    NavigationNodeCollection nodeCollection = web.LoadSearchNavigation();
+                    deleteNode = nodeCollection.SingleOrDefault(n => n.Title == nodeTitle);
+                }
+            }
+            finally
+            {
+                if (deleteNode != null)
+                {
+                    deleteNode.DeleteObject();
+                }
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -127,7 +129,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         public static void DeleteAllQuickLaunchNodes(this Web web)
         {
-
             web.Context.Load(web, w => w.Navigation.QuickLaunch);
             web.Context.ExecuteQueryRetry();
 
@@ -150,6 +151,21 @@ namespace Microsoft.SharePoint.Client
             web.Update();
             web.Context.ExecuteQueryRetry();
         }
+
+        /// <summary>
+        /// Loads the search navigation nodes
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <returns>Collection of NavigationNode instances</returns>
+        public static NavigationNodeCollection LoadSearchNavigation(this Web web)
+        {
+            var searchNav = web.Navigation.GetNodeById(1040); // 1040 is the id of the search navigation            
+            var nodeCollection = searchNav.Children;
+            web.Context.Load(searchNav);
+            web.Context.Load(nodeCollection);
+            web.Context.ExecuteQueryRetry();
+            return nodeCollection;
+        }
         #endregion
 
         #region Custom actions
@@ -162,14 +178,14 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         /// var editAction = new CustomActionEntity()
         /// {
-        ///     Title = "Edit Site Classification",
-        ///     Description = "Manage business impact information for site collection or sub sites.",
-        ///     Sequence = 1000,
-        ///     Group = "SiteActions",
-        ///     Location = "Microsoft.SharePoint.StandardMenu",
-        ///     Url = EditFormUrl,
-        ///     ImageUrl = EditFormImageUrl,
-        ///     Rights = new BasePermissions(),
+        ///    Title = "Edit Site Classification",
+        ///    Description = "Manage business impact information for site collection or sub sites.",
+        ///    Sequence = 1000,
+        ///    Group = "SiteActions",
+        ///    Location = "Microsoft.SharePoint.StandardMenu",
+        ///    Url = EditFormUrl,
+        ///    ImageUrl = EditFormImageUrl,
+        ///    Rights = new BasePermissions(),
         /// };
         /// editAction.Rights.Set(PermissionKind.ManageWeb);
         /// AddCustomAction(editAction, new Uri(site.Properties.Url));
@@ -187,11 +203,11 @@ namespace Microsoft.SharePoint.Client
 
         private static bool AddCustomActionImplementation(ClientObject clientObject, CustomActionEntity customAction)
         {
-            UserCustomAction targetAction = null;
-            UserCustomActionCollection existingActions = null;
+            UserCustomAction targetAction;
+            UserCustomActionCollection existingActions;
             if (clientObject is Web)
             {
-                var web = (Web) clientObject;
+                var web = (Web)clientObject;
 
                 existingActions = web.UserCustomActions;
                 web.Context.Load(existingActions);
@@ -201,7 +217,7 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                var site = (Site) clientObject;
+                var site = (Site)clientObject;
 
                 existingActions = site.UserCustomActions;
                 site.Context.Load(existingActions);
@@ -217,10 +233,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     return true;
                 }
-                else
-                {
-                    targetAction = existingActions.Add();
-                }
+                targetAction = existingActions.Add();
             }
             else if (customAction.Remove)
             {
@@ -276,14 +289,13 @@ namespace Microsoft.SharePoint.Client
             }
             else
             {
-                var site = (Site) clientObject;
+                var site = (Site)clientObject;
                 site.Context.Load(site, s => s.UserCustomActions);
                 site.Context.ExecuteQueryRetry();
             }
 
             return true;
         }
-
 
 
         /// <summary>
@@ -293,7 +305,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static IEnumerable<UserCustomAction> GetCustomActions(this Web web)
         {
-            var clientContext = web.Context as ClientContext;
+            var clientContext = (ClientContext)web.Context;
 
             List<UserCustomAction> actions = new List<UserCustomAction>();
 
@@ -314,7 +326,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static IEnumerable<UserCustomAction> GetCustomActions(this Site site)
         {
-            var clientContext = site.Context as ClientContext;
+            var clientContext = (ClientContext)site.Context;
 
             List<UserCustomAction> actions = new List<UserCustomAction>();
 
@@ -338,7 +350,7 @@ namespace Microsoft.SharePoint.Client
         /// </param>
         public static void DeleteCustomAction(this Web web, Guid id)
         {
-            var clientContext = web.Context as ClientContext;
+            var clientContext = (ClientContext)web.Context;
 
             clientContext.Load(web.UserCustomActions);
             clientContext.ExecuteQueryRetry();
@@ -352,7 +364,6 @@ namespace Microsoft.SharePoint.Client
                     break;
                 }
             }
-
         }
 
         /// <summary>
@@ -365,7 +376,7 @@ namespace Microsoft.SharePoint.Client
         /// </param>
         public static void DeleteCustomAction(this Site site, Guid id)
         {
-            var clientContext = site.Context as ClientContext;
+            var clientContext = (ClientContext)site.Context;
 
             clientContext.Load(site.UserCustomActions);
             clientContext.ExecuteQueryRetry();
@@ -410,6 +421,7 @@ namespace Microsoft.SharePoint.Client
             }
             return false;
         }
+
         #endregion
     }
 }

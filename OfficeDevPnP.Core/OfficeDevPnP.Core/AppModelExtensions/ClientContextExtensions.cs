@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static class ClientContextExtensions
+    public static partial class ClientContextExtensions
     {
         /// <summary>
         /// Clones a ClientContext object while "taking over" the security context of the existing ClientContext instance
@@ -30,12 +30,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="clientContext"></param>
         /// <param name="retryCount">Number of times to retry the request</param>
         /// <param name="delay">Milliseconds to wait before retrying the request. The delay will be increased (doubled) every retry</param>
-        public static void ExecuteQueryRetry(this ClientRuntimeContext clientContext, int retryCount = 1, int delay = 500)
+        public static void ExecuteQueryRetry(this ClientRuntimeContext clientContext, int retryCount = 10, int delay = 500)
         {
             ExecuteQueryImplementation(clientContext, retryCount, delay);
         }
 
-        private static void ExecuteQueryImplementation(ClientRuntimeContext clientContext, int retryCount = 1, int delay = 500)
+        private static void ExecuteQueryImplementation(ClientRuntimeContext clientContext, int retryCount = 10, int delay = 500)
         {
             int retryAttempts = 0;
             int backoffInterval = delay;

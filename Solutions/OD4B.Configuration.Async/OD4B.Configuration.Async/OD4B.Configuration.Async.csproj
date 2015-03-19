@@ -22,6 +22,7 @@
     <WorkflowPartId>{150b8281-dcd4-481b-8c89-1a938ef92d51}</WorkflowPartId>
     <CspkgPartId>{9e166d1e-9a10-4fbf-8aa5-35f0fb638d17}</CspkgPartId>
     <SqlPackagePartId>{e47e1950-463b-4319-be8d-31e71e65bd8c}</SqlPackagePartId>
+    <ActivePublishProfile>vesaj-od4bconfUI - Web Deploy</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

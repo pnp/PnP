@@ -69,29 +69,25 @@ namespace Microsoft.SharePoint.Client
             var backgroundUrl = default(string);
             var masterUrl = default(string);
 
-            using (var innerContext = web.Context.Clone(web.Context.Url))
-            {
-                var rootWeb = innerContext.Site.RootWeb;
-                Utility.EnsureWeb(innerContext, rootWeb, "ServerRelativeUrl");
-
-                if (!string.IsNullOrEmpty(paletteFileName))
-                {
-                    paletteUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(paletteFileName)));
-                }
-                if (!string.IsNullOrEmpty(fontFileName))
-                {
-                    fontUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
-                }
-                if (!string.IsNullOrEmpty(backgroundFileName))
-                {
-                    backgroundUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
-                }
-            }
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQueryRetry();
             }
+
+            if (!string.IsNullOrEmpty(paletteFileName))
+            {
+                paletteUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(paletteFileName)));
+            }
+            if (!string.IsNullOrEmpty(fontFileName))
+            {
+                fontUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(fontFileName)));
+            }
+            if (!string.IsNullOrEmpty(backgroundFileName))
+            {
+                backgroundUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.THEMES_DIRECTORY, Path.GetFileName(backgroundFileName)));
+            }
+
             if (!string.IsNullOrEmpty(masterFileName))
             {
                 masterUrl = UrlUtility.Combine(web.ServerRelativeUrl, string.Format(Constants.MASTERPAGE_DIRECTORY, Path.GetFileName(masterFileName)));
@@ -126,7 +122,7 @@ namespace Microsoft.SharePoint.Client
 
             if (item == null)
             {
-                LoggingUtility.Internal.TraceInformation((int)EventId.CreateComposedLook, CoreResources.BrandingExtension_CreateComposedLook, lookName, web.ServerRelativeUrl);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_CreateComposedLook, lookName, web.ServerRelativeUrl);
                 ListItemCreationInformation itemInfo = new ListItemCreationInformation();
                 item = composedLooksList.AddItem(itemInfo);
                 item["Name"] = lookName;
@@ -138,7 +134,7 @@ namespace Microsoft.SharePoint.Client
                 {
                     throw new Exception("Composed look already exists, replace contents needs to be specified.");
                 }
-                LoggingUtility.Internal.TraceInformation((int)EventId.UpdateComposedLook, CoreResources.BrandingExtension_UpdateComposedLook, lookName, web.ServerRelativeUrl);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_UpdateComposedLook, lookName, web.ServerRelativeUrl);
             }
 
             if (!string.IsNullOrEmpty(paletteServerRelativeUrl))
@@ -178,7 +174,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="backgroundServerRelativeUrl">Override background image file URL to use</param>
         /// <param name="masterServerRelativeUrl">Override master page file URL to use</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
-        public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false)
+        public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false, bool updateRootOnly = true)
         {
             var paletteUrl = default(string);
             var fontUrl = default(string);
@@ -222,7 +218,7 @@ namespace Microsoft.SharePoint.Client
                 }
                 else
                 {
-                    LoggingUtility.Internal.TraceError((int)EventId.ThemeMissing, CoreResources.BrandingExtension_ComposedLookMissing, lookName);
+                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_ComposedLookMissing, lookName);
                     throw new Exception(string.Format("Composed look '{0}' can not be found; pass null or empty to set look directly (not based on an existing entry)", lookName));
                 }
             }
@@ -244,12 +240,9 @@ namespace Microsoft.SharePoint.Client
                 masterUrl = masterServerRelativeUrl;
             }
 
-            // Save as 'current'
-            web.CreateComposedLookByUrl(CurrentLookName, paletteUrl, fontUrl, backgroundUrl, masterUrl, displayOrder: 0);
-
-            web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit);
-            web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit);
-            web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit);
+            web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+            web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+            web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit, updateRootOnly);
         }
 
         /// <summary>
@@ -267,7 +260,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetTheme, CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, web.ServerRelativeUrl);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritTheme] = "False";
             web.Update();
             web.ApplyTheme(paletteServerRelativeUrl, fontServerRelativeUrl, backgroundServerRelativeUrl, shareGenerated: true);
@@ -296,7 +289,7 @@ namespace Microsoft.SharePoint.Client
 
                         if (resetSubsitesToInherit || inheritTheme)
                         {
-                            LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, childWeb.ServerRelativeUrl);
+                            Log.Debug(Constants.LOGGING_SOURCE, "Inherited: " + CoreResources.BrandingExtension_ApplyTheme, paletteServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritTheme] = "True";
                             //childWeb.ThemedCssFolderUrl = themedCssFolderUrl;
                             childWeb.Update();
@@ -434,7 +427,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployPageLayout, CoreResources.BrandingExtension_DeployPageLayout, fileName, web.Context.Url);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_DeployPageLayout, fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
@@ -485,7 +478,10 @@ namespace Microsoft.SharePoint.Client
             if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
             {
                 uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
-                listItem.File.Publish(string.Empty);
+                if (masterPageGallery.EnableModeration)
+                {
+                    listItem.File.Publish(string.Empty);
+                }
             }
             web.Context.ExecuteQueryRetry();
 
@@ -500,7 +496,7 @@ namespace Microsoft.SharePoint.Client
                 throw new FileNotFoundException("File for param sourceFilePath not found.", sourceFilePath);
 
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.DeployMasterPage, CoreResources.BrandingExtension_DeployMasterPage, fileName, web.Context.Url);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_DeployMasterPage, fileName, web.Context.Url);
 
             // Get the path to the file which we are about to deploy
             List masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
@@ -547,7 +543,10 @@ namespace Microsoft.SharePoint.Client
             if (masterPageGallery.ForceCheckout || masterPageGallery.EnableVersioning)
             {
                 uploadFile.CheckIn(string.Empty, CheckinType.MajorCheckIn);
-                listItem.File.Publish(string.Empty);
+                if (masterPageGallery.EnableModeration)
+                {
+                    listItem.File.Publish(string.Empty);
+                }
             }
             web.Context.Load(listItem);
             web.Context.ExecuteQueryRetry();
@@ -789,7 +788,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetMasterUrl, CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritMaster] = "False";
             web.MasterUrl = masterPageServerRelativeUrl;
             web.Update();
@@ -817,7 +816,7 @@ namespace Microsoft.SharePoint.Client
 
                         if (resetSubsitesToInherit || inheritTheme)
                         {
-                            LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
+                            Log.Debug(Constants.LOGGING_SOURCE, "Inherited: " + CoreResources.BrandingExtension_SetMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritMaster] = "True";
                             childWeb.MasterUrl = masterPageServerRelativeUrl;
                             childWeb.Update();
@@ -845,7 +844,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.SetCustomMasterUrl, CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, web.ServerRelativeUrl);
             web.AllProperties[InheritMaster] = "False";
             web.CustomMasterUrl = masterPageServerRelativeUrl;
             web.Update();
@@ -872,7 +871,7 @@ namespace Microsoft.SharePoint.Client
 
                         if (resetSubsitesToInherit || inheritTheme)
                         {
-                            LoggingUtility.Internal.TraceVerbose("Inherited: " + CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
+                            Log.Debug(Constants.LOGGING_SOURCE, "Inherited: " + CoreResources.BrandingExtension_SetCustomMasterUrl, masterPageServerRelativeUrl, childWeb.ServerRelativeUrl);
                             childWeb.AllProperties[InheritMaster] = "True";
                             childWeb.CustomMasterUrl = masterPageServerRelativeUrl;
                             childWeb.Update();
