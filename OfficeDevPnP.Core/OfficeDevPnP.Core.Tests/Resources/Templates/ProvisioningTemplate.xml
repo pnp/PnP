@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <SitePolicy>HBI</SitePolicy>
-  <PropertyBags>
-    <PropertyBag Key="KEY1" value="value1" />
-    <PropertyBag Key="KEY2" value ="value2" />
-  </PropertyBags>
+  <PropertyBagEntries>
+    <PropertyBagEntry Key="KEY1" Value ="value1" />
+    <PropertyBagEntry Key="KEY2" Value ="value2" />
+  </PropertyBagEntries>
   <Security>
     <AdditionalAdministrators>
       <User Name="user@contoso.com"/>
