@@ -267,13 +267,22 @@
     <Compile Include="Framework\Provisioning\File.cs" />
     <Compile Include="Framework\Provisioning\ListInstance.cs" />
     <Compile Include="Framework\Provisioning\Member.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />
     <Compile Include="Framework\Provisioning\Owner.cs" />
     <Compile Include="Framework\Provisioning\PropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\Provider.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
+    <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
+    <Compile Include="Framework\Provisioning\Providers\XMLTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\ProvisioningTemplate.cs" />
     <Compile Include="Framework\Provisioning\SiteFeature.cs" />
     <Compile Include="Framework\Provisioning\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\User.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
     <Compile Include="Framework\Provisioning\Vistor.cs" />
     <Compile Include="Framework\Provisioning\WebFeature.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
@@ -390,6 +399,9 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>OfficeDevPnP_Core_UPAWebService_UserProfileService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Framework\Provisioning\Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
