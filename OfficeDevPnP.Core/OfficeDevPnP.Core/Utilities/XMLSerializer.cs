@@ -20,11 +20,7 @@ namespace OfficeDevPnP.Core.Utilities
         {
            
         }
-        
-        private XMLSerializer()
-        {
-
-        }
+   
         #endregion
 
         #region Private Methods
