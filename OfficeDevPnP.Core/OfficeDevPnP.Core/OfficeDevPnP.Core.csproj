@@ -256,6 +256,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
     <Compile Include="Framework\Provisioning\Model\AdditionalAdministrator.cs" />
     <Compile Include="Framework\Provisioning\Model\BrandingPackage.cs" />
     <Compile Include="Framework\Provisioning\Model\ContentType.cs" />
@@ -276,6 +279,12 @@
     <Compile Include="Framework\Provisioning\Model\User.cs" />
     <Compile Include="Framework\Provisioning\Model\Vistor.cs" />
     <Compile Include="Framework\Provisioning\Model\WebFeature.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
+    <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
+    <Compile Include="Framework\Provisioning\Providers\XMLTemplateProvider.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />

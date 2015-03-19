@@ -17,6 +17,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region private members
         private List<Field> _siteFields = new List<Field>();
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
+        private List<ListInstance> _lists = new List<ListInstance>();
+        private BrandingPackage _composedLook = new BrandingPackage();
         #endregion
 
         #region Properties
@@ -62,6 +64,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._siteFields = value; }
         }
 
+
+        public List<ListInstance> Lists
+        {
+            get { return this._lists; }
+            set { this._lists = value; }
+        }
+
+        public BrandingPackage ComposedLook
+        {
+            get { return this._composedLook; }
+            set { this._composedLook = value; }
+        }
 
         #endregion
     }
