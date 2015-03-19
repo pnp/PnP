@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace OfficeDevPnP.Core.Framework.Provisioning
+namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object for Extensiblity Call out

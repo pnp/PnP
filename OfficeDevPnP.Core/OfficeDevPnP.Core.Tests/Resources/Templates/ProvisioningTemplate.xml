@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+<SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1.0" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <SitePolicy>HBI</SitePolicy>
   <PropertyBagEntries>
     <PropertyBagEntry Key="KEY1" Value ="value1" />

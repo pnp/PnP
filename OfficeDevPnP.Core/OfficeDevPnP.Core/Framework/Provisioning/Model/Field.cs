@@ -10,7 +10,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 
 
-namespace OfficeDevPnP.Core.Framework.Provisioning
+namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Represents a Field XML

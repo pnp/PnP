@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace OfficeDevPnP.Core.Framework.Provisioning
+namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     public class File
     {
