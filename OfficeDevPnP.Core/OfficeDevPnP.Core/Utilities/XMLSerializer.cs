@@ -9,16 +9,21 @@ using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Utilities
 {
-    public static  class XMLUtility
+    public static class XMLSerializer
     {
         #region Private Instance Members
-        private static readonly Dictionary<Type, XmlSerializer> _XmlFormatter;
+        private static readonly Dictionary<Type, XmlSerializer> _XmlFormatter = new Dictionary<Type, XmlSerializer>();
         #endregion
 
         #region Constructors
-        static XMLUtility()
+        static XMLSerializer()
         {
-            _XmlFormatter = new Dictionary<Type, XmlSerializer>();
+           
+        }
+        
+        private XMLSerializer()
+        {
+
         }
         #endregion
 
@@ -35,7 +40,6 @@ namespace OfficeDevPnP.Core.Utilities
         #endregion
 
         #region Public Members
-
         /// <summary>
         /// Deserialize an XDocuemnt to instance of an object T
         /// </summary>
@@ -50,7 +54,6 @@ namespace OfficeDevPnP.Core.Utilities
                 return (T)_xmlSerializer.Deserialize(_reader);
             }
         }
-
 
         /// <summary>
         /// Serializes an object instance to an XML reresented string. 
