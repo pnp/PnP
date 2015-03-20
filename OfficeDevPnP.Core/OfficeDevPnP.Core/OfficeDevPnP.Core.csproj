@@ -274,11 +274,10 @@
     <Compile Include="Framework\Provisioning\Model\PropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\Model\Provider.cs" />
     <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
-    <Compile Include="Framework\Provisioning\Model\SiteFeature.cs" />
+    <Compile Include="Framework\Provisioning\Model\Feature.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
     <Compile Include="Framework\Provisioning\Model\Vistor.cs" />
-    <Compile Include="Framework\Provisioning\Model\WebFeature.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />

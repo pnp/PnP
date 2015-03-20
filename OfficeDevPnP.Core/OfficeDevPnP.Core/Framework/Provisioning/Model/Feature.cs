@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class SiteFeature
+    public class Feature
     {     
         [XmlAttribute]
         public string ID { get; set; }
