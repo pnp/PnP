@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Management;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -12,70 +14,72 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
+            var context = web.Context as ClientContext;
+
             var webFeatures = template.Features.WebFeatures;
             var siteFeatures = template.Features.SiteFeatures;
-            ProvisionWebFeaturesImplementation(web, webFeatures);
-            ProvisionSiteFeaturesImplementation(web, siteFeatures);
-
+            ProvisionFeaturesImplementation(web, webFeatures);
+            ProvisionFeaturesImplementation(context.Site, siteFeatures);
         }
 
-        private static void ProvisionWebFeaturesImplementation(Web container, List<WebFeature> webFeatures)
+        private static void ProvisionFeaturesImplementation(object parent, List<OfficeDevPnP.Core.Framework.Provisioning.Model.Feature> webFeatures)
         {
+            Web web = null;
+            Site site = null;
+            if (parent is Site)
+            {
+                site = parent as Site;
+            }
+            else
+            {
+                web = parent as Web;
+            }
+
             if (webFeatures != null)
             {
                 foreach (var feature in webFeatures)
                 {
-                    var featureId = Guid.Empty;
-
-                    if (Guid.TryParse(feature.ID, out featureId))
+                    if (!feature.Deactivate)
                     {
-                        if (!feature.Deactivate)
+                        if (site != null)
                         {
-                            if (!container.IsFeatureActive(featureId))
+                            if (!site.IsFeatureActive(feature.ID))
                             {
-                                container.ActivateFeature(featureId);
+                                site.ActivateFeature(feature.ID);
                             }
                         }
                         else
                         {
-                            if (container.IsFeatureActive(featureId))
+                            if (!web.IsFeatureActive(feature.ID))
                             {
-                                container.DeactivateFeature(featureId);
+                                web.ActivateFeature(feature.ID);
                             }
                         }
+
                     }
-                }
-            }
-        }
-
-        private static void ProvisionSiteFeaturesImplementation(Web container, List<SiteFeature> features)
-        {
-            if (features != null)
-            {
-                foreach (var feature in features)
-                {
-                    var featureId = Guid.Empty;
-
-                    if (Guid.TryParse(feature.ID, out featureId))
+                    else
                     {
-                        if (!feature.Deactivate)
+                        if (site != null)
                         {
-                            if (!container.IsFeatureActive(featureId))
+                            if (site.IsFeatureActive(feature.ID))
                             {
-                                container.ActivateFeature(featureId);
+                                site.DeactivateFeature(feature.ID);
+
                             }
                         }
                         else
                         {
-                            if (container.IsFeatureActive(featureId))
+                            if (web.IsFeatureActive(feature.ID))
                             {
-                                container.DeactivateFeature(featureId);
+                                web.DeactivateFeature(feature.ID);
                             }
                         }
                     }
+
                 }
             }
         }
+
 
         public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
@@ -90,11 +94,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var features = new Features();
             foreach (var feature in webFeatures)
             {
-                features.WebFeatures.Add(new WebFeature() { Deactivate = false, ID = feature.DefinitionId.ToString() });
+                features.WebFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
             }
             foreach (var feature in siteFeatures)
             {
-                features.SiteFeatures.Add(new SiteFeature() { Deactivate = false, ID = feature.DefinitionId.ToString() });
+                features.SiteFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
             }
 
             template.Features = features;
