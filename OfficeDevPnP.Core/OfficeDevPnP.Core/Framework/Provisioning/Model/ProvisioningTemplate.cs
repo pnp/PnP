@@ -21,6 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private BrandingPackage _composedLook = new BrandingPackage();
         private Features _features = new Features();
         private CustomActions _customActions = new CustomActions();
+        private List<File> _files = new List<File>();
             #endregion
 
         #region Properties
@@ -83,6 +84,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._customActions; }
             set { this._customActions = value; }
+        }
+
+        public List<File> Files
+        {
+            get { return this._files; }
+            set { this._files = value; }
         }
 
         public BrandingPackage ComposedLook

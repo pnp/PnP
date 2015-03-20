@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         
         [XmlAttribute]
         public string TargetFolder { get; set; }
-        
 
+        public bool Overwrite { get; set; }
     }
 }
