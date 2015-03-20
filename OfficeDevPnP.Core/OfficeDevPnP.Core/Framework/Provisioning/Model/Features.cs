@@ -25,7 +25,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return this._siteFeatures;
             }
-            set { this._siteFeatures = value; }
+            private set { this._siteFeatures = value; }
         }
 
         [XmlArray(ElementName = "WebFeatures")]
@@ -36,7 +36,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return this._webFeatures;
             }
-            set { this._webFeatures = value; }
+            private set { this._webFeatures = value; }
         }
 
         #endregion

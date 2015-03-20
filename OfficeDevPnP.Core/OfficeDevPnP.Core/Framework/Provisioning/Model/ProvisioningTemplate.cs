@@ -15,14 +15,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class ProvisioningTemplate
     {
         #region private members
+        [NonSerializedAttribute]
         private List<Field> _siteFields = new List<Field>();
+        [NonSerialized]
+        private List<ContentType> _contentTypes = new List<ContentType>();
+        [NonSerializedAttribute]
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
+        [NonSerializedAttribute]
         private List<ListInstance> _lists = new List<ListInstance>();
+        [NonSerializedAttribute]
         private BrandingPackage _composedLook = new BrandingPackage();
+        [NonSerializedAttribute]
         private Features _features = new Features();
+        [NonSerializedAttribute]
         private CustomActions _customActions = new CustomActions();
+        [NonSerializedAttribute]
         private List<File> _files = new List<File>();
-            #endregion
+        #endregion
 
         #region Properties
         /// <summary>
@@ -48,7 +57,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<PropertyBagEntry> PropertyBagEntries
         {
             get { return this._propertyBags; }
-            set { this._propertyBags = value; }
+            private set { this._propertyBags = value; }
         }
         
         /// <summary>
@@ -65,21 +74,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<Field> SiteFields
         {
             get { return this._siteFields; }
-            set { this._siteFields = value; }
+            private set { this._siteFields = value; }
         }
 
+        public List<ContentType> ContentTypes
+        {
+            get{ return this._contentTypes;}
+            private set { this._contentTypes = value;}
+        }
+
+        [XmlArray(ElementName="Lists")]
+        [XmlArrayItem("ListInstance", typeof(ListInstance))]
         public List<ListInstance> Lists
         {
             get { return this._lists; }
-            set { this._lists = value; }
+            private set { this._lists = value; }
         }
 
+        [XmlElement]
         public Features Features
         {
             get { return this._features; }
             set { this._features = value; }
         }
 
+        [XmlElement]
         public CustomActions CustomActions
         {
             get { return this._customActions; }
@@ -89,13 +108,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<File> Files
         {
             get { return this._files; }
-            set { this._files = value; }
+            private set { this._files = value; }
         }
 
         public BrandingPackage ComposedLook
         {
             get { return this._composedLook; }
             set { this._composedLook = value; }
+        }
+
+        public List<Provider> Providers
+        {
+            get;
+            set;
         }
 
         #endregion

@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return this._siteCustomActions;
             }
-            set { this._siteCustomActions = value; }
+            private set { this._siteCustomActions = value; }
         }
 
         [XmlArray(ElementName = "WebCustomActions")]
@@ -39,7 +39,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return this._webCustomActions;
             }
-            set { this._webCustomActions = value; }
+            private set { this._webCustomActions = value; }
         }
 
         #endregion
