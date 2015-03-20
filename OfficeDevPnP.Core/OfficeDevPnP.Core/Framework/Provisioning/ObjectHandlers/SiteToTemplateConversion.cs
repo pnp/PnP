@@ -24,11 +24,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Get Lists 
             template = new ObjectListInstance().CreateEntities(web, template);
             // Get custom actions
-
+            template = new ObjectCustomActions().CreateEntities(web, template);
             // Get features
-
+            template = new ObjectFeatures().CreateEntities(web, template);
             // Handle composite look
             template = new ObjectComposedLook().CreateEntities(web, template);
+            // Handle files
+            template = new ObjectFiles().CreateEntities(web, template);
 
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
@@ -45,8 +47,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
 
+            // Custom actions
+            new ObjectCustomActions().ProvisionObjects(web, template);
+
+            // Features
+            new ObjectCustomActions().ProvisionObjects(web, template);
+
             // Composite look 
             new ObjectComposedLook().ProvisionObjects(web, template);
+
+            // Files
+            new ObjectFiles().ProvisionObjects(web, template);
         }
     }
 }

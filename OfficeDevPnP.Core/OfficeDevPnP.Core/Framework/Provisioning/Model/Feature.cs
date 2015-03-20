@@ -9,8 +9,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     public class Feature
     {     
-        [XmlAttribute]
-        public string ID { get; set; }
+        
+        public Guid ID { get; set; }
+
         [XmlAttribute]
         public bool Deactivate { get; set; }
     }
