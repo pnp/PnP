@@ -146,6 +146,64 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
             Assert.AreEqual(_expectedUser2, _u2);
         }
 
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetFeatures()
+        {
+            var _pt = this.GetProvisioningTemplate();
+            var _sfs = _pt.Features.SiteFeatures;
+
+            var _expectedSiteFeaturesCount = 3;
+            var _expectedWebFeaturesCount = 4;
+
+            Assert.AreEqual(_expectedSiteFeaturesCount, _pt.Features.SiteFeatures.Count);
+            Assert.AreEqual(_expectedWebFeaturesCount, _pt.Features.WebFeatures.Count);
+
+            foreach(var _f in _sfs)
+            {
+                Assert.IsTrue(_f.ID != Guid.Empty);
+            }
+
+            var f = new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature();
+            _pt.Features.SiteFeatures.Add(f);
+
+            
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetCustomActions()
+        {
+            var _pt = this.GetProvisioningTemplate();
+            var _csa = _pt.CustomActions.SiteCustomActions.FirstOrDefault();
+            Assert.IsNotNull(_csa.Rights);
+      
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void IsFieldObjectSerializeCorrectly()
+        {
+            var _ptExpected = this.GetProvisioningTemplate();
+            var _expectedField =  _ptExpected.SiteFields[0].SchemaXml;
+            var _xdoc = XMLSerializer.Serialize(_ptExpected);
+            var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
+            var _actualField = _ptActual.SiteFields[0].SchemaXml;
+            Assert.AreEqual(_expectedField, _actualField);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void IsContentObjectSeriliazedCorrectly()
+        {
+            var _ptExpected = this.GetProvisioningTemplate();
+            var _expectedContentType = _ptExpected.ContentTypes[0].SchemaXml;
+            var _xdoc = XMLSerializer.Serialize(_ptExpected);
+            var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
+            var _actualContentType = _ptActual.ContentTypes[0].SchemaXml;
+            Assert.AreEqual(_expectedContentType, _actualContentType);
+        }
+     
         #region Test Support
         /// <summary>
         /// Test Support to return ProvisionTemplate 

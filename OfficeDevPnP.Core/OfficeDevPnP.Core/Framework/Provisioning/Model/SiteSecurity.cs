@@ -14,10 +14,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public partial class SiteSecurity
     {
         #region Private
-        private List<AdditionalAdministrator> _additionalAdministrators;
-        private List<Owner> _additionalOwners;
-        private List<Member> _additionalMembers;
-        private List<Vistor> _additionalVisitors;
+        private List<AdditionalAdministrator> _additionalAdministrators = new List<AdditionalAdministrator>();
+        private List<Owner> _additionalOwners = new List<Owner>();
+        private List<Member> _additionalMembers = new List<Member>();
+        private List<Vistor> _additionalVisitors = new List<Vistor>();
         #endregion
 
         #region Properties
@@ -29,7 +29,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return _additionalAdministrators ?? (_additionalAdministrators = new List<AdditionalAdministrator>());
             }
-            set { _additionalAdministrators = value; }
+            private set { _additionalAdministrators = value; }
         }
 
         [XmlArray(ElementName = "AdditionalOwners")]
@@ -38,9 +38,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get
             {
-                return _additionalOwners ?? (_additionalOwners = new List<Owner>());
+                return _additionalOwners;
             }
-            set { _additionalOwners = value; }
+            private set { _additionalOwners = value; }
         }
 
         [XmlArray(ElementName = "AdditionalMembers")]
@@ -49,9 +49,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get
             {
-                return _additionalMembers ?? (_additionalMembers = new List<Member>());
+                return _additionalMembers;
             }
-            set { _additionalMembers = value; }
+            private set { _additionalMembers = value; }
         }
 
         [XmlArray(ElementName = "AdditionalVistors")]
@@ -60,9 +60,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get
             {
-                return _additionalVisitors ?? (_additionalVisitors = new List<Vistor>());
+                return _additionalVisitors;
             }
-            set { _additionalVisitors = value; }
+            private set { _additionalVisitors = value; }
         }
         #endregion
 
