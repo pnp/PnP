@@ -4,6 +4,8 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using System.Xml.Linq;
 using OfficeDevPnP.Core.Utilities;
 using System.IO;
+using System.Linq;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
 {
@@ -153,6 +155,17 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
         {
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
             return XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void GetRemoteTemplateTest()
+        {
+            using (var ctx = TestCommon.CreateClientContext())
+            {
+                var template = ctx.Web.GetProvisioningTemplate();
+                Assert.IsTrue(template.Lists.Any());
+            }
         }
         #endregion
     }
