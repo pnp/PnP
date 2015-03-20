@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    [XmlRoot(ElementName = "CustomActions")]
     public class CustomActions
     {
         private List<CustomAction> _siteCustomActions;
@@ -20,8 +19,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
 
         #region Properties
-        [XmlArray(ElementName = "SiteCustomActions")]
-        [XmlArrayItem("CustomAction", typeof(CustomAction))]
         public List<CustomAction> SiteCustomActions
         {
             get
@@ -31,8 +28,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._siteCustomActions = value; }
         }
 
-        [XmlArray(ElementName = "WebCustomActions")]
-        [XmlArrayItem("CustomAction", typeof(CustomAction))]
         public List<CustomAction> WebCustomActions
         {
             get

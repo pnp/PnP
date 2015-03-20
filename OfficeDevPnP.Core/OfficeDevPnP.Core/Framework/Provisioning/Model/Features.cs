@@ -10,15 +10,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that is used in the Site Template for OOB Features
     /// </summary>
-    [XmlRoot(ElementName = "Features")]
     public partial class Features
     {
         private List<Feature> _siteFeatures = new List<Feature>();
         private List<Feature> _webFeatures = new List<Feature>();
 
         #region Properties
-        [XmlArray(ElementName = "SiteFeatures")]
-        [XmlArrayItem("Feature", typeof(Feature))]
         public List<Feature> SiteFeatures
         {
             get
@@ -28,8 +25,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._siteFeatures = value; }
         }
 
-        [XmlArray(ElementName = "WebFeatures")]
-        [XmlArrayItem("Feature", typeof(Feature))]
         public List<Feature> WebFeatures
         {
             get

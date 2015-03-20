@@ -10,7 +10,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that defines a Composed Look in the Site Template
     /// </summary>
-    public partial class BrandingPackage
+    public partial class ComposedLook
     {
         [XmlAttribute]
         public string Name { get; set; }
