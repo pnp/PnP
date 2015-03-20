@@ -25,8 +25,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Title { get; set; }
         [XmlAttribute]
         public int Sequence { get; set; }
-        [XmlAttribute]
+
         public BasePermissions Rights { get; set; }   
+
         [XmlAttribute]
         public string Url { get; set; }
         [XmlAttribute]
