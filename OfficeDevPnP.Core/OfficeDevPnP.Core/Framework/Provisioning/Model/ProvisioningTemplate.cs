@@ -51,7 +51,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
         
         /// <summary>
-        /// Gets or Sets the Site Security
+        /// Security Groups Members for the Template
         /// </summary>
         public SiteSecurity Security { get; set; }
 
@@ -64,6 +64,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._siteFields = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Content Types to create
+        /// </summary>
         public List<ContentType> ContentTypes
         {
             get{ return this._contentTypes;}
@@ -76,30 +79,45 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._lists = value; }
         }
 
+        /// <summary>
+        /// Gets or sets a list of features to activate or deactivate
+        /// </summary>
         public Features Features
         {
             get { return this._features; }
             set { this._features = value; }
         }
 
+        /// <summary>
+        /// Gets or sets CustomActions for the template
+        /// </summary>
         public CustomActions CustomActions
         {
             get { return this._customActions; }
             set { this._customActions = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of files for the template
+        /// </summary>
         public List<File> Files
         {
             get { return this._files; }
             private set { this._files = value; }
         }
 
+        /// <summary>
+        /// Gets or Sets the composed look of the template
+        /// </summary>
         public ComposedLook ComposedLook
         {
             get { return this._composedLook; }
             set { this._composedLook = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Providers that are used during the extensibility pipeline
+        /// </summary>
         public List<Provider> Providers
         {
             get { return this._providers;  }
