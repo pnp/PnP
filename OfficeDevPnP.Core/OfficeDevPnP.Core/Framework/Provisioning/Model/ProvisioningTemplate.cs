@@ -19,7 +19,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
         private List<ListInstance> _lists = new List<ListInstance>();
         private BrandingPackage _composedLook = new BrandingPackage();
-        #endregion
+        private Features _features = new Features();
+        private CustomActions _customActions = new CustomActions();
+            #endregion
 
         #region Properties
         /// <summary>
@@ -69,6 +71,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._lists; }
             set { this._lists = value; }
+        }
+
+        public Features Features
+        {
+            get { return this._features; }
+            set { this._features = value; }
+        }
+
+        public CustomActions CustomActions
+        {
+            get { return this._customActions; }
+            set { this._customActions = value; }
         }
 
         public BrandingPackage ComposedLook

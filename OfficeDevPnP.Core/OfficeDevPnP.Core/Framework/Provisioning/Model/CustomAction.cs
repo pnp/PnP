@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -25,7 +26,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         [XmlAttribute]
         public int Sequence { get; set; }
         [XmlAttribute]
-        public int Rights { get; set; }   
+        public BasePermissions Rights { get; set; }   
         [XmlAttribute]
         public string Url { get; set; }
         [XmlAttribute]
