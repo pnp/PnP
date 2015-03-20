@@ -16,22 +16,22 @@ namespace Core.ExternalSharing
         {
            
             /* Prompt for you Admin Tenant*/
-            Console.WriteLine("Enter your Tenant Admin URL for your Office 365 subscription:");
+            Console.WriteLine("Enter your Office 365 admin center URL:");
             string tenantAdminURL = GetSite();
 
             /* End Program if no tenantAdmin */
             if (string.IsNullOrEmpty(tenantAdminURL))
             {
-                Console.WriteLine("Hmm, i tried to work on it but you didn't supply your admin tenant url:");
+                Console.WriteLine("Hmm, i tried to work on it but you didn't supply your Office 365 admin center URL:");
                 return;
             }
                
             // Request Office365 site from the user
-            Console.WriteLine("Enter your Office 365 Site Collection URL:");
+            Console.WriteLine("Enter your Office 365 site collection URL that you want to share:");
             string siteUrl = GetSite();
 
             /* Prompt for Credentials */
-            Console.WriteLine("Enter Credentials for your Office 365 Site Collection {0}:", siteUrl);
+            Console.WriteLine("Enter credentials for your Office 365 site collection {0}:", siteUrl);
 
             string userName = GetUserName();
             SecureString pwd = GetPassword();
@@ -39,7 +39,7 @@ namespace Core.ExternalSharing
             /* End Program if no Credentials */
             if (string.IsNullOrEmpty(userName) || (pwd == null))
             {
-                Console.WriteLine("Hmm, i tried to work on it but you didn't supply your credentials:");
+                Console.WriteLine("Hmm, I tried to work on it but you didn't supply your credentials:");
                 return;
             }
 
@@ -55,11 +55,11 @@ namespace Core.ExternalSharing
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Opps, Mistakes can happen to anyone. An Error occured : {0}", ex.Message);
+                Console.WriteLine("Oops, mistakes can happen to anyone. An error occured: {0}", ex.Message);
                
             }
 
-            Console.WriteLine("Hit Enter to exit.");
+            Console.WriteLine("Press Enter to exit.");
             Console.Read();
 
         
@@ -88,7 +88,7 @@ namespace Core.ExternalSharing
                 case "3":
                     return SharingCapabilities.ExternalUserSharingOnly;               
                 default:
-                    throw new Exception("hmmm, I did not understand your input.");
+                    throw new Exception("Hmm, I did not understand your selection.");
             }
             
         }
@@ -112,7 +112,7 @@ namespace Core.ExternalSharing
 
             if(_tenantSharing == SharingCapabilities.Disabled)
             {
-                Console.WriteLine("Sharing is currently disabled in your tenant! I am unable to work on it.");
+                Console.WriteLine("Sharing is currently disabled in your Office 365 subscription. I am unable to work on it.");
             }
             else
             {  
@@ -130,7 +130,7 @@ namespace Core.ExternalSharing
                     }
                     else
                     {
-                        Console.WriteLine("ExternalUserAndGuestSharing is currently disabled in your tenant! I am unable to work on it.");
+                        Console.WriteLine("ExternalUserAndGuestSharing is currently disabled in your Office 365 subscription. I am unable to work on it.");
                     }
                 }
             }

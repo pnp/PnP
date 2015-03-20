@@ -1,10 +1,11 @@
 #New-SPOList
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
 Creates a new list
 ##Syntax
-    New-SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-QuickLaunchOptions [<QuickLaunchOptions>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+New-SPOList -Title [<String>] -Template [<ListTemplateType>] [-Url [<String>]] [-EnableVersioning [<SwitchParameter>]] [-EnableContentTypes [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters
@@ -12,7 +13,6 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 EnableContentTypes|SwitchParameter|False|
 EnableVersioning|SwitchParameter|False|
-QuickLaunchOptions|QuickLaunchOptions|False|Obsolete
 Template|ListTemplateType|True|The type of list to create.
 Title|String|True|
 Url|String|False|If set, will override the url of the list.

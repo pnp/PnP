@@ -109,11 +109,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
         /// <param name="tenant">Tenant object to operate against</param>
         private void FillSitesViaTenantAPIAndSearch(Tenant tenant)
         {
-            // Use tenant API to get the regular sites
-            var props = tenant.GetSiteProperties(0, false);
-            tenant.Context.Load(props);
-            tenant.Context.ExecuteQueryRetry();
 
+            // Use tenant API to get the regular sites
+            var props = tenant.GetSiteCollections(includeDetail: false);
+            
             if (props.Count == 0)
             {
                 return;
@@ -127,7 +126,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
             }
 
             foreach (var prop in props)
-            {        
+            {
                 this.sites.Add(prop.Url.ToLower());
             }
 

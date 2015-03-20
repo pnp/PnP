@@ -170,6 +170,7 @@
       <HintPath>..\..\Scenarios\Core.Services.Authenticate\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -255,6 +256,39 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
+    <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
+    <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibility.cs" />
+    <Compile Include="Framework\Provisioning\Model\AdditionalAdministrator.cs" />
+    <Compile Include="Framework\Provisioning\Model\ComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\Model\ContentType.cs" />
+    <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />
+    <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
+    <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
+    <Compile Include="Framework\Provisioning\Model\Features.cs" />
+    <Compile Include="Framework\Provisioning\Model\Field.cs" />
+    <Compile Include="Framework\Provisioning\Model\File.cs" />
+    <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
+    <Compile Include="Framework\Provisioning\Model\Member.cs" />
+    <Compile Include="Framework\Provisioning\Model\Owner.cs" />
+    <Compile Include="Framework\Provisioning\Model\PropertyBagEntry.cs" />
+    <Compile Include="Framework\Provisioning\Model\Provider.cs" />
+    <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
+    <Compile Include="Framework\Provisioning\Model\Feature.cs" />
+    <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
+    <Compile Include="Framework\Provisioning\Model\User.cs" />
+    <Compile Include="Framework\Provisioning\Model\Vistor.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFeatures.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
+    <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
+    <Compile Include="Framework\Provisioning\Providers\XMLTemplateProvider.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
@@ -271,6 +305,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\CredentialManager.cs" />
+    <Compile Include="Utilities\XMLSerializer.cs" />
     <Compile Include="Web References\UPAWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -369,6 +404,7 @@
       <CachedSettingsPropName>OfficeDevPnP_Core_UPAWebService_UserProfileService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <TFSBaseBuildYear>2014</TFSBaseBuildYear>

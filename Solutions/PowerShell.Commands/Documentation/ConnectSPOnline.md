@@ -1,14 +1,16 @@
 #Connect-SPOnline
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
 Connects to a SharePoint site and creates an in-memory context
 ##Syntax
-    Connect-SPOnline [-Credentials [<CredentialPipeBind>]] [-CurrentCredentials [<SwitchParameter>]] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
-
+```powershell
+Connect-SPOnline [-Credentials [<CredentialPipeBind>]] [-CurrentCredentials [<SwitchParameter>]] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
+```
 &nbsp;
 
-    Connect-SPOnline [-Realm [<String>]] -AppId [<String>] -AppSecret [<String>] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
-
+```powershell
+Connect-SPOnline [-Realm [<String>]] -AppId [<String>] -AppSecret [<String>] [-MinimalHealthScore [<Int32>]] [-RetryCount [<Int32>]] [-RetryWait [<Int32>]] [-RequestTimeout [<Int32>]] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url [<String>]
+```
 &nbsp;
 
 ##Detailed Description
@@ -31,16 +33,16 @@ Url|String|True|The Url of the site collection to connect to.
 ##Examples
 
 ###Example 1
+    PS:> Connect-SPOnline -Url https://yourtenant.sharepoint.com -Credentials (Get-Credential)
+This will prompt for username and password and creates a context for the other PowerShell commands to use.
+ 
+
+###Example 2
     PS:> Connect-SPOnline -Url http://yourlocalserver -CurrentCredentials
 This will use the current user credentials and connects to the server specified by the Url parameter.
     
 
-###Example 2
+###Example 3
     PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'
 This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
     
-
-###Example 3
-    PS:> Connect-SPOnline -Url https://yourtenant.sharepoint.com -Credentials (Get-Credential)
-This will prompt for username and password and creates a context for the other PowerShell commands to use.
- 

@@ -1814,6 +1814,60 @@ namespace Microsoft.SharePoint.Client
                 return -1;
             }
         }
+
+        /// <summary>
+        /// Sets the default value for a managed metadata field
+        /// </summary>
+        /// <param name="field">Field to be wired up</param>
+        /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
+        /// <param name="defaultValue">default value for the field</param>
+        public static void SetTaxonomyFieldDefaultValue(this Field field, TaxonomyItem taxonomyItem, string defaultValue)
+        {
+            if (string.IsNullOrEmpty(defaultValue))
+            {
+                throw new ArgumentException("defaultValue");
+            }
+
+            var clientContext = field.Context as ClientContext;
+
+            taxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
+
+            var anchorTerm = taxonomyItem as Term;
+
+            if (anchorTerm != default(Term) && !anchorTerm.IsPropertyAvailable("TermSet"))
+            {
+                clientContext.Load(anchorTerm.TermSet);
+                clientContext.ExecuteQueryRetry();
+            }
+
+            var termSet = taxonomyItem is Term ? anchorTerm.TermSet : taxonomyItem as TermSet;
+
+            if (termSet == default(TermSet))
+            {
+                throw new ArgumentException("Bound TaxonomyItem must be either a TermSet or a Term");
+            }
+
+            // set the SSP ID and Term Set ID on the taxonomy field
+            var taxField = clientContext.CastTo<TaxonomyField>(field);
+
+
+            if (!termSet.IsPropertyAvailable("Terms"))
+            {
+                clientContext.Load(termSet.Terms);
+                clientContext.ExecuteQueryRetry();
+            }
+
+            Term defaultValTerm = termSet.Terms.GetByName(defaultValue);
+            if (defaultValTerm != null)
+            {
+                clientContext.Load(defaultValTerm);
+                clientContext.ExecuteQueryRetry();
+
+                taxField.DefaultValue = string.Format("-1;#{0}{1}{2}", defaultValTerm.Name, TaxonomyGuidLabelDelimiter, defaultValTerm.Id);
+                taxField.Update();
+                clientContext.ExecuteQueryRetry();
+            }
+        }
         #endregion
     }
 }

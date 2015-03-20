@@ -1,10 +1,11 @@
 #Get-SPOWorkflowDefinition
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-03-12*
 
-
+Returns a workflow definition
 ##Syntax
-    Get-SPOWorkflowDefinition [-PublishedOnly [<SwitchParameter>]] [-Web [<WebPipeBind>]] [-Name [<String>]]
-
+```powershell
+Get-SPOWorkflowDefinition [-PublishedOnly [<SwitchParameter>]] [-Web [<WebPipeBind>]] [-Name [<String>]]
+```
 &nbsp;
 
 ##Parameters

@@ -7,7 +7,7 @@ using OfficeDevPnP.PowerShell.Commands.Enums;
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
     [Cmdlet("Enable", "SPOFeature")]
-    [CmdletHelp("Enables a feature")]
+    [CmdletHelp("Enables a feature", Category = "Features")]
     [CmdletExample(Code = "PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe")]
     [CmdletExample(Code = "PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force")]
     [CmdletExample(Code = "PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web")]
