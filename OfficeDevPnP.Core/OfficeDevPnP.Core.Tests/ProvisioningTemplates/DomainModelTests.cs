@@ -204,6 +204,15 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
             Assert.AreEqual(_expectedContentType, _actualContentType);
         }
      
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeToJSon()
+        {
+           var _pt = this.GetProvisioningTemplate();
+           var _json = JsonUtility.Serialize<ProvisioningTemplate>(_pt);
+
+        
+        }
         #region Test Support
         /// <summary>
         /// Test Support to return ProvisionTemplate 
@@ -214,6 +223,8 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
             return XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
         }
+
+
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]

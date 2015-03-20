@@ -11,26 +11,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// Domain Object for the Provisioning Template
     /// </summary>
     [XmlRoot(ElementName = "SharePointProvisioningTemplate")]
-    [Serializable]
     public class ProvisioningTemplate
     {
         #region private members
-        [NonSerializedAttribute]
+
         private List<Field> _siteFields = new List<Field>();
-        [NonSerialized]
         private List<ContentType> _contentTypes = new List<ContentType>();
-        [NonSerializedAttribute]
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
-        [NonSerializedAttribute]
         private List<ListInstance> _lists = new List<ListInstance>();
-        [NonSerializedAttribute]
         private BrandingPackage _composedLook = new BrandingPackage();
-        [NonSerializedAttribute]
         private Features _features = new Features();
-        [NonSerializedAttribute]
         private CustomActions _customActions = new CustomActions();
-        [NonSerializedAttribute]
         private List<File> _files = new List<File>();
+        private 
         #endregion
 
         #region Properties
@@ -120,7 +113,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<Provider> Providers
         {
             get;
-            set;
+            private set;
         }
 
         #endregion
