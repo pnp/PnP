@@ -49,6 +49,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._propertyBags; }
             set { this._propertyBags = value; }
         }
+        
         /// <summary>
         /// Gets or Sets the Site Security
         /// </summary>
@@ -65,7 +66,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._siteFields; }
             set { this._siteFields = value; }
         }
-
 
         public List<ListInstance> Lists
         {

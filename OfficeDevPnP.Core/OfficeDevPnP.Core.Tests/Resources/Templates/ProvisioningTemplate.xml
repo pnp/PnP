@@ -15,12 +15,12 @@
       <User Name="U_SHAREPOINT_ADMINS"/>
     </AdditionalOwners>
     <AdditionalMembers>
-      <User Name=" user@contoso.com"/>
+      <User Name="user@contoso.com"/>
       <User Name="U_SHAREPOINT_ADMINS"/>
     </AdditionalMembers>
     <AdditionalVistors>
-      <User Name=" user@contoso.com"/>
-      <User Name="U_SHAREPOINT_ADMINS "/>
+      <User Name="user@contoso.com"/>
+      <User Name="U_SHAREPOINT_ADMINS"/>
     </AdditionalVistors>
   </Security>
   <Files>

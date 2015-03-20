@@ -13,13 +13,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     [XmlRoot(ElementName = "Features")]
     public partial class Features
     {
-        private List<SiteFeature> _siteFeatures = new List<SiteFeature>();
-        private List<WebFeature> _webFeatures = new List<WebFeature>();
+        private List<Feature> _siteFeatures = new List<Feature>();
+        private List<Feature> _webFeatures = new List<Feature>();
 
         #region Properties
         [XmlArray(ElementName = "SiteFeatures")]
-        [XmlArrayItem("Feature", typeof(SiteFeature))]
-        public List<SiteFeature> SiteFeatures
+        [XmlArrayItem("Feature", typeof(Feature))]
+        public List<Feature> SiteFeatures
         {
             get
             {
@@ -29,8 +29,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
 
         [XmlArray(ElementName = "WebFeatures")]
-        [XmlArrayItem("Feature", typeof(WebFeature))]
-        public List<WebFeature> WebFeatures
+        [XmlArrayItem("Feature", typeof(Feature))]
+        public List<Feature> WebFeatures
         {
             get
             {

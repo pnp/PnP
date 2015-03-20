@@ -62,11 +62,89 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
             var _pb2 = _pt.PropertyBagEntries[1];
             Assert.AreEqual(_pb2KEY, _pb2.Key);
             Assert.AreEqual(_pb2Value, _pb2.Value);
+        }
+     
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetOwners()
+        {
+            var _pt = GetProvisioningTemplate();
+            var _expectedCount = 2;
+            var _expectedUser1 = "user@contoso.com";
+            var _expectedUser2 = "U_SHAREPOINT_ADMINS";
 
+            var _siteSecurity = _pt.Security;
+            var _users = _pt.Security.AdditionalOwners;
+            Assert.AreEqual(_expectedCount, _users.Count);
 
+            var _u1 = _pt.Security.AdditionalOwners[0].Name;
+            var _u2 = _pt.Security.AdditionalOwners[1].Name;
 
+            Assert.AreEqual(_expectedUser1, _u1);
+            Assert.AreEqual(_expectedUser2, _u2);
+        }
+        
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetAdminstrators()
+        {
+            var _pt = GetProvisioningTemplate();
+            var _expectedCount = 2;
+            var _expectedUser1 = "user@contoso.com";
+            var _expectedUser2 = "U_SHAREPOINT_ADMINS";
+
+            var _siteSecurity = _pt.Security;
+            var _users = _pt.Security.AdditionalAdministrators;
+            Assert.AreEqual(_expectedCount, _users.Count);
+
+            var _u1 = _pt.Security.AdditionalAdministrators[0].Name;
+            var _u2 = _pt.Security.AdditionalAdministrators[1].Name;
+
+            Assert.AreEqual(_expectedUser1, _u1);
+            Assert.AreEqual(_expectedUser2, _u2);
         }
 
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetMembers()
+        {
+            var _pt = GetProvisioningTemplate();
+            var _expectedCount = 2;
+            var _expectedUser1 = "user@contoso.com";
+            var _expectedUser2 = "U_SHAREPOINT_ADMINS";
+
+            var _siteSecurity = _pt.Security;
+            var _users = _pt.Security.AdditionalMembers;
+            Assert.AreEqual(_expectedCount, _users.Count);
+
+            var _u1 = _pt.Security.AdditionalMembers[0].Name;
+            var _u2 = _pt.Security.AdditionalMembers[1].Name;
+
+            Assert.AreEqual(_expectedUser1, _u1);
+            Assert.AreEqual(_expectedUser2, _u2);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanGetVistors()
+        {
+            var _pt = GetProvisioningTemplate();
+            var _expectedCount = 2;
+            var _expectedUser1 = "user@contoso.com";
+            var _expectedUser2 = "U_SHAREPOINT_ADMINS";
+
+            var _siteSecurity = _pt.Security;
+            var _additionalAdmins = _pt.Security.AdditionalVisitors;
+            Assert.AreEqual(_expectedCount, _additionalAdmins.Count);
+
+            var _u1 = _pt.Security.AdditionalVisitors[0].Name;
+            var _u2 = _pt.Security.AdditionalVisitors[1].Name;
+
+            Assert.AreEqual(_expectedUser1, _u1);
+            Assert.AreEqual(_expectedUser2, _u2);
+        }
+
+        #region Test Support
         /// <summary>
         /// Test Support to return ProvisionTemplate 
         /// </summary>
@@ -76,5 +154,6 @@ namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
             return XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
         }
+        #endregion
     }
 }
