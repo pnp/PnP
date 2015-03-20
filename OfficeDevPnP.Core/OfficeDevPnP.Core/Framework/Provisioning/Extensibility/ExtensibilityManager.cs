@@ -11,6 +11,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
     /// </summary>
     public class ExtensibilityManager
     {
-        public void ExecuteCallout();
+        public void ExecuteCallout()
+        { 
+        }
     }
 }
