@@ -15,13 +15,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class Provider
     {
         [XmlAttribute]
-        public bool Enabled
-        {
-            get;
-            set;
-        }
-
-        [XmlAttribute]
         public string Assembly
         {
             get;

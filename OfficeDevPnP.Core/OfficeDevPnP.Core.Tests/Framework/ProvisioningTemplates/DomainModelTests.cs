@@ -13,7 +13,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
     public class DomainModelTests
     {
         private string _provisioningTemplatePath = string.Empty;
-        private const string TEST_CATEGORY = "Provisioning Template Domain Model";
+        private const string TEST_CATEGORY = "Framework Provisioning Domain Model";
 
         [TestInitialize()]
         public void Intialize()
