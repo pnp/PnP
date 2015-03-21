@@ -9,10 +9,13 @@ using System.Xml.Serialization;
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Domain Object that defines a User in the Site Template
+    /// Domain Object that defines a User or group in the provisioning template
     /// </summary>
     public partial class User
     {
+        /// <summary>
+        /// The User Email Address or the Group name.
+        /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
     }
