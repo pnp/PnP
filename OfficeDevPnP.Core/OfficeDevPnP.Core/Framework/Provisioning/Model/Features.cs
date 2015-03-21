@@ -16,6 +16,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private List<Feature> _webFeatures = new List<Feature>();
 
         #region Properties
+        /// <summary>
+        /// A Collection of Features at the Site level
+        /// </summary>
         public List<Feature> SiteFeatures
         {
             get
@@ -25,6 +28,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._siteFeatures = value; }
         }
 
+        /// <summary>
+        /// A Collection of Features at the Web level
+        /// </summary>
         public List<Feature> WebFeatures
         {
             get
