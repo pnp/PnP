@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
+namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
     /// <summary>
     /// Provider for xml based configurations

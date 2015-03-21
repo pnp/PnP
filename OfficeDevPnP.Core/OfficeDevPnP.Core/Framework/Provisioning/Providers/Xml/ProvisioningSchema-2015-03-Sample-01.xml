@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SharePointProvisioningTemplate 
+  xmlns="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema"
+  ID="SAMPLE01" version="1.0">
+
+  <SitePolicy>HBI</SitePolicy>
+
+  <PropertyBagEntries>
+    <PropertyBagEntry key="Version" value="1.0" />
+    <PropertyBagEntry key="Author" value="OfficeDev/PnP" />
+  </PropertyBagEntries>
+  
+  <Security>
+    <AdditionalAdministrators>
+      <User name="SPSampleAdmin"/>
+      <User name="SPAdmins"/>
+    </AdditionalAdministrators>
+    <AdditionalOwners>
+      <User name="SPSampleOwner"/>
+      <User name="SPOwners"/>
+    </AdditionalOwners>
+    <AdditionalMembers>
+      <User name="SPSampleMember"/>
+      <User name="SPMembers"/>
+    </AdditionalMembers>
+    <AdditionalVisitors>
+      <User name="SPSampleVisitor"/>
+      <User name="SPVisitors"/>
+    </AdditionalVisitors>
+  </Security>
+
+  <SiteFields>
+    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="Base.Foundation.Columns"  MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
+  </SiteFields>
+
+  <ContentTypes>
+    <ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E"
+                 Name="General Project Document"
+                 Group="Base Foundation Content Types"
+                 Description="General Project Document Content Type"
+                 Inherits="true"
+                 Version="0">
+      <FieldRefs>
+        <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
+        <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
+        <FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Name="ProjectManager" DisplayName="Project Manager" />
+        <FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Name="DocumentDescription" DisplayName="Document Description" />
+      </FieldRefs>
+    </ContentType>
+  </ContentTypes>
+
+  <Lists>
+    <ListInstance Title = "Project Documents"
+                Description = "Project Documents are stored here"
+                DocumentTemplate = ""
+                OnQuickLaunch = "true"
+                QuickLaunchUrl = "/_layouts/15/start.aspx#/ProjectDocuments/Forms/AllItems.aspx"
+                TemplateType = "101"
+                Url = "Lists/ProjectDocuments"
+                EnableVersioning ="true"
+                RemoveDefaultContentType ="false">
+      <ContentTypeBindings>
+        <ContentTypeBinding ContentTypeID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Default="true"/>
+      </ContentTypeBindings>
+    </ListInstance>
+    <ListInstance Title = "General Documents"
+                 Description = "Project Documents are stored here"
+                 DocumentTemplate = ""
+                 OnQuickLaunch = "true"
+                 QuickLaunchUrl = "/_layouts/15/start.aspx#/GeneralDocuments/Forms/AllItems.aspx"
+                 TemplateType = "101"
+                 Url = "Lists/GeneralDocuments"
+                 EnableVersioning ="true"
+                 RemoveDefaultContentType ="true">
+      <ContentTypeBindings>
+        <ContentTypeBinding ContentTypeID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Default="true"/>
+      </ContentTypeBindings>
+    </ListInstance>
+  </Lists>
+
+</SharePointProvisioningTemplate>
