@@ -1,0 +1,127 @@
+﻿@Model ECM.DocumentSetsWeb.Models.HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Welcome @ViewBag.UserName!</h2>
+    <p class="lead"><b>DocumentSetTemplate Demo</b></p>
+    <p><a href="https://github.com/OfficeDev/PnP" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" id="panel-title">Allowed Content Type<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+            </div>
+            <div class="panel-body">
+                <table>
+                    <tr>
+                        <th>
+                            ContentType Name
+                        </th>
+                        <th>
+                            ContentType Id
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model.AllowedContentTypes)
+            {
+                        <tr id="row-@item.Name">
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.StringId
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteAllowedContentType", new { id = item.StringId })
+                            </td>
+                        </tr>
+            }
+                </table>
+                @Html.ActionLink("Delete All", "DeleteAll")
+                @Html.ActionLink("Add ContentType", "AddAllowedContentType")
+
+
+            </div>
+
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" id="panel-title">Shared Fields<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+            </div>
+            <div class="panel-body">
+                <table>
+                    <tr>
+                        <th>
+                            Field Id
+                        </th>
+                        <th>
+                            Field Name
+                        </th>
+                        <th>
+                            Field Type
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model.SharedFields)
+                    {
+                        <tr id="row-@item.Name">
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Type
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title" id="panel-title">Welcome Page Fields<a class="anchorjs-link" href="#panel-title"><span class="anchorjs-icon"></span></a></h3>
+            </div>
+            <div class="panel-body">
+                <table>
+                    <tr>
+                        <th>
+                            Field Id
+                        </th>
+                        <th>
+                            Field Name
+                        </th>
+                        <th>
+                            Field Type
+                        </th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model.WelcomeFields)
+                    {
+                        <tr id="row-@item.Name">
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Type
+                            </td>
+                            <td></td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

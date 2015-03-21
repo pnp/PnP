@@ -14,27 +14,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public partial class SiteSecurity
     {
         #region Private
-        private List<AdditionalAdministrator> _additionalAdministrators = new List<AdditionalAdministrator>();
-        private List<Owner> _additionalOwners = new List<Owner>();
-        private List<Member> _additionalMembers = new List<Member>();
-        private List<Vistor> _additionalVisitors = new List<Vistor>();
+        private List<User> _additionalAdministrators = new List<User>();
+        private List<User> _additionalOwners = new List<User>();
+        private List<User> _additionalMembers = new List<User>();
+        private List<User> _additionalVisitors = new List<User>();
         #endregion
 
         #region Properties
+        /// <summary>
+        /// A Collection of users that are associated as site collection adminsitrators
+        /// </summary>
         [XmlArray(ElementName = "AdditionalAdministrators")]
-        [XmlArrayItem("User", typeof(AdditionalAdministrator))]
-        public List<AdditionalAdministrator> AdditionalAdministrators
+        [XmlArrayItem("User", typeof(User))]
+        public List<User> AdditionalAdministrators
         {
             get
             {
-                return _additionalAdministrators ?? (_additionalAdministrators = new List<AdditionalAdministrator>());
+                return _additionalAdministrators;
             }
             private set { _additionalAdministrators = value; }
         }
 
+        /// <summary>
+        /// A Collection of users that are associated to the sites owners group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalOwners")]
-        [XmlArrayItem("User", typeof(Owner))]
-        public List<Owner> AdditionalOwners
+        [XmlArrayItem("User", typeof(User))]
+        public List<User> AdditionalOwners
         {
             get
             {
@@ -43,9 +49,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalOwners = value; }
         }
 
+        /// <summary>
+        /// A Collection of users that are associated to the sites members group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalMembers")]
-        [XmlArrayItem("User", typeof(Member))]
-        public List<Member> AdditionalMembers
+        [XmlArrayItem("User", typeof(User))]
+        public List<User> AdditionalMembers
         {
             get
             {
@@ -54,9 +63,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalMembers = value; }
         }
 
+        /// <summary>
+        /// A Collection of users taht are associated to the sites visitors group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalVistors")]
-        [XmlArrayItem("User", typeof(Vistor))]
-        public List<Vistor> AdditionalVisitors
+        [XmlArrayItem("User", typeof(User))]
+        public List<User> AdditionalVisitors
         {
             get
             {

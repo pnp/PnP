@@ -8,63 +8,66 @@ using System.Xml.Serialization;
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Domain Object for List Creation
+    /// Domain Object that specifies the properties of the new list.
     /// </summary>
     public class ListInstance
     {
+        #region Private Members
         private List<ContentTypeBinding> _ctBindings = new List<ContentTypeBinding>();
-        
+        #endregion
+
+        #region Properties
         /// <summary>
-        /// The Title of the list
+        /// Gets or sets the list title
         /// </summary>
         [XmlAttribute]
         public string Title { get; set; }
         
         /// <summary>
-        /// The Description of the list
+        /// Gets or sets the description of the list
         /// </summary>
         [XmlAttribute]
         public string Description { get; set; }
         
         /// <summary>
-        /// DocumentTemplate
+        /// Gets or sets a value that specifies the identifier of the document template for the new list.
         /// </summary>
         [XmlAttribute]
         public string DocumentTemplate { get; set; }
         
         /// <summary>
-        /// Add to QuickLaunch
+        /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
         [XmlAttribute]
         public bool OnQuickLaunch { get; set; }
         
         /// <summary>
-        /// The Template Type
+        /// Gets or sets a value that specifies the list server template of the new list.
         /// https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.listtemplatetype.aspx
         /// </summary>
         [XmlAttribute]
         public int TemplateType { get; set; }
         
         /// <summary>
-        /// The Url Of list
+        /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
         [XmlAttribute]
         public string Url { get; set; }
        
         /// <summary>
-        /// Enable Versioning
+        /// Gets or sets whether verisioning is enabled on the list
         /// </summary>
         [XmlAttribute]
         public bool EnableVersioning { get; set; }
 
         /// <summary>
-        /// Removes the Default Content Type from the library
+        /// Gets or sets whether to remove the default content type from the list
         /// </summary>
         [XmlAttribute]
         public bool RemoveDefaultContentType { get; set; }
   
         /// <summary>
-        /// Domain Object for Content Type Bindings
+        /// Gets or sets the content types to associate to the list
         /// </summary>
         [XmlArray(ElementName = "ContentTypeBindings")]
         [XmlArrayItem("ContentTypeBinding", typeof(ContentTypeBinding))]
@@ -73,5 +76,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._ctBindings; }
             private set { this._ctBindings = value;}
         }
+        #endregion
+
     }
 }

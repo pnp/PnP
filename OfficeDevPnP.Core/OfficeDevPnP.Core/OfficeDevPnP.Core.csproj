@@ -261,7 +261,6 @@
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibility.cs" />
-    <Compile Include="Framework\Provisioning\Model\AdditionalAdministrator.cs" />
     <Compile Include="Framework\Provisioning\Model\ComposedLook.cs" />
     <Compile Include="Framework\Provisioning\Model\ContentType.cs" />
     <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />
@@ -271,15 +270,12 @@
     <Compile Include="Framework\Provisioning\Model\Field.cs" />
     <Compile Include="Framework\Provisioning\Model\File.cs" />
     <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
-    <Compile Include="Framework\Provisioning\Model\Member.cs" />
-    <Compile Include="Framework\Provisioning\Model\Owner.cs" />
     <Compile Include="Framework\Provisioning\Model\PropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\Model\Provider.cs" />
     <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
     <Compile Include="Framework\Provisioning\Model\Feature.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
-    <Compile Include="Framework\Provisioning\Model\Vistor.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
