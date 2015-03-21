@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 
-namespace OfficeDevPnP.Core.Tests.ProvisioningTemplates
+namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
     [TestClass]
     public class DomainModelTests
