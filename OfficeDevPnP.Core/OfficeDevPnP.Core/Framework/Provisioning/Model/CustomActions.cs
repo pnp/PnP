@@ -13,18 +13,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class CustomActions
     {
         #region Private Members
-        private List<CustomAction> _siteCustomActions;
-        private List<CustomAction> _webCustomActions;
+        private List<CustomAction> _siteCustomActions = new List<CustomAction>();
+        private List<CustomAction> _webCustomActions = new List<CustomAction>();
         #endregion
-
-        #region Constructor
-        public CustomActions()
-        {
-            this._siteCustomActions = new List<CustomAction>();
-            this._webCustomActions = new List<CustomAction>();
-        }
-        #endregion
-
 
         #region Properties
         /// <summary>

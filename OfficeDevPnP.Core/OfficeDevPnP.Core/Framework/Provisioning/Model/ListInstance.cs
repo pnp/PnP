@@ -12,6 +12,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// </summary>
     public class ListInstance
     {
+        #region Constructors
+
+        public ListInstance() { }
+
+        public ListInstance(IEnumerable<ContentTypeBinding> contentTypeBindings)
+        {
+            if (contentTypeBindings != null)
+            {
+                this.ContentTypeBindings.AddRange(contentTypeBindings);
+            }
+        }
+
+        #endregion
+
         #region Private Members
         private List<ContentTypeBinding> _ctBindings = new List<ContentTypeBinding>();
         #endregion
@@ -71,7 +85,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         [XmlArray(ElementName = "ContentTypeBindings")]
         [XmlArrayItem("ContentTypeBinding", typeof(ContentTypeBinding))]
-        public List<ContentTypeBinding> GetContentTypeBindings
+        public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
             private set { this._ctBindings = value;}

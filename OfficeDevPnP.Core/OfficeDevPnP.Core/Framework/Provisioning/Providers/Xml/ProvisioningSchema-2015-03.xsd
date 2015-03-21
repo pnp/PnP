@@ -15,7 +15,7 @@
     </xsd:annotation>
     
     <xsd:complexType>
-      <xsd:sequence>
+      <xsd:all>
         
         <xsd:element name="SitePolicy" type="xsd:string" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
@@ -215,7 +215,7 @@
 
         </xsd:element>
 
-      </xsd:sequence>
+      </xsd:all>
       
       <xsd:attribute name="ID" type="xsd:ID" use="required">
         <xsd:annotation>
@@ -225,7 +225,7 @@
         </xsd:annotation>
       </xsd:attribute>
       
-      <xsd:attribute name="version" type="xsd:string" use="optional" default="1.0">
+      <xsd:attribute name="Version" type="xsd:string" use="optional" default="1.0">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
             The Version of the Provisioning Template, required attribute
@@ -243,7 +243,7 @@
       </xsd:documentation>
     </xsd:annotation>
     
-    <xsd:attribute name="key" type="xsd:string" use="required">
+    <xsd:attribute name="Key" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Key of the property to store in the Property Bag, required attribute
@@ -251,7 +251,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="value" type="xsd:string" use="required">
+    <xsd:attribute name="Value" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Value of the property to store in the Property Bag, required attribute
@@ -281,7 +281,7 @@
       </xsd:documentation>
     </xsd:annotation>
     
-    <xsd:attribute name="name" type="xsd:string" use="required">
+    <xsd:attribute name="Name" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Name of the User, required attribute
@@ -314,7 +314,7 @@
       </xsd:element>
     </xsd:sequence>
 
-    <xsd:attribute name="title" type="xsd:string" use="required">
+    <xsd:attribute name="Title" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Title of the List Instance, required attribute
@@ -322,7 +322,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="description" type="xsd:string" use="optional">
+    <xsd:attribute name="Description" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Description of the List Instance, optional attribute
@@ -330,7 +330,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="documentTemplate" type="xsd:string" use="optional">
+    <xsd:attribute name="DocumentTemplate" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The DocumentTemplate of the List Instance, optional attribute
@@ -338,7 +338,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="onQuickLaunch" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="OnQuickLaunch" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The OnQuickLaunch flag for the List Instance, optional attribute
@@ -346,7 +346,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="templateType" type="xsd:int" use="required">
+    <xsd:attribute name="TemplateType" type="xsd:int" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TemplateType of the List Instance, required attribute
@@ -355,7 +355,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="url" type="xsd:string" use="required">
+    <xsd:attribute name="Url" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Url of the List Instance, required attribute
@@ -363,7 +363,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="enableVersioning" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="EnableVersioning" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The EnableVersioning flag for the List Instance, optional attribute
@@ -371,7 +371,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="removeDefaultContentType" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="RemoveDefaultContentType" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The RemoveDefaultContentType flag for the List Instance, optional attribute
@@ -388,7 +388,7 @@
       </xsd:documentation>
     </xsd:annotation>
 
-    <xsd:attribute name="contentTypeID" type="xsd:string" use="required">
+    <xsd:attribute name="ContentTypeID" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The value of the ContentTypeID to bind, required attribute
@@ -396,7 +396,7 @@
       </xsd:annotation>
     </xsd:attribute>
     
-    <xsd:attribute name="default" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="Default" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           Declares if the Content Type should be the default Content Type in the list or library, optional attribute
@@ -435,14 +435,22 @@
       </xsd:annotation>
     </xsd:attribute>
     
-    <xsd:attribute name="deactivate" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="Deactivate" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           Defines if the feature has to be deactivated or activated while applying the Provisioning Template, optional attribute
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    
+
+    <xsd:attribute name="Description" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The Description of the feature, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
   </xsd:complexType>
 
   <xsd:complexType name="CustomActionsList">
@@ -466,7 +474,7 @@
       </xsd:documentation>
     </xsd:annotation>
 
-    <xsd:attribute name="name" type="xsd:string" use="required">
+    <xsd:attribute name="Name" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Name of the CustomAction, required attribute
@@ -474,7 +482,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="description" type="xsd:string" use="optional">
+    <xsd:attribute name="Description" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Description of the CustomAction, optional attribute
@@ -482,15 +490,15 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="group" type="xsd:string" use="required">
+    <xsd:attribute name="Group" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          The Group of the CustomAction, required attribute
+          The Group of the CustomAction, optional attribute
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="location" type="xsd:string" use="required">
+    <xsd:attribute name="Location" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Location of the CustomAction, required attribute
@@ -498,7 +506,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="title" type="xsd:string" use="required">
+    <xsd:attribute name="Title" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Title of the CustomAction, required attribute
@@ -506,15 +514,15 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="sequence" type="xsd:int" use="required">
+    <xsd:attribute name="Sequence" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          The Sequence of the CustomAction, required attribute
+          The Sequence of the CustomAction, optional attribute
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     
-    <xsd:attribute name="rights" type="xsd:int" use="optional">
+    <xsd:attribute name="Rights" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Rights for the CustomAction, based on values from Microsoft.SharePoint.Client.BasePermissions, optional attribute
@@ -522,7 +530,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="url" type="xsd:string" use="optional">
+    <xsd:attribute name="Url" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The URL of the CustomAction, optional attribute
@@ -530,7 +538,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="enabled" type="xsd:string" use="optional" default="true">
+    <xsd:attribute name="Enabled" type="xsd:boolean" use="optional" default="true">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Enabled flag for the CustomAction, optional attribute
@@ -538,7 +546,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="scriptBlock" type="xsd:string" use="optional">
+    <xsd:attribute name="ScriptBlock" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The ScriptBlock of the CustomAction, optional attribute
@@ -546,7 +554,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="imageUrl" type="xsd:string" use="optional">
+    <xsd:attribute name="ImageUrl" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The ImageUrl of the CustomAction, optional attribute
@@ -554,7 +562,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="scriptSrc" type="xsd:string" use="optional">
+    <xsd:attribute name="ScriptSrc" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The ScriptSrc of the CustomAction, optional attribute
@@ -571,7 +579,7 @@
       </xsd:documentation>
     </xsd:annotation>
 
-    <xsd:attribute name="src" type="xsd:string" use="required">
+    <xsd:attribute name="Src" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Src of the File, required attribute
@@ -579,7 +587,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="targetFolder" type="xsd:string" use="required">
+    <xsd:attribute name="TargetFolder" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TargetFolder of the File, required attribute
@@ -587,7 +595,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="overwrite" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Overwrite flag for the File, optional attribute
@@ -604,7 +612,7 @@
       </xsd:documentation>
     </xsd:annotation>
 
-    <xsd:attribute name="name" type="xsd:string" use="required">
+    <xsd:attribute name="Name" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Name of the ComposedLook, required attribute
@@ -612,7 +620,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="colorFile" type="xsd:string" use="required">
+    <xsd:attribute name="ColorFile" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The ColorFile of the ComposedLook, required attribute
@@ -620,7 +628,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="fontFile" type="xsd:string" use="required">
+    <xsd:attribute name="FontFile" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The FontFile of the ComposedLook, required attribute
@@ -628,7 +636,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="backgroundFile" type="xsd:string" use="optional">
+    <xsd:attribute name="BackgroundFile" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The BackgroundFile of the ComposedLook, optional attribute
@@ -636,7 +644,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="masterPage" type="xsd:string" use="required">
+    <xsd:attribute name="MasterPage" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The MasterPage of the ComposedLook, required attribute
@@ -644,7 +652,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="siteLogo" type="xsd:string" use="optional">
+    <xsd:attribute name="SiteLogo" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The SiteLogo of the ComposedLook, optional attribute
@@ -652,7 +660,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="alternateCSS" type="xsd:string" use="optional">
+    <xsd:attribute name="AlternateCSS" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The AlternateCSS of the ComposedLook, optional attribute
@@ -660,7 +668,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="version" type="xsd:int" use="optional">
+    <xsd:attribute name="Version" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Version of the ComposedLook, optional attribute
@@ -685,16 +693,16 @@
           </xsd:documentation>
         </xsd:annotation>
         
-        <xsd:complexType>
+        <xsd:complexType mixed="true">
           <xsd:sequence>
-            <xsd:any processContents="lax" namespace="##other" />
+            <xsd:any processContents="lax" namespace="##other" minOccurs="0" />
           </xsd:sequence>
         </xsd:complexType>
         
       </xsd:element>
     </xsd:sequence>
     
-    <xsd:attribute name="enabled" type="xsd:boolean" use="optional" default="false">
+    <xsd:attribute name="Enabled" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           Defines whether the Extensibility Provider is enabled or not, optional attribute
@@ -702,7 +710,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="assembly" type="xsd:string" use="required">
+    <xsd:attribute name="Assembly" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The .NET Assembly FQN of the Extensibility Provider, required attribute
@@ -710,7 +718,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="type" type="xsd:string" use="required">
+    <xsd:attribute name="Type" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The .NET Type of the Extensibility Provider, required attribute

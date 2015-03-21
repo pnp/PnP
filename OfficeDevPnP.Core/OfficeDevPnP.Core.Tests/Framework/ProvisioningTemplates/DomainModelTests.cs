@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Utilities;
 using System.IO;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
@@ -18,7 +19,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         [TestInitialize()]
         public void Intialize()
         {
-            this._provisioningTemplatePath = string.Format(@"{0}\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate.xml");
+            this._provisioningTemplatePath = string.Format(@"{0}\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
         }
 
         [TestMethod]
@@ -27,7 +28,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             this.GetProvisioningTemplate();
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
-            var _pt = XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
             Assert.IsNotNull(_pt);
         }
 
@@ -221,10 +222,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         protected ProvisioningTemplate GetProvisioningTemplate()
         {
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
-            return XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
+            return XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
         }
-
-
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
