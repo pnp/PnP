@@ -128,6 +128,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         TemplateType = list.TemplateType,
                         Title = list.Title,
                         Url = list.Url,
+                        ContentTypesEnabled = list.ContentTypesEnabled,
                     });
             }
 

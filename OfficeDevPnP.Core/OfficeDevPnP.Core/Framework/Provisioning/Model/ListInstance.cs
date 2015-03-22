@@ -87,6 +87,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets whether to remove the default content type from the list
         /// </summary>
         public bool RemoveDefaultContentType { get; set; }
+  
+        /// <summary>
+        /// Gets or sets whether content types are enabled
+        /// </summary>
+        public bool ContentTypesEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether to hide the list
@@ -99,7 +104,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
-            private set { this._ctBindings = value;}
+            set { this._ctBindings = value;}
         }
 
         /// <summary>

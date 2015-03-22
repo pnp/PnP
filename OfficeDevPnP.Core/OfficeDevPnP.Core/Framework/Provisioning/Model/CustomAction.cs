@@ -17,6 +17,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Properties
+        
+        public string CommandUIExtension { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the custom action.
         /// </summary>
@@ -74,6 +77,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 }
             }
         }
+
+        public string RegistrationId { get; set; }
+
+        public UserCustomActionRegistrationType RegistrationType { get; set; }
+
+        public bool Remove { get; set; }
 
         /// <summary>
         /// Gets or sets the URL, URI, or ECMAScript (JScript, JavaScript) function associated with the action.

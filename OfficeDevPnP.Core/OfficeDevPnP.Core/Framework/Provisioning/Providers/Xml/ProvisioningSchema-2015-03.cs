@@ -797,12 +797,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         private bool removeDefaultContentTypeField;
         
         private bool hiddenField;
+
+        private bool contentTypesEnabledField;
+
         
         public ListInstance() {
             this.onQuickLaunchField = false;
             this.enableVersioningField = false;
             this.removeDefaultContentTypeField = false;
             this.hiddenField = false;
+            this.contentTypesEnabledField = false;
         }
         
         /// <remarks/>
@@ -958,6 +962,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
             }
             set {
                 this.removeDefaultContentTypeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool ContentTypesEnabled 
+        {
+            get
+            {
+                return this.contentTypesEnabledField;
+            }
+            set
+            {
+                this.contentTypesEnabledField = value;
             }
         }
         

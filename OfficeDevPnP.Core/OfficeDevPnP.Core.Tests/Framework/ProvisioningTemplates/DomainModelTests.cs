@@ -214,8 +214,17 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
            var _pt = this.GetProvisioningTemplate();
            var _json = JsonUtility.Serialize<ProvisioningTemplate>(_pt);
+        }
 
-        
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeToXml()
+        {
+            using (var ctx = TestCommon.CreateClientContext())
+            {
+                var template = ctx.Web.GetProvisioningTemplate();
+                string xml = XMLSerializer.Serialize(template);
+            }
         }
         #region Test Support
         /// <summary>
