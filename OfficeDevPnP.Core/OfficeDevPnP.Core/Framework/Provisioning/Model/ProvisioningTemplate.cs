@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object for the Provisioning Template
     /// </summary>
-    [XmlRoot(ElementName = "SharePointProvisioningTemplate")]
     public class ProvisioningTemplate
     {
         #region private members
@@ -21,22 +19,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private List<ListInstance> _lists = new List<ListInstance>();
         private ComposedLook _composedLook = new ComposedLook();
         private Features _features = new Features();
+        private SiteSecurity _siteSecurity = new SiteSecurity();
         private CustomActions _customActions = new CustomActions();
         private List<File> _files = new List<File>();
-        private List<Provider> _providers = new List<Provider>(); 
+        private List<Provider> _providers = new List<Provider>();
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets the Version of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public double Version { get; set; }
 
         /// <summary>
@@ -49,11 +46,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._propertyBags; }
             private set { this._propertyBags = value; }
         }
-        
+
         /// <summary>
         /// Security Groups Members for the Template
         /// </summary>
-        public SiteSecurity Security { get; set; }
+        public SiteSecurity Security
+        {
+            get { return this._siteSecurity; }
+            private set { this._siteSecurity = value; }
+        }
 
         /// <summary>
         /// Gets a collection of fields 
@@ -69,8 +70,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<ContentType> ContentTypes
         {
-            get{ return this._contentTypes;}
-            private set { this._contentTypes = value;}
+            get { return this._contentTypes; }
+            private set { this._contentTypes = value; }
         }
 
         public List<ListInstance> Lists
@@ -120,7 +121,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<Provider> Providers
         {
-            get { return this._providers;  }
+            get { return this._providers; }
             private set { this._providers = value; }
         }
 
