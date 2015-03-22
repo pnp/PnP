@@ -88,15 +88,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public bool RemoveDefaultContentType { get; set; }
   
-        [XmlAttribute]
-        public bool Hidden
-        {
-            get; set;
-            
-        }
-
-        [XmlAttribute]
-        public bool AllowContentTypes { get; set; }
+        /// <summary>
+        /// Gets or sets whether content types are enabled
+        /// </summary>
+        public bool ContentTypesEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets whether to hide the list
