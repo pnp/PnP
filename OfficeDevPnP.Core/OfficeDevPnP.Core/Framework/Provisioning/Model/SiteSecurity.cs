@@ -21,6 +21,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Properties
+        /// <summary>
+        /// A Collection of users that are associated as site collection adminsitrators
+        /// </summary>
         [XmlArray(ElementName = "AdditionalAdministrators")]
         [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalAdministrators
@@ -32,6 +35,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalAdministrators = value; }
         }
 
+        /// <summary>
+        /// A Collection of users that are associated to the sites owners group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalOwners")]
         [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalOwners
@@ -43,6 +49,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalOwners = value; }
         }
 
+        /// <summary>
+        /// A Collection of users that are associated to the sites members group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalMembers")]
         [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalMembers
@@ -54,6 +63,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalMembers = value; }
         }
 
+        /// <summary>
+        /// A Collection of users taht are associated to the sites visitors group
+        /// </summary>
         [XmlArray(ElementName = "AdditionalVistors")]
         [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalVisitors

@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public partial class User
     {
         /// <summary>
-        /// The User Email Address or the Group name.
+        /// The User email Address or the group name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }

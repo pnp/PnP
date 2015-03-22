@@ -13,14 +13,18 @@ using System.Xml.Serialization;
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Represents a Field XML
+    /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
     public class Field : IXmlSerializable
     {
+        #region Private Members
         private string _schemaXml = string.Empty;
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// Gets a value that specifies the XML Schema representing the Field type.
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/office/ff407271.aspx"/>
         /// </summary>
         public string SchemaXml
         {
@@ -28,8 +32,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._schemaXml = value; }
         }
 
+        #endregion
+
+        #region IXmlSerializable
         /// <summary>
-        /// No Imp will return null
+        /// No Implementation will return null
         /// </summary>
         /// <returns></returns>
         public XmlSchema GetSchema()
@@ -37,16 +44,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             return null;
         }
 
+        /// <summary>
+        /// Generates an object from its XML representation.
+        /// </summary>
+        /// <param name="reader"></param>
         public void ReadXml(XmlReader reader)
         {
             if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "Field")
             {
                 this._schemaXml = reader.ReadOuterXml();
             }
-            //    reader.MoveToContent();
-
         }
 
+        /// <summary>
+        /// Converts an object into its XML representation.
+        /// </summary>
+        /// <param name="writer"></param>
         public void WriteXml(XmlWriter writer)
         {
             if (string.IsNullOrEmpty(this._schemaXml))
@@ -59,5 +72,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 writer.WriteAttributeString(attrib.Name.ToString(), attrib.Value);
             }
         }
+        #endregion
     }
 }
