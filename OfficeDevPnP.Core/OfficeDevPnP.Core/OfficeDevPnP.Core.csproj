@@ -277,11 +277,15 @@
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFeatures.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectSiteSecurity.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
     <Compile Include="Framework\Provisioning\Providers\XMLTemplateProvider.cs" />
