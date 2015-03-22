@@ -15,6 +15,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     {
         private int _rightsValue = 0;
 
+        public string CommandUIExtension { get; set; }
+
         [XmlAttribute]
         public string Name { get; set; }
 
@@ -54,6 +56,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 }
             }
         }
+
+        public string RegistrationId { get; set; }
+
+        public UserCustomActionRegistrationType RegistrationType { get; set; }
+
+        public bool Remove { get; set; }
 
         [XmlAttribute]
         public string Url { get; set; }
