@@ -48,7 +48,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             // For each list in the site
             ListCollection lists = web.Lists;
-            web.Context.Load(lists);
+            web.Context.Load(lists, lc => lc.IncludeWithDefaultProperties(l => l.ContentTypes));
             web.Context.ExecuteQuery();
             foreach (var item in lists)
             {
