@@ -27,7 +27,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var file in template.Files)
             {
                 var fileInfo = new FileInfo(file.Src);
-                var folder = web.EnsureFolderPath(file.TargetFolder);
+                var folder = web.EnsureFolderPath(file.Folder);
 
                 if (System.IO.File.Exists(file.Src))
                 {
