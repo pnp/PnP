@@ -62,16 +62,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         [XmlAttribute]
         public bool RemoveDefaultContentType { get; set; }
-  
+
+        [XmlAttribute]
+        public bool Hidden
+        {
+            get; set;
+            
+        }
+
+        [XmlAttribute]
+        public bool AllowContentTypes { get; set; }
+
         /// <summary>
         /// Domain Object for Content Type Bindings
         /// </summary>
         [XmlArray(ElementName = "ContentTypeBindings")]
         [XmlArrayItem("ContentTypeBinding", typeof(ContentTypeBinding))]
-        public List<ContentTypeBinding> GetContentTypeBindings
+        public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
-            private set { this._ctBindings = value;}
+            set { this._ctBindings = value;}
         }
     }
 }
