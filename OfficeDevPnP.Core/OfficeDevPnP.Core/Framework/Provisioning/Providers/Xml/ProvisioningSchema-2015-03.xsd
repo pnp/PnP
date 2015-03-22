@@ -298,7 +298,7 @@
       </xsd:documentation>
     </xsd:annotation>
     
-    <xsd:sequence>
+    <xsd:all>
       <xsd:element name="ContentTypeBindings" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
@@ -312,7 +312,20 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-    </xsd:sequence>
+      <xsd:element name="Views" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The Views entries of the List Instance, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any minOccurs="1" maxOccurs="unbounded"
+                     processContents="lax" namespace="##any" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
 
     <xsd:attribute name="Title" type="xsd:string" use="required">
       <xsd:annotation>
@@ -371,6 +384,22 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="MinorVersionLimit" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The MinorVersionLimit for versions history for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="MaxVersionLimit" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The MaxVersionLimit for versions history for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
     <xsd:attribute name="RemoveDefaultContentType" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -379,6 +408,14 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="Hidden" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The Hidden flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
   </xsd:complexType>
 
   <xsd:complexType name="ContentTypeBinding">
@@ -587,7 +624,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="TargetFolder" type="xsd:string" use="required">
+    <xsd:attribute name="Folder" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TargetFolder of the File, required attribute

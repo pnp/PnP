@@ -428,7 +428,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         private string srcField;
         
-        private string targetFolderField;
+        private string folderField;
         
         private bool overwriteField;
         
@@ -449,12 +449,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string TargetFolder {
+        public string Folder {
             get {
-                return this.targetFolderField;
+                return this.folderField;
             }
             set {
-                this.targetFolderField = value;
+                this.folderField = value;
             }
         }
         
@@ -770,6 +770,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         private ContentTypeBinding[] contentTypeBindingsField;
         
+        private ListInstanceViews viewsField;
+        
         private string titleField;
         
         private string descriptionField;
@@ -784,12 +786,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         private bool enableVersioningField;
         
+        private int minorVersionLimitField;
+        
+        private bool minorVersionLimitFieldSpecified;
+        
+        private int maxVersionLimitField;
+        
+        private bool maxVersionLimitFieldSpecified;
+        
         private bool removeDefaultContentTypeField;
+        
+        private bool hiddenField;
         
         public ListInstance() {
             this.onQuickLaunchField = false;
             this.enableVersioningField = false;
             this.removeDefaultContentTypeField = false;
+            this.hiddenField = false;
         }
         
         /// <remarks/>
@@ -800,6 +813,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
             }
             set {
                 this.contentTypeBindingsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public ListInstanceViews Views {
+            get {
+                return this.viewsField;
+            }
+            set {
+                this.viewsField = value;
             }
         }
         
@@ -884,6 +907,50 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int MinorVersionLimit {
+            get {
+                return this.minorVersionLimitField;
+            }
+            set {
+                this.minorVersionLimitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool MinorVersionLimitSpecified {
+            get {
+                return this.minorVersionLimitFieldSpecified;
+            }
+            set {
+                this.minorVersionLimitFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int MaxVersionLimit {
+            get {
+                return this.maxVersionLimitField;
+            }
+            set {
+                this.maxVersionLimitField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool MaxVersionLimitSpecified {
+            get {
+                return this.maxVersionLimitFieldSpecified;
+            }
+            set {
+                this.maxVersionLimitFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(false)]
         public bool RemoveDefaultContentType {
             get {
@@ -891,6 +958,40 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
             }
             set {
                 this.removeDefaultContentTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool Hidden {
+            get {
+                return this.hiddenField;
+            }
+            set {
+                this.hiddenField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.18020")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema")]
+    public partial class ListInstanceViews {
+        
+        private System.Xml.XmlElement[] anyField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAnyElementAttribute()]
+        public System.Xml.XmlElement[] Any {
+            get {
+                return this.anyField;
+            }
+            set {
+                this.anyField = value;
             }
         }
     }

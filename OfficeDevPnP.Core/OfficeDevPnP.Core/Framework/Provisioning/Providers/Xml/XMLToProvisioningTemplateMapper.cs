@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             // Translate basic properties
             result.ID = template.ID;
-            result.Version = Double.Parse(!String.IsNullOrEmpty(template.Version) ? template.Version : "0");
+            result.Version = Double.Parse(!String.IsNullOrEmpty(template.Version) ? template.Version : "0", new System.Globalization.CultureInfo("en-US"));
             result.SitePolicy = template.SitePolicy;
 
             // Translate PropertyBagEntries, if any
@@ -109,11 +109,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 select new Model.ContentTypeBinding {
                                     ContentTypeID = contentTypeBinding.ContentTypeID,
                                     Default = contentTypeBinding.Default,
-                                }) : null))
+                                }) : null),
+                        (list.Views != null ?
+                                (from view in list.Views.Any
+                                 select new Model.View
+                                 {
+                                     SchemaXml = view.OuterXml,
+                                 }) : null))
                     {
                         Description = list.Description,
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
+                        Hidden = list.Hidden,
+                        MinorVersionLimit = list.MinorVersionLimit,
+                        MaxVersionLimit = list.MaxVersionLimit,
                         OnQuickLaunch = list.OnQuickLaunch,
                         RemoveDefaultContentType = list.RemoveDefaultContentType,
                         TemplateType = list.TemplateType,
@@ -200,7 +209,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     select new Model.File { 
                         Overwrite = file.Overwrite,
                         Src = file.Src,
-                        TargetFolder = file.TargetFolder,
+                        Folder = file.Folder,
                     });
             }
 

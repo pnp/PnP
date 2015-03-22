@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object for the Provisioning Template
     /// </summary>
-    [XmlRoot(ElementName = "SharePointProvisioningTemplate")]
     public class ProvisioningTemplate
     {
         #region private members
@@ -31,13 +29,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets the Version of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public double Version { get; set; }
 
         /// <summary>

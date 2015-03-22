@@ -276,6 +276,7 @@
     <Compile Include="Framework\Provisioning\Model\Feature.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
+    <Compile Include="Framework\Provisioning\Model\View.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
