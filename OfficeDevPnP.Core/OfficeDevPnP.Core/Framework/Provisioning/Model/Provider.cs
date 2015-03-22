@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -14,20 +13,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// </summary>
     public class Provider
     {
-        [XmlAttribute]
+        public bool Enabled
+        {
+            get;
+            set;
+        }
+
         public string Assembly
         {
             get;
             set;
         }
-        [XmlAttribute]
+
         public string Type
         {
             get;
             set;
         }
         
-        [XmlElement("Configuration")]
         public string Configuration { get; set; }
     }
 }

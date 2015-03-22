@@ -276,6 +276,7 @@
     <Compile Include="Framework\Provisioning\Model\Feature.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
+    <Compile Include="Framework\Provisioning\Model\View.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
@@ -288,7 +289,11 @@
     </Compile>
     <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
-    <Compile Include="Framework\Provisioning\Providers\XMLTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
+      <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLToProvisioningTemplateMapper.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
@@ -344,6 +349,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
