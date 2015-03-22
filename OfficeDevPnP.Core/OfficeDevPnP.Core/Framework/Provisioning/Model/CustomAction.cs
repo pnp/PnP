@@ -18,11 +18,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Properties
+        
+        public string CommandUIExtension { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the custom action.
         /// </summary>
-        public string CommandUIExtension { get; set; }
-
         [XmlAttribute]
         public string Name { get; set; }
 
