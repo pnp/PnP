@@ -408,6 +408,14 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="ContentTypesEnabled" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The ContentTypesEnabled flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
     <xsd:attribute name="Hidden" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
