@@ -27,7 +27,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 createdList.EnableVersioning = list.EnableVersioning;
                 createdList.DocumentTemplateUrl = list.DocumentTemplate;
                 createdList.Hidden = list.Hidden;
-                createdList.ContentTypesEnabled = list.AllowContentTypes;
+                createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 
                 createdList.Update();
 
@@ -60,7 +60,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 list.Title = item.Title;
                 list.Hidden = item.Hidden;
                 list.DocumentTemplate = item.DocumentTemplateUrl;
-                list.AllowContentTypes = item.AllowContentTypes;
+                list.ContentTypesEnabled = item.ContentTypesEnabled;
 
                 int count = 0;
                 foreach (var ct in item.ContentTypes)
