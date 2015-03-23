@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 {
     /// <summary>
-    /// Connector for files in Azure storage
+    /// Connector for files in Azure blob storage
     /// </summary>
     public class AzureStorageConnector : FileConnectorBase
     {
@@ -21,11 +21,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// Base constructor
+        /// </summary>
         public AzureStorageConnector() : base()
         {
 
         }
         
+        /// <summary>
+        /// AzureStorageConnector constructor. Allows to directly set Azure Storage key and container
+        /// </summary>
+        /// <param name="connectionString">Azure Storage Key (DefaultEndpointsProtocol=https;AccountName=yyyy;AccountKey=xxxx)</param>
+        /// <param name="container">Name of the Azure container to operate against</param>
         public AzureStorageConnector(string connectionString, string container): base ()
         {
             if (String.IsNullOrEmpty(connectionString))
@@ -43,12 +51,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         }
         #endregion
 
-        #region overrides
+        #region Base class overrides
+        /// <summary>
+        /// Get the files available in the default container
+        /// </summary>
+        /// <returns>List of files</returns>
         public override List<string> GetFiles()
         {
             return GetFiles(GetContainer());
         }
 
+        /// <summary>
+        /// Get the files available in the specified container
+        /// </summary>
+        /// <param name="container">Name of the container to get the files from</param>
+        /// <returns>List of files</returns>
         public override List<string> GetFiles(string container)
         {
             if (String.IsNullOrEmpty(container))
@@ -77,11 +94,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             return result;
         }
 
+        /// <summary>
+        /// Gets a file as string from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public override string GetFile(string fileName)
         {
             return GetFile(fileName, GetContainer());
         }
 
+        /// <summary>
+        /// Gets a file as string from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public override string GetFile(string fileName, string container)
         {
             if (String.IsNullOrEmpty(fileName))
@@ -118,11 +146,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             return result;
         }
 
+        /// <summary>
+        /// Gets a file as stream from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public override Stream GetFileStream(string fileName)
         {
             return GetFileStream(fileName, GetContainer());
         }
 
+        /// <summary>
+        /// Gets a file as stream from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public override Stream GetFileStream(string fileName, string container)
         {
             if (String.IsNullOrEmpty(fileName))
@@ -142,9 +181,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         #region Private methods
         private void Initialize()
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(GetConnectionString());
-            blobClient = storageAccount.CreateCloudBlobClient();
-            initialized = true;
+            try
+            {
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(GetConnectionString());
+                blobClient = storageAccount.CreateCloudBlobClient();
+                initialized = true;
+            }
+            catch(Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FailedToInitialize, ex.Message);
+                throw;
+            }
         }
 
         private MemoryStream GetFileFromStorage(string fileName, string container)
@@ -161,11 +208,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
                 MemoryStream result = new MemoryStream();
                 blockBlob.DownloadToStream(result);
+
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FileRetrieved, fileName, container);
                 return result;
             }
             catch (StorageException ex)
             {
-                Log.Error(Constants.LOGGING_SOURCE, "File {0} not found in Azure storage container {1}. Exception = {2}", fileName, container, ex.Message);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FileNotFound, fileName, container, ex.Message);
                 return null;
             }
         }

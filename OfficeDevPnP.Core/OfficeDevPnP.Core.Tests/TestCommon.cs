@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 using System.Net;
 
 namespace OfficeDevPnP.Core.Tests {
-    static class TestCommon {
-        static TestCommon() {
+    static class TestCommon
+    {
+
+        #region Constructor
+        static TestCommon() 
+        {
             // Read configuration data
             TenantUrl = ConfigurationManager.AppSettings["SPOTenantUrl"];
             DevSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
@@ -56,7 +60,28 @@ namespace OfficeDevPnP.Core.Tests {
                 }
             }
         }
+        #endregion
 
+        #region Properties
+        static string TenantUrl { get; set; }
+        static string DevSiteUrl { get; set; }
+        static string UserName { get; set; }
+        static SecureString Password { get; set; }
+        static ICredentials Credentials { get; set; }
+        static string Realm { get; set; }
+        static string AppId { get; set; }
+        static string AppSecret { get; set; }
+
+        public static String AzureStorageKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AzureStorageKey"];
+            }
+        }
+        #endregion
+
+        #region Methods
         public static ClientContext CreateClientContext() {
             return CreateContext(DevSiteUrl, Credentials);
         }
@@ -92,15 +117,8 @@ namespace OfficeDevPnP.Core.Tests {
 
             return secureString;
         }
+        #endregion
 
 
-        static string TenantUrl { get; set; }
-        static string DevSiteUrl { get; set; }
-        static string UserName { get; set; }
-        static SecureString Password { get; set; }
-        static ICredentials Credentials { get; set; }
-        static string Realm { get; set; }
-        static string AppId { get; set; }
-        static string AppSecret { get; set; }
     }
 }

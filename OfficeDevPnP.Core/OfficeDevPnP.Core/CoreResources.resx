@@ -498,4 +498,19 @@
   <data name="TimerJob_Realm" xml:space="preserve">
     <value>Realm set to {0}</value>
   </data>
+  <data name="Prov_Connectors_Azure_FailedToInitialize" xml:space="preserve">
+    <value>Could not initialize AzureStorageConnector. Error = {0}</value>
+  </data>
+  <data name="Prov_Connectors_Azure_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in Azure storage container {1}. Exception = {2}</value>
+  </data>
+  <data name="Prov_Connectors_Azure_FileRetrieved" xml:space="preserve">
+    <value>File {0} retrieved from Azure storage container {1}</value>
+  </data>
+  <data name="Prov_Connectors_FileSystem_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in directory {1}. Exception = {2}</value>
+  </data>
+  <data name="Prov_Connectors_FileSystem_FileRetrieved" xml:space="preserve">
+    <value>File {0} retrieved from folder {1}</value>
+  </data>
 </root>

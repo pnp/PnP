@@ -385,6 +385,51 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not initialize AzureStorageConnector. Error = {0}.
+        /// </summary>
+        internal static string Prov_Connectors_Azure_FailedToInitialize {
+            get {
+                return ResourceManager.GetString("Prov_Connectors_Azure_FailedToInitialize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found in Azure storage container {1}. Exception = {2}.
+        /// </summary>
+        internal static string Prov_Connectors_Azure_FileNotFound {
+            get {
+                return ResourceManager.GetString("Prov_Connectors_Azure_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} retrieved from Azure storage container {1}.
+        /// </summary>
+        internal static string Prov_Connectors_Azure_FileRetrieved {
+            get {
+                return ResourceManager.GetString("Prov_Connectors_Azure_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found in directory {1}. Exception = {2}.
+        /// </summary>
+        internal static string Prov_Connectors_FileSystem_FileNotFound {
+            get {
+                return ResourceManager.GetString("Prov_Connectors_FileSystem_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} retrieved from folder {1}.
+        /// </summary>
+        internal static string Prov_Connectors_FileSystem_FileRetrieved {
+            get {
+                return ResourceManager.GetString("Prov_Connectors_FileSystem_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error provisioning module &apos;{0}&apos; file &apos;{1}&apos;. Error = {2}.
         /// </summary>
         internal static string ProvisioningExtensions_ErrorProvisioningModule0File1 {

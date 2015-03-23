@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 {
-    public abstract class FileConnectorBase
+    /// <summary>
+    /// Base file connector class
+    /// </summary>
+    public abstract class FileConnectorBase : IFileConnector
     {
         #region public variables
         public const string CONNECTIONSTRING = "ConnectionString";
         public const string CONTAINER = "Container";
         #endregion
 
-
+        #region Private variables
         private Dictionary<string, string> parameters = new Dictionary<string, string>();
+        #endregion
 
+        #region Properties
         public Dictionary<string, string> Parameters
         {
             get
@@ -24,7 +29,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 return this.parameters;
             }
         }
+        #endregion
 
+        #region Overridable Methods
         public abstract List<string> GetFiles();
 
         public abstract List<string> GetFiles(string container);
@@ -36,7 +43,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         public abstract Stream GetFileStream(string fileName);
 
         public abstract Stream GetFileStream(string fileName, string container);
+        #endregion
 
+        #region Helper methods
         public void AddParameter(string key, string value)
         {
             if (!this.Parameters.ContainsKey(key))
@@ -72,7 +81,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw new Exception("No container string specified");
             }
         }
-
+        #endregion
 
     }
 }

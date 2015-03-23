@@ -14,12 +14,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
     public class FileSystemConnector : FileConnectorBase
     {
         #region Constructors
-        public FileSystemConnector() : base()
+        /// <summary>
+        /// Base constructor
+        /// </summary>
+        public FileSystemConnector()
+            : base()
         {
 
         }
 
-        public FileSystemConnector(string connectionString, string container): base ()
+        /// <summary>
+        /// FileSystemConnector constructor. Allows to directly set root folder and sub folder
+        /// </summary>
+        /// <param name="connectionString">Root folder (e.g. c:\temp or .\resources or . or .\resources\templates)</param>
+        /// <param name="container">Sub folder (e.g. templates or resources\templates or blank</param>
+        public FileSystemConnector(string connectionString, string container)
+            : base()
         {
             if (String.IsNullOrEmpty(connectionString))
             {
@@ -37,22 +47,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
         #endregion
 
-        #region overrides
+        #region Base class overrides
+        /// <summary>
+        /// Get the files available in the default container
+        /// </summary>
+        /// <returns>List of files</returns>
         public override List<string> GetFiles()
         {
             return GetFiles(GetContainer());
         }
 
+        /// <summary>
+        /// Get the files available in the specified container
+        /// </summary>
+        /// <param name="container">Name of the container to get the files from</param>
+        /// <returns>List of files</returns>
         public override List<string> GetFiles(string container)
         {
             if (String.IsNullOrEmpty(container))
             {
-                throw new ArgumentException("container");
+                container = "";
             }
 
             List<string> result = new List<string>();
 
-            string path = Path.Combine(GetConnectionString(), container);
+            string path = ConstructPath("", container);
 
             foreach (string file in Directory.EnumerateFiles(path, "*.*"))
             {
@@ -62,11 +81,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             return result;
         }
 
+        /// <summary>
+        /// Gets a file as string from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public override string GetFile(string fileName)
         {
             return GetFile(fileName, GetContainer());
         }
 
+        /// <summary>
+        /// Gets a file as string from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public override string GetFile(string fileName, string container)
         {
             if (String.IsNullOrEmpty(fileName))
@@ -76,7 +106,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
             if (String.IsNullOrEmpty(container))
             {
-                throw new ArgumentException("container");
+                container = "";
             }
 
             string result = null;
@@ -103,11 +133,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             return result;
         }
 
+        /// <summary>
+        /// Gets a file as stream from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public override Stream GetFileStream(string fileName)
         {
             return GetFileStream(fileName, GetContainer());
         }
 
+        /// <summary>
+        /// Gets a file as stream from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public override Stream GetFileStream(string fileName, string container)
         {
             if (String.IsNullOrEmpty(fileName))
@@ -117,7 +158,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
             if (String.IsNullOrEmpty(container))
             {
-                throw new ArgumentException("container");
+                container = "";
             }
 
             return GetFileFromStorage(fileName, container);
@@ -129,7 +170,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         {
             try
             {
-                string filePath = Path.Combine(GetConnectionString(), GetContainer(), fileName);
+                string filePath = ConstructPath(fileName, container);
 
                 MemoryStream stream = new MemoryStream();
                 using (FileStream fileStream = File.OpenRead(filePath))
@@ -137,16 +178,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     stream.SetLength(fileStream.Length);
                     fileStream.Read(stream.GetBuffer(), 0, (int)fileStream.Length);
                 }
+
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileRetrieved, fileName, container);
                 return stream;
             }
             catch (Exception ex)
             {
-                Log.Error(Constants.LOGGING_SOURCE, "File {0} not found in Azure storage container {1}. Exception = {2}", fileName, container, ex.Message);
-                return null;
+                if (ex is FileNotFoundException || ex is DirectoryNotFoundException)
+                {
+                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileNotFound, fileName, container, ex.Message);
+                    return null;
+                }
+
+                throw;
             }
         }
+
+        private string ConstructPath(string fileName, string container)
+        {
+            string filePath = "";
+
+            if (container.IndexOf(@"\") > 0)
+            {
+                string[] parts = container.Split(new string[] { @"\" }, StringSplitOptions.RemoveEmptyEntries);
+                filePath = Path.Combine(GetConnectionString(), parts[0]);
+
+                if (parts.Length > 1)
+                {
+                    for (int i = 1; i < parts.Length; i++)
+                    {
+                        filePath = Path.Combine(filePath, parts[i]);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(fileName))
+                {
+                    filePath = Path.Combine(filePath, fileName);
+                }
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(fileName))
+                {
+                    filePath = Path.Combine(GetConnectionString(), container, fileName);
+                }
+                else
+                {
+                    filePath = Path.Combine(GetConnectionString(), container);
+                }
+            }
+
+            return filePath;
+        }
+
         #endregion
-
-
     }
 }

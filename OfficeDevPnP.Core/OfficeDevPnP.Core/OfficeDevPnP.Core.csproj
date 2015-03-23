@@ -283,6 +283,7 @@
     <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\IFileConnector.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibility.cs" />
     <Compile Include="Framework\Provisioning\Model\ComposedLook.cs" />
