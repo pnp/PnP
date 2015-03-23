@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             siteSecurity.AdditionalVisitors = visitors;
 
             var allUsers = web.SiteUsers;
-            web.Context.Load(allUsers, users => users.Include(u => u.LoginName));
+            web.Context.Load(allUsers, users => users.Include(u => u.LoginName, u => u.IsSiteAdmin));
             web.Context.ExecuteQueryRetry();
 
             var admins = new List<Model.User>();
