@@ -1,10 +1,14 @@
-﻿using System;
+﻿using OfficeDevPnP.Core.Utilities;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using Model = OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
@@ -13,6 +17,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
         public static SharePointProvisioningTemplate ToXml(this Model.ProvisioningTemplate template)
         {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
             SharePointProvisioningTemplate result = new SharePointProvisioningTemplate();
 
             // Translate basic properties
@@ -35,6 +44,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Security configuration, if any
             if (template.Security != null)
             {
+                result.Security = new SharePointProvisioningTemplateSecurity();
+
                 if (template.Security.AdditionalAdministrators != null)
                 {
                     result.Security.AdditionalAdministrators =
@@ -133,7 +144,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Features, if any
             if (template.Features != null)
             {
-                if (result.Features.SiteFeatures != null)
+                result.Features = new SharePointProvisioningTemplateFeatures();
+
+                if (template.Features.SiteFeatures != null)
                 {
                     result.Features.SiteFeatures =
                         (from feature in template.Features.SiteFeatures
@@ -143,7 +156,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
-                if (result.Features.WebFeatures != null)
+                if (template.Features.WebFeatures != null)
                 {
                     result.Features.WebFeatures =
                         (from feature in template.Features.WebFeatures
@@ -158,7 +171,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate CustomActions, if any
             if (template.CustomActions != null)
             {
-                if (result.CustomActions.SiteCustomActions != null)
+                result.CustomActions = new SharePointProvisioningTemplateCustomActions();
+
+                if (template.CustomActions.SiteCustomActions != null)
                 {
                     result.CustomActions.SiteCustomActions =
                         (from customAction in template.CustomActions.SiteCustomActions
@@ -180,7 +195,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                              Url = customAction.Url,
                          }).ToArray();
                 }
-                if (result.CustomActions.WebCustomActions != null)
+                if (template.CustomActions.WebCustomActions != null)
                 {
                     result.CustomActions.WebCustomActions =
                         (from customAction in template.CustomActions.WebCustomActions
@@ -220,14 +235,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
             {
-                result.ComposedLook.AlternateCSS = template.ComposedLook.AlternateCSS;
-                result.ComposedLook.BackgroundFile = template.ComposedLook.BackgroundFile;
-                result.ComposedLook.ColorFile = template.ComposedLook.ColorFile;
-                result.ComposedLook.FontFile = template.ComposedLook.FontFile;
-                result.ComposedLook.MasterPage = template.ComposedLook.MasterPage;
-                result.ComposedLook.Name = template.ComposedLook.Name;
-                result.ComposedLook.SiteLogo = template.ComposedLook.SiteLogo;
-                result.ComposedLook.Version = template.ComposedLook.Version;
+                result.ComposedLook = new ComposedLook
+                {
+                    AlternateCSS = template.ComposedLook.AlternateCSS,
+                    BackgroundFile = template.ComposedLook.BackgroundFile,
+                    ColorFile = template.ComposedLook.ColorFile,
+                    FontFile = template.ComposedLook.FontFile,
+                    MasterPage = template.ComposedLook.MasterPage,
+                    Name = template.ComposedLook.Name,
+                    SiteLogo = template.ComposedLook.SiteLogo,
+                    Version = template.ComposedLook.Version,
+                    VersionSpecified = true,
+                };
             }
 
             // Translate Providers, if any
@@ -238,7 +257,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                      select new Provider
                      {
                          Assembly = provider.Assembly,
-                         Configuration = provider.Configuration.ToXmlElement(),
+                         Configuration = provider.Configuration != null ? provider.Configuration.ToXmlNode() : null,
                          Enabled = provider.Enabled,
                          Type = provider.Type,
                      }).ToArray();
@@ -249,6 +268,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public static Model.ProvisioningTemplate ToProvisioningTemplate(this SharePointProvisioningTemplate template)
         {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            // Check the provided template against the XML schema
+            if (!template.IsValid())
+            {
+                // TODO: Use resource file
+                throw new ApplicationException("The provided template is not valid!");
+            }
+
             Model.ProvisioningTemplate result = new Model.ProvisioningTemplate();
 
             // Translate basic properties
@@ -316,7 +347,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     from field in template.SiteFields.Any
                     select new Model.Field
                     {
-                        SchemaXml = field.OuterXml,
+                        SchemaXml = field.FixupElementNamespace().OuterXml,
                     });
             }
 
@@ -327,7 +358,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     from contentType in template.ContentTypes.Any
                     select new Model.ContentType
                     {
-                        SchemaXml = contentType.OuterXml,
+                        SchemaXml = contentType.FixupElementNamespace().OuterXml,
                     });
             }
 
@@ -479,6 +510,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
+        public static Boolean IsValid(this SharePointProvisioningTemplate template)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            // Serialize the template into an XML string
+            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
+
+            // Load the XSD embedded resource
+            Stream stream = typeof(ProvisioningTemplateExtensions)
+                .Assembly
+                .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
+
+            // Prepare the XML Schema Set
+            XmlSchemaSet schemas = new XmlSchemaSet();
+            schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE,
+                new XmlTextReader(stream));
+
+            XDocument doc = XDocument.Parse(xml);
+            Boolean result = true;
+            doc.Validate(schemas, (o, e) => {
+                result = false;
+            });
+
+            return (result);
+        }
+
         #region Private extension methods for handling XML content
 
         /// <summary>
@@ -488,6 +548,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <returns>The converted XmlElement</returns>
         private static XmlElement ToXmlElement(this XElement element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException("element");
+            }
+
             using (XmlReader reader = element.CreateReader())
             {
                 XmlDocument doc = new XmlDocument();
@@ -503,6 +568,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <returns>The converted XElement</returns>
         private static XElement ToXElement(this XmlElement element)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException("element");
+            }
+
             using (XmlReader reader = new XmlNodeReader(element))
             {
                 XElement result = XElement.Load(reader);
@@ -517,6 +587,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <returns>The converted XElement</returns>
         private static XElement ToXElement(this String xml)
         {
+            if (xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
+
             XElement element = XElement.Parse(xml);
             return (element);
         }
@@ -528,8 +603,54 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <returns>The converted XmlElement</returns>
         private static XmlElement ToXmlElement(this String xml)
         {
+            if (xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
+
             XElement element = XElement.Parse(xml);
             return (element.ToXmlElement());
+        }
+
+        /// <summary>
+        /// Private extension method to convert a String into an XmlNode
+        /// </summary>
+        /// <param name="element">The String to convert</param>
+        /// <returns>The converted XmlNode</returns>
+        private static XmlNode ToXmlNode(this String xml)
+        {
+            if (xml == null)
+            {
+                throw new ArgumentNullException("xml");
+            }
+
+            if (xml.StartsWith("<![CDATA["))
+            {
+                // TODO: Improve code quality here!
+                XmlDocument doc = new XmlDocument();
+                return (doc.CreateCDataSection(xml.Substring(9, xml.Length - 12)));
+            }
+            else
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(xml);
+                return (doc.DocumentElement);
+            }
+        }
+
+        private static XmlElement FixupElementNamespace(this XmlElement element)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException("element");
+            }
+
+            XElement xElement = XElement.Parse(element.OuterXml);
+            XElement cleanedElement = new XElement(xElement.Name.LocalName,
+                from a in xElement.Attributes()
+                where a.IsNamespaceDeclaration == false
+                select a);
+            return (cleanedElement.ToXmlElement());
         }
 
         #endregion
