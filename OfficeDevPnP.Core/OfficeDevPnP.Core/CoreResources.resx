@@ -513,4 +513,22 @@
   <data name="Prov_Connectors_FileSystem_FileRetrieved" xml:space="preserve">
     <value>File {0} retrieved from folder {1}</value>
   </data>
+  <data name="Provisioning_Extensibility_Pipeline_Missing_AssemblyName" xml:space="preserve">
+    <value>Provider.Assembly missing value. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Missing_TypeName" xml:space="preserve">
+    <value>Provider.Type missing value. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_BeforeInvocation" xml:space="preserve">
+    <value>Provisioning extensibility pipeline preparing to invoke, Assembly: {0}. Type {1}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Exception" xml:space="preserve">
+    <value>There was an exception invoking the custom extensibility provider. Assembly: {0}, Type: {1}. Exception {2}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Success" xml:space="preserve">
+    <value>Provisioning extensibility pipline invocation successful, Assembly {0}, Type {1}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_ClientCtxNull" xml:space="preserve">
+    <value>ClientContext is NULL. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
 </root>

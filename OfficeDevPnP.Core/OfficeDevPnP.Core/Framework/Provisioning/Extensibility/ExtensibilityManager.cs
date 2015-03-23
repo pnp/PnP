@@ -15,52 +15,60 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
     public class ExtensibilityManager
     {
         /// <summary>
-        /// Method to Invoke Custom Provisioning Providers
+        /// Method to Invoke Custom Provisioning Providers. 
+        /// Ensure the ClientContext is not dispose in the custom provider.
         /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="provider"></param>
-        /// <param name="template"></param>
-        public void ExecuteCallout(ClientContext ctx, Provider provider, ProvisioningTemplate template)
+        /// <param name="ctx">Authenticated ClientContext that is passed to teh custom provider.</param>
+        /// <param name="provider">A custom Extensibility Provisioning Provider</param>
+        /// <param name="template">ProvisioningTemplate that is passed to the custom provider</param>
+        /// <exception cref="ExtensiblityPipelineException"></exception>
+        /// <exception cref="ArgumentException">Provider.Assembly or Provider.Type is NullOrWhiteSpace></exception>
+        /// <exception cref="ArgumentnullException">ClientContext is Null></exception>
+        public void ExecuteExtensibilityCallOut(ClientContext ctx, Provider provider, ProvisioningTemplate template)
         {
-            if (string.IsNullOrWhiteSpace(provider.Assembly))
-            {
-                //TODO USE RESOURCE FILE
-                Log.Warning("OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout", "Provider.Assembly did not contain a value.");
-                return;
+            var _loggingSource = "OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout";
+
+            if (ctx == null) {
+                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_ClientCtxNull);
+                throw new ArgumentNullException(CoreResources.Provisioning_Extensibility_Pipeline_ClientCtxNull);
             }
 
-            if(string.IsNullOrWhiteSpace(provider.Type))
-            {
-                //TODO USE RESOURCE FILE
-                Log.Warning("OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout", "Provider.Type  did not contain a value.");
-                return;
+            if (string.IsNullOrWhiteSpace(provider.Assembly)) {
+                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_Missing_AssemblyName);
+                throw new ArgumentException(CoreResources.Provisioning_Extensibility_Pipeline_Missing_AssemblyName);
+            }
+
+            if(string.IsNullOrWhiteSpace(provider.Type)) {
+                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_Missing_TypeName);
+                throw new ArgumentException(CoreResources.Provisioning_Extensibility_Pipeline_Missing_TypeName);
             }
 
             try
             {
-                //TODO USE RESOURCE FILES
-                Log.Info("OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout",
-                    "Begin Invoke, Assembly {0}, Type {1}",
+                Log.Info(_loggingSource,
+                    CoreResources.Provisioning_Extensibility_Pipeline_BeforeInvocation,
                     provider.Assembly,
                     provider.Type);
 
-                var _instance = (IProvisioningExtensibility)Activator.CreateInstance(provider.Assembly, provider.Type).Unwrap();
+                var _instance = (IProvisioningExtensibilityProvider)Activator.CreateInstance(provider.Assembly, provider.Type).Unwrap();
                 _instance.ProcessRequest(ctx, template, provider.Configuration);
 
-                Log.Info("OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout",
-                 "Provider Invoke Successful, Assembly {0}, Type {1}",
+                Log.Info(_loggingSource,
+                 CoreResources.Provisioning_Extensibility_Pipeline_Success,
                  provider.Assembly,
                  provider.Type);
             }
             catch(Exception ex)
             {
-                //TODO USE RESOURCE FILE THROW CUSTOM EXCEPTION
-                Log.Error("OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout", 
-                    "There was an exception invoking custom provider. Assembly: {0}, Type: {1}. Exception {2}", 
+                string _message = string.Format(
+                    CoreResources.Provisioning_Extensibility_Pipeline_Exception, 
                     provider.Assembly, 
                     provider.Type, 
                     ex);
-                throw;
+
+                Log.Error(_loggingSource, _message);
+                throw new ExtensiblityPipelineException(_message, ex);
+             
             }
         }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 {
-    public class ExtensibilityMockProvider : IProvisioningExtensibility
+    public class ExtensibilityMockProvider : IProvisioningExtensibilityProvider
     {
         public void ProcessRequest(ClientContext ctx, ProvisioningTemplate template, string configurationData)
         {

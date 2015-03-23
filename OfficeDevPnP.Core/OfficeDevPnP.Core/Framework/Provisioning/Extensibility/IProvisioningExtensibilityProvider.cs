@@ -11,7 +11,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
     /// <summary>
     /// Defines a interface that accepts requests from the provisioning processing component
     /// </summary>
-    public interface IProvisioningExtensibility
+    public interface IProvisioningExtensibilityProvider
     {
         /// <summary>
         /// Defines a interface that accepts requests from the provisioning processing component
