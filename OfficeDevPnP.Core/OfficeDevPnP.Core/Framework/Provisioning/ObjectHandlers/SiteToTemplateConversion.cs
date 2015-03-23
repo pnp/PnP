@@ -23,10 +23,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template);
-
             // Content Types
             template = new ObjectContentType().CreateEntities(web, template);
-
             // Get Lists 
             template = new ObjectListInstance().CreateEntities(web, template);
             // Get custom actions
@@ -37,7 +35,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template = new ObjectComposedLook().CreateEntities(web, template);
             // Get files
             template = new ObjectFiles().CreateEntities(web, template);
-
+            // Get Property Bag Entires
+            template = new ObjectPropertyBagEntry().CreateEntities(web, template);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
             return template;
@@ -63,13 +62,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Features
-            new ObjectCustomActions().ProvisionObjects(web, template);
+            new ObjectFeatures().ProvisionObjects(web, template);
 
             // Composite look 
             new ObjectComposedLook().ProvisionObjects(web, template);
 
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Property Bag Entries
+            new ObjectPropertyBagEntry().ProvisionObjects(web, template);
         }
     }
 }

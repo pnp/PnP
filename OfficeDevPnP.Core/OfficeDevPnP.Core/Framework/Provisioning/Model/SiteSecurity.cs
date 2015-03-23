@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return _additionalAdministrators;
             }
-            private set { _additionalAdministrators = value; }
+             set { _additionalAdministrators = value; }
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return _additionalOwners;
             }
-            private set { _additionalOwners = value; }
+            set { _additionalOwners = value; }
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return _additionalMembers;
             }
-            private set { _additionalMembers = value; }
+            set { _additionalMembers = value; }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 return _additionalVisitors;
             }
-            private set { _additionalVisitors = value; }
+            set { _additionalVisitors = value; }
         }
         #endregion
     }

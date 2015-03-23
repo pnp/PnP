@@ -42,30 +42,42 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
             foreach (var customAction in customActions)
             {
-                var customActionEntity = new CustomActionEntity();
-                customActionEntity.CommandUIExtension = customAction.CommandUIExtension;
-                customActionEntity.Description = customAction.Description;
-                customActionEntity.Group = customAction.Group;
-                customActionEntity.ImageUrl = customAction.ImageUrl;
-                customActionEntity.Location = customAction.Location;
-                customActionEntity.Name = customAction.Name;
-                customActionEntity.RegistrationId = customAction.RegistrationId;
-                customActionEntity.RegistrationType = customAction.RegistrationType;
-                customActionEntity.Remove = customAction.Remove;
-                customActionEntity.Rights = customAction.Rights;
-                customActionEntity.ScriptBlock = customAction.ScriptBlock;
-                customActionEntity.ScriptSrc = customAction.ScriptSrc;
-                customActionEntity.Sequence = customAction.Sequence;
-                customActionEntity.Title = customAction.Title;
-                customActionEntity.Url = customAction.Url;
-
+                var caExists = false;
                 if (site != null)
                 {
-                    site.AddCustomAction(customActionEntity);
+                    caExists = site.CustomActionExists(customAction.Name);
                 }
                 else
                 {
-                    web.AddCustomAction(customActionEntity);
+                    caExists = web.CustomActionExists(customAction.Name);
+                }
+                if (!caExists)
+                {
+                    var customActionEntity = new CustomActionEntity();
+                    customActionEntity.CommandUIExtension = customAction.CommandUIExtension;
+                    customActionEntity.Description = customAction.Description;
+                    customActionEntity.Group = customAction.Group;
+                    customActionEntity.ImageUrl = customAction.ImageUrl;
+                    customActionEntity.Location = customAction.Location;
+                    customActionEntity.Name = customAction.Name;
+                    customActionEntity.RegistrationId = customAction.RegistrationId;
+                    customActionEntity.RegistrationType = customAction.RegistrationType;
+                    customActionEntity.Remove = customAction.Remove;
+                    customActionEntity.Rights = customAction.Rights;
+                    customActionEntity.ScriptBlock = customAction.ScriptBlock;
+                    customActionEntity.ScriptSrc = customAction.ScriptSrc;
+                    customActionEntity.Sequence = customAction.Sequence;
+                    customActionEntity.Title = customAction.Title;
+                    customActionEntity.Url = customAction.Url;
+
+                    if (site != null)
+                    {
+                        site.AddCustomAction(customActionEntity);
+                    }
+                    else
+                    {
+                        web.AddCustomAction(customActionEntity);
+                    }
                 }
             }
 
