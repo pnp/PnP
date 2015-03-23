@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
-            web.Context.Load(web, w => w.AllProperties.FieldValues);
+            web.Context.Load(web, w => w.AllProperties);
             web.Context.ExecuteQueryRetry();
 
             var entries = new List<PropertyBagEntry>();
