@@ -63,7 +63,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Features
-            new ObjectCustomActions().ProvisionObjects(web, template);
+            new ObjectFeatures().ProvisionObjects(web, template);
 
             // Composite look 
             new ObjectComposedLook().ProvisionObjects(web, template);

@@ -44,7 +44,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<PropertyBagEntry> PropertyBagEntries
         {
             get { return this._propertyBags; }
-            private set { this._propertyBags = value; }
+            set { this._propertyBags = value; }
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public SiteSecurity Security
         {
             get { return this._siteSecurity; }
-            private set { this._siteSecurity = value; }
+            set { this._siteSecurity = value; }
         }
 
         /// <summary>

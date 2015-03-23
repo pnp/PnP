@@ -304,6 +304,7 @@
     <Compile Include="Framework\Provisioning\Model\View.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFeatures.cs" />
