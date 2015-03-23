@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object that is used in the site template
     /// </summary>
-    [XmlRoot(ElementName = "Security")]
     public partial class SiteSecurity
     {
         #region Private
@@ -24,8 +22,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// A Collection of users that are associated as site collection adminsitrators
         /// </summary>
-        [XmlArray(ElementName = "AdditionalAdministrators")]
-        [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalAdministrators
         {
             get
@@ -38,8 +34,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// A Collection of users that are associated to the sites owners group
         /// </summary>
-        [XmlArray(ElementName = "AdditionalOwners")]
-        [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalOwners
         {
             get
@@ -52,8 +46,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// A Collection of users that are associated to the sites members group
         /// </summary>
-        [XmlArray(ElementName = "AdditionalMembers")]
-        [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalMembers
         {
             get
@@ -66,8 +58,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// A Collection of users taht are associated to the sites visitors group
         /// </summary>
-        [XmlArray(ElementName = "AdditionalVistors")]
-        [XmlArrayItem("User", typeof(User))]
         public List<User> AdditionalVisitors
         {
             get
@@ -77,6 +67,5 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { _additionalVisitors = value; }
         }
         #endregion
-
     }
 }

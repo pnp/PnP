@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -16,7 +15,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// The User email Address or the group name.
         /// </summary>
-        [XmlAttribute]
         public string Name { get; set; }
     }
 }

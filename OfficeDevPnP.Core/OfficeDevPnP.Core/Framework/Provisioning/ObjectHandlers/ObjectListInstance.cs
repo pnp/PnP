@@ -19,8 +19,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 listCreate.Description = list.Description;
                 listCreate.TemplateType = list.TemplateType;
                 listCreate.Title = list.Title;
+                listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
+                listCreate.Url = list.Url;
+              
+                var createdList = web.Lists.Add(listCreate);
 
-                
+                createdList.EnableVersioning = list.EnableVersioning;
+                createdList.DocumentTemplateUrl = list.DocumentTemplate;
+                createdList.Hidden = list.Hidden;
+                createdList.ContentTypesEnabled = list.ContentTypesEnabled;
+
+                createdList.Update();
+
+
+                web.Context.ExecuteQueryRetry();
+
+                // TODO: handle 'removedefaultcontenttype'
+
+                foreach (var ctBinding in list.ContentTypeBindings)
+                {
+                    createdList.AddContentTypeToListById(ctBinding.ContentTypeID);
+                }
+
             }
         }
 
@@ -28,19 +48,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             // For each list in the site
             ListCollection lists = web.Lists;
-            web.Context.Load(lists);
+            web.Context.Load(lists, lc => lc.IncludeWithDefaultProperties(l => l.ContentTypes));
             web.Context.ExecuteQuery();
             foreach (var item in lists)
             {
-                if (!item.Hidden)
+
+                ListInstance list = new ListInstance();
+                list.Description = item.Description;
+                list.EnableVersioning = item.EnableVersioning;
+                list.TemplateType = item.BaseTemplate;
+                list.Title = item.Title;
+                list.Hidden = item.Hidden;
+                list.DocumentTemplate = item.DocumentTemplateUrl;
+                list.ContentTypesEnabled = item.ContentTypesEnabled;
+
+                int count = 0;
+                foreach (var ct in item.ContentTypes)
                 {
-                    ListInstance list = new ListInstance();
-                    list.Description = item.Description;
-                    list.EnableVersioning = item.EnableVersioning;
-                    list.TemplateType = item.BaseTemplate;
-                    list.Title = item.Title;
-                    template.Lists.Add(list);
+                    list.ContentTypeBindings.Add(new ContentTypeBinding() {ContentTypeID = ct.StringId, Default = count == 0 ? true : false  });
+                    count++;
                 }
+
+                template.Lists.Add(list);
             }
 
             return template;

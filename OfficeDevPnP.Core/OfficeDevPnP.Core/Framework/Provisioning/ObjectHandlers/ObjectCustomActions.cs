@@ -43,15 +43,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var customAction in customActions)
             {
                 var customActionEntity = new CustomActionEntity();
-                customActionEntity.CommandUIExtension = string.Empty; // TODO
+                customActionEntity.CommandUIExtension = customAction.CommandUIExtension;
                 customActionEntity.Description = customAction.Description;
                 customActionEntity.Group = customAction.Group;
                 customActionEntity.ImageUrl = customAction.ImageUrl;
                 customActionEntity.Location = customAction.Location;
                 customActionEntity.Name = customAction.Name;
-                customActionEntity.RegistrationId = string.Empty; // TODO
-                customActionEntity.RegistrationType = UserCustomActionRegistrationType.None; // TODO
-                customActionEntity.Remove = false; // TODO
+                customActionEntity.RegistrationId = customAction.RegistrationId;
+                customActionEntity.RegistrationType = customAction.RegistrationType;
+                customActionEntity.Remove = customAction.Remove;
                 customActionEntity.Rights = customAction.Rights;
                 customActionEntity.ScriptBlock = customAction.ScriptBlock;
                 customActionEntity.ScriptSrc = customAction.ScriptSrc;
@@ -107,6 +107,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             customAction.Sequence = userCustomAction.Sequence;
             customAction.Title = userCustomAction.Title;
             customAction.Url = userCustomAction.Url;
+            customAction.RegistrationId = userCustomAction.RegistrationId;
+            customAction.RegistrationType = userCustomAction.RegistrationType;
+            customAction.CommandUIExtension = userCustomAction.CommandUIExtension;
 
             return customAction;
         }

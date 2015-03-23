@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Utilities;
 using System.IO;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
@@ -18,7 +19,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         [TestInitialize()]
         public void Intialize()
         {
-            this._provisioningTemplatePath = string.Format(@"{0}\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate.xml");
+            this._provisioningTemplatePath = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
         }
 
         [TestMethod]
@@ -27,7 +28,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             this.GetProvisioningTemplate();
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
-            var _pt = XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
             Assert.IsNotNull(_pt);
         }
 
@@ -180,29 +181,32 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
       
         }
 
-        [TestMethod]
-        [TestCategory(TEST_CATEGORY)]
-        public void IsFieldObjectSerializeCorrectly()
-        {
-            var _ptExpected = this.GetProvisioningTemplate();
-            var _expectedField =  _ptExpected.SiteFields[0].SchemaXml;
-            var _xdoc = XMLSerializer.Serialize(_ptExpected);
-            var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
-            var _actualField = _ptActual.SiteFields[0].SchemaXml;
-            Assert.AreEqual(_expectedField, _actualField);
-        }
+        // PaoloPia - 2015-03-22
+        // We don't need these test methods anymore, I guess
 
-        [TestMethod]
-        [TestCategory(TEST_CATEGORY)]
-        public void IsContentObjectSeriliazedCorrectly()
-        {
-            var _ptExpected = this.GetProvisioningTemplate();
-            var _expectedContentType = _ptExpected.ContentTypes[0].SchemaXml;
-            var _xdoc = XMLSerializer.Serialize(_ptExpected);
-            var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
-            var _actualContentType = _ptActual.ContentTypes[0].SchemaXml;
-            Assert.AreEqual(_expectedContentType, _actualContentType);
-        }
+        //[TestMethod]
+        //[TestCategory(TEST_CATEGORY)]
+        //public void IsFieldObjectSerializeCorrectly()
+        //{
+        //    var _ptExpected = this.GetProvisioningTemplate();
+        //    var _expectedField =  _ptExpected.SiteFields[0].SchemaXml;
+        //    var _xdoc = XMLSerializer.Serialize(_ptExpected);
+        //    var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
+        //    var _actualField = _ptActual.SiteFields[0].SchemaXml;
+        //    Assert.AreEqual(_expectedField, _actualField);
+        //}
+
+        //[TestMethod]
+        //[TestCategory(TEST_CATEGORY)]
+        //public void IsContentObjectSeriliazedCorrectly()
+        //{
+        //    var _ptExpected = this.GetProvisioningTemplate();
+        //    var _expectedContentType = _ptExpected.ContentTypes[0].SchemaXml;
+        //    var _xdoc = XMLSerializer.Serialize(_ptExpected);
+        //    var _ptActual = XMLSerializer.Deserialize<ProvisioningTemplate>(_xdoc);
+        //    var _actualContentType = _ptActual.ContentTypes[0].SchemaXml;
+        //    Assert.AreEqual(_expectedContentType, _actualContentType);
+        //}
      
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
@@ -210,8 +214,17 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
            var _pt = this.GetProvisioningTemplate();
            var _json = JsonUtility.Serialize<ProvisioningTemplate>(_pt);
+        }
 
-        
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeToXml()
+        {
+            using (var ctx = TestCommon.CreateClientContext())
+            {
+                var template = ctx.Web.GetProvisioningTemplate();
+                string xml = XMLSerializer.Serialize(template);
+            }
         }
         #region Test Support
         /// <summary>
@@ -221,10 +234,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         protected ProvisioningTemplate GetProvisioningTemplate()
         {
             XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
-            return XMLSerializer.Deserialize<ProvisioningTemplate>(_doc);
+            return XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
         }
-
-
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
