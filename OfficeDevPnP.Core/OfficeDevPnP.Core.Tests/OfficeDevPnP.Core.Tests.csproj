@@ -198,6 +198,7 @@
     <Compile Include="AppModelExtensions\Tenant15ExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
+    <Compile Include="Framework\Connectors\ConnectorTests.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTestConstants.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
