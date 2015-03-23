@@ -32,16 +32,47 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         #endregion
 
         #region Overridable Methods
+        /// <summary>
+        /// Get the files available in the default container
+        /// </summary>
+        /// <returns>List of files</returns>
         public abstract List<string> GetFiles();
 
+        /// <summary>
+        /// Get the files available in the specified container
+        /// </summary>
+        /// <param name="container">Name of the container to get the files from</param>
+        /// <returns>List of files</returns>
         public abstract List<string> GetFiles(string container);
 
+        /// <summary>
+        /// Gets a file as string from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public abstract string GetFile(string fileName);
 
+        /// <summary>
+        /// Gets a file as string from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public abstract string GetFile(string fileName, string container);
 
+        /// <summary>
+        /// Gets a file as stream from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <returns>String containing the file contents</returns>
         public abstract Stream GetFileStream(string fileName);
 
+        /// <summary>
+        /// Gets a file as stream from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to get</param>
+        /// <param name="container">Name of the container to get the file from</param>
+        /// <returns>String containing the file contents</returns>
         public abstract Stream GetFileStream(string fileName, string container);
         #endregion
 
