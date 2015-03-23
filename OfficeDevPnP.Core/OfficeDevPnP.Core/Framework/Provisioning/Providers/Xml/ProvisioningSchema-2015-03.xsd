@@ -225,7 +225,7 @@
         </xsd:annotation>
       </xsd:attribute>
       
-      <xsd:attribute name="Version" type="xsd:string" use="optional" default="1.0">
+      <xsd:attribute name="Version" type="xsd:string" use="optional">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
             The Version of the Provisioning Template, required attribute

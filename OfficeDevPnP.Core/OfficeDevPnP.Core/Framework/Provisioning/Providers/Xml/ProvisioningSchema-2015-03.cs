@@ -50,10 +50,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         private string versionField;
         
-        public SharePointProvisioningTemplate() {
-            this.versionField = "1.0";
-        }
-        
         /// <remarks/>
         public string SitePolicy {
             get {
@@ -181,7 +177,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("1.0")]
         public string Version {
             get {
                 return this.versionField;
@@ -796,17 +791,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
         
         private bool removeDefaultContentTypeField;
         
-        private bool hiddenField;
-
         private bool contentTypesEnabledField;
-
+        
+        private bool hiddenField;
         
         public ListInstance() {
             this.onQuickLaunchField = false;
             this.enableVersioningField = false;
             this.removeDefaultContentTypeField = false;
-            this.hiddenField = false;
             this.contentTypesEnabledField = false;
+            this.hiddenField = false;
         }
         
         /// <remarks/>
@@ -964,18 +958,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml {
                 this.removeDefaultContentTypeField = value;
             }
         }
-
+        
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool ContentTypesEnabled 
-        {
-            get
-            {
+        public bool ContentTypesEnabled {
+            get {
                 return this.contentTypesEnabledField;
             }
-            set
-            {
+            set {
                 this.contentTypesEnabledField = value;
             }
         }
