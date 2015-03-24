@@ -88,7 +88,7 @@
           <xsd:complexType>
             <xsd:sequence>
               <xsd:any minOccurs="1" maxOccurs="unbounded"
-                       processContents="lax" namespace="##any" />
+                       processContents="lax" namespace="##other" />
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
@@ -102,7 +102,7 @@
           <xsd:complexType>
             <xsd:sequence>
               <xsd:any minOccurs="1" maxOccurs="unbounded"
-                       processContents="lax" namespace="##any" />
+                       processContents="lax" namespace="##other" />
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>

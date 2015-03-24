@@ -11,7 +11,6 @@ using System.Net;
 namespace OfficeDevPnP.Core.Tests {
     static class TestCommon
     {
-
         #region Constructor
         static TestCommon() 
         {
@@ -63,8 +62,8 @@ namespace OfficeDevPnP.Core.Tests {
         #endregion
 
         #region Properties
-        static string TenantUrl { get; set; }
-        static string DevSiteUrl { get; set; }
+        public static string TenantUrl { get; set; }
+        public static string DevSiteUrl { get; set; }
         static string UserName { get; set; }
         static SecureString Password { get; set; }
         static ICredentials Credentials { get; set; }
@@ -118,7 +117,5 @@ namespace OfficeDevPnP.Core.Tests {
             return secureString;
         }
         #endregion
-
-
     }
 }

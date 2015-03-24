@@ -41,8 +41,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 container = "";
             }
 
-            this.AddParameter(CONNECTIONSTRING, connectionString);
-            this.AddParameter(CONTAINER, container);
+            this.AddParameterAsString(CONNECTIONSTRING, connectionString);
+            this.AddParameterAsString(CONTAINER, container);
         }
 
         #endregion
@@ -180,13 +180,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 }
 
                 Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileRetrieved, fileName, container);
+                stream.Position = 0;
                 return stream;
             }
             catch (Exception ex)
             {
                 if (ex is FileNotFoundException || ex is DirectoryNotFoundException)
                 {
-                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileNotFound, fileName, container, ex.Message);
+                    Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileNotFound, fileName, container, ex.Message);
                     return null;
                 }
 

@@ -18,11 +18,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         #endregion
 
         #region Private variables
-        private Dictionary<string, string> parameters = new Dictionary<string, string>();
+        private Dictionary<string, object> parameters = new Dictionary<string, object>();
         #endregion
 
         #region Properties
-        public Dictionary<string, string> Parameters
+        public Dictionary<string, object> Parameters
         {
             get
             {
@@ -77,7 +77,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         #endregion
 
         #region Helper methods
-        public void AddParameter(string key, string value)
+        public void AddParameterAsString(string key, string value)
+        {
+            if (!this.Parameters.ContainsKey(key))
+            {
+                this.Parameters.Add(key, value);
+            }
+            else
+            {
+                this.Parameters[key] = value;
+            }
+        }
+
+        public void AddParameter(string key, object value)
         {
             if (!this.Parameters.ContainsKey(key))
             {
@@ -93,7 +105,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         {
             if (this.Parameters.ContainsKey(CONNECTIONSTRING))
             {
-                return this.Parameters[CONNECTIONSTRING];
+                return this.Parameters[CONNECTIONSTRING].ToString();
             }
             else
             {
@@ -105,7 +117,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         {
             if (this.Parameters.ContainsKey(CONTAINER))
             {
-                return this.Parameters[CONTAINER];
+                return this.Parameters[CONTAINER].ToString();
             }
             else
             {
@@ -113,6 +125,5 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             }
         }
         #endregion
-
     }
 }

@@ -284,6 +284,7 @@
     <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\IFileConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\SharePointConnector.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibilityProvider.cs" />
@@ -320,9 +321,11 @@
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
       <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
-    <Compile Include="Framework\Provisioning\Providers\Xml\XMLToProvisioningTemplateMapper.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\SharePointProvisioningTemplateExtensions.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />

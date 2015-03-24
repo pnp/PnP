@@ -30,10 +30,10 @@
     <File Src="/Resources/Files/SAMPLE.js" Folder="SAMPLE"/>
   </Files>
   <SiteFields>
-    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="My Columns"  MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="My Columns " MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="My Columns"  MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="My Columns " MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
   </SiteFields>
   <ContentTypes>
     <ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E"
@@ -41,7 +41,7 @@
                  Group="Base Foundation Content Types"
                  Description="General Project Document Content Type"
                  Inherits="true"
-                 Version="0">
+                 Version="0" xmlns="http://schemas.microsoft.com/sharepoint/">
       <FieldRefs>
         <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
         <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
@@ -62,7 +62,7 @@
                   Hidden="false"
                   RemoveDefaultContentType ="true">
       <Views>
-        <View>
+        <View xmlns="http://schemas.microsoft.com/sharepoint/">
           <ViewFields>
             <FieldRef Name="ID" />
             <FieldRef Name="Title" />
@@ -134,7 +134,7 @@
                 SiteLogo="Resources/Themes/Contoso/contosologo.png" />
   <Providers>
     <Provider Assembly="Sample" Type="MyType">
-      <Configuration><![CDATA[<test>Hello World</test>]]></Configuration>
+      <Configuration><![CDATA[Some custom text that is not XML and that can contain symbols like >, or <, or &, or whatever else.]]></Configuration>
     </Provider>
   </Providers>
 </SharePointProvisioningTemplate>

@@ -30,10 +30,10 @@
   </Security>
 
   <SiteFields>
-    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="Base.Foundation.Columns"  MaxLength="255" AllowDeletion="TRUE" />
-    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="Base.Foundation.Columns"  MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
+    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" xmlns="http://schemas.microsoft.com/sharepoint/" />
   </SiteFields>
 
   <ContentTypes>
@@ -42,7 +42,7 @@
                  Group="Base Foundation Content Types"
                  Description="General Project Document Content Type"
                  Inherits="true"
-                 Version="0">
+                 Version="0" xmlns="http://schemas.microsoft.com/sharepoint/">
       <FieldRefs>
         <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
         <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
@@ -120,7 +120,13 @@
 
   <Providers>
     <Provider Assembly="OfficeDev.PnP.Provisioning.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              Type="OfficeDev.PnP.Provisioning.Providers.FakeProvider" Enabled="true" />
+              Type="OfficeDev.PnP.Provisioning.Providers.FakeProvider" Enabled="true">
+      <Configuration>
+        <MyProviderConfiguration id="SampleConfig" xmlns="http://schemas.somecompany.com/MyProviderConfiguration">
+          <ChildNode Attribute="value">TextContent</ChildNode>
+        </MyProviderConfiguration>
+      </Configuration>
+    </Provider>
   </Providers>
 
 </SharePointProvisioningTemplate>

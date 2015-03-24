@@ -13,7 +13,7 @@ using Model = OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
-    public static partial class ProvisioningTemplateExtensions
+    public static partial class SharePointProvisioningTemplateExtensions
     {
         public static SharePointProvisioningTemplate ToXml(this Model.ProvisioningTemplate template)
         {
@@ -125,19 +125,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          TemplateType = list.TemplateType,
                          Title = list.Title,
                          Url = list.Url,
-                         ContentTypeBindings =
+                         ContentTypeBindings = list.ContentTypeBindings.Count > 0 ?
                             (from contentTypeBinding in list.ContentTypeBindings
                              select new ContentTypeBinding
                              {
                                  ContentTypeID = contentTypeBinding.ContentTypeID,
                                  Default = contentTypeBinding.Default,
-                             }).ToArray(),
-                         Views = new ListInstanceViews
+                             }).ToArray() : null,
+                         Views = list.Views.Count > 0 ?
+                         new ListInstanceViews
                          {
                              Any =
                                 (from view in list.Views
                                  select view.SchemaXml.ToXmlElement()).ToArray(),
-                         },
+                         } : null,
                      }).ToArray();
             }
 
@@ -274,7 +275,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Check the provided template against the XML schema
-            if (!template.IsValid())
+            if (!template.IsValidSharePointProvisioningTemplate())
             {
                 // TODO: Use resource file
                 throw new ApplicationException("The provided template is not valid!");
@@ -347,7 +348,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     from field in template.SiteFields.Any
                     select new Model.Field
                     {
-                        SchemaXml = field.FixupElementNamespace().OuterXml,
+                        SchemaXml = field.OuterXml,
                     });
             }
 
@@ -358,7 +359,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     from contentType in template.ContentTypes.Any
                     select new Model.ContentType
                     {
-                        SchemaXml = contentType.FixupElementNamespace().OuterXml,
+                        SchemaXml = contentType.OuterXml,
                     });
             }
 
@@ -501,7 +502,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     select new Model.Provider
                     {
                         Assembly = provider.Assembly,
-                        Configuration = provider.Configuration != null ? provider.Configuration.OuterXml : null,
+                        Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
                         Enabled = provider.Enabled,
                         Type = provider.Type,
                     });
@@ -510,18 +511,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        public static Boolean IsValid(this SharePointProvisioningTemplate template)
+        public static Boolean IsValidSharePointProvisioningTemplate(this XDocument xml)
         {
-            if (template == null)
+            if (xml == null)
             {
-                throw new ArgumentNullException("template");
+                throw new ArgumentNullException("xml");
             }
 
-            // Serialize the template into an XML string
-            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
-
             // Load the XSD embedded resource
-            Stream stream = typeof(ProvisioningTemplateExtensions)
+            Stream stream = typeof(SharePointProvisioningTemplateExtensions)
                 .Assembly
                 .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
 
@@ -530,13 +528,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE,
                 new XmlTextReader(stream));
 
-            XDocument doc = XDocument.Parse(xml);
             Boolean result = true;
-            doc.Validate(schemas, (o, e) => {
+            xml.Validate(schemas, (o, e) =>
+            {
                 result = false;
             });
 
             return (result);
+        }
+
+        public static Boolean IsValidSharePointProvisioningTemplate(this SharePointProvisioningTemplate template)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            // Serialize the template into an XML string
+            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
+            XDocument doc = XDocument.Parse(xml);
+
+            return (doc.IsValidSharePointProvisioningTemplate());
         }
 
         #region Private extension methods for handling XML content
@@ -619,22 +631,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <returns>The converted XmlNode</returns>
         private static XmlNode ToXmlNode(this String xml)
         {
-            if (xml == null)
+            if (String.IsNullOrEmpty(xml))
             {
-                throw new ArgumentNullException("xml");
+                throw new ArgumentException("xml");
             }
 
-            if (xml.StartsWith("<![CDATA["))
-            {
-                // TODO: Improve code quality here!
-                XmlDocument doc = new XmlDocument();
-                return (doc.CreateCDataSection(xml.Substring(9, xml.Length - 12)));
-            }
-            else
+            try
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(xml);
                 return (doc.DocumentElement);
+            }
+            catch (XmlException)
+            {
+                XmlDocument doc = new XmlDocument();
+                return (doc.CreateCDataSection(xml));
+            }
+        }
+
+        private static String ToProviderConfiguration(this XmlNode xml)
+        {
+            switch (xml.NodeType)
+            {
+                case XmlNodeType.CDATA:
+                    return (((XmlCDataSection)xml).InnerText);
+                default:
+                    return (xml.OuterXml);
             }
         }
 

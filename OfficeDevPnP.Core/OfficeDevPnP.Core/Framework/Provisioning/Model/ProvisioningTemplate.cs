@@ -44,7 +44,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<PropertyBagEntry> PropertyBagEntries
         {
             get { return this._propertyBags; }
-            set { this._propertyBags = value; }
+            private set { this._propertyBags = value; }
         }
 
         /// <summary>
