@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     fileStream.Read(stream.GetBuffer(), 0, (int)fileStream.Length);
                 }
 
-                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileRetrieved, fileName, container);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileRetrieved, fileName, container);
                 stream.Position = 0;
                 return stream;
             }
