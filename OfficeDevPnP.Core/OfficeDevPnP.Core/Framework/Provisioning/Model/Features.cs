@@ -20,10 +20,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<Feature> SiteFeatures
         {
-            get
-            {
-                return this._siteFeatures;
-            }
+            get{ return this._siteFeatures; }
             private set { this._siteFeatures = value; }
         }
 
@@ -32,10 +29,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<Feature> WebFeatures
         {
-            get
-            {
-                return this._webFeatures;
-            }
+            get { return this._webFeatures; }
             private set { this._webFeatures = value; }
         }
 

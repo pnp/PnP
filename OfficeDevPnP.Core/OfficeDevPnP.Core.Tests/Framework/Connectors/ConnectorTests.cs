@@ -26,61 +26,61 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             // Azure setup
             if (!String.IsNullOrEmpty(TestCommon.AzureStorageKey))
             {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(TestCommon.AzureStorageKey);
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(TestCommon.AzureStorageKey);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            
+            CloudBlobContainer container = blobClient.GetContainerReference(testContainer);
+            // Create the container if it doesn't already exist.
+            container.CreateIfNotExists();
 
-                CloudBlobContainer container = blobClient.GetContainerReference(testContainer);
-                // Create the container if it doesn't already exist.
-                container.CreateIfNotExists();
+            // Upload files
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference("office365.png");
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            } 
 
-                // Upload files
-                CloudBlockBlob blockBlob = container.GetBlockBlobReference("office365.png");
-                // Create or overwrite the "myblob" blob with contents from a local file.
-                using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
-                {
-                    blockBlob.UploadFromStream(fileStream);
-                }
+            CloudBlobContainer containerSecure = blobClient.GetContainerReference(testContainerSecure);
+            // Create the container if it doesn't already exist.
+            containerSecure.CreateIfNotExists();
 
-                CloudBlobContainer containerSecure = blobClient.GetContainerReference(testContainerSecure);
-                // Create the container if it doesn't already exist.
-                containerSecure.CreateIfNotExists();
+            // Avoid public access to this test container
+            BlobContainerPermissions bcp = new BlobContainerPermissions();
+            bcp.PublicAccess = BlobContainerPublicAccessType.Off;
+            containerSecure.SetPermissions(bcp);
 
-                // Avoid public access to this test container
-                BlobContainerPermissions bcp = new BlobContainerPermissions();
-                bcp.PublicAccess = BlobContainerPublicAccessType.Off;
-                containerSecure.SetPermissions(bcp);
-
-                blockBlob = containerSecure.GetBlockBlobReference("custom.spcolor");
-                // Create or overwrite the "myblob" blob with contents from a local file.
-                using (var fileStream = System.IO.File.OpenRead(@".\resources\custom.spcolor"))
-                {
-                    blockBlob.UploadFromStream(fileStream);
-                }
-
-                blockBlob = containerSecure.GetBlockBlobReference("custombg.jpg");
-                // Create or overwrite the "myblob" blob with contents from a local file.
-                using (var fileStream = System.IO.File.OpenRead(@".\resources\custombg.jpg"))
-                {
-                    blockBlob.UploadFromStream(fileStream);
-                }
-
-                blockBlob = containerSecure.GetBlockBlobReference("ProvisioningTemplate.xml");
-                // Create or overwrite the "myblob" blob with contents from a local file.
-                using (var fileStream = System.IO.File.OpenRead(@".\resources\templates\ProvisioningTemplate.xml"))
-                {
-                    blockBlob.UploadFromStream(fileStream);
-                }
+            blockBlob = containerSecure.GetBlockBlobReference("custom.spcolor");
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\custom.spcolor"))
+            {
+                blockBlob.UploadFromStream(fileStream);
             }
+
+            blockBlob = containerSecure.GetBlockBlobReference("custombg.jpg");
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\custombg.jpg"))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            }
+
+            blockBlob = containerSecure.GetBlockBlobReference("ProvisioningTemplate-2015-03-Sample-01.xml");
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\templates\ProvisioningTemplate-2015-03-Sample-01.xml"))
+            {
+                blockBlob.UploadFromStream(fileStream);
+            }
+        }
 
             // SharePoint setup
             using (ClientContext cc = TestCommon.CreateClientContext())
-            {
+        {
                 if (!cc.Web.ListExists(testContainer))
-                {
+            {
                     List list = cc.Web.CreateDocumentLibrary(testContainer);
                     // upload files
                     list.RootFolder.UploadFile("office365.png", @".\resources\office365.png", true);
-                }
+            }
 
                 if (!cc.Web.ListExists(testContainerSecure))
                 {
@@ -108,15 +108,15 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             // Azure setup
             if (!String.IsNullOrEmpty(TestCommon.AzureStorageKey))
             {
-                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(TestCommon.AzureStorageKey);
-                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(TestCommon.AzureStorageKey);
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
-                CloudBlobContainer container = blobClient.GetContainerReference(testContainer);
-                container.DeleteIfExists();
+            CloudBlobContainer container = blobClient.GetContainerReference(testContainer);
+            container.DeleteIfExists();
 
-                CloudBlobContainer containerSecure = blobClient.GetContainerReference(testContainerSecure);
-                containerSecure.DeleteIfExists();
-            }
+            CloudBlobContainer containerSecure = blobClient.GetContainerReference(testContainerSecure);
+            containerSecure.DeleteIfExists();
+        }
 
             // SharePoint setup
             using (ClientContext cc = TestCommon.CreateClientContext())
@@ -153,7 +153,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             azureConnector.Parameters.Add(AzureStorageConnector.CONNECTIONSTRING, TestCommon.AzureStorageKey);
             azureConnector.Parameters.Add(AzureStorageConnector.CONTAINER, testContainerSecure);
 
-            string file = azureConnector.GetFile("ProvisioningTemplate.xml");
+            string file = azureConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = azureConnector.GetFile("Idonotexist.xml");
@@ -174,7 +174,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
 
             AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
             
-            string file = azureConnector.GetFile("ProvisioningTemplate.xml");
+            string file = azureConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = azureConnector.GetFile("Idonotexist.xml");
@@ -226,7 +226,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
 
             AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
 
-            using (var bytes = azureConnector.GetFileStream("ProvisioningTemplate.xml"))
+            using (var bytes = azureConnector.GetFileStream("ProvisioningTemplate-2015-03-Sample-01.xml"))
             {
                 Assert.IsTrue(bytes.Length > 0);
             }
@@ -271,7 +271,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".\Resources", "Templates");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml");
@@ -286,7 +286,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".", @"Resources\Templates");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml");
@@ -301,7 +301,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".", @"wrong");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml", @"Resources\Templates");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml", @"Resources\Templates");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml", "Templates");

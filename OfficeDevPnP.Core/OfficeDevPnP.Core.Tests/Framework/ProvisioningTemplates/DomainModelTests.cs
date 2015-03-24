@@ -13,34 +13,57 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
     [TestClass]
     public class DomainModelTests
     {
-        private string _provisioningTemplatePath = string.Empty;
+        private string _provisioningTemplatePath1 = string.Empty;
+        private string _provisioningTemplatePath2 = string.Empty;
         private const string TEST_CATEGORY = "Framework Provisioning Domain Model";
 
         [TestInitialize()]
         public void Intialize()
         {
-            this._provisioningTemplatePath = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-01.xml");
+            this._provisioningTemplatePath1 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-01.xml");
+            this._provisioningTemplatePath2 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
         }
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
-        public void CanDeserializeXMLToDomainObject()
+        public void CanDeserializeXMLToDomainObject1()
         {
             this.GetProvisioningTemplate();
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
             var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
             Assert.IsNotNull(_pt);
         }
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
-        public void CanSerializeDomainObjectToXML()
+        public void CanSerializeDomainObjectToXML1()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
             var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
             var _spt = _pt.ToXml();
 
-            Assert.IsTrue(_spt.IsValid());
+            Assert.IsTrue(_spt.IsValidSharePointProvisioningTemplate());
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanDeserializeXMLToDomainObject2()
+        {
+            this.GetProvisioningTemplate();
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath2);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
+            Assert.IsNotNull(_pt);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML2()
+        {
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath2);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
+            var _spt = _pt.ToXml();
+
+            Assert.IsTrue(_spt.IsValidSharePointProvisioningTemplate());
         }
 
         [TestMethod]
@@ -218,7 +241,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         /// <returns></returns>
         protected ProvisioningTemplate GetProvisioningTemplate()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath);
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
             return XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
         }
 

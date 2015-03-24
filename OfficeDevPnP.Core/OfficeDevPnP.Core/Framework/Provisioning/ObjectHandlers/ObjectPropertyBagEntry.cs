@@ -38,7 +38,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 entries.Add(new PropertyBagEntry() {Key = propbagEntry.Key, Value = propbagEntry.Value.ToString()});
             }
 
-            template.PropertyBagEntries = entries;
+            template.PropertyBagEntries.Clear();
+            template.PropertyBagEntries.AddRange(entries);
 
             return template;
         }

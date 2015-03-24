@@ -22,10 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<CustomAction> SiteCustomActions
         {
-            get
-            {
-                return this._siteCustomActions;
-            }
+            get { return this._siteCustomActions; }
             private set { this._siteCustomActions = value; }
         }
 
@@ -34,10 +31,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<CustomAction> WebCustomActions
         {
-            get
-            {
-                return this._webCustomActions;
-            }
+            get { return this._webCustomActions; }
             private set { this._webCustomActions = value; }
         }
 
