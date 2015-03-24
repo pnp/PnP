@@ -23,6 +23,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template);
+            // Site Fields
+            template = new ObjectField().CreateEntities(web, template);
             // Content Types
             template = new ObjectContentType().CreateEntities(web, template);
             // Get Lists 
@@ -52,7 +54,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
 
-            //
+            // Site Fields
+            new ObjectField().ProvisionObjects(web, template);
+
+            // Content Types
             new ObjectContentType().ProvisionObjects(web, template);
 
             // Lists
