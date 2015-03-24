@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1.0" xmlns="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema">
+<SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1.0" 
+  xmlns="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SitePolicy>HBI</SitePolicy>
   <PropertyBagEntries>
     <PropertyBagEntry Key="KEY1" Value ="value1" />
@@ -84,7 +87,6 @@
     </ListInstance>
   </Lists>
   <Features>
-    <!--OOB Features to Activate or deactivate. If you want to deactivate a feature apply Deactivate="true" attribute -->
     <SiteFeatures>
       <Feature ID="b50e3104-6812-424f-a011-cc90e6327318" />
       <Feature ID="9c0834e1-ba47-4d49-812b-7d4fb6fea211" />
@@ -123,8 +125,7 @@
                     Url="/_layouts/CustomActionsHello.aspx?ActionsMenu" />
     </WebCustomActions>
   </CustomActions>
-  <ComposedLook Name="Contoso"
-                Version ="1"
+  <ComposedLook Name="Contoso" Version="1"
                 ColorFile="Resources/Themes/Contoso/contoso.spcolor"
                 FontFile="Resources/Themes/Contoso/contoso.spfont"
                 BackgroundFile="Resources/Themes/Contoso/contosobg.jpg"

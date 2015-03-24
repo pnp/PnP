@@ -306,6 +306,7 @@
     <Compile Include="Framework\Provisioning\Model\View.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFeatures.cs" />
@@ -319,6 +320,7 @@
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
       <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLToProvisioningTemplateMapper.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
@@ -376,9 +378,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
+    <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

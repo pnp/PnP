@@ -104,7 +104,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
-            set { this._ctBindings = value;}
+            private set { this._ctBindings = value;}
         }
 
         /// <summary>
