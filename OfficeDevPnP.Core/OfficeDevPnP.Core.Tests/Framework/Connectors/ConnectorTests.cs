@@ -348,6 +348,58 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
 
             // file will be deleted at end of test since the used storage containers are deleted
         }
+
+        /// <summary>
+        /// Delete file from default container
+        /// </summary>
+        [TestMethod]
+        public void AzureConnectorDelete1Test()
+        {
+            AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
+            
+            // Add a file
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                azureConnector.SaveFileStream("blabla.png", fileStream);
+            }
+
+            // Delete the file
+            azureConnector.DeleteFile("blabla.png");
+
+            //read the file
+            using (var bytes = azureConnector.GetFileStream("blabla.png"))
+            {
+                Assert.IsNull(bytes);
+            }
+
+            // file will be deleted at end of test since the used storage containers are deleted
+        }
+
+        /// <summary>
+        /// Delete file from a specific container
+        /// </summary>
+        [TestMethod]
+        public void AzureConnectorDelete2Test()
+        {
+            AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
+
+            // Add a file
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                azureConnector.SaveFileStream("blabla.png", testContainer, fileStream);
+            }
+
+            // Delete the file
+            azureConnector.DeleteFile("blabla.png", testContainer);
+
+            //read the file
+            using (var bytes = azureConnector.GetFileStream("blabla.png", testContainer))
+            {
+                Assert.IsNull(bytes);
+            }
+
+            // file will be deleted at end of test since the used storage containers are deleted
+        }
         #endregion
 
         #region File connector tests
@@ -509,6 +561,56 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             using (var bytes = fileSystemConnector.GetFileStream("blabla.png", @"Resources\Templates"))
             {
                 Assert.IsTrue(byteCount == bytes.Length);
+            }
+
+            // file will be deleted at end of test 
+        }
+
+        /// <summary>
+        /// Save file to default container
+        /// </summary>
+        [TestMethod]
+        public void FileConnectorDelete1Test()
+        {
+            // upload the file
+            FileSystemConnector fileSystemConnector = new FileSystemConnector(@".\Resources", "");
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                fileSystemConnector.SaveFileStream("blabla.png", fileStream);
+            }
+
+            // delete the file
+            fileSystemConnector.DeleteFile("blabla.png");
+
+            //read the file
+            using (var bytes = fileSystemConnector.GetFileStream("blabla.png"))
+            {
+                Assert.IsNull(bytes);
+            }
+
+            // file will be deleted at end of test 
+        }
+
+        /// <summary>
+        /// Save file to default container
+        /// </summary>
+        [TestMethod]
+        public void FileConnectorDelete2Test()
+        {
+            // upload the file
+            FileSystemConnector fileSystemConnector = new FileSystemConnector(@".", "wrong");
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                fileSystemConnector.SaveFileStream("blabla.png", @"Resources\Templates", fileStream);
+            }
+
+            // delete the file
+            fileSystemConnector.DeleteFile("blabla.png", @"Resources\Templates");
+
+            //read the file
+            using (var bytes = fileSystemConnector.GetFileStream("blabla.png", @"Resources\Templates"))
+            {
+                Assert.IsNull(bytes);
             }
 
             // file will be deleted at end of test 
@@ -695,6 +797,58 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             using (var bytes = spConnector.GetFileStream("blabla.png", String.Format("{0}/sub1/sub11", testContainerSecure)))
             {
                 Assert.IsTrue(byteCount == bytes.Length);
+            }
+
+            // file will be deleted at end of test 
+        }
+
+        /// <summary>
+        /// Delete file from default container
+        /// </summary>
+        [TestMethod]
+        public void SharePointConnectorDelete1Test()
+        {
+            SharePointConnector spConnector = new SharePointConnector(TestCommon.CreateClientContext(), TestCommon.DevSiteUrl, testContainer);
+            
+            // upload file
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                spConnector.SaveFileStream("blabla.png", fileStream);
+            }
+
+            // delete the file
+            spConnector.DeleteFile("blabla.png");
+
+            // read the file
+            using (var bytes = spConnector.GetFileStream("blabla.png"))
+            {
+                Assert.IsNull(bytes);
+            }
+
+            // file will be deleted at end of test 
+        }
+
+        /// <summary>
+        /// Delete file from specific container
+        /// </summary>
+        [TestMethod]
+        public void SharePointConnectorDelete2Test()
+        {
+            SharePointConnector spConnector = new SharePointConnector(TestCommon.CreateClientContext(), TestCommon.DevSiteUrl, testContainer);
+
+            // upload file
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\office365.png"))
+            {
+                spConnector.SaveFileStream("blabla.png", String.Format("{0}/sub1/sub11", testContainerSecure), fileStream);
+            }
+
+            // delete the file
+            spConnector.DeleteFile("blabla.png", String.Format("{0}/sub1/sub11", testContainerSecure));
+
+            // read the file
+            using (var bytes = spConnector.GetFileStream("blabla.png", String.Format("{0}/sub1/sub11", testContainerSecure)))
+            {
+                Assert.IsNull(bytes);
             }
 
             // file will be deleted at end of test 

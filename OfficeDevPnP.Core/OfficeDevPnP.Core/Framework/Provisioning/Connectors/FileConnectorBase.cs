@@ -90,6 +90,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         /// <param name="stream">Stream containing the file contents</param>
         public abstract void SaveFileStream(string fileName, string container, Stream stream);
 
+        /// <summary>
+        /// Deletes a file from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        public abstract void DeleteFile(string fileName);
+
+        /// <summary>
+        /// Deletes a file from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        /// <param name="container">Name of the container to delete the file from</param>
+        public abstract void DeleteFile(string fileName, string container);
+
         #endregion
 
         #region Helper methods

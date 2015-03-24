@@ -229,6 +229,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw;
             }
         }
+
+        /// <summary>
+        /// Deletes a file from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        public override void DeleteFile(string fileName)
+        {
+            DeleteFile(fileName, GetContainer());
+        }
+
+        /// <summary>
+        /// Deletes a file from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        /// <param name="container">Name of the container to delete the file from</param>
+        public override void DeleteFile(string fileName, string container)
+        {
+            if (String.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("fileName");
+            }
+
+            if (String.IsNullOrEmpty(container))
+            {
+                throw new ArgumentException("container");
+            }
+
+            try
+            {
+                if (!initialized)
+                {
+                    Initialize();
+                }
+
+                CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
+                CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
+
+                if (blockBlob.Exists())
+                {
+                    blockBlob.Delete();
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileDeleted, fileName, container);
+                }
+                else
+                {
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileDeleteNotFound, fileName, container);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileDeleteFailed, fileName, container, ex.Message);
+                throw;
+            }
+        }
         #endregion
 
         #region Private methods
