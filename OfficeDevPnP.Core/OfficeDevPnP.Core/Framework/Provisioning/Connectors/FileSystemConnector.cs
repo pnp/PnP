@@ -180,6 +180,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 }
 
                 Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_FileSystem_FileRetrieved, fileName, container);
+                stream.Position = 0;
                 return stream;
             }
             catch (Exception ex)

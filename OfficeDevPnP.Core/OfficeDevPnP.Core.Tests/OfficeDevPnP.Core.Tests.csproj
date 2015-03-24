@@ -231,6 +231,7 @@
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTestConstants.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
+    <Compile Include="Framework\Providers\XMLProvidersTests.cs" />
     <Compile Include="Framework\ProvisioningTemplates\DomainModelTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
     <Compile Include="Utilities\EncryptionUtilityTests.cs" />
@@ -252,6 +253,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="App.config.sample" />
     <None Include="packages.config" />
     <None Include="Resources\custom.spcolor">
@@ -264,9 +266,9 @@
     <None Include="Resources\TestSolution.wsp" />
     <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-01.xml" />
     <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-02.xml" />
-    <Content Include="Resources\Templates\ProvisioningTemplate.xml">
+    <None Include="Resources\Templates\ProvisioningTemplate.xml.old">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>

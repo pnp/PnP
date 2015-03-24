@@ -13,7 +13,7 @@ using Model = OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
-    public static partial class ProvisioningTemplateExtensions
+    public static partial class SharePointProvisioningTemplateExtensions
     {
         public static SharePointProvisioningTemplate ToXml(this Model.ProvisioningTemplate template)
         {
@@ -274,7 +274,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Check the provided template against the XML schema
-            if (!template.IsValid())
+            if (!template.IsValidSharePointProvisioningTemplate())
             {
                 // TODO: Use resource file
                 throw new ApplicationException("The provided template is not valid!");
@@ -510,18 +510,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        public static Boolean IsValid(this SharePointProvisioningTemplate template)
+        public static Boolean IsValidSharePointProvisioningTemplate(this XDocument xml)
         {
-            if (template == null)
+            if (xml == null)
             {
-                throw new ArgumentNullException("template");
+                throw new ArgumentNullException("xml");
             }
 
-            // Serialize the template into an XML string
-            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
-
             // Load the XSD embedded resource
-            Stream stream = typeof(ProvisioningTemplateExtensions)
+            Stream stream = typeof(SharePointProvisioningTemplateExtensions)
                 .Assembly
                 .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
 
@@ -530,13 +527,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE,
                 new XmlTextReader(stream));
 
-            XDocument doc = XDocument.Parse(xml);
             Boolean result = true;
-            doc.Validate(schemas, (o, e) => {
+            xml.Validate(schemas, (o, e) =>
+            {
                 result = false;
             });
 
             return (result);
+        }
+
+        public static Boolean IsValidSharePointProvisioningTemplate(this SharePointProvisioningTemplate template)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            // Serialize the template into an XML string
+            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
+            XDocument doc = XDocument.Parse(xml);
+
+            return (doc.IsValidSharePointProvisioningTemplate());
         }
 
         #region Private extension methods for handling XML content

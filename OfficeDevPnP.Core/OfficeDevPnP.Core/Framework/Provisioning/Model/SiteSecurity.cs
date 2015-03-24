@@ -24,11 +24,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<User> AdditionalAdministrators
         {
-            get
-            {
-                return _additionalAdministrators;
-            }
-             set { _additionalAdministrators = value; }
+            get { return _additionalAdministrators; }
+            private set { _additionalAdministrators = value; }
         }
 
         /// <summary>
@@ -36,11 +33,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<User> AdditionalOwners
         {
-            get
-            {
-                return _additionalOwners;
-            }
-            set { _additionalOwners = value; }
+            get { return _additionalOwners; }
+            private set { _additionalOwners = value; }
         }
 
         /// <summary>
@@ -48,11 +42,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<User> AdditionalMembers
         {
-            get
-            {
-                return _additionalMembers;
-            }
-            set { _additionalMembers = value; }
+            get { return _additionalMembers; }
+            private set { _additionalMembers = value; }
         }
 
         /// <summary>
@@ -60,11 +51,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public List<User> AdditionalVisitors
         {
-            get
-            {
-                return _additionalVisitors;
-            }
-            set { _additionalVisitors = value; }
+            get { return _additionalVisitors; }
+            private set { _additionalVisitors = value; }
         }
         #endregion
     }

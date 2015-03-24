@@ -88,9 +88,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 visitors.Add(new Model.User() { Name = member.LoginName });
             }
             var siteSecurity = new SiteSecurity();
-            siteSecurity.AdditionalOwners = owners;
-            siteSecurity.AdditionalMembers = members;
-            siteSecurity.AdditionalVisitors = visitors;
+            siteSecurity.AdditionalOwners.AddRange(owners);
+            siteSecurity.AdditionalMembers.AddRange(members);
+            siteSecurity.AdditionalVisitors.AddRange(visitors);
 
             var allUsers = web.SiteUsers;
             web.Context.Load(allUsers, users => users.Include(u => u.LoginName, u => u.IsSiteAdmin));
@@ -104,7 +104,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     admins.Add(new Model.User() {Name = member.LoginName});
                 }
             }
-            siteSecurity.AdditionalAdministrators = admins;
+            siteSecurity.AdditionalAdministrators.AddRange(admins);
 
             template.Security = siteSecurity;
             return template;

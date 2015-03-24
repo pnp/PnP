@@ -208,6 +208,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
                 MemoryStream result = new MemoryStream();
                 blockBlob.DownloadToStream(result);
+                result.Position = 0;
 
                 Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FileRetrieved, fileName, container);
                 return result;

@@ -65,9 +65,9 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
                 blockBlob.UploadFromStream(fileStream);
             }
 
-            blockBlob = containerSecure.GetBlockBlobReference("ProvisioningTemplate.xml");
+            blockBlob = containerSecure.GetBlockBlobReference("ProvisioningTemplate-2015-03-Sample-01.xml");
             // Create or overwrite the "myblob" blob with contents from a local file.
-            using (var fileStream = System.IO.File.OpenRead(@".\resources\templates\ProvisioningTemplate.xml"))
+            using (var fileStream = System.IO.File.OpenRead(@".\resources\templates\ProvisioningTemplate-2015-03-Sample-01.xml"))
             {
                 blockBlob.UploadFromStream(fileStream);
             }
@@ -110,7 +110,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             azureConnector.Parameters.Add(AzureStorageConnector.CONNECTIONSTRING, TestCommon.AzureStorageKey);
             azureConnector.Parameters.Add(AzureStorageConnector.CONTAINER, testContainerSecure);
 
-            string file = azureConnector.GetFile("ProvisioningTemplate.xml");
+            string file = azureConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = azureConnector.GetFile("Idonotexist.xml");
@@ -130,8 +130,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
             }
 
             AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
-            
-            string file = azureConnector.GetFile("ProvisioningTemplate.xml");
+
+            string file = azureConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = azureConnector.GetFile("Idonotexist.xml");
@@ -183,7 +183,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
 
             AzureStorageConnector azureConnector = new AzureStorageConnector(TestCommon.AzureStorageKey, testContainerSecure);
 
-            using (var bytes = azureConnector.GetFileStream("ProvisioningTemplate.xml"))
+            using (var bytes = azureConnector.GetFileStream("ProvisioningTemplate-2015-03-Sample-01.xml"))
             {
                 Assert.IsTrue(bytes.Length > 0);
             }
@@ -228,7 +228,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".\Resources", "Templates");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml");
@@ -243,7 +243,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".", @"Resources\Templates");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml");
@@ -258,7 +258,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Connectors
         {
             FileSystemConnector fileSystemConnector = new FileSystemConnector(@".", @"wrong");
 
-            string file = fileSystemConnector.GetFile("ProvisioningTemplate.xml", @"Resources\Templates");
+            string file = fileSystemConnector.GetFile("ProvisioningTemplate-2015-03-Sample-01.xml", @"Resources\Templates");
             Assert.IsNotNull(file);
 
             string file2 = fileSystemConnector.GetFile("Idonotexist.xml", "Templates");

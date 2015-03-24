@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
             var _spt = _pt.ToXml();
 
-            Assert.IsTrue(_spt.IsValid());
+            Assert.IsTrue(_spt.IsValidSharePointProvisioningTemplate());
         }
 
         [TestMethod]

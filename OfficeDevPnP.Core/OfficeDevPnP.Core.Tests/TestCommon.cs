@@ -11,7 +11,6 @@ using System.Net;
 namespace OfficeDevPnP.Core.Tests {
     static class TestCommon
     {
-
         #region Constructor
         static TestCommon() 
         {
@@ -118,7 +117,5 @@ namespace OfficeDevPnP.Core.Tests {
             return secureString;
         }
         #endregion
-
-
     }
 }
