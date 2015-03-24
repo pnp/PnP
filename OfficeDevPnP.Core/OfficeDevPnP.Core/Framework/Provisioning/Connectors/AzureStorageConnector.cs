@@ -46,8 +46,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw new ArgumentException("container");
             }
 
-            this.AddParameter(CONNECTIONSTRING, connectionString);
-            this.AddParameter(CONTAINER, container);
+            this.AddParameterAsString(CONNECTIONSTRING, connectionString);
+            this.AddParameterAsString(CONTAINER, container);
         }
         #endregion
 
@@ -189,7 +189,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             }
             catch(Exception ex)
             {
-                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FailedToInitialize, ex.Message);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FailedToInitialize, ex.Message);
                 throw;
             }
         }
@@ -209,12 +209,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 MemoryStream result = new MemoryStream();
                 blockBlob.DownloadToStream(result);
 
-                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FileRetrieved, fileName, container);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileRetrieved, fileName, container);
                 return result;
             }
             catch (StorageException ex)
             {
-                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Prov_Connectors_Azure_FileNotFound, fileName, container, ex.Message);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileNotFound, fileName, container, ex.Message);
                 return null;
             }
         }
