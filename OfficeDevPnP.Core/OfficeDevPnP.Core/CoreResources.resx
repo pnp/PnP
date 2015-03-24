@@ -498,19 +498,19 @@
   <data name="TimerJob_Realm" xml:space="preserve">
     <value>Realm set to {0}</value>
   </data>
-  <data name="Prov_Connectors_Azure_FailedToInitialize" xml:space="preserve">
+  <data name="Provisioning_Connectors_Azure_FailedToInitialize" xml:space="preserve">
     <value>Could not initialize AzureStorageConnector. Error = {0}</value>
   </data>
-  <data name="Prov_Connectors_Azure_FileNotFound" xml:space="preserve">
+  <data name="Provisioning_Connectors_Azure_FileNotFound" xml:space="preserve">
     <value>File {0} not found in Azure storage container {1}. Exception = {2}</value>
   </data>
-  <data name="Prov_Connectors_Azure_FileRetrieved" xml:space="preserve">
+  <data name="Provisioning_Connectors_Azure_FileRetrieved" xml:space="preserve">
     <value>File {0} retrieved from Azure storage container {1}</value>
   </data>
-  <data name="Prov_Connectors_FileSystem_FileNotFound" xml:space="preserve">
+  <data name="Provisioning_Connectors_FileSystem_FileNotFound" xml:space="preserve">
     <value>File {0} not found in directory {1}. Exception = {2}</value>
   </data>
-  <data name="Prov_Connectors_FileSystem_FileRetrieved" xml:space="preserve">
+  <data name="Provisioning_Connectors_FileSystem_FileRetrieved" xml:space="preserve">
     <value>File {0} retrieved from folder {1}</value>
   </data>
   <data name="Provisioning_Extensibility_Pipeline_Missing_AssemblyName" xml:space="preserve">
@@ -530,5 +530,11 @@
   </data>
   <data name="Provisioning_Extensibility_Pipeline_ClientCtxNull" xml:space="preserve">
     <value>ClientContext is NULL. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in site {1}, library  {2}. Exception = {3}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileRetrieved" xml:space="preserve">
+    <value>File {0}  found in site {1}, library  {2}</value>
   </data>
 </root>
