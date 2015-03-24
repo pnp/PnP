@@ -72,6 +72,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Property Bag Entries
             new ObjectPropertyBagEntry().ProvisionObjects(web, template);
+
+
+            // Extensibility Provider CallOut the last thing we do.
+            new ObjectExtensibilityProviders().ProvisionObjects(web, template);
         }
     }
 }
