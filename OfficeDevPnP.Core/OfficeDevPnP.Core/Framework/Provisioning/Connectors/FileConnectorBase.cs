@@ -10,7 +10,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
     /// <summary>
     /// Base file connector class
     /// </summary>
-    public abstract class FileConnectorBase : IFileConnector
+    public abstract class FileConnectorBase
     {
         #region public variables
         public const string CONNECTIONSTRING = "ConnectionString";
@@ -74,6 +74,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         /// <param name="container">Name of the container to get the file from</param>
         /// <returns>String containing the file contents</returns>
         public abstract Stream GetFileStream(string fileName, string container);
+
+        /// <summary>
+        /// Saves a stream to the default container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public abstract void SaveFileStream(string fileName, Stream stream);
+
+        /// <summary>
+        /// Saves a stream to the specified container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="container">Name of the container to save the file to</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public abstract void SaveFileStream(string fileName, string container, Stream stream);
+
         #endregion
 
         #region Helper methods

@@ -1,5 +1,4 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -192,6 +191,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             }
 
             return GetFileFromStorage(fileName, container);
+        }
+
+        /// <summary>
+        /// Saves a stream to the default container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, Stream stream)
+        {
+            SaveFileStream(fileName, GetContainer(), stream);
+        }
+
+        /// <summary>
+        /// Saves a stream to the specified container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="container">Name of the container to save the file to</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, string container, Stream stream)
+        {
+            try
+            {
+                using (ClientContext cc = GetClientContext().Clone(GetConnectionString()))
+                {
+                    List list = cc.Web.GetListByUrl(GetDocumentLibrary(container));
+
+                    string folders = GetFolders(container);
+
+                    Microsoft.SharePoint.Client.Folder spFolder = null;
+
+                    if (folders.Length == 0)
+                    {
+                        spFolder = list.RootFolder;
+                    }
+                    else
+                    {
+                        spFolder = list.RootFolder;
+                        string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 1; i < parts.Length; i++)
+                        {
+                            spFolder = spFolder.ResolveSubFolder(parts[i]);
+                        }
+                    }
+
+                    spFolder.UploadFile(fileName, stream, true);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_SharePoint_FileSaved, fileName, GetConnectionString(), container);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_SharePoint_FileSaveFailed, fileName, GetConnectionString(), container, ex.Message);
+                throw;
+            }
         }
         #endregion
 

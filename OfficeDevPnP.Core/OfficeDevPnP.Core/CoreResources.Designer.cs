@@ -412,6 +412,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to Azure storage container {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to Azure storage container {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File {0} not found in directory {1}. Exception = {2}.
         /// </summary>
         internal static string Provisioning_Connectors_FileSystem_FileNotFound {
@@ -430,6 +448,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to folder {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to folder {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File {0} not found in site {1}, library  {2}. Exception = {3}.
         /// </summary>
         internal static string Provisioning_Connectors_SharePoint_FileNotFound {
@@ -444,6 +480,24 @@ namespace OfficeDevPnP.Core {
         internal static string Provisioning_Connectors_SharePoint_FileRetrieved {
             get {
                 return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to site {1}, library {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to site {1}, library {2}. Error = {3}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileSaveFailed", resourceCulture);
             }
         }
         

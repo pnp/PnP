@@ -110,7 +110,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         /// <param name="fileName">Name of the file to get</param>
         /// <param name="container">Name of the container to get the file from</param>
         /// <returns>String containing the file contents</returns>
-        public override string GetFile(string fileName, string container)
+        public override String GetFile(string fileName, string container)
         {
             if (String.IsNullOrEmpty(fileName))
             {
@@ -175,6 +175,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             }
 
             return GetFileFromStorage(fileName, container);
+        }
+
+        /// <summary>
+        /// Saves a stream to the default container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, Stream stream)
+        {
+            SaveFileStream(fileName, GetContainer(), stream);
+        }
+
+        /// <summary>
+        /// Saves a stream to the specified container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="container">Name of the container to save the file to</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, string container, Stream stream)
+        {
+            if (String.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("fileName");
+            }
+
+            if (String.IsNullOrEmpty(container))
+            {
+                throw new ArgumentException("container");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            try
+            {
+                if (!initialized)
+                {
+                    Initialize();
+                }
+
+                CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
+                CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
+
+                blockBlob.UploadFromStream(stream);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileSaved, fileName, container);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_Azure_FileSaveFailed, fileName, container, ex.Message);
+                throw;
+            }
         }
         #endregion
 
