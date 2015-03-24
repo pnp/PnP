@@ -210,13 +210,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw new ArgumentNullException("stream");
             }
 
+            if (!initialized)
+            {
+                Initialize();
+            }
+
             try
             {
-                if (!initialized)
-                {
-                    Initialize();
-                }
-
                 CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
                 CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
 
@@ -256,13 +256,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw new ArgumentException("container");
             }
 
+            if (!initialized)
+            {
+                Initialize();
+            }
+
             try
             {
-                if (!initialized)
-                {
-                    Initialize();
-                }
-
                 CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
                 CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
 
@@ -302,13 +302,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
         private MemoryStream GetFileFromStorage(string fileName, string container)
         {
+            if (!initialized)
+            {
+                Initialize();
+            }
+
             try
             {
-                if (!initialized)
-                {
-                    Initialize();
-                }
-
                 CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
                 CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
 
