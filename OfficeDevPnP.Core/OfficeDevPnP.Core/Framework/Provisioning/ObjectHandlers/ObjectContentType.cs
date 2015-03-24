@@ -39,7 +39,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var ct in cts)
             {
-                template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                if (!BuiltInContentTypeId.Contains(ct.StringId))
+                {
+                    template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                }
             }
 
             return template;
