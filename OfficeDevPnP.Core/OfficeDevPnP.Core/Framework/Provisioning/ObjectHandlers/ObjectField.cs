@@ -9,6 +9,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Management;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
@@ -44,17 +45,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
             var existingFields = web.Fields;
-            web.Context.Load(existingFields);
+            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f=>  f.SchemaXml));
             web.Context.ExecuteQueryRetry();
 
             
             foreach (var field in existingFields)
-            { 
-               
-                XDocument document = XDocument.Parse(field.SchemaXml);
-                var sourceId = document.Root.Attribute("SourceID") != null ? document.Root.Attribute("SourceID").Value : string.Empty;
-                Debug.WriteLine(sourceId);
-                template.SiteFields.Add(new Model.Field() { SchemaXml = field.SchemaXml });
+            {
+                if (!BuiltInFieldId.Contains(field.Id))
+                {
+                    template.SiteFields.Add(new Model.Field() {SchemaXml = field.SchemaXml});
+                }
             }
             return template;
         }
