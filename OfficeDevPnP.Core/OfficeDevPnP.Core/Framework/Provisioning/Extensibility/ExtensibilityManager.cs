@@ -29,17 +29,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
             var _loggingSource = "OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout";
 
             if (ctx == null) {
-                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_ClientCtxNull);
                 throw new ArgumentNullException(CoreResources.Provisioning_Extensibility_Pipeline_ClientCtxNull);
             }
 
             if (string.IsNullOrWhiteSpace(provider.Assembly)) {
-                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_Missing_AssemblyName);
                 throw new ArgumentException(CoreResources.Provisioning_Extensibility_Pipeline_Missing_AssemblyName);
             }
 
             if(string.IsNullOrWhiteSpace(provider.Type)) {
-                Log.Warning(_loggingSource, CoreResources.Provisioning_Extensibility_Pipeline_Missing_TypeName);
                 throw new ArgumentException(CoreResources.Provisioning_Extensibility_Pipeline_Missing_TypeName);
             }
 
@@ -54,9 +51,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
                 _instance.ProcessRequest(ctx, template, provider.Configuration);
 
                 Log.Info(_loggingSource,
-                 CoreResources.Provisioning_Extensibility_Pipeline_Success,
-                 provider.Assembly,
-                 provider.Type);
+                    CoreResources.Provisioning_Extensibility_Pipeline_Success,
+                    provider.Assembly,
+                    provider.Type);
             }
             catch(Exception ex)
             {
@@ -65,7 +62,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
                     provider.Assembly, 
                     provider.Type, 
                     ex);
-
                 Log.Error(_loggingSource, _message);
                 throw new ExtensiblityPipelineException(_message, ex);
              

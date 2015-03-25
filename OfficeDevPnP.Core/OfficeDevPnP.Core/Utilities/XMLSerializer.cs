@@ -67,6 +67,19 @@ namespace OfficeDevPnP.Core.Utilities
         }
 
         /// <summary>
+        /// Serializes an object instance to a stream. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectToSerialize"></param>
+        /// <returns>An string that represents the serialized object.</returns>
+        public static Stream SerializeToStream<T>(T objectToSerialize) where T : new()
+        {
+            MemoryStream stream = new MemoryStream();
+            GetFormatter(objectToSerialize.GetType()).Serialize(stream, objectToSerialize);
+            return stream;
+        }
+
+        /// <summary>
         /// Deserializes an XML string to an object instance
         /// </summary>
         /// <typeparam name="T">The Object Type to Desserialize</typeparam>

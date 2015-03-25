@@ -3,11 +3,13 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
@@ -16,11 +18,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     /// </summary>
     public abstract class XMLTemplateProvider : TemplateProviderBase
     {
+
+        #region Constructor
         protected XMLTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
         }
+        #endregion
 
+        #region Base class overrides
         public override List<ProvisioningTemplate> GetTemplates()
         {
             List<ProvisioningTemplate> result = new List<ProvisioningTemplate>();
@@ -34,8 +40,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 if (file.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Load it from a File Stream
-                    //String xml = this.Connector.GetFile(file);
-                    //XDocument doc = XDocument.Parse(xml);
                     XDocument doc = XDocument.Load(new XmlTextReader(this.Connector.GetFileStream(file)));
 
                     // And convert it into a ProvisioningTemplate
@@ -49,18 +53,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        public override ProvisioningTemplate GetTemplate(string identifyer)
+        public override ProvisioningTemplate GetTemplate(string identifier)
         {
-            if (String.IsNullOrEmpty(identifyer))
+            if (String.IsNullOrEmpty(identifier))
             {
-                throw new ArgumentException("identifyer");
+                throw new ArgumentException("identifier");
             }
 
             // Get the XML document from a File Stream
-            XDocument doc = XDocument.Load(this.Connector.GetFileStream(identifyer));
+            XDocument doc = XDocument.Load(this.Connector.GetFileStream(identifier));
 
             // And convert it into a ProvisioningTemplate
             ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+
+            // Store the identifier of this template, is needed for latter save operation
+            this.Identifier = identifier;
 
             return (provisioningTemplate);
         }
@@ -72,24 +79,44 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ArgumentNullException("template");
             }
 
-            //SharePointProvisioningTemplate spProvisioningTemplate = template.ToXml();
-            //String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(spProvisioningTemplate);
-
-            // TODO: Wait for Save method implementation
-            // this.Connector.Save(xml, name/identifyer?);
-
-            throw new NotImplementedException();
+            SaveToConnector(template, this.Identifier);
         }
 
-        public override void Delete(string identifyer)
+        public override void SaveAs(ProvisioningTemplate template, string identifier)
         {
-            if (String.IsNullOrEmpty(identifyer))
+            if (template == null)
             {
-                throw new ArgumentException("identifyer");
+                throw new ArgumentNullException("template");
             }
 
-            // TODO: Wait for Delete method implementation
-            throw new NotImplementedException();
+            if (String.IsNullOrEmpty(identifier))
+            {
+                throw new ArgumentException("identifier");
+            }
+
+            SaveToConnector(template, identifier);
         }
+
+        public override void Delete(string identifier)
+        {
+            if (String.IsNullOrEmpty(identifier))
+            {
+                throw new ArgumentException("identifier");
+            }
+
+            this.Connector.DeleteFile(identifier);
+        }
+        #endregion
+
+        #region Helper methods
+        private void SaveToConnector(ProvisioningTemplate template, string identifier)
+        {
+            SharePointProvisioningTemplate spProvisioningTemplate = template.ToXml();
+            using (var stream = XMLSerializer.SerializeToStream<SharePointProvisioningTemplate>(spProvisioningTemplate))
+            {
+                this.Connector.SaveFileStream(identifier, stream);
+            }
+        }
+        #endregion
     }
 }

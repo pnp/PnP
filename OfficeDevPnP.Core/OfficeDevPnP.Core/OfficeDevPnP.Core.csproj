@@ -284,7 +284,6 @@
     <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
-    <Compile Include="Framework\Provisioning\Connectors\IFileConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\SharePointConnector.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
@@ -307,6 +306,7 @@
     <Compile Include="Framework\Provisioning\Model\View.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />

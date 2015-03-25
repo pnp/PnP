@@ -163,6 +163,105 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
             return GetFileFromStorage(fileName, container);
         }
+
+        /// <summary>
+        /// Saves a stream to the default container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, Stream stream)
+        {
+            SaveFileStream(fileName, GetContainer(), stream);
+        }
+
+        /// <summary>
+        /// Saves a stream to the specified container with the given name. If the file exists it will be overwritten
+        /// </summary>
+        /// <param name="fileName">Name of the file to save</param>
+        /// <param name="container">Name of the container to save the file to</param>
+        /// <param name="stream">Stream containing the file contents</param>
+        public override void SaveFileStream(string fileName, string container, Stream stream)
+        {
+            if (String.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("fileName");
+            }
+
+            if (String.IsNullOrEmpty(container))
+            {
+                container = "";
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            try
+            {
+                string filePath = ConstructPath(fileName, container);
+
+                using(var fileStream = System.IO.File.Create(filePath))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(fileStream);
+                }
+                
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileSaved, fileName, container);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileSaveFailed, fileName, container, ex.Message);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Deletes a file from the default container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        public override void DeleteFile(string fileName)
+        {
+            DeleteFile(fileName, GetContainer());
+        }
+
+        /// <summary>
+        /// Deletes a file from the specified container
+        /// </summary>
+        /// <param name="fileName">Name of the file to delete</param>
+        /// <param name="container">Name of the container to delete the file from</param>
+        public override void DeleteFile(string fileName, string container)
+        {
+            if (String.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentException("fileName");
+            }
+
+            if (String.IsNullOrEmpty(container))
+            {
+                container = "";
+            }
+
+            try
+            {
+                string filePath = ConstructPath(fileName, container);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileDeleted, fileName, container);
+                }
+                else
+                {
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileDeleteNotFound, fileName, container);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_FileSystem_FileDeleteFailed, fileName, container, ex.Message);
+                throw;
+            }
+        }
         #endregion
 
         #region Private methods

@@ -273,8 +273,12 @@
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\HelloWorldApp15.app" />
     <None Include="Resources\TestSolution.wsp" />
-    <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-01.xml" />
-    <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-02.xml" />
+    <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Templates\ProvisioningTemplate.xml.old">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
