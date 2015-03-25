@@ -401,7 +401,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Features, if any
             if (template.Features != null)
             {
-                if (result.Features.SiteFeatures != null)
+                if (result.Features.SiteFeatures != null && template.Features.SiteFeatures != null)
                 {
                     result.Features.SiteFeatures.AddRange(
                         from feature in template.Features.SiteFeatures
@@ -411,7 +411,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             Deactivate = feature.Deactivate,
                         });
                 }
-                if (result.Features.WebFeatures != null)
+                if (result.Features.WebFeatures != null && template.Features.WebFeatures != null)
                 {
                     result.Features.WebFeatures.AddRange(
                         from feature in template.Features.WebFeatures
