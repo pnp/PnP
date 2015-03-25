@@ -1123,11 +1123,14 @@ namespace Microsoft.SharePoint.Client
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
 
             // Load the current collection of content types
-            ContentTypeCollection contentTypes = web.AvailableContentTypes;
-            web.Context.Load(contentTypes);
+            ContentTypeCollection availableContentTypes = web.AvailableContentTypes;
+            ContentTypeCollection contentTypes = web.ContentTypes;
+
+            web.Context.Load(availableContentTypes);
             web.Context.ExecuteQueryRetry();
             ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
 
+            
             // Set the properties for the content type
             newCt.Name = name;
             newCt.Id = id;
