@@ -7,20 +7,23 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using System.Xml.Serialization;
 
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Represents a Field XML
+    /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
-    public class Field : IXmlSerializable
+    public class Field
     {
+        #region Private Members
         private string _schemaXml = string.Empty;
+        #endregion
 
+        #region Public Properties
         /// <summary>
         /// Gets a value that specifies the XML Schema representing the Field type.
+        /// <seealso cref="https://msdn.microsoft.com/en-us/library/office/ff407271.aspx"/>
         /// </summary>
         public string SchemaXml
         {
@@ -28,36 +31,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._schemaXml = value; }
         }
 
-        /// <summary>
-        /// No Imp will return null
-        /// </summary>
-        /// <returns></returns>
-        public XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        public void ReadXml(XmlReader reader)
-        {
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "Field")
-            {
-                this._schemaXml = reader.ReadOuterXml();
-            }
-            //    reader.MoveToContent();
-
-        }
-
-        public void WriteXml(XmlWriter writer)
-        {
-            if (string.IsNullOrEmpty(this._schemaXml))
-            {
-                return;
-            }
-            XElement _fieldXML = XElement.Parse(this._schemaXml);
-            foreach (var attrib in _fieldXML.Attributes())
-            {
-                writer.WriteAttributeString(attrib.Name.ToString(), attrib.Value);
-            }
-        }
+        #endregion
     }
 }

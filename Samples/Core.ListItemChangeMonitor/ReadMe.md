@@ -16,7 +16,7 @@ None.
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.ListItemChangeMonitor | Daniel Budimir (**Microsoft**)
+Core.ListItemChangeMonitor | Daniel Budimir & Phil Cohen (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments

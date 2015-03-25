@@ -15,6 +15,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         private bool _supportDelete = false;
         private FileConnectorBase _connector = null;
 
+        public TemplateProviderBase()
+        {
+
+        }
+
+        public TemplateProviderBase(FileConnectorBase connector)
+        {
+            this._connector = connector;
+        }
+
         public Dictionary<string, string> Parameters
         {
             get

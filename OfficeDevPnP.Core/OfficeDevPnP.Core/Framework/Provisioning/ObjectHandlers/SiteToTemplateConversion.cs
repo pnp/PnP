@@ -21,17 +21,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Create empty object
             ProvisioningTemplate template = new ProvisioningTemplate();
 
+            // Get Security
+            template = new ObjectSiteSecurity().CreateEntities(web, template);
+            // Content Types
+            template = new ObjectContentType().CreateEntities(web, template);
             // Get Lists 
             template = new ObjectListInstance().CreateEntities(web, template);
             // Get custom actions
             template = new ObjectCustomActions().CreateEntities(web, template);
             // Get features
             template = new ObjectFeatures().CreateEntities(web, template);
-            // Handle composite look
+            // Get composite look
             template = new ObjectComposedLook().CreateEntities(web, template);
-            // Handle files
+            // Get files
             template = new ObjectFiles().CreateEntities(web, template);
-
+            // Get Property Bag Entires
+            template = new ObjectPropertyBagEntry().CreateEntities(web, template);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
             return template;
@@ -44,6 +49,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         public void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
+            // Site Security
+            new ObjectSiteSecurity().ProvisionObjects(web, template);
+
+            //
+            new ObjectContentType().ProvisionObjects(web, template);
+
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
 
@@ -51,13 +62,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Features
-            new ObjectCustomActions().ProvisionObjects(web, template);
+            new ObjectFeatures().ProvisionObjects(web, template);
 
             // Composite look 
             new ObjectComposedLook().ProvisionObjects(web, template);
 
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Property Bag Entries
+            new ObjectPropertyBagEntry().ProvisionObjects(web, template);
+
+
+            // Extensibility Provider CallOut the last thing we do.
+            new ObjectExtensibilityProviders().ProvisionObjects(web, template);
         }
     }
 }

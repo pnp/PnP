@@ -3,124 +3,126 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object for the Provisioning Template
     /// </summary>
-    [XmlRoot(ElementName = "SharePointProvisioningTemplate")]
-    [Serializable]
     public class ProvisioningTemplate
     {
         #region private members
-        [NonSerializedAttribute]
+
         private List<Field> _siteFields = new List<Field>();
-        [NonSerialized]
         private List<ContentType> _contentTypes = new List<ContentType>();
-        [NonSerializedAttribute]
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
-        [NonSerializedAttribute]
         private List<ListInstance> _lists = new List<ListInstance>();
-        [NonSerializedAttribute]
-        private BrandingPackage _composedLook = new BrandingPackage();
-        [NonSerializedAttribute]
+        private ComposedLook _composedLook = new ComposedLook();
         private Features _features = new Features();
-        [NonSerializedAttribute]
+        private SiteSecurity _siteSecurity = new SiteSecurity();
         private CustomActions _customActions = new CustomActions();
-        [NonSerializedAttribute]
         private List<File> _files = new List<File>();
+        private List<Provider> _providers = new List<Provider>();
         #endregion
 
         #region Properties
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public string ID { get; set; }
 
         /// <summary>
         /// Gets or sets the Version of the Provisioning Template
         /// </summary>
-        [XmlAttribute]
         public double Version { get; set; }
 
         /// <summary>
         /// Gets or Sets the Site Policy
         /// </summary>
-        [XmlElement]
         public string SitePolicy { get; set; }
 
-        [XmlArray(ElementName = "PropertyBagEntries")]
-        [XmlArrayItem("PropertyBagEntry", typeof(PropertyBagEntry))]
         public List<PropertyBagEntry> PropertyBagEntries
         {
             get { return this._propertyBags; }
             private set { this._propertyBags = value; }
         }
-        
+
         /// <summary>
-        /// Gets or Sets the Site Security
+        /// Security Groups Members for the Template
         /// </summary>
-        [XmlElement]
-        public SiteSecurity Security { get; set; }
+        public SiteSecurity Security
+        {
+            get { return this._siteSecurity; }
+            set { this._siteSecurity = value; }
+        }
 
         /// <summary>
         /// Gets a collection of fields 
         /// </summary>
-        [XmlArray(ElementName = "SiteFields")]
-        [XmlArrayItem("Field", typeof(Field))]
         public List<Field> SiteFields
         {
             get { return this._siteFields; }
             private set { this._siteFields = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Content Types to create
+        /// </summary>
         public List<ContentType> ContentTypes
         {
-            get{ return this._contentTypes;}
-            private set { this._contentTypes = value;}
+            get { return this._contentTypes; }
+            private set { this._contentTypes = value; }
         }
 
-        [XmlArray(ElementName="Lists")]
-        [XmlArrayItem("ListInstance", typeof(ListInstance))]
         public List<ListInstance> Lists
         {
             get { return this._lists; }
             private set { this._lists = value; }
         }
 
-        [XmlElement]
+        /// <summary>
+        /// Gets or sets a list of features to activate or deactivate
+        /// </summary>
         public Features Features
         {
             get { return this._features; }
             set { this._features = value; }
         }
 
-        [XmlElement]
+        /// <summary>
+        /// Gets or sets CustomActions for the template
+        /// </summary>
         public CustomActions CustomActions
         {
             get { return this._customActions; }
             set { this._customActions = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of files for the template
+        /// </summary>
         public List<File> Files
         {
             get { return this._files; }
             private set { this._files = value; }
         }
 
-        public BrandingPackage ComposedLook
+        /// <summary>
+        /// Gets or Sets the composed look of the template
+        /// </summary>
+        public ComposedLook ComposedLook
         {
             get { return this._composedLook; }
             set { this._composedLook = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Providers that are used during the extensibility pipeline
+        /// </summary>
         public List<Provider> Providers
         {
-            get;
-            set;
+            get { return this._providers; }
+            private set { this._providers = value; }
         }
 
         #endregion
