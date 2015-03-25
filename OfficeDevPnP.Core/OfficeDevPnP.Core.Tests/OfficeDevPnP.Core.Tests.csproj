@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OfficeDevPnP.Core.Tests</RootNamespace>
     <AssemblyName>OfficeDevPnP.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -16,6 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -231,6 +232,14 @@
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTestConstants.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectSiteSecurityTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectPropertyBagEntryTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectListInstanceTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectFilesTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectFeaturesTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectCustomActionsTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectFieldTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectContentTypeTests.cs" />
     <Compile Include="Framework\Providers\XMLProvidersTests.cs" />
     <Compile Include="Framework\ProvisioningTemplates\DomainModelTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
@@ -253,6 +262,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="App.config.sample" />
     <None Include="packages.config" />
     <None Include="Resources\custom.spcolor">
