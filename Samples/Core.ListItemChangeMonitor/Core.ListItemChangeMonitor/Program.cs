@@ -14,7 +14,6 @@ namespace Core.ListItemChangeMonitor
         static string listName = string.Empty;
         static string userName;
         static SecureString password;
-        static bool allItems = false;
         static DateTime lastRunTime;
         const int WaitSeconds = 30;
 
