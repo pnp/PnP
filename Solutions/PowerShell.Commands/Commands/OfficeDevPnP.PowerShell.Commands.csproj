@@ -57,25 +57,25 @@
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
-  <ItemGroup>
-    <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
-      <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
+      <ItemGroup>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
@@ -165,6 +165,8 @@
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
     <Compile Include="Branding\GetJavaScriptLink.cs" />
+    <Compile Include="Branding\ApplyProvisioningTemplate.cs" />
+    <Compile Include="Branding\GetProvisioningTemplate.cs" />
     <Compile Include="ContentTypes\RemoveContentTypeFromList.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
@@ -273,7 +275,7 @@
     <Compile Include="Web\RequestReIndexWeb.cs" />
     <Compile Include="Web\GetMasterPage.cs" />
     <Compile Include="Web\GetHomepage.cs" />
-    <Compile Include="Web\SetMDS.cs" />
+    <Compile Include="Branding\SetMDS.cs" />
     <Compile Include="Branding\SetHomepage.cs" />
     <Compile Include="Web\SetPropertyBagValue.cs" />
     <Compile Include="Web\SetIndexedProperties.cs" />
@@ -311,6 +313,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
