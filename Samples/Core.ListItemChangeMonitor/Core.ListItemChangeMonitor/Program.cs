@@ -11,7 +11,7 @@ namespace Core.ListItemChangeMonitor
     {
 
         static string url;
-        static string listName = string.Empty;
+        static string listName;
         static string userName;
         static SecureString password;
         static DateTime lastRunTime;
@@ -31,7 +31,7 @@ namespace Core.ListItemChangeMonitor
             password = GetPassword();
 
             /* End Program if no Credentials */
-            if (string.IsNullOrEmpty(userName) || (password == null) || (listName == string.Empty))
+            if (string.IsNullOrEmpty(userName) || (password == null) || string.IsNullOrEmpty(listName ))
                 return;
 
             DoWork();
