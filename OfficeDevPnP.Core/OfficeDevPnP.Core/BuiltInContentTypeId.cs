@@ -1,4 +1,6 @@
-﻿namespace OfficeDevPnP.Core
+﻿using System.Collections.Generic;
+
+namespace OfficeDevPnP.Core
 {
     /// <summary>
     /// A class that returns strings that represent identifiers (IDs) for built-in content types.
@@ -15,10 +17,12 @@
         public const string Discussion = "0x012002";
         public const string DisplayTemplateJS = "0x0101002039C03B61C64EC4A04F5361F3851068";
         public const string Document = "0x0101";
+
         /// <summary>
         /// Contains the content identifier (ID) for the DocumentSet content type. To get content type from a list, use BestMatchContentTypeId().
         /// </summary>
         public const string DocumentSet = "0x0120D520";
+
         public const string DocumentWorkflowItem = "0x010107";
         public const string DomainGroup = "0x010C";
         public const string DublinCoreName = "0x01010B";
@@ -32,10 +36,12 @@
         public const string Holiday = "0x01009BE2AB5291BF4C1A986910BD278E4F18";
         public const string IMEDictionaryItem = "0x010018F21907ED4E401CB4F14422ABC65304";
         public const string Issue = "0x0103";
+
         /// <summary>
         /// Contains the content identifier (ID) for the Item content type.
         /// </summary>
         public const string Item = "0x01";
+
         public const string Link = "0x0105";
         public const string LinkToDocument = "0x01010A";
         public const string MasterPage = "0x010105";
@@ -64,5 +70,72 @@
         public const string WorkflowTask = "0x010801";
         public const string XMLDocument = "0x010101";
         public const string XSLStyle = "0x010100734778F2B7DF462491FC91844AE431CF";
+
+
+        private static Dictionary<string, bool> s_dict = (Dictionary<string, bool>) null;
+
+
+        public static bool Contains(string id)
+        {
+            if (BuiltInContentTypeId.s_dict == null)
+            {
+                BuiltInContentTypeId.s_dict = new Dictionary<string, bool>();
+                BuiltInContentTypeId.s_dict.Add(AdminTask, true);
+                BuiltInContentTypeId.s_dict.Add(Announcement, true);
+                BuiltInContentTypeId.s_dict.Add(BasicPage, true);
+                BuiltInContentTypeId.s_dict.Add(BlogComment, true);
+                BuiltInContentTypeId.s_dict.Add(CallTracking, true);
+                BuiltInContentTypeId.s_dict.Add(Contact, true);
+                BuiltInContentTypeId.s_dict.Add(Discussion, true);
+                BuiltInContentTypeId.s_dict.Add(DisplayTemplateJS, true);
+                BuiltInContentTypeId.s_dict.Add(Document, true);
+                BuiltInContentTypeId.s_dict.Add(DocumentSet, true);
+                BuiltInContentTypeId.s_dict.Add(DocumentWorkflowItem, true);
+                BuiltInContentTypeId.s_dict.Add(DomainGroup, true);
+                BuiltInContentTypeId.s_dict.Add(DublinCoreName, true);
+                BuiltInContentTypeId.s_dict.Add(Event, true);
+                BuiltInContentTypeId.s_dict.Add(FarEastContact, true);
+                BuiltInContentTypeId.s_dict.Add(Folder, true);
+                BuiltInContentTypeId.s_dict.Add(GbwCirculationCTName, true);
+                BuiltInContentTypeId.s_dict.Add(GbwOfficeNoticeCTName, true);
+                BuiltInContentTypeId.s_dict.Add(HealthReport, true);
+                BuiltInContentTypeId.s_dict.Add(HealthRuleDefinition, true);
+                BuiltInContentTypeId.s_dict.Add(Holiday, true);
+                BuiltInContentTypeId.s_dict.Add(IMEDictionaryItem, true);
+                BuiltInContentTypeId.s_dict.Add(Issue, true);
+                BuiltInContentTypeId.s_dict.Add(Item, true);
+                BuiltInContentTypeId.s_dict.Add(Link, true);
+                BuiltInContentTypeId.s_dict.Add(LinkToDocument, true);
+                BuiltInContentTypeId.s_dict.Add(MasterPage, true);
+                BuiltInContentTypeId.s_dict.Add(Message, true);
+                BuiltInContentTypeId.s_dict.Add(ODCDocument, true);
+                BuiltInContentTypeId.s_dict.Add(Person, true);
+                BuiltInContentTypeId.s_dict.Add(Picture, true);
+                BuiltInContentTypeId.s_dict.Add(Resource, true);
+                BuiltInContentTypeId.s_dict.Add(ResourceGroup, true);
+                BuiltInContentTypeId.s_dict.Add(ResourceReservation, true);
+                BuiltInContentTypeId.s_dict.Add(RootOfList, true);
+                BuiltInContentTypeId.s_dict.Add(Schedule, true);
+                BuiltInContentTypeId.s_dict.Add(ScheduleAndResourceReservation, true);
+                BuiltInContentTypeId.s_dict.Add(SharePointGroup, true);
+                BuiltInContentTypeId.s_dict.Add(SummaryTask, true);
+                BuiltInContentTypeId.s_dict.Add(System, true);
+                BuiltInContentTypeId.s_dict.Add(Task, true);
+                BuiltInContentTypeId.s_dict.Add(Timecard, true);
+                BuiltInContentTypeId.s_dict.Add(UDCDocument, true);
+                BuiltInContentTypeId.s_dict.Add(UntypedDocument, true);
+                BuiltInContentTypeId.s_dict.Add(WebPartPage, true);
+                BuiltInContentTypeId.s_dict.Add(WhatsNew, true);
+                BuiltInContentTypeId.s_dict.Add(Whereabouts, true);
+                BuiltInContentTypeId.s_dict.Add(WikiDocument, true);
+                BuiltInContentTypeId.s_dict.Add(WorkflowHistory, true);
+                BuiltInContentTypeId.s_dict.Add(WorkflowTask, true);
+                BuiltInContentTypeId.s_dict.Add(XMLDocument, true);
+                BuiltInContentTypeId.s_dict.Add(XSLStyle, true);
+            }
+            bool flag = false;
+            BuiltInContentTypeId.s_dict.TryGetValue(id, out flag);
+            return flag;
+        }
     }
 }
