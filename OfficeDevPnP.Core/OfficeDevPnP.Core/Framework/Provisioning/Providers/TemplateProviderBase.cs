@@ -14,6 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         private bool _supportSave = false;
         private bool _supportDelete = false;
         private FileConnectorBase _connector = null;
+        private string _identifier = "";
 
         public TemplateProviderBase()
         {
@@ -61,12 +62,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
             }
         }
 
+        public String Identifier
+        {
+            get
+            {
+                return _identifier;
+            }
+            set
+            {
+                _identifier = value;
+            }
+        }
+
         public abstract List<ProvisioningTemplate> GetTemplates();
 
-        public abstract ProvisioningTemplate GetTemplate(string identifyer);
+        public abstract ProvisioningTemplate GetTemplate(string identifier);
 
         public abstract void Save(ProvisioningTemplate template);
 
-        public abstract void Delete(string identifyer);
+        public abstract void SaveAs(ProvisioningTemplate template, string identifier);
+
+        public abstract void Delete(string identifier);
     }
 }
