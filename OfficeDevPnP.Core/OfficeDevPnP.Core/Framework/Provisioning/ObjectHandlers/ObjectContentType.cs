@@ -9,7 +9,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    class ObjectContentType : ObjectHandlerBase
+    public class ObjectContentType : ObjectHandlerBase
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
@@ -39,7 +39,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var ct in cts)
             {
-                template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                if (!BuiltInContentTypeId.Contains(ct.StringId))
+                {
+                    template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                }
             }
 
             return template;

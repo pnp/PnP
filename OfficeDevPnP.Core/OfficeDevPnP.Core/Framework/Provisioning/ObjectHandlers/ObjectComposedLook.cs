@@ -14,8 +14,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             web.AlternateCssUrl = template.ComposedLook.AlternateCSS;
             web.SiteLogoUrl = template.ComposedLook.SiteLogo;
-            web.Update();
-            web.Context.ExecuteQuery();
+    //        web.MasterUrl = template.ComposedLook.MasterPage;
+
+            web.SetComposedLookByUrl(template.ComposedLook.Name,template.ComposedLook.ColorFile,template.ComposedLook.FontFile,template.ComposedLook.BackgroundFile,template.ComposedLook.MasterPage);
+
+    
 
             // TODO: Add theme handling
         }
@@ -29,13 +32,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.ExecuteQuery();
             }
 
+            var theme = web.GetComposedLook("Current");
+           
             // Get needed data from the site
             // TODO: Access currently set theme for details
             template.ComposedLook.AlternateCSS = web.AlternateCssUrl;
-            template.ComposedLook.BackgroundFile = "";
-            template.ComposedLook.ColorFile = "";
-            template.ComposedLook.FontFile = "";
-            template.ComposedLook.MasterPage = "";
+            template.ComposedLook.BackgroundFile = theme.BackgroundImage;
+            template.ComposedLook.ColorFile = theme.Theme;
+            template.ComposedLook.FontFile = theme.Font;
+            template.ComposedLook.MasterPage = web.MasterUrl;
             template.ComposedLook.Name = "";
             template.ComposedLook.SiteLogo = web.SiteLogoUrl;
 

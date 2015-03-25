@@ -9,7 +9,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    class ObjectListInstance : ObjectHandlerBase
+    public class ObjectListInstance : ObjectHandlerBase
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
         {
