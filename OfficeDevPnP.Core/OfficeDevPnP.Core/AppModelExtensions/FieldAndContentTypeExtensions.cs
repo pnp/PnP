@@ -1122,12 +1122,8 @@ namespace Microsoft.SharePoint.Client
         {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
 
-            // Load the current collection of content types
-            ContentTypeCollection availableContentTypes = web.AvailableContentTypes;
             ContentTypeCollection contentTypes = web.ContentTypes;
 
-            web.Context.Load(availableContentTypes);
-            web.Context.ExecuteQueryRetry();
             ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
 
             
