@@ -47,6 +47,28 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXMLString1()
+        {
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
+            var _xmlString = _pt.ToXmlString();
+
+            Assert.IsTrue(!String.IsNullOrEmpty(_xmlString));
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXMLStream1()
+        {
+            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
+            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
+            var _xmlStream = _pt.ToXmlStream();
+
+            Assert.IsNotNull(_xmlStream);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
         public void CanDeserializeXMLToDomainObject2()
         {
             this.GetProvisioningTemplate();

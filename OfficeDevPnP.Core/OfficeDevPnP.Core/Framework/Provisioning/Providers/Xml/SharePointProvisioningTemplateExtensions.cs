@@ -147,6 +147,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Features = new SharePointProvisioningTemplateFeatures();
 
+                // TODO: This nullability check could be useless, because
+                // the SiteFeatures property is initialized in the Features
+                // constructor
                 if (template.Features.SiteFeatures != null)
                 {
                     result.Features.SiteFeatures =
@@ -157,6 +160,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
+                // TODO: This nullability check could be useless, because
+                // the WebFeatures property is initialized in the Features
+                // constructor
                 if (template.Features.WebFeatures != null)
                 {
                     result.Features.WebFeatures =
@@ -549,6 +555,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XDocument doc = XDocument.Parse(xml);
 
             return (doc.IsValidSharePointProvisioningTemplate());
+        }
+
+        public static String ToXmlString(this Model.ProvisioningTemplate template)
+        {
+            System.Xml.Serialization.XmlSerializerNamespaces ns =
+                new System.Xml.Serialization.XmlSerializerNamespaces();
+            ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
+                XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
+
+            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template.ToXml(), ns);
+            return (xml);
+        }
+
+        public static Stream ToXmlStream(this Model.ProvisioningTemplate template)
+        {
+            System.Xml.Serialization.XmlSerializerNamespaces ns =
+                new System.Xml.Serialization.XmlSerializerNamespaces();
+            ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
+                XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
+
+            Stream stream = XMLSerializer.SerializeToStream<SharePointProvisioningTemplate>(template.ToXml(), ns);
+            return (stream);
         }
 
         #region Private extension methods for handling XML content
