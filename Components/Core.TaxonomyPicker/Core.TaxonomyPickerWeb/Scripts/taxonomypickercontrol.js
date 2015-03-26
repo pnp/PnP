@@ -433,7 +433,22 @@
                 this.showSuggestions(textValidation, caret);
                 return false;
             }
-            else if (keynum == 9) { //Tab key pressed
+            else if (keynum == 9 || keynum == 13) { //Tab key pressed and also validate on enter
+                // support for selecting a suggestion
+                var sel = this._suggestionContainer.children('.cam-taxpicker-suggestion-item.selected');
+                if (sel.length > 0) {
+                    this._editor.blur();
+                    sel.click();
+                    return false;
+                }
+                var newText = '';
+
+                //calculate new text and then convert to html
+                if (caret < rawText.length)
+                    newText = rawText.substring(0, caret - selection.length) + String.fromCharCode(keynum) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
+                else
+                    newText = rawText.substring(0, caret - selection.length) + rawText.substring(caret, rawText.length) + String.fromCharCode(keynum) + this.MarkerMarkup;
+
                 //validate raw text OR mark invalid
                 var textValidation = this.validateText(rawText);
                 var html = this.markInvalidTerms(textValidation);
@@ -441,6 +456,34 @@
 
                 //close the suggestion panel
                 this._suggestionContainer.hide();
+
+                if (keynum == 13) { // also validate on enter, we need to cancel the enter and blur
+                    this._editor.blur();
+                    return false;
+                }
+            }
+            else if (keynum == 38 || keynum == 40) { // selecting suggestion with Up or Down key
+                if (this._suggestionContainer.css('display') != 'none') {
+                    var sel = this._suggestionContainer.children('.cam-taxpicker-suggestion-item.selected');
+                    if (sel.length == 0) {
+                        sel = this._suggestionContainer.children('.cam-taxpicker-suggestion-item').first();
+                        sel.addClass('selected');
+                    }
+                    else {
+                        sel.removeClass('selected');
+                        if (keynum == 38) {
+                            sel = sel.prev();
+                            if (sel.attr('data-item') == null)
+                                sel = this._suggestionContainer.children('.cam-taxpicker-suggestion-item').last();
+                        }
+                        else {
+                            sel = sel.next();
+                            if (sel.length == 0)
+                                sel = this._suggestionContainer.children('.cam-taxpicker-suggestion-item').first();
+                        }
+                        sel.addClass('selected');
+                    }
+                }
             }
         },
         //get the cursor position in a content editable div
@@ -488,12 +531,10 @@
         setCaret: function () {
             //find the marker
             var marker = null;
-            for (var i = 0; i < this._editor[0].childNodes.length; i++) {
-                if (this._editor[0].childNodes[i].tagName == 'SPAN' && this._editor[0].childNodes[i].id == 'caretmarker') {
-                    marker = this._editor[0].childNodes[i];
-                    break;
-                }
-            }
+            // getting the marker in more reliably
+            var jQmarker = this._editor.find('span#caretmarker');
+            if (jQmarker.length > 0)
+                marker = jQmarker.get(0);
 
             if (marker != null) {
                 //HTML5
@@ -719,11 +760,26 @@
         },
         //dialog new term button is clicked
         dialogNewTermClicked: function (event) {
+            if ($('.cam-taxpicker-treenode-newnode').length > 0) // don't allow adding multiple nodes at once
+                return;
+
             this._dlgNewNodeEditor = $('<div class="cam-taxpicker-treenode-newnode" style="min-width: 100px;" contenteditable="true"></div>');
             this._dlgNewNode = $('<li class="cam-taxpicker-treenode-li newNode"></li>').append($('<div class="cam-taxpicker-treenode"></div>').append('<div class="cam-taxpicker-expander"></div><img src="../styles/images/EMMTerm.png" alt=""/>').append(this._dlgNewNodeEditor));
 
+            // only one level allowed for keywords, so always add to the root
+            if (this.TermSet.UseKeywords || this._dlgCurrTerm == null) {
+                $('.cam-taxpicker-treenode-title').removeClass('selected');
+                var root = $('.cam-taxpicker-treenode-title.root').first();
+                root.addClass('selected');
+                this._dlgCurrTermNode = root;
+                this._dlgCurrTerm = null;
+            }
+
             //get the container for the new node
             var ul = this._dlgCurrTermNode.parent().next();
+            if (ul.length == 0) { // adding a term to a newly added term
+                ul = $('<ul class="cam-taxpicker-treenode-ul"></ul>').appendTo(this._dlgCurrTermNode.parent().parent());
+            }
             ul.prepend(this._dlgNewNode);
 
             //toggle the expand on the parent node
@@ -783,7 +839,7 @@
             title.dblclick(Function.createDelegate(this, this.termNodeDoubleClicked));
 
             //set the _dlgCurrTermNode and _dlgCurrTerm
-            this._dlgCurrTermNode = $(event.target);
+            this._dlgCurrTermNode = title; // title node as current node
             this._dlgCurrTerm = newTerm;
         },
         //failed callback from trying to create a new term
