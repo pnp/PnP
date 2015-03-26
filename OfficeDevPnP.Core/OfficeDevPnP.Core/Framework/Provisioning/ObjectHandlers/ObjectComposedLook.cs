@@ -23,7 +23,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // TODO: Add theme handling
         }
 
-        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
+        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             // Load object if not there
             if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))
@@ -46,6 +46,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             //template.ComposedLook.MasterPage = web.MasterUrl;
             //template.ComposedLook.Name = "";
             //template.ComposedLook.SiteLogo = web.SiteLogoUrl;
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
 
             return template;
         }

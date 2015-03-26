@@ -59,7 +59,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
@@ -107,6 +107,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             siteSecurity.AdditionalAdministrators.AddRange(admins);
 
             template.Security = siteSecurity;
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+
             return template;
         }
     }

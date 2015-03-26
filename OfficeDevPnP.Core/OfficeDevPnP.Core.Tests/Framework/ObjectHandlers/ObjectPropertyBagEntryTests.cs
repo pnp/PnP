@@ -58,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectPropertyBagEntry().CreateEntities(ctx.Web, template);
+                template = new ObjectPropertyBagEntry().CreateEntities(ctx.Web, template, null);
 
                 Assert.IsTrue(template.PropertyBagEntries.Any());
             }

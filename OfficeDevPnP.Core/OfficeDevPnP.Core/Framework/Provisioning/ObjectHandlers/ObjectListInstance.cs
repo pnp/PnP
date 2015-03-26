@@ -66,7 +66,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
+        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -107,6 +107,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 template.Lists.Add(list);
             }
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
 
             return template;
         }

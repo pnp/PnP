@@ -31,7 +31,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var cts = web.ContentTypes;
             web.Context.Load(cts);
@@ -44,6 +44,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
                 }
             }
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
 
             return template;
         }

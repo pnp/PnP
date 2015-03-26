@@ -25,7 +25,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
             {
                 using(ClientContext cc = ctx.Clone("https://bertonline.sharepoint.com/sites/templateSTS0"))
                 {
-                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate();
+                    // Specify null as base template since we do want "everything" in this case
+                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(null);
                     p.ID = "STS0template";
 
                     // Cleanup before saving

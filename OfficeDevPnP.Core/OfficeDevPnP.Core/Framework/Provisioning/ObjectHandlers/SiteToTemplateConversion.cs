@@ -22,30 +22,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             ProvisioningTemplate template = new ProvisioningTemplate();
 
             // Get Security
-            template = new ObjectSiteSecurity().CreateEntities(web, template);
+            template = new ObjectSiteSecurity().CreateEntities(web, template, baseTemplate);
             // Site Fields
-            template = new ObjectField().CreateEntities(web, template);
+            template = new ObjectField().CreateEntities(web, template, baseTemplate);
             // Content Types
-            template = new ObjectContentType().CreateEntities(web, template);
+            template = new ObjectContentType().CreateEntities(web, template, baseTemplate);
             // Get Lists 
-            template = new ObjectListInstance().CreateEntities(web, template);
+            template = new ObjectListInstance().CreateEntities(web, template, baseTemplate);
             // Get custom actions
-            template = new ObjectCustomActions().CreateEntities(web, template);
+            template = new ObjectCustomActions().CreateEntities(web, template, baseTemplate);
             // Get features
-            template = new ObjectFeatures().CreateEntities(web, template);
+            template = new ObjectFeatures().CreateEntities(web, template, baseTemplate);
             // Get composite look
-            template = new ObjectComposedLook().CreateEntities(web, template);
+            template = new ObjectComposedLook().CreateEntities(web, template, baseTemplate);
             // Get files
-            template = new ObjectFiles().CreateEntities(web, template);
+            template = new ObjectFiles().CreateEntities(web, template, baseTemplate);
             // Get Property Bag Entires
-            template = new ObjectPropertyBagEntry().CreateEntities(web, template);
+            template = new ObjectPropertyBagEntry().CreateEntities(web, template, baseTemplate);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
-
-            // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
-            {
-                //todo
-            }
 
             return template;
         }
