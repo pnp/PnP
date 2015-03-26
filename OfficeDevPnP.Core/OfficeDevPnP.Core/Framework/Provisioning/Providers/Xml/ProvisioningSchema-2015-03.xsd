@@ -551,7 +551,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="Title" type="xsd:string" use="required">
+    <xsd:attribute name="Title" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Title of the CustomAction, required attribute

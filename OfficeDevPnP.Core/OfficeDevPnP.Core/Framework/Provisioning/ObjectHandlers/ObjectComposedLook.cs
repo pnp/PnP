@@ -32,17 +32,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.ExecuteQuery();
             }
 
-            var theme = web.GetComposedLook("Current");
+            // TODO: review
+            template.ComposedLook = null;
+
+            //var theme = web.GetComposedLook("Current");
            
-            // Get needed data from the site
-            // TODO: Access currently set theme for details
-            template.ComposedLook.AlternateCSS = web.AlternateCssUrl;
-            template.ComposedLook.BackgroundFile = theme.BackgroundImage;
-            template.ComposedLook.ColorFile = theme.Theme;
-            template.ComposedLook.FontFile = theme.Font;
-            template.ComposedLook.MasterPage = web.MasterUrl;
-            template.ComposedLook.Name = "";
-            template.ComposedLook.SiteLogo = web.SiteLogoUrl;
+            //// Get needed data from the site
+            //// TODO: Access currently set theme for details
+            //template.ComposedLook.AlternateCSS = web.AlternateCssUrl;
+            //template.ComposedLook.BackgroundFile = theme.BackgroundImage;
+            //template.ComposedLook.ColorFile = theme.Theme;
+            //template.ComposedLook.FontFile = theme.Font;
+            //template.ComposedLook.MasterPage = web.MasterUrl;
+            //template.ComposedLook.Name = "";
+            //template.ComposedLook.SiteLogo = web.SiteLogoUrl;
 
             return template;
         }
