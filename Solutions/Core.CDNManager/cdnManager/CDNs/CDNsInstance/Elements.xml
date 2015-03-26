@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="CDNs" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/CDNs" Description="JavaScript CDNs">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="Title">jquery-1.11.2.min.js</Field>
+          <Field Name="Namespace">jQuery</Field>
+          <Field Name="Type">JavaScript</Field>
+          <Field Name="Url">//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js</Field>
+          <Field Name="Active">TRUE</Field>
+          <Field Name="Sequence">0</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">knockout-2.2.1.js</Field>
+          <Field Name="Namespace">ko</Field>
+          <Field Name="Type">JavaScript</Field>
+          <Field Name="Url">//ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js</Field>
+          <Field Name="Active">FALSE</Field>
+          <Field Name="Sequence">1</Field>
+          <Field Name="Dependency">jquery-1.11.2.min.js</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">bootstrap.min.js</Field>
+          <Field Name="Namespace">jQuery</Field>
+          <Field Name="Type">JavaScript</Field>
+          <Field Name="Url">//ajax.aspnetcdn.com/ajax/bootstrap/3.3.2/bootstrap.min.js</Field>
+          <Field Name="Active">FALSE</Field>
+          <Field Name="Sequence">2</Field>
+          <Field Name="Dependency">jquery-1.11.2.min.js</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">bootstrap.min.css</Field>
+          <Field Name="Namespace"></Field>
+          <Field Name="Type">StyleSheet</Field>
+          <Field Name="Url">//ajax.aspnetcdn.com/ajax/bootstrap/3.3.2/css/bootstrap.min.css</Field>
+          <Field Name="Active">FALSE</Field>
+          <Field Name="Sequence">2</Field>
+        </Row>
+      </Rows>
+    </Data>
+  </ListInstance>
+</Elements>
