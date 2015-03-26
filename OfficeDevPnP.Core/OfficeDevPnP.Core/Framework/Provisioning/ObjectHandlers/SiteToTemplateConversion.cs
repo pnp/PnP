@@ -83,11 +83,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Features
             new ObjectFeatures().ProvisionObjects(web, template);
 
-            // Composite look 
-            new ObjectComposedLook().ProvisionObjects(web, template);
-
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Composite look 
+            new ObjectComposedLook().ProvisionObjects(web, template);
 
             // Property Bag Entries
             new ObjectPropertyBagEntry().ProvisionObjects(web, template);
