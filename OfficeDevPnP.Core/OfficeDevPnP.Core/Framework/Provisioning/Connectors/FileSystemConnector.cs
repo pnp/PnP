@@ -201,6 +201,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             {
                 string filePath = ConstructPath(fileName, container);
 
+                // Ensure the target path exists
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(filePath));
+
                 using(var fileStream = System.IO.File.Create(filePath))
                 {
                     stream.Seek(0, SeekOrigin.Begin);
