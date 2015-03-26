@@ -441,13 +441,6 @@
                     sel.click();
                     return false;
                 }
-                var newText = '';
-
-                //calculate new text and then convert to html
-                if (caret < rawText.length)
-                    newText = rawText.substring(0, caret - selection.length) + String.fromCharCode(keynum) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
-                else
-                    newText = rawText.substring(0, caret - selection.length) + rawText.substring(caret, rawText.length) + String.fromCharCode(keynum) + this.MarkerMarkup;
 
                 //validate raw text OR mark invalid
                 var textValidation = this.validateText(rawText);
