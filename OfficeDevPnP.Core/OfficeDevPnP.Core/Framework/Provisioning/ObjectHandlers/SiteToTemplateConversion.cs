@@ -16,7 +16,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="web"></param>
         /// <param name="hiddenObjects"></param>
         /// <returns></returns>
-        public ProvisioningTemplate GetRemoteTemplate(Web web)
+        public ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate)
         {
             // Create empty object
             ProvisioningTemplate template = new ProvisioningTemplate();
@@ -41,7 +41,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template = new ObjectPropertyBagEntry().CreateEntities(web, template);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                //todo
+            }
+
             return template;
+        }
+
+        public ProvisioningTemplate GetRemoteTemplate(Web web)
+        {
+            // Load the base template which will be used for the comparison work
+            ProvisioningTemplate baseTemplate = web.GetBaseTemplate();
+
+            return GetRemoteTemplate(web, baseTemplate);
         }
 
         /// <summary>

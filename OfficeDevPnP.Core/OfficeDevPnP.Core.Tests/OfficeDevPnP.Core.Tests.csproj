@@ -242,6 +242,7 @@
     <Compile Include="Framework\ObjectHandlers\ObjectCustomActionsTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectFieldTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectContentTypeTests.cs" />
+    <Compile Include="Framework\Providers\BaseTemplateTests.cs" />
     <Compile Include="Framework\Providers\XMLProvidersTests.cs" />
     <Compile Include="Framework\ProvisioningTemplates\DomainModelTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />
