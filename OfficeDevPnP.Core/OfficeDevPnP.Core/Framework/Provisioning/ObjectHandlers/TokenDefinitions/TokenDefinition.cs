@@ -5,19 +5,28 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
 {
     public abstract class TokenDefinition
     {
+        protected string CacheValue;
 
-        protected TokenDefinition(Web web, string token)
+        protected TokenDefinition(Web web, params string[] token)
         {
             this.Token = token;
             this.Web = web;
         }
         
-        public string Token { get; private set; }
+        public string[] Token { get; private set; }
         public Web Web { get; private set; }
 
-        public Regex Regex
+        public Regex[] Regex
         {
-            get { return new Regex(Token); }
+            get
+            {
+                var regexs = new Regex[this.Token.Length];
+                for (var q = 0; q < this.Token.Length;q++)
+                {
+                    regexs[q] = new Regex(this.Token[q], RegexOptions.IgnoreCase);
+                }
+                return regexs;
+            }
         }
 
         public abstract string GetReplaceValue();

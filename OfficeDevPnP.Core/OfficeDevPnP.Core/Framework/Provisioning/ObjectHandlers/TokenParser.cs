@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 
@@ -27,9 +28,12 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
         {
             foreach (var token in _tokens)
             {
-                if (token.Regex.IsMatch(input))
+                foreach (var regex in token.Regex)
                 {
-                    input = token.Regex.Replace(input, token.GetReplaceValue());
+                    if (regex.IsMatch(input))
+                    {
+                        input = regex.Replace(input, token.GetReplaceValue());
+                    }
                 }
             }
 
