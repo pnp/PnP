@@ -14,7 +14,8 @@ namespace Core.ListItemChangeMonitor
         static string listName;
         static string userName;
         static SecureString password;
-        static DateTime lastRunTime;
+        //static DateTime lastRunTime;
+        static DateTime nextRunTime;
         const int WaitSeconds = 30;
 
         static void Main(string[] args)
@@ -38,16 +39,16 @@ namespace Core.ListItemChangeMonitor
         }
         private static void DoWork()
         {
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.WriteLine("Url: " + url);
             Console.WriteLine("User Name: " + userName);
             Console.WriteLine("List Name: " + listName);
-            Console.WriteLine("");
+            Console.WriteLine();
             try
             {
 
                 Console.WriteLine(string.Format("Connecting to {0}", url));
-                Console.WriteLine("");
+                Console.WriteLine();
                 ClientContext cc = new ClientContext(url);
                 cc.AuthenticationMode = ClientAuthenticationMode.Default;
                 cc.Credentials = new SharePointOnlineCredentials(userName, password);
@@ -64,34 +65,50 @@ namespace Core.ListItemChangeMonitor
                     return;
                 }
 
-
-                lastRunTime = DateTime.Now.ToUniversalTime();
+                nextRunTime = DateTime.Now;
 
                 ChangeQuery cq = new ChangeQuery(false, false);
                 cq.Item = true;
                 cq.DeleteObject = true;
                 cq.Add = true;
                 cq.Update = true;
+                
+                // Initially set the ChangeTokenStart to 2 days ago so we don't go off and grab every item from the list since the day it was created.
+                // The format of the string is semicolon delimited with the following pieces of information in order
+                // Version number 
+                // A number indicating the change scope: 0 – Content Database, 1 – site collection, 2 – site, 3 – list. 
+                // GUID representing the scope ID of the change token
+                // Time (in UTC) when the change occurred
+                // Number of the change relative to other changes
+                cq.ChangeTokenStart = new ChangeToken();
+                cq.ChangeTokenStart.StringValue = string.Format("1;3;{0};{1};-1", list.Id.ToString(), DateTime.Now.AddDays(-2).ToUniversalTime().Ticks.ToString());
+
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(string.Format("Ctrl+c to terminate. Press \"r\" key to force run without waiting {0} seconds.", WaitSeconds));
+                Console.WriteLine();
+                Console.ResetColor();
                 do
                 {
                     do
                     {
                         if (Console.KeyAvailable && Console.ReadKey(true).KeyChar == 'r') { break; }
                     }
-                    while (lastRunTime.AddSeconds(WaitSeconds) > DateTime.Now.ToUniversalTime());
+                    while (nextRunTime > DateTime.Now);
 
-                    lastRunTime = lastRunTime.AddSeconds(WaitSeconds).AddMilliseconds(1);
+                    Console.WriteLine(string.Format("Looking for items modified after {0} UTC", GetDateStringFromChangeToken(cq.ChangeTokenStart)));
+
+                    
                     ChangeCollection coll = list.GetChanges(cq);
                     cc.Load(coll);
                     cc.ExecuteQuery();
 
+
+                    DisplayChanges(coll, cq.ChangeTokenStart);
                     // if we find any changes to the list take the last change and use the ChangeToken as the start time for our next query.
                     // The ChangeToken will contain the Date/time of the last change to any item in the list.
                     cq.ChangeTokenStart = coll.Count > 0 ? coll.Last().ChangeToken : cq.ChangeTokenStart;
 
-                    DisplayChanges(coll);
-                    
+                    nextRunTime = DateTime.Now.AddSeconds(WaitSeconds);
 
                 } while (true);
             }
@@ -104,11 +121,19 @@ namespace Core.ListItemChangeMonitor
             }
         }
 
-        private static void DisplayChanges(ChangeCollection coll)
+        private static String GetDateStringFromChangeToken(ChangeToken ct)
+        {
+            string ticks = ct.StringValue.Split(';')[3];
+            DateTime dt = new DateTime(Convert.ToInt64(ticks));
+
+            return string.Format("{0} {1}", dt.ToShortDateString(), dt.ToLongTimeString());
+        }
+
+        private static void DisplayChanges(ChangeCollection coll, ChangeToken ct)
         {
             if (coll.Count == 0)
             {
-                Console.WriteLine(string.Format("No changes to {0} since {1} {2} UTC.", listName, lastRunTime.ToShortDateString(), lastRunTime.ToLongTimeString()));
+                Console.WriteLine(string.Format("No changes to {0} since {1} UTC.", listName, GetDateStringFromChangeToken(ct)));
                 return;
             }
 
@@ -116,10 +141,10 @@ namespace Core.ListItemChangeMonitor
             foreach (ChangeItem itm in coll)
             {
 
-                Console.WriteLine("");
+                Console.WriteLine();
                 Console.WriteLine(string.Format("List {0} had a Change of type \"{1}\" on the item with Id {2}.", listName, itm.ChangeType.ToString(), itm.ItemId));
             }
-            Console.WriteLine("");
+            Console.WriteLine();
             Console.ResetColor();
         }
 
@@ -149,7 +174,7 @@ namespace Core.ListItemChangeMonitor
                     }
 
                 }
-                Console.WriteLine("");
+                Console.WriteLine();
             }
             catch (Exception e)
             {
