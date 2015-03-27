@@ -170,6 +170,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 (from view in list.Views
                                  select view.SchemaXml.ToXmlElement()).ToArray(),
                          } : null,
+                         Fields = list.Fields.Count > 0 ?
+                         new ListInstanceFields
+                         {
+                             Any =
+                             (from field in list.Fields
+                              select field.SchemaXml.ToXmlElement()).ToArray(),
+                         } : null,
+                         FieldRefs = list.FieldRefs.Count > 0 ?
+                         (from fieldRef in list.FieldRefs
+                          select new FieldRef
+                          {
+                              ID = fieldRef.ID.ToString(),
+                          }).ToArray() : null,
                      }).ToArray();
             }
             else
@@ -448,7 +461,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  select new Model.View
                                  {
                                      SchemaXml = view.OuterXml,
-                                 }) : null))
+                                 }) : null),
+                        (list.Fields != null ?
+                                (from field in list.Fields.Any
+                                 select new Model.Field
+                                 {
+                                     SchemaXml = field.OuterXml,
+                                 }) : null),
+                        (list.FieldRefs != null ?
+                                 (from fieldRef in list.FieldRefs
+                                  select new Model.FieldRef
+                                  {
+                                      ID = Guid.Parse(fieldRef.ID)
+                                  }) : null)
+                         )
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,
                         Description = list.Description,
@@ -499,7 +525,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from customAction in template.CustomActions.SiteCustomActions
                         select new Model.CustomAction
                         {
-                            Description = customAction.Description,                           
+                            Description = customAction.Description,
                             Enabled = customAction.Enabled,
                             Group = customAction.Group,
                             ImageUrl = customAction.ImageUrl,

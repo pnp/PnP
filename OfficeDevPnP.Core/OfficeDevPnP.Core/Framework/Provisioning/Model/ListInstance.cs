@@ -16,7 +16,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public ListInstance() { }
 
         public ListInstance(IEnumerable<ContentTypeBinding> contentTypeBindings,
-            IEnumerable<View> views)
+            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs   )
         {
             if (contentTypeBindings != null)
             {
@@ -27,6 +27,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 this.Views.AddRange(views);
             }
+
+            if (fields != null)
+            {
+                this.Fields.AddRange(fields);
+            }
+
+            if (fieldRefs != null)
+            {
+                this._fieldRefs.AddRange(fieldRefs);
+            }
         }
 
         #endregion
@@ -34,6 +44,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Private Members
         private List<ContentTypeBinding> _ctBindings = new List<ContentTypeBinding>();
         private List<View> _views = new List<View>();
+        private List<Field> _fields = new List<Field>(); 
+        private List<FieldRef> _fieldRefs = new List<FieldRef>(); 
         #endregion
 
         #region Properties
@@ -114,6 +126,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._views; }
             private set { this._views = value; }
+        }
+
+        public List<Field> Fields
+        {
+            get { return this._fields; }
+            private set { this._fields = value; }
+        }
+
+        public List<FieldRef> FieldRefs
+        {
+            get { return this._fieldRefs; }
+            private set { this._fieldRefs = value; }
         }
         #endregion
 

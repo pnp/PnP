@@ -325,6 +325,32 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <xsd:element name="Fields" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The Fields entries of the List Instance, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any minOccurs="1" maxOccurs="unbounded"
+                     processContents="lax" namespace="##any" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FieldRefs" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The FieldRefs entries of the List Instance, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="FieldRef" type="FieldRef"
+                         minOccurs="1" maxOccurs="unbounded" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
     </xsd:all>
 
     <xsd:attribute name="Title" type="xsd:string" use="required">
@@ -496,6 +522,23 @@
       </xsd:annotation>
     </xsd:attribute>
 
+  </xsd:complexType>
+
+  <xsd:complexType name="FieldRef">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines the binding between a ListInstance and a Field
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:attribute name="ID" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The value of the field ID to bind, required attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
   </xsd:complexType>
 
   <xsd:complexType name="CustomActionsList">
