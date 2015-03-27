@@ -451,8 +451,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Framework\Provisioning\BaseTemplates\v15\" />
+    <Content Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
