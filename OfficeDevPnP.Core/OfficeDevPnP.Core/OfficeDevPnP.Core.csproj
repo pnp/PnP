@@ -321,6 +321,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\ThemeCatalogToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\TokenDefinition.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\MasterPageCatalogToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteCollectionToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenParser.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
       <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
