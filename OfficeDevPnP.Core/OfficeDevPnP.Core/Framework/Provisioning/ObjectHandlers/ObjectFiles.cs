@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Management;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 
@@ -16,6 +17,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
+            TokenParser parser = new TokenParser(web);
             var context = web.Context as ClientContext;
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -26,19 +28,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var file in template.Files)
             {
-                var fileInfo = new FileInfo(file.Src);
-                var folder = web.EnsureFolderPath(file.Folder);
 
-                if (System.IO.File.Exists(file.Src))
+                var folderName = parser.Parse(file.Folder);
+
+                if (folderName.ToLower().StartsWith((web.ServerRelativeUrl.ToLower())))
                 {
-                    folder.UploadFile(fileInfo.Name, fileInfo.FullName, file.Overwrite);
+                    folderName = folderName.Substring(web.ServerRelativeUrl.Length);
                 }
-                else
+                
+
+                var folder = web.EnsureFolderPath(folderName);
+
+                using (var stream = template.Connector.GetFileStream(file.Src))
                 {
-                    Log.Error("Source File {0} does not exist",file.Src);
+                    folder.UploadFile(file.Src, stream, true);
                 }
+
             }
-           
+
         }
 
 

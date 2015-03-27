@@ -11,6 +11,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using System.Xml.Linq;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
@@ -30,6 +31,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
             if (provisioningTemplate != null)
             {
+                var fileinfo = new FileInfo(Path);
+                FileSystemConnector fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
+                provisioningTemplate.Connector = fileSystemConnector;
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate);
             }
         }
