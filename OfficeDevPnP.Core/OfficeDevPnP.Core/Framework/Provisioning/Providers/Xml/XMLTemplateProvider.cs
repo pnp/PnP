@@ -4,12 +4,8 @@ using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
@@ -111,8 +107,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         #region Helper methods
         private void SaveToConnector(ProvisioningTemplate template, string identifier)
         {
-            SharePointProvisioningTemplate spProvisioningTemplate = template.ToXml();
-            using (var stream = XMLSerializer.SerializeToStream<SharePointProvisioningTemplate>(spProvisioningTemplate))
+            if (String.IsNullOrEmpty(template.ID))
+            {
+                template.ID = Path.GetFileNameWithoutExtension(identifier);
+            }
+
+            using (var stream = template.ToXmlStream())
             {
                 this.Connector.SaveFileStream(identifier, stream);
             }

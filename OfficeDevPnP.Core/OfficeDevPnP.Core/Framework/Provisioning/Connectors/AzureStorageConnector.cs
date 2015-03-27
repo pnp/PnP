@@ -218,6 +218,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             try
             {
                 CloudBlobContainer blobContainer = blobClient.GetContainerReference(container);
+                
+                // Create the container if it doesn't already exist.
+                blobContainer.CreateIfNotExists();
+
                 CloudBlockBlob blockBlob = blobContainer.GetBlockBlobReference(fileName);
 
                 blockBlob.UploadFromStream(stream);

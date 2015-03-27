@@ -90,7 +90,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectFiles().CreateEntities(ctx.Web, template);
+                template = new ObjectFiles().CreateEntities(ctx.Web, template, null);
 
                 Assert.IsInstanceOfType(template.Files, typeof(List<Core.Framework.Provisioning.Model.File>));
             }

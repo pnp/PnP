@@ -231,7 +231,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                         string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
                         for (int i = 1; i < parts.Length; i++)
                         {
+                            var prevFolder = spFolder;
                             spFolder = spFolder.ResolveSubFolder(parts[i]);
+
+                            if (spFolder == null)
+                            {
+                                spFolder = prevFolder.CreateFolder(parts[i]);
+                            }
                         }
                     }
 

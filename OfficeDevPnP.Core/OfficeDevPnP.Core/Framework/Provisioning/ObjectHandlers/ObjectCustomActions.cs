@@ -21,11 +21,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var webCustomActions = template.CustomActions.WebCustomActions;
             var siteCustomActions = template.CustomActions.SiteCustomActions;
 
-
             ProvisionCustomActionImplementation(web, webCustomActions);
             ProvisionCustomActionImplementation(site, siteCustomActions);
-
-
         }
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
@@ -83,7 +80,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var context = web.Context as ClientContext;
             var webCustomActions = web.GetCustomActions();
@@ -101,6 +98,37 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             template.CustomActions = customActions;
 
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+            foreach (var customAction in baseTemplate.CustomActions.SiteCustomActions)
+            {
+                int index = template.CustomActions.SiteCustomActions.FindIndex(f => f.Name.Equals(customAction.Name));
+
+                if (index > -1)
+                {
+                    template.CustomActions.SiteCustomActions.RemoveAt(index);
+                }
+            }
+
+            foreach (var customAction in baseTemplate.CustomActions.WebCustomActions)
+            {
+                int index = template.CustomActions.WebCustomActions.FindIndex(f => f.Name.Equals(customAction.Name));
+
+                if (index > -1)
+                {
+                    template.CustomActions.WebCustomActions.RemoveAt(index);
+                }
+            }
+            
             return template;
         }
 

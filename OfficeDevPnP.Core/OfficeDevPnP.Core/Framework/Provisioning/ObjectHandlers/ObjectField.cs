@@ -13,6 +13,7 @@ using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
+using System.Xml;
 
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -42,7 +43,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var existingFields = web.Fields;
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f=>  f.SchemaXml));
@@ -56,6 +57,34 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     template.SiteFields.Add(new Model.Field() {SchemaXml = field.SchemaXml});
                 }
             }
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+            foreach (var field in baseTemplate.SiteFields)
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(field.SchemaXml);
+                var node = doc.DocumentElement.SelectSingleNode("/Field/@ID");
+
+                if (node != null)
+                {
+                    int index = template.SiteFields.FindIndex(f => f.SchemaXml.IndexOf(node.Value, StringComparison.InvariantCultureIgnoreCase) > -1);
+
+                    if (index > -1)
+                    {
+                        template.SiteFields.RemoveAt(index);
+                    }
+                }
+            }
+
             return template;
         }
     }

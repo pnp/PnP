@@ -56,7 +56,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectContentType().CreateEntities(ctx.Web, template);
+                template = new ObjectContentType().CreateEntities(ctx.Web, template, null);
 
                 Assert.IsTrue(template.ContentTypes.Any());
                 Assert.IsInstanceOfType(template.ContentTypes, typeof(List<ContentType>));

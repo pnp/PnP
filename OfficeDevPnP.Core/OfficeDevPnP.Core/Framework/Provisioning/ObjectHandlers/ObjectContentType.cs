@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using System.Xml;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -27,11 +28,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     web.CreateContentTypeFromXMLString(ct.SchemaXml);
                 }
-            }
-            
+            }            
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var cts = web.ContentTypes;
             web.Context.Load(cts);
@@ -42,6 +42,34 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (!BuiltInContentTypeId.Contains(ct.StringId))
                 {
                     template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                }
+            }
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+            foreach (var ct in baseTemplate.ContentTypes)
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(ct.SchemaXml);
+                var node = doc.DocumentElement.SelectSingleNode("/ContentType/@ID");
+
+                if (node != null)
+                {
+                    int index = template.ContentTypes.FindIndex(f => f.SchemaXml.IndexOf(node.Value, StringComparison.InvariantCultureIgnoreCase) > -1);
+
+                    if (index > -1)
+                    {
+                        template.ContentTypes.RemoveAt(index);
+                    }
                 }
             }
 

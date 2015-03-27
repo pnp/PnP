@@ -88,7 +88,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectSiteSecurity().CreateEntities(ctx.Web, template);
+                template = new ObjectSiteSecurity().CreateEntities(ctx.Web, template, null);
 
                 Assert.IsTrue(template.Security.AdditionalAdministrators.Any());
             }

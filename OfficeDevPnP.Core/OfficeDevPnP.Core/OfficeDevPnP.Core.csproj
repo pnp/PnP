@@ -281,6 +281,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\BaseTemplates\BaseTemplateManager.cs" />
     <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
     <Compile Include="Framework\Provisioning\Model\Features.cs" />
+    <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
     <Compile Include="Framework\Provisioning\Model\Field.cs" />
     <Compile Include="Framework\Provisioning\Model\File.cs" />
     <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
@@ -301,6 +303,7 @@
     <Compile Include="Framework\Provisioning\Model\Provider.cs" />
     <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
     <Compile Include="Framework\Provisioning\Model\Feature.cs" />
+    <Compile Include="Framework\Provisioning\Model\ProvisioningTemplateInfo.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
     <Compile Include="Framework\Provisioning\Model\View.cs" />
@@ -445,7 +448,13 @@
       <CachedSettingsPropName>OfficeDevPnP_Core_UPAWebService_UserProfileService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
+  </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <TFSBaseBuildYear>2014</TFSBaseBuildYear>

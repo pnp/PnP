@@ -1,5 +1,6 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Extensibility;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, Model.ProvisioningTemplate baseTemplate)
         {
-            throw new NotImplementedException();
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+
+            return template;
         }
     }
 }

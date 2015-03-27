@@ -7,7 +7,7 @@
     <ProjectGuid>{039FAD1D-18EA-4498-9CA6-B78CE6218454}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Provisioning.Framework.Console</RootNamespace>
+    <RootNamespace>Provisioning.Framework</RootNamespace>
     <AssemblyName>Provisioning.Framework.Console</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,13 +53,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
       <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

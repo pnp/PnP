@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OfficeDevPnP.Core.Tests</RootNamespace>
     <AssemblyName>OfficeDevPnP.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -228,7 +228,9 @@
     <Compile Include="AppModelExtensions\Tenant15ExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\TenantExtensionsTests.cs" />
     <Compile Include="AppModelExtensions\NavigationExtensionsTests.cs" />
-    <Compile Include="Framework\Connectors\ConnectorTests.cs" />
+    <Compile Include="Framework\Connectors\ConnectorAzureTests.cs" />
+    <Compile Include="Framework\Connectors\ConnectorFileSystemTests.cs" />
+    <Compile Include="Framework\Connectors\ConnectorSharePointTests.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTestConstants.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="Framework\ObjectHandlers\ObjectCustomActionsTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectFieldTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectContentTypeTests.cs" />
+    <Compile Include="Framework\Providers\BaseTemplateTests.cs" />
     <Compile Include="Framework\Providers\XMLProvidersTests.cs" />
     <Compile Include="Framework\ProvisioningTemplates\DomainModelTests.cs" />
     <Compile Include="Utilities\JsonUtilityTests.cs" />

@@ -12,18 +12,54 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
         {
-            web.AlternateCssUrl = template.ComposedLook.AlternateCSS;
-            web.SiteLogoUrl = template.ComposedLook.SiteLogo;
-    //        web.MasterUrl = template.ComposedLook.MasterPage;
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQueryRetry();
+            }
+            var relativeUrl = web.ServerRelativeUrl;
+            if (template.ComposedLook.AlternateCSS != null)
+            {
+                var alternateCssUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.AlternateCSS);
+                web.AlternateCssUrl = alternateCssUrl;
+                web.Update();
+            }
+            if (template.ComposedLook.SiteLogo != null)
+            {
+                var siteLogoUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.SiteLogo);
+                web.SiteLogoUrl = siteLogoUrl;
+                web.Update();
+            }
+            string masterUrl = null;
+            if (template.ComposedLook.MasterPage != null)
+            {
+                masterUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.MasterPage);
+                web.MasterUrl = masterUrl;
+            }
+            string colorFile = null;
+            if (template.ComposedLook.ColorFile != null)
+            {
+                colorFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.ColorFile);
+            }
+            string backgroundFile = null;
+            if (template.ComposedLook.BackgroundFile != null)
+            {
+                backgroundFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.BackgroundFile);
+            }
+            string fontFile = null;
+            if (template.ComposedLook.FontFile != null)
+            {
+                fontFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.FontFile);
+            }
 
-            web.SetComposedLookByUrl(template.ComposedLook.Name,template.ComposedLook.ColorFile,template.ComposedLook.FontFile,template.ComposedLook.BackgroundFile,template.ComposedLook.MasterPage);
+            web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
 
-    
+            web.Context.ExecuteQueryRetry();
 
             // TODO: Add theme handling
         }
 
-        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
+        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             // Load object if not there
             if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))
@@ -32,17 +68,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.ExecuteQuery();
             }
 
-            var theme = web.GetComposedLook("Current");
-           
-            // Get needed data from the site
-            // TODO: Access currently set theme for details
-            template.ComposedLook.AlternateCSS = web.AlternateCssUrl;
-            template.ComposedLook.BackgroundFile = theme.BackgroundImage;
-            template.ComposedLook.ColorFile = theme.Theme;
-            template.ComposedLook.FontFile = theme.Font;
-            template.ComposedLook.MasterPage = web.MasterUrl;
-            template.ComposedLook.Name = "";
-            template.ComposedLook.SiteLogo = web.SiteLogoUrl;
+            // TODO: review
+            template.ComposedLook = null;
+
+            //var theme = web.GetComposedLook("Current");
+
+            //// Get needed data from the site
+            //// TODO: Access currently set theme for details
+            //template.ComposedLook.AlternateCSS = web.AlternateCssUrl;
+            //template.ComposedLook.BackgroundFile = theme.BackgroundImage;
+            //template.ComposedLook.ColorFile = theme.Theme;
+            //template.ComposedLook.FontFile = theme.Font;
+            //template.ComposedLook.MasterPage = web.MasterUrl;
+            //template.ComposedLook.Name = "";
+            //template.ComposedLook.SiteLogo = web.SiteLogoUrl;
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
 
             return template;
         }

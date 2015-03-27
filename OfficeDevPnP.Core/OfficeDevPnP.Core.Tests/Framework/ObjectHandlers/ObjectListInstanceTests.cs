@@ -63,7 +63,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectListInstance().CreateEntities(ctx.Web, template);
+                template = new ObjectListInstance().CreateEntities(ctx.Web, template, null);
 
                 Assert.IsTrue(template.Lists.Any());
             }

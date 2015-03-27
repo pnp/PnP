@@ -59,7 +59,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template)
+        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
@@ -107,6 +107,58 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             siteSecurity.AdditionalAdministrators.AddRange(admins);
 
             template.Security = siteSecurity;
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (baseTemplate != null)
+            {
+                template = CleanupEntities(template, baseTemplate);
+            }
+
+            return template;
+        }
+
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        {
+            foreach (var user in baseTemplate.Security.AdditionalAdministrators)
+            {
+                int index = template.Security.AdditionalAdministrators.FindIndex(f => f.Name.Equals(user.Name));
+
+                if (index > -1)
+                {
+                    template.Security.AdditionalAdministrators.RemoveAt(index);
+                }
+            }
+
+            foreach (var user in baseTemplate.Security.AdditionalMembers)
+            {
+                int index = template.Security.AdditionalMembers.FindIndex(f => f.Name.Equals(user.Name));
+
+                if (index > -1)
+                {
+                    template.Security.AdditionalMembers.RemoveAt(index);
+                }
+            }
+
+            foreach (var user in baseTemplate.Security.AdditionalOwners)
+            {
+                int index = template.Security.AdditionalOwners.FindIndex(f => f.Name.Equals(user.Name));
+
+                if (index > -1)
+                {
+                    template.Security.AdditionalOwners.RemoveAt(index);
+                }
+            }
+
+            foreach (var user in baseTemplate.Security.AdditionalVisitors)
+            {
+                int index = template.Security.AdditionalVisitors.FindIndex(f => f.Name.Equals(user.Name));
+
+                if (index > -1)
+                {
+                    template.Security.AdditionalVisitors.RemoveAt(index);
+                }
+            }
+
             return template;
         }
     }
