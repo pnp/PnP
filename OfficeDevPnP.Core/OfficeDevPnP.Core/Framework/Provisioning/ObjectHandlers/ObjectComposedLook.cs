@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -12,44 +13,45 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
         {
+            TokenParser parser = new TokenParser(web);
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQueryRetry();
             }
             var relativeUrl = web.ServerRelativeUrl;
-            if (template.ComposedLook.AlternateCSS != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
             {
-                var alternateCssUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.AlternateCSS);
+                var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
                 web.AlternateCssUrl = alternateCssUrl;
                 web.Update();
             }
-            if (template.ComposedLook.SiteLogo != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
             {
-                var siteLogoUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.SiteLogo);
+                var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
                 web.SiteLogoUrl = siteLogoUrl;
                 web.Update();
             }
             string masterUrl = null;
-            if (template.ComposedLook.MasterPage != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
             {
-                masterUrl = UrlUtility.Combine(relativeUrl, template.ComposedLook.MasterPage);
+                masterUrl = parser.Parse(template.ComposedLook.MasterPage);
                 web.MasterUrl = masterUrl;
             }
             string colorFile = null;
             if (template.ComposedLook.ColorFile != null)
             {
-                colorFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.ColorFile);
+                colorFile = parser.Parse(template.ComposedLook.ColorFile);
             }
             string backgroundFile = null;
             if (template.ComposedLook.BackgroundFile != null)
             {
-                backgroundFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.BackgroundFile);
+                backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
             }
             string fontFile = null;
-            if (template.ComposedLook.FontFile != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
             {
-                fontFile = UrlUtility.Combine(relativeUrl, template.ComposedLook.FontFile);
+                fontFile = parser.Parse(template.ComposedLook.FontFile);
             }
 
             web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
