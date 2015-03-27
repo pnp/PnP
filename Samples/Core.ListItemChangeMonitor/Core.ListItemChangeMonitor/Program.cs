@@ -20,10 +20,9 @@ namespace Core.ListItemChangeMonitor
         static void Main(string[] args)
         {
 
-
             // Request Office365 site from the user
-             url = GetSite();
-             listName = GetListName();
+            url = GetSite();
+            listName = GetListName();
 
             /* Prompt for Credentials */
             Console.WriteLine("Enter Credentials for {0}", url);
@@ -31,7 +30,7 @@ namespace Core.ListItemChangeMonitor
             password = GetPassword();
 
             /* End Program if no Credentials */
-            if (string.IsNullOrEmpty(userName) || (password == null) || string.IsNullOrEmpty(listName ))
+            if (string.IsNullOrEmpty(userName) || (password == null) || string.IsNullOrEmpty(listName))
                 return;
 
             DoWork();
@@ -44,10 +43,11 @@ namespace Core.ListItemChangeMonitor
             Console.WriteLine("User Name: " + userName);
             Console.WriteLine("List Name: " + listName);
             Console.WriteLine("");
-            Console.WriteLine(string.Format("Ctrl+c to terminate. Press \"r\" key to force run without waiting {0} seconds.",WaitSeconds));
             try
             {
 
+                Console.WriteLine(string.Format("Connecting to {0}", url));
+                Console.WriteLine("");
                 ClientContext cc = new ClientContext(url);
                 cc.AuthenticationMode = ClientAuthenticationMode.Default;
                 cc.Credentials = new SharePointOnlineCredentials(userName, password);
@@ -72,6 +72,7 @@ namespace Core.ListItemChangeMonitor
                 cq.DeleteObject = true;
                 cq.Add = true;
                 cq.Update = true;
+                Console.WriteLine(string.Format("Ctrl+c to terminate. Press \"r\" key to force run without waiting {0} seconds.", WaitSeconds));
                 do
                 {
                     do
@@ -80,12 +81,16 @@ namespace Core.ListItemChangeMonitor
                     }
                     while (lastRunTime.AddSeconds(WaitSeconds) > DateTime.Now.ToUniversalTime());
 
-                    cq.ChangeTokenStart = new ChangeToken();
-                    cq.ChangeTokenStart.StringValue = string.Format("1;3;{0};{1};-1", list.Id.ToString(), lastRunTime.Ticks.ToString());
                     lastRunTime = lastRunTime.AddSeconds(WaitSeconds).AddMilliseconds(1);
                     ChangeCollection coll = list.GetChanges(cq);
                     cc.Load(coll);
                     cc.ExecuteQuery();
+
+                    // if we find any changes to the list take the last change
+                    // and use the ChangeToken as the start time for our next query
+                    // The ChangeToken will contain the Date/time of the last change to any item in the list
+                    cq.ChangeTokenStart = coll.Count > 0 ? coll.Last().ChangeToken : cq.ChangeTokenStart;
+
                     DisplayChanges(coll);
 
                 } while (true);
@@ -98,6 +103,7 @@ namespace Core.ListItemChangeMonitor
 
             }
         }
+
         private static void DisplayChanges(ChangeCollection coll)
         {
             if (coll.Count == 0)
@@ -113,6 +119,7 @@ namespace Core.ListItemChangeMonitor
                 Console.WriteLine("");
                 Console.WriteLine(string.Format("List {0} had a Change of type \"{1}\" on the item with Id {2}.", listName, itm.ChangeType.ToString(), itm.ItemId));
             }
+            Console.WriteLine("");
             Console.ResetColor();
         }
 
