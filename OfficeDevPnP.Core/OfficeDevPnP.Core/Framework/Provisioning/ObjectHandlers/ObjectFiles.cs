@@ -28,19 +28,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var file in template.Files)
             {
-                var fileInfo = new FileInfo(file.Src);
-                var folder = web.EnsureFolderPath(parser.Parse(file.Folder));
 
-                if (System.IO.File.Exists(file.Src))
+                var folderName = parser.Parse(file.Folder);
+
+                if (folderName.ToLower().StartsWith((web.ServerRelativeUrl.ToLower())))
                 {
-                    folder.UploadFile(fileInfo.Name, fileInfo.FullName, file.Overwrite);
+                    folderName = folderName.Substring(web.ServerRelativeUrl.Length);
                 }
-                else
+                
+
+                var folder = web.EnsureFolderPath(folderName);
+
+                using (var stream = template.Connector.GetFileStream(file.Src))
                 {
-                    Log.Error("Source File {0} does not exist",file.Src);
+                    folder.UploadFile(file.Src, stream, true);
                 }
+
             }
-           
+
         }
 
 
