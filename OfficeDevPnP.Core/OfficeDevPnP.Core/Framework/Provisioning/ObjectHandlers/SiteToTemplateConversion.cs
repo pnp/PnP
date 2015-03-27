@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -95,6 +96,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Extensibility Provider CallOut the last thing we do.
             new ObjectExtensibilityProviders().ProvisionObjects(web, template);
+
+            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId",template.ID);
+            web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
+
+            ProvisioningTemplateInfo info = new ProvisioningTemplateInfo();
+            info.TemplateID = template.ID;
+            info.Result = true;
+            info.ProvisioningTime = DateTime.Now;
+
+            var s = new JavaScriptSerializer();
+            string jsonInfo = s.Serialize(info);
+
+            web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo",jsonInfo);
         }
     }
 }

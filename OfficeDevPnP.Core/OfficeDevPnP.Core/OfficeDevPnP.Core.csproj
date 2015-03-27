@@ -295,6 +295,7 @@
     <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
     <Compile Include="Framework\Provisioning\Model\Features.cs" />
+    <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
     <Compile Include="Framework\Provisioning\Model\Field.cs" />
     <Compile Include="Framework\Provisioning\Model\File.cs" />
     <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="Framework\Provisioning\Model\Provider.cs" />
     <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
     <Compile Include="Framework\Provisioning\Model\Feature.cs" />
+    <Compile Include="Framework\Provisioning\Model\ProvisioningTemplateInfo.cs" />
     <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
     <Compile Include="Framework\Provisioning\Model\User.cs" />
     <Compile Include="Framework\Provisioning\Model\View.cs" />
