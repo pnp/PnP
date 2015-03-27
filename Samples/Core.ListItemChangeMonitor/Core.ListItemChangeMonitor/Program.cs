@@ -86,12 +86,12 @@ namespace Core.ListItemChangeMonitor
                     cc.Load(coll);
                     cc.ExecuteQuery();
 
-                    // if we find any changes to the list take the last change
-                    // and use the ChangeToken as the start time for our next query
-                    // The ChangeToken will contain the Date/time of the last change to any item in the list
+                    // if we find any changes to the list take the last change and use the ChangeToken as the start time for our next query.
+                    // The ChangeToken will contain the Date/time of the last change to any item in the list.
                     cq.ChangeTokenStart = coll.Count > 0 ? coll.Last().ChangeToken : cq.ChangeTokenStart;
 
                     DisplayChanges(coll);
+                    
 
                 } while (true);
             }
