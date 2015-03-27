@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class ProvisioningTemplate
     {
         #region private members
-
         private List<Field> _siteFields = new List<Field>();
         private List<ContentType> _contentTypes = new List<ContentType>();
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
@@ -23,7 +23,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private CustomActions _customActions = new CustomActions();
         private List<File> _files = new List<File>();
         private List<Provider> _providers = new List<Provider>();
+        private FileConnectorBase connector;
         #endregion
+
+        #region Constructor
+        public ProvisioningTemplate()
+        {
+            this.connector = new FileSystemConnector(".", "");
+        }
+
+        public ProvisioningTemplate(FileConnectorBase connector)
+        {
+            this.connector = connector;
+        }
+        #endregion
+
 
         #region Properties
         /// <summary>
@@ -123,6 +137,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._providers; }
             private set { this._providers = value; }
+        }
+
+        public FileConnectorBase Connector
+        {
+            get
+            {
+                return this.connector;
+            }
+            set
+            {
+                this.connector = value;
+            }
         }
 
         #endregion
