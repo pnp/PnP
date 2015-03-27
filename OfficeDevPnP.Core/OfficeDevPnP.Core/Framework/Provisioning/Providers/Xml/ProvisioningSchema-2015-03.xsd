@@ -25,7 +25,7 @@
           </xsd:annotation>
         </xsd:element>
 
-        <xsd:element name="PropertyBagEntries" minOccurs="0">
+        <xsd:element name="PropertyBagEntries" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Property Bag entries of the Provisioning Template, optional collection of elements
@@ -39,7 +39,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="Security">
+        <xsd:element name="Security" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Security Groups Members of the Provisioning Template, optional collection of elements
@@ -79,7 +79,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="SiteFields" minOccurs="0">
+        <xsd:element name="SiteFields" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Site Columns of the Provisioning Template, optional element
@@ -93,7 +93,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="ContentTypes" minOccurs="0">
+        <xsd:element name="ContentTypes" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Content Types of the Provisioning Template, optional element
@@ -107,7 +107,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="Lists" minOccurs="0">
+        <xsd:element name="Lists" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Lists instances of the Provisioning Template, optional element
@@ -121,7 +121,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="Features" minOccurs="0">
+        <xsd:element name="Features" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Features (Site or Web) to activate or deactivate while applying the Provisioning Template, optional collection of elements
@@ -149,7 +149,7 @@
           
         </xsd:element>
 
-        <xsd:element name="CustomActions" minOccurs="0">
+        <xsd:element name="CustomActions" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Custom Actions (Site or Web) to provision with the Provisioning Template, optional element
@@ -177,7 +177,7 @@
           
         </xsd:element>
 
-        <xsd:element name="Files" minOccurs="0">
+        <xsd:element name="Files" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Files to provision into the target Site through the Provisioning Template, optional element
@@ -191,7 +191,7 @@
           </xsd:complexType>
         </xsd:element>
 
-        <xsd:element name="ComposedLook" type="ComposedLook" minOccurs="0">
+        <xsd:element name="ComposedLook" type="ComposedLook" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The ComposedLook for the Provisioning Template, optional element
@@ -199,7 +199,7 @@
           </xsd:annotation>
         </xsd:element>
 
-        <xsd:element name="Providers" minOccurs="0">
+        <xsd:element name="Providers" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
               The Extensiblity Providers to invoke while applying the Provisioning Template, optional collection of elements
@@ -531,7 +531,7 @@
       </xsd:documentation>
     </xsd:annotation>
 
-    <xsd:attribute name="ID" type="xsd:string" use="required">
+    <xsd:attribute name="ID" type="GUID" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The value of the field ID to bind, required attribute
