@@ -28,17 +28,25 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 ctx.Load(themesCatalog, t => t.RootFolder.ServerRelativeUrl);
 
 
-                TokenParser parser = new TokenParser(ctx.Web);
+                var parser = new TokenParser(ctx.Web);
 
-                var site = parser.Parse("~site/test");
-                var sitecol = parser.Parse("~sitecollection/test");
-                var masterUrl = parser.Parse("~masterpagecatalog/test");
-                var themeUrl = parser.Parse("~themecatalog/test");
+                var site1 = parser.Parse("~siTE/test");
+                var site2 = parser.Parse("{site}/test");
+                var sitecol1 = parser.Parse("~siteCOLLECTION/test");
+                var sitecol2 = parser.Parse("{sitecollection}/test");
+                var masterUrl1 = parser.Parse("~masterpagecatalog/test");
+                var masterUrl2 = parser.Parse("{masterpagecatalog}/test");
+                var themeUrl1 = parser.Parse("~themecatalog/test");
+                var themeUrl2 = parser.Parse("{themecatalog}/test");
 
-                Assert.IsTrue(site == string.Format("{0}/test",ctx.Web.ServerRelativeUrl));
-                Assert.IsTrue(sitecol == string.Format("{0}/test", ctx.Site.ServerRelativeUrl));
-                Assert.IsTrue(masterUrl == string.Format("{0}/test", masterCatalog.RootFolder.ServerRelativeUrl));
-                Assert.IsTrue(themeUrl == string.Format("{0}/test", themesCatalog.RootFolder.ServerRelativeUrl));
+                Assert.IsTrue(site1 == string.Format("{0}/test", ctx.Web.ServerRelativeUrl));
+                Assert.IsTrue(site2 == string.Format("{0}/test", ctx.Web.ServerRelativeUrl));
+                Assert.IsTrue(sitecol1 == string.Format("{0}/test", ctx.Site.ServerRelativeUrl));
+                Assert.IsTrue(sitecol2 == string.Format("{0}/test", ctx.Site.ServerRelativeUrl));
+                Assert.IsTrue(masterUrl1 == string.Format("{0}/test", masterCatalog.RootFolder.ServerRelativeUrl));
+                Assert.IsTrue(masterUrl2 == string.Format("{0}/test", masterCatalog.RootFolder.ServerRelativeUrl));
+                Assert.IsTrue(themeUrl1 == string.Format("{0}/test", themesCatalog.RootFolder.ServerRelativeUrl));
+                Assert.IsTrue(themeUrl2 == string.Format("{0}/test", themesCatalog.RootFolder.ServerRelativeUrl));
             }
         }
     }

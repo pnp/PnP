@@ -5,15 +5,19 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
     public class SiteToken : TokenDefinition
     {
         public SiteToken(Web web)
-            : base(web, "~site")
+            : base(web, "~site", "{site}")
         {
         }
 
         public override string GetReplaceValue()
         {
-            Web.Context.Load(Web, w => w.ServerRelativeUrl);
-            Web.Context.ExecuteQueryRetry();
-            return Web.ServerRelativeUrl;
+            if (CacheValue == null)
+            {
+                Web.Context.Load(Web, w => w.ServerRelativeUrl);
+                Web.Context.ExecuteQueryRetry();
+                CacheValue = Web.ServerRelativeUrl;
+            }
+            return CacheValue;
         }
     }
 }
