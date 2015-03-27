@@ -119,6 +119,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            foreach (var list in baseTemplate.Lists)
+            {
+                int index = template.Lists.FindIndex(f => f.Url.Equals(list.Url) && 
+                                                          f.TemplateType.Equals(list.TemplateType));
+
+                if (index > -1)
+                {
+                    template.Lists.RemoveAt(index);
+                }
+            }
 
             return template;
         }

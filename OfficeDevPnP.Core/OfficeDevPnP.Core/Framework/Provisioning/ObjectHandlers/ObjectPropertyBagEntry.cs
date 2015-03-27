@@ -52,6 +52,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            foreach (var propertyBagEntry in baseTemplate.PropertyBagEntries)
+            {
+                int index = template.PropertyBagEntries.FindIndex(f => f.Key.Equals(propertyBagEntry.Key));
+
+                if (index > -1)
+                {
+                    template.PropertyBagEntries.RemoveAt(index);
+                }
+            }
+
+            // Scan for "system" properties that should be removed as well
+            List<string> systemPropertyBagEntries = new List<string>(new string[] { "dlc_ExpirationLastRun", "profileschemaversion", "dlc_PolicyUpdateLastRun" });
+            foreach(string property in systemPropertyBagEntries)
+            {
+                int index = template.PropertyBagEntries.FindIndex(f => f.Key.Equals(property));
+
+                if (index > -1)
+                {
+                    template.PropertyBagEntries.RemoveAt(index);
+                }
+            }
 
             return template;
         }

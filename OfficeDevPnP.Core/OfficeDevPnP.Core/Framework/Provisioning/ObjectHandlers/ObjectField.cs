@@ -13,6 +13,7 @@ using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
+using System.Xml;
 
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -67,6 +68,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            foreach (var field in baseTemplate.SiteFields)
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(field.SchemaXml);
+                var node = doc.DocumentElement.SelectSingleNode("/Field/@ID");
+
+                if (node != null)
+                {
+                    int index = template.SiteFields.FindIndex(f => f.SchemaXml.IndexOf(node.Value, StringComparison.InvariantCultureIgnoreCase) > -1);
+
+                    if (index > -1)
+                    {
+                        template.SiteFields.RemoveAt(index);
+                    }
+                }
+            }
 
             return template;
         }

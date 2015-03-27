@@ -115,6 +115,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
 
+            foreach (var feature in baseTemplate.Features.SiteFeatures)
+            {
+                int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+
+                if (index > -1)
+                {
+                    template.Features.SiteFeatures.RemoveAt(index);
+                }
+            }
+
+            foreach (var feature in baseTemplate.Features.WebFeatures)
+            {
+                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+
+                if (index > -1)
+                {
+                    template.Features.WebFeatures.RemoveAt(index);
+                }
+            }
+
             return template;
         }
 
