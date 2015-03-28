@@ -14,6 +14,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 using System.Xml;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -22,8 +23,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
+            var parser = new TokenParser(web);
             var existingFields = web.Fields;
+
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
+            var existingFieldIds = existingFields.Select(l => l.Id).ToList();
+
             web.Context.ExecuteQueryRetry();
             
             var fields = template.SiteFields;
@@ -33,10 +38,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 XDocument document = XDocument.Parse(field.SchemaXml);
                 var fieldId = document.Root.Attribute("ID").Value;
 
-                var existingField = existingFields.FirstOrDefault(c => c.Id == Guid.Parse(fieldId));
-                if (existingField == null)
+
+                if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    web.Fields.AddFieldAsXml(field.SchemaXml, false, AddFieldOptions.DefaultValue);
+                    var fieldXml = parser.Parse(field.SchemaXml);
+                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                     web.Context.ExecuteQueryRetry();
                 }
             }

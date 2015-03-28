@@ -22,21 +22,24 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             _tokens.Add(new SiteToken(web));
             _tokens.Add(new MasterPageCatalogToken(web));
             _tokens.Add(new ThemeCatalogToken(web));
+            _tokens.Add(new SiteCollectionTermStoreIdToken(web));
         }
 
         public string Parse(string input)
         {
-            foreach (var token in _tokens)
+            if (!string.IsNullOrEmpty(input))
             {
-                foreach (var regex in token.Regex)
+                foreach (var token in _tokens)
                 {
-                    if (regex.IsMatch(input))
+                    foreach (var regex in token.Regex)
                     {
-                        input = regex.Replace(input, token.GetReplaceValue());
+                        if (regex.IsMatch(input))
+                        {
+                            input = regex.Replace(input, token.GetReplaceValue());
+                        }
                     }
                 }
             }
-
             return input;
         }
     }
