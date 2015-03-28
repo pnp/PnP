@@ -54,6 +54,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return _additionalVisitors; }
             private set { _additionalVisitors = value; }
         }
+
         #endregion
     }
 }

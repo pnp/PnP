@@ -10,7 +10,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object for custom actions  associated with a SharePoint list, Web site, or subsite.
     /// </summary>
-    public partial class CustomAction
+    public partial class CustomAction : BaseModelEntity
     {
         #region Private Members
         private int _rightsValue = 0;
@@ -105,6 +105,65 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets a value that specifies the URI of a file which contains the ECMAScript to execute on the page
         /// </summary>
         public string ScriptSrc { get; set; }
+        #endregion
+
+        #region Comparison code
+
+        public override int CompareTo(Object obj)
+        {
+            CustomAction other = obj as CustomAction;
+
+            if (other == null)
+            {
+                return (1);
+            }
+
+            if (this.CommandUIExtension == other.CommandUIExtension &&
+                this.Description == other.Description && 
+                this.Enabled == other.Enabled && 
+                this.Group == other.Group && 
+                this.ImageUrl == other.ImageUrl && 
+                this.Location == other.Location && 
+                this.Name == other.Name && 
+                this.RegistrationId == other.RegistrationId && 
+                this.RegistrationType == other.RegistrationType && 
+                this.Remove == other.Remove && 
+                this.RightsValue == other.RightsValue && 
+                this.ScriptBlock == other.ScriptBlock && 
+                this.ScriptSrc == other.ScriptSrc && 
+                this.Sequence == other.Sequence && 
+                this.Title == other.Title && 
+                this.Url == other.Url)
+            {
+                return (0);
+            }
+            else
+            {
+                return (-1);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}",
+                this.CommandUIExtension,
+                this.Description,
+                this.Enabled,
+                this.Group,
+                this.ImageUrl,
+                this.Location,
+                this.Name,
+                this.RegistrationId,
+                this.RegistrationType,
+                this.Remove,
+                this.RightsValue,
+                this.ScriptBlock,
+                this.ScriptSrc,
+                this.Sequence,
+                this.Title,
+                this.Url).GetHashCode());
+        }
+
         #endregion
     }
 }
