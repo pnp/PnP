@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.UPAWebService;
 
@@ -27,15 +28,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
         {
+            TokenParser parser = null;
             Web web = null;
             Site site = null;
             if (parent is Site)
             {
                 site = parent as Site;
+                parser = new TokenParser(site.RootWeb);
             }
             else
             {
                 web = parent as Web;
+                parser = new TokenParser(web);
             }
             foreach (var customAction in customActions)
             {
@@ -54,7 +58,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     customActionEntity.CommandUIExtension = customAction.CommandUIExtension;
                     customActionEntity.Description = customAction.Description;
                     customActionEntity.Group = customAction.Group;
-                    customActionEntity.ImageUrl = customAction.ImageUrl;
+                    customActionEntity.ImageUrl = parser.Parse(customAction.ImageUrl);
                     customActionEntity.Location = customAction.Location;
                     customActionEntity.Name = customAction.Name;
                     customActionEntity.RegistrationId = customAction.RegistrationId;
@@ -62,10 +66,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     customActionEntity.Remove = customAction.Remove;
                     customActionEntity.Rights = customAction.Rights;
                     customActionEntity.ScriptBlock = customAction.ScriptBlock;
-                    customActionEntity.ScriptSrc = customAction.ScriptSrc;
+                    customActionEntity.ScriptSrc = parser.Parse(customAction.ScriptSrc);
                     customActionEntity.Sequence = customAction.Sequence;
                     customActionEntity.Title = customAction.Title;
-                    customActionEntity.Url = customAction.Url;
+                    customActionEntity.Url = parser.Parse(customAction.Url);
 
                     if (site != null)
                     {

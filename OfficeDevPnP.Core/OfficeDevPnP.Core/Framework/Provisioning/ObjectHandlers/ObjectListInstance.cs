@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.ModelBinding;
 using System.Xml.Linq;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -15,6 +16,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
         {
+            var parser = new TokenParser(web);
+
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -23,15 +26,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(web.Lists, lc => lc.IncludeWithDefaultProperties(l => l.RootFolder.ServerRelativeUrl));
             web.Context.ExecuteQueryRetry();
-
+            var existingLists = web.Lists.Select(existingList => existingList.RootFolder.ServerRelativeUrl).ToList();
             var serverRelativeUrl = web.ServerRelativeUrl;
 
-            var existingLists = web.Lists;
+           
             foreach (var list in template.Lists)
             {
-
-                var existingList = existingLists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl == UrlUtility.Combine(serverRelativeUrl, list.Url));
-                if (existingList == null)
+                if (!existingLists.Contains(UrlUtility.Combine(serverRelativeUrl, list.Url)))
                 {
                     var listCreate = new ListCreationInformation();
                     listCreate.Description = list.Description;
@@ -68,7 +69,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var field in list.Fields)
                         {
-                            createdList.Fields.AddFieldAsXml(field.SchemaXml, false, AddFieldOptions.DefaultValue);
+                            var fieldXml = parser.Parse(field.SchemaXml);
+                            createdList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                         }
                         createdList.Update();
                         web.Context.ExecuteQueryRetry();
