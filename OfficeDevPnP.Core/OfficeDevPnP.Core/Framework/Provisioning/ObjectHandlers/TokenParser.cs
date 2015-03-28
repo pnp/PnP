@@ -17,12 +17,14 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
 
         public TokenParser(Web web)
         {
-            _web = web;
+            _web = web; 
+
+            // ORDER IS IMPORTANT!
+            _tokens.Add(new SiteCollectionTermStoreIdToken(web));
             _tokens.Add(new SiteCollectionToken(web));
             _tokens.Add(new SiteToken(web));
             _tokens.Add(new MasterPageCatalogToken(web));
             _tokens.Add(new ThemeCatalogToken(web));
-            _tokens.Add(new SiteCollectionTermStoreIdToken(web));
         }
 
         public string Parse(string input)
