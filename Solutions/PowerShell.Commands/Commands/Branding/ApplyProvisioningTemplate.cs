@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
     [CmdletHelp("Generates a provisioning template from a web", Category = "Branding")]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true)]
         public string Path;
 
         

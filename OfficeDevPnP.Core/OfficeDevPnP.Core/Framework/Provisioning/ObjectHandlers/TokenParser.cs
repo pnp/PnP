@@ -18,11 +18,20 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
         public TokenParser(Web web)
         {
             _web = web;
+
+          
             _tokens.Add(new SiteCollectionToken(web));
             _tokens.Add(new SiteToken(web));
             _tokens.Add(new MasterPageCatalogToken(web));
-            _tokens.Add(new ThemeCatalogToken(web));
             _tokens.Add(new SiteCollectionTermStoreIdToken(web));
+            _tokens.Add(new ThemeCatalogToken(web));
+
+            // ORDER IS IMPORTANT!
+            var sortedTokens = from t in _tokens 
+                               orderby t.GetTokenLength() descending 
+                               select t;
+
+            _tokens = sortedTokens.ToList();
         }
 
         public string Parse(string input)
@@ -31,7 +40,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             {
                 foreach (var token in _tokens)
                 {
-                    foreach (var regex in token.Regex)
+                    foreach (var regex in token.GetRegex())
                     {
                         if (regex.IsMatch(input))
                         {
