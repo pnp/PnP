@@ -25,6 +25,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             _tokens.Add(new MasterPageCatalogToken(web));
             _tokens.Add(new SiteCollectionTermStoreIdToken(web));
             _tokens.Add(new ThemeCatalogToken(web));
+            _tokens.Add(new KeywordsTermStoreIdToken(web));
 
             // ORDER IS IMPORTANT!
             var sortedTokens = from t in _tokens 
