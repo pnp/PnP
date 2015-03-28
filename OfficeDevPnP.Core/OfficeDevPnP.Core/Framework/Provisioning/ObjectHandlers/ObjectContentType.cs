@@ -14,19 +14,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
+ 
             var existingCts = web.AvailableContentTypes;
-            web.Context.Load(existingCts);
+            web.Context.Load(existingCts, cts => cts.Include(ct => ct.StringId));
             web.Context.ExecuteQueryRetry();
+
+            var existingCtsIds = existingCts.Select(cts => cts.StringId).ToList();
 
             foreach (var ct in template.ContentTypes)
             {
                 // find the id of the content type
                 XDocument document = XDocument.Parse(ct.SchemaXml);
                 var contentTypeId = document.Root.Attribute("ID").Value;
-                var existingCt = existingCts.FirstOrDefault(c => c.StringId == contentTypeId);
-                if (existingCt == null)
+                if(!existingCtsIds.Contains(contentTypeId))
                 {
                     web.CreateContentTypeFromXMLString(ct.SchemaXml);
+                    existingCtsIds.Add(contentTypeId);
                 }
             }            
         }
