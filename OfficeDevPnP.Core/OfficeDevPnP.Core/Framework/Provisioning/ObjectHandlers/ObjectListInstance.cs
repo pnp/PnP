@@ -82,6 +82,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         {
                             var field = web.GetFieldById<Microsoft.SharePoint.Client.Field>(fieldRef.ID);
                             createdList.Fields.Add(field);
+                         
                         }
                         createdList.Update();
                         web.Context.ExecuteQueryRetry();
