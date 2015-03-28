@@ -6,7 +6,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
     public class KeywordsTermStoreIdToken : TokenDefinition
     {
         public KeywordsTermStoreIdToken(Web web)
-            : base(web, "~keywordstermstoreidtoken", "{keywordstermstoreidtoken}")
+            : base(web, "~keywordstermstoreid", "{keywordstermstoreid}")
         {
         }
 
