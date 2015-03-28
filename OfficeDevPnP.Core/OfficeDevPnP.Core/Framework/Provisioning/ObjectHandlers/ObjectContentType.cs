@@ -19,14 +19,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             web.Context.Load(existingCts, cts => cts.Include(ct => ct.StringId));
             web.Context.ExecuteQueryRetry();
 
-            var existingCtsIds = existingCts.Select(cts => cts.StringId).ToList();
+            var existingCtsIds = existingCts.Select(cts => cts.StringId.ToLower()).ToList();
 
             foreach (var ct in template.ContentTypes)
             {
                 // find the id of the content type
                 XDocument document = XDocument.Parse(ct.SchemaXml);
                 var contentTypeId = document.Root.Attribute("ID").Value;
-                if(!existingCtsIds.Contains(contentTypeId))
+                if(!existingCtsIds.Contains(contentTypeId.ToLower()))
                 {
                     web.CreateContentTypeFromXMLString(ct.SchemaXml);
                     existingCtsIds.Add(contentTypeId);
