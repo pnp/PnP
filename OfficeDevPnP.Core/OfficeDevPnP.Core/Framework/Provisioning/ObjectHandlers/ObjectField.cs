@@ -27,10 +27,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var existingFields = web.Fields;
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
+            web.Context.ExecuteQueryRetry();
             var existingFieldIds = existingFields.Select(l => l.Id).ToList();
 
-            web.Context.ExecuteQueryRetry();
-            
             var fields = template.SiteFields;
 
             foreach (var field in fields)
