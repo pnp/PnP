@@ -38,7 +38,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
         #endregion
 
-
         #region Properties
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template

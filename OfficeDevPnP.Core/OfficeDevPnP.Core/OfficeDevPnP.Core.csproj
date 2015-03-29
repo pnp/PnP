@@ -289,6 +289,7 @@
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibilityProvider.cs" />
+    <Compile Include="Framework\Provisioning\Model\BaseModelEntity.cs" />
     <Compile Include="Framework\Provisioning\Model\ComposedLook.cs" />
     <Compile Include="Framework\Provisioning\Model\ContentType.cs" />
     <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />

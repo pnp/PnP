@@ -44,7 +44,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
-                    createdList.DocumentTemplateUrl = list.DocumentTemplate;
+                    if (!String.IsNullOrEmpty(list.DocumentTemplate))
+                    {
+                        createdList.DocumentTemplateUrl = list.DocumentTemplate;
+                    }
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 

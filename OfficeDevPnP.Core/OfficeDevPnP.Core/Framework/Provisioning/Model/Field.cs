@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
-    public class Field
+    public class Field : BaseModelEntity
     {
         #region Private Members
         private string _schemaXml = string.Empty;
@@ -29,6 +29,38 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._schemaXml; }
             set { this._schemaXml = value; }
+        }
+
+        #endregion
+
+        #region Comparison code
+
+        public override int CompareTo(Object obj)
+        {
+            Field other = obj as Field;
+
+            if (other == null)
+            {
+                return (1);
+            }
+
+            XElement currentXml = XElement.Parse(this.SchemaXml);
+            XElement otherXml = XElement.Parse(other.SchemaXml);
+
+            if (XNode.DeepEquals(currentXml, otherXml))
+            {
+                return (0);
+            }
+            else
+            {
+                return (-1);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}",
+                this.SchemaXml).GetHashCode()); 
         }
 
         #endregion

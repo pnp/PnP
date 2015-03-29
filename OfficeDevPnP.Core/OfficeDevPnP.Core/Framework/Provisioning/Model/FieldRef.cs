@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
-    public class FieldRef
+    public class FieldRef : BaseModelEntity
     {
         #region Private Members
 
@@ -30,6 +30,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._ID; }
             set { this._ID = value; }
+        }
+
+        #endregion
+
+        #region Comparison code
+
+        public override int CompareTo(Object obj)
+        {
+            FieldRef other = obj as FieldRef;
+
+            if (other == null)
+            {
+                return (1);
+            }
+
+            if (this.ID == other.ID)
+            {
+                return (0);
+            }
+            else
+            {
+                return (-1);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}",
+                this.ID).GetHashCode());
         }
 
         #endregion
