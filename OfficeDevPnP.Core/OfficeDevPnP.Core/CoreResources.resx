@@ -498,4 +498,88 @@
   <data name="TimerJob_Realm" xml:space="preserve">
     <value>Realm set to {0}</value>
   </data>
+  <data name="Provisioning_Connectors_Azure_FailedToInitialize" xml:space="preserve">
+    <value>Could not initialize AzureStorageConnector. Error = {0}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in Azure storage container {1}. Exception = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileRetrieved" xml:space="preserve">
+    <value>File {0} retrieved from Azure storage container {1}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in directory {1}. Exception = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileRetrieved" xml:space="preserve">
+    <value>File {0} retrieved from folder {1}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Missing_AssemblyName" xml:space="preserve">
+    <value>Provider.Assembly missing value. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Missing_TypeName" xml:space="preserve">
+    <value>Provider.Type missing value. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_BeforeInvocation" xml:space="preserve">
+    <value>Provisioning extensibility pipeline preparing to invoke, Assembly: {0}. Type {1}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Exception" xml:space="preserve">
+    <value>There was an exception invoking the custom extensibility provider. Assembly: {0}, Type: {1}. Exception {2}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_Success" xml:space="preserve">
+    <value>Provisioning extensibility pipline invocation successful, Assembly {0}, Type {1}</value>
+  </data>
+  <data name="Provisioning_Extensibility_Pipeline_ClientCtxNull" xml:space="preserve">
+    <value>ClientContext is NULL. Unable to Invoke Extensibility Pipeline.</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileNotFound" xml:space="preserve">
+    <value>File {0} not found in site {1}, library  {2}. Exception = {3}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileRetrieved" xml:space="preserve">
+    <value>File {0}  found in site {1}, library  {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileDeleted" xml:space="preserve">
+    <value>File {0} was deleted from Azure storage container {1}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileDeleteFailed" xml:space="preserve">
+    <value>File {0} was not deleted from Azure storage container {1}. Error = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileDeleteNotFound" xml:space="preserve">
+    <value>File {0} was not deleted from Azure storage container {1} because it was not available</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileSaved" xml:space="preserve">
+    <value>File {0} saved to Azure storage container {1}</value>
+  </data>
+  <data name="Provisioning_Connectors_Azure_FileSaveFailed" xml:space="preserve">
+    <value>File {0} was not saved to Azure storage container {1}. Error = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileDeleted" xml:space="preserve">
+    <value>File {0} deleted from folder {1}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileDeleteFailed" xml:space="preserve">
+    <value>File {0} was not deleted from folder {1}. Error = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileDeleteNotFound" xml:space="preserve">
+    <value>File {0} was not deleted from folder {1} because it was not available</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileSaved" xml:space="preserve">
+    <value>File {0} saved to folder {1}</value>
+  </data>
+  <data name="Provisioning_Connectors_FileSystem_FileSaveFailed" xml:space="preserve">
+    <value>File {0} was not saved to folder {1}. Error = {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileDeleted" xml:space="preserve">
+    <value>File {0} deleted from site {1}, library {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileDeleteFailed" xml:space="preserve">
+    <value>File {0} was not deleted from site {1}, library {2}. Error = {3}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileDeleteNotFound" xml:space="preserve">
+    <value>File {0} was not deleted from site {1}, library {2} because it was not available</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileSaved" xml:space="preserve">
+    <value>File {0} saved to site {1}, library {2}</value>
+  </data>
+  <data name="Provisioning_Connectors_SharePoint_FileSaveFailed" xml:space="preserve">
+    <value>File {0} was not saved to site {1}, library {2}. Error = {3}</value>
+  </data>
 </root>

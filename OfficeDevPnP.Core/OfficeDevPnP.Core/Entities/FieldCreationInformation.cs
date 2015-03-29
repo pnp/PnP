@@ -15,7 +15,6 @@ namespace OfficeDevPnP.Core.Entities
         public string Group { get; set; }
         public bool Required { get; set; }
 
-
         public FieldCreationInformation(string fieldType)
         {
             FieldType = fieldType;

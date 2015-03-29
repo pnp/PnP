@@ -385,6 +385,258 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not initialize AzureStorageConnector. Error = {0}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FailedToInitialize {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FailedToInitialize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was deleted from Azure storage container {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileDeleted {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from Azure storage container {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileDeleteFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from Azure storage container {1} because it was not available.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileDeleteNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileDeleteNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found in Azure storage container {1}. Exception = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} retrieved from Azure storage container {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileRetrieved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to Azure storage container {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to Azure storage container {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_Azure_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_Azure_FileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} deleted from folder {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileDeleted {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from folder {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileDeleteFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from folder {1} because it was not available.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileDeleteNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileDeleteNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found in directory {1}. Exception = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} retrieved from folder {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileRetrieved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to folder {1}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to folder {1}. Error = {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_FileSystem_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_FileSystem_FileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} deleted from site {1}, library {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileDeleted {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from site {1}, library {2}. Error = {3}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileDeleteFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not deleted from site {1}, library {2} because it was not available.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileDeleteNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileDeleteNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} not found in site {1}, library  {2}. Exception = {3}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileNotFound {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0}  found in site {1}, library  {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileRetrieved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} saved to site {1}, library {2}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileSaved {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File {0} was not saved to site {1}, library {2}. Error = {3}.
+        /// </summary>
+        internal static string Provisioning_Connectors_SharePoint_FileSaveFailed {
+            get {
+                return ResourceManager.GetString("Provisioning_Connectors_SharePoint_FileSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provisioning extensibility pipeline preparing to invoke, Assembly: {0}. Type {1}.
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_BeforeInvocation {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_BeforeInvocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ClientContext is NULL. Unable to Invoke Extensibility Pipeline..
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_ClientCtxNull {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_ClientCtxNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an exception invoking the custom extensibility provider. Assembly: {0}, Type: {1}. Exception {2}.
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_Exception {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider.Assembly missing value. Unable to Invoke Extensibility Pipeline..
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_Missing_AssemblyName {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_Missing_AssemblyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provider.Type missing value. Unable to Invoke Extensibility Pipeline..
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_Missing_TypeName {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_Missing_TypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Provisioning extensibility pipline invocation successful, Assembly {0}, Type {1}.
+        /// </summary>
+        internal static string Provisioning_Extensibility_Pipeline_Success {
+            get {
+                return ResourceManager.GetString("Provisioning_Extensibility_Pipeline_Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error provisioning module &apos;{0}&apos; file &apos;{1}&apos;. Error = {2}.
         /// </summary>
         internal static string ProvisioningExtensions_ErrorProvisioningModule0File1 {

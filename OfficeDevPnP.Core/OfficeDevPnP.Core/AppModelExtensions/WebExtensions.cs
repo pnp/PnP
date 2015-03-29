@@ -9,6 +9,8 @@ using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -968,6 +970,42 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
         }
 #endif
+        #endregion
+
+        #region TemplateHandling
+
+        /// <summary>
+        /// Can be used to apply custom remote provisioning template on top of existing site. 
+        /// </summary>
+        /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
+        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template)
+        {
+            // Call actual handler
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the default base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web)
+        {
+            return new SiteToTemplateConversion().GetRemoteTemplate(web);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the provided base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <param name="baseTemplate">Base template to compare against</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplate baseTemplate)
+        {
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, baseTemplate);
+        }
         #endregion
 
     }

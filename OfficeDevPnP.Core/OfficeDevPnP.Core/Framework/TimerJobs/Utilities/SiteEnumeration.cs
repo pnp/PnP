@@ -54,6 +54,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
         /// <param name="resolvedSites">List of site collections matching the passed wildcard site Url</param>
         internal void ResolveSite(Tenant tenant, string siteWildCard, List<string> resolvedSites)
         {
+#if !CLIENTSDKV15
             //strip the wildcard
             string searchString = siteWildCard.Substring(0, siteWildCard.IndexOf("*"));
 
@@ -66,6 +67,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
 
             //iterate the found site collections and add the sites that match to the site wildcard
             MatchSites(resolvedSites, searchString);
+#endif
         }
 
         /// <summary>
@@ -109,11 +111,10 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
         /// <param name="tenant">Tenant object to operate against</param>
         private void FillSitesViaTenantAPIAndSearch(Tenant tenant)
         {
+#if !CLIENTSDKV15
             // Use tenant API to get the regular sites
-            var props = tenant.GetSiteProperties(0, false);
-            tenant.Context.Load(props);
-            tenant.Context.ExecuteQueryRetry();
-
+            var props = tenant.GetSiteCollections(includeDetail: false);
+            
             if (props.Count == 0)
             {
                 return;
@@ -127,13 +128,13 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
             }
 
             foreach (var prop in props)
-            {        
+            {
                 this.sites.Add(prop.Url.ToLower());
             }
 
             // Use search api to get the OneDrive sites
             this.sites.AddRange(SiteSearch(tenant.Context, "contentclass:\"STS_Site\" AND WebTemplate:SPSPERS"));
-
+#endif
         }
 
         /// <summary>

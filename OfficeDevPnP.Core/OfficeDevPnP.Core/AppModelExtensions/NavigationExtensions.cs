@@ -395,21 +395,45 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Utility method to check particular custom action already exists on the web
         /// </summary>
-        /// <param name="clientContext"></param>
+        /// <param name="web"></param>
         /// <param name="name">Name of the custom action</param>
-        /// <returns></returns>
-        public static bool CustomActionExists(ClientContext clientContext, string name)
+        /// <returns></returns>        
+        public static bool CustomActionExists(this Web web, string name)
         {
-            if (clientContext == null)
-                throw new ArgumentNullException("clientContext");
-
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            clientContext.Load(clientContext.Web.UserCustomActions);
-            clientContext.ExecuteQueryRetry();
+            web.Context.Load(web.UserCustomActions);
+            web.Context.ExecuteQueryRetry();
 
-            var customActions = clientContext.Web.UserCustomActions.Cast<UserCustomAction>();
+            var customActions = web.UserCustomActions.Cast<UserCustomAction>();
+            foreach (var customAction in customActions)
+            {
+                var customActionName = customAction.Name;
+                if (!string.IsNullOrEmpty(customActionName) &&
+                    customActionName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Utility method to check particular custom action already exists on the web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="name">Name of the custom action</param>
+        /// <returns></returns>        
+        public static bool CustomActionExists(this Site site, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
+            site.Context.Load(site.UserCustomActions);
+            site.Context.ExecuteQueryRetry();
+
+            var customActions = site.UserCustomActions.Cast<UserCustomAction>();
             foreach (var customAction in customActions)
             {
                 var customActionName = customAction.Name;

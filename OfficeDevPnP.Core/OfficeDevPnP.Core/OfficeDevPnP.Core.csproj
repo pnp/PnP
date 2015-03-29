@@ -157,8 +157,28 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
@@ -170,7 +190,12 @@
       <HintPath>..\..\Scenarios\Core.Services.Authenticate\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -236,6 +261,7 @@
     <Compile Include="Entities\WebTemplateEntity.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
+    <Compile Include="Enums\BuiltInFieldId.cs" />
     <Compile Include="Enums\BuiltInIdentity.cs" />
     <Compile Include="Enums\EcmListManualRecordDeclaration.cs" />
     <Compile Include="Enums\EcmRecordDeclarationBy.cs" />
@@ -255,6 +281,64 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\BaseTemplates\BaseTemplateManager.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\AzureStorageConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileConnectorBase.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
+    <Compile Include="Framework\Provisioning\Connectors\SharePointConnector.cs" />
+    <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
+    <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
+    <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibilityProvider.cs" />
+    <Compile Include="Framework\Provisioning\Model\BaseModelEntity.cs" />
+    <Compile Include="Framework\Provisioning\Model\ComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\Model\ContentType.cs" />
+    <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />
+    <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
+    <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
+    <Compile Include="Framework\Provisioning\Model\Features.cs" />
+    <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
+    <Compile Include="Framework\Provisioning\Model\Field.cs" />
+    <Compile Include="Framework\Provisioning\Model\File.cs" />
+    <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
+    <Compile Include="Framework\Provisioning\Model\PropertyBagEntry.cs" />
+    <Compile Include="Framework\Provisioning\Model\Provider.cs" />
+    <Compile Include="Framework\Provisioning\Model\ProvisioningTemplate.cs" />
+    <Compile Include="Framework\Provisioning\Model\Feature.cs" />
+    <Compile Include="Framework\Provisioning\Model\ProvisioningTemplateInfo.cs" />
+    <Compile Include="Framework\Provisioning\Model\SiteSecurity.cs" />
+    <Compile Include="Framework\Provisioning\Model\User.cs" />
+    <Compile Include="Framework\Provisioning\Model\View.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFeatures.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectHandlerBase.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstance.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectSiteSecurity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\KeywordsTermStoreIdToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteCollectionTermStoreId.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\ThemeCatalogToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\TokenDefinition.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\MasterPageCatalogToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteCollectionToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenParser.cs" />
+    <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
+      <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\SharePointProvisioningTemplateExtensions.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
@@ -271,6 +355,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\CredentialManager.cs" />
+    <Compile Include="Utilities\XMLSerializer.cs" />
     <Compile Include="Web References\UPAWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -309,6 +394,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -368,6 +456,13 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>OfficeDevPnP_Core_UPAWebService_UserProfileService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
