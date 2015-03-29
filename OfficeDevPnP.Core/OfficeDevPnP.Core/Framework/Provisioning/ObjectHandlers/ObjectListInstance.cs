@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         var viewDoc = XDocument.Parse(view.SchemaXml);
 
-                        var viewTitle = viewDoc.Root.Attribute("DisplayName").Value;
+                        var viewTitle = viewDoc.Root.Attribute("DisplayName") != null ? viewDoc.Root.Attribute("DisplayName").Value : list.Title;
 
                         // Type
                         var viewTypeString = viewDoc.Root.Attribute("Type") != null ? viewDoc.Root.Attribute("Type").Value : "None";

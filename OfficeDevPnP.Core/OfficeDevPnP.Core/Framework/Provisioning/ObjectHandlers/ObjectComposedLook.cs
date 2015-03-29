@@ -39,12 +39,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.MasterUrl = masterUrl;
             }
             string colorFile = null;
-            if (template.ComposedLook.ColorFile != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
             {
                 colorFile = parser.Parse(template.ComposedLook.ColorFile);
             }
             string backgroundFile = null;
-            if (template.ComposedLook.BackgroundFile != null)
+            if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
             {
                 backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
             }
@@ -54,9 +54,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 fontFile = parser.Parse(template.ComposedLook.FontFile);
             }
 
-            web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
-
-            web.Context.ExecuteQueryRetry();
+            if (!String.IsNullOrEmpty(colorFile) &&
+                !String.IsNullOrEmpty(fontFile) &&
+                !String.IsNullOrEmpty(backgroundFile))
+            {
+                web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
+                web.Context.ExecuteQueryRetry();
+            }
 
             // TODO: Add theme handling
         }
