@@ -93,7 +93,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     foreach (var view in list.Views)
                     {
-                        createdList.CreateViewsFromXMLString(view.SchemaXml);
+
+                        var viewDoc = XDocument.Parse(view.SchemaXml);
+
+                        var viewTitle = viewDoc.Root.Attribute("DisplayName").Value;
+
+                        // Type
+                        var viewTypeString = viewDoc.Root.Attribute("Type") != null ? viewDoc.Root.Attribute("Type").Value : "None";
+                        viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
+                        var viewType = (ViewType)Enum.Parse(typeof(ViewType),viewTypeString);
+
+                        // Fields
+                        string[] viewFields = null;
+                        var viewFieldsElement = viewDoc.Descendants("ViewFields").FirstOrDefault();
+                        if (viewFieldsElement != null)
+                        {
+                            viewFields = (from field in viewDoc.Descendants("ViewFields").Descendants("FieldRef") select field.Attribute("Name").Value).ToArray();
+                        }
+
+                        // Default view
+                        var viewDefault = viewDoc.Root.Attribute("DefaultView") != null && Boolean.Parse(viewDoc.Root.Attribute("DefaultView").Value);
+                        
+                        // Row limit
+                        bool viewPaged = true;
+                        uint viewRowLimit = 30;
+                        var rowLimitElement = viewDoc.Descendants("RowLimit").FirstOrDefault();
+                        if (rowLimitElement != null)
+                        {
+                            viewPaged = bool.Parse(rowLimitElement.Attribute("Paged").Value);
+                            viewRowLimit = uint.Parse(rowLimitElement.Value);
+                        }
+
+                        // Query
+                        var viewQuery = new StringBuilder();
+                        foreach (var queryElement in viewDoc.Descendants("Query").Elements())
+                        {
+                            viewQuery.Append(queryElement.ToString());
+                        }
+
+                        var viewCI = new ViewCreationInformation
+                        {
+                            ViewFields = viewFields, 
+                            RowLimit = viewRowLimit, 
+                            Paged = viewPaged, 
+                            Title = viewTitle, 
+                            Query = viewQuery.ToString(), 
+                            ViewTypeKind = viewType, 
+                            PersonalView = false, 
+                            SetAsDefaultView = viewDefault
+                        };
+
+                        createdList.Views.Add(viewCI);
+                        createdList.Update();
+                        web.Context.ExecuteQueryRetry();
                     }
 
 
