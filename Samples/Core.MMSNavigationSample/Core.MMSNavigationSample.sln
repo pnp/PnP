@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.MMSNavigationSample", "Core.MMSNavigationSample\Core.MMSNavigationSample.csproj", "{BB541CED-13D6-4131-83BF-462EA451552C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FD51CB4-6DBE-4C00-8B97-BDBD4215D464}"
+	ProjectSection(SolutionItems) = preProject
+		Output Verification.docx = Output Verification.docx
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB541CED-13D6-4131-83BF-462EA451552C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB541CED-13D6-4131-83BF-462EA451552C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB541CED-13D6-4131-83BF-462EA451552C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB541CED-13D6-4131-83BF-462EA451552C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
