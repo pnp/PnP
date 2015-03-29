@@ -67,9 +67,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                }
+
                 if (File.Exists(Path))
                 {
-                    if (Force || ShouldProcess(string.Format(Resources.File0ExistsOverwrite, Path), Resources.Confirm))
+                    if (Force || ShouldContinue(string.Format(Resources.File0ExistsOverwrite, Path), Resources.Confirm))
                     {
                         File.WriteAllLines(Path, exportedTerms);
                     }

@@ -42,6 +42,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                 }
                 AppInstance instance;
 
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                }
+
                 var appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
                 if (Locale == -1)
                 {
