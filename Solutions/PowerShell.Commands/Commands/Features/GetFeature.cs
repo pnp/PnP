@@ -10,19 +10,19 @@ using OfficeDevPnP.PowerShell.Commands.Enums;
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
     [Cmdlet(VerbsCommon.Get, "SPOFeature")]
-    [CmdletHelp("Returns all or a specific feature", Category = "Features")]
+    [CmdletHelp("Returns all activated or a specific activated feature", Category = "Features")]
     [CmdletExample(
      Code = @"PS:> Get-SPOFeature",
-     Remarks = @"This will return all web scoped features", SortOrder = 1)]
+     Remarks = @"This will return all activated web scoped features", SortOrder = 1)]
     [CmdletExample(
      Code = @"PS:> Get-SPOFeature -Scope Site",
-     Remarks = @"This will return all site scoped features", SortOrder = 2)]
+     Remarks = @"This will return all activated site scoped features", SortOrder = 2)]
     [CmdletExample(
      Code = @"PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22",
-     Remarks = @"This will return a specific web scoped feature", SortOrder = 3)]
+     Remarks = @"This will return a specific activated web scoped feature", SortOrder = 3)]
     [CmdletExample(
      Code = @"PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site",
-     Remarks = @"This will return a specific site scoped feature", SortOrder = 3)]
+     Remarks = @"This will return a specific activated site scoped feature", SortOrder = 3)]
     public class GetFeature : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position = 0, ValueFromPipeline = true)]
