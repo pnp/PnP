@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+
+    <p class="lead">
+        Custom Taxonomy Picker for provider hosted apps.
+    </p>
+    <p>
+        Select the tags and click on 'Update' to update the 'Skills' SharePoint UserProfile property.
+        When you start typing, the autocomplete suggestions will be based on the terms in the "Keywords" termset.
+    </p>
+</div>
+
+
+<div>
+    <span>Edit your skills:</span>
+    <input name="taxonomyPickerName" id="taxonomyPickerID" value="@ViewBag.CurrentSkills">
+    <a id="SubmitValues" href="#" class="btn btn-primary btn-large">Update</a>
+    <span id="updateSuccess" class="alert alert-success" role="alert">Success!</span>
+    <span id="updateError" class="alert alert-danger" role="alert">Something went wrong :( Check console for details.</span>
+    <span id="bannedCharacters" class="alert alert-danger" role="alert">Cannot contain any of the following characters " ; < > |</span>
+</div>
+
+@Scripts.Render("~/bundles/taxpicker")
