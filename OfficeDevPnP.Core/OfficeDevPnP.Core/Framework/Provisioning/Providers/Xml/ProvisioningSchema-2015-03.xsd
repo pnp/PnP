@@ -724,7 +724,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="BackgroundFile" type="xsd:string" use="optional">
+    <xsd:attribute name="BackgroundFile" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The BackgroundFile of the ComposedLook, optional attribute
@@ -732,7 +732,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="MasterPage" type="xsd:string" use="required">
+    <xsd:attribute name="MasterPage" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The MasterPage of the ComposedLook, required attribute
