@@ -36,17 +36,21 @@ namespace OfficeDevPnP.PowerShell.Commands
             switch (ParameterSetName)
             {
                 case "FILE":
+                    if (!System.IO.Path.IsPathRooted(Path))
+                    {
+                        Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                    }
                     if (File.Exists(Path))
                     {
                         var fileStream = new StreamReader(Path);
                         var webPartString = fileStream.ReadToEnd();
                         fileStream.Close();
 
-                        wp = new WebPartEntity {WebPartXml = webPartString};
+                        wp = new WebPartEntity { WebPartXml = webPartString };
                     }
                     break;
                 case "XML":
-                    wp = new WebPartEntity {WebPartXml = Xml};
+                    wp = new WebPartEntity { WebPartXml = Xml };
                     break;
             }
             if (wp != null)

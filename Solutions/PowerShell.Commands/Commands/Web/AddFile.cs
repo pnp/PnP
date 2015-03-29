@@ -38,6 +38,11 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(Path))
+            {
+                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+            }
+
             if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
