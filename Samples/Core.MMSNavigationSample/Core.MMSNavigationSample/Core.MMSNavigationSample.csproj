@@ -48,9 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="mms.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

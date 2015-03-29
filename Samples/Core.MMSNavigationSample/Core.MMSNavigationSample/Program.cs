@@ -150,7 +150,7 @@ namespace Core.MMSNavigationSample
             #region for each taxonomy sessions, repeat for each term store, term group
             foreach (XElement termStoreElement in termsXML.Elements())
             {
-                TermStore termStore = taxonomySession.TermStores.GetByName(termStoreElement.Attribute("Name").Value);
+                TermStore termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
                 clientContext.Load(termStore.Groups);
                 clientContext.ExecuteQuery();
                 if (termStore != null)
