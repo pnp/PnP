@@ -204,6 +204,9 @@
     <Compile Include="Principals\SetGroup.cs" />
     <Compile Include="Taxonomy\ImportTermGroup.cs" />
     <Compile Include="Taxonomy\ExportTermGroup.cs" />
+    <Compile Include="Taxonomy\NewTermGroup.cs" />
+    <Compile Include="Taxonomy\GetTermGroup.cs" />
+    <Compile Include="Taxonomy\ImportTermSet.cs" />
     <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Branding\RemoveJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptLink.cs" />

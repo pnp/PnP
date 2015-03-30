@@ -25,6 +25,56 @@ namespace Microsoft.SharePoint.Client
 
         public const string TaxonomyGuidLabelDelimiter = "|";
 
+        /// <summary>
+        /// Creates a new term group, in the specified term store.
+        /// </summary>
+        /// <param name="site">Site connected to the term store to use</param>
+        /// <param name="groupName">Name of the term group</param>
+        /// <param name="groupId">(Optional) ID of the group; if not provided a random GUID is used</param>
+        /// <param name="groupDescription">(Optional) Description of the term group</param>
+        /// <returns>The created term group</returns>
+        public static TermGroup CreateTermGroup(this TermStore termStore, string groupName, Guid groupId = default(Guid), string groupDescription = null)
+        {
+            if (string.IsNullOrEmpty(groupName)) { throw new ArgumentNullException("groupName"); }
+
+            var termGroup = default(TermGroup);
+            groupName = NormalizeName(groupName);
+            ValidateName(groupName, "groupName");
+
+            // Create Group
+            if (groupId == Guid.Empty)
+            {
+                groupId = Guid.NewGuid();
+            }
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_CreateTermGroup0InStore1, groupName, termStore.Name);
+            termGroup = termStore.CreateGroup(groupName, groupId);
+            termStore.Context.Load(termGroup, g => g.Name, g => g.Id, g => g.Description);
+            termStore.Context.ExecuteQueryRetry();
+
+            // Apply description
+            bool changed = false;
+            if (groupDescription != null && !string.Equals(termGroup.Description, groupDescription))
+            {
+                try
+                {
+                    ValidateDescription(groupDescription, "groupDescription");
+                    termGroup.Description = groupDescription;
+                    changed = true;
+                }
+                catch (Exception ex)
+                {
+                    Log.Warning(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_ExceptionUpdateDescriptionGroup01, termGroup.Name, termGroup.Id, ex.Message);
+                }
+            }
+            if (changed)
+            {
+                Log.Debug(Constants.LOGGING_SOURCE, "Updating term group");
+                termStore.Context.ExecuteQueryRetry();
+                //termStore.CommitAll();
+            }
+
+            return termGroup;
+        }
 
         /// <summary>
         /// Ensures the named group exists, returning a reference to the group, and creating or updating as necessary.
@@ -308,6 +358,27 @@ namespace Microsoft.SharePoint.Client
             IEnumerable<TermGroup> groups = site.Context.LoadQuery(store.Groups.Include(g => g.Name, g => g.Id, g => g.TermSets)).Where(g => g.Name == name);
             site.Context.ExecuteQueryRetry();
             return groups.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the named term group, if it exists in the term store.
+        /// </summary>
+        /// <param name="site">Site connected to the term store to use</param>
+        /// <param name="groupName">Name of the term group</param>
+        /// <returns>The requested term group, or null if it does not exist</returns>
+        public static TermGroup GetTermGroupByName(this TermStore termStore, string groupName)
+        {
+            if (string.IsNullOrEmpty(groupName)) { throw new ArgumentNullException("groupName"); }
+
+            var termGroup = default(TermGroup);
+            groupName = NormalizeName(groupName);
+            ValidateName(groupName, "groupName");
+
+            // Find group
+            var groups = termStore.Context.LoadQuery(termStore.Groups.Include(g => g.Name, g => g.Id, g => g.Description));
+            termStore.Context.ExecuteQueryRetry();
+            termGroup = groups.FirstOrDefault(g => string.Equals(g.Name, groupName, StringComparison.OrdinalIgnoreCase));
+            return termGroup;
         }
 
         public static TermGroup GetTermGroupById(this Site site, Guid termGroupId)

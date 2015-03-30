@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 {
@@ -109,8 +110,19 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     detailsElement.Add(new XElement(command + "noun", noun));
                     detailsElement.Add(new XElement(dev + "version", version));
 
-                    commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
-
+                    if (detaileddescription.Contains("<para>"))
+                    {
+                        var paraSplit = new Regex("<para>|</para>");
+                        var paragraphsText = paraSplit.Split(detaileddescription);
+                        var paragraphsElements = paragraphsText
+                            .Where(p => !string.IsNullOrWhiteSpace(p))
+                            .Select(p => new XElement(maml + "para", p));
+                        commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", paragraphsElements.ToArray())));
+                    }
+                    else
+                    {
+                        commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
+                    }
                     var syntaxElement = new XElement(command + "syntax");
                     commandElement.Add(syntaxElement);
 
