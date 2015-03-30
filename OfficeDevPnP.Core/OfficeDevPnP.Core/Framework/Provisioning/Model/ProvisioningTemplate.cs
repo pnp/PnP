@@ -1,10 +1,8 @@
-﻿using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OfficeDevPnP.Core.Extensions;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {

@@ -1,20 +1,19 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http.ModelBinding;
 using System.Xml.Linq;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
-using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using Field = Microsoft.SharePoint.Client.Field;
+using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectListInstance : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var parser = new TokenParser(web);
 
@@ -83,7 +82,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var fieldRef in list.FieldRefs)
                         {
-                            var field = web.GetFieldById<Microsoft.SharePoint.Client.Field>(fieldRef.ID);
+                            var field = web.GetFieldById<Field>(fieldRef.ID);
                             createdList.Fields.Add(field);
                          
                         }
@@ -159,7 +158,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -202,7 +201,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var view in item.Views)
                 {
-                    list.Views.Add(new Model.View() { SchemaXml = view.ListViewXml });
+                    list.Views.Add(new View() { SchemaXml = view.ListViewXml });
                 }
 
                 var siteColumns = web.Fields;

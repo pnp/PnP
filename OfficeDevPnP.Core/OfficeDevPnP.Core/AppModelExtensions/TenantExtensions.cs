@@ -413,12 +413,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="userCodeWarningLevel"></param>
         public static void SetSiteProperties(this Tenant tenant, string siteFullUrl,
             string title = null,
-            Nullable<bool> allowSelfServiceUpgrade = null,
-            Nullable<SharingCapabilities> sharingCapability = null,
-            Nullable<long> storageMaximumLevel = null,
-            Nullable<long> storageWarningLevel = null,
-            Nullable<double> userCodeMaximumLevel = null,
-            Nullable<double> userCodeWarningLevel = null
+            bool? allowSelfServiceUpgrade = null,
+            SharingCapabilities? sharingCapability = null,
+            long? storageMaximumLevel = null,
+            long? storageWarningLevel = null,
+            double? userCodeMaximumLevel = null,
+            double? userCodeWarningLevel = null
             )
         {
             var siteProps = tenant.GetSitePropertiesByUrl(siteFullUrl, true);
@@ -576,14 +576,14 @@ namespace Microsoft.SharePoint.Client
 
             while (int.Parse(userProfileResult.NextValue) != -1)
             {
-                var personalSpaceProperty = userProfileResult.UserProfile.Where(p => p.Name == "PersonalSpace").FirstOrDefault();
+                var personalSpaceProperty = userProfileResult.UserProfile.FirstOrDefault(p => p.Name == "PersonalSpace");
 
                 if (personalSpaceProperty != null)
                 {
                     if (personalSpaceProperty.Values.Any())
                     {
-                        var usernameProperty = userProfileResult.UserProfile.Where(p => p.Name == "UserName").FirstOrDefault();
-                        var nameProperty = userProfileResult.UserProfile.Where(p => p.Name == "PreferredName").FirstOrDefault();
+                        var usernameProperty = userProfileResult.UserProfile.FirstOrDefault(p => p.Name == "UserName");
+                        var nameProperty = userProfileResult.UserProfile.FirstOrDefault(p => p.Name == "PreferredName");
                         var url = personalSpaceProperty.Values[0].Value as string;
                         var name = nameProperty.Values[0].Value as string;
                         SiteEntity siteEntity = new SiteEntity();

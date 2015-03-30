@@ -1,11 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
 {
@@ -23,7 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Extensibility
         /// <param name="template">ProvisioningTemplate that is passed to the custom provider</param>
         /// <exception cref="ExtensiblityPipelineException"></exception>
         /// <exception cref="ArgumentException">Provider.Assembly or Provider.Type is NullOrWhiteSpace></exception>
-        /// <exception cref="ArgumentnullException">ClientContext is Null></exception>
+        /// <exception cref="ArgumentNullException">ClientContext is Null></exception>
         public void ExecuteExtensibilityCallOut(ClientContext ctx, Provider provider, ProvisioningTemplate template)
         {
             var _loggingSource = "OfficeDevPnP.Core.Framework.Provisioning.Extensibility.ExtensibilityManager.ExecuteCallout";
