@@ -54,13 +54,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 fontFile = parser.Parse(template.ComposedLook.FontFile);
             }
 
-            if (!String.IsNullOrEmpty(colorFile) &&
-                !String.IsNullOrEmpty(fontFile) &&
-                !String.IsNullOrEmpty(backgroundFile))
-            {
-                web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
-                web.Context.ExecuteQueryRetry();
-            }
+            web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
+            web.Context.ExecuteQueryRetry();
 
             // TODO: Add theme handling
         }
