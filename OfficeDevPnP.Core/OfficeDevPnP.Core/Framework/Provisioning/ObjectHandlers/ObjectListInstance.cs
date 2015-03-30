@@ -96,7 +96,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         var viewDoc = XDocument.Parse(view.SchemaXml);
 
-                        var viewTitle = viewDoc.Root.Attribute("DisplayName") != null ? viewDoc.Root.Attribute("DisplayName").Value : list.Title;
+                        var displayNameXml = viewDoc.Root.Attribute("DisplayName");
+                        if (displayNameXml == null)
+                        {
+                            throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
+                        }
+                        var viewTitle = displayNameXml.Value;
 
                         // Type
                         var viewTypeString = viewDoc.Root.Attribute("Type") != null ? viewDoc.Root.Attribute("Type").Value : "None";
