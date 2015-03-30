@@ -337,6 +337,7 @@
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLSharePointTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\SharePointProvisioningTemplateExtensions.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
