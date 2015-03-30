@@ -113,6 +113,8 @@
   </pnp:Files>
 
   <pnp:ComposedLook Name="Custom Look" Version="1"
+    BackgroundFile="Resources/Themes/Contoso/contosobg.jpg"
+    AlternateCSS="Resources/Themes/Contoso/Contoso.css"
     MasterPage="_catalogs/MasterPage/CustomMaster.master"
     ColorFile="_catalogs/Theme/15/Custom.spcolor"
     FontFile="_catalogs/Theme/15/Custom.spfont"

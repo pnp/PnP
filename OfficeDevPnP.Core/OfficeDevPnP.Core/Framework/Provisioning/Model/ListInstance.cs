@@ -9,7 +9,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that specifies the properties of the new list.
     /// </summary>
-    public class ListInstance : BaseModelEntity
+    public class ListInstance : IEquatable<ListInstance>
     {
         #region Constructors
 
@@ -143,37 +143,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         #region Comparison code
 
-        public override int CompareTo(Object obj)
-        {
-            ListInstance other = obj as ListInstance;
-
-            if (other == null)
-            {
-                return (1);
-            }
-
-            if (this.ContentTypesEnabled == other.ContentTypesEnabled &&
-                this.Description == other.Description &&
-                this.DocumentTemplate == other.DocumentTemplate &&
-                this.EnableVersioning == other.EnableVersioning &&
-                this.Hidden == other.Hidden &&
-                this.MaxVersionLimit == other.MaxVersionLimit &&
-                this.MinorVersionLimit == other.MinorVersionLimit &&
-                this.OnQuickLaunch == other.OnQuickLaunch &&
-                this.RemoveDefaultContentType == other.RemoveDefaultContentType &&
-                this.TemplateType == other.TemplateType &&
-                this.Title == other.Title &&
-                this.Url == other.Url)
-            {
-                // TODO: Compare Fields, FieldRefs, Views, ContentTypeBindings
-                return (0);
-            }
-            else
-            {
-                return (-1);
-            }
-        }
-
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}",
@@ -189,6 +158,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.TemplateType,
                 this.Title,
                 this.Url).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ListInstance))
+            {
+                return (false);
+            }
+            return (Equals((ListInstance)obj));
+        }
+
+        public bool Equals(ListInstance other)
+        {
+            return (this.ContentTypesEnabled == other.ContentTypesEnabled &&
+                this.Description == other.Description &&
+                this.DocumentTemplate == other.DocumentTemplate &&
+                this.EnableVersioning == other.EnableVersioning &&
+                this.Hidden == other.Hidden &&
+                this.MaxVersionLimit == other.MaxVersionLimit &&
+                this.MinorVersionLimit == other.MinorVersionLimit &&
+                this.OnQuickLaunch == other.OnQuickLaunch &&
+                this.RemoveDefaultContentType == other.RemoveDefaultContentType &&
+                this.TemplateType == other.TemplateType &&
+                this.Title == other.Title &&
+                this.Url == other.Url);
         }
 
         #endregion
