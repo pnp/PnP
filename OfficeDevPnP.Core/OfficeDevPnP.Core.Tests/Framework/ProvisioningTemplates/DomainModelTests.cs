@@ -13,8 +13,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
     [TestClass]
     public class DomainModelTests
     {
-        // PaoloPia: I changed it now
-
         private string _provisioningTemplatePath1 = string.Empty;
         private string _provisioningTemplatePath2 = string.Empty;
         private const string TEST_CATEGORY = "Framework Provisioning Domain Model";
