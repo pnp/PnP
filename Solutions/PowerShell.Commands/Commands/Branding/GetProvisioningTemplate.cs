@@ -61,9 +61,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         private string GetProvisioningTemplateXML()
         {
             var template = SelectedWeb.GetProvisioningTemplate();
-            SharePointProvisioningTemplate spProvisioningTemplate = template.ToXml();
-            string xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(spProvisioningTemplate);
-            return xml;
+            return template.ToXmlString();
         }
     }
 }
