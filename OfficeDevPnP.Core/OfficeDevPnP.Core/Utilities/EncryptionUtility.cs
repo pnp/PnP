@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Utilities
                 return string.Empty;
             }
 
-            byte[] encoded = UTF8Encoding.UTF8.GetBytes(stringToEncrypt);
+            byte[] encoded = Encoding.UTF8.GetBytes(stringToEncrypt);
             byte[] encrypted;
 
             try
@@ -75,7 +75,7 @@ namespace OfficeDevPnP.Core.Utilities
                 return string.Empty;
             }
 
-            decryptedString = UTF8Encoding.UTF8.GetString(decrypted);
+            decryptedString = Encoding.UTF8.GetString(decrypted);
 
             return decryptedString;
         }

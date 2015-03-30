@@ -1,15 +1,10 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Xml.Linq;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -38,7 +33,7 @@ namespace Microsoft.SharePoint.Client
                     provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 //TODO: log message
             }
@@ -48,7 +43,7 @@ namespace Microsoft.SharePoint.Client
 
         private static int GetSharePointVersion()
         {
-            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site));
+            Assembly asm = Assembly.GetAssembly(typeof(Site));
             return asm.GetName().Version.Major;
         }
 

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Management;
-using System.Web.UI.WebControls;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Utilities;
-
+using User = OfficeDevPnP.Core.Framework.Provisioning.Model.User;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -43,7 +36,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         }
 
-        private static void AddUserToGroup(Web web, Group group, List<Model.User> members)
+        private static void AddUserToGroup(Web web, Group group, List<User> members)
         {
             web.Context.Load(group, o => o.Users);
 
@@ -59,7 +52,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
@@ -71,21 +64,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.ExecuteQueryRetry();
 
-            var owners = new List<Model.User>();
-            var members = new List<Model.User>();
-            var visitors = new List<Model.User>();
+            var owners = new List<User>();
+            var members = new List<User>();
+            var visitors = new List<User>();
 
             foreach (var member in ownerGroup.Users)
             {
-                owners.Add(new Model.User() {Name = member.LoginName});
+                owners.Add(new User() {Name = member.LoginName});
             }
             foreach (var member in memberGroup.Users)
             {
-                members.Add(new Model.User() { Name = member.LoginName });
+                members.Add(new User() { Name = member.LoginName });
             }
             foreach (var member in visitorGroup.Users)
             {
-                visitors.Add(new Model.User() { Name = member.LoginName });
+                visitors.Add(new User() { Name = member.LoginName });
             }
             var siteSecurity = new SiteSecurity();
             siteSecurity.AdditionalOwners.AddRange(owners);
@@ -96,12 +89,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             web.Context.Load(allUsers, users => users.Include(u => u.LoginName, u => u.IsSiteAdmin));
             web.Context.ExecuteQueryRetry();
 
-            var admins = new List<Model.User>();
+            var admins = new List<User>();
             foreach (var member in allUsers)
             {
                 if (member.IsSiteAdmin)
                 {
-                    admins.Add(new Model.User() {Name = member.LoginName});
+                    admins.Add(new User() {Name = member.LoginName});
                 }
             }
             siteSecurity.AdditionalAdministrators.AddRange(admins);

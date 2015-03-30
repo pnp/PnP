@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
-
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -22,9 +13,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Gets a value that specifies the XML Schema representing the Field type.
-        /// <seealso cref="https://msdn.microsoft.com/en-us/library/office/ff407271.aspx"/>
+        /// <seealso>
+        ///     <cref>https://msdn.microsoft.com/en-us/library/office/ff407271.aspx</cref>
+        /// </seealso>
         /// </summary>
         public Guid ID
         {

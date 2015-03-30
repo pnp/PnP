@@ -1,11 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Web.Script.Serialization;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -15,7 +11,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// Actual implementation of extracting configuration from existing site.
         /// </summary>
         /// <param name="web"></param>
-        /// <param name="hiddenObjects"></param>
+        /// <param name="baseTemplate"></param>
         /// <returns></returns>
         public ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate)
         {

@@ -1,21 +1,19 @@
-﻿using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using Model = OfficeDevPnP.Core.Framework.Provisioning.Model;
+using System.Xml.Serialization;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
     public static partial class SharePointProvisioningTemplateExtensions
     {
-        public static SharePointProvisioningTemplate ToXml(this Model.ProvisioningTemplate template)
+        public static SharePointProvisioningTemplate ToXml(this ProvisioningTemplate template)
         {
             if (template == null)
             {
@@ -26,7 +24,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             // Translate basic properties
             result.ID = template.ID;
-            result.Version = template.Version.ToString("###0.0", new System.Globalization.CultureInfo("en-US"));
+            result.Version = template.Version.ToString("###0.0", new CultureInfo("en-US"));
             result.SitePolicy = template.SitePolicy;
 
             // Translate PropertyBagEntries, if any
@@ -347,7 +345,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        public static Model.ProvisioningTemplate ToProvisioningTemplate(this SharePointProvisioningTemplate template)
+        public static ProvisioningTemplate ToProvisioningTemplate(this SharePointProvisioningTemplate template)
         {
             if (template == null)
             {
@@ -361,11 +359,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ApplicationException("The provided template is not valid!");
             }
 
-            Model.ProvisioningTemplate result = new Model.ProvisioningTemplate();
+            ProvisioningTemplate result = new ProvisioningTemplate();
 
             // Translate basic properties
             result.ID = template.ID;
-            result.Version = Double.Parse(!String.IsNullOrEmpty(template.Version) ? template.Version : "0", new System.Globalization.CultureInfo("en-US"));
+            result.Version = Double.Parse(!String.IsNullOrEmpty(template.Version) ? template.Version : "0", new CultureInfo("en-US"));
             result.SitePolicy = template.SitePolicy;
 
             // Translate PropertyBagEntries, if any
@@ -426,7 +424,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.SiteFields.AddRange(
                     from field in template.SiteFields.Any
-                    select new Model.Field
+                    select new Field
                     {
                         SchemaXml = field.OuterXml,
                     });
@@ -437,7 +435,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.ContentTypes.AddRange(
                     from contentType in template.ContentTypes.Any
-                    select new Model.ContentType
+                    select new ContentType
                     {
                         SchemaXml = contentType.OuterXml,
                     });
@@ -458,13 +456,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  }) : null),
                         (list.Views != null ?
                                 (from view in list.Views.Any
-                                 select new Model.View
+                                 select new View
                                  {
                                      SchemaXml = view.OuterXml,
                                  }) : null),
                         (list.Fields != null ?
                                 (from field in list.Fields.Any
-                                 select new Model.Field
+                                 select new Field
                                  {
                                      SchemaXml = field.OuterXml,
                                  }) : null),
@@ -644,10 +642,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (doc.IsValidSharePointProvisioningTemplate());
         }
 
-        public static String ToXmlString(this Model.ProvisioningTemplate template)
+        public static String ToXmlString(this ProvisioningTemplate template)
         {
-            System.Xml.Serialization.XmlSerializerNamespaces ns =
-                new System.Xml.Serialization.XmlSerializerNamespaces();
+            XmlSerializerNamespaces ns =
+                new XmlSerializerNamespaces();
             ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
                 XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
 
@@ -655,10 +653,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (xml);
         }
 
-        public static Stream ToXmlStream(this Model.ProvisioningTemplate template)
+        public static Stream ToXmlStream(this ProvisioningTemplate template)
         {
-            System.Xml.Serialization.XmlSerializerNamespaces ns =
-                new System.Xml.Serialization.XmlSerializerNamespaces();
+            XmlSerializerNamespaces ns =
+                new XmlSerializerNamespaces();
             ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
                 XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
 
@@ -710,7 +708,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <summary>
         /// Private extension method to convert a String into an XElement
         /// </summary>
-        /// <param name="element">The String to convert</param>
+        /// <param name="xml"></param>
         /// <returns>The converted XElement</returns>
         private static XElement ToXElement(this String xml)
         {
@@ -726,7 +724,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <summary>
         /// Private extension method to convert a String into an XmlElement
         /// </summary>
-        /// <param name="element">The String to convert</param>
+        /// <param name="xml"></param>
         /// <returns>The converted XmlElement</returns>
         private static XmlElement ToXmlElement(this String xml)
         {
@@ -742,7 +740,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <summary>
         /// Private extension method to convert a String into an XmlNode
         /// </summary>
-        /// <param name="element">The String to convert</param>
+        /// <param name="xml"></param>
         /// <returns>The converted XmlNode</returns>
         private static XmlNode ToXmlNode(this String xml)
         {

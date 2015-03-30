@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Management;
+﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-
+using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFeatures : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var context = web.Context as ClientContext;
 
@@ -22,7 +17,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             ProvisionFeaturesImplementation(context.Site, siteFeatures);
         }
 
-        private static void ProvisionFeaturesImplementation(object parent, List<OfficeDevPnP.Core.Framework.Provisioning.Model.Feature> webFeatures)
+        private static void ProvisionFeaturesImplementation(object parent, List<Feature> webFeatures)
         {
             Web web = null;
             Site site = null;
@@ -81,7 +76,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var context = web.Context as ClientContext;
             var webFeatures = web.Features;
@@ -94,11 +89,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var features = new Features();
             foreach (var feature in webFeatures)
             {
-                features.WebFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
+                features.WebFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
             }
             foreach (var feature in siteFeatures)
             {
-                features.SiteFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
+                features.SiteFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
             }
 
             template.Features = features;
