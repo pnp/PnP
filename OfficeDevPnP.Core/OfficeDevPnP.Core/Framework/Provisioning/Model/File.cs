@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class File : BaseModelEntity
+    public class File : IEquatable<File>
     {
         #region Properties
 
@@ -20,33 +20,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         #region Comparison code
 
-        public override int CompareTo(Object obj)
-        {
-            File other = obj as File;
-
-            if (other == null)
-            {
-                return (1);
-            }
-
-            if (this.Folder == other.Folder &&
-                this.Overwrite == other.Overwrite &&
-                this.Src == other.Src)
-            {
-                return (0);
-            }
-            else
-            {
-                return (-1);
-            }
-        }
-
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}",
                 this.Folder,
                 this.Overwrite,
                 this.Src).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is File))
+            {
+                return (false);
+            }
+            return (Equals((File)obj));
+        }
+
+        public bool Equals(File other)
+        {
+            return (this.Folder == other.Folder &&
+                this.Overwrite == other.Overwrite &&
+                this.Src == other.Src);
         }
 
         #endregion
