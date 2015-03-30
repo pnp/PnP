@@ -57,7 +57,7 @@ namespace Provisioning.Framework
 
             // Save template using XML provider
             XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
-            string templateName = "bert.xml";
+            string templateName = "template.xml";
             provider.SaveAs(template, templateName);
             
             // Load the saved model again

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Framework.Console", "Provisioning.Framework.Console\Provisioning.Framework.Console.csproj", "{039FAD1D-18EA-4498-9CA6-B78CE6218454}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{78570237-3803-4E8B-B353-35DDC042DBE2}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5FD6A96D-476C-42E1-8515-705A6C12C3E0}"
 EndProject
