@@ -35,7 +35,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
 
             string stringData = String.Format("wa=wsignin1.0&wctx={0}&wresult={1}", HttpUtility.UrlEncode(sharepointSite.Wctx), HttpUtility.UrlEncode(samlToken));
 
-            HttpWebRequest sharepointRequest = HttpWebRequest.Create(sharepointSite.Wreply) as HttpWebRequest;
+            HttpWebRequest sharepointRequest = WebRequest.Create(sharepointSite.Wreply) as HttpWebRequest;
             sharepointRequest.Method = "POST";
             sharepointRequest.ContentType = "application/x-www-form-urlencoded";
             sharepointRequest.CookieContainer = new CookieContainer();

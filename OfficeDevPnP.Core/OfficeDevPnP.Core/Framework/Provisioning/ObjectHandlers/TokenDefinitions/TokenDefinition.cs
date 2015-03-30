@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using Microsoft.SharePoint.Client;
 
@@ -8,9 +7,8 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
     public abstract class TokenDefinition
     {
         protected string CacheValue;
-        private string[] _tokens;
-        private Regex[] _regex;
-
+        private readonly string[] _tokens;
+     
         protected TokenDefinition(Web web, params string[] token)
         {
             this._tokens = token;

@@ -428,7 +428,7 @@ namespace Microsoft.SharePoint.Client
             Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
-            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
+            const string keywordQuery = "contentclass:\"STS_Site\" AND WebTemplate:SPSPERS";
             return web.SiteSearch(keywordQuery);
         }
 
@@ -977,6 +977,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Can be used to apply custom remote provisioning template on top of existing site. 
         /// </summary>
+        /// <param name="web"></param>
         /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
         public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template)
         {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
@@ -58,7 +54,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         /// <summary>
         /// Gets or sets the value that specifies the permissions needed for the custom action.
-        /// <seealso cref="https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.permissionkind.aspx"/>
+        /// <seealso>
+        ///     <cref>https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.permissionkind.aspx</cref>
+        /// </seealso>
         /// </summary>
         public int RightsValue {
             get

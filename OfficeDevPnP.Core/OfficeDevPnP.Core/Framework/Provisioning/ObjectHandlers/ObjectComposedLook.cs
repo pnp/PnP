@@ -1,17 +1,12 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     class ObjectComposedLook : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             TokenParser parser = new TokenParser(web);
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -32,10 +27,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.SiteLogoUrl = siteLogoUrl;
                 web.Update();
             }
-            string masterUrl = null;
             if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
             {
-                masterUrl = parser.Parse(template.ComposedLook.MasterPage);
+                var masterUrl = parser.Parse(template.ComposedLook.MasterPage);
                 web.MasterUrl = masterUrl;
             }
             string colorFile = null;
@@ -60,7 +54,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // TODO: Add theme handling
         }
 
-        public override ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             // Load object if not there
             if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))

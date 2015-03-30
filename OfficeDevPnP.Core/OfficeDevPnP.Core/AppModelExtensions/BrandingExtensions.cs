@@ -174,6 +174,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="backgroundServerRelativeUrl">Override background image file URL to use</param>
         /// <param name="masterServerRelativeUrl">Override master page file URL to use</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
+        /// <param name="updateRootOnly">false to apply to subsites; true (default) to only apply to specified site</param>
         public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false, bool updateRootOnly = true)
         {
             var paletteUrl = default(string);
@@ -317,7 +318,7 @@ namespace Microsoft.SharePoint.Client
         public static File UploadThemeFile(this Web web, string localFilePath, string themeFolderVersion = "15")
         {
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
-            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Source_file_path_is_required_, "localFilePath"); }
 
             var fileName = Path.GetFileName(localFilePath);
             using (var localStream = new FileStream(localFilePath, FileMode.Open))
@@ -338,9 +339,9 @@ namespace Microsoft.SharePoint.Client
         public static File UploadThemeFile(this Web web, string fileName, string localFilePath, string themeFolderVersion = "15")
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
-            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Source_file_path_is_required_, "localFilePath"); }
 
             using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
@@ -361,11 +362,11 @@ namespace Microsoft.SharePoint.Client
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
             // TODO: Check for any other illegal characters in SharePoint
             if (fileName.Contains('/') || fileName.Contains('\\'))
             {
-                throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+                throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_, "fileName");
             }
 
             // Theme catalog only exists at site collection root
@@ -1049,7 +1050,7 @@ namespace Microsoft.SharePoint.Client
             {
                 languages[key] = new List<string>();
             }
-            (languages[key] as List<string>).Add(item.TemplateName);
+            languages[key].Add(item.TemplateName);
         }
 
         /// <summary>

@@ -582,4 +582,52 @@
   <data name="Provisioning_Connectors_SharePoint_FileSaveFailed" xml:space="preserve">
     <value>File {0} was not saved to site {1}, library {2}. Error = {3}</value>
   </data>
+  <data name="BrandingExtensions_UploadThemeFile_Source_file_path_is_required_" xml:space="preserve">
+    <value>Source file path is required.</value>
+  </data>
+  <data name="BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_" xml:space="preserve">
+    <value>Destination file name is required.</value>
+  </data>
+  <data name="BrandingExtensions_UploadThemeFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_" xml:space="preserve">
+    <value>The argument must be a single file name and cannot contain path characters.</value>
+  </data>
+  <data name="ClientContextExtensions_Clone_Url_of_the_site_is_required_" xml:space="preserve">
+    <value>Url of the site is required.</value>
+  </data>
+  <data name="FileFolderExtensions_CreateDocumentSet_The_argument_must_be_a_single_document_set_name_and_cannot_contain_path_characters_" xml:space="preserve">
+    <value>The argument must be a single document set name and cannot contain path characters.</value>
+  </data>
+  <data name="FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_" xml:space="preserve">
+    <value>The argument must be a single folder name and cannot contain path characters.</value>
+  </data>
+  <data name="FileFolderExtensions_EnsureFolderPath_Folder_URL_is_required_" xml:space="preserve">
+    <value>Folder URL is required.</value>
+  </data>
+  <data name="FileFolderExtensions_UploadFile_Destination_file_name_is_required_" xml:space="preserve">
+    <value>Destination file name is required.</value>
+  </data>
+  <data name="FileFolderExtensions_UploadFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_" xml:space="preserve">
+    <value>The argument must be a single file name and cannot contain path characters.</value>
+  </data>
+  <data name="FileFolderExtensions_UploadFileWebDav_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_" xml:space="preserve">
+    <value>The argument must be a single file name and cannot contain path characters.</value>
+  </data>
+  <data name="ProvisioningExtensions_ProvisionElementFile_Path_to_the_element_file_is_required" xml:space="preserve">
+    <value>Path to the element file is required</value>
+  </data>
+  <data name="ProvisioningExtensions_ProvisionElementXml_Expected_element__Elements__" xml:space="preserve">
+    <value>Expected element 'Elements'.</value>
+  </data>
+  <data name="ProvisioningExtensions_ProvisionModuleInternal_Expected_element__Module__" xml:space="preserve">
+    <value>Expected element 'Module'.</value>
+  </data>
+  <data name="ProvisioningExtensions_ProvisionFileInternal_Expected_element__File__" xml:space="preserve">
+    <value>Expected element 'File'.</value>
+  </data>
+  <data name="TaxonomyExtensions_ImportTermSet_File_path_is_required_" xml:space="preserve">
+    <value>File path is required.</value>
+  </data>
+  <data name="TaxonomyExtensions_ImportTermSetImplementation_Invalid_CSV_format__was_expecting_a_comma_in_the_first__header__line_" xml:space="preserve">
+    <value>Invalid CSV format; was expecting a comma in the first (header) line.</value>
+  </data>
 </root>

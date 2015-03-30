@@ -1,12 +1,10 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 {
@@ -133,7 +131,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     return null;
                 }
 
-                result = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+                result = Encoding.UTF8.GetString(stream.ToArray());
             }
             finally
             {
