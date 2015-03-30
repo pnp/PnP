@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http.ModelBinding;
-using System.Web.Management;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Utilities;
-using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
-using System.Xml;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
-
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectField : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var parser = new TokenParser(web);
             var existingFields = web.Fields;
@@ -48,18 +38,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var existingFields = web.Fields;
-            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f=>  f.SchemaXml));
+            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
             web.Context.ExecuteQueryRetry();
 
-            
+
             foreach (var field in existingFields)
             {
                 if (!BuiltInFieldId.Contains(field.Id))
                 {
-                    template.SiteFields.Add(new Model.Field() {SchemaXml = field.SchemaXml});
+                    template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
                 }
             }
             // If a base template is specified then use that one to "cleanup" the generated template model
@@ -75,13 +65,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             foreach (var field in baseTemplate.SiteFields)
             {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(field.SchemaXml);
-                var node = doc.DocumentElement.SelectSingleNode("/Field/@ID");
 
-                if (node != null)
+                XDocument xDoc = XDocument.Parse(field.SchemaXml);
+                var id = xDoc.Root.Attribute("ID") != null ? xDoc.Root.Attribute("ID").Value : null;
+                if (id != null)
                 {
-                    int index = template.SiteFields.FindIndex(f => f.SchemaXml.IndexOf(node.Value, StringComparison.InvariantCultureIgnoreCase) > -1);
+                    int index = template.SiteFields.FindIndex(f => f.SchemaXml.IndexOf(id, StringComparison.InvariantCultureIgnoreCase) > -1);
 
                     if (index > -1)
                     {
