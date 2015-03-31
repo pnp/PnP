@@ -705,9 +705,12 @@ namespace Microsoft.SharePoint.Client
             const string camlString = @"
             <View>  
                 <Query> 
-                    <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>{0}</Value></Eq></Where> 
                 </Query> 
+                <OrderBy>
+                   <FieldRef Name='Modified' />
+                </OrderBy>
                 <ViewFields>
+                    <FieldRef Name='Name' />
                     <FieldRef Name='ImageUrl' />
                     <FieldRef Name='MasterPageUrl' />
                     <FieldRef Name='FontSchemeUrl' />
@@ -716,30 +719,124 @@ namespace Microsoft.SharePoint.Client
             </View>";
 
             CamlQuery camlQuery = new CamlQuery();
-            camlQuery.ViewXml = string.Format(camlString, composedLookName);
+            camlQuery.ViewXml = camlString;
 
             ListItemCollection themes = designCatalog.GetItems(camlQuery);
             web.Context.Load(themes);
             web.Context.ExecuteQueryRetry();
             if (themes.Count > 0)
             {
-                var themeItem = themes[0];
-                theme = new ThemeEntity();
-                if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                string masterPageUrl = null;
+                string themeUrl = null;
+                string imageUrl = null;
+                string fontUrl = null;
+                string name = "";
+
+                // Iterate over the existing composed looks to figure out the current composed look
+                foreach (var themeItem in themes)
                 {
-                    theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                    if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                    {
+                        masterPageUrl = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                    {
+                        imageUrl = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                    {
+                        fontUrl = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                    {
+                        themeUrl = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["Name"] != null && themeItem["Name"].ToString().Length > 0)
+                    {
+                        name = themeItem["Name"] as String;
+                    }
+
+                    if (name != null && name.Equals(composedLookName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        theme = new ThemeEntity();
+                        if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                        {
+                            theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                        {
+                            theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                        {
+                            theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                        {
+                            theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                        }
+                        // Found, stop iterating
+                        break;
+                    }
                 }
-                if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+
+                // return here if we did not find the requested theme...it does not exist.
+                if (theme == null)
                 {
-                    theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                    return theme;
                 }
-                if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+
+                // List of OOB composed looks
+                List<string> defaultComposedLooks = new List<string>(new string[] { "Orange", "Sea Monster", "Green", "Lime", "Nature", "Blossom", "Sketch", "City", "Orbit", "Grey", "Characters", "Office", "Breeze", "Immerse", "Red", "Purple", "Wood" });            
+
+                // For a brand new clean site everything is null. Once you apply another OOB composed look and then re-apply the default 
+                // Office composed look the theme information will be populated 
+                if (theme.BackgroundImage == null &&
+                    theme.Font == null &&
+                    theme.MasterPage == null &&
+                    theme.Theme == null)
                 {
-                    theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                    theme.Name = "Office";
+                    theme.IsCustomComposedLook = false;
                 }
-                if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                else
                 {
-                    theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    // Loop over the defined composed look and get the one that matches the information gathered from the "current" composed look
+                    foreach (var themeItem in themes)
+                    {
+                        if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                        {
+                            masterPageUrl = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                        {
+                            imageUrl = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                        {
+                            fontUrl = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                        {
+                            themeUrl = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["Name"] != null && themeItem["Name"].ToString().Length > 0)
+                        {
+                            name = themeItem["Name"] as String;
+                        }
+
+                        if ((masterPageUrl == null || theme.MasterPage == null || theme.MasterPage.Equals(masterPageUrl, StringComparison.InvariantCultureIgnoreCase)) &&
+                            (imageUrl == null || theme.BackgroundImage == null || theme.BackgroundImage.Equals(imageUrl, StringComparison.InvariantCultureIgnoreCase)) &&
+                            (fontUrl == null || theme.Font == null || theme.Font.Equals(fontUrl, StringComparison.InvariantCultureIgnoreCase)) &&
+                            (themeUrl == null || theme.Theme == null || theme.Theme.Equals(themeUrl, StringComparison.InvariantCultureIgnoreCase)))
+                        {
+                            theme.Name = name;
+                            theme.IsCustomComposedLook = !defaultComposedLooks.Contains(theme.Name);
+
+                            // We're taking the first matching composed look
+                            break;
+                        }
+                    }
                 }
             }
 
