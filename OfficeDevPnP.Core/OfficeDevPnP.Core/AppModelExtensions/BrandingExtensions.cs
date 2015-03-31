@@ -696,7 +696,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to check</param>
         /// <param name="composedLookName">Name of the composed look to retrieve</param>
-        /// <returns>Entity with the attributes of the composed look, or null if it does not exist</returns>
+        /// <returns>Entity with the attributes of the composed look, or null if the composed look does not exists or cannot be determined</returns>
         public static ThemeEntity GetComposedLook(this Web web, string composedLookName)
         {
             // List of OOB composed looks
@@ -881,7 +881,6 @@ namespace Microsoft.SharePoint.Client
                         if (!web.IsUsingOfficeTheme())
                         {
                             // Assume the the last added custom theme is what the site is using
-                            //for (int i = themes.Count - 1; i >= 0; i-- )
                             for (int i = themes.Count; i-- > 0; )
                             {
                                 var themeItem = themes[i];
@@ -916,6 +915,12 @@ namespace Microsoft.SharePoint.Client
                     }
 
                 }
+            }
+
+            // if name still is "Current" then we can't correctly determine the set composed look...so return null
+            if (theme.Name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return null;
             }
 
             // Clean up the fully qualified urls
