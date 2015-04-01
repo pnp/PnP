@@ -11,6 +11,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
+            if (web.IsSubSite())
+            {
+                return;
+            }
 
             var existingCts = web.AvailableContentTypes;
             web.Context.Load(existingCts, cts => cts.Include(ct => ct.StringId));
@@ -33,6 +38,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            // if this is a sub site then we're not creating content type entities. 
+            if (web.IsSubSite())
+            {
+                return template;
+            }
+
             var cts = web.ContentTypes;
             web.Context.Load(cts);
             web.Context.ExecuteQueryRetry();

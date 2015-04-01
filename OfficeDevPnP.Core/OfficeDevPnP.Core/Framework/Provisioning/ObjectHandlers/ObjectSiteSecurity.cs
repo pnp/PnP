@@ -10,6 +10,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            // if this is a sub site then we're not provisioning security as by default security is inherited from the root site
+            if (web.IsSubSite())
+            {
+                return;
+            }
+
             var siteSecurity = template.Security;
 
             var ownerGroup = web.AssociatedOwnerGroup;
@@ -54,6 +60,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+
+            // if this is a sub site then we're not creating security entities as by default security is inherited from the root site
+            if (web.IsSubSite())
+            {
+                return template;
+            }
+
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
