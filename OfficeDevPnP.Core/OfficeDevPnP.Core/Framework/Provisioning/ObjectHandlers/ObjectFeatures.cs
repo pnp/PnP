@@ -82,7 +82,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var context = web.Context as ClientContext;
             bool isSubSite = web.IsSubSite();
@@ -114,9 +114,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template.Features = features;
 
             // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
+            if (creationInfo.BaseTemplate != null)
             {
-                template = CleanupEntities(template, baseTemplate, isSubSite);
+                template = CleanupEntities(template, creationInfo.BaseTemplate, isSubSite);
             }
 
             return template;
@@ -125,6 +125,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate, bool isSubSite)
         {
             List<Guid> featuresToExclude = new List<Guid>();
+            // Seems to be an feature left over on some older online sites...
             featuresToExclude.Add(Guid.Parse("d70044a4-9f71-4a3f-9998-e7238c11ce1a"));
 
             if (!isSubSite)
