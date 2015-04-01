@@ -18,7 +18,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             HelpMessage = "GUID to use for the term group; if not specified, or the empty GUID, a random GUID is generated and used.")]
         public Guid GroupId = default(Guid);
 
-        [Parameter(Mandatory = true, 
+        [Parameter(Mandatory = false, 
             HelpMessage = "Description to use for the term group.")]
         public string Description;
 

@@ -46,6 +46,13 @@ namespace Microsoft.SharePoint.Client
             {
                 groupId = Guid.NewGuid();
             }
+
+            if (!termStore.IsObjectPropertyInstantiated("Name"))
+            {
+                // get instances to root web, since we are processing currently sub site 
+                termStore.Context.Load(termStore);
+                termStore.Context.ExecuteQueryRetry();
+            }
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TaxonomyExtension_CreateTermGroup0InStore1, groupName, termStore.Name);
             termGroup = termStore.CreateGroup(groupName, groupId);
             termStore.Context.Load(termGroup, g => g.Name, g => g.Id, g => g.Description);
