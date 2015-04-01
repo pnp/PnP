@@ -13,11 +13,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var context = web.Context as ClientContext;
             var site = context.Site;
 
-            var webCustomActions = template.CustomActions.WebCustomActions;
-            var siteCustomActions = template.CustomActions.SiteCustomActions;
+            // if this is a sub site then we're not enabling the site collection scoped custom actions
+            if (!web.IsSubSite())
+            {
+                var siteCustomActions = template.CustomActions.SiteCustomActions;
+                ProvisionCustomActionImplementation(site, siteCustomActions);
+            }
 
+            var webCustomActions = template.CustomActions.WebCustomActions;
             ProvisionCustomActionImplementation(web, webCustomActions);
-            ProvisionCustomActionImplementation(site, siteCustomActions);
         }
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
@@ -81,6 +85,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             var context = web.Context as ClientContext;
+            bool isSubSite = web.IsSubSite();
             var webCustomActions = web.GetCustomActions();
             var siteCustomActions = context.Site.GetCustomActions();
 
@@ -89,9 +94,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 customActions.WebCustomActions.Add(CopyUserCustomAction(customAction));
             }
-            foreach (var customAction in siteCustomActions)
+            
+            // if this is a sub site then we're not creating entities for site collection scoped custom actions
+            if (!isSubSite)
             {
-                customActions.SiteCustomActions.Add(CopyUserCustomAction(customAction));
+                foreach (var customAction in siteCustomActions)
+                {
+                    customActions.SiteCustomActions.Add(CopyUserCustomAction(customAction));
+                }
             }
 
             template.CustomActions = customActions;
@@ -99,21 +109,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // If a base template is specified then use that one to "cleanup" the generated template model
             if (baseTemplate != null)
             {
-                template = CleanupEntities(template, baseTemplate);
+                template = CleanupEntities(template, baseTemplate, isSubSite);
             }
 
             return template;
         }
 
-        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate, bool isSubSite)
         {
-            foreach (var customAction in baseTemplate.CustomActions.SiteCustomActions)
+            if (!isSubSite)
             {
-                int index = template.CustomActions.SiteCustomActions.FindIndex(f => f.Name.Equals(customAction.Name));
-
-                if (index > -1)
+                foreach (var customAction in baseTemplate.CustomActions.SiteCustomActions)
                 {
-                    template.CustomActions.SiteCustomActions.RemoveAt(index);
+                    int index = template.CustomActions.SiteCustomActions.FindIndex(f => f.Name.Equals(customAction.Name));
+
+                    if (index > -1)
+                    {
+                        template.CustomActions.SiteCustomActions.RemoveAt(index);
+                    }
                 }
             }
 

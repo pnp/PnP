@@ -59,6 +59,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
 
+            // Features
+            new ObjectFeatures().ProvisionObjects(web, template);
+
             // Site Fields
             new ObjectField().ProvisionObjects(web, template);
 
@@ -68,14 +71,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
 
-            // Custom actions
-            new ObjectCustomActions().ProvisionObjects(web, template);
-
-            // Features
-            new ObjectFeatures().ProvisionObjects(web, template);
-
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Custom actions
+            new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Composite look 
             new ObjectComposedLook().ProvisionObjects(web, template);
@@ -83,15 +83,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Property Bag Entries
             new ObjectPropertyBagEntry().ProvisionObjects(web, template);
 
-
             // Extensibility Provider CallOut the last thing we do.
             new ObjectExtensibilityProviders().ProvisionObjects(web, template);
 
-            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId",template.ID);
+            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.ID != null ? template.ID : "");
             web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
 
             ProvisioningTemplateInfo info = new ProvisioningTemplateInfo();
-            info.TemplateID = template.ID;
+            info.TemplateID = template.ID != null ? template.ID : "";
             info.Result = true;
             info.ProvisioningTime = DateTime.Now;
 
