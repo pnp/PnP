@@ -237,6 +237,44 @@ namespace Microsoft.SharePoint.Client
             return exists;
         }
 
+        /// <summary>
+        /// Checks if the current web is a sub site or not
+        /// </summary>
+        /// <param name="web">Web to check</param>
+        /// <returns>True is sub site, false otherwise</returns>
+        public static bool IsSubSite(this Web web)
+        {
+            bool executeQueryNeeded = false;
+            Site site = (web.Context as ClientContext).Site;
+
+            if (!web.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(web);
+                executeQueryNeeded = true;
+            }
+
+            if (!site.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(site);
+                executeQueryNeeded = true;
+            }
+
+            if (executeQueryNeeded)
+            {
+                web.Context.ExecuteQueryRetry();
+            }
+
+            if (web.Url.Equals(site.Url, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         private static bool IsCannotGetSiteException(Exception ex)
         {
             if (ex is ServerException)
