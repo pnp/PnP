@@ -56,7 +56,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             // Scan for "system" properties that should be removed as well
-            List<string> systemPropertyBagEntries = new List<string>(new string[] { "dlc_ExpirationLastRun", "profileschemaversion", "dlc_PolicyUpdateLastRun" });
+            List<string> systemPropertyBagEntries = new List<string>(new string[] 
+            { "dlc_ExpirationLastRun", "profileschemaversion", "dlc_PolicyUpdateLastRun", "_PnP_ProvisioningTemplateInfo", 
+                "vti_indexedpropertykeys", "__InheritsThemedCssFolderUrl", "_PnP_ProvisioningTemplateId", "__InheritMasterUrl",
+                "DesignPreviewLayoutUrl", "DesignPreviewThemedCssFolderUrl"
+            });
+
             foreach(string property in systemPropertyBagEntries)
             {
                 int index = template.PropertyBagEntries.FindIndex(f => f.Key.Equals(property));
