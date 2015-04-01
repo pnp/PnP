@@ -1,6 +1,8 @@
 ﻿using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
 using System.Collections.Generic;
@@ -28,7 +30,10 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 using(ClientContext cc = ctx.Clone("https://bertonline.sharepoint.com/sites/templateSTS0"))
                 {
                     // Specify null as base template since we do want "everything" in this case
-                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(null);
+                    ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
+                    creationInfo.BaseTemplate = null;
+
+                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
                     p.ID = "STS0template";
 
                     // Cleanup before saving
@@ -63,7 +68,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         {
             using (ClientContext cc = TestCommon.CreateClientContext())
             {
-                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/dev"))
+                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
                 {
 
                     ProvisioningTemplate p = ctx.Web.GetProvisioningTemplate();
@@ -81,20 +86,40 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         }
 
         [TestMethod]
-        public void ParseFieldXmlTest()
+        public void ApplyRootSiteProvisioningTemplateToSubSiteTest()
         {
-            string fieldXML = "<Field ID=\"{28081524-7C2F-4f08-9319-9C737B495BC1}\" Name=\"ParentName\" StaticName=\"ParentName\" Group=\"_Hidden\" ShowInNewForm=\"FALSE\" ShowInEditForm=\"FALSE\" ShowInFileDlg=\"FALSE\" Type=\"Text\" DisplayName=\"Report Parent Name\" AuthoringInfo=\"(the name of a snapshot's parent)\" Filterable=\"FALSE\" Sortable=\"TRUE\" SourceID=\"http://schemas.microsoft.com/sharepoint/v3\" />";
-
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(fieldXML);
-            var node = doc.DocumentElement.SelectSingleNode("/Field/@ID");
-
-            if (node != null)
+            using (ClientContext cc = TestCommon.CreateClientContext())
             {
-                Guid newGuid;
-                Assert.IsTrue(Guid.TryParse(node.Value, out newGuid));
+                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2"))
+                {
+                    ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web);
+                    creationInfo.FileConnector = new FileSystemConnector(@"c:\temp\template\garage", "");
+                    creationInfo.PersistComposedLookFiles = true;
+
+                    ProvisioningTemplate p = ctx.Web.GetProvisioningTemplate(creationInfo);
+                    Assert.IsNotNull(p);
+
+                    using (ClientContext cc2 = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                    {
+                        p.Connector = new FileSystemConnector("./resources", "");
+                        cc2.Web.ApplyProvisioningTemplate(p);
+                    }                    
+                }
             }
-            
+        }
+
+        [TestMethod]
+        public void IsSubsiteTest()
+        {
+            using (ClientContext cc = TestCommon.CreateClientContext())
+            {
+                Assert.IsFalse(cc.Web.IsSubSite());
+
+                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                {
+                    Assert.IsTrue(ctx.Web.IsSubSite());
+                }
+            }
         }
 
 

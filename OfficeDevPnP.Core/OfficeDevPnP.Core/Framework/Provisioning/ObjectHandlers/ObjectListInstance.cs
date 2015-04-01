@@ -158,7 +158,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -176,10 +176,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var item in lists)
             {
                 int index = -1;
-                if (baseTemplate != null)
+                if (creationInfo.BaseTemplate != null)
                 {
                     // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves perf
-                    index = baseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length)) &&
+                    index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length)) &&
                                                               f.TemplateType.Equals(item.BaseTemplate));
                 }
 

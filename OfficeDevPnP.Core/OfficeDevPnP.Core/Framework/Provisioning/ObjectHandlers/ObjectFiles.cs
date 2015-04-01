@@ -40,14 +40,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // Impossible to return all files in the site currently
 
             // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
+            if (creationInfo.BaseTemplate != null)
             {
-                template = CleanupEntities(template, baseTemplate);
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
             }
 
             return template;

@@ -2,10 +2,11 @@
 using System.Web.Script.Serialization;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class SiteToTemplateConversion
+    internal class SiteToTemplateConversion
     {
         /// <summary>
         /// Actual implementation of extracting configuration from existing site.
@@ -13,40 +14,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="web"></param>
         /// <param name="baseTemplate"></param>
         /// <returns></returns>
-        public ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate)
+        internal ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
             // Create empty object
             ProvisioningTemplate template = new ProvisioningTemplate();
 
+            // Hookup connector, is handy when the generated template object is used to apply to another site
+            template.Connector = creationInfo.FileConnector;
+
             // Get Security
-            template = new ObjectSiteSecurity().CreateEntities(web, template, baseTemplate);
+            template = new ObjectSiteSecurity().CreateEntities(web, template, creationInfo);
             // Site Fields
-            template = new ObjectField().CreateEntities(web, template, baseTemplate);
+            template = new ObjectField().CreateEntities(web, template, creationInfo);
             // Content Types
-            template = new ObjectContentType().CreateEntities(web, template, baseTemplate);
+            template = new ObjectContentType().CreateEntities(web, template, creationInfo);
             // Get Lists 
-            template = new ObjectListInstance().CreateEntities(web, template, baseTemplate);
+            template = new ObjectListInstance().CreateEntities(web, template, creationInfo);
             // Get custom actions
-            template = new ObjectCustomActions().CreateEntities(web, template, baseTemplate);
+            template = new ObjectCustomActions().CreateEntities(web, template, creationInfo);
             // Get features
-            template = new ObjectFeatures().CreateEntities(web, template, baseTemplate);
+            template = new ObjectFeatures().CreateEntities(web, template, creationInfo);
             // Get composite look
-            template = new ObjectComposedLook().CreateEntities(web, template, baseTemplate);
+            template = new ObjectComposedLook().CreateEntities(web, template, creationInfo);
             // Get files
-            template = new ObjectFiles().CreateEntities(web, template, baseTemplate);
+            template = new ObjectFiles().CreateEntities(web, template, creationInfo);
             // Get Property Bag Entires
-            template = new ObjectPropertyBagEntry().CreateEntities(web, template, baseTemplate);
+            template = new ObjectPropertyBagEntry().CreateEntities(web, template, creationInfo);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
             return template;
-        }
-
-        public ProvisioningTemplate GetRemoteTemplate(Web web)
-        {
-            // Load the base template which will be used for the comparison work
-            ProvisioningTemplate baseTemplate = web.GetBaseTemplate();
-
-            return GetRemoteTemplate(web, baseTemplate);
         }
 
         /// <summary>
@@ -54,7 +50,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// </summary>
         /// <param name="web"></param>
         /// <param name="template"></param>
-        public void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
+        internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);

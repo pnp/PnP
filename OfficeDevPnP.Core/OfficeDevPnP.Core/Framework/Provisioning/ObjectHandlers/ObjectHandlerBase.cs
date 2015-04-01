@@ -7,6 +7,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public abstract void ProvisionObjects(Web web, ProvisioningTemplate template);
 
-        public abstract ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate);
+        public abstract ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
     }
 }

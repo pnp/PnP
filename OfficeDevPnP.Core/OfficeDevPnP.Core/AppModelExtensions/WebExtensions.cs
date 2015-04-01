@@ -11,6 +11,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -1031,19 +1032,23 @@ namespace Microsoft.SharePoint.Client
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
         public static ProvisioningTemplate GetProvisioningTemplate(this Web web)
         {
-            return new SiteToTemplateConversion().GetRemoteTemplate(web);
+            ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(web);
+            // Load the base template which will be used for the comparison work
+            creationInfo.BaseTemplate = web.GetBaseTemplate();
+
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
         }
 
         /// <summary>
         /// Can be used to extract custom provisioning template from existing site. The extracted template
-        /// will be compared with the provided base template.
+        /// will be compared with the default base template.
         /// </summary>
         /// <param name="web">Web to get template from</param>
-        /// <param name="baseTemplate">Base template to compare against</param>
+        /// <param name="connector">Connector that will be used to persist the files retrieved from the template "get"</param>
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
-        public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplate baseTemplate)
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
-            return new SiteToTemplateConversion().GetRemoteTemplate(web, baseTemplate);
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
         }
         #endregion
 
