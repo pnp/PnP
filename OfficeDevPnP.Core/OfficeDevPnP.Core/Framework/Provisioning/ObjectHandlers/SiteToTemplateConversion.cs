@@ -2,10 +2,11 @@
 using System.Web.Script.Serialization;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class SiteToTemplateConversion
+    internal class SiteToTemplateConversion
     {
         /// <summary>
         /// Actual implementation of extracting configuration from existing site.
@@ -13,10 +14,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="web"></param>
         /// <param name="baseTemplate"></param>
         /// <returns></returns>
-        public ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate)
+        internal ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate, FileConnectorBase connector)
         {
             // Create empty object
             ProvisioningTemplate template = new ProvisioningTemplate();
+
+            // Hookup connector
+            template.Connector = connector;
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template, baseTemplate);
@@ -41,12 +45,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return template;
         }
 
-        public ProvisioningTemplate GetRemoteTemplate(Web web)
+                /// <summary>
+        /// Actual implementation of extracting configuration from existing site.
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="baseTemplate"></param>
+        /// <returns></returns>
+        internal ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplate baseTemplate)
+        {
+            return GetRemoteTemplate(web, baseTemplate, null);
+        }
+
+        internal ProvisioningTemplate GetRemoteTemplate(Web web)
         {
             // Load the base template which will be used for the comparison work
             ProvisioningTemplate baseTemplate = web.GetBaseTemplate();
 
-            return GetRemoteTemplate(web, baseTemplate);
+            return GetRemoteTemplate(web, baseTemplate, null);
+        }
+
+        internal ProvisioningTemplate GetRemoteTemplate(Web web, FileConnectorBase connector)
+        {
+            // Load the base template which will be used for the comparison work
+            ProvisioningTemplate baseTemplate = web.GetBaseTemplate();
+
+            return GetRemoteTemplate(web, baseTemplate, connector);
         }
 
         /// <summary>
@@ -54,7 +77,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// </summary>
         /// <param name="web"></param>
         /// <param name="template"></param>
-        public void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
+        internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
