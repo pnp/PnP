@@ -273,7 +273,16 @@
     <None Include="Resources\custom.spcolor">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\garagewhite.spcolor">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\HelloWorldApp.app" />
+    <Content Include="Resources\garagebg.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\garagelogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\GuidTermSet.csv" />
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\HelloWorldApp15.app" />
