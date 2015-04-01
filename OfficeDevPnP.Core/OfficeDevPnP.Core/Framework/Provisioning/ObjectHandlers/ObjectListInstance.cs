@@ -175,75 +175,64 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             web.Context.ExecuteQuery();
             foreach (var item in lists)
             {
-                var contentTypeFields = new List<FieldRef>();
-                ListInstance list = new ListInstance();
-                list.Description = item.Description;
-                list.EnableVersioning = item.EnableVersioning;
-                list.TemplateType = item.BaseTemplate;
-                list.Title = item.Title;
-                list.Hidden = item.Hidden;
-                list.DocumentTemplate = item.DocumentTemplateUrl;
-                list.ContentTypesEnabled = item.ContentTypesEnabled;
-                list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length);
-
-                int count = 0;
-                foreach (var ct in item.ContentTypes)
+                int index = -1;
+                if (baseTemplate != null)
                 {
-                    web.Context.Load(ct.FieldLinks);
-                    web.Context.ExecuteQueryRetry();
-                    foreach (var fieldLink in ct.FieldLinks)
-                    {
-                        contentTypeFields.Add(new FieldRef() { ID = fieldLink.Id });
-                    }
-                    list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.StringId, Default = count == 0 ? true : false });
-                    count++;
+                    // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves perf
+                    index = baseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length)) &&
+                                                              f.TemplateType.Equals(item.BaseTemplate));
                 }
 
-                foreach (var view in item.Views)
+                if (index == -1)
                 {
-                    list.Views.Add(new View() { SchemaXml = view.ListViewXml });
-                }
+                    var contentTypeFields = new List<FieldRef>();
+                    ListInstance list = new ListInstance();
+                    list.Description = item.Description;
+                    list.EnableVersioning = item.EnableVersioning;
+                    list.TemplateType = item.BaseTemplate;
+                    list.Title = item.Title;
+                    list.Hidden = item.Hidden;
+                    list.DocumentTemplate = item.DocumentTemplateUrl;
+                    list.ContentTypesEnabled = item.ContentTypesEnabled;
+                    list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length);
 
-                var siteColumns = web.Fields;
-                web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
-                web.Context.ExecuteQueryRetry();
-
-                foreach (var field in item.Fields)
-                {
-                    if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
+                    int count = 0;
+                    foreach (var ct in item.ContentTypes)
                     {
-                        if (contentTypeFields.FirstOrDefault(c => c.ID == field.Id) == null)
+                        web.Context.Load(ct.FieldLinks);
+                        web.Context.ExecuteQueryRetry();
+                        foreach (var fieldLink in ct.FieldLinks)
                         {
-                            list.FieldRefs.Add(new FieldRef() {ID = field.Id});
+                            contentTypeFields.Add(new FieldRef() { ID = fieldLink.Id });
+                        }
+                        list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.StringId, Default = count == 0 ? true : false });
+                        count++;
+                    }
+
+                    foreach (var view in item.Views)
+                    {
+                        list.Views.Add(new View() { SchemaXml = view.ListViewXml });
+                    }
+
+                    var siteColumns = web.Fields;
+                    web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
+                    web.Context.ExecuteQueryRetry();
+
+                    foreach (var field in item.Fields)
+                    {
+                        if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
+                        {
+                            if (contentTypeFields.FirstOrDefault(c => c.ID == field.Id) == null)
+                            {
+                                list.FieldRefs.Add(new FieldRef() { ID = field.Id });
+                            }
+                        }
+                        else
+                        {
+                            list.Fields.Add((new Model.Field() { SchemaXml = field.SchemaXml }));
                         }
                     }
-                    else
-                    {
-                        list.Fields.Add((new Model.Field() { SchemaXml = field.SchemaXml }));
-                    }
-                }
-                template.Lists.Add(list);
-            }
-
-            // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
-            {
-                template = CleanupEntities(template, baseTemplate);
-            }
-
-            return template;
-        }
-
-        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
-        {
-            foreach (var list in baseTemplate.Lists)
-            {
-                int index = template.Lists.FindIndex(f => f.Url.Equals(list.Url) && 
-                                                          f.TemplateType.Equals(list.TemplateType));
-
-                if (index > -1)
-                {
-                    template.Lists.RemoveAt(index);
+                    template.Lists.Add(list);
                 }
             }
 
