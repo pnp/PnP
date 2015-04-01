@@ -304,7 +304,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
                             {
                                 docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
-                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
+                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy'-'MM'-'dd"));
                                 docfile.WriteLine("");
                                 docfile.WriteLine(cmdletInfo.Description);
                                 docfile.WriteLine("##Syntax");
@@ -319,7 +319,14 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         {
                                             syntaxText.Append("[");
                                         }
-                                        syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                        if (par.Type == "SwitchParameter")
+                                        {
+                                            syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                        }
+                                        else
+                                        {
+                                            syntaxText.AppendFormat("-{0} <{1}>", par.Name, par.Type);
+                                        }
                                         if (!par.Required)
                                         {
                                             syntaxText.Append("]");

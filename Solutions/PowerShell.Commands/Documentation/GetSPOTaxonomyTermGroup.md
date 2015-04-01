@@ -4,7 +4,7 @@
 Returns a taxonomy term group
 ##Syntax
 ```powershell
-Get-SPOTaxonomyTermGroup -GroupName [<String>] [-TermStoreName [<String>]]
+Get-SPOTaxonomyTermGroup -GroupName <String> [-TermStoreName <String>]
 ```
 &nbsp;
 

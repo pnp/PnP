@@ -4,7 +4,7 @@
 Creates a taxonomy term group
 ##Syntax
 ```powershell
-New-SPOTaxonomyTermGroup -GroupName [<String>] [-GroupId [<Guid>]] -Description [<String>] [-TermStoreName [<String>]]
+New-SPOTaxonomyTermGroup -GroupName <String> [-GroupId <Guid>] -Description <String> [-TermStoreName <String>]
 ```
 &nbsp;
 
