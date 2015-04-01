@@ -115,7 +115,8 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 xs.Serialize(stream, objectToSerialize);
             }
-            
+
+            stream.Position = 0;
             return stream;
         }
 
