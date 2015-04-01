@@ -38,14 +38,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.TemplateType = list.TemplateType;
                     listCreate.Title = list.Title;
                     listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
-                    listCreate.Url = list.Url;
+                    listCreate.Url = parser.Parse(list.Url);
 
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
                     if (!String.IsNullOrEmpty(list.DocumentTemplate))
                     {
-                        createdList.DocumentTemplateUrl = list.DocumentTemplate;
+                        createdList.DocumentTemplateUrl = parser.Parse(list.DocumentTemplate);
                     }
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
@@ -192,9 +192,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     list.TemplateType = item.BaseTemplate;
                     list.Title = item.Title;
                     list.Hidden = item.Hidden;
-                    list.DocumentTemplate = item.DocumentTemplateUrl;
+                    list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
                     list.ContentTypesEnabled = item.ContentTypesEnabled;
-                    list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length);
+                    list.Url = Tokenize(item.RootFolder.ServerRelativeUrl, web.Url);
+                    //list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length);
 
                     int count = 0;
                     foreach (var ct in item.ContentTypes)
@@ -237,6 +238,41 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        private string Tokenize(string url, string webUrl)
+        {
+
+            if (string.IsNullOrEmpty(url))
+            {
+                return "";
+            }
+            else
+            {
+                if (url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "~themecatalog");
+                }
+                if (url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "~masterpagecatalog");
+                }
+                if (url.IndexOf(webUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
+                {
+                    return url.Replace(webUrl, "~site");
+                }
+                else
+                {
+                    Uri r = new Uri(webUrl);
+                    if (url.IndexOf(r.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) > -1)
+                    {
+                        return url.Replace(r.PathAndQuery, "~site");
+                    }
+                }
+
+                // nothing to tokenize...
+                return url;
+            }
         }
     }
 }
