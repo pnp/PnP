@@ -62,7 +62,7 @@
                   Hidden="false"
                   RemoveDefaultContentType ="true">
       <pnp:Views>
-        <View>
+        <View DisplayName="View One">
           <ViewFields>
             <FieldRef Name="ID" />
             <FieldRef Name="Title" />
