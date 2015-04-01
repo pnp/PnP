@@ -18,7 +18,10 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
                 var termStore = session.GetDefaultSiteCollectionTermStore();
                 Web.Context.Load(termStore, t => t.Id);
                 Web.Context.ExecuteQueryRetry();
-                CacheValue = termStore.Id.ToString();
+                if (termStore != null)
+                {
+                    CacheValue = termStore.Id.ToString();
+                }
             }
             return CacheValue;
         }
