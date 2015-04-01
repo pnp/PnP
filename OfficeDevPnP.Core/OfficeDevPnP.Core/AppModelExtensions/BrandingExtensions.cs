@@ -244,6 +244,9 @@ namespace Microsoft.SharePoint.Client
             web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
             web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
             web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit, updateRootOnly);
+
+            // Update/create the "Current" reference in the composed looks gallery
+            web.CreateComposedLookByUrl(CurrentLookName, paletteUrl, fontUrl, backgroundUrl, masterUrl, displayOrder:0);            
         }
 
         /// <summary>

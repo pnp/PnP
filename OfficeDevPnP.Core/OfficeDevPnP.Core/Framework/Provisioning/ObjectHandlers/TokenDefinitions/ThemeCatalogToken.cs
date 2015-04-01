@@ -13,10 +13,13 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
         {
             if (CacheValue == null)
             {
-                var catalog = Web.GetCatalog((int) ListTemplateType.ThemeCatalog);
-                Web.Context.Load(catalog, c => c.RootFolder.ServerRelativeUrl);
-                Web.Context.ExecuteQueryRetry();
-                CacheValue = catalog.RootFolder.ServerRelativeUrl;
+                using (ClientContext cc = Web.Context.GetSiteCollectionContext())
+                {
+                    var catalog = cc.Web.GetCatalog((int)ListTemplateType.ThemeCatalog);
+                    cc.Load(catalog, c => c.RootFolder.ServerRelativeUrl);
+                    cc.ExecuteQueryRetry();
+                    CacheValue = catalog.RootFolder.ServerRelativeUrl;
+                }
             }
             return CacheValue;
         }

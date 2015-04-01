@@ -9,50 +9,69 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            TokenParser parser = new TokenParser(web);
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            if (template.ComposedLook != null)
             {
-                web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQueryRetry();
-            }
-            var relativeUrl = web.ServerRelativeUrl;
-            if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
-            {
-                var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
-                web.AlternateCssUrl = alternateCssUrl;
-                web.Update();
-            }
-            if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
-            {
-                var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
-                web.SiteLogoUrl = siteLogoUrl;
-                web.Update();
-            }
-            if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
-            {
-                var masterUrl = parser.Parse(template.ComposedLook.MasterPage);
-                web.MasterUrl = masterUrl;
-            }
-            string colorFile = null;
-            if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
-            {
-                colorFile = parser.Parse(template.ComposedLook.ColorFile);
-            }
-            string backgroundFile = null;
-            if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
-            {
-                backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
-            }
-            string fontFile = null;
-            if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
-            {
-                fontFile = parser.Parse(template.ComposedLook.FontFile);
-            }
+                bool executeQueryNeeded = false;
+                TokenParser parser = new TokenParser(web);
+                
+                // Apply alternate CSS
+                if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
+                {
+                    var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
+                    web.AlternateCssUrl = alternateCssUrl;
+                    web.Update();
+                    executeQueryNeeded = true;
+                }
+                
+                // Apply Site logo
+                if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
+                {
+                    var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
+                    web.SiteLogoUrl = siteLogoUrl;
+                    web.Update();
+                    executeQueryNeeded = true;
+                }
 
-            web.ApplyTheme(colorFile, fontFile, backgroundFile, true);
-            web.Context.ExecuteQueryRetry();
+                if (executeQueryNeeded)
+                {
+                    web.Context.ExecuteQueryRetry();
+                }
 
-            // TODO: Add theme handling
+                if (template.ComposedLook.ColorFile.Length == 0 &&
+                    template.ComposedLook.FontFile.Length == 0 &&
+                    template.ComposedLook.BackgroundFile.Length == 0)
+                {
+                    // Apply OOB theme
+                    web.SetComposedLookByUrl(template.ComposedLook.Name);
+                }
+                else
+                {
+                    // Apply custom theme
+                    string colorFile = null;
+                    if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
+                    {
+                        colorFile = parser.Parse(template.ComposedLook.ColorFile);
+                    }
+                    string backgroundFile = null;
+                    if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
+                    {
+                        backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
+                    }
+                    string fontFile = null;
+                    if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
+                    {
+                        fontFile = parser.Parse(template.ComposedLook.FontFile);
+                    }
+
+                    string masterUrl = null;
+                    if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
+                    {
+                        masterUrl = parser.Parse(template.ComposedLook.MasterPage);
+                    }
+                    web.CreateComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
+                    web.SetComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
+                }
+            }
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
@@ -93,19 +112,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     template.ComposedLook.FontFile = Tokenize(theme.Font, web.Url);
 
                     // Create file entries for the custom theme files  
-                    if (template.ComposedLook.BackgroundFile != null)
+                    if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
                     {
                         template.Files.Add(GetComposedLookFile(template.ComposedLook.BackgroundFile));
                     }
-                    if (template.ComposedLook.ColorFile != null)
+                    if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
                     {
                         template.Files.Add(GetComposedLookFile(template.ComposedLook.ColorFile));
                     }
-                    if (template.ComposedLook.FontFile != null)
+                    if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
                     {
                         template.Files.Add(GetComposedLookFile(template.ComposedLook.FontFile));
                     }
-                    if (template.ComposedLook.SiteLogo != null)
+                    if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
                     {
                         template.Files.Add(GetComposedLookFile(template.ComposedLook.SiteLogo));
                     }
@@ -115,6 +134,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         template = CleanupEntities(template, baseTemplate);
                     }
+                }
+                else
+                {
+                    template.ComposedLook.BackgroundFile = "";
+                    template.ComposedLook.ColorFile = "";
+                    template.ComposedLook.FontFile = "";
                 }
             }
             else
@@ -140,7 +165,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (string.IsNullOrEmpty(url))
             {
-                return url;
+                return "";
             }
             else
             {
