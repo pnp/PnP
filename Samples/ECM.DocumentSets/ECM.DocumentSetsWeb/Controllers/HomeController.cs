@@ -535,7 +535,7 @@ namespace ECM.DocumentSetsWeb.Controllers
                     clientContext.ExecuteQuery();
 
                     ContentType ctSow = web.ContentTypes.FirstOrDefault(ct => ct.Name == CONTENTTYPENAME);
-                    if (ctSow != null)// && DocumentSetTemplate.IsChildOfDocumentSetContentType(clientContext, ctSow).Value)
+                    if (ctSow != null)
                     {
                         template = DocumentSetTemplate.GetDocumentSetTemplate(clientContext, ctSow);
                         clientContext.Load(template, t => t.AllowedContentTypes, t => t.DefaultDocuments, t => t.SharedFields, t => t.WelcomePageFields);
@@ -577,26 +577,12 @@ namespace ECM.DocumentSetsWeb.Controllers
             clientContext.ExecuteQuery();
 
             ContentType ctSow = web.ContentTypes.FirstOrDefault(ct => ct.Name == CONTENTTYPENAME);
-            if (ctSow != null && DocumentSetTemplate.IsChildOfDocumentSetContentType(clientContext, ctSow).Value)
+            if (ctSow != null)
             {
                 template = DocumentSetTemplate.GetDocumentSetTemplate(clientContext, ctSow);
                 clientContext.Load(template, t => t.AllowedContentTypes, t => t.DefaultDocuments, t => t.SharedFields, t => t.WelcomePageFields);
                 clientContext.ExecuteQuery();
             }
-
-            //foreach (ContentType ct in web.ContentTypes)
-            //{
-            //    //find out documentset and child content type
-            //    if (ct.Name.IndexOf("document set", StringComparison.CurrentCultureIgnoreCase) != -1 ||
-            //        DocumentSetTemplate.IsChildOfDocumentSetContentType(clientContext, ct).Value)
-            //    {
-            //        template = DocumentSetTemplate.GetDocumentSetTemplate(clientContext, ct);
-            //        clientContext.Load(template, t => t.AllowedContentTypes, t => t.DefaultDocuments, t => t.SharedFields, t => t.WelcomePageFields);
-            //        clientContext.ExecuteQuery();
-
-            //        break;
-            //    }
-            //}
             return template;
 
         }
@@ -678,7 +664,7 @@ namespace ECM.DocumentSetsWeb.Controllers
                 sowNumber = clientContext.Web.Fields.AddFieldAsXml(String.Format("<Field DisplayName='{0}' Name='{0}' ID='{{{1}}}' Group='SP2TestPublish1Columns' Type='Text' />", fieldName, Guid.NewGuid().ToString().ToLower()),
                     false,
                     AddFieldOptions.AddFieldInternalNameHint);
-                //clientContext.ExecuteQuery();
+
             }
             clientContext.Load(sowNumber);
             clientContext.ExecuteQuery();
