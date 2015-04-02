@@ -1,5 +1,5 @@
 #Get-SPOMasterPage
-*Topic automatically generated on: 2015-03-12*
+*Topic automatically generated on: 2015-04-02*
 
 Returns the URLS of the default Master Page and the custom Master Page.
 ##Syntax
