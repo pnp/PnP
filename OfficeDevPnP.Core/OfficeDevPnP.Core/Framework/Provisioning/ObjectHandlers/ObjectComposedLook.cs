@@ -39,9 +39,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Context.ExecuteQueryRetry();
                 }
 
-                if (template.ComposedLook.ColorFile.Length == 0 &&
-                    template.ComposedLook.FontFile.Length == 0 &&
-                    template.ComposedLook.BackgroundFile.Length == 0)
+                if (String.IsNullOrEmpty(template.ComposedLook.ColorFile) &&
+                    String.IsNullOrEmpty(template.ComposedLook.FontFile) &&
+                    String.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
                 {
                     // Apply OOB theme
                     web.SetComposedLookByUrl(template.ComposedLook.Name);
