@@ -19,11 +19,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
     [CmdletHelp("Generates a provisioning template from a web", Category = "Branding")]
     public class GetProvisioningTemplate : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, Position = 0)]
+        [Parameter(Mandatory = false, Position = 0, HelpMessage = "Filename to write to, optionally including full path")]
         public string Out;
 
         [Parameter(Mandatory = false, HelpMessage = "Overwrites the output file if it exists.")]
         public SwitchParameter Force;
+
+        [Parameter(Mandatory = false)]
+        public Encoding Encoding = System.Text.Encoding.Unicode;
 
         protected override void ExecuteCmdlet()
         {
@@ -40,14 +43,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                     {
                         var xml = GetProvisioningTemplateXML();
 
-                        File.WriteAllText(Out, xml);
+                        File.WriteAllText(Out, xml, Encoding);
                     }
                 }
                 else
                 {
                     var xml = GetProvisioningTemplateXML();
 
-                    File.WriteAllText(Out, xml);
+                    File.WriteAllText(Out, xml, Encoding);
                 }
             }
             else

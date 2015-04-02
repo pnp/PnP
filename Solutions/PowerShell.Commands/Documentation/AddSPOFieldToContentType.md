@@ -1,5 +1,5 @@
 #Add-SPOFieldToContentType
-*Topic automatically generated on: 2015-03-12*
+*Topic automatically generated on: 2015-04-02*
 
 Adds an existing site column to a content type
 ##Syntax

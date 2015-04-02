@@ -1,5 +1,5 @@
 #Remove-SPOView
-*Topic automatically generated on: 2015-03-12*
+*Topic automatically generated on: 2015-04-02*
 
 Deletes a view from a list
 ##Syntax
