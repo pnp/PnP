@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
@@ -55,24 +56,59 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
             }
 
-            // Scan for "system" properties that should be removed as well
-            List<string> systemPropertyBagEntries = new List<string>(new string[] 
-            { "dlc_ExpirationLastRun", "profileschemaversion", "dlc_PolicyUpdateLastRun", "_PnP_ProvisioningTemplateInfo", 
-                "vti_indexedpropertykeys", "__InheritsThemedCssFolderUrl", "_PnP_ProvisioningTemplateId", "__InheritMasterUrl",
-                "DesignPreviewLayoutUrl", "DesignPreviewThemedCssFolderUrl"
+            // Scan for "system" properties that should be removed as well. Below list contains
+            // prefixes of properties that will be dropped
+            List<string> systemPropertyBagEntriesExclusions = new List<string>(new string[] 
+            { 
+                "_", 
+                "vti_", 
+                "dlc_", 
+                "ecm_",
+                "profileschemaversion", 
+                "DesignPreview"
             });
 
-            foreach(string property in systemPropertyBagEntries)
+            // Below property prefixes indicate properties that never can be dropped 
+            List<string> systemPropertyBagEntriesInclusions = new List<string>(new string[]
             {
-                int index = template.PropertyBagEntries.FindIndex(f => f.Key.Equals(property));
+                "_PnP_"
+            });
 
-                if (index > -1)
-                {
-                    template.PropertyBagEntries.RemoveAt(index);
-                }
+            List<PropertyBagEntry> entriesToDelete = new List<PropertyBagEntry>();
+
+            // Prepare the list of property bag entries that will be dropped
+            foreach(string property in systemPropertyBagEntriesExclusions)
+            {
+                var results = from prop in template.PropertyBagEntries
+                              where prop.Key.Contains(property)
+                              select prop;
+                entriesToDelete.AddRange(results);                
+            }
+
+            // Remove the property bag entries that we want to forcifully keep
+            foreach (string property in systemPropertyBagEntriesInclusions)
+            {
+                var results = from prop in entriesToDelete
+                              where prop.Key.Contains(property)
+                              select prop;
+                // Drop the found elements from the delete list    
+                entriesToDelete = new List<PropertyBagEntry>(SymmetricExcept<PropertyBagEntry>(results, entriesToDelete));
+            }
+
+            // Delete the resulting list of property bag entries
+            foreach(var property in entriesToDelete)
+            {
+                template.PropertyBagEntries.Remove(property);
             }
 
             return template;
+        }
+
+        private IEnumerable<T> SymmetricExcept<T>(IEnumerable<T> seq1, IEnumerable<T> seq2)
+        {
+            HashSet<T> hashSet = new HashSet<T>(seq1);
+            hashSet.SymmetricExceptWith(seq2);
+            return hashSet.Select(x => x);
         }
 
     }
