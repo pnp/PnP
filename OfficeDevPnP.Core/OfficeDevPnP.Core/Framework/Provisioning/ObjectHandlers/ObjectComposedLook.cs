@@ -11,7 +11,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            if (template.ComposedLook != null)
+            if (template.ComposedLook != null && 
+                !template.ComposedLook.Equals(ComposedLook.Empty))
             {
                 bool executeQueryNeeded = false;
                 TokenParser parser = new TokenParser(web);

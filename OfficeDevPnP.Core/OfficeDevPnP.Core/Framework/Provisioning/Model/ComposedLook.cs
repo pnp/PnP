@@ -7,6 +7,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// </summary>
     public partial class ComposedLook : IEquatable<ComposedLook>
     {
+        static ComposedLook()
+        {
+            Empty = new ComposedLook();
+        }
+
+        private static ComposedLook _empty;
+
+        public static ComposedLook Empty
+        {
+            private set { _empty = value; }
+            get { return (_empty); }
+        }
+
         #region Properties
         /// <summary>
         /// Gets or sets the Name
