@@ -1,7 +1,9 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using System;
+using System.IO;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -75,7 +77,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
-        {
+        {            
             // Load object if not there
             bool executeQueryNeeded = false;
             if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))
@@ -107,6 +109,37 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (theme.IsCustomComposedLook)
                 {
+                    if (creationInfo.PersistComposedLookFiles && creationInfo.FileConnector != null)
+                    {
+                        Site site = (web.Context as ClientContext).Site;
+                        if (!site.IsObjectPropertyInstantiated("Url"))
+                        {
+                            web.Context.Load(site);
+                            web.Context.ExecuteQueryRetry();
+                        }
+
+                        // Let's create a SharePoint connector since our files anyhow are in SharePoint at this moment
+                        SharePointConnector spConnector = new SharePointConnector(web.Context, web.Url, "dummy");
+
+                        // to get files from theme catalog we need a connector linked to the root site
+                        SharePointConnector spConnectorRoot;
+                        if (!site.Url.Equals(web.Url, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            spConnectorRoot = new SharePointConnector(web.Context.Clone(site.Url), site.Url, "dummy");
+                        }
+                        else
+                        {
+                            spConnectorRoot = spConnector;
+                        }                        
+
+                        // Download the theme/branding specific files
+                        DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, web.AlternateCssUrl);
+                        DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, web.SiteLogoUrl);
+                        DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, theme.BackgroundImage);
+                        DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, theme.Theme);
+                        DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, theme.Font);
+                    }
+
                     template.ComposedLook.BackgroundFile = Tokenize(theme.BackgroundImage, web.Url);
                     template.ComposedLook.ColorFile = Tokenize(theme.Theme, web.Url);
                     template.ComposedLook.FontFile = Tokenize(theme.Font, web.Url);
@@ -149,6 +182,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             return template;
         }
+
+        private void DownLoadFile(SharePointConnector reader, SharePointConnector readerRoot, FileConnectorBase writer, string webUrl, string asset)
+        {
+
+            // No file passed...leave
+            if (String.IsNullOrEmpty(asset))
+            {
+                return;
+            }
+
+            SharePointConnector readerToUse;
+            Model.File f = GetComposedLookFile(asset);
+
+            // Strip the /sites/root part from /sites/root/lib/folder structure
+            Uri u = new Uri(webUrl);
+            if (f.Folder.IndexOf(u.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                f.Folder = f.Folder.Replace(u.PathAndQuery, "");
+            }
+
+            // in case of a theme catalog we need to use the root site reader as that list only exists on root site level
+            if (f.Folder.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                readerToUse = readerRoot;
+            }
+            else
+            {
+                readerToUse = reader;
+            }
+
+            using (Stream s = readerToUse.GetFileStream(f.Src, f.Folder))
+            {
+                if (s != null)
+                {
+                    // if we've found the file use the provided writer to persist the downloaded file
+                    writer.SaveFileStream(f.Src, s);
+                }
+            }
+        }
+
 
         private Model.File GetComposedLookFile(string asset)
         {
