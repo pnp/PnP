@@ -4,7 +4,7 @@
     ViewBag.Title = "AddAllowedContentTypeView";
 }
 
-<h2>AddAllowedContentTypeView</h2>
+<h2>Add AllowedContentType</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Add Content Type to Allowed Content Types</h4>
+        @*<h4>Add Content Type to Allowed Content Types</h4>*@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
