@@ -213,53 +213,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         foreach (var ct in item.ContentTypes)
                         {
-                            var contentTypeStringID = string.Empty;
-
-                            if (ct.StringId.IndexOf("00") > -1)
+                            web.Context.Load(ct, c => c.Parent);
+                            web.Context.ExecuteQuery();
+                            if (ct.Parent != null)
                             {
-                                var fullContentTypeStringID = ct.StringId;
-
-                                while (fullContentTypeStringID.Contains("00"))
+                                // Add the parent to the list of content types
+                                if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
                                 {
-                                    // CT inherits from another CT, lets make sure we add it to the template
-                                    var parentCTID = fullContentTypeStringID.Substring(0, fullContentTypeStringID.LastIndexOf("00"));
-
-                                    // Did we already add it maybe?
-                                    var ctIndex = template.ContentTypes.FindIndex(c => c.SchemaXml.IndexOf(parentCTID, StringComparison.InvariantCultureIgnoreCase) > -1);
-
-                                    if (ctIndex == -1)
-                                    {
-                                        // Retrieve the parent CT and add it to the template content types
-                                        var parentCT = web.AvailableContentTypes.GetById(parentCTID);
-                                        contentTypeStringID = parentCTID;
-                                        web.Context.Load(parentCT, pct => pct.SchemaXml);
-                                        web.Context.ExecuteQueryRetry();
-                                        if (!BuiltInContentTypeId.Contains(parentCTID))
-                                        {
-                                            template.ContentTypes.Add(new Model.ContentType() { SchemaXml = parentCT.SchemaXml });
-                                            if (string.IsNullOrEmpty(contentTypeStringID))
-                                            {
-                                                contentTypeStringID = parentCTID;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (string.IsNullOrEmpty(contentTypeStringID))
-                                        {
-                                            contentTypeStringID = parentCTID;
-                                        }
-                                    }
-
-                                    fullContentTypeStringID = parentCTID;
-
+                                    list.ContentTypeBindings.Add(new ContentTypeBinding() {ContentTypeID = ct.Parent.StringId, Default = count == 0 ? true : false});
                                 }
                             }
                             else
                             {
-                                contentTypeStringID = ct.StringId;
+                                list.ContentTypeBindings.Add(new ContentTypeBinding() {ContentTypeID = ct.StringId, Default = count == 0});
                             }
-
+                         
                             web.Context.Load(ct.FieldLinks);
                             web.Context.ExecuteQueryRetry();
                             foreach (var fieldLink in ct.FieldLinks)
@@ -269,8 +237,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                     contentTypeFields.Add(new FieldRef() { ID = fieldLink.Id });
                                 }
                             }
-
-                            list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = contentTypeStringID, Default = count == 0 ? true : false });
                             count++;
                         }
 
