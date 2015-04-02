@@ -344,7 +344,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     {
                         spFolder = list.RootFolder;
                         string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                        for (int i = 1; i < parts.Length; i++)
+
+                        int startFrom = 1;
+                        if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            startFrom = 2;
+                        }
+
+                        for (int i = startFrom; i < parts.Length; i++)
                         {
                             spFolder = spFolder.ResolveSubFolder(parts[i]);
                         }                        
@@ -381,6 +388,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         private string GetDocumentLibrary(string container)
         {
             string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length > 1)
+            {
+                if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return string.Format("_catalogs/{0}", parts[1]);
+                }
+            }
+
             return parts[0];
         }
 
@@ -390,8 +406,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
             if (parts.Length > 1)
             {
+                int startFrom = 1;
+                if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    startFrom = 2;
+                }
+                
                 string folder = "";
-                for (int i = 1; i < parts.Length;i++)
+                for (int i = startFrom; i < parts.Length;i++)
                 {
                     folder = folder + "/" + parts[i];
                 }
