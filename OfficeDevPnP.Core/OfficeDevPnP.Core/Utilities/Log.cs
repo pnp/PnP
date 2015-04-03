@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -110,8 +107,8 @@ namespace OfficeDevPnP.Core.Utilities
                     message = message.Replace("{", "{{").Replace("}", "}}");
                 }
 
-                string msg = String.Format(System.Globalization.CultureInfo.CurrentCulture, message, args);
-                string log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg);
+                string msg = String.Format(CultureInfo.CurrentCulture, message, args);
+                string log = string.Format(CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg);
                 return log;
             }
             catch (Exception e)

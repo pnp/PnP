@@ -1,10 +1,11 @@
 #Get-SPOWikiPageContent
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Gets the contents/source of a wiki page
 ##Syntax
-    Get-SPOWikiPageContent [-Web [<WebPipeBind>]] -ServerRelativePageUrl [<String>]
-
+```powershell
+Get-SPOWikiPageContent [-Web [<WebPipeBind>]] -ServerRelativePageUrl [<String>]
+```
 &nbsp;
 
 ##Parameters

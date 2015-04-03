@@ -1,10 +1,11 @@
 #Set-SPOGroup
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Updates a group
 ##Syntax
-    Set-SPOGroup -Identity [<GroupPipeBind>] [-SetAssociatedGroup [<AssociatedGroupType>]] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Set-SPOGroup -Identity [<GroupPipeBind>] [-SetAssociatedGroup [<AssociatedGroupType>]] [-AddRole [<String>]] [-RemoveRole [<String>]] [-Title [<String>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

@@ -6,7 +6,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOEventReceiver")]
-    [CmdletHelp("Adds a new event receiver")]
+    [CmdletHelp("Adds a new event receiver", Category = "Event Receivers")]
     [CmdletExample(
       Code = @"PS:> Add-SPOEventReceiver -List ""ProjectList"" -Name ""TestEventReceiver"" -Url https://yourserver.azurewebsites.net/eventreceiver.svc -EventReceiverType ItemAdded -Synchronization Asynchronous",
       Remarks = @"This will add a new event receiver that is executed after an item has been added to the ProjectList list", SortOrder = 1)]

@@ -1,9 +1,12 @@
-﻿namespace OfficeDevPnP.Core
+﻿using System;
+
+namespace OfficeDevPnP.Core
 {
     /// <summary>
     /// Specify restrictions to place on a document or item once it has been declared as a record.  Changing this setting 
     /// will not affect items which have already been declared records.  
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue"), Flags]
     public enum EcmSiteRecordRestrictions
     {
         Unknown = 0,

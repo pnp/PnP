@@ -1,10 +1,12 @@
 ﻿using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
     [Cmdlet(VerbsCommon.Set, "SPOList")]
+    [CmdletHelp("Updates list settings", Category = "Lists")]
     public class SetList : SPOWebCmdlet
     {
         [Parameter(Mandatory=true)]

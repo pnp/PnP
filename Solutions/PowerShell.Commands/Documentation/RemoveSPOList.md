@@ -1,10 +1,11 @@
 #Remove-SPOList
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Deletes a list
 ##Syntax
-    Remove-SPOList [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ListPipeBind>]
-
+```powershell
+Remove-SPOList [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]] -Identity [<ListPipeBind>]
+```
 &nbsp;
 
 ##Parameters

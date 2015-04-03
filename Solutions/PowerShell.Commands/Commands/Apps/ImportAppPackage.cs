@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOAppPackage")]
     [CmdletHelp("Adds a SharePoint App to a site",
-        Details = "This commands requires that you have an app package to deploy")]
+        Details = "This commands requires that you have an app package to deploy", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -LoadOnly",
         Remarks = @"This will load the app in the demo.app package, but will not install it to the site.
@@ -41,6 +41,11 @@ namespace OfficeDevPnP.PowerShell.Commands
                     ClientContext.Site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
                 }
                 AppInstance instance;
+
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                }
 
                 var appPackageStream = new FileStream(Path, FileMode.Open, FileAccess.Read);
                 if (Locale == -1)

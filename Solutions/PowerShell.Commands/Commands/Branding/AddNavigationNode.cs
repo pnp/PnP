@@ -3,10 +3,12 @@ using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
 using System.Management.Automation;
 using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPONavigationNode")]
+    [CmdletHelp("Adds a menu item to either the quicklaunch or top navigation", Category = "Branding")]
     public class AddNavigationNode : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]

@@ -7,7 +7,7 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOFile")]
-    [CmdletHelp("Uploads a file to Web")]
+    [CmdletHelp("Uploads a file to Web", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
     public class AddFile : SPOWebCmdlet
@@ -38,6 +38,11 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(Path))
+            {
+                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+            }
+
             if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);

@@ -2,6 +2,10 @@
 {
     public class ThemeEntity
     {
+        public string Name { get; set; }
+
+        public bool IsCustomComposedLook { get; set; }
+
         public string MasterPage { get; set; }
 
         public string CustomMasterPage { get; set; }

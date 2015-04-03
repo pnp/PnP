@@ -1,10 +1,11 @@
 #Set-SPOFileCheckedOut
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Checks out a file
 ##Syntax
-    Set-SPOFileCheckedOut [-Web [<WebPipeBind>]] -Url [<String>]
-
+```powershell
+Set-SPOFileCheckedOut [-Web [<WebPipeBind>]] -Url [<String>]
+```
 &nbsp;
 
 ##Parameters

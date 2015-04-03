@@ -42,6 +42,9 @@
   </AppPermissionRequests>    
     -->
 
+    <!-- Support for Azure based testing -->
+    <add key="AzureStorageKey" value="" />
+    
   </appSettings>
   <system.diagnostics>
     <sharedListeners>
