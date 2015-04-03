@@ -29,6 +29,8 @@ namespace Provisioning.OneDriveWeb.Pages
 
             var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
 
+            string personalSiteUrl = null;
+
             using (ClientContext clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 // Get user profile
@@ -50,46 +52,50 @@ namespace Provisioning.OneDriveWeb.Pages
                 }
                 else
                 {
-                    // Site already exists, let's modify the branding by applying a theme... just as well you could upload
-                    // master page and set that to be shown. Notice that you can also modify this code to change the branding
-                    // later and updates would be reflected whenever user visits OneDrive host... or any other location where this
-                    // app part is located. You could place this also to front page of the intranet for ensuring that it's applied.
+                    personalSiteUrl = personalSite.Url;
+                }
+            }
 
-                    string personalSiteUrl = personalSite.Url;
-                    Uri siteUri = new Uri(personalSiteUrl);
-                    string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
-                    string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
-                    using (var appOnlyCtx = TokenHelper.GetClientContextWithAccessToken(siteUri.ToString(), accessToken))
+            if(personalSiteUrl != null)
+            {
+                // Site already exists, let's modify the branding by applying a theme... just as well you could upload
+                // master page and set that to be shown. Notice that you can also modify this code to change the branding
+                // later and updates would be reflected whenever user visits OneDrive host... or any other location where this
+                // app part is located. You could place this also to front page of the intranet for ensuring that it's applied.
+
+                Uri siteUri = new Uri(personalSiteUrl);
+                string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
+                string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
+                using (var appOnlyCtx = TokenHelper.GetClientContextWithAccessToken(siteUri.ToString(), accessToken))
+                {
+                    Web rootWeb = appOnlyCtx.Web;
+                    appOnlyCtx.Load(rootWeb);
+                    appOnlyCtx.ExecuteQuery();
+
+                    //Let's set the theme only if needed, note that you can easily check for example specific version here as well
+                    if (rootWeb.GetPropertyBagValueInt(OneDriveCustomizer.OneDriveMarkerBagID, 0) < 2)
                     {
-                        Web rootWeb = appOnlyCtx.Web;
-                        appOnlyCtx.Load(rootWeb);
-                        appOnlyCtx.ExecuteQuery();
-
-                        //Let's set the theme only if needed, note that you can easily check for example specific version here as well
-                        if (rootWeb.GetPropertyBagValueInt(OneDriveCustomizer.OneDriveMarkerBagID, 0) < 2)
-                        {
-                            // Let's first upload the contoso theme to host web, if it does not exist there
-                            var colorFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
-                            var backgroundFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
-                            rootWeb.CreateComposedLookByUrl("SPC", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
+                        // Let's first upload the contoso theme to host web, if it does not exist there
+                        var colorFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
+                        var backgroundFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
+                        rootWeb.CreateComposedLookByUrl("SPC", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
                         
-                            // Setting the Contoos theme to host web
-                            rootWeb.SetComposedLookByUrl("SPC");
+                        // Setting the Contoos theme to host web
+                        rootWeb.SetComposedLookByUrl("SPC");
 
-                            // Add additional JS injection with the policy statement to the site
-                            rootWeb.AddJsLink("OneDriveCustomJS", BuildJavaScriptUrl());
+                        // Add additional JS injection with the policy statement to the site
+                        rootWeb.AddJsLink("OneDriveCustomJS", BuildJavaScriptUrl());
 
-                            // Let's set the site processed, so that we don't update that all the time. Currently set as "version" 1 of branding
-                            rootWeb.SetPropertyBagValue(OneDriveCustomizer.OneDriveMarkerBagID, 2);
+                        // Let's set the site processed, so that we don't update that all the time. Currently set as "version" 1 of branding
+                        rootWeb.SetPropertyBagValue(OneDriveCustomizer.OneDriveMarkerBagID, 2);
 
-                            // Write output if enabled
-                            WriteDebugInformationIfNeeded(string.Format("OneDrive for Business site existed at {0}. Custom branding applied.", personalSiteUrl));
-                        }
-                        else
-                        {
-                            // Just to output status if enabled in the app part
-                            WriteDebugInformationIfNeeded(string.Format("OneDrive for Business site existed at {0} and had right branding.", personalSiteUrl));
-                        }
+                        // Write output if enabled
+                        WriteDebugInformationIfNeeded(string.Format("OneDrive for Business site existed at {0}. Custom branding applied.", personalSiteUrl));
+                    }
+                    else
+                    {
+                        // Just to output status if enabled in the app part
+                        WriteDebugInformationIfNeeded(string.Format("OneDrive for Business site existed at {0} and had right branding.", personalSiteUrl));
                     }
                 }
             }
