@@ -570,8 +570,6 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-
-
         private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
         {
             var clientContext = term.Context;
@@ -655,7 +653,7 @@ namespace Microsoft.SharePoint.Client
         public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
         {
             if (filePath == null) { throw new ArgumentNullException("filePath"); }
-            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
+            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException(CoreResources.TaxonomyExtensions_ImportTermSet_File_path_is_required_, "filePath"); }
 
             using (var fs = new FileStream(filePath, FileMode.Open))
             {
@@ -757,7 +755,7 @@ namespace Microsoft.SharePoint.Client
                             // Check file look vaguely like a CSV -- ensure the first line (headers) has some commas:
                             if (!rowText.Contains(","))
                             {
-                                throw new ArgumentException("Invalid CSV format; was expecting a comma in the first (header) line.", "reader");
+                                throw new ArgumentException(CoreResources.TaxonomyExtensions_ImportTermSetImplementation_Invalid_CSV_format__was_expecting_a_comma_in_the_first__header__line_, "reader");
                             }
                         }
                         else
@@ -1155,9 +1153,6 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, string delimiter = "|")
         {
-            var clientContext = site.Context;
-            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
-
             var termStore = site.GetDefaultSiteCollectionTermStore();
 
             return ExportTermSet(site, termSetId, includeId, termStore, delimiter);

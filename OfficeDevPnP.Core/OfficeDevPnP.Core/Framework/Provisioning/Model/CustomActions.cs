@@ -1,48 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    [XmlRoot(ElementName = "CustomActions")]
+    /// <summary>
+    /// Domain Object that represents a Collections of Custom Actions
+    /// </summary>
     public class CustomActions
     {
-        private List<CustomAction> _siteCustomActions;
-        private List<CustomAction> _webCustomActions;
-
-        public CustomActions()
-        {
-            this._siteCustomActions = new List<CustomAction>();
-            this._webCustomActions = new List<CustomAction>();
-        }
+        #region Private Members
+        private List<CustomAction> _siteCustomActions = new List<CustomAction>();
+        private List<CustomAction> _webCustomActions = new List<CustomAction>();
+        #endregion
 
         #region Properties
-        [XmlArray(ElementName = "SiteCustomActions")]
-        [XmlArrayItem("CustomAction", typeof(CustomAction))]
+        /// <summary>
+        /// A Collection of CustomActions at the Site level
+        /// </summary>
         public List<CustomAction> SiteCustomActions
         {
-            get
-            {
-                return this._siteCustomActions;
-            }
-            set { this._siteCustomActions = value; }
+            get { return this._siteCustomActions; }
+            private set { this._siteCustomActions = value; }
         }
 
-        [XmlArray(ElementName = "WebCustomActions")]
-        [XmlArrayItem("CustomAction", typeof(CustomAction))]
+        /// <summary>
+        /// A Collection of CustomActions at the Web level
+        /// </summary>
         public List<CustomAction> WebCustomActions
         {
-            get
-            {
-                return this._webCustomActions;
-            }
-            set { this._webCustomActions = value; }
+            get { return this._webCustomActions; }
+            private set { this._webCustomActions = value; }
         }
 
         #endregion
-
     }
 }

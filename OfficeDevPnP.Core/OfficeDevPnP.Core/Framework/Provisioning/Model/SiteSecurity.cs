@@ -1,70 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object that is used in the site template
     /// </summary>
-    [XmlRoot(ElementName = "Security")]
     public partial class SiteSecurity
     {
         #region Private
-        private List<AdditionalAdministrator> _additionalAdministrators;
-        private List<Owner> _additionalOwners;
-        private List<Member> _additionalMembers;
-        private List<Vistor> _additionalVisitors;
+        private List<User> _additionalAdministrators = new List<User>();
+        private List<User> _additionalOwners = new List<User>();
+        private List<User> _additionalMembers = new List<User>();
+        private List<User> _additionalVisitors = new List<User>();
         #endregion
 
         #region Properties
-        [XmlArray(ElementName = "AdditionalAdministrators")]
-        [XmlArrayItem("User", typeof(AdditionalAdministrator))]
-        public List<AdditionalAdministrator> AdditionalAdministrators
+        /// <summary>
+        /// A Collection of users that are associated as site collection adminsitrators
+        /// </summary>
+        public List<User> AdditionalAdministrators
         {
-            get
-            {
-                return _additionalAdministrators ?? (_additionalAdministrators = new List<AdditionalAdministrator>());
-            }
-            set { _additionalAdministrators = value; }
+            get { return _additionalAdministrators; }
+            private set { _additionalAdministrators = value; }
         }
 
-        [XmlArray(ElementName = "AdditionalOwners")]
-        [XmlArrayItem("User", typeof(Owner))]
-        public List<Owner> AdditionalOwners
+        /// <summary>
+        /// A Collection of users that are associated to the sites owners group
+        /// </summary>
+        public List<User> AdditionalOwners
         {
-            get
-            {
-                return _additionalOwners ?? (_additionalOwners = new List<Owner>());
-            }
-            set { _additionalOwners = value; }
+            get { return _additionalOwners; }
+            private set { _additionalOwners = value; }
         }
 
-        [XmlArray(ElementName = "AdditionalMembers")]
-        [XmlArrayItem("User", typeof(Member))]
-        public List<Member> AdditionalMembers
+        /// <summary>
+        /// A Collection of users that are associated to the sites members group
+        /// </summary>
+        public List<User> AdditionalMembers
         {
-            get
-            {
-                return _additionalMembers ?? (_additionalMembers = new List<Member>());
-            }
-            set { _additionalMembers = value; }
+            get { return _additionalMembers; }
+            private set { _additionalMembers = value; }
         }
 
-        [XmlArray(ElementName = "AdditionalVistors")]
-        [XmlArrayItem("User", typeof(Vistor))]
-        public List<Vistor> AdditionalVisitors
+        /// <summary>
+        /// A Collection of users taht are associated to the sites visitors group
+        /// </summary>
+        public List<User> AdditionalVisitors
         {
-            get
-            {
-                return _additionalVisitors ?? (_additionalVisitors = new List<Vistor>());
-            }
-            set { _additionalVisitors = value; }
+            get { return _additionalVisitors; }
+            private set { _additionalVisitors = value; }
         }
+
         #endregion
-
     }
 }

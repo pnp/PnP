@@ -1,77 +1,187 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Domain Object for List Creation
+    /// Domain Object that specifies the properties of the new list.
     /// </summary>
-    public class ListInstance
+    public class ListInstance : IEquatable<ListInstance>
     {
+        #region Constructors
+
+        public ListInstance() { }
+
+        public ListInstance(IEnumerable<ContentTypeBinding> contentTypeBindings,
+            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs   )
+        {
+            if (contentTypeBindings != null)
+            {
+                this.ContentTypeBindings.AddRange(contentTypeBindings);
+            }
+
+            if (views != null)
+            {
+                this.Views.AddRange(views);
+            }
+
+            if (fields != null)
+            {
+                this.Fields.AddRange(fields);
+            }
+
+            if (fieldRefs != null)
+            {
+                this._fieldRefs.AddRange(fieldRefs);
+            }
+        }
+
+        #endregion
+
+        #region Private Members
         private List<ContentTypeBinding> _ctBindings = new List<ContentTypeBinding>();
-        
+        private List<View> _views = new List<View>();
+        private List<Field> _fields = new List<Field>(); 
+        private List<FieldRef> _fieldRefs = new List<FieldRef>(); 
+        #endregion
+
+        #region Properties
         /// <summary>
-        /// The Title of the list
+        /// Gets or sets the list title
         /// </summary>
-        [XmlAttribute]
         public string Title { get; set; }
         
         /// <summary>
-        /// The Description of the list
+        /// Gets or sets the description of the list
         /// </summary>
-        [XmlAttribute]
         public string Description { get; set; }
         
         /// <summary>
-        /// DocumentTemplate
+        /// Gets or sets a value that specifies the identifier of the document template for the new list.
         /// </summary>
-        [XmlAttribute]
         public string DocumentTemplate { get; set; }
         
         /// <summary>
-        /// Add to QuickLaunch
+        /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
-        [XmlAttribute]
         public bool OnQuickLaunch { get; set; }
         
         /// <summary>
-        /// The Template Type
+        /// Gets or sets a value that specifies the list server template of the new list.
         /// https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.listtemplatetype.aspx
         /// </summary>
-        [XmlAttribute]
         public int TemplateType { get; set; }
         
         /// <summary>
-        /// The Url Of list
+        /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
-        [XmlAttribute]
         public string Url { get; set; }
        
         /// <summary>
-        /// Enable Versioning
+        /// Gets or sets whether verisioning is enabled on the list
         /// </summary>
-        [XmlAttribute]
         public bool EnableVersioning { get; set; }
 
         /// <summary>
-        /// Removes the Default Content Type from the library
+        /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
         /// </summary>
-        [XmlAttribute]
+        public int MinorVersionLimit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
+        /// </summary>
+        public int MaxVersionLimit { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to remove the default content type from the list
+        /// </summary>
         public bool RemoveDefaultContentType { get; set; }
   
         /// <summary>
-        /// Domain Object for Content Type Bindings
+        /// Gets or sets whether content types are enabled
         /// </summary>
-        [XmlArray(ElementName = "ContentTypeBindings")]
-        [XmlArrayItem("ContentTypeBinding", typeof(ContentTypeBinding))]
-        public List<ContentTypeBinding> GetContentTypeBindings
+        public bool ContentTypesEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether to hide the list
+        /// </summary>
+        public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content types to associate to the list
+        /// </summary>
+        public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
-            set { this._ctBindings = value;}
+            private set { this._ctBindings = value;}
         }
+
+        /// <summary>
+        /// Gets or sets the content types to associate to the list
+        /// </summary>
+        public List<View> Views
+        {
+            get { return this._views; }
+            private set { this._views = value; }
+        }
+
+        public List<Field> Fields
+        {
+            get { return this._fields; }
+            private set { this._fields = value; }
+        }
+
+        public List<FieldRef> FieldRefs
+        {
+            get { return this._fieldRefs; }
+            private set { this._fieldRefs = value; }
+        }
+        #endregion
+
+        #region Comparison code
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}",
+                this.ContentTypesEnabled,
+                this.Description,
+                this.DocumentTemplate,
+                this.EnableVersioning,
+                this.Hidden,
+                this.MaxVersionLimit,
+                this.MinorVersionLimit,
+                this.OnQuickLaunch,
+                this.RemoveDefaultContentType,
+                this.TemplateType,
+                this.Title,
+                this.Url).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ListInstance))
+            {
+                return (false);
+            }
+            return (Equals((ListInstance)obj));
+        }
+
+        public bool Equals(ListInstance other)
+        {
+            return (this.ContentTypesEnabled == other.ContentTypesEnabled &&
+                this.Description == other.Description &&
+                this.DocumentTemplate == other.DocumentTemplate &&
+                this.EnableVersioning == other.EnableVersioning &&
+                this.Hidden == other.Hidden &&
+                this.MaxVersionLimit == other.MaxVersionLimit &&
+                this.MinorVersionLimit == other.MinorVersionLimit &&
+                this.OnQuickLaunch == other.OnQuickLaunch &&
+                this.RemoveDefaultContentType == other.RemoveDefaultContentType &&
+                this.TemplateType == other.TemplateType &&
+                this.Title == other.Title &&
+                this.Url == other.Url);
+        }
+
+        #endregion
     }
 }

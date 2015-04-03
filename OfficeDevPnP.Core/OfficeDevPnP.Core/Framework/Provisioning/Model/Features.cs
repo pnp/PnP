@@ -1,42 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object that is used in the Site Template for OOB Features
     /// </summary>
-    [XmlRoot(ElementName = "Features")]
     public partial class Features
     {
-        private List<SiteFeature> _siteFeatures = new List<SiteFeature>();
-        private List<WebFeature> _webFeatures = new List<WebFeature>();
+        private List<Feature> _siteFeatures = new List<Feature>();
+        private List<Feature> _webFeatures = new List<Feature>();
 
         #region Properties
-        [XmlArray(ElementName = "SiteFeatures")]
-        [XmlArrayItem("Feature", typeof(SiteFeature))]
-        public List<SiteFeature> SiteFeatures
+        /// <summary>
+        /// A Collection of Features at the Site level
+        /// </summary>
+        public List<Feature> SiteFeatures
         {
-            get
-            {
-                return this._siteFeatures;
-            }
-            set { this._siteFeatures = value; }
+            get{ return this._siteFeatures; }
+            private set { this._siteFeatures = value; }
         }
 
-        [XmlArray(ElementName = "WebFeatures")]
-        [XmlArrayItem("Feature", typeof(WebFeature))]
-        public List<WebFeature> WebFeatures
+        /// <summary>
+        /// A Collection of Features at the Web level
+        /// </summary>
+        public List<Feature> WebFeatures
         {
-            get
-            {
-                return this._webFeatures;
-            }
-            set { this._webFeatures = value; }
+            get { return this._webFeatures; }
+            private set { this._webFeatures = value; }
         }
 
         #endregion

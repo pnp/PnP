@@ -1,18 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class PropertyBagEntry
+    public class PropertyBagEntry : IEquatable<PropertyBagEntry>
     {
-        [XmlAttribute]
+        #region Properties
+
         public string Key { get; set; }
             
-        [XmlAttribute]
         public string Value { get; set; }
+
+        #endregion
+
+        #region Comparison code
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}|{1}",
+                this.Key,
+                this.Value).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PropertyBagEntry))
+            {
+                return(false);
+            }
+            return (Equals((PropertyBagEntry)obj));
+        }
+
+        public bool Equals(PropertyBagEntry other)
+        {
+            return (this.Key == other.Key &&
+                this.Value == other.Value);
+        }
+
+        #endregion
     }
 }

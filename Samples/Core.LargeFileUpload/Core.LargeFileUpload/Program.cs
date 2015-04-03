@@ -17,7 +17,7 @@ namespace Contoso.Core.LargeFileUpload
             string siteUrl = GetSite();
 
             /* Prompt for Credentials */
-            Console.WriteLine("Enter Credentials for {0}", siteUrl);
+            Console.WriteLine("Enter credentials for {0}", siteUrl);
 
             string userName = GetUserName();
             SecureString pwd = GetPassword();
@@ -64,7 +64,7 @@ namespace Contoso.Core.LargeFileUpload
             }
             // Just to see what we have in console
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("All good with three big files uploaded to the Office365, press enter to continue.");
+            Console.WriteLine("Three large files were uploaded to the Docs document library. Press enter to continue.");
             Console.Read();
         }
 
@@ -74,7 +74,7 @@ namespace Contoso.Core.LargeFileUpload
             SecureString sStrPwd = new SecureString();
             try
             {
-                Console.Write("SharePoint Password : ");
+                Console.Write("Password: ");
 
                 for (ConsoleKeyInfo keyInfo = Console.ReadKey(true); keyInfo.Key != ConsoleKey.Enter; keyInfo = Console.ReadKey(true))
                 {
@@ -111,7 +111,7 @@ namespace Contoso.Core.LargeFileUpload
             string strUserName = string.Empty;
             try
             {
-                Console.Write("SharePoint Username : ");
+                Console.Write("Username: ");
                 strUserName = Console.ReadLine();
             }
             catch (Exception e)
@@ -127,7 +127,7 @@ namespace Contoso.Core.LargeFileUpload
             string siteUrl = string.Empty;
             try
             {
-                Console.Write("Give Office365 site URL: ");
+                Console.Write("Enter your Office365 site collection URL: ");
                 siteUrl = Console.ReadLine();
             }
             catch (Exception e)

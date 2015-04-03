@@ -1,5 +1,5 @@
 #Send-SPOMail
-*Topic automatically generated on: 2015-03-12*
+*Topic automatically generated on: 2015-04-02*
 
 Sends an email using the Office 365 SMTP Service
 ##Syntax

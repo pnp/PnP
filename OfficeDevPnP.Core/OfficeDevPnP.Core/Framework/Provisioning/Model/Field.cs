@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Represents a Field XML
+    /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
-    public class Field : IXmlSerializable
+    public class Field : IEquatable<Field>
     {
+        #region Private Members
         private string _schemaXml = string.Empty;
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
         /// Gets a value that specifies the XML Schema representing the Field type.
+        /// <seealso>
+        ///     <cref>https://msdn.microsoft.com/en-us/library/office/ff407271.aspx</cref>
+        /// </seealso>
         /// </summary>
         public string SchemaXml
         {
@@ -28,36 +26,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._schemaXml = value; }
         }
 
-        /// <summary>
-        /// No Imp will return null
-        /// </summary>
-        /// <returns></returns>
-        public XmlSchema GetSchema()
+        #endregion
+
+        #region Comparison code
+
+        public override int GetHashCode()
         {
-            return null;
+            return (String.Format("{0}",
+                this.SchemaXml).GetHashCode()); 
         }
 
-        public void ReadXml(XmlReader reader)
+        public override bool Equals(object obj)
         {
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "Field")
+            if (!(obj is Field))
             {
-                this._schemaXml = reader.ReadOuterXml();
+                return (false);
             }
-            //    reader.MoveToContent();
-
+            return (Equals((Field)obj));
         }
 
-        public void WriteXml(XmlWriter writer)
+        public bool Equals(Field other)
         {
-            if (string.IsNullOrEmpty(this._schemaXml))
-            {
-                return;
-            }
-            XElement _fieldXML = XElement.Parse(this._schemaXml);
-            foreach (var attrib in _fieldXML.Attributes())
-            {
-                writer.WriteAttributeString(attrib.Name.ToString(), attrib.Value);
-            }
+            XElement currentXml = XElement.Parse(this.SchemaXml);
+            XElement otherXml = XElement.Parse(other.SchemaXml);
+
+            return (XNode.DeepEquals(currentXml, otherXml));
         }
+
+        #endregion
     }
 }

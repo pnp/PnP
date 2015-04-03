@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -30,7 +27,9 @@ namespace OfficeDevPnP.Core.Utilities
         private static XmlSerializer GetFormatter(Type objectType)
         {
             if (!_XmlFormatter.ContainsKey(objectType))
+            {
                 _XmlFormatter.Add(objectType, new XmlSerializer(objectType));
+            }
             return _XmlFormatter[objectType];
         }
         #endregion
@@ -52,18 +51,73 @@ namespace OfficeDevPnP.Core.Utilities
         }
 
         /// <summary>
-        /// Serializes an object instance to an XML reresented string. 
+        /// Serializes an object instance to an XML represented string. 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="objectToSerialize"></param>
         /// <returns>An string that represents the serialized object.</returns>
         public static string Serialize<T>(T objectToSerialize) where T : new()
         {
+            return (Serialize(objectToSerialize, null));
+        }
+
+        /// <summary>
+        /// Serializes an object instance to an XML represented string, providing custom namespace prefixes. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectToSerialize"></param>
+        /// <param name="ns"></param>
+        /// <returns>An string that represents the serialized object.</returns>
+        public static string Serialize<T>(T objectToSerialize, XmlSerializerNamespaces ns) where T : new()
+        {
             using (StringWriter _sw = new StringWriter())
             {
-                GetFormatter(objectToSerialize.GetType()).Serialize(_sw, objectToSerialize);
+                XmlSerializer xs = GetFormatter(objectToSerialize.GetType());
+                if (ns != null)
+                {
+                    xs.Serialize(_sw, objectToSerialize, ns);
+                }
+                else
+                {
+                    xs.Serialize(_sw, objectToSerialize);
+                }
                 return _sw.ToString();
             }
+        }
+
+        /// <summary>
+        /// Serializes an object instance to a stream. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectToSerialize"></param>
+        /// <returns>An string that represents the serialized object.</returns>
+        public static Stream SerializeToStream<T>(T objectToSerialize) where T : new()
+        {
+            return (SerializeToStream(objectToSerialize, null));
+        }
+
+        /// <summary>
+        /// Serializes an object instance to a stream, providing custom namespace prefixes. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objectToSerialize"></param>
+        /// <param name="ns"></param>
+        /// <returns>An string that represents the serialized object.</returns>
+        public static Stream SerializeToStream<T>(T objectToSerialize, XmlSerializerNamespaces ns) where T : new()
+        {
+            MemoryStream stream = new MemoryStream();
+            XmlSerializer xs = GetFormatter(objectToSerialize.GetType());
+            if (ns != null)
+            {
+                xs.Serialize(stream, objectToSerialize, ns);
+            }
+            else
+            {
+                xs.Serialize(stream, objectToSerialize);
+            }
+
+            stream.Position = 0;
+            return stream;
         }
 
         /// <summary>

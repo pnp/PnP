@@ -1,26 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
-    /// Domain Object for Content Type Binding in the site tempalte
+    /// Domain Object for Content Type Binding in the Provisioning Template 
     /// </summary>
-    public class ContentTypeBinding
+    public class ContentTypeBinding : IEquatable<ContentTypeBinding>
     {
+        #region Properties
         /// <summary>
-        /// Content Type ID
+        /// Gets or Sets the Content Type ID 
         /// </summary>
-        [XmlAttribute]
         public string ContentTypeID { get; set; }
+        
         /// <summary>
-        /// Gets if the Content Type should be the default Content Type in the library
+        /// Gets or Sets if the Content Type should be the default Content Type in the library
         /// </summary>
-        [XmlAttribute]
         public bool Default { get; set; }
+        #endregion
+
+        #region Comparison code
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}|{1}",
+                this.ContentTypeID,
+                this.Default).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ContentTypeBinding))
+            {
+                return (false);
+            }
+            return (Equals((ContentTypeBinding)obj));
+        }
+
+        public bool Equals(ContentTypeBinding other)
+        {
+            return (this.ContentTypeID == other.ContentTypeID &&
+                this.Default == other.Default);
+        }
+
+        #endregion
     }
 }

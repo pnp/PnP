@@ -1,10 +1,7 @@
-﻿using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
 {
@@ -14,6 +11,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         private bool _supportSave = false;
         private bool _supportDelete = false;
         private FileConnectorBase _connector = null;
+        private string _identifier = "";
+
+        public TemplateProviderBase()
+        {
+
+        }
+
+        public TemplateProviderBase(FileConnectorBase connector)
+        {
+            this._connector = connector;
+        }
 
         public Dictionary<string, string> Parameters
         {
@@ -51,12 +59,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
             }
         }
 
+        public String Identifier
+        {
+            get
+            {
+                return _identifier;
+            }
+            set
+            {
+                _identifier = value;
+            }
+        }
+
         public abstract List<ProvisioningTemplate> GetTemplates();
 
-        public abstract ProvisioningTemplate GetTemplate(string identifyer);
+        public abstract ProvisioningTemplate GetTemplate(string identifier);
 
         public abstract void Save(ProvisioningTemplate template);
 
-        public abstract void Delete(string identifyer);
+        public abstract void SaveAs(ProvisioningTemplate template, string identifier);
+
+        public abstract void Delete(string identifier);
     }
 }

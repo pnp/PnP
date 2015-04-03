@@ -28,11 +28,18 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
+           
+
             WebPartEntity wp = null;
 
             switch (ParameterSetName)
             {
                 case "FILE":
+                    if (!System.IO.Path.IsPathRooted(Path))
+                    {
+                        Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                    }
+
                     if (File.Exists(Path))
                     {
                         var fileStream = new StreamReader(Path);
