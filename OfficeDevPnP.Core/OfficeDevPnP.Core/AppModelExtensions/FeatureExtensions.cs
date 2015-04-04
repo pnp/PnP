@@ -10,8 +10,6 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class FeatureExtensions
     {
-        const string MSG_PROBLEM_REMOVING = "Problem removing feature [{0}].";
-
         /// <summary>
         /// Activates a site collection or site scoped feature
         /// </summary>
@@ -99,10 +97,6 @@ namespace Microsoft.SharePoint.Client
             if (iprFeature != null && iprFeature.IsPropertyAvailable("DefinitionId") && !iprFeature.ServerObjectIsNull.Value && iprFeature.DefinitionId.Equals(featureID))
             {
                 featureIsActive = true;
-            }
-            else
-            {
-                featureIsActive = false;
             }
 
             return featureIsActive;

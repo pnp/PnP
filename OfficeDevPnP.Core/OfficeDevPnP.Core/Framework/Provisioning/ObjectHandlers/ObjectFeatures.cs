@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Management;
+﻿using System.Collections.Generic;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-
+using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
+using System;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFeatures : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var context = web.Context as ClientContext;
+            
+            // if this is a sub site then we're not enabling the site collection scoped features
+            if (!web.IsSubSite())
+            {
+                var siteFeatures = template.Features.SiteFeatures;
+                ProvisionFeaturesImplementation(context.Site, siteFeatures);
+            }
 
             var webFeatures = template.Features.WebFeatures;
-            var siteFeatures = template.Features.SiteFeatures;
             ProvisionFeaturesImplementation(web, webFeatures);
-            ProvisionFeaturesImplementation(context.Site, siteFeatures);
         }
 
-        private static void ProvisionFeaturesImplementation(object parent, List<OfficeDevPnP.Core.Framework.Provisioning.Model.Feature> webFeatures)
+        private static void ProvisionFeaturesImplementation(object parent, List<Feature> webFeatures)
         {
             Web web = null;
             Site site = null;
@@ -81,53 +82,89 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var context = web.Context as ClientContext;
+            bool isSubSite = web.IsSubSite();
             var webFeatures = web.Features;
             var siteFeatures = context.Site.Features;
 
             context.Load(webFeatures, fs => fs.Include(f => f.DefinitionId));
-            context.Load(siteFeatures, fs => fs.Include(f => f.DefinitionId));
+            if (!isSubSite)
+            {
+                context.Load(siteFeatures, fs => fs.Include(f => f.DefinitionId));
+            }
             context.ExecuteQueryRetry();
 
             var features = new Features();
             foreach (var feature in webFeatures)
             {
-                features.WebFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
+                features.WebFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
             }
-            foreach (var feature in siteFeatures)
+
+            // if this is a sub site then we're not creating  site collection scoped feature entities
+            if (!isSubSite)
             {
-                features.SiteFeatures.Add(new Model.Feature() { Deactivate = false, ID = feature.DefinitionId });
+                foreach (var feature in siteFeatures)
+                {
+                    features.SiteFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
+                }
             }
 
             template.Features = features;
 
             // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
+            if (creationInfo.BaseTemplate != null)
             {
-                template = CleanupEntities(template, baseTemplate);
+                template = CleanupEntities(template, creationInfo.BaseTemplate, isSubSite);
             }
 
             return template;
         }
 
-        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate, bool isSubSite)
         {
+            List<Guid> featuresToExclude = new List<Guid>();
+            // Seems to be an feature left over on some older online sites...
+            featuresToExclude.Add(Guid.Parse("d70044a4-9f71-4a3f-9998-e7238c11ce1a"));
 
-            foreach (var feature in baseTemplate.Features.SiteFeatures)
+            if (!isSubSite)
             {
-                int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature.ID));
-
-                if (index > -1)
+                foreach (var feature in baseTemplate.Features.SiteFeatures)
                 {
-                    template.Features.SiteFeatures.RemoveAt(index);
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+
+                    if (index > -1)
+                    {
+                        template.Features.SiteFeatures.RemoveAt(index);
+                    }
                 }
+
+                foreach(var feature in featuresToExclude)
+                {
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature));
+
+                    if (index > -1)
+                    {
+                        template.Features.SiteFeatures.RemoveAt(index);
+                    }
+                }
+
             }
 
             foreach (var feature in baseTemplate.Features.WebFeatures)
             {
                 int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+
+                if (index > -1)
+                {
+                    template.Features.WebFeatures.RemoveAt(index);
+                }
+            }
+
+            foreach (var feature in featuresToExclude)
+            {
+                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature));
 
                 if (index > -1)
                 {

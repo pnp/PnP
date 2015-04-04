@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +19,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">semi colon delimited list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Web web, string key, string scriptLinks, int sequence = 0)
         {
@@ -32,12 +32,13 @@ namespace Microsoft.SharePoint.Client
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">semi colon delimited list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Site site, string key, string scriptLinks, int sequence = 0)
         {
             return AddJsLinkImplementation(site, key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)), sequence);
         }
-	
+
 
         /// <summary>
         /// Injects links to javascript files via a adding a custom action to the site
@@ -45,6 +46,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">IEnumerable list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Web web, string key, IEnumerable<string> scriptLinks, int sequence = 0)
         {
@@ -57,6 +59,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">IEnumerable list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Site site, string key, IEnumerable<string> scriptLinks, int sequence = 0)
         {
@@ -157,6 +160,7 @@ headID.appendChild(newScript);", link);
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptBlock">Javascript to be injected</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsBlock(this Web web, string key, string scriptBlock, int sequence = 0)
         {
@@ -170,6 +174,7 @@ headID.appendChild(newScript);", link);
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptBlock">Javascript to be injected</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
         public static bool AddJsBlock(this Site site, string key, string scriptBlock, int sequence = 0)
         {

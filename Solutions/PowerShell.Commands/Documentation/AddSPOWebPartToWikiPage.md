@@ -1,5 +1,5 @@
 #Add-SPOWebPartToWikiPage
-*Topic automatically generated on: 2015-03-12*
+*Topic automatically generated on: 2015-04-02*
 
 Adds a webpart to a wiki page in a specified table row and column
 ##Syntax

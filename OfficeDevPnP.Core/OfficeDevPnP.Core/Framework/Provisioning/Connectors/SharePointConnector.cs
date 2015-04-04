@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Utilities;
+using File = Microsoft.SharePoint.Client.File;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 {
@@ -32,6 +31,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         /// <summary>
         /// SharePointConnector constructor. Allows to directly set root folder and sub folder
         /// </summary>
+        /// <param name="clientContext"></param>
         /// <param name="connectionString">Site collection URL (e.g. https://yourtenant.sharepoint.com/sites/dev) </param>
         /// <param name="container">Library + folder that holds the files (mydocs/myfolder)</param>
         public SharePointConnector(ClientRuntimeContext clientContext, string connectionString, string container)
@@ -149,7 +149,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     return null;
                 }
 
-                result = System.Text.Encoding.UTF8.GetString(stream.ToArray());
+                result = Encoding.UTF8.GetString(stream.ToArray());
             }
             finally
             {
@@ -219,7 +219,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
                     string folders = GetFolders(container);
 
-                    Microsoft.SharePoint.Client.Folder spFolder = null;
+                    Folder spFolder = null;
 
                     if (folders.Length == 0)
                     {
@@ -276,7 +276,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
                     string folders = GetFolders(container);
 
-                    Microsoft.SharePoint.Client.Folder spFolder = null;
+                    Folder spFolder = null;
 
                     if (folders.Length == 0)
                     {
@@ -299,7 +299,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     }
 
                     var fileServerRelativeUrl = UrlUtility.Combine(spFolder.ServerRelativeUrl, fileName);
-                    Microsoft.SharePoint.Client.File file = cc.Web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
+                    File file = cc.Web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                     cc.Load(file);
                     cc.ExecuteQueryRetry();
 
@@ -333,8 +333,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     List list = cc.Web.GetListByUrl(GetDocumentLibrary(container));
                     string folders = GetFolders(container);
 
-                    Microsoft.SharePoint.Client.File file = null;
-                    Microsoft.SharePoint.Client.Folder spFolder = null;
+                    File file = null;
+                    Folder spFolder = null;
 
                     if (folders.Length == 0)
                     {
@@ -344,7 +344,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     {
                         spFolder = list.RootFolder;
                         string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-                        for (int i = 1; i < parts.Length; i++)
+
+                        int startFrom = 1;
+                        if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            startFrom = 2;
+                        }
+
+                        for (int i = startFrom; i < parts.Length; i++)
                         {
                             spFolder = spFolder.ResolveSubFolder(parts[i]);
                         }                        
@@ -381,6 +388,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         private string GetDocumentLibrary(string container)
         {
             string[] parts = container.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length > 1)
+            {
+                if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return string.Format("_catalogs/{0}", parts[1]);
+                }
+            }
+
             return parts[0];
         }
 
@@ -390,8 +406,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
 
             if (parts.Length > 1)
             {
+                int startFrom = 1;
+                if (parts[0].Equals("_catalogs", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    startFrom = 2;
+                }
+                
                 string folder = "";
-                for (int i = 1; i < parts.Length;i++)
+                for (int i = startFrom; i < parts.Length;i++)
                 {
                     folder = folder + "/" + parts[i];
                 }

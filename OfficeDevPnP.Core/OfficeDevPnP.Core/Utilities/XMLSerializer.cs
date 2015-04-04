@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -61,7 +58,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <returns>An string that represents the serialized object.</returns>
         public static string Serialize<T>(T objectToSerialize) where T : new()
         {
-            return (XMLSerializer.Serialize(objectToSerialize, null));
+            return (Serialize(objectToSerialize, null));
         }
 
         /// <summary>
@@ -96,7 +93,7 @@ namespace OfficeDevPnP.Core.Utilities
         /// <returns>An string that represents the serialized object.</returns>
         public static Stream SerializeToStream<T>(T objectToSerialize) where T : new()
         {
-            return (XMLSerializer.SerializeToStream(objectToSerialize, null));
+            return (SerializeToStream(objectToSerialize, null));
         }
 
         /// <summary>
@@ -118,7 +115,8 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 xs.Serialize(stream, objectToSerialize);
             }
-            
+
+            stream.Position = 0;
             return stream;
         }
 

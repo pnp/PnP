@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using System.Xml;
+using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectContentType : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
- 
+            // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
+            if (web.IsSubSite())
+            {
+                return;
+            }
+
             var existingCts = web.AvailableContentTypes;
             web.Context.Load(existingCts, cts => cts.Include(ct => ct.StringId));
             web.Context.ExecuteQueryRetry();
@@ -26,16 +28,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // find the id of the content type
                 XDocument document = XDocument.Parse(ct.SchemaXml);
                 var contentTypeId = document.Root.Attribute("ID").Value;
-                if(!existingCtsIds.Contains(contentTypeId.ToLower()))
+                if (!existingCtsIds.Contains(contentTypeId.ToLower()))
                 {
                     web.CreateContentTypeFromXMLString(ct.SchemaXml);
                     existingCtsIds.Add(contentTypeId);
                 }
-            }            
+            }
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
+            // if this is a sub site then we're not creating content type entities. 
+            if (web.IsSubSite())
+            {
+                return template;
+            }
+
             var cts = web.ContentTypes;
             web.Context.Load(cts);
             web.Context.ExecuteQueryRetry();
@@ -44,14 +52,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!BuiltInContentTypeId.Contains(ct.StringId))
                 {
-                    template.ContentTypes.Add(new Model.ContentType() {SchemaXml = ct.SchemaXml});
+                    template.ContentTypes.Add(new ContentType() { SchemaXml = ct.SchemaXml });
                 }
             }
 
             // If a base template is specified then use that one to "cleanup" the generated template model
-            if (baseTemplate != null)
+            if (creationInfo.BaseTemplate != null)
             {
-                template = CleanupEntities(template, baseTemplate);
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
             }
 
             return template;
@@ -61,13 +69,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             foreach (var ct in baseTemplate.ContentTypes)
             {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(ct.SchemaXml);
-                var node = doc.DocumentElement.SelectSingleNode("/ContentType/@ID");
-
-                if (node != null)
+                XDocument xDoc = XDocument.Parse(ct.SchemaXml);
+                var id = xDoc.Root.Attribute("ID") != null ? xDoc.Root.Attribute("ID").Value : null;
+                if (id != null)
                 {
-                    int index = template.ContentTypes.FindIndex(f => f.SchemaXml.IndexOf(node.Value, StringComparison.InvariantCultureIgnoreCase) > -1);
+                    int index = template.ContentTypes.FindIndex(f => f.SchemaXml.IndexOf(id, StringComparison.InvariantCultureIgnoreCase) > -1);
 
                     if (index > -1)
                     {

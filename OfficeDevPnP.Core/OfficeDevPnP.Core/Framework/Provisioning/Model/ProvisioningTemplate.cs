@@ -1,16 +1,15 @@
-﻿using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Extensions;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     /// <summary>
     /// Domain Object for the Provisioning Template
     /// </summary>
-    public class ProvisioningTemplate
+    public class ProvisioningTemplate : IEquatable<ProvisioningTemplate>
     {
         #region private members
         private List<Field> _siteFields = new List<Field>();
@@ -148,6 +147,66 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 this.connector = value;
             }
+        }
+
+        #endregion
+
+        #region Comparison code
+
+        public override int GetHashCode()
+        {
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}",
+                this.ComposedLook.GetHashCode(),
+                this.ContentTypes.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.CustomActions.SiteCustomActions.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.CustomActions.WebCustomActions.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Features.SiteFeatures.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Features.WebFeatures.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Files.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.ID,
+                this.Lists.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.PropertyBagEntries.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Providers.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Security.AdditionalAdministrators.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Security.AdditionalMembers.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Security.AdditionalOwners.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Security.AdditionalVisitors.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.SiteFields.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.SitePolicy,
+                this.Version
+                ).GetHashCode());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ProvisioningTemplate))
+            {
+                return (false);
+            }
+            return (Equals((ProvisioningTemplate)obj));
+        }
+
+        public bool Equals(ProvisioningTemplate other)
+        {
+            return (
+                this.ComposedLook == other.ComposedLook &&
+                this.ContentTypes.DeepEquals(other.ContentTypes) &&
+                this.CustomActions.SiteCustomActions.DeepEquals(other.CustomActions.SiteCustomActions) &&
+                this.CustomActions.WebCustomActions.DeepEquals(other.CustomActions.WebCustomActions) &&
+                this.Features.SiteFeatures.DeepEquals(other.Features.SiteFeatures) &&
+                this.Features.WebFeatures.DeepEquals(other.Features.WebFeatures) &&
+                this.Files.DeepEquals(other.Files) &&
+                this.ID == other.ID &&
+                this.Lists.DeepEquals(other.Lists) &&
+                this.PropertyBagEntries.DeepEquals(other.PropertyBagEntries) &&
+                this.Providers.DeepEquals(other.Providers) &&
+                this.Security.AdditionalAdministrators.DeepEquals(other.Security.AdditionalAdministrators) &&
+                this.Security.AdditionalMembers.DeepEquals(other.Security.AdditionalMembers) &&
+                this.Security.AdditionalOwners.DeepEquals(other.Security.AdditionalOwners) &&
+                this.Security.AdditionalVisitors.DeepEquals(other.Security.AdditionalVisitors) &&
+                this.SiteFields.DeepEquals(other.SiteFields) &&
+                this.SitePolicy == other.SitePolicy &&
+                this.Version == other.Version);
         }
 
         #endregion

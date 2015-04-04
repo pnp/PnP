@@ -1,11 +1,8 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Search.Query;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
 {
@@ -74,7 +71,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs.Utilities
         /// Builds up a list of site collections that match the passed site wildcard. This method can be used against on-premises
         /// </summary>
         /// <param name="context">ClientContext object of an arbitrary site collection accessible by the defined enumeration username and password</param>
-        /// <param name="siteWildCard">The widcard site Url (e.g. https://tenant.sharepoint.com/sites/*) </param>
+        /// <param name="site">The widcard site Url (e.g. https://tenant.sharepoint.com/sites/*) </param>
         /// <param name="resolvedSites">List of site collections matching the passed wildcard site Url</param>
         internal void ResolveSite(ClientContext context, string site, List<string> resolvedSites)
         {

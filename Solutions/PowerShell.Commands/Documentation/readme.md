@@ -36,8 +36,11 @@ Cmdlet|Description
 **[Remove&#8209;SPOJavaScriptLink](RemoveSPOJavaScriptLink.md)** |Removes a JavaScript link or block from a web or sitecollection
 **[Add&#8209;SPOJavaScriptLink](AddSPOJavaScriptLink.md)** |Adds a link to a JavaScript file to a web or sitecollection
 **[Set&#8209;SPOMasterPage](SetSPOMasterPage.md)** |Sets the default master page of the current web.
+**[Set&#8209;SPOMinimalDownloadStrategy](SetSPOMinimalDownloadStrategy.md)** |Activates or deactivates the minimal downloading strategy.
 **[Add&#8209;SPONavigationNode](AddSPONavigationNode.md)** |Adds a menu item to either the quicklaunch or top navigation
 **[Remove&#8209;SPONavigationNode](RemoveSPONavigationNode.md)** |Removes a menu item from either the quicklaunch or top navigation
+**[Apply&#8209;SPOProvisioningTemplate](ApplySPOProvisioningTemplate.md)** |Applies a provisioning template to a web
+**[Get&#8209;SPOProvisioningTemplate](GetSPOProvisioningTemplate.md)** |Generates a provisioning template from a web
 **[Set&#8209;SPOTheme](SetSPOTheme.md)** |Sets the theme of the current web.
 ##Content Types
 Cmdlet|Description
@@ -45,6 +48,7 @@ Cmdlet|Description
 **[Remove&#8209;SPOContentType](RemoveSPOContentType.md)** |Removes a content type
 **[Get&#8209;SPOContentType](GetSPOContentType.md)** |Retrieves a content type
 **[Add&#8209;SPOContentType](AddSPOContentType.md)** |Adds a new content type
+**[Remove&#8209;SPOContentTypeFromList](RemoveSPOContentTypeFromList.md)** |Removes a content type from a list
 **[Add&#8209;SPOContentTypeToList](AddSPOContentTypeToList.md)** |Adds a new content type to a list
 **[Set&#8209;SPODefaultContentTypeToList](SetSPODefaultContentTypeToList.md)** |Sets the default content type for a list
 **[Add&#8209;SPOFieldToContentType](AddSPOFieldToContentType.md)** |Adds an existing site column to a content type
@@ -57,7 +61,7 @@ Cmdlet|Description
 ##Features
 Cmdlet|Description
 :-----|:----------
-**[Get&#8209;SPOFeature](GetSPOFeature.md)** |Returns all or a specific feature
+**[Get&#8209;SPOFeature](GetSPOFeature.md)** |Returns all activated or a specific activated feature
 **[Disable&#8209;SPOFeature](DisableSPOFeature.md)** |Disables a feature
 **[Enable&#8209;SPOFeature](EnableSPOFeature.md)** |Enables a feature
 ##Fields
@@ -156,7 +160,6 @@ Cmdlet|Description
 **[Set&#8209;SPOIndexedProperties](SetSPOIndexedProperties.md)** |Marks values of the propertybag to be indexed by search. Notice that this will overwrite the existing flags, e.g. only the properties you define with the cmdlet will be indexed.
 **[Get&#8209;SPOIndexedPropertyKeys](GetSPOIndexedPropertyKeys.md)** |Returns the keys of the property bag values that have been marked for indexing by search
 **[Get&#8209;SPOMasterPage](GetSPOMasterPage.md)** |Returns the URLS of the default Master Page and the custom Master Page.
-**[Set&#8209;SPOMinimalDownloadStrategy](SetSPOMinimalDownloadStrategy.md)** |Activates or deactivates the minimal downloading strategy.
 **[Get&#8209;SPOPropertyBag](GetSPOPropertyBag.md)** |Returns the property bag values.
 **[Remove&#8209;SPOPropertyBagValue](RemoveSPOPropertyBagValue.md)** |Removes a value from the property bag
 **[Set&#8209;SPOPropertyBagValue](SetSPOPropertyBagValue.md)** |Sets a property bag value

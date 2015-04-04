@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SharePoint.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,5 +31,6 @@ namespace ECM.DocumentSetsWeb.Models
             set { _allowedContentTypes = value; }
         }
         public string CurrentUsername { get; set; }
+        public ContentType DocSetContentType { get; set; }
     }
 }

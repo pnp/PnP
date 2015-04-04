@@ -16,7 +16,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44304</IISExpressSSLPort>
+    <IISExpressSSLPort>44305</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
@@ -139,6 +139,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddAllowedContentTypeViewModel.cs" />
+    <Compile Include="Models\AddDocumentSetViewModel.cs" />
+    <Compile Include="Models\AddSharedFieldViewModel.cs" />
+    <Compile Include="Models\AddWelcomeFieldViewModel.cs" />
     <Compile Include="Models\ContentTypeModel.cs" />
     <Compile Include="Models\FieldModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
@@ -168,7 +171,9 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\spcontext.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -186,6 +191,9 @@
     <Content Include="Views\Home\AllowedContentTypesDeleteAll.cshtml" />
     <Content Include="Views\Home\AddAllowedContentType.cshtml" />
     <Content Include="Views\Home\DeleteAllowedContentType.cshtml" />
+    <Content Include="Views\Home\AddDocumentSet.cshtml" />
+    <Content Include="Views\Home\AddSharedField.cshtml" />
+    <Content Include="Views\Home\AddWelcomeField.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

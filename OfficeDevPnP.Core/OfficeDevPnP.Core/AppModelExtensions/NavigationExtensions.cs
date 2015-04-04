@@ -422,7 +422,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Utility method to check particular custom action already exists on the web
         /// </summary>
-        /// <param name="web"></param>
+        /// <param name="site"></param>
         /// <param name="name">Name of the custom action</param>
         /// <returns></returns>        
         public static bool CustomActionExists(this Site site, string name)

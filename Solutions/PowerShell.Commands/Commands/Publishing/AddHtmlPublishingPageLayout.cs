@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
        Category = "Publishing")]
     public class AddHtmlPublishingPageLayout : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, HelpMessage = "Full path to the file which will be uploaded")]
+        [Parameter(Mandatory = true, HelpMessage = "Path to the file which will be uploaded")]
         public string SourceFilePath = string.Empty;
 
         [Parameter(Mandatory = true)]
@@ -23,6 +23,10 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(SourceFilePath))
+            {
+                SourceFilePath = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, SourceFilePath);
+            }
             SelectedWeb.DeployHtmlPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
         }
     }

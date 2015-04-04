@@ -1,4 +1,5 @@
-﻿@{
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
     Layout = null;
 }
 
@@ -14,6 +15,25 @@
         <div class="jumbotron">
             <h2>An unexpected error has occurred.</h2>
             <p>Please try again by launching the app installed on your site.</p>
+            @{
+                if (Request.IsLocal)
+                {
+                    if (Model != null && @Model.Exception != null)
+                    {
+                        <h3>
+                            Exception was: @Model.Exception.Message
+                        </h3>
+                        <h4>Stack Trace: @Model.Exception.StackTrace</h4>
+                    }
+                    else
+                    {
+                        <h3>Exception was null</h3>
+                    }
+                }else
+                {
+                    <h4>The Error has been reported to the Administrator.</h4>
+                }
+            }
         </div>
     </div>
 </body>

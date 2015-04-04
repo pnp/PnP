@@ -1,15 +1,16 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core;
-using OfficeDevPnP.Core.Utilities;
-using OfficeDevPnP.Core.Framework.TimerJobs.Enums;
-using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.Security;
 using System.Threading;
 using System.Web.Script.Serialization;
+using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.TimerJobs.Enums;
+using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.TimerJobs
 {
@@ -37,7 +38,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         // property management information
         private bool manageState = false;
         // Authentication related variables
-        private System.Collections.Concurrent.ConcurrentDictionary<string, AuthenticationManager> authenticationManagers;
+        private ConcurrentDictionary<string, AuthenticationManager> authenticationManagers;
         private AuthenticationType authenticationType;
         private string username;
         private SecureString password;
@@ -87,6 +88,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// </summary>
         /// <param name="name">Name of the timer job</param>
         /// <param name="version">Version of the timer job</param>
+        /// <param name="configurationData"></param>
         public TimerJob(string name, string version, string configurationData)
         {
             this.name = name;
@@ -96,8 +98,8 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             this.configurationData = configurationData;
 
             // Default authentication model will be Office365
-            this.authenticationType = Enums.AuthenticationType.Office365;
-            this.authenticationManagers = new System.Collections.Concurrent.ConcurrentDictionary<string, AuthenticationManager>();
+            this.authenticationType = AuthenticationType.Office365;
+            this.authenticationManagers = new ConcurrentDictionary<string, AuthenticationManager>();
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Constructor, this.name, this.version);
         }
@@ -234,7 +236,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 this.requestedSites = UpdateAddedSites(requestedSites);
                 Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Run_AfterUpdateAddedSites, requestedSites.Count);
 
-                if (String.IsNullOrEmpty(this.realm) && this.authenticationType == Enums.AuthenticationType.AppOnly && requestedSites.Count > 0)
+                if (String.IsNullOrEmpty(this.realm) && this.authenticationType == AuthenticationType.AppOnly && requestedSites.Count > 0)
                 {
                     this.realm = TokenHelper.GetRealmFromTargetUrl(new Uri(GetTopLevelSite(requestedSites[0].Replace("*", ""))));
                 }
@@ -577,7 +579,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Prepares the timerjob to operate against Office 365 with user and password credentials. Sets AuthenticationType 
         /// to AuthenticationType.Office365
         /// </summary>
-        /// <param name="username">UPN of the user that will be used to operate the timer job work</param>
+        /// <param name="userUPN"></param>
         /// <param name="password">Password of the user that will be used to operate the timer job work</param>
         public void UseOffice365Authentication(string userUPN, string password)
         {
@@ -593,7 +595,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Prepares the timerjob to operate against Office 365 with user and password credentials. Sets AuthenticationType 
         /// to AuthenticationType.Office365
         /// </summary>
-        /// <param name="username">UPN of the user that will be used to operate the timer job work</param>
+        /// <param name="userUPN"></param>
         /// <param name="password">Password of the user that will be used to operate the timer job work</param>
         public void UseOffice365Authentication(string userUPN, SecureString password)
         {
@@ -607,7 +609,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("password");
             }
 
-            this.authenticationType = Enums.AuthenticationType.Office365;
+            this.authenticationType = AuthenticationType.Office365;
             this.username = userUPN;
             this.password = password;
 
@@ -627,7 +629,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
-            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+            NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
             {
@@ -680,7 +682,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("domain");
             }
 
-            this.authenticationType = Enums.AuthenticationType.NetworkCredentials;
+            this.authenticationType = AuthenticationType.NetworkCredentials;
             this.username = samAccountName;
             this.password = password;
             this.domain = domain;
@@ -701,7 +703,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
-            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+            NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (!String.IsNullOrEmpty(cred.UserName))
             {
@@ -742,7 +744,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 throw new ArgumentNullException("clientSecret");
             }
 
-            this.authenticationType = Enums.AuthenticationType.AppOnly;
+            this.authenticationType = AuthenticationType.AppOnly;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
 
@@ -775,7 +777,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// Get an AuthenticationManager instance per host Url. Needed to make this work properly, else we're getting access denied 
         /// because of Invalid audience Uri
         /// </summary>
-        /// <param name="Url">Url of the site</param>
+        /// <param name="url">Url of the site</param>
         /// <returns>An instantiated AuthenticationManager</returns>
         private AuthenticationManager GetAuthenticationManager(string url)
         {
@@ -881,7 +883,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Provides the timer job with the enumeration credentials. For Office 365 username and password is sufficient
         /// </summary>
-        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="userUPN"></param>
         /// <param name="password">Password of the enumeration user</param>
         public void SetEnumerationCredentials(string userUPN, string password)
         {
@@ -896,7 +898,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Provides the timer job with the enumeration credentials. For Office 365 username and password is sufficient
         /// </summary>
-        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="userUPN"></param>
         /// <param name="password">Password of the enumeration user</param>
         public void SetEnumerationCredentials(string userUPN, SecureString password)
         {
@@ -918,7 +920,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Provides the timer job with the enumeration credentials. For SharePoint on-premises username, password and domain are needed
         /// </summary>
-        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="samAccountName">UPN of the enumeration user</param>
         /// <param name="password">Password of the enumeration user</param>
         /// <param name="domain">Domain of the enumeration user</param>
         public void SetEnumerationCredentials(string samAccountName, string password, string domain)
@@ -934,7 +936,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Provides the timer job with the enumeration credentials. For SharePoint on-premises username, password and domain are needed
         /// </summary>
-        /// <param name="username">UPN of the enumeration user</param>
+        /// <param name="samAccountName">Account name of the enumeration user</param>
         /// <param name="password">Password of the enumeration user</param>
         /// <param name="domain">Domain of the enumeration user</param>
         public void SetEnumerationCredentials(string samAccountName, SecureString password, string domain)
@@ -972,7 +974,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             }
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Authentication_RetrieveFromCredMan, credentialName);
-            System.Net.NetworkCredential cred = CredentialManager.GetCredential(credentialName);
+            NetworkCredential cred = CredentialManager.GetCredential(credentialName);
 
             if (cred != null && !String.IsNullOrEmpty(cred.UserName) && !String.IsNullOrEmpty(cred.Password))
             {
@@ -1215,7 +1217,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 IEnumerable<string> expandedSites = GetAllSubSites(ccExpand.Site);
                 resolvedSitesAndSubSites.AddRange(expandedSites);
             }
-            catch (System.Net.WebException ex)
+            catch (WebException ex)
             {
                 if (IsInternalServerErrorException(ex) || IsNotFoundException(ex))
                 {
@@ -1238,22 +1240,22 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         {
             if (SharePointVersion == 15)
             {
-                if (AuthenticationType == Enums.AuthenticationType.NetworkCredentials)
+                if (AuthenticationType == AuthenticationType.NetworkCredentials)
                 {
                     return GetAuthenticationManager(site).GetNetworkCredentialAuthenticatedContext(site, username, password, domain);
                 }
-                else if (AuthenticationType == Enums.AuthenticationType.AppOnly)
+                else if (AuthenticationType == AuthenticationType.AppOnly)
                 {
                     return GetAuthenticationManager(site).GetAppOnlyAuthenticatedContext(site, this.realm, this.clientId, this.clientSecret);
                 }
             }
             else
             {
-                if (AuthenticationType == Enums.AuthenticationType.Office365)
+                if (AuthenticationType == AuthenticationType.Office365)
                 {
                     return GetAuthenticationManager(site).GetSharePointOnlineAuthenticatedContextTenant(site, username, password);
                 }
-                else if (AuthenticationType == Enums.AuthenticationType.AppOnly)
+                else if (AuthenticationType == AuthenticationType.AppOnly)
                 {
                     return GetAuthenticationManager(site).GetAppOnlyAuthenticatedContext(site, this.realm, this.clientId, this.clientSecret);
                 }
@@ -1320,7 +1322,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <summary>
         /// Verifies if the passed Url has a valid structure
         /// </summary>
-        /// <param name="Url">Url to validate</param>
+        /// <param name="url">Url to validate</param>
         /// <returns>True is valid, false otherwise</returns>
         private bool IsValidUrl(string url)
         {
@@ -1340,7 +1342,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <returns></returns>
         private int GetSharePointVersion()
         {
-            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site));
+            Assembly asm = Assembly.GetAssembly(typeof(Site));
             return asm.GetName().Version.Major;
         }
 
@@ -1440,7 +1442,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <returns>True if "The remote server returned an error: (500) Internal Server Error" exception, false otherwise</returns>
         private bool IsInternalServerErrorException(Exception ex)
         {
-            if (ex is System.Net.WebException)
+            if (ex is WebException)
             {
                 if (ex.HResult == -2146233079 && ex.Message.IndexOf("(500)") > -1)
                 {
@@ -1464,7 +1466,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <returns>True if "The remote server returned an error: (404) Not Found" exception, false otherwise</returns>
         private bool IsNotFoundException(Exception ex)
         {
-            if (ex is System.Net.WebException)
+            if (ex is WebException)
             {
                 if (ex.HResult == -2146233079 && ex.Message.IndexOf("(404)") > -1)
                 {

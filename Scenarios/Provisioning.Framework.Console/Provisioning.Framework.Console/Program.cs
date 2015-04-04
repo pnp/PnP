@@ -22,7 +22,7 @@ namespace Provisioning.Framework
             string targetSiteUrl = "https://bertonline.sharepoint.com/sites/pr1";
             string loginId = "bert.jansen@bertonline.onmicrosoft.com";
 
-            // Get pwd from environment variable, so that we do nto need to show that.
+            // Get pwd from environment variable, so that we do to need to show that.
             string pwd = "";
             if (interactiveLogin)
             {
@@ -35,7 +35,7 @@ namespace Provisioning.Framework
 
             if (string.IsNullOrEmpty(pwd))
             {
-                System.Console.WriteLine("MSOPWD user environment variable empty, cannot continue. Press any key to abort.");
+                System.Console.WriteLine("MSOPWD user environment variable empty or no password was specified, cannot continue. Press any key to abort.");
                 System.Console.ReadKey();
                 return;
             }
@@ -57,7 +57,7 @@ namespace Provisioning.Framework
 
             // Save template using XML provider
             XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
-            string templateName = "bert.xml";
+            string templateName = "template.xml";
             provider.SaveAs(template, templateName);
             
             // Load the saved model again
@@ -79,7 +79,7 @@ namespace Provisioning.Framework
                 ctx.Credentials = new SharePointOnlineCredentials(loginId, passWord);
 
                 // Apply template to existing site
-                //ctx.Web.ApplyProvisioningTemplate(template);
+                ctx.Web.ApplyProvisioningTemplate(template);
             }
         }
 
