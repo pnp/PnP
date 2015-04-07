@@ -95,7 +95,9 @@ The Solution requires some configuration in the app.config file. The following c
 ## Provision Workflow ##
 Description:
 Workflow template provisioning consists of providing WorkflowTemplateInfo object with file-path to the solution file, SolutionId and FeatureId of the package. Provisioning is two step operation:
+
 1. Deploy package file to template library. In our case it is stored in Site Assets.
+
 2. Activate user solution in the Solutions Gallery and also activate solution feature on Web scope.
 
 Code snippet:
@@ -123,8 +125,11 @@ using (WorkflowTemplateDeployer workflowDeployer = new WorkflowTemplateDeployer(
 # Remove Workflow #
 Description:
 In order to uninstall workflow template mandatory info is Solution id and Package name. Removing is two step operation:
+
 1. Deactivating user solution in the Solution Gallery.
+
 2. Remove package file from the template library.
+
 
 Code snippet:
 ```C#
