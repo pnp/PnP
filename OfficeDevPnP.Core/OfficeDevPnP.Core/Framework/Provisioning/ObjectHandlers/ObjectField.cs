@@ -92,6 +92,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             var existingFields = web.Fields;
+            web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
             web.Context.ExecuteQueryRetry();
 
@@ -100,6 +101,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!BuiltInFieldId.Contains(field.Id))
                 {
+                    XDocument document = XDocument.Parse(field.SchemaXml);
+
+                    // Check if the field contains a reference to a list. If by Guid, rewrite the value of the attribute to use web relative paths
+                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+                    if (!string.IsNullOrEmpty(listIdentifier))
+                    {
+                        var listGuid = Guid.Empty;
+                        if (Guid.TryParse(listIdentifier, out listGuid))
+                        {
+                            var list = web.Lists.GetById(listGuid);
+                            web.Context.Load(list, l => l.RootFolder.ServerRelativeUrl);
+                            web.Context.ExecuteQueryRetry();
+
+                            var listUrl = list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length).TrimStart('/');
+                            document.Root.Attribute("List").SetValue(listUrl);
+                            field.SchemaXml = document.ToString();
+                        }
+                    }
                     template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
                 }
             }
@@ -134,3 +153,4 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
     }
 }
+
