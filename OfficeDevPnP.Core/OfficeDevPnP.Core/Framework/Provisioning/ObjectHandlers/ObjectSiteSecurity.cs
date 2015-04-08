@@ -22,15 +22,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
 
+
             web.Context.Load(ownerGroup, o => o.Users);
             web.Context.Load(memberGroup, o => o.Users);
             web.Context.Load(visitorGroup, o => o.Users);
 
             web.Context.ExecuteQueryRetry();
 
-            AddUserToGroup(web, ownerGroup, siteSecurity.AdditionalOwners);
-            AddUserToGroup(web, memberGroup, siteSecurity.AdditionalMembers);
-            AddUserToGroup(web, visitorGroup, siteSecurity.AdditionalVisitors);
+            if (!ownerGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, ownerGroup, siteSecurity.AdditionalOwners);
+            }
+            if (!memberGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, memberGroup, siteSecurity.AdditionalMembers);
+            }
+            if (!visitorGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, visitorGroup, siteSecurity.AdditionalVisitors);
+            }
 
             foreach (var admin in siteSecurity.AdditionalAdministrators)
             {
@@ -44,17 +54,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)
         {
-            //web.Context.Load(group, o => o.Users);
-
-            if (group.Users.Any())
+            foreach (var user in members)
             {
-                foreach (var user in members)
-                {
-                    var existingUser = web.EnsureUser(user.Name);
-                    group.Users.AddUser(existingUser);
-                }
-                web.Context.ExecuteQueryRetry();
+                var existingUser = web.EnsureUser(user.Name);
+                group.Users.AddUser(existingUser);
             }
+            web.Context.ExecuteQueryRetry();
+
         }
 
 
@@ -94,21 +100,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var member in ownerGroup.Users)
                 {
-                    owners.Add(new User() {Name = member.LoginName});
+                    owners.Add(new User() { Name = member.LoginName });
                 }
             }
             if (!memberGroup.ServerObjectIsNull.Value)
             {
                 foreach (var member in memberGroup.Users)
                 {
-                    members.Add(new User() {Name = member.LoginName});
+                    members.Add(new User() { Name = member.LoginName });
                 }
             }
             if (!visitorGroup.ServerObjectIsNull.Value)
             {
                 foreach (var member in visitorGroup.Users)
                 {
-                    visitors.Add(new User() {Name = member.LoginName});
+                    visitors.Add(new User() { Name = member.LoginName });
                 }
             }
             var siteSecurity = new SiteSecurity();
@@ -126,7 +132,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var admins = new List<User>();
             foreach (var member in allUsers)
             {
-                    admins.Add(new User() {Name = member.LoginName});
+                admins.Add(new User() { Name = member.LoginName });
             }
             siteSecurity.AdditionalAdministrators.AddRange(admins);
 
