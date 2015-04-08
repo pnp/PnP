@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
@@ -39,7 +40,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.Title = list.Title;
                     listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
                     listCreate.Url = parser.Parse(list.Url);
-
+                    listCreate.TemplateFeatureId = list.TemplateFeatureID;
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
@@ -52,11 +53,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     createdList.Update();
 
-
+                    web.Context.Load(createdList.Views);
+                    web.Context.Load(createdList, l => l.Id);
+                    web.Context.Load(createdList.ContentTypes);
                     web.Context.ExecuteQueryRetry();
 
-
-                    // TODO: handle 'removedefaultcontenttype'
+                    if (list.RemoveExistingContentTypes)
+                    {
+                        while (createdList.ContentTypes.Any())
+                        {
+                            createdList.ContentTypes[0].DeleteObject();
+                        }
+                        web.Context.ExecuteQueryRetry();
+                    }
 
                     foreach (var ctBinding in list.ContentTypeBindings)
                     {
@@ -66,6 +75,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeID);
                         }
                     }
+                    // Any postponed fields that refer to this list? 
+                    ParsePostponedFields(template.SiteFields, createdList.Id, parser.Parse(list.Url), web, parser);
 
                     if (list.Fields.Any())
                     {
@@ -97,9 +108,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
 
+                    if(list.Views.Any() && list.RemoveExistingViews)
+                    {
+                        while (createdList.Views.Any())
+                        {
+                            createdList.Views[0].DeleteObject();
+                        }
+                        web.Context.ExecuteQueryRetry();
+                    }
+
                     foreach (var view in list.Views)
                     {
-
                         var viewDoc = XDocument.Parse(view.SchemaXml);
 
                         var displayNameXml = viewDoc.Root.Attribute("DisplayName");
@@ -162,17 +181,72 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
 
-
                 }
 
             }
         }
 
+        private void ParsePostponedFields(List<Model.Field> fields, Guid listId, string listUrl, Web web, TokenParser parser)
+        {
+            foreach (var field in fields)
+            {
+                XDocument document = XDocument.Parse(field.SchemaXml);
+                var fieldId = document.Root.Attribute("ID").Value;
+
+
+                var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+
+                if (listIdentifier != null)
+                {
+                    var createField = false;
+                    var listGuid = Guid.Empty;
+                    if (Guid.TryParse(listIdentifier, out listGuid))
+                    {
+                        if (listGuid.Equals(listId))
+                        {
+                            createField = true;
+                        }
+                    }
+                    else
+                    {
+                        if (listIdentifier.Equals(listUrl, StringComparison.OrdinalIgnoreCase))
+                        {
+                            createField = true;
+                            document.Root.Attribute("List").SetValue(listId);
+                        }
+                    }
+                    if (createField)
+                    {
+                        var fieldGuid = Guid.Parse(fieldId);
+                        var existingFieldIds = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldGuid));
+                        web.Context.ExecuteQuery();
+
+                        if (!existingFieldIds.Any())
+                        {
+                            var fieldXml = parser.Parse(document.ToString());
+                            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                            web.Context.ExecuteQueryRetry();
+                        }
+                    }
+                }
+            }
+        }
+
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
+            var propertyLoadRequired = false;
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
+                propertyLoadRequired = true;
+            }
+            if (!web.IsPropertyAvailable("Url"))
+            {
+                web.Context.Load(web, w => w.Url);
+                propertyLoadRequired = true;
+            }
+            if (propertyLoadRequired)
+            {
                 web.Context.ExecuteQueryRetry();
             }
 
@@ -208,7 +282,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
                         list.ContentTypesEnabled = item.ContentTypesEnabled;
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
-
+                        list.TemplateFeatureID = item.TemplateFeatureId;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)
@@ -220,14 +294,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 // Add the parent to the list of content types
                                 if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
                                 {
-                                    list.ContentTypeBindings.Add(new ContentTypeBinding() {ContentTypeID = ct.Parent.StringId, Default = count == 0 ? true : false});
+                                    list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.Parent.StringId, Default = count == 0 ? true : false });
                                 }
                             }
                             else
                             {
-                                list.ContentTypeBindings.Add(new ContentTypeBinding() {ContentTypeID = ct.StringId, Default = count == 0});
+                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.StringId, Default = count == 0 });
                             }
-                         
+
                             web.Context.Load(ct.FieldLinks);
                             web.Context.ExecuteQueryRetry();
                             foreach (var fieldLink in ct.FieldLinks)
