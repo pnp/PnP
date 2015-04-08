@@ -810,7 +810,9 @@ namespace Microsoft.SharePoint.Client
                 }
 
                 var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-                var web = folder.ListItemAllFields.ParentList.ParentWeb;
+                var context = folder.Context as ClientContext;
+
+                var web = context.Web;
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
