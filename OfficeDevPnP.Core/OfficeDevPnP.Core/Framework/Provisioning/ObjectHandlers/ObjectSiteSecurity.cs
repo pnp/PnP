@@ -44,7 +44,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)
         {
-            web.Context.Load(group, o => o.Users);
+            //web.Context.Load(group, o => o.Users);
 
             if (group.Users.Any())
             {
@@ -70,45 +70,63 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
+            web.Context.ExecuteQueryRetry();
 
-            web.Context.Load(ownerGroup, o => o.Users);
-            web.Context.Load(memberGroup, o => o.Users);
-            web.Context.Load(visitorGroup, o => o.Users);
+            if (!ownerGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(ownerGroup, o => o.Users);
+            }
+            if (!memberGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(memberGroup, o => o.Users);
+            }
+            if (!visitorGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(visitorGroup, o => o.Users);
 
+            }
             web.Context.ExecuteQueryRetry();
 
             var owners = new List<User>();
             var members = new List<User>();
             var visitors = new List<User>();
-
-            foreach (var member in ownerGroup.Users)
+            if (!ownerGroup.ServerObjectIsNull.Value)
             {
-                owners.Add(new User() {Name = member.LoginName});
+                foreach (var member in ownerGroup.Users)
+                {
+                    owners.Add(new User() {Name = member.LoginName});
+                }
             }
-            foreach (var member in memberGroup.Users)
+            if (!memberGroup.ServerObjectIsNull.Value)
             {
-                members.Add(new User() { Name = member.LoginName });
+                foreach (var member in memberGroup.Users)
+                {
+                    members.Add(new User() {Name = member.LoginName});
+                }
             }
-            foreach (var member in visitorGroup.Users)
+            if (!visitorGroup.ServerObjectIsNull.Value)
             {
-                visitors.Add(new User() { Name = member.LoginName });
+                foreach (var member in visitorGroup.Users)
+                {
+                    visitors.Add(new User() {Name = member.LoginName});
+                }
             }
             var siteSecurity = new SiteSecurity();
             siteSecurity.AdditionalOwners.AddRange(owners);
             siteSecurity.AdditionalMembers.AddRange(members);
             siteSecurity.AdditionalVisitors.AddRange(visitors);
 
-            var allUsers = web.SiteUsers;
-            web.Context.Load(allUsers, users => users.Include(u => u.LoginName, u => u.IsSiteAdmin));
+            var query = from user in web.SiteUsers
+                        where user.IsSiteAdmin
+                        select user;
+            var allUsers = web.Context.LoadQuery(query);
+
             web.Context.ExecuteQueryRetry();
 
             var admins = new List<User>();
             foreach (var member in allUsers)
             {
-                if (member.IsSiteAdmin)
-                {
                     admins.Add(new User() {Name = member.LoginName});
-                }
             }
             siteSecurity.AdditionalAdministrators.AddRange(admins);
 
