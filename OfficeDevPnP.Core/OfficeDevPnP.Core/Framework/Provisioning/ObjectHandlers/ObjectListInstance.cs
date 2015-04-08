@@ -53,11 +53,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     createdList.Update();
 
                     web.Context.Load(createdList.Views);
-
+                    web.Context.Load(createdList.ContentTypes);
                     web.Context.ExecuteQueryRetry();
 
 
-                    // TODO: handle 'removedefaultcontenttype'
+                   
+                    if (list.RemoveExistingContentTypes)
+                    {
+                        while (createdList.ContentTypes.Any())
+                        {
+                            createdList.ContentTypes[0].DeleteObject();
+                        }
+                        web.Context.ExecuteQueryRetry();
+                    }
 
                     foreach (var ctBinding in list.ContentTypeBindings)
                     {
@@ -180,9 +188,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
+            var propertyLoadRequired = false;
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 web.Context.Load(web, w => w.ServerRelativeUrl);
+                propertyLoadRequired = true;
+            }
+            if (!web.IsPropertyAvailable("Url"))
+            {
+                web.Context.Load(web, w => w.Url);
+                propertyLoadRequired = true;
+            }
+            if (propertyLoadRequired)
+            {
                 web.Context.ExecuteQueryRetry();
             }
 
@@ -218,7 +236,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
                         list.ContentTypesEnabled = item.ContentTypesEnabled;
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
-
+                        list.TemplateFeatureID = item.TemplateFeatureId;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)

@@ -6,7 +6,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that specifies the properties of the new list.
     /// </summary>
-    public class ListInstance : IEquatable<ListInstance>
+    public partial class ListInstance : IEquatable<ListInstance>
     {
         #region Constructors
 
@@ -91,12 +91,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
         /// </summary>
         public int MaxVersionLimit { get; set; }
-
+   
         /// <summary>
-        /// Gets or sets whether to remove the default content type from the list
+        /// Gets or sets whether existing content types should be removed
         /// </summary>
-        public bool RemoveDefaultContentType { get; set; }
-  
+        public bool RemoveExistingContentTypes { get; set; }
         /// <summary>
         /// Gets or sets whether content types are enabled
         /// </summary>
@@ -136,13 +135,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._fieldRefs; }
             private set { this._fieldRefs = value; }
         }
+
+        public Guid TemplateFeatureID { get; set; }
+
         #endregion
 
         #region Comparison code
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}",
                 this.ContentTypesEnabled,
                 this.Description,
                 this.DocumentTemplate,
@@ -151,10 +153,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.MaxVersionLimit,
                 this.MinorVersionLimit,
                 this.OnQuickLaunch,
-                this.RemoveDefaultContentType,
+                this.RemoveExistingContentTypes,
                 this.TemplateType,
                 this.Title,
-                this.Url).GetHashCode());
+                this.Url,
+                this.TemplateFeatureID).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -176,10 +179,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.MaxVersionLimit == other.MaxVersionLimit &&
                 this.MinorVersionLimit == other.MinorVersionLimit &&
                 this.OnQuickLaunch == other.OnQuickLaunch &&
-                this.RemoveDefaultContentType == other.RemoveDefaultContentType &&
+                this.RemoveExistingContentTypes == other.RemoveExistingContentTypes &&
                 this.TemplateType == other.TemplateType &&
                 this.Title == other.Title &&
-                this.Url == other.Url);
+                this.Url == other.Url &&
+                this.TemplateFeatureID == other.TemplateFeatureID);
         }
 
         #endregion
