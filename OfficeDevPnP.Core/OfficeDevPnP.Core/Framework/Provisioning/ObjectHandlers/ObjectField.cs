@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Web.Services.Discovery;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectField : ObjectHandlerBase
     {
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
 
@@ -37,13 +42,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var fieldXml = parser.Parse(field.SchemaXml);
-                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                    web.Context.ExecuteQueryRetry();
+                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+
+                    var createField = false;
+                    if (listIdentifier != null)
+                    {
+                        // Check if the list is already there
+                        var listGuid = Guid.Empty;
+                        if (Guid.TryParse(listIdentifier, out listGuid))
+                        {
+                            // Check if list exists
+                            if (web.ListExists(listGuid))
+                            {
+                                createField = true;
+                            }
+                        }
+                        else
+                        {
+                            var existingList = web.GetListByUrl(listIdentifier);
+
+                            if (existingList != null)
+                            {
+                                createField = true;
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        createField = true;
+                    }
+
+                    if(createField)
+                    {
+                        var fieldXml = parser.Parse(field.SchemaXml);
+                        web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                        web.Context.ExecuteQueryRetry();
+                    }
                 }
             }
         }
-
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
