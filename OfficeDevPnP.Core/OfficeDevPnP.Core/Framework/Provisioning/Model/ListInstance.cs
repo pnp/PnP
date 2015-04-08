@@ -96,6 +96,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets whether existing content types should be removed
         /// </summary>
         public bool RemoveExistingContentTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether existing views should be removed
+        /// </summary>
+        public bool RemoveExistingViews { get; set; }
+
         /// <summary>
         /// Gets or sets whether content types are enabled
         /// </summary>
@@ -144,7 +150,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}",
                 this.ContentTypesEnabled,
                 this.Description,
                 this.DocumentTemplate,
@@ -157,7 +163,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.TemplateType,
                 this.Title,
                 this.Url,
-                this.TemplateFeatureID).GetHashCode());
+                this.TemplateFeatureID,
+                this.RemoveExistingViews).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -183,7 +190,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.TemplateType == other.TemplateType &&
                 this.Title == other.Title &&
                 this.Url == other.Url &&
-                this.TemplateFeatureID == other.TemplateFeatureID);
+                this.TemplateFeatureID == other.TemplateFeatureID &&
+                this.RemoveExistingViews == other.RemoveExistingViews);
         }
 
         #endregion
