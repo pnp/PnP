@@ -55,8 +55,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectContentType().CreateEntities(ctx.Web, template, null);
+                template = new ObjectContentType().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.ContentTypes.Any());
                 Assert.IsInstanceOfType(template.ContentTypes, typeof(List<ContentType>));
