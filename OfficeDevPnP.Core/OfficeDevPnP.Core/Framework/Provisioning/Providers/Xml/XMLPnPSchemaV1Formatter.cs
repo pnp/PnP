@@ -1,26 +1,68 @@
-﻿using System;
+﻿using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
-using System.Xml.Serialization;
-using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
-    public static partial class SharePointProvisioningTemplateExtensions
+    internal class XMLPnPSchemaV1Formatter :
+        IXMLSchemaFormatter, ITemplateFormatter
     {
-        public static SharePointProvisioningTemplate ToXml(this ProvisioningTemplate template)
+        string IXMLSchemaFormatter.NamespaceUri
+        {
+            get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03); }
+        }
+
+        string IXMLSchemaFormatter.NamespacePrefix
+        {
+            get { return (XMLConstants.PROVISIONING_SCHEMA_PREFIX); }
+        }
+
+        public bool IsValid(Stream template)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
-            SharePointProvisioningTemplate result = new SharePointProvisioningTemplate();
+            // Load the template into an XDocument
+            XDocument xml = XDocument.Load(template);
+
+            // Load the XSD embedded resource
+            Stream stream = typeof(XMLPnPSchemaV2Formatter)
+                .Assembly
+                .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
+
+            // Prepare the XML Schema Set
+            XmlSchemaSet schemas = new XmlSchemaSet();
+            schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03,
+                new XmlTextReader(stream));
+
+            Boolean result = true;
+            xml.Validate(schemas, (o, e) =>
+            {
+                result = false;
+            });
+
+            return (result);
+        }
+
+        Stream ITemplateFormatter.ToFormattedTemplate(ProvisioningTemplate template)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            V1.SharePointProvisioningTemplate result = new V1.SharePointProvisioningTemplate();
 
             // Translate basic properties
             result.ID = template.ID;
@@ -32,7 +74,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new PropertyBagEntry
+                     select new V1.PropertyBagEntry
                      {
                          Key = bag.Key,
                          Value = bag.Value,
@@ -46,13 +88,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Security configuration, if any
             if (template.Security != null)
             {
-                result.Security = new SharePointProvisioningTemplateSecurity();
+                result.Security = new V1.SharePointProvisioningTemplateSecurity();
 
                 if (template.Security.AdditionalAdministrators != null && template.Security.AdditionalAdministrators.Count > 0)
                 {
                     result.Security.AdditionalAdministrators =
                         (from user in template.Security.AdditionalAdministrators
-                         select new User
+                         select new V1.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -66,7 +108,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalOwners =
                         (from user in template.Security.AdditionalOwners
-                         select new User
+                         select new V1.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -80,7 +122,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalMembers =
                         (from user in template.Security.AdditionalMembers
-                         select new User
+                         select new V1.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -94,7 +136,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalVisitors =
                         (from user in template.Security.AdditionalVisitors
-                         select new User
+                         select new V1.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -108,7 +150,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Site Columns (Fields), if any
             if (template.SiteFields != null && template.SiteFields.Count > 0)
             {
-                result.SiteFields = new SharePointProvisioningTemplateSiteFields
+                result.SiteFields = new V1.SharePointProvisioningTemplateSiteFields
                 {
                     Any =
                         (from field in template.SiteFields
@@ -123,7 +165,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ContentTypes, if any
             if (template.ContentTypes != null && template.ContentTypes.Count > 0)
             {
-                result.ContentTypes = new SharePointProvisioningTemplateContentTypes
+                result.ContentTypes = new V1.SharePointProvisioningTemplateContentTypes
                 {
                     Any =
                         (from contentType in template.ContentTypes
@@ -140,7 +182,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Lists =
                     (from list in template.Lists
-                     select new ListInstance
+                     select new V1.ListInstance
                      {
                          ContentTypesEnabled = list.ContentTypesEnabled,
                          Description = list.Description,
@@ -156,20 +198,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Url = list.Url,
                          ContentTypeBindings = list.ContentTypeBindings.Count > 0 ?
                             (from contentTypeBinding in list.ContentTypeBindings
-                             select new ContentTypeBinding
+                             select new V1.ContentTypeBinding
                              {
                                  ContentTypeID = contentTypeBinding.ContentTypeID,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
-                         new ListInstanceViews
+                         new V1.ListInstanceViews
                          {
                              Any =
                                 (from view in list.Views
                                  select view.SchemaXml.ToXmlElement()).ToArray(),
                          } : null,
                          Fields = list.Fields.Count > 0 ?
-                         new ListInstanceFields
+                         new V1.ListInstanceFields
                          {
                              Any =
                              (from field in list.Fields
@@ -177,7 +219,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          } : null,
                          FieldRefs = list.FieldRefs.Count > 0 ?
                          (from fieldRef in list.FieldRefs
-                          select new FieldRef
+                          select new V1.FieldRef
                           {
                               ID = fieldRef.ID.ToString(),
                           }).ToArray() : null,
@@ -191,7 +233,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Features, if any
             if (template.Features != null)
             {
-                result.Features = new SharePointProvisioningTemplateFeatures();
+                result.Features = new V1.SharePointProvisioningTemplateFeatures();
 
                 // TODO: This nullability check could be useless, because
                 // the SiteFeatures property is initialized in the Features
@@ -200,7 +242,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Features.SiteFeatures =
                         (from feature in template.Features.SiteFeatures
-                         select new Feature
+                         select new V1.Feature
                          {
                              ID = feature.ID.ToString(),
                              Deactivate = feature.Deactivate,
@@ -218,7 +260,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Features.WebFeatures =
                         (from feature in template.Features.WebFeatures
-                         select new Feature
+                         select new V1.Feature
                          {
                              ID = feature.ID.ToString(),
                              Deactivate = feature.Deactivate,
@@ -233,13 +275,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate CustomActions, if any
             if (template.CustomActions != null)
             {
-                result.CustomActions = new SharePointProvisioningTemplateCustomActions();
+                result.CustomActions = new V1.SharePointProvisioningTemplateCustomActions();
 
                 if (template.CustomActions.SiteCustomActions != null && template.CustomActions.SiteCustomActions.Count > 0)
                 {
                     result.CustomActions.SiteCustomActions =
                         (from customAction in template.CustomActions.SiteCustomActions
-                         select new CustomAction
+                         select new V1.CustomAction
                          {
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
@@ -266,7 +308,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.CustomActions.WebCustomActions =
                         (from customAction in template.CustomActions.WebCustomActions
-                         select new CustomAction
+                         select new V1.CustomAction
                          {
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
@@ -295,7 +337,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Files =
                     (from file in template.Files
-                     select new File
+                     select new V1.File
                      {
                          Overwrite = file.Overwrite,
                          Src = file.Src,
@@ -310,7 +352,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
             {
-                result.ComposedLook = new ComposedLook
+                result.ComposedLook = new V1.ComposedLook
                 {
                     AlternateCSS = template.ComposedLook.AlternateCSS,
                     BackgroundFile = template.ComposedLook.BackgroundFile,
@@ -329,7 +371,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Providers =
                     (from provider in template.Providers
-                     select new Provider
+                     select new V1.Provider
                      {
                          Assembly = provider.Assembly,
                          Configuration = provider.Configuration != null ? provider.Configuration.ToXmlNode() : null,
@@ -342,35 +384,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.Providers = null;
             }
 
-            return (result);
+            var output = XMLSerializer.SerializeToStream<V1.SharePointProvisioningTemplate>(result);
+            output.Position = 0;
+            return (output);
         }
 
-        public static ProvisioningTemplate ToProvisioningTemplate(this SharePointProvisioningTemplate template)
+        public ProvisioningTemplate ToProvisioningTemplate(Stream template)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
+            // Crate a copy of the source stream
+            MemoryStream sourceStream = new MemoryStream();
+            template.CopyTo(sourceStream);
+            sourceStream.Position = 0;
+
             // Check the provided template against the XML schema
-            if (!template.IsValidSharePointProvisioningTemplate())
+            if (!this.IsValid(sourceStream))
             {
                 // TODO: Use resource file
                 throw new ApplicationException("The provided template is not valid!");
             }
 
+            sourceStream.Position = 0; 
+            XDocument xml = XDocument.Load(sourceStream);
+            V1.SharePointProvisioningTemplate source = XMLSerializer.Deserialize<V1.SharePointProvisioningTemplate>(xml);
+
             ProvisioningTemplate result = new ProvisioningTemplate();
 
             // Translate basic properties
-            result.ID = template.ID;
-            result.Version = Double.Parse(!String.IsNullOrEmpty(template.Version) ? template.Version : "0", new CultureInfo("en-US"));
-            result.SitePolicy = template.SitePolicy;
+            result.ID = source.ID;
+            result.Version = Double.Parse(!String.IsNullOrEmpty(source.Version) ? source.Version : "0", new CultureInfo("en-US"));
+            result.SitePolicy = source.SitePolicy;
 
             // Translate PropertyBagEntries, if any
-            if (template.PropertyBagEntries != null)
+            if (source.PropertyBagEntries != null)
             {
                 result.PropertyBagEntries.AddRange(
-                    from bag in template.PropertyBagEntries
+                    from bag in source.PropertyBagEntries
                     select new Model.PropertyBagEntry
                     {
                         Key = bag.Key,
@@ -379,39 +432,39 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate Security configuration, if any
-            if (template.Security != null)
+            if (source.Security != null)
             {
-                if (template.Security.AdditionalAdministrators != null)
+                if (source.Security.AdditionalAdministrators != null)
                 {
                     result.Security.AdditionalAdministrators.AddRange(
-                    from user in template.Security.AdditionalAdministrators
+                    from user in source.Security.AdditionalAdministrators
                     select new Model.User
                     {
                         Name = user.Name,
                     });
                 }
-                if (template.Security.AdditionalOwners != null)
+                if (source.Security.AdditionalOwners != null)
                 {
                     result.Security.AdditionalOwners.AddRange(
-                    from user in template.Security.AdditionalOwners
+                    from user in source.Security.AdditionalOwners
                     select new Model.User
                     {
                         Name = user.Name,
                     });
                 }
-                if (template.Security.AdditionalMembers != null)
+                if (source.Security.AdditionalMembers != null)
                 {
                     result.Security.AdditionalMembers.AddRange(
-                    from user in template.Security.AdditionalMembers
+                    from user in source.Security.AdditionalMembers
                     select new Model.User
                     {
                         Name = user.Name,
                     });
                 }
-                if (template.Security.AdditionalVisitors != null)
+                if (source.Security.AdditionalVisitors != null)
                 {
                     result.Security.AdditionalVisitors.AddRange(
-                    from user in template.Security.AdditionalVisitors
+                    from user in source.Security.AdditionalVisitors
                     select new Model.User
                     {
                         Name = user.Name,
@@ -420,10 +473,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate Site Columns (Fields), if any
-            if ((template.SiteFields != null) && (template.SiteFields.Any != null))
+            if ((source.SiteFields != null) && (source.SiteFields.Any != null))
             {
                 result.SiteFields.AddRange(
-                    from field in template.SiteFields.Any
+                    from field in source.SiteFields.Any
                     select new Field
                     {
                         SchemaXml = field.OuterXml,
@@ -431,10 +484,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate ContentTypes, if any
-            if ((template.ContentTypes != null) && (template.ContentTypes.Any != null))
+            if ((source.ContentTypes != null) && (source.ContentTypes.Any != null))
             {
                 result.ContentTypes.AddRange(
-                    from contentType in template.ContentTypes.Any
+                    from contentType in source.ContentTypes.Any
                     select new ContentType
                     {
                         SchemaXml = contentType.OuterXml,
@@ -442,10 +495,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate Lists Instances, if any
-            if (template.Lists != null)
+            if (source.Lists != null)
             {
                 result.Lists.AddRange(
-                    from list in template.Lists
+                    from list in source.Lists
                     select new Model.ListInstance(
                         (list.ContentTypeBindings != null ?
                                 (from contentTypeBinding in list.ContentTypeBindings
@@ -490,22 +543,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate Features, if any
-            if (template.Features != null)
+            if (source.Features != null)
             {
-                if (result.Features.SiteFeatures != null && template.Features.SiteFeatures != null)
+                if (result.Features.SiteFeatures != null && source.Features.SiteFeatures != null)
                 {
                     result.Features.SiteFeatures.AddRange(
-                        from feature in template.Features.SiteFeatures
+                        from feature in source.Features.SiteFeatures
                         select new Model.Feature
                         {
                             ID = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
-                if (result.Features.WebFeatures != null && template.Features.WebFeatures != null)
+                if (result.Features.WebFeatures != null && source.Features.WebFeatures != null)
                 {
                     result.Features.WebFeatures.AddRange(
-                        from feature in template.Features.WebFeatures
+                        from feature in source.Features.WebFeatures
                         select new Model.Feature
                         {
                             ID = new Guid(feature.ID),
@@ -515,12 +568,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate CustomActions, if any
-            if (template.CustomActions != null)
+            if (source.CustomActions != null)
             {
-                if (result.CustomActions.SiteCustomActions != null && template.CustomActions.SiteCustomActions != null)
+                if (result.CustomActions.SiteCustomActions != null && source.CustomActions.SiteCustomActions != null)
                 {
                     result.CustomActions.SiteCustomActions.AddRange(
-                        from customAction in template.CustomActions.SiteCustomActions
+                        from customAction in source.CustomActions.SiteCustomActions
                         select new Model.CustomAction
                         {
                             Description = customAction.Description,
@@ -537,10 +590,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             Url = customAction.Url,
                         });
                 }
-                if (result.CustomActions.WebCustomActions != null && template.CustomActions.WebCustomActions != null)
+                if (result.CustomActions.WebCustomActions != null && source.CustomActions.WebCustomActions != null)
                 {
                     result.CustomActions.WebCustomActions.AddRange(
-                        from customAction in template.CustomActions.WebCustomActions
+                        from customAction in source.CustomActions.WebCustomActions
                         select new Model.CustomAction
                         {
                             Description = customAction.Description,
@@ -560,10 +613,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate Files, if any
-            if (template.Files != null)
+            if (source.Files != null)
             {
                 result.Files.AddRange(
-                    from file in template.Files
+                    from file in source.Files
                     select new Model.File
                     {
                         Overwrite = file.Overwrite,
@@ -573,23 +626,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate ComposedLook, if any
-            if (template.ComposedLook != null)
+            if (source.ComposedLook != null)
             {
-                result.ComposedLook.AlternateCSS = template.ComposedLook.AlternateCSS;
-                result.ComposedLook.BackgroundFile = template.ComposedLook.BackgroundFile;
-                result.ComposedLook.ColorFile = template.ComposedLook.ColorFile;
-                result.ComposedLook.FontFile = template.ComposedLook.FontFile;
-                result.ComposedLook.MasterPage = template.ComposedLook.MasterPage;
-                result.ComposedLook.Name = template.ComposedLook.Name;
-                result.ComposedLook.SiteLogo = template.ComposedLook.SiteLogo;
-                result.ComposedLook.Version = template.ComposedLook.Version;
+                result.ComposedLook.AlternateCSS = source.ComposedLook.AlternateCSS;
+                result.ComposedLook.BackgroundFile = source.ComposedLook.BackgroundFile;
+                result.ComposedLook.ColorFile = source.ComposedLook.ColorFile;
+                result.ComposedLook.FontFile = source.ComposedLook.FontFile;
+                result.ComposedLook.MasterPage = source.ComposedLook.MasterPage;
+                result.ComposedLook.Name = source.ComposedLook.Name;
+                result.ComposedLook.SiteLogo = source.ComposedLook.SiteLogo;
+                result.ComposedLook.Version = source.ComposedLook.Version;
             }
 
             // Translate Providers, if any
-            if (template.Providers != null)
+            if (source.Providers != null)
             {
                 result.Providers.AddRange(
-                    from provider in template.Providers
+                    from provider in source.Providers
                     select new Model.Provider
                     {
                         Assembly = provider.Assembly,
@@ -601,193 +654,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             return (result);
         }
-
-        public static Boolean IsValidSharePointProvisioningTemplate(this XDocument xml)
-        {
-            if (xml == null)
-            {
-                throw new ArgumentNullException("xml");
-            }
-
-            // Load the XSD embedded resource
-            Stream stream = typeof(SharePointProvisioningTemplateExtensions)
-                .Assembly
-                .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
-
-            // Prepare the XML Schema Set
-            XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE,
-                new XmlTextReader(stream));
-
-            Boolean result = true;
-            xml.Validate(schemas, (o, e) =>
-            {
-                result = false;
-            });
-
-            return (result);
-        }
-
-        public static Boolean IsValidSharePointProvisioningTemplate(this SharePointProvisioningTemplate template)
-        {
-            if (template == null)
-            {
-                throw new ArgumentNullException("template");
-            }
-
-            // Serialize the template into an XML string
-            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template);
-            XDocument doc = XDocument.Parse(xml);
-
-            return (doc.IsValidSharePointProvisioningTemplate());
-        }
-
-        public static String ToXmlString(this ProvisioningTemplate template)
-        {
-            XmlSerializerNamespaces ns =
-                new XmlSerializerNamespaces();
-            ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
-                XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
-
-            String xml = XMLSerializer.Serialize<SharePointProvisioningTemplate>(template.ToXml(), ns);
-            return (xml);
-        }
-
-        public static Stream ToXmlStream(this ProvisioningTemplate template)
-        {
-            XmlSerializerNamespaces ns =
-                new XmlSerializerNamespaces();
-            ns.Add(XMLConstants.PROVISIONING_SCHEMA_PREFIX,
-                XMLConstants.PROVISIONING_SCHEMA_NAMESPACE);
-
-            Stream stream = XMLSerializer.SerializeToStream<SharePointProvisioningTemplate>(template.ToXml(), ns);
-            return (stream);
-        }
-
-        #region Private extension methods for handling XML content
-
-        /// <summary>
-        /// Private extension method to convert an XElement into an XmlElement
-        /// </summary>
-        /// <param name="element">The XElement to convert</param>
-        /// <returns>The converted XmlElement</returns>
-        private static XmlElement ToXmlElement(this XElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            using (XmlReader reader = element.CreateReader())
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(reader);
-                return (doc.DocumentElement);
-            }
-        }
-
-        /// <summary>
-        /// Private extension method to convert an XmlElement into an XElement
-        /// </summary>
-        /// <param name="element">The XmlElement to convert</param>
-        /// <returns>The converted XElement</returns>
-        private static XElement ToXElement(this XmlElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            using (XmlReader reader = new XmlNodeReader(element))
-            {
-                XElement result = XElement.Load(reader);
-                return (result);
-            }
-        }
-
-        /// <summary>
-        /// Private extension method to convert a String into an XElement
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns>The converted XElement</returns>
-        private static XElement ToXElement(this String xml)
-        {
-            if (xml == null)
-            {
-                throw new ArgumentNullException("xml");
-            }
-
-            XElement element = XElement.Parse(xml);
-            return (element);
-        }
-
-        /// <summary>
-        /// Private extension method to convert a String into an XmlElement
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns>The converted XmlElement</returns>
-        private static XmlElement ToXmlElement(this String xml)
-        {
-            if (xml == null)
-            {
-                throw new ArgumentNullException("xml");
-            }
-
-            XElement element = XElement.Parse(xml);
-            return (element.ToXmlElement());
-        }
-
-        /// <summary>
-        /// Private extension method to convert a String into an XmlNode
-        /// </summary>
-        /// <param name="xml"></param>
-        /// <returns>The converted XmlNode</returns>
-        private static XmlNode ToXmlNode(this String xml)
-        {
-            if (String.IsNullOrEmpty(xml))
-            {
-                throw new ArgumentException("xml");
-            }
-
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(xml);
-                return (doc.DocumentElement);
-            }
-            catch (XmlException)
-            {
-                XmlDocument doc = new XmlDocument();
-                return (doc.CreateCDataSection(xml));
-            }
-        }
-
-        private static String ToProviderConfiguration(this XmlNode xml)
-        {
-            switch (xml.NodeType)
-            {
-                case XmlNodeType.CDATA:
-                    return (((XmlCDataSection)xml).InnerText);
-                default:
-                    return (xml.OuterXml);
-            }
-        }
-
-        private static XmlElement FixupElementNamespace(this XmlElement element)
-        {
-            if (element == null)
-            {
-                throw new ArgumentNullException("element");
-            }
-
-            XElement xElement = XElement.Parse(element.OuterXml);
-            XElement cleanedElement = new XElement(xElement.Name.LocalName,
-                from a in xElement.Attributes()
-                where a.IsNamespaceDeclaration == false
-                select a);
-            return (cleanedElement.ToXmlElement());
-        }
-
-        #endregion
     }
 }
+

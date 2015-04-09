@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
@@ -14,7 +15,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
     public class DomainModelTests
     {
         private string _provisioningTemplatePath1 = string.Empty;
+        private string _provisioningTemplatePath1NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
         private string _provisioningTemplatePath2 = string.Empty;
+        private string _provisioningTemplatePath2NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
+        private string _provisioningTemplatePath3 = string.Empty;
+        private string _provisioningTemplatePath3NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
+        private string _provisioningTemplatePath4 = string.Empty;
+        private string _provisioningTemplatePath4NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
         private const string TEST_CATEGORY = "Framework Provisioning Domain Model";
 
         [TestInitialize()]
@@ -29,42 +36,43 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         public void CanDeserializeXMLToDomainObject1()
         {
             this.GetProvisioningTemplate();
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            Assert.IsNotNull(_pt);
+            
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath1, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
+                Assert.IsNotNull(_pt);
+            }
         }
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
         public void CanSerializeDomainObjectToXML1()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            var _spt = _pt.ToXml();
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath1, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
 
-            Assert.IsTrue(_spt.IsValidSharePointProvisioningTemplate());
-        }
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
 
-        [TestMethod]
-        [TestCategory(TEST_CATEGORY)]
-        public void CanSerializeDomainObjectToXMLString1()
-        {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            var _xmlString = _pt.ToXmlString();
-
-            Assert.IsTrue(!String.IsNullOrEmpty(_xmlString));
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
         }
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
         public void CanSerializeDomainObjectToXMLStream1()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            var _xmlStream = _pt.ToXmlStream();
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath1, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
 
-            Assert.IsNotNull(_xmlStream);
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsNotNull(_formattedTemplateBack);
+            }
         }
 
         [TestMethod]
@@ -72,20 +80,29 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         public void CanDeserializeXMLToDomainObject2()
         {
             this.GetProvisioningTemplate();
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath2);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            Assert.IsNotNull(_pt);
+
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath2, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
+                Assert.IsNotNull(_pt);
+            }
         }
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
         public void CanSerializeDomainObjectToXML2()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath2);
-            var _pt = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
-            var _spt = _pt.ToXml();
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath2, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
 
-            Assert.IsTrue(_spt.IsValidSharePointProvisioningTemplate());
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+
         }
 
         [TestMethod]
@@ -262,11 +279,20 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         [TestCategory(TEST_CATEGORY)]
         public void AreTemplatesEqual()
         {
-            XDocument _doc1 = XDocument.Load(this._provisioningTemplatePath1);
-            var _pt1 = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc1).ToProvisioningTemplate();
+            ProvisioningTemplate _pt1 = null;
+            ProvisioningTemplate _pt2 = null;
 
-            XDocument _doc2 = XDocument.Load(this._provisioningTemplatePath2);
-            var _pt2 = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc2).ToProvisioningTemplate();
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath1, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                _pt1 = formatter.ToProvisioningTemplate(_formattedTemplate);
+            }
+
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath2, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                _pt2 = formatter.ToProvisioningTemplate(_formattedTemplate);
+            } 
 
             Assert.IsFalse(_pt1.Equals(_pt2));
             Assert.IsTrue(_pt1.Equals(_pt1));
@@ -281,8 +307,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         /// <returns></returns>
         protected ProvisioningTemplate GetProvisioningTemplate()
         {
-            XDocument _doc = XDocument.Load(this._provisioningTemplatePath1);
-            return XMLSerializer.Deserialize<SharePointProvisioningTemplate>(_doc).ToProvisioningTemplate();
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath1, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath1NamespaceURI);
+                return (formatter.ToProvisioningTemplate(_formattedTemplate));
+            }
         }
 
         [TestMethod]

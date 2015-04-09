@@ -23,7 +23,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         #endregion
 
         #region Base class overrides
+
         public override List<ProvisioningTemplate> GetTemplates()
+        {
+            var formatter = new XMLPnPSchemaFormatter();
+            return (this.GetTemplates(formatter));
+        }
+
+        public override List<ProvisioningTemplate> GetTemplates(ITemplateFormatter formatter)
         {
             List<ProvisioningTemplate> result = new List<ProvisioningTemplate>();
 
@@ -36,10 +43,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 if (file.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Load it from a File Stream
-                    XDocument doc = XDocument.Load(new XmlTextReader(this.Connector.GetFileStream(file)));
+                    Stream stream = this.Connector.GetFileStream(file);
 
                     // And convert it into a ProvisioningTemplate
-                    ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+                    ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
 
                     // Add the template to the result
                     result.Add(provisioningTemplate);
@@ -51,16 +58,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override ProvisioningTemplate GetTemplate(string identifier)
         {
+            var formatter = new XMLPnPSchemaFormatter();
+            return (this.GetTemplate(identifier, formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string identifier, ITemplateFormatter formatter)
+        {
             if (String.IsNullOrEmpty(identifier))
             {
                 throw new ArgumentException("identifier");
             }
 
             // Get the XML document from a File Stream
-            XDocument doc = XDocument.Load(this.Connector.GetFileStream(identifier));
+            Stream stream = this.Connector.GetFileStream(identifier);
 
             // And convert it into a ProvisioningTemplate
-            ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+            ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
 
             // Store the identifier of this template, is needed for latter save operation
             this.Identifier = identifier;
@@ -70,15 +83,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override void Save(ProvisioningTemplate template)
         {
+            var formatter = new XMLPnPSchemaFormatter();
+            this.Save(template, formatter);
+        }
+
+        public override void Save(ProvisioningTemplate template, ITemplateFormatter formatter)
+        {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
-            SaveToConnector(template, this.Identifier);
+            SaveToConnector(template, this.Identifier, formatter);
         }
 
         public override void SaveAs(ProvisioningTemplate template, string identifier)
+        {
+            var formatter = new XMLPnPSchemaFormatter();
+            this.SaveAs(template, identifier, formatter);
+        }
+
+        public override void SaveAs(ProvisioningTemplate template, string identifier, ITemplateFormatter formatter)
         {
             if (template == null)
             {
@@ -90,7 +115,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ArgumentException("identifier");
             }
 
-            SaveToConnector(template, identifier);
+            SaveToConnector(template, identifier, formatter);
         }
 
         public override void Delete(string identifier)
@@ -105,18 +130,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         #endregion
 
         #region Helper methods
-        private void SaveToConnector(ProvisioningTemplate template, string identifier)
+        
+        private void SaveToConnector(ProvisioningTemplate template, string identifier, ITemplateFormatter formatter)
         {
             if (String.IsNullOrEmpty(template.ID))
             {
                 template.ID = Path.GetFileNameWithoutExtension(identifier);
             }
 
-            using (var stream = template.ToXmlStream())
+            using (var stream = formatter.ToFormattedTemplate(template))
             {
                 this.Connector.SaveFileStream(identifier, stream);
             }
         }
+
         #endregion
     }
 }
