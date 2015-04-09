@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
-    internal class XMLPnPSchemaV1Formatter :
+    internal class XMLPnPSchemaV201504Formatter :
         IXMLSchemaFormatter, ITemplateFormatter
     {
         string IXMLSchemaFormatter.NamespaceUri
         {
-            get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03); }
+            get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04); }
         }
 
         string IXMLSchemaFormatter.NamespacePrefix
@@ -37,13 +38,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XDocument xml = XDocument.Load(template);
 
             // Load the XSD embedded resource
-            Stream stream = typeof(XMLPnPSchemaV2Formatter)
+            Stream stream = typeof(XMLPnPSchemaV201504Formatter)
                 .Assembly
-                .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
+                .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-04.xsd");
 
             // Prepare the XML Schema Set
             XmlSchemaSet schemas = new XmlSchemaSet();
-            schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03,
+            schemas.Add(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04,
                 new XmlTextReader(stream));
 
             Boolean result = true;
@@ -62,11 +63,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ArgumentNullException("template");
             }
 
-            V1.SharePointProvisioningTemplate result = new V1.SharePointProvisioningTemplate();
+            V201504.SharePointProvisioningTemplate result = new V201504.SharePointProvisioningTemplate();
 
             // Translate basic properties
             result.ID = template.ID;
-            result.Version = template.Version.ToString("###0.0", new CultureInfo("en-US"));
+            result.Version = (Decimal)template.Version;
             result.SitePolicy = template.SitePolicy;
 
             // Translate PropertyBagEntries, if any
@@ -74,7 +75,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new V1.PropertyBagEntry
+                     select new V201504.PropertyBagEntry
                      {
                          Key = bag.Key,
                          Value = bag.Value,
@@ -88,13 +89,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Security configuration, if any
             if (template.Security != null)
             {
-                result.Security = new V1.SharePointProvisioningTemplateSecurity();
+                result.Security = new V201504.SharePointProvisioningTemplateSecurity();
 
                 if (template.Security.AdditionalAdministrators != null && template.Security.AdditionalAdministrators.Count > 0)
                 {
                     result.Security.AdditionalAdministrators =
                         (from user in template.Security.AdditionalAdministrators
-                         select new V1.User
+                         select new V201504.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -108,7 +109,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalOwners =
                         (from user in template.Security.AdditionalOwners
-                         select new V1.User
+                         select new V201504.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -122,7 +123,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalMembers =
                         (from user in template.Security.AdditionalMembers
-                         select new V1.User
+                         select new V201504.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -136,7 +137,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Security.AdditionalVisitors =
                         (from user in template.Security.AdditionalVisitors
-                         select new V1.User
+                         select new V201504.User
                          {
                              Name = user.Name,
                          }).ToArray();
@@ -150,7 +151,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Site Columns (Fields), if any
             if (template.SiteFields != null && template.SiteFields.Count > 0)
             {
-                result.SiteFields = new V1.SharePointProvisioningTemplateSiteFields
+                result.SiteFields = new V201504.SharePointProvisioningTemplateSiteFields
                 {
                     Any =
                         (from field in template.SiteFields
@@ -165,7 +166,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ContentTypes, if any
             if (template.ContentTypes != null && template.ContentTypes.Count > 0)
             {
-                result.ContentTypes = new V1.SharePointProvisioningTemplateContentTypes
+                result.ContentTypes = new V201504.SharePointProvisioningTemplateContentTypes
                 {
                     Any =
                         (from contentType in template.ContentTypes
@@ -182,7 +183,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Lists =
                     (from list in template.Lists
-                     select new V1.ListInstance
+                     select new V201504.ListInstance
                      {
                          ContentTypesEnabled = list.ContentTypesEnabled,
                          Description = list.Description,
@@ -192,26 +193,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          MinorVersionLimit = list.MinorVersionLimit,
                          MaxVersionLimit = list.MaxVersionLimit,
                          OnQuickLaunch = list.OnQuickLaunch,
-                         RemoveDefaultContentType = list.RemoveDefaultContentType,
+                         RemoveExistingContentTypes = list.RemoveExistingContentTypes,
+                         TemplateFeatureID = list.TemplateFeatureID != Guid.Empty ? list.TemplateFeatureID.ToString() : null,
                          TemplateType = list.TemplateType,
                          Title = list.Title,
                          Url = list.Url,
                          ContentTypeBindings = list.ContentTypeBindings.Count > 0 ?
                             (from contentTypeBinding in list.ContentTypeBindings
-                             select new V1.ContentTypeBinding
+                             select new V201504.ContentTypeBinding
                              {
                                  ContentTypeID = contentTypeBinding.ContentTypeID,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
-                         new V1.ListInstanceViews
+                         new V201504.ListInstanceViews
                          {
                              Any =
                                 (from view in list.Views
                                  select view.SchemaXml.ToXmlElement()).ToArray(),
+                             RemoveExistingViews = list.RemoveExistingViews,
                          } : null,
                          Fields = list.Fields.Count > 0 ?
-                         new V1.ListInstanceFields
+                         new V201504.ListInstanceFields
                          {
                              Any =
                              (from field in list.Fields
@@ -219,7 +222,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          } : null,
                          FieldRefs = list.FieldRefs.Count > 0 ?
                          (from fieldRef in list.FieldRefs
-                          select new V1.FieldRef
+                          select new V201504.FieldRef
                           {
                               ID = fieldRef.ID.ToString(),
                           }).ToArray() : null,
@@ -233,7 +236,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Features, if any
             if (template.Features != null)
             {
-                result.Features = new V1.SharePointProvisioningTemplateFeatures();
+                result.Features = new V201504.SharePointProvisioningTemplateFeatures();
 
                 // TODO: This nullability check could be useless, because
                 // the SiteFeatures property is initialized in the Features
@@ -242,7 +245,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Features.SiteFeatures =
                         (from feature in template.Features.SiteFeatures
-                         select new V1.Feature
+                         select new V201504.Feature
                          {
                              ID = feature.ID.ToString(),
                              Deactivate = feature.Deactivate,
@@ -260,7 +263,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.Features.WebFeatures =
                         (from feature in template.Features.WebFeatures
-                         select new V1.Feature
+                         select new V201504.Feature
                          {
                              ID = feature.ID.ToString(),
                              Deactivate = feature.Deactivate,
@@ -275,13 +278,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate CustomActions, if any
             if (template.CustomActions != null)
             {
-                result.CustomActions = new V1.SharePointProvisioningTemplateCustomActions();
+                result.CustomActions = new V201504.SharePointProvisioningTemplateCustomActions();
 
                 if (template.CustomActions.SiteCustomActions != null && template.CustomActions.SiteCustomActions.Count > 0)
                 {
                     result.CustomActions.SiteCustomActions =
                         (from customAction in template.CustomActions.SiteCustomActions
-                         select new V1.CustomAction
+                         select new V201504.CustomAction
                          {
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
@@ -308,7 +311,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     result.CustomActions.WebCustomActions =
                         (from customAction in template.CustomActions.WebCustomActions
-                         select new V1.CustomAction
+                         select new V201504.CustomAction
                          {
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
@@ -337,7 +340,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Files =
                     (from file in template.Files
-                     select new V1.File
+                     select new V201504.File
                      {
                          Overwrite = file.Overwrite,
                          Src = file.Src,
@@ -352,7 +355,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
             {
-                result.ComposedLook = new V1.ComposedLook
+                result.ComposedLook = new V201504.ComposedLook
                 {
                     AlternateCSS = template.ComposedLook.AlternateCSS,
                     BackgroundFile = template.ComposedLook.BackgroundFile,
@@ -371,7 +374,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Providers =
                     (from provider in template.Providers
-                     select new V1.Provider
+                     select new V201504.Provider
                      {
                          Assembly = provider.Assembly,
                          Configuration = provider.Configuration != null ? provider.Configuration.ToXmlNode() : null,
@@ -384,7 +387,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.Providers = null;
             }
 
-            var output = XMLSerializer.SerializeToStream<V1.SharePointProvisioningTemplate>(result);
+            XmlSerializerNamespaces ns =
+                new XmlSerializerNamespaces();
+            ns.Add(((IXMLSchemaFormatter)this).NamespacePrefix,
+                ((IXMLSchemaFormatter)this).NamespaceUri);
+
+            var output = XMLSerializer.SerializeToStream<V201504.SharePointProvisioningTemplate>(result, ns);
             output.Position = 0;
             return (output);
         }
@@ -408,15 +416,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ApplicationException("The provided template is not valid!");
             }
 
-            sourceStream.Position = 0; 
+            sourceStream.Position = 0;
             XDocument xml = XDocument.Load(sourceStream);
-            V1.SharePointProvisioningTemplate source = XMLSerializer.Deserialize<V1.SharePointProvisioningTemplate>(xml);
+            V201504.SharePointProvisioningTemplate source = XMLSerializer.Deserialize<V201504.SharePointProvisioningTemplate>(xml);
 
             ProvisioningTemplate result = new ProvisioningTemplate();
 
             // Translate basic properties
             result.ID = source.ID;
-            result.Version = Double.Parse(!String.IsNullOrEmpty(source.Version) ? source.Version : "0", new CultureInfo("en-US"));
+            result.Version = (Double)source.Version;
             result.SitePolicy = source.SitePolicy;
 
             // Translate PropertyBagEntries, if any
@@ -535,7 +543,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         MinorVersionLimit = list.MinorVersionLimit,
                         MaxVersionLimit = list.MaxVersionLimit,
                         OnQuickLaunch = list.OnQuickLaunch,
-                        RemoveDefaultContentType = list.RemoveDefaultContentType,
+                        RemoveExistingContentTypes = list.RemoveExistingContentTypes,
+                        TemplateFeatureID = !String.IsNullOrEmpty(list.TemplateFeatureID) ? Guid.Parse(list.TemplateFeatureID) : Guid.Empty,
+                        RemoveExistingViews = list.Views != null ? list.Views.RemoveExistingViews : false,
                         TemplateType = list.TemplateType,
                         Title = list.Title,
                         Url = list.Url,

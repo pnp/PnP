@@ -29,6 +29,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             this._provisioningTemplatePath1 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-01.xml");
             this._provisioningTemplatePath2 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
+            this._provisioningTemplatePath3 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-01.xml");
+            this._provisioningTemplatePath4 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-02.xml");
         }
 
         [TestMethod]
