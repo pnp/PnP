@@ -1060,11 +1060,12 @@ namespace Microsoft.SharePoint.Client
                             l => l.EnableModeration,
                             l => l.ForceCheckout);
 
-                var checkOutRequired = parentList.ForceCheckout;
+                var checkOutRequired = false;
 
                 try
                 {
                     context.ExecuteQueryRetry();
+                    checkOutRequired = parentList.ForceCheckout;
                     publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
                     approvalRequired = parentList.EnableModeration;
                 }
