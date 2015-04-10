@@ -1,6 +1,7 @@
 # 16 folder #
 
--  **Current version:** SharePoint Online Client Components SDK: http://www.microsoft.com/en-us/download/details.aspx?id=42038 (version **16.0.3104.1200**)
+-  **Current version:** SharePoint Online Client Components from updated Nuget: http://www.nuget.org/packages/Microsoft.SharePointOnline.CSOM (version **16.1.3912.1204**)
+-  **Version until 10th of April 2015:** SharePoint Online Client Components SDK: http://www.microsoft.com/en-us/download/details.aspx?id=42038 (version **16.0.3104.1200**)
 -  **Version up until September 3th 2014:** SharePoint Online Client Components SDK: http://www.microsoft.com/en-us/download/details.aspx?id=42038 (version **16.0.2617.1200**)
 
 # 15 folder #
