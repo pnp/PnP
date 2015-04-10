@@ -166,12 +166,43 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ContentTypes, if any
             if (template.ContentTypes != null && template.ContentTypes.Count > 0)
             {
-                result.ContentTypes = new V201503.SharePointProvisioningTemplateContentTypes
+                result.ContentTypes = new V201503.SharePointProvisioningTemplateContentTypes();
+                List<XmlElement> ctElements = new List<XmlElement>();
+
+                foreach (var ct in template.ContentTypes)
                 {
-                    Any =
-                        (from contentType in template.ContentTypes
-                         select contentType.SchemaXml.ToXmlElement()).ToArray(),
-                };
+                    XElement xElement = new XElement("ContentType");
+                    xElement.Add(new XAttribute("ID",ct.ID));
+                  
+                        xElement.Add(new XAttribute("Name", ct.Name));
+                    if (!string.IsNullOrEmpty(ct.Group))
+                    {
+                        xElement.Add(new XAttribute("Group", ct.Group));
+                    }
+                    if (!string.IsNullOrEmpty(ct.Description))
+                    {
+                        xElement.Add(new XAttribute("Description",ct.Description));
+                    }
+                    xElement.Add(new XAttribute("Hidden",ct.Hidden.ToString().ToLower()));
+                                       xElement.Add(new XAttribute("ReadOnly",ct.ReadOnly.ToString().ToLower()));
+
+                                        xElement.Add(new XAttribute("Sealed",ct.Sealed.ToString().ToLower()));
+                    if (!string.IsNullOrEmpty(ct.DocumentTemplate))
+                    {
+
+                        var documentTemplateElement = new XElement("DocumentTemplate");
+                        documentTemplateElement.Add(new XAttribute("TargetName", ct.DocumentTemplate));
+                        xElement.Add(documentTemplateElement);
+                    }
+                    var doc = new XmlDocument();
+                    using (var elReader = xElement.CreateReader())
+                    {
+                        doc.Load(elReader);
+                        ctElements.Add(doc.DocumentElement);
+                    }
+                }
+                result.ContentTypes.Any = ctElements.ToArray();
+                
             }
             else
             {
@@ -492,12 +523,53 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ContentTypes, if any
             if ((source.ContentTypes != null) && (source.ContentTypes.Any != null))
             {
-                result.ContentTypes.AddRange(
-                    from contentType in source.ContentTypes.Any
-                    select new ContentType
+                // Convert the SchemaXml property to the new format
+                foreach (var contentType in source.ContentTypes.Any)
+                {
+                    var xelement = XElement.Parse(contentType.OuterXml);
+                    var ID = xelement.Attribute("ID") != null ? xelement.Attribute("ID").Value : null;
+                    var Name = xelement.Attribute("Name") != null ? xelement.Attribute("Name").Value : null;
+                    var Description = xelement.Attribute("Description") != null ? xelement.Attribute("Description").Value : null;
+                    var Group = xelement.Attribute("Group") != null ? xelement.Attribute("Group").Value : null;
+                    var Hidden = xelement.Attribute("Hidden") != null ? bool.Parse(xelement.Attribute("Hidden").Value) : false;
+                    var ReadOnly = xelement.Attribute("ReadOnly") != null ? bool.Parse(xelement.Attribute("ReadOnly").Value) : false;
+                    var Sealed = xelement.Attribute("Sealed") != null ? bool.Parse(xelement.Attribute("Sealed").Value) : false;
+                    var Overwrite = xelement.Attribute("Overwrite") != null ? bool.Parse(xelement.Attribute("Overwrite").Value) : false;
+
+                    var ct = new ContentType();
+                    ct.ID = ID;
+                    ct.Name = Name;
+                    ct.Description = Description;
+                    ct.Group = Group;
+                    ct.Hidden = Hidden;
+                    ct.ReadOnly = ReadOnly;
+                    ct.Sealed = Sealed;
+                    ct.Overwrite = Overwrite;
+
+                    var documentTemplateElement = xelement.Descendants("DocumentTemplate").FirstOrDefault();
+                    if (documentTemplateElement != null)
                     {
-                        SchemaXml = contentType.OuterXml,
-                    });
+                        ct.DocumentTemplate = documentTemplateElement.Attribute("TargetName") != null ? documentTemplateElement.Attribute("TargetName").Value : null;
+                    }
+                    var fieldRefs = xelement.Descendants("FieldRefs").Descendants("FieldRef");
+                    foreach (var fieldRef in fieldRefs)
+                    {
+                        FieldRef fr = new FieldRef();
+                        fr.ID = fieldRef.Attribute("ID") != null ? Guid.Parse(fieldRef.Attribute("ID").Value) : Guid.Empty;
+                        fr.Required = fieldRef.Attribute("Required") != null ? bool.Parse(fieldRef.Attribute("Required").Value) : false;
+                        fr.Hidden = fieldRef.Attribute("Hidden") != null ? bool.Parse(fieldRef.Attribute("Hidden").Value) : false;
+                        ct.FieldRefs.Add(fr);
+                    }
+                    result.ContentTypes.Add(ct);
+
+                }
+
+                //result.ContentTypes.AddRange(
+                //    from contentType in source.ContentTypes.Any
+                //    select new ContentType
+                //    {
+                //        SchemaXml = contentType.OuterXml,
+                //    });
             }
 
             // Translate Lists Instances, if any

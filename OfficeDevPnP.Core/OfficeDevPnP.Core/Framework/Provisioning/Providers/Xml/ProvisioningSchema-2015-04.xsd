@@ -101,8 +101,8 @@
           </xsd:annotation>
           <xsd:complexType>
             <xsd:sequence>
-              <xsd:any minOccurs="1" maxOccurs="unbounded"
-                       processContents="lax" namespace="##any" />
+              <xsd:element name="ContentType" type="ContentType"
+                           minOccurs="1" maxOccurs="unbounded" />
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
@@ -467,6 +467,112 @@
 
   </xsd:complexType>
 
+  <xsd:complexType name="ContentType">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a content type
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:all>
+      <xsd:element name="FieldRefs" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The FieldRefs entries of the List Instance, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="FieldRef" type="FieldRef"
+                         minOccurs="1" maxOccurs="unbounded" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      
+      <xsd:element name="DocumentTemplate" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Specifies the document template for the content type. This is the file which SharePoint Foundation opens as a template when a user requests a new item of this content type.
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:attribute name="TargetName" type="xsd:string" use="required">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The value of the content type ID, required attribute
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+
+    <xsd:attribute name="ID" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The value of the content type ID, required attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The name of the content type, required attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Description" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The description of the content type, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Group" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The group of the content type, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Hidden" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional Boolean. True to define the content type as hidden. If you define a content type as hidden, SharePoint Foundation does not display that content type on the New button in list views.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Sealed" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional Boolean. True to prevent changes to this content type. You cannot change the value of this attribute through the user interface, but you can change it in code if you have sufficient rights. You must have site collection administrator rights to unseal a content type.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional Boolean. TRUE to specify that the content type cannot be edited without explicitly removing the read-only setting. This can be done either in the user interface or in code.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
+    <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional Boolean. TRUE to overwrite an existing content type with the same ID.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+  </xsd:complexType>
+
   <xsd:complexType name="ContentTypeBinding">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -554,6 +660,21 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="Required" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The Required flag for the field to bind, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Hidden" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The Hidden flag for the field to bind, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="CustomActionsList">
