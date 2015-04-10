@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<pnp:SharePointProvisioningTemplate ID="SPECIALTEAM" xmlns:pnp="http://schemas.dev.office.com/PnP/2015/04/ProvisioningSchema">
+<pnp:SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:pnp="http://schemas.dev.office.com/PnP/2015/04/ProvisioningSchema">
   <pnp:SitePolicy>HBI</pnp:SitePolicy>
   <pnp:PropertyBagEntries>
     <pnp:PropertyBagEntry Key="KEY1" Value="value1" />

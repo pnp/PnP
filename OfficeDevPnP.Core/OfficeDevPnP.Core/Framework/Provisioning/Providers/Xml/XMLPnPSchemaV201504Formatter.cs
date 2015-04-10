@@ -68,6 +68,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate basic properties
             result.ID = template.ID;
             result.Version = (Decimal)template.Version;
+            result.VersionSpecified = true;
             result.SitePolicy = template.SitePolicy;
 
             // Translate PropertyBagEntries, if any

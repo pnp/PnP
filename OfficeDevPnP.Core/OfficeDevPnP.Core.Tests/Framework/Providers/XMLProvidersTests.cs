@@ -99,9 +99,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplates();
 
-            Assert.IsTrue(result.Count == 2);
+            Assert.IsTrue(result.Count == 4);
             Assert.IsTrue(result[0].Files.Count == 1);
             Assert.IsTrue(result[1].Files.Count == 5);
+            Assert.IsTrue(result[2].Files.Count == 1);
+            Assert.IsTrue(result[3].Files.Count == 5);
         }
 
         [TestMethod]
