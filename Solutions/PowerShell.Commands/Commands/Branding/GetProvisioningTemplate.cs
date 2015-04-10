@@ -6,6 +6,9 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
@@ -63,8 +66,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
         private string GetProvisioningTemplateXML()
         {
+
             var template = SelectedWeb.GetProvisioningTemplate();
-            return template.ToXmlString();
+           
+            var _outputStream = XMLPnPSchemaFormatter.LatestFormatter.ToFormattedTemplate(template);
+            StreamReader reader = new StreamReader(_outputStream);
+
+            return reader.ReadToEnd();
+
         }
     }
 }

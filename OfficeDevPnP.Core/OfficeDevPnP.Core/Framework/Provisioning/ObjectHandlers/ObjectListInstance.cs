@@ -17,8 +17,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            //var postponedListFields = new List<PostponedListField>();
-
             var parser = new TokenParser(web);
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -89,10 +87,38 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             #region Fields
 
+            // Handle site columns that refer to lists that didn't exist yet
             foreach (var listInfo in createdLists)
             {
-                ParsePostponedFields(template.SiteFields, listInfo.CreatedList.Id, parser.Parse(listInfo.ListInstance.Url), web, parser);
+                ParsePostponedSiteColumns(template.SiteFields, listInfo.CreatedList.Id, parser.Parse(listInfo.ListInstance.Url), web, parser);
             }
+
+
+            // Loop through all content types and check if fields are missing
+            foreach (var ctDef in template.ContentTypes)
+            {
+                var ct = web.ContentTypes.GetById(ctDef.ID);
+                web.Context.Load(ct.FieldLinks);
+                web.Context.ExecuteQueryRetry();
+
+                var fieldLinks = ct.FieldLinks.ToList();
+
+                foreach (var f in template.SiteFields)
+                {
+                    XDocument fieldDocument = XDocument.Parse(f.SchemaXml);
+                    var id = Guid.Parse(fieldDocument.Root.Attribute("ID").Value);
+                    if (fieldLinks.FirstOrDefault(fl => fl.Id == id) == null)
+                    {
+                        var field = web.Fields.GetById(id);
+                        FieldLinkCreationInformation fieldLinkCI = new FieldLinkCreationInformation();
+                        fieldLinkCI.Field = field;
+                        ct.FieldLinks.Add(fieldLinkCI);
+                        ct.Update(true);
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+            }
+
 
             foreach (var listInfo in createdLists)
             {
@@ -264,7 +290,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             public ListInstance ListInstance { get; set; }
         }
 
-        private void ParsePostponedFields(List<Model.Field> fields, Guid listId, string listUrl, Web web, TokenParser parser)
+        private void ParsePostponedSiteColumns(List<Model.Field> fields, Guid listId, string listUrl, Web web, TokenParser parser)
         {
             foreach (var field in fields)
             {

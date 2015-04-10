@@ -167,12 +167,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate ContentTypes, if any
             if (template.ContentTypes != null && template.ContentTypes.Count > 0)
             {
-                result.ContentTypes = new V201504.SharePointProvisioningTemplateContentTypes
-                {
-                    Any =
-                        (from contentType in template.ContentTypes
-                         select contentType.SchemaXml.ToXmlElement()).ToArray(),
-                };
+                result.ContentTypes = (from ct in template.ContentTypes
+                                       select new V201504.ContentType
+            {
+                ID = ct.ID,
+                Description = ct.Description,
+                Group = ct.Group,
+                Name = ct.Name,
+                FieldRefs = ct.FieldRefs.Count > 0 ?
+                    (from fieldRef in ct.FieldRefs
+                     select new V201504.FieldRef
+                     {
+                         ID = fieldRef.ID.ToString(),
+                         Hidden = fieldRef.Hidden,
+                         Required = fieldRef.Required
+                     }).ToArray() : null,
+
+            }).ToArray();
+
             }
             else
             {
@@ -493,15 +505,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             // Translate ContentTypes, if any
-            if ((source.ContentTypes != null) && (source.ContentTypes.Any != null))
+            if ((source.ContentTypes != null) && (source.ContentTypes != null))
             {
                 result.ContentTypes.AddRange(
-                    from contentType in source.ContentTypes.Any
-                    select new ContentType
-                    {
-                        SchemaXml = contentType.OuterXml,
-                    });
+                    from contentType in source.ContentTypes
+                    select new ContentType(
+                        contentType.ID,
+                        contentType.Name,
+                        contentType.Description,
+                        contentType.Group,
+                        contentType.Sealed,
+                        contentType.Hidden,
+                        contentType.ReadOnly,
+                        (contentType.DocumentTemplate != null ?
+                            contentType.DocumentTemplate.TargetName : null),
+                        contentType.Overwrite,
+                        (contentType.FieldRefs != null ?
+                            (from fieldRef in contentType.FieldRefs
+                             select new Model.FieldRef
+                             {
+                                 ID = Guid.Parse(fieldRef.ID),
+                                 Hidden = fieldRef.Hidden,
+                                 Required = fieldRef.Required
+                             }) : null)
+                        )
+                    );
             }
+
 
             // Translate Lists Instances, if any
             if (source.Lists != null)
