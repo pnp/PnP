@@ -17,22 +17,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            var existingCts = web.AvailableContentTypes;
-            web.Context.Load(existingCts, cts => cts.Include(ct => ct.StringId));
-            web.Context.ExecuteQueryRetry();
-
-            var existingCtsIds = existingCts.Select(cts => cts.StringId.ToLower()).ToList();
-
             foreach (var ct in template.ContentTypes)
             {
-                // find the id of the content type
-                XDocument document = XDocument.Parse(ct.SchemaXml);
-                var contentTypeId = document.Root.Attribute("ID").Value;
-                if (!existingCtsIds.Contains(contentTypeId.ToLower()))
-                {
-                    web.CreateContentTypeFromXMLString(ct.SchemaXml);
-                    existingCtsIds.Add(contentTypeId);
-                }
+                web.CreateContentTypeFromXMLString(ct.SchemaXml); // The method checks if a CT exists
             }
         }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -16,16 +17,17 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
     [TestClass]
     public class ObjectFilesTests
     {
-        private string fileResource;
+        private string resourceFolder;
         private const string fileName = "ProvisioningTemplate-2015-03-Sample-01.xml";
         private string folder;
 
         [TestInitialize]
         public void Initialize()
         {
-            fileResource = string.Format(@"{0}\..\..\Resources\Templates\{1}",
-                AppDomain.CurrentDomain.BaseDirectory, fileName);
+            resourceFolder = string.Format(@"{0}\..\..\Resources\Templates",
+                AppDomain.CurrentDomain.BaseDirectory);
 
+            
             folder = string.Format("test{0}", DateTime.Now.Ticks);
         }
 
@@ -61,8 +63,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         public void CanProvisionObjects()
         {
             var template = new ProvisioningTemplate();
+            
+            FileSystemConnector connector = new FileSystemConnector(resourceFolder,"");
 
-            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Src = fileResource, Folder = folder });
+            template.Connector = connector;
+
+            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Src = fileName, Folder = folder });
 
             using (var ctx = TestCommon.CreateClientContext())
             {
@@ -89,8 +95,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectFiles().CreateEntities(ctx.Web, template, null);
+                template = new ObjectFiles().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsInstanceOfType(template.Files, typeof(List<Core.Framework.Provisioning.Model.File>));
             }

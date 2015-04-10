@@ -13,6 +13,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         private FileConnectorBase _connector = null;
         private string _identifier = "";
 
+        #region Constructors
+        
         public TemplateProviderBase()
         {
 
@@ -22,6 +24,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         {
             this._connector = connector;
         }
+
+        #endregion
+
+        #region Public Properties
 
         public Dictionary<string, string> Parameters
         {
@@ -71,14 +77,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
             }
         }
 
+        #endregion
+
+        #region Abstract Methods
+
         public abstract List<ProvisioningTemplate> GetTemplates();
+
+        public abstract List<ProvisioningTemplate> GetTemplates(ITemplateFormatter formatter);
 
         public abstract ProvisioningTemplate GetTemplate(string identifier);
 
+        public abstract ProvisioningTemplate GetTemplate(string identifier, ITemplateFormatter formatter);
+
         public abstract void Save(ProvisioningTemplate template);
+
+        public abstract void Save(ProvisioningTemplate template, ITemplateFormatter formatter);
 
         public abstract void SaveAs(ProvisioningTemplate template, string identifier);
 
+        public abstract void SaveAs(ProvisioningTemplate template, string identifier, ITemplateFormatter formatter);
+
         public abstract void Delete(string identifier);
+
+        #endregion
     }
 }

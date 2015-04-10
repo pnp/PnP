@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     ")]
     public class ImportAppPackage : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "Path pointing to the .app file")]
+        [Parameter(Mandatory = true, HelpMessage = "Path pointing to the .app file")]
         public string Path = string.Empty;
 
         [Parameter(Mandatory = false, HelpMessage = "Will forcibly install the app by activating the app sideloading feature, installing the app, and deactivating the sideloading feature")]

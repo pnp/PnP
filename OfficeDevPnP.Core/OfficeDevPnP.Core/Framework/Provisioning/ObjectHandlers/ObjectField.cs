@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Web.Services.Discovery;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectField : ObjectHandlerBase
     {
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
 
@@ -37,13 +42,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var fieldXml = parser.Parse(field.SchemaXml);
-                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                    web.Context.ExecuteQueryRetry();
+                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+
+                    var createField = false;
+                    if (listIdentifier != null)
+                    {
+                        // Check if the list is already there
+                        var listGuid = Guid.Empty;
+                        if (Guid.TryParse(listIdentifier, out listGuid))
+                        {
+                            // Check if list exists
+                            if (web.ListExists(listGuid))
+                            {
+                                createField = true;
+                            }
+                        }
+                        else
+                        {
+                            var existingList = web.GetListByUrl(listIdentifier);
+
+                            if (existingList != null)
+                            {
+                                createField = true;
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        createField = true;
+                    }
+
+                    if(createField)
+                    {
+                        var fieldXml = parser.Parse(field.SchemaXml);
+                        web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                        web.Context.ExecuteQueryRetry();
+                    }
                 }
             }
         }
-
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
@@ -54,6 +92,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             var existingFields = web.Fields;
+            web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
             web.Context.ExecuteQueryRetry();
 
@@ -62,6 +101,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!BuiltInFieldId.Contains(field.Id))
                 {
+                    XDocument document = XDocument.Parse(field.SchemaXml);
+
+                    // Check if the field contains a reference to a list. If by Guid, rewrite the value of the attribute to use web relative paths
+                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+                    if (!string.IsNullOrEmpty(listIdentifier))
+                    {
+                        var listGuid = Guid.Empty;
+                        if (Guid.TryParse(listIdentifier, out listGuid))
+                        {
+                            var list = web.Lists.GetById(listGuid);
+                            web.Context.Load(list, l => l.RootFolder.ServerRelativeUrl);
+                            web.Context.ExecuteQueryRetry();
+
+                            var listUrl = list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length).TrimStart('/');
+                            document.Root.Attribute("List").SetValue(listUrl);
+                            field.SchemaXml = document.ToString();
+                        }
+                    }
                     template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
                 }
             }
@@ -96,3 +153,4 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
     }
 }
+
