@@ -12,7 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// Gets or sets whether to remove the default content type from the list
         /// </summary>
-        [Obsolete("Use RemoveExistingContentTypes instead")]
+        [Obsolete("Use RemoveExistingContentTypes instead. This deprecated property will be removed in the June 2015 release.")]
         public bool RemoveDefaultContentType { get; set; }
 
         #endregion
