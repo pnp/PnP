@@ -15,10 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Public Properties
 
         /// <summary>
-        /// Gets a value that specifies the XML Schema representing the Field type.
-        /// <seealso>
-        ///     <cref>https://msdn.microsoft.com/en-us/library/office/ff407271.aspx</cref>
-        /// </seealso>
+        /// Gets ot sets the ID of the referenced field
         /// </summary>
         public Guid ID
         {
@@ -26,14 +23,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._ID = value; }
         }
 
+        /// <summary>
+        /// Gets or sets if the field is Required
+        /// </summary>
+        public bool Required { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the field is Hidden
+        /// </summary>
+        public bool Hidden { get; set; }
         #endregion
 
         #region Comparison code
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}",
-                this.ID).GetHashCode());
+            return (String.Format("{0}|{1}|{2}",
+                this.ID,
+                this.Required,
+                this.Hidden).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -47,7 +55,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(FieldRef other)
         {
-            return (this.ID == other.ID);
+            return (this.ID == other.ID &&
+                this.Required == other.Required &&
+                this.Hidden == other.Hidden);
         }
 
         #endregion
