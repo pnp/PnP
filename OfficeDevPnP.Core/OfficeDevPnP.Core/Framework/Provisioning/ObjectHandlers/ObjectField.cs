@@ -77,6 +77,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         var fieldXml = parser.Parse(field.SchemaXml);
                         web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                        web.Context.Load(web.Fields);
                         web.Context.ExecuteQueryRetry();
                     }
                 }
