@@ -7,7 +7,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public XMLAzureStorageTemplateProvider(string connectionString, string container) :
             base(new AzureStorageConnector(connectionString, container))
         {
-
         }
     }
 }

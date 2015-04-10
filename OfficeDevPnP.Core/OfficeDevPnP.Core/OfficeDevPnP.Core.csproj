@@ -332,16 +332,24 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteCollectionToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenParser.cs" />
+    <Compile Include="Framework\Provisioning\Providers\ITemplateFormatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\IXMLSchemaFormatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-04.cs">
+      <DependentUpon>ProvisioningSchema-2015-04.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
       <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
     </Compile>
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLExtensions.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaFormatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaV201504Formatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaV201503Formatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLSharePointTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
-    <Compile Include="Framework\Provisioning\Providers\Xml\SharePointProvisioningTemplateExtensions.cs" />
     <Compile Include="Framework\TimerJobs\Enums\AuthenticationType.cs" />
     <Compile Include="Framework\TimerJobs\TimerJob.cs" />
     <Compile Include="Framework\TimerJobs\TimerJobRun.cs" />
@@ -398,6 +406,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-04.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -463,7 +474,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Framework\Provisioning\Providers\Json\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
   </ItemGroup>

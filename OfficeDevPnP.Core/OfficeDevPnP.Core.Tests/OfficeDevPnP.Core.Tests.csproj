@@ -293,9 +293,8 @@
     <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-02.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Templates\ProvisioningTemplate.xml.old">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="Resources\Templates\ProvisioningTemplate-2015-04-Sample-01.xml" />
+    <Content Include="Resources\Templates\ProvisioningTemplate-2015-04-Sample-02.xml" />
     <Content Include="Resources\UpdateTermSet.csv" />
   </ItemGroup>
   <ItemGroup>
