@@ -334,6 +334,7 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenParser.cs" />
     <Compile Include="Framework\Provisioning\Providers\ITemplateFormatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonFormatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\IXMLSchemaFormatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-04.cs">
@@ -475,9 +476,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Framework\Provisioning\Providers\Json\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
   </ItemGroup>
