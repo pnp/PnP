@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>OfficeDevPnPCore16</id>
-        <version>1.0.0415.0</version>
+        <version>1.0.0415.2</version>
         <title>OfficeDevPnP.Core</title>
         <authors>Office 365 Developer Patterns &amp; Practices</authors>
         <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
@@ -10,15 +10,15 @@
         <projectUrl>http://aka.ms/OfficeDevPnP</projectUrl>
         <iconUrl>http://i.imgur.com/6MWZgWW.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
-        <description>Core CSOM extension methods for SharePoint app model development.</description>
+        <description>Core CSOM extension methods for SharePoint app model development. Will increase productivity of the developers by abstracting complex operations.</description>
         <summary>Core CSOM extension methods for SharePoint app model development.</summary>
-        <releaseNotes />
+        <releaseNotes>Updated to use latest CSOM package for cloud.</releaseNotes>
         <copyright>Copyright 2015</copyright>
         <tags>Office AppModel FTCtoCAM Office365</tags>
         <dependencies>
             <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
             <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.2" />
-            <dependency id="AppForSharePointWebToolkit" version="3.0.1" />
+            <dependency id="Microsoft.SharePointOnline.CSOM" version="16.1.3912.1204" />
         </dependencies>
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System" targetFramework="" />
@@ -37,22 +37,10 @@
             <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
             <frameworkAssembly assemblyName="Microsoft.IdentityModel" targetFramework="" />
             <frameworkAssembly assemblyName="Microsoft.IdentityModel.Extensions" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.Office.Client.Policy, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.Office.Client.TranslationServices, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Publishing, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Search, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Search.Applications, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0" targetFramework="" />
-            <frameworkAssembly assemblyName="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0" targetFramework="" />
         </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" target="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
-        <file src="OfficeDevPnP.Core\bin\Release\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
-        <file src="OfficeDevPnP.Core\bin\Release\OfficeDevPnP.Core.XmlSerializers.dll" target="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" />
-        <file src="tools\install.ps1" target="tools\install.ps1" />
+        <file src="lib\net45\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
+        <file src="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" target="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" />
     </files>
 </package>
