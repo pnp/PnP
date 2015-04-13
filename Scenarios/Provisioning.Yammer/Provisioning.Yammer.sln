@@ -1,8 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Yammer", "Provisioning.Yammer\Provisioning.Yammer.csproj", "{FB51DE43-E558-4C1C-9B4B-FE1609C9A139}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {F2077977-8EBF-409D-BBF4-8EFB328928A8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.YammerWeb", "Provisioning.YammerWeb\Provisioning.YammerWeb.csproj", "{5039283A-82D6-46D0-B2EE-ED6E7C25F221}"
 EndProject
