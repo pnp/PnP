@@ -224,18 +224,15 @@ namespace Provisioning.YammerWeb
 
         protected void YammerGroupAssociationType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (YammerFeedType.SelectedValue == "Group")
+            if (YammerGroupAssociationType.SelectedValue == "Existing")
             {
-                if (YammerGroupAssociationType.SelectedValue == "Existing")
-                {
-                    YammerExistingGroups.Enabled = true;
-                    txtYammerGroup.Enabled = false;
-                }
-                else
-                {
-                    YammerExistingGroups.Enabled = false;
-                    txtYammerGroup.Enabled = true;
-                }
+                YammerExistingGroups.Enabled = true;
+                txtYammerGroup.Enabled = false;
+            }
+            else
+            {
+                YammerExistingGroups.Enabled = false;
+                txtYammerGroup.Enabled = true;
             }
         }
     }
