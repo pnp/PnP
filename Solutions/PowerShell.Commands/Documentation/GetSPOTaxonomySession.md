@@ -1,10 +1,11 @@
 #Get-SPOTaxonomySession
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Returns a taxonomy session
 ##Syntax
-    Get-SPOTaxonomySession [-Web [<WebPipeBind>]]
-
+```powershell
+Get-SPOTaxonomySession [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

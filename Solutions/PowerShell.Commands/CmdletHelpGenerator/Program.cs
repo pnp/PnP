@@ -16,6 +16,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             var cmdlets = new List<CmdletInfo>();
             var inFile = args[0];
             var outFile = args[1];
+            var toc = new List<CmdletInfo>();
 
             // Specify an additional (third) parameter pointing to the Solution folder to generate Markdown. The markdown 
             // will be created in the Documentation folder underneath the solution folder.
@@ -26,7 +27,6 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                 solutionDir = args[2];
                 generateMarkdown = true;
             }
-
             var doc = new XDocument(new XDeclaration("1.0", "UTF-8", string.Empty));
 
             XNamespace ns = "http://msh";
@@ -57,6 +57,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     var detaileddescription = string.Empty;
                     var copyright = string.Empty;
                     var version = string.Empty;
+                    var category = string.Empty;
                     var attrs = t.GetCustomAttributes();
                     var examples = new List<CmdletExampleAttribute>();
 
@@ -78,6 +79,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             copyright = a.Copyright;
                             version = a.Version;
                             detaileddescription = a.DetailedDescription;
+                            category = a.Category;
                         }
                         if (attr is CmdletExampleAttribute)
                         {
@@ -93,6 +95,8 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     cmdletInfo.DetailedDescription = detaileddescription;
                     cmdletInfo.Version = version;
                     cmdletInfo.Copyright = copyright;
+                    cmdletInfo.Category = category;
+
 
                     var commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
                     var detailsElement = new XElement(command + "details");
@@ -120,19 +124,20 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             {
                                 var a = (ParameterAttribute)attr;
 
-
-                                if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
+                                if (!a.DontShow)
                                 {
-                                    var cmdletSyntax = cmdletInfo.Syntaxes.FirstOrDefault(c => c.ParameterSetName == a.ParameterSetName);
-                                    if (cmdletSyntax == null)
+                                    if (a.ParameterSetName != ParameterAttribute.AllParameterSets)
                                     {
-                                        cmdletSyntax = new CmdletSyntax();
-                                        cmdletSyntax.ParameterSetName = a.ParameterSetName;
-                                        cmdletInfo.Syntaxes.Add(cmdletSyntax);
+                                        var cmdletSyntax = cmdletInfo.Syntaxes.FirstOrDefault(c => c.ParameterSetName == a.ParameterSetName);
+                                        if (cmdletSyntax == null)
+                                        {
+                                            cmdletSyntax = new CmdletSyntax();
+                                            cmdletSyntax.ParameterSetName = a.ParameterSetName;
+                                            cmdletInfo.Syntaxes.Add(cmdletSyntax);
+                                        }
+
+                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                     }
-
-                                    cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
-
 
                                     var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
                                     if (syntaxItem == null)
@@ -140,7 +145,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         syntaxItem = new SyntaxItem(a.ParameterSetName);
                                         syntaxItems.Add(syntaxItem);
                                     }
-                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                 }
                             }
                         }
@@ -154,20 +159,23 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             if (attr is ParameterAttribute)
                             {
                                 var a = (ParameterAttribute)attr;
-                                if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
+                                if (!a.DontShow)
                                 {
-                                    foreach (var si in syntaxItems)
+                                    if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
                                     {
-                                        si.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
-                                    }
+                                        foreach (var si in syntaxItems)
+                                        {
+                                            si.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                        }
 
-                                    if (cmdletInfo.Syntaxes.Count == 0)
-                                    {
-                                        cmdletInfo.Syntaxes.Add(new CmdletSyntax() { ParameterSetName = ParameterAttribute.AllParameterSets });
-                                    }
-                                    foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
-                                    {
-                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                        if (cmdletInfo.Syntaxes.Count == 0)
+                                        {
+                                            cmdletInfo.Syntaxes.Add(new CmdletSyntax() {ParameterSetName = ParameterAttribute.AllParameterSets});
+                                        }
+                                        foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                                        {
+                                            cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                        }
                                     }
                                 }
                             }
@@ -205,24 +213,26 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             if (attr is ParameterAttribute)
                             {
                                 var a = (ParameterAttribute)attr;
+                                if (!a.DontShow)
+                                {
+                                    cmdletInfo.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
 
-                                cmdletInfo.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
+                                    var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
 
-                                var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
+                                    parameter2Element.Add(new XElement(maml + "name", field.Name));
 
-                                parameter2Element.Add(new XElement(maml + "name", field.Name));
+                                    parameter2Element.Add(new XElement(maml + "description", new XElement(maml + "para", a.HelpMessage)));
+                                    var parameterValueElement = new XElement(command + "parameterValue", field.FieldType.Name, new XAttribute("required", a.Mandatory));
+                                    parameter2Element.Add(parameterValueElement);
 
-                                parameter2Element.Add(new XElement(maml + "description", new XElement(maml + "para", a.HelpMessage)));
-                                var parameterValueElement = new XElement(command + "parameterValue", field.FieldType.Name, new XAttribute("required", a.Mandatory));
-                                parameter2Element.Add(parameterValueElement);
+                                    var devElement = new XElement(dev + "type");
+                                    devElement.Add(new XElement(maml + "name", field.FieldType.Name));
+                                    devElement.Add(new XElement(maml + "uri"));
 
-                                var devElement = new XElement(dev + "type");
-                                devElement.Add(new XElement(maml + "name", field.FieldType.Name));
-                                devElement.Add(new XElement(maml + "uri"));
+                                    parameter2Element.Add(devElement);
 
-                                parameter2Element.Add(devElement);
-
-                                parametersElement.Add(parameter2Element);
+                                    parametersElement.Add(parameter2Element);
+                                }
                                 break;
 
                             }
@@ -270,6 +280,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     {
                         if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
                         {
+                            toc.Add(cmdletInfo);
                             using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
                             {
                                 docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
@@ -280,7 +291,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
                                 {
                                     var syntaxText = new StringBuilder();
-                                    syntaxText.AppendFormat("    {0}", cmdletInfo.FullCommand);
+                                    syntaxText.AppendFormat("```powershell\r\n{0}", cmdletInfo.FullCommand);
                                     foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
                                     {
                                         syntaxText.Append(" ");
@@ -296,7 +307,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     }
                                     // Add All ParameterSet ones
                                     docfile.WriteLine(syntaxText);
-                                    docfile.WriteLine("");
+                                    docfile.WriteLine("```");
                                     docfile.WriteLine("&nbsp;");
                                     docfile.WriteLine("");
                                 }
@@ -333,6 +344,33 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             }
             doc.Save(outFile);
 
+            if (generateMarkdown)
+            {
+                // Create the readme.md
+                using (var readme = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\readme.md", solutionDir)))
+                {
+                    readme.WriteLine("# Cmdlet Documentation #");
+                    readme.WriteLine("Below you can find a list of all the available cmdlets. Many commands provide built-in help and examples. Retrieve the detailed help with ");
+                    readme.WriteLine("\r\n```powershell\r\nGet-Help Connect-SPOnline -Detailed\r\n```\r\n\r\n");
+
+                    // Get all unique categories
+                    var categories = toc.Select(c => c.Category).Distinct();
+
+                    foreach (var category in categories.OrderBy(c => c))
+                    {
+                        readme.WriteLine("##{0}",category);
+
+                        readme.WriteLine("Cmdlet|Description");
+                        readme.WriteLine(":-----|:----------");
+                        foreach (var cmdletInfo in toc.Where(c => c.Category == category).OrderBy(c => c.Noun))
+                        {
+                            var description = cmdletInfo.Description.Replace("\r\n", " ");
+                            readme.WriteLine("**[{0}]({1}{2}.md)** |{3}", cmdletInfo.FullCommand.Replace("-", "&#8209;"), cmdletInfo.Verb, cmdletInfo.Noun, description);
+                        }
+                    }
+                }
+
+            }
 
         }
 
@@ -356,5 +394,6 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                 public string Type;
             }
         }
+
     }
 }

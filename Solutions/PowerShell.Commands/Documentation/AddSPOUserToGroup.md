@@ -1,10 +1,11 @@
 #Add-SPOUserToGroup
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
 Adds a user to a group
 ##Syntax
-    Add-SPOUserToGroup -LoginName [<String>] -Identity [<GroupPipeBind>] [-Web [<WebPipeBind>]]
-
+```powershell
+Add-SPOUserToGroup -LoginName [<String>] -Identity [<GroupPipeBind>] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters
@@ -17,12 +18,12 @@ Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the cu
 
 ###Example 1
     
-    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
-    
-Add the specified user to the group with Id 5
-
-###Example 2
-    
     PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'
     
 
+
+###Example 2
+    
+    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
+    
+Add the specified user to the group with Id 5

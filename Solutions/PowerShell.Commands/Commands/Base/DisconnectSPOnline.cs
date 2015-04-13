@@ -6,7 +6,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet("Disconnect", "SPOnline")]
 
-    [CmdletHelp("Disconnects the context")]
+    [CmdletHelp("Disconnects the context", Category = "Base Cmdlets")]
     [CmdletExample(
         Code = @"PS:> Disconnect-SPOnline")]
     public class DisconnectSPOnline : PSCmdlet

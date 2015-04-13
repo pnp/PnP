@@ -137,7 +137,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
-    <Compile Include="Authentication\GetAuthenticationRealm.cs" />
+    <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
@@ -164,6 +164,10 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Branding\GetJavaScriptLink.cs" />
+    <Compile Include="Branding\ApplyProvisioningTemplate.cs" />
+    <Compile Include="Branding\GetProvisioningTemplate.cs" />
+    <Compile Include="ContentTypes\RemoveContentTypeFromList.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
@@ -203,6 +207,7 @@
     <Compile Include="Branding\AddJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptBlock.cs" />
     <Compile Include="Web\AddFolder.cs" />
+    <Compile Include="Web\RemoveFile.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
@@ -217,9 +222,9 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
-    <Compile Include="PublishingPage\AddPublishingPage.cs" />
-    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
-    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPage.cs" />
+    <Compile Include="Publishing\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
@@ -259,9 +264,9 @@
     <Compile Include="Web\GetWeb.cs" />
     <Compile Include="Web\GetSubwebs.cs" />
     <Compile Include="Web\FindFile.cs" />
-    <Compile Include="Web\RemoveCustomAction.cs" />
-    <Compile Include="Web\GetCustomAction.cs" />
-    <Compile Include="Web\AddCustomAction.cs" />
+    <Compile Include="Branding\RemoveCustomAction.cs" />
+    <Compile Include="Branding\GetCustomAction.cs" />
+    <Compile Include="Branding\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
     <Compile Include="Branding\RemoveNavigationNode.cs">
       <SubType>Code</SubType>
@@ -270,7 +275,7 @@
     <Compile Include="Web\RequestReIndexWeb.cs" />
     <Compile Include="Web\GetMasterPage.cs" />
     <Compile Include="Web\GetHomepage.cs" />
-    <Compile Include="Web\SetMDS.cs" />
+    <Compile Include="Branding\SetMDS.cs" />
     <Compile Include="Branding\SetHomepage.cs" />
     <Compile Include="Web\SetPropertyBagValue.cs" />
     <Compile Include="Web\SetIndexedProperties.cs" />
@@ -285,10 +290,10 @@
     <Compile Include="Branding\SetTheme.cs" />
     <Compile Include="Base\SPOWebCmdlet.cs" />
     <Compile Include="Web\SetWeb.cs" />
-    <Compile Include="WikiPage\RemoveWikiPage.cs" />
-    <Compile Include="WikiPage\AddWikiPage.cs" />
-    <Compile Include="WikiPage\GetWikiPageContent.cs" />
-    <Compile Include="WikiPage\SetWikiPageContent.cs" />
+    <Compile Include="Publishing\RemoveWikiPage.cs" />
+    <Compile Include="Publishing\AddWikiPage.cs" />
+    <Compile Include="Publishing\GetWikiPageContent.cs" />
+    <Compile Include="Publishing\SetWikiPageContent.cs" />
     <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +313,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

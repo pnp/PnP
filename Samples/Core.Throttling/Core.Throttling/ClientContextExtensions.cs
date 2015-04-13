@@ -15,12 +15,12 @@ namespace Core.Throttling
         // The first parameter takes the "this" modifier
         // and specifies the type for which the method is defined. 
         /// <summary>
-        /// Extension method to invoke execute query with retry and exponential back off.
+        /// Extension method to invoke execute query with retry and incremental back off.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="retryCount">Maximum amount of retries before giving up.</param>
         /// <param name="delay">Initial delay in milliseconds.</param>
-        public static void ExecuteQueryWithExponentialRetry(this ClientContext context, int retryCount, int delay)
+        public static void ExecuteQueryWithIncrementalRetry(this ClientContext context, int retryCount, int delay)
         {
             int retryAttempts = 0;
             int backoffInterval = delay;
@@ -43,7 +43,8 @@ namespace Core.Throttling
                 {
                     var response = wex.Response as HttpWebResponse;
                     // Check if request was throttled - http status code 429
-                    if (response != null && response.StatusCode == (HttpStatusCode)429)
+                    // Check is request failed due to server unavailable - http status code 503
+                    if (response != null && (response.StatusCode == (HttpStatusCode)429 || response.StatusCode == (HttpStatusCode)503))
                     {
                         // Output status to console. Should be changed as Debug.WriteLine for production usage.
                         Console.WriteLine(string.Format("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", 

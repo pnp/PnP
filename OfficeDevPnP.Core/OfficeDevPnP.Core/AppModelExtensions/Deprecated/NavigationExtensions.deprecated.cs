@@ -40,5 +40,13 @@ namespace Microsoft.SharePoint.Client
             DeleteNavigationNode(web, nodeTitle, parentNodeTitle, isQuickLaunch ? NavigationType.QuickLaunch : NavigationType.TopNavigationBar);
         }
         #endregion
+
+        #region Will be deprecated in June 2015 release
+        [Obsolete("Use: CustomActionExists(this Web web, string name). This deprecated method will be removed in the June release.")]
+        public static bool CustomActionExists(ClientContext clientContext, string name)
+        {
+            return clientContext.Web.CustomActionExists(name);
+        }
+        #endregion
     }
 }

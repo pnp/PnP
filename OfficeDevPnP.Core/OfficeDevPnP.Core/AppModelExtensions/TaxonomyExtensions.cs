@@ -570,8 +570,6 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
-
-
         private static Term AddTermToTerm(this Term term, int lcid, string termLabel, Guid termId)
         {
             var clientContext = term.Context;
@@ -655,7 +653,7 @@ namespace Microsoft.SharePoint.Client
         public static TermSet ImportTermSet(this TermGroup termGroup, string filePath, Guid termSetId = default(Guid), bool synchroniseDeletions = false, bool? termSetIsOpen = null, string termSetContact = null, string termSetOwner = null)
         {
             if (filePath == null) { throw new ArgumentNullException("filePath"); }
-            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException("File path is required.", "filePath"); }
+            if (string.IsNullOrWhiteSpace(filePath)) { throw new ArgumentException(CoreResources.TaxonomyExtensions_ImportTermSet_File_path_is_required_, "filePath"); }
 
             using (var fs = new FileStream(filePath, FileMode.Open))
             {
@@ -757,7 +755,7 @@ namespace Microsoft.SharePoint.Client
                             // Check file look vaguely like a CSV -- ensure the first line (headers) has some commas:
                             if (!rowText.Contains(","))
                             {
-                                throw new ArgumentException("Invalid CSV format; was expecting a comma in the first (header) line.", "reader");
+                                throw new ArgumentException(CoreResources.TaxonomyExtensions_ImportTermSetImplementation_Invalid_CSV_format__was_expecting_a_comma_in_the_first__header__line_, "reader");
                             }
                         }
                         else
@@ -1155,9 +1153,6 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static List<string> ExportTermSet(this Site site, Guid termSetId, bool includeId, string delimiter = "|")
         {
-            var clientContext = site.Context;
-            TaxonomySession taxonomySession = taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
-
             var termStore = site.GetDefaultSiteCollectionTermStore();
 
             return ExportTermSet(site, termSetId, includeId, termStore, delimiter);
@@ -1812,6 +1807,60 @@ namespace Microsoft.SharePoint.Client
             else
             {
                 return -1;
+            }
+        }
+
+        /// <summary>
+        /// Sets the default value for a managed metadata field
+        /// </summary>
+        /// <param name="field">Field to be wired up</param>
+        /// <param name="taxonomyItem">Taxonomy TermSet or Term</param>
+        /// <param name="defaultValue">default value for the field</param>
+        public static void SetTaxonomyFieldDefaultValue(this Field field, TaxonomyItem taxonomyItem, string defaultValue)
+        {
+            if (string.IsNullOrEmpty(defaultValue))
+            {
+                throw new ArgumentException("defaultValue");
+            }
+
+            var clientContext = field.Context as ClientContext;
+
+            taxonomyItem.ValidateNotNullOrEmpty("taxonomyItem");
+
+            var anchorTerm = taxonomyItem as Term;
+
+            if (anchorTerm != default(Term) && !anchorTerm.IsPropertyAvailable("TermSet"))
+            {
+                clientContext.Load(anchorTerm.TermSet);
+                clientContext.ExecuteQueryRetry();
+            }
+
+            var termSet = taxonomyItem is Term ? anchorTerm.TermSet : taxonomyItem as TermSet;
+
+            if (termSet == default(TermSet))
+            {
+                throw new ArgumentException("Bound TaxonomyItem must be either a TermSet or a Term");
+            }
+
+            // set the SSP ID and Term Set ID on the taxonomy field
+            var taxField = clientContext.CastTo<TaxonomyField>(field);
+
+
+            if (!termSet.IsPropertyAvailable("Terms"))
+            {
+                clientContext.Load(termSet.Terms);
+                clientContext.ExecuteQueryRetry();
+            }
+
+            Term defaultValTerm = termSet.Terms.GetByName(defaultValue);
+            if (defaultValTerm != null)
+            {
+                clientContext.Load(defaultValTerm);
+                clientContext.ExecuteQueryRetry();
+
+                taxField.DefaultValue = string.Format("-1;#{0}{1}{2}", defaultValTerm.Name, TaxonomyGuidLabelDelimiter, defaultValTerm.Id);
+                taxField.Update();
+                clientContext.ExecuteQueryRetry();
             }
         }
         #endregion

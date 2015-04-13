@@ -1,10 +1,13 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
     [Cmdlet(VerbsCommon.Get, "SPOWorkflowDefinition")]
+    [CmdletHelp("Returns a workflow definition", Category = "Workflows")]
+
     public class GetWorkflowDefinition : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The name of the workflow", Position = 0)]

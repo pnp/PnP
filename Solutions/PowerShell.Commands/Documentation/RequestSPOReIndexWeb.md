@@ -1,10 +1,11 @@
 #Request-SPOReIndexWeb
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Marks the web for full indexing during the next incremental crawl
 ##Syntax
-    Request-SPOReIndexWeb [-Web [<WebPipeBind>]]
-
+```powershell
+Request-SPOReIndexWeb [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

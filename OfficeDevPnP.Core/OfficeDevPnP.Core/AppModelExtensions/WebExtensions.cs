@@ -9,6 +9,9 @@ using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -235,6 +238,44 @@ namespace Microsoft.SharePoint.Client
             return exists;
         }
 
+        /// <summary>
+        /// Checks if the current web is a sub site or not
+        /// </summary>
+        /// <param name="web">Web to check</param>
+        /// <returns>True is sub site, false otherwise</returns>
+        public static bool IsSubSite(this Web web)
+        {
+            bool executeQueryNeeded = false;
+            Site site = (web.Context as ClientContext).Site;
+
+            if (!web.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(web);
+                executeQueryNeeded = true;
+            }
+
+            if (!site.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(site);
+                executeQueryNeeded = true;
+            }
+
+            if (executeQueryNeeded)
+            {
+                web.Context.ExecuteQueryRetry();
+            }
+
+            if (web.Url.Equals(site.Url, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         private static bool IsCannotGetSiteException(Exception ex)
         {
             if (ex is ServerException)
@@ -426,7 +467,7 @@ namespace Microsoft.SharePoint.Client
             Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
-            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
+            const string keywordQuery = "contentclass:\"STS_Site\" AND WebTemplate:SPSPERS";
             return web.SiteSearch(keywordQuery);
         }
 
@@ -968,6 +1009,47 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
         }
 #endif
+        #endregion
+
+        #region TemplateHandling
+
+        /// <summary>
+        /// Can be used to apply custom remote provisioning template on top of existing site. 
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
+        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template)
+        {
+            // Call actual handler
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the default base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web)
+        {
+            ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(web);
+            // Load the base template which will be used for the comparison work
+            creationInfo.BaseTemplate = web.GetBaseTemplate();
+
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the default base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <param name="connector">Connector that will be used to persist the files retrieved from the template "get"</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
+        }
         #endregion
 
     }
