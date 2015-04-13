@@ -4,12 +4,12 @@
 Demonstrates how to use DocumentSetTemplate using CSOM.
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT) - With upcoming CSOM package
+-  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D) 
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-2015 March CU installed on the farm or new CSOM cloud re-distributable package (released around end of March 2015)
+2015 March CU installed on farm for on-premises or new re-distributable package for cloud CSOM (April 2015 release).
 
 ### Solution ###
 Solution | Author(s)
@@ -20,6 +20,7 @@ ECM.DocumentSetTemplate | Frank Chen (**Microsoft**)
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | March 19th 2015 | Draft version
+1.1  | April 13th 2015 | Updated to use latest Office 365 CSOM
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
