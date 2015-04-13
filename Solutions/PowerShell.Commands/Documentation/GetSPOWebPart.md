@@ -1,10 +1,11 @@
 #Get-SPOWebPart
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Returns a webpart definition object
 ##Syntax
-    Get-SPOWebPart -PageUrl [<String>] [-Identity [<WebPartPipeBind>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Get-SPOWebPart -PageUrl [<String>] [-Identity [<WebPartPipeBind>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

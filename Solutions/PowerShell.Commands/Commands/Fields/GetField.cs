@@ -2,10 +2,12 @@
 using Microsoft.SharePoint.Client;
 using System;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOField")]
+    [CmdletHelp("Returns a field from a list or site", Category = "Fields")]
     public class GetField : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true)]

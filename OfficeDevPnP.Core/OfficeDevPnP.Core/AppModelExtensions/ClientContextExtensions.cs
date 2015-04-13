@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Threading;
+using OfficeDevPnP.Core;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -18,7 +19,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrWhiteSpace(siteUrl))
             {
-                throw new ArgumentException("Url of the site is required.", "siteUrl");
+                throw new ArgumentException(CoreResources.ClientContextExtensions_Clone_Url_of_the_site_is_required_, "siteUrl");
             }
 
             return clientContext.Clone(new Uri(siteUrl));
@@ -90,7 +91,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (siteUrl == null)
             {
-                throw new ArgumentException("Url of the site is required.", "siteUrl");
+                throw new ArgumentException(CoreResources.ClientContextExtensions_Clone_Url_of_the_site_is_required_, "siteUrl");
             }
 
             ClientContext clonedClientContext = new ClientContext(siteUrl);
@@ -118,6 +119,23 @@ namespace Microsoft.SharePoint.Client
             }
 
             return clonedClientContext;
+        }
+
+        /// <summary>
+        /// Gets a site collection context for the passed web. This site collection client context uses the same credentials
+        /// as the passed client context
+        /// </summary>
+        /// <param name="clientContext">Client context to take the credentials from</param>
+        /// <returns>A site collection client context object for the site collection</returns>
+        public static ClientContext GetSiteCollectionContext(this ClientRuntimeContext clientContext)
+        {
+            Site site = (clientContext as ClientContext).Site;
+            if (!site.IsObjectPropertyInstantiated("Url"))
+            {
+                clientContext.Load(site);
+                clientContext.ExecuteQueryRetry();
+            }
+            return clientContext.Clone(site.Url);
         }
 
         [Serializable]

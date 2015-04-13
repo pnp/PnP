@@ -1,10 +1,11 @@
 #Import-SPOAppPackage
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
 Adds a SharePoint App to a site
 ##Syntax
-    Import-SPOAppPackage [-Path [<String>]] [-Force [<SwitchParameter>]] [-LoadOnly [<SwitchParameter>]] [-Locale [<Int32>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Import-SPOAppPackage [-Path [<String>]] [-Force [<SwitchParameter>]] [-LoadOnly [<SwitchParameter>]] [-Locale [<Int32>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

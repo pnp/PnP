@@ -8,7 +8,7 @@ using File = System.IO.File;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsLifecycle.Install, "SPOSolution")]
-    [CmdletHelp("Installs a sandboxed solution to a site collection")]
+    [CmdletHelp("Installs a sandboxed solution to a site collection", Category = "Sites")]
     public class InstallSolution : SPOCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage="ID of the solution, from the solution manifest")]

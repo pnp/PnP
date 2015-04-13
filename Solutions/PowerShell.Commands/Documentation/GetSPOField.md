@@ -1,10 +1,11 @@
 #Get-SPOField
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
-
+Returns a field from a list or site
 ##Syntax
-    Get-SPOField [-List [<ListPipeBind>]] [-Web [<WebPipeBind>]] [-Identity [<FieldPipeBind>]]
-
+```powershell
+Get-SPOField [-List [<ListPipeBind>]] [-Web [<WebPipeBind>]] [-Identity [<FieldPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

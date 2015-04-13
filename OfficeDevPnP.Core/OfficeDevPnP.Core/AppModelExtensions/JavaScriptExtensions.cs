@@ -19,10 +19,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">semi colon delimited list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsLink(this Web web, string key, string scriptLinks)
+        public static bool AddJsLink(this Web web, string key, string scriptLinks, int sequence = 0)
         {
-            return AddJsLinkImplementation(web, key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)));
+            return AddJsLinkImplementation(web, key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)), sequence);
         }
 
         /// <summary>
@@ -31,12 +32,13 @@ namespace Microsoft.SharePoint.Client
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">semi colon delimited list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsLink(this Site site, string key, string scriptLinks)
+        public static bool AddJsLink(this Site site, string key, string scriptLinks, int sequence = 0)
         {
-            return AddJsLinkImplementation(site, key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)));
+            return AddJsLinkImplementation(site, key, new List<string>(scriptLinks.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)), sequence);
         }
-	
+
 
         /// <summary>
         /// Injects links to javascript files via a adding a custom action to the site
@@ -44,10 +46,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">IEnumerable list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsLink(this Web web, string key, IEnumerable<string> scriptLinks)
+        public static bool AddJsLink(this Web web, string key, IEnumerable<string> scriptLinks, int sequence = 0)
         {
-            return AddJsLinkImplementation(web,key,scriptLinks);
+            return AddJsLinkImplementation(web,key,scriptLinks, sequence);
         }
 
         /// <summary>
@@ -56,13 +59,14 @@ namespace Microsoft.SharePoint.Client
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptLinks">IEnumerable list of links to javascript files</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsLink(this Site site, string key, IEnumerable<string> scriptLinks)
+        public static bool AddJsLink(this Site site, string key, IEnumerable<string> scriptLinks, int sequence = 0)
         {
-            return AddJsLinkImplementation(site, key, scriptLinks);
+            return AddJsLinkImplementation(site, key, scriptLinks, sequence);
         }
 
-        private static bool AddJsLinkImplementation(ClientObject clientObject, string key, IEnumerable<string> scriptLinks)
+        private static bool AddJsLinkImplementation(ClientObject clientObject, string key, IEnumerable<string> scriptLinks, int sequence)
         {
             var ret = false;
             if (clientObject is Web || clientObject is Site)
@@ -88,7 +92,7 @@ headID.appendChild(newScript);", link);
 
                 }
 
-                ret = AddJsBlockImplementation(clientObject, key, scripts.ToString());
+                ret = AddJsBlockImplementation(clientObject, key, scripts.ToString(), sequence);
 
             }
             else
@@ -131,7 +135,7 @@ headID.appendChild(newScript);", link);
                 {
                     Name = key,
                     Location = SCRIPT_LOCATION,
-                    Remove = true
+                    Remove = true,
                 };
                 if (clientObject is Web)
                 {
@@ -156,10 +160,11 @@ headID.appendChild(newScript);", link);
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptBlock">Javascript to be injected</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsBlock(this Web web, string key, string scriptBlock)
+        public static bool AddJsBlock(this Web web, string key, string scriptBlock, int sequence = 0)
         {
-            return AddJsBlockImplementation(web, key, scriptBlock);
+            return AddJsBlockImplementation(web, key, scriptBlock, sequence);
             
         }
 
@@ -169,13 +174,14 @@ headID.appendChild(newScript);", link);
         /// <param name="site">Site to be processed</param>
         /// <param name="key">Identifier (key) for the custom action that will be created</param>
         /// <param name="scriptBlock">Javascript to be injected</param>
+        /// <param name="sequence"></param>
         /// <returns>True if action was ok</returns>
-        public static bool AddJsBlock(this Site site, string key, string scriptBlock)
+        public static bool AddJsBlock(this Site site, string key, string scriptBlock, int sequence = 0)
         {
-            return AddJsBlockImplementation(site, key, scriptBlock);
+            return AddJsBlockImplementation(site, key, scriptBlock, sequence);
         }
 
-        private static bool AddJsBlockImplementation(ClientObject clientObject, string key, string scriptBlock)
+        private static bool AddJsBlockImplementation(ClientObject clientObject, string key, string scriptBlock, int sequence)
         {
             var ret = false;
             if (clientObject is Web || clientObject is Site)
@@ -185,6 +191,7 @@ headID.appendChild(newScript);", link);
                     Name = key,
                     Location = SCRIPT_LOCATION,
                     ScriptBlock = scriptBlock,
+                    Sequence = sequence
                 };
                 if (clientObject is Web)
                 {

@@ -2,11 +2,13 @@
 using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOTaxonomyField")]
+    [CmdletHelp("Adds a taxonomy field to a list or as a site column.", Category = "Fields")]
     public class AddTaxonomyField : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

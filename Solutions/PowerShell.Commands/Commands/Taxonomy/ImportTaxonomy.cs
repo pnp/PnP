@@ -7,7 +7,7 @@ using File = System.IO.File;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOTaxonomy", SupportsShouldProcess = true)]
-    [CmdletHelp("Imports a taxonomy from either a string array or a file")]
+    [CmdletHelp("Imports a taxonomy from either a string array or a file", Category = "Taxonomy")]
     [CmdletExample(Code = @"
 PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'",
            Remarks = "Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'")]
@@ -37,6 +37,11 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(Path))
+            {
+                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+            }
+
             string[] lines;
             if (ParameterSetName == "File")
             {

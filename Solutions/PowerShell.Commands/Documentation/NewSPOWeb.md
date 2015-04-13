@@ -1,10 +1,11 @@
 #New-SPOWeb
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
 Creates a new subweb to the current web
 ##Syntax
-    New-SPOWeb -Title [<String>] -Url [<String>] [-Description [<String>]] [-Locale [<Int32>]] -Template [<String>] [-BreakInheritance [<SwitchParameter>]] [-InheritNavigation [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+New-SPOWeb -Title [<String>] -Url [<String>] [-Description [<String>]] [-Locale [<Int32>]] -Template [<String>] [-BreakInheritance [<SwitchParameter>]] [-InheritNavigation [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters

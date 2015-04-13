@@ -2,10 +2,12 @@
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOWeb")]
+    [CmdletHelp("Returns the current web object", Category = "Webs")]
     public class GetWeb : SPOCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position=0)]

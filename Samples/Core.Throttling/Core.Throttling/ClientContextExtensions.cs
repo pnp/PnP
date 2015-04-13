@@ -43,7 +43,8 @@ namespace Core.Throttling
                 {
                     var response = wex.Response as HttpWebResponse;
                     // Check if request was throttled - http status code 429
-                    if (response != null && response.StatusCode == (HttpStatusCode)429)
+                    // Check is request failed due to server unavailable - http status code 503
+                    if (response != null && (response.StatusCode == (HttpStatusCode)429 || response.StatusCode == (HttpStatusCode)503))
                     {
                         // Output status to console. Should be changed as Debug.WriteLine for production usage.
                         Console.WriteLine(string.Format("CSOM request frequency exceeded usage limits. Sleeping for {0} seconds before retrying.", 

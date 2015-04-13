@@ -1,10 +1,11 @@
 #Add-SPOFile
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-04-02*
 
 Uploads a file to Web
 ##Syntax
-    Add-SPOFile -Path [<String>] -Folder [<String>] [-Checkout [<SwitchParameter>]] [-Approve [<SwitchParameter>]] [-ApproveComment [<String>]] [-Publish [<SwitchParameter>]] [-PublishComment [<String>]] [-UseWebDav [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-
+```powershell
+Add-SPOFile -Path [<String>] -Folder [<String>] [-Checkout [<SwitchParameter>]] [-Approve [<SwitchParameter>]] [-ApproveComment [<String>]] [-Publish [<SwitchParameter>]] [-PublishComment [<String>]] [-UseWebDav [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```
 &nbsp;
 
 ##Parameters
