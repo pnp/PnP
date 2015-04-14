@@ -10,7 +10,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     public abstract class ModelBase<T> : IEquatable<T>
     {
-        public Func<int> HashFormatter { get; set; }
         public Func<T, bool> ObjectComparer { get; set; }
 
         public ModelBase() { }
