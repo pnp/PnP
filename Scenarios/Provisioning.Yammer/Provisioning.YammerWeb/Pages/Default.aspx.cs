@@ -224,6 +224,7 @@ namespace Provisioning.YammerWeb
 
         protected void YammerGroupAssociationType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Fix toggle by making sure group is selected
             if (YammerFeedType.SelectedValue == "Group")
             {
                 if (YammerGroupAssociationType.SelectedValue == "Existing")
