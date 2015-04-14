@@ -80,22 +80,24 @@ Objects Changed
 (Note that not all actions apply to all object types.) 
 
 The GetChanges methods return a ChangeCollection. The items in the collection all inherit from the Change class. This inheritance hierarchy is crucial to understanding the items returned by the query. 
-To process the change using its core type, cast the Change item to the appropriate inheriting type (ChangeWeb, ChangeList, etc.). 
+To process the change using its core type, cast the Change item to the appropriate inheriting type (ChangeWeb, ChangeList, etc.). This core type will provide properties that can be used to retrieve the source object.
+However, be prepared for the object to no longer exists.
 
-```c#
+```cs
 foreach (ChangeItem itm in coll)
 {
   if (change is Microsoft.SharePoint.Client.ChangeItem)
   {
     ChangeItem ci = change as ChangeItem;
-    itemId = ci.ItemId.ToString();
-
-    ListItem li = list.GetItemById(ci.ItemId);
-		clientContext.Load(li);
-		clientContext.ExecuteQuery();
+    
+    // the ci variable will have the Web Id, List Id and List Item Id 
+	  // necessary to read the object.
+		
+    // Be sure to test for object existance 
   }
 }
 ```
+
 
 # To use this sample #
 1. Open the .sln file for the sample in **Visual Studio**.
