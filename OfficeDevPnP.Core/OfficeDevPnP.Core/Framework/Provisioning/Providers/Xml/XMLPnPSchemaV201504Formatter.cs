@@ -371,51 +371,61 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             if (template.Pages != null && template.Pages.Count > 0)
             {
                 var pages = new List<V201504.Page>();
-                foreach(var page in template.Pages)
+                foreach (var page in template.Pages)
                 {
-                    var pageLayout = WIKIPAGELAYOUT.OneColumn;
-                    switch (page.Layout)
+                    var schemaPage = new V201504.Page();
+
+                    if (page.Layout.HasValue)
                     {
-                        case WikiPageLayout.OneColumn:
-                            pageLayout = WIKIPAGELAYOUT.OneColumn;
-                            break;
-                        case WikiPageLayout.OneColumnSideBar:
-                            pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
-                            break;
-                        case WikiPageLayout.TwoColumns:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumns;
-                            break;
-                        case WikiPageLayout.TwoColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
-                            break;
-                        case WikiPageLayout.TwoColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
-                            break;
-                        case WikiPageLayout.ThreeColumns:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumns;
-                            break;
-                        case WikiPageLayout.ThreeColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
-                            break;
-                        case WikiPageLayout.ThreeColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
-                            break;
-                    }
-                    var webparts = (from wp in page.WebParts
-                        select new V201504.WebPart
+
+                        var pageLayout = WIKIPAGELAYOUT.OneColumn;
+                        switch (page.Layout)
                         {
-                            Column = (int) wp.Column,
-                            Row = (int) wp.Row,
-                            Contents = wp.Contents,
-                            Title = wp.Title
-                        }).ToArray();
-                    pages.Add(new V201504.Page()
-                    {
-                        Layout = pageLayout,
-                        Overwrite = page.Overwrite, 
-                        Url = page.Url,
-                        WebParts = webparts
-                    });
+                            case WikiPageLayout.OneColumn:
+                                pageLayout = WIKIPAGELAYOUT.OneColumn;
+                                break;
+                            case WikiPageLayout.OneColumnSideBar:
+                                pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
+                                break;
+                            case WikiPageLayout.TwoColumns:
+                                pageLayout = WIKIPAGELAYOUT.TwoColumns;
+                                break;
+                            case WikiPageLayout.TwoColumnsHeader:
+                                pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
+                                break;
+                            case WikiPageLayout.TwoColumnsHeaderFooter:
+                                pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
+                                break;
+                            case WikiPageLayout.ThreeColumns:
+                                pageLayout = WIKIPAGELAYOUT.ThreeColumns;
+                                break;
+                            case WikiPageLayout.ThreeColumnsHeader:
+                                pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
+                                break;
+                            case WikiPageLayout.ThreeColumnsHeaderFooter:
+                                pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
+                                break;
+                        }
+                        schemaPage.Layout = pageLayout;
+                        schemaPage.Overwrite = page.Overwrite;
+                    }
+                    schemaPage.WebParts = (from wp in page.WebParts
+                                           select new V201504.WebPart
+                                           {
+                                               ColumnSpecified = wp.Column.HasValue,
+                                               Column = wp.Column.HasValue ? (int)wp.Column.Value : 0,
+                                               RowSpecified = wp.Row.HasValue,
+                                               Row = wp.Row.HasValue ? (int)wp.Row.Value : 0,
+                                               Contents = wp.Contents,
+                                               Title = wp.Title,
+                                               Zone = wp.Zone,
+                                               IndexSpecified = wp.Index.HasValue,
+                                               Index = wp.Index.HasValue ? (int)wp.Index.Value : 0
+                                           }).ToArray();
+
+                    schemaPage.Url = page.Url;
+
+                    pages.Add(schemaPage);
                 }
                 result.Pages = pages.ToArray();
             }
@@ -726,46 +736,63 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 foreach (var page in source.Pages)
                 {
-                    var pageLayout = WikiPageLayout.OneColumn;
-                    switch (page.Layout)
+
+                    if (page.LayoutSpecified)
                     {
-                        case WIKIPAGELAYOUT.OneColumn:
-                            pageLayout = WikiPageLayout.OneColumn;
-                            break;
-                        case WIKIPAGELAYOUT.OneColumnSidebar:
-                            pageLayout = WikiPageLayout.OneColumnSideBar;
-                            break;
-                        case WIKIPAGELAYOUT.TwoColumns:
-                            pageLayout = WikiPageLayout.TwoColumns;
-                            break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeader:
-                            pageLayout = WikiPageLayout.TwoColumnsHeader;
-                            break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
-                            pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
-                            break;
-                        case WIKIPAGELAYOUT.ThreeColumns:
-                            pageLayout = WikiPageLayout.ThreeColumns;
-                            break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeader:
-                            pageLayout = WikiPageLayout.ThreeColumnsHeader;
-                            break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
-                            pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
-                            break;
+                        var pageLayout = WikiPageLayout.OneColumn;
+                        switch (page.Layout)
+                        {
+                            case WIKIPAGELAYOUT.OneColumn:
+                                pageLayout = WikiPageLayout.OneColumn;
+                                break;
+                            case WIKIPAGELAYOUT.OneColumnSidebar:
+                                pageLayout = WikiPageLayout.OneColumnSideBar;
+                                break;
+                            case WIKIPAGELAYOUT.TwoColumns:
+                                pageLayout = WikiPageLayout.TwoColumns;
+                                break;
+                            case WIKIPAGELAYOUT.TwoColumnsHeader:
+                                pageLayout = WikiPageLayout.TwoColumnsHeader;
+                                break;
+                            case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
+                                pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
+                                break;
+                            case WIKIPAGELAYOUT.ThreeColumns:
+                                pageLayout = WikiPageLayout.ThreeColumns;
+                                break;
+                            case WIKIPAGELAYOUT.ThreeColumnsHeader:
+                                pageLayout = WikiPageLayout.ThreeColumnsHeader;
+                                break;
+                            case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
+                                pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
+                                break;
+                        }
+
+                        result.Pages.Add(new Model.Page(page.Url, page.Overwrite, pageLayout,
+                            (page.WebParts != null ?
+                                (from wp in page.WebParts
+                                 select new Model.WebPart
+                                 {
+                                     Title = wp.Title,
+                                     Column = (uint)wp.Column,
+                                     Row = (uint)wp.Row,
+                                     Contents = wp.Contents
+
+                                 }).ToList() : null)));
                     }
-
-                    result.Pages.Add(new Model.Page(page.Url, page.Overwrite, pageLayout,
-                        (page.WebParts != null ?
-                            (from wp in page.WebParts
-                             select new Model.WebPart
-                             {
-                                 Title = wp.Title,
-                                 Column = (uint)wp.Column,
-                                 Row = (uint)wp.Row,
-                                 Contents = wp.Contents
-
-                             }).ToList() : null)));
+                    else
+                    {
+                        result.Pages.Add(new Model.Page(page.Url,
+                           (page.WebParts != null ?
+                                (from wp in page.WebParts
+                                 select new Model.WebPart
+                                 {
+                                     Title = wp.Title,
+                                     Zone = wp.Zone,
+                                     Index = (uint)wp.Index,
+                                     Contents = wp.Contents
+                                 }).ToList() : null)));
+                    }
                 }
             }
 

@@ -454,7 +454,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
         
         private int rowField;
         
+        private bool rowFieldSpecified;
+        
         private int columnField;
+        
+        private bool columnFieldSpecified;
+        
+        private string zoneField;
+        
+        private int indexField;
+        
+        private bool indexFieldSpecified;
         
         /// <remarks/>
         public string Contents {
@@ -489,6 +499,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
         }
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool RowSpecified {
+            get {
+                return this.rowFieldSpecified;
+            }
+            set {
+                this.rowFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int Column {
             get {
@@ -496,6 +517,50 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
             }
             set {
                 this.columnField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ColumnSpecified {
+            get {
+                return this.columnFieldSpecified;
+            }
+            set {
+                this.columnFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Zone {
+            get {
+                return this.zoneField;
+            }
+            set {
+                this.zoneField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Index {
+            get {
+                return this.indexField;
+            }
+            set {
+                this.indexField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IndexSpecified {
+            get {
+                return this.indexFieldSpecified;
+            }
+            set {
+                this.indexFieldSpecified = value;
             }
         }
     }
@@ -514,9 +579,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
         
         private bool overwriteField;
         
-        private bool overwriteFieldSpecified;
-        
         private WIKIPAGELAYOUT layoutField;
+        
+        private bool layoutFieldSpecified;
+        
+        public Page() {
+            this.overwriteField = false;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
@@ -542,23 +611,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
         public bool Overwrite {
             get {
                 return this.overwriteField;
             }
             set {
                 this.overwriteField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool OverwriteSpecified {
-            get {
-                return this.overwriteFieldSpecified;
-            }
-            set {
-                this.overwriteFieldSpecified = value;
             }
         }
         
@@ -570,6 +629,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
             }
             set {
                 this.layoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LayoutSpecified {
+            get {
+                return this.layoutFieldSpecified;
+            }
+            set {
+                this.layoutFieldSpecified = value;
             }
         }
     }

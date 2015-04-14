@@ -23,32 +23,63 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 var url = parser.Parse(page.Url);
 
+
                 if (!url.ToLower().StartsWith(web.ServerRelativeUrl.ToLower()))
                 {
                     url = UrlUtility.Combine(web.ServerRelativeUrl, url);
                 }
 
-                if (page.Overwrite)
+                // Wikipage or WebPart Page?
+                if (page.Layout.HasValue)
                 {
-                    var file = web.GetFileByServerRelativeUrl(url);
-                    web.Context.Load(file, f => f.Exists);
-                    web.Context.ExecuteQueryRetry();
-                    if (file.Exists)
+                    var exists = true;
+                    Microsoft.SharePoint.Client.File file = null;
+                    try
+                    {
+                        file = web.GetFileByServerRelativeUrl(url);
+                        web.Context.Load(file);
+                        web.Context.ExecuteQuery();
+                    }
+                    catch (ServerException ex)
+                    {
+                        if (ex.ServerErrorTypeName == "System.IO.FileNotFoundException")
+                        {
+                            exists = false;
+                        }
+                    }
+                    if (exists && page.Overwrite)
                     {
                         file.DeleteObject();
                         web.Context.ExecuteQueryRetry();
+                        web.AddWikiPageByUrl(url);
+                        web.AddLayoutToWikiPage(page.Layout.Value, url);
+                    }
+                    else
+                    {
+                        web.AddWikiPageByUrl(url);
+                        web.AddLayoutToWikiPage(page.Layout.Value, url);
+                    }
+
+                    foreach (var webpart in page.WebParts)
+                    {
+                        WebPartEntity wpEntity = new WebPartEntity();
+                        wpEntity.WebPartTitle = webpart.Title;
+                        wpEntity.WebPartXml = webpart.Contents;
+                        web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
                     }
                 }
-                web.AddWikiPageByUrl(url);
-                web.AddLayoutToWikiPage(page.Layout, url);
-
-                foreach (var webpart in page.WebParts)
+                else
                 {
-                    WebPartEntity wpEntity = new WebPartEntity();
-                    wpEntity.WebPartTitle = webpart.Title;
-                    wpEntity.WebPartXml = webpart.Contents;
+                    foreach (var webpart in page.WebParts)
+                    {
+                        WebPartEntity wpEntity = new WebPartEntity();
+                        wpEntity.WebPartTitle = webpart.Title;
+                        wpEntity.WebPartXml = webpart.Contents;
+                        wpEntity.WebPartZone = webpart.Zone;
+                        wpEntity.WebPartIndex = (int)webpart.Index;
 
-                    web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
+                        web.AddWebPartToWebPartPage(url, wpEntity);
+                    }
                 }
             }
 
