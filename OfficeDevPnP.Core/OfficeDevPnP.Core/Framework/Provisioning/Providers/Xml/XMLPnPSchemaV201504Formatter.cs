@@ -7,10 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http.ModelBinding;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504;
+using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
@@ -365,6 +368,58 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.Files = null;
             }
 
+            if (template.Pages != null && template.Pages.Count > 0)
+            {
+                var pages = new List<V201504.Page>();
+                foreach(var page in template.Pages)
+                {
+                    var pageLayout = WIKIPAGELAYOUT.OneColumn;
+                    switch (page.Layout)
+                    {
+                        case WikiPageLayout.OneColumn:
+                            pageLayout = WIKIPAGELAYOUT.OneColumn;
+                            break;
+                        case WikiPageLayout.OneColumnSideBar:
+                            pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
+                            break;
+                        case WikiPageLayout.TwoColumns:
+                            pageLayout = WIKIPAGELAYOUT.TwoColumns;
+                            break;
+                        case WikiPageLayout.TwoColumnsHeader:
+                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
+                            break;
+                        case WikiPageLayout.TwoColumnsHeaderFooter:
+                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
+                            break;
+                        case WikiPageLayout.ThreeColumns:
+                            pageLayout = WIKIPAGELAYOUT.ThreeColumns;
+                            break;
+                        case WikiPageLayout.ThreeColumnsHeader:
+                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
+                            break;
+                        case WikiPageLayout.ThreeColumnsHeaderFooter:
+                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
+                            break;
+                    }
+                    var webparts = (from wp in page.WebParts
+                        select new V201504.WebPart
+                        {
+                            Column = (int) wp.Column,
+                            Row = (int) wp.Row,
+                            Contents = wp.Contents,
+                            Title = wp.Title
+                        }).ToArray();
+                    pages.Add(new V201504.Page()
+                    {
+                        Layout = pageLayout,
+                        Overwrite = page.Overwrite, 
+                        Url = page.Url,
+                        WebParts = webparts
+                    });
+                }
+                result.Pages = pages.ToArray();
+            }
+
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
             {
@@ -664,6 +719,54 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         Src = file.Src,
                         Folder = file.Folder,
                     });
+            }
+
+            // Translate Pages, if any
+            if (source.Pages != null)
+            {
+                foreach (var page in source.Pages)
+                {
+                    var pageLayout = WikiPageLayout.OneColumn;
+                    switch (page.Layout)
+                    {
+                        case WIKIPAGELAYOUT.OneColumn:
+                            pageLayout = WikiPageLayout.OneColumn;
+                            break;
+                        case WIKIPAGELAYOUT.OneColumnSidebar:
+                            pageLayout = WikiPageLayout.OneColumnSideBar;
+                            break;
+                        case WIKIPAGELAYOUT.TwoColumns:
+                            pageLayout = WikiPageLayout.TwoColumns;
+                            break;
+                        case WIKIPAGELAYOUT.TwoColumnsHeader:
+                            pageLayout = WikiPageLayout.TwoColumnsHeader;
+                            break;
+                        case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
+                            pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
+                            break;
+                        case WIKIPAGELAYOUT.ThreeColumns:
+                            pageLayout = WikiPageLayout.ThreeColumns;
+                            break;
+                        case WIKIPAGELAYOUT.ThreeColumnsHeader:
+                            pageLayout = WikiPageLayout.ThreeColumnsHeader;
+                            break;
+                        case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
+                            pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
+                            break;
+                    }
+
+                    result.Pages.Add(new Model.Page(page.Url, page.Overwrite, pageLayout,
+                        (page.WebParts != null ?
+                            (from wp in page.WebParts
+                             select new Model.WebPart
+                             {
+                                 Title = wp.Title,
+                                 Column = (uint)wp.Column,
+                                 Row = (uint)wp.Row,
+                                 Contents = wp.Contents
+
+                             }).ToList() : null)));
+                }
             }
 
             // Translate ComposedLook, if any

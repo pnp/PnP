@@ -38,6 +38,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template = new ObjectComposedLook().CreateEntities(web, template, creationInfo);
             // Get files
             template = new ObjectFiles().CreateEntities(web, template, creationInfo);
+            // Get Pages
+            template = new ObjectPages().CreateEntities(web, template, creationInfo);
             // Get Property Bag Entries
             template = new ObjectPropertyBagEntry().CreateEntities(web, template, creationInfo);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
@@ -112,6 +114,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Pages
+            new ObjectPages().ProvisionObjects(web, template);
 
             // Custom actions
             new ObjectCustomActions().ProvisionObjects(web, template);

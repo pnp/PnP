@@ -232,6 +232,7 @@
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectComposedLookTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectPagesTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectSiteSecurityTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectPropertyBagEntryTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectListInstanceTests.cs" />
