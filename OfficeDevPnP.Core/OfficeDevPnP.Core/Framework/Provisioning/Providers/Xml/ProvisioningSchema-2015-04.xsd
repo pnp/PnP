@@ -662,7 +662,6 @@
   <xsd:complexType name="WebPart">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
-        '
         Defines a webpart to be added to a wikipage
       </xsd:documentation>
     </xsd:annotation>
@@ -683,22 +682,34 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="Row" type="xsd:int" use="required">
+    <xsd:attribute name="Row" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Required: Defines the row to add the webpart to
+          Optional: Defines the row to add the webpart to
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-
-    <xsd:attribute name="Column" type="xsd:int" use="required">
+    <xsd:attribute name="Column" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Required: Defines the column to add the webpart to
+          Optional: Defines the column to add the webpart to
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-
+    <xsd:attribute name="Zone" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: defines the zone of a webpart page to add the webpart to
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Index" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: defines the index of the webpart in the zone
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="FieldRef">
@@ -855,7 +866,7 @@
   <xsd:complexType name="Page">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
-        Defines a Page element, to describe a page that will be provisioned into the target Site
+        Defines a Page element, to describe a page that will be provisioned into the target Site. If the Layout attribute is defined, the assumption is made that you're referring/creating a wikipage.
       </xsd:documentation>
     </xsd:annotation>
 
@@ -886,21 +897,18 @@
     <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: if set, overwrites an existing page
+          Optional: if set, overwrites an existing page in the case of a wikipage. 
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="Layout" type="WIKIPAGELAYOUT" use="required">
+    <xsd:attribute name="Layout" type="WIKIPAGELAYOUT" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Required: sets the required layout of the wikipage
+          Optional: If defined, child webpart elements need the row and column attributes set
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-
-
-
   </xsd:complexType>
 
   <xsd:complexType name="File">

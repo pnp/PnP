@@ -81,7 +81,8 @@ alert(""Hello!"");
             page.Overwrite = true;
             page.Url = "~site/sitepages/pagetest.aspx";
 
-            WebPart webPart = new WebPart();
+           
+            var webPart = new WebPart();
             webPart.Column = 1;
             webPart.Row = 1;
             webPart.Contents = webpartcontents;
