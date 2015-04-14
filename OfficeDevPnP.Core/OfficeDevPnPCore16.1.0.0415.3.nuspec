@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>OfficeDevPnPCore16</id>
-        <version>1.0.0415.2</version>
+        <version>1.0.0415.3</version>
         <title>OfficeDevPnP.Core</title>
         <authors>Office 365 Developer Patterns &amp; Practices</authors>
         <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
@@ -12,7 +12,7 @@
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <description>Core CSOM extension methods for SharePoint app model development. Will increase productivity of the developers by abstracting complex operations.</description>
         <summary>Core CSOM extension methods for SharePoint app model development.</summary>
-        <releaseNotes>Updated to use latest CSOM package for cloud.</releaseNotes>
+        <releaseNotes>Updated to use latest CSOM package for cloud. Small adjustments to Core component on references.</releaseNotes>
         <copyright>Copyright 2015</copyright>
         <tags>Office AppModel FTCtoCAM Office365</tags>
         <dependencies>
@@ -40,7 +40,6 @@
         </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="lib\net45\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
-        <file src="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" target="lib\net45\OfficeDevPnP.Core.XmlSerializers.dll" />
+        <file src="..\..\..\Users\vesaj\Desktop\Nuget\lib\net45\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
     </files>
 </package>
