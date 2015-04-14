@@ -30,14 +30,14 @@
     <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="Base.Foundation.Columns" MaxLength="255" AllowDeletion="TRUE" />
   </pnp:SiteFields>
   <pnp:ContentTypes>
-    <ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Name="General Project Document" Group="Base Foundation Content Types" Description="General Project Document Content Type" Inherits="true" Version="0">
-      <FieldRefs>
-        <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
-        <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
-        <FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Name="ProjectManager" DisplayName="Project Manager" />
-        <FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Name="DocumentDescription" DisplayName="Document Description" />
-      </FieldRefs>
-    </ContentType>
+    <pnp:ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Name="General Project Document" Group="Base Foundation Content Types" Description="General Project Document Content Type">
+      <pnp:FieldRefs>
+        <pnp:FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" />
+        <pnp:FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" />
+        <pnp:FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" />
+        <pnp:FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" />
+      </pnp:FieldRefs>
+    </pnp:ContentType>
   </pnp:ContentTypes>
   <pnp:Lists>
     <pnp:ListInstance Title="Project Documents" Description="Project Documents are stored here" DocumentTemplate="" OnQuickLaunch="true" TemplateType="101" Url="Lists/ProjectDocuments" EnableVersioning="true">
@@ -80,6 +80,49 @@
     <pnp:File Src="Custom.spcolor" Folder="_catalogs/Theme/15" Overwrite="true" />
     <pnp:File Src="Custom.spfont" Folder="_catalogs/Theme/15" Overwrite="true" />
   </pnp:Files>
+  <pnp:Pages>
+    <pnp:Page Layout="TwoColumns" Overwrite="true" Url="~site/sitepages/demo.aspx">
+      <pnp:WebParts>
+        <pnp:WebPart Column="1" Row="1" Title="Script Editor">
+          <pnp:Contents>
+            <![CDATA[
+            <webParts><webPart xmlns="http://schemas.microsoft.com/WebPart/v3"><metaData><type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" /><importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="ExportMode" type="exportmode">All</property>
+        <property name="HelpUrl" type="string" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="Description" type="string">Allows authors to insert HTML snippets or scripts.</property>
+        <property name="Content" type="string">&lt;script type="text/javascript"&gt;
+function showAlert(){alert("Hello!")};
+&lt;/script&gt;&lt;input type="button" onclick="showAlert();" value="Click me"&gt;</property>
+        <property name="CatalogIconImageUrl" type="string" />
+        <property name="Title" type="string">Script Editor</property>
+        <property name="AllowHide" type="bool">True</property>
+        <property name="AllowMinimize" type="bool">True</property>
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="TitleUrl" type="string" />
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="Width" type="unit" />
+        <property name="Height" type="unit" />
+        <property name="HelpMode" type="helpmode">Navigate</property>
+        <property name="AllowEdit" type="bool">True</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="AllowClose" type="bool">True</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
+            ]]>
+          </pnp:Contents>
+        </pnp:WebPart>
+      </pnp:WebParts>
+    </pnp:Page>
+  </pnp:Pages>
   <pnp:ComposedLook Name="Custom Look" ColorFile="_catalogs/Theme/15/Custom.spcolor" FontFile="_catalogs/Theme/15/Custom.spfont" BackgroundFile="Resources/Themes/Contoso/contosobg.jpg" MasterPage="_catalogs/MasterPage/CustomMaster.master" SiteLogo="SiteAssets/Logo.png" AlternateCSS="Resources/Themes/Contoso/Contoso.css" Version="1" />
   <pnp:Providers>
     <pnp:Provider Enabled="true" Assembly="OfficeDev.PnP.Provisioning.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" Type="OfficeDev.PnP.Provisioning.Providers.FakeProvider">

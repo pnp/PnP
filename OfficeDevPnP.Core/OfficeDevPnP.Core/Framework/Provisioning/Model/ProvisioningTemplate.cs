@@ -22,6 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private CustomActions _customActions = new CustomActions();
         private List<File> _files = new List<File>();
         private List<Provider> _providers = new List<Provider>();
+        private List<Page> _pages = new List<Page>(); 
         private FileConnectorBase connector;
         #endregion
 
@@ -135,6 +136,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return this._providers; }
             private set { this._providers = value; }
+        }
+
+        public List<Page> Pages
+        {
+            get { return this._pages; }
+            private set { this._pages = value; }
         }
 
         public FileConnectorBase Connector
