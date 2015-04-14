@@ -43,7 +43,7 @@ Each of these methods has a parameter of type ChangeQuery, and this type provide
 
 ### ChangeQuery properties ###
 
-The properties of the ChangeQuery object can be separated into two general categories – change actions and objects changed. (Abstracting the properties to a couple of Enumerations would be a nice exercise for some ambitious reader.) 
+The properties of the ChangeQuery object can be separated into two general categories - change actions and objects changed. 
 
 Change Action     
 - Add     
@@ -81,7 +81,7 @@ Objects Changed
 
 The GetChanges methods return a ChangeCollection. The items in the collection all inherit from the Change class. This inheritance hierarchy is crucial to understanding the items returned by the query. 
 To process the change using its core type, cast the Change item to the appropriate inheriting type (ChangeWeb, ChangeList, etc.). This core type will provide properties that can be used to retrieve the source object.
-However, be prepared for the object to no longer exists.
+However, be prepared for the object to no longer exist.
 
 ```cs
 foreach (ChangeItem itm in coll)
@@ -91,9 +91,9 @@ foreach (ChangeItem itm in coll)
     ChangeItem ci = change as ChangeItem;
     
     // the ci variable will have the Web Id, List Id and List Item Id 
-	  // necessary to read the object.
-		
-    // Be sure to test for object existance 
+    // necessary to read the object.
+    
+    // Be sure to test for object existence 
   }
 }
 ```
