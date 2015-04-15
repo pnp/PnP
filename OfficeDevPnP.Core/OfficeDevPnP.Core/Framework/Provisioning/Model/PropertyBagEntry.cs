@@ -13,7 +13,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Value { get; set; }
         public PropertyBagEntry()
         {
-            ObjectComparer = PropertyBagEntryComparer.GetComparer(this);
+            InstanceEquator = PropertyBagEntryEquator.GetEquator(this);
         }
     }
 }

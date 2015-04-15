@@ -10,21 +10,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// </summary>
     public partial class ComposedLook : ModelBase<ComposedLook>
     {
+        public static ComposedLook Empty
+        {
+            get { return ComposedLookBuilder.Build(); }
+        }
+        private class ComposedLookBuilder
+        {
+            private readonly ComposedLook cl;
+            public ComposedLook Cl { get { return cl; } }
+
+            private ComposedLookBuilder()
+            {
+                this.cl = new ComposedLook();
+            }
+
+            public static ComposedLook Build()
+            {
+                return new ComposedLookBuilder().Cl;
+            }
+        }
         static ComposedLook()
         {
-            Empty = new ComposedLook();
         }
         public ComposedLook()
         {
-            ObjectComparer = ComposedLookComparer.GetComparer(this);
-        }
-
-        private static ComposedLook _empty;
-
-        public static ComposedLook Empty
-        {
-            private set { _empty = value; }
-            get { return (_empty); }
+            InstanceEquator = new ComposedLookEquator().GetEquator(this);
         }
 
         #region Properties

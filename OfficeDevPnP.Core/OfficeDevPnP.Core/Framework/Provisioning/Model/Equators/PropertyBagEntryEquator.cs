@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model.Comparers
 {
-    public static class PropertyBagEntryComparer
+    public static class PropertyBagEntryEquator
     {
-        public static Func<PropertyBagEntry, bool> GetComparer(PropertyBagEntry model)
+        public static Func<PropertyBagEntry, bool> GetEquator(PropertyBagEntry model)
         {
             return (other) =>
             {

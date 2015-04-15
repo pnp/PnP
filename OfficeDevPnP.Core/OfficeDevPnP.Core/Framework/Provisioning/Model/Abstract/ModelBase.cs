@@ -10,7 +10,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     public abstract class ModelBase<T> : IEquatable<T>
     {
-        public Func<T, bool> ObjectComparer { get; set; }
+        internal Func<T, bool> InstanceEquator { get; set; }
 
         public ModelBase() { }
         public override int GetHashCode()
@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(T other)
         {
-            return ObjectComparer(other);
+            return InstanceEquator(other);
         }
     }
 }
