@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Management;
+using Microsoft.IdentityModel.Protocols.WSIdentity;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 
@@ -10,24 +12,69 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
         private Web _web;
         private List<TokenDefinition> _tokens = new List<TokenDefinition>();
 
+        public List<TokenDefinition> Tokens
+        {
+            get {  return _tokens;}
+            private set
+            {
+                _tokens = value;
+            }
+        }
+
+        public void AddToken(TokenDefinition tokenDefinition)
+        {
+            
+            this.Tokens.Add(tokenDefinition);
+             // ORDER IS IMPORTANT!
+            var sortedTokens = from t in _tokens
+                               orderby t.GetTokenLength() descending
+                               select t;
+
+            this.Tokens = sortedTokens.ToList();
+        }
+
         public TokenParser(Web web)
+        {
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQueryRetry();
+            }
+            _web = web;
+
+            this.Tokens = new List<TokenDefinition>();
+
+            this.Tokens.Add(new SiteCollectionToken(web));
+            this.Tokens.Add(new SiteToken(web));
+            this.Tokens.Add(new MasterPageCatalogToken(web));
+            this.Tokens.Add(new SiteCollectionTermStoreIdToken(web));
+            this.Tokens.Add(new KeywordsTermStoreIdToken(web));
+
+            // Add lists
+            web.Context.Load(web.Lists, ls => ls.Include(l => l.Id, l => l.Title, l => l.RootFolder.ServerRelativeUrl));
+            web.Context.ExecuteQueryRetry();
+            foreach (var list in web.Lists)
+            {
+                this.Tokens.Add(new ListIdToken(web, list.Title, list.Id));
+                this.Tokens.Add(new ListUrlToken(web, list.Title, list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+            }
+
+            var sortedTokens = from t in _tokens
+                               orderby t.GetTokenLength() descending
+                               select t;
+
+            this.Tokens = sortedTokens.ToList();
+        }
+
+        public void Rebase(Web web)
         {
             _web = web;
 
-          
-            _tokens.Add(new SiteCollectionToken(web));
-            _tokens.Add(new SiteToken(web));
-            _tokens.Add(new MasterPageCatalogToken(web));
-            _tokens.Add(new SiteCollectionTermStoreIdToken(web));
-            _tokens.Add(new ThemeCatalogToken(web));
-            _tokens.Add(new KeywordsTermStoreIdToken(web));
-
-            // ORDER IS IMPORTANT!
-            var sortedTokens = from t in _tokens 
-                               orderby t.GetTokenLength() descending 
-                               select t;
-
-            _tokens = sortedTokens.ToList();
+            foreach (var token in this.Tokens)
+            {
+                token.ClearCache();
+                token.Web = web;
+            }
         }
 
         public string Parse(string input)
