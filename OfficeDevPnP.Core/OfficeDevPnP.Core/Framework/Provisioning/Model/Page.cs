@@ -12,7 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Properties
         public string Url { get; set; }
 
-        public WikiPageLayout? Layout { get; set; }
+        public WikiPageLayout Layout { get; set; }
 
         public bool Overwrite { get; set; }
 
@@ -25,7 +25,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Constructors
-          public Page() { }
+        public Page() { }
 
         public Page(string url, bool overwrite, WikiPageLayout layout, IEnumerable<WebPart> webParts)
         {
@@ -39,15 +39,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             }
         }
 
-        public Page(string url, IEnumerable<WebPart> webParts)
-        {
-            this.Url = url;
-        
-            if (webParts != null)
-            {
-                this.WebParts.AddRange(webParts);
-            }
-        }
 
         #endregion
 

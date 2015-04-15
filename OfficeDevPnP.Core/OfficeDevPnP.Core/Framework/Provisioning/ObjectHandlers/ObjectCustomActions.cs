@@ -8,7 +8,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectCustomActions : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
             var context = web.Context as ClientContext;
             var site = context.Site;
@@ -17,27 +17,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (!web.IsSubSite())
             {
                 var siteCustomActions = template.CustomActions.SiteCustomActions;
-                ProvisionCustomActionImplementation(site, siteCustomActions);
+                ProvisionCustomActionImplementation(site, siteCustomActions,parser);
             }
 
             var webCustomActions = template.CustomActions.WebCustomActions;
-            ProvisionCustomActionImplementation(web, webCustomActions);
+            ProvisionCustomActionImplementation(web, webCustomActions,parser);
         }
 
-        private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
+        private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions, TokenParser parser)
         {
-            TokenParser parser = null;
             Web web = null;
             Site site = null;
             if (parent is Site)
             {
                 site = parent as Site;
-                parser = new TokenParser(site.RootWeb);
+
+                // Switch parser context;
+                parser.Rebase(site.RootWeb);
             }
             else
             {
                 web = parent as Web;
-                parser = new TokenParser(web);
             }
             foreach (var customAction in customActions)
             {
@@ -80,6 +80,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
             }
 
+            // Rebase parser context to current web
+            parser.Rebase(web);
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)

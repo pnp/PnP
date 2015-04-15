@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -43,7 +44,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectCustomActions().ProvisionObjects(ctx.Web, template);
+                TokenParser parser = new TokenParser(ctx.Web);
+                new ObjectCustomActions().ProvisionObjects(ctx.Web, template, parser);
 
                 Assert.IsTrue(ctx.Site.CustomActionExists("Test Custom Action"));
             }

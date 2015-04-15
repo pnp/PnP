@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.UI.WebControls.WebParts;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
@@ -95,7 +96,8 @@ alert(""Hello!"");
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectPages().ProvisionObjects(ctx.Web, template);
+                TokenParser parser = new TokenParser(ctx.Web);
+                new ObjectPages().ProvisionObjects(ctx.Web, template, parser);
 
                 ctx.Load(ctx.Web, w => w.ServerRelativeUrl);
                 ctx.ExecuteQueryRetry();

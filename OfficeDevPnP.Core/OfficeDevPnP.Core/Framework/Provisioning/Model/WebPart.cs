@@ -5,9 +5,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class WebPart : IEquatable<WebPart>
     {
         #region Properties
-        public uint? Row { get; set; }
+        public uint Row { get; set; }
 
-        public uint? Column { get; set; }
+        public uint Column { get; set; }
 
         public string Title { get; set; }
 
@@ -15,7 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public string Zone { get; set; }
 
-        public uint? Index { get; set; }
+        public uint Order { get; set; }
         #endregion
 
         #region Comparison code

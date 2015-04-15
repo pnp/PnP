@@ -16,7 +16,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     public class ObjectField : ObjectHandlerBase
     {
 
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
 
             // if this is a sub site then we're not provisioning fields. Technically this can be done but it's not a recommended practice
@@ -25,7 +25,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            var parser = new TokenParser(web);
             var existingFields = web.Fields;
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
