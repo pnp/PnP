@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 
@@ -10,7 +11,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectContentType : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
             // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())

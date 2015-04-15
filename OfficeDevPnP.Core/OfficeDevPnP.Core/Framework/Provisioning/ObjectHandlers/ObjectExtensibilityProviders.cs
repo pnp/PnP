@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Extensibility;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
@@ -13,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         ExtensibilityManager _extManager = new ExtensibilityManager();
 
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)

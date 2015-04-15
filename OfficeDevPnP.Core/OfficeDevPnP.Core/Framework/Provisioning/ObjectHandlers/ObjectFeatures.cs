@@ -3,12 +3,13 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFeatures : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
             var context = web.Context as ClientContext;
             

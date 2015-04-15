@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
+using System.Web.Configuration;
 using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Field = Microsoft.SharePoint.Client.Field;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
@@ -15,9 +17,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectListInstance : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
         {
-            var parser = new TokenParser(web);
+            //var parser = new TokenParser(web);
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -80,6 +82,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         }
                     }
                     createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
+
+                    parser.AddToken(new ListIdToken(web,list.Title,createdList.Id));
+                    
+                    parser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+
+
                 }
 
             }
@@ -174,9 +182,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Context.ExecuteQueryRetry();
                 }
             }
-
             #endregion
 
+           
             #region FieldRefs
 
             foreach (var listInfo in createdLists)
@@ -466,22 +474,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "~themecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "{themecatalog}");
                 }
                 if (url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "~masterpagecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "{masterpagecatalog}");
                 }
                 if (url.IndexOf(webUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Replace(webUrl, "~site");
+                    return url.Replace(webUrl, "{site}");
                 }
                 else
                 {
                     Uri r = new Uri(webUrl);
                     if (url.IndexOf(r.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
-                        return url.Replace(r.PathAndQuery, "~site");
+                        return url.Replace(r.PathAndQuery, "{site}");
                     }
                 }
 
@@ -489,6 +497,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return url;
             }
         }
+
     }
 }
 
