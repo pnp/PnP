@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -16,11 +17,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
     public class ObjectListInstanceTests
     {
         private string listName;
-
+        private static TokenParser parser;
         [TestInitialize]
         public void Initialize()
         {
             listName = string.Format("Test_{0}", DateTime.Now.Ticks);
+            
         }
         [TestCleanup]
         public void CleanUp()
@@ -50,7 +52,9 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectListInstance().ProvisionObjects(ctx.Web, template);
+                parser = new TokenParser(ctx.Web);
+
+                new ObjectListInstance().ProvisionObjects(ctx.Web, template, parser);
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);
