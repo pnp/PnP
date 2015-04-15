@@ -659,7 +659,7 @@
 
   </xsd:complexType>
 
-  <xsd:complexType name="WebPart">
+  <xsd:complexType name="WikiPageWebPart">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         Defines a webpart to be added to a wikipage
@@ -682,31 +682,55 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="Row" type="xsd:int" use="optional">
+    <xsd:attribute name="Row" type="xsd:int" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: Defines the row to add the webpart to
+          Required: Defines the row to add the webpart to
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="Column" type="xsd:int" use="optional">
+    <xsd:attribute name="Column" type="xsd:int" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: Defines the column to add the webpart to
+          Required: Defines the column to add the webpart to
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="Zone" type="xsd:string" use="optional">
+  </xsd:complexType>
+
+  <xsd:complexType name="WebPartPageWebPart">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a webpart to be added to a wikipage
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:all>
+      <xsd:element name="Contents" type="xsd:string" minOccurs="1" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Required: Defines the webpart XML
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="Title" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: defines the zone of a webpart page to add the webpart to
+          Required: Defines the title of the webpart
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="Index" type="xsd:int" use="optional">
+    <xsd:attribute name="Zone" type="xsd:string" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: defines the index of the webpart in the zone
+          Required: defines the zone of a webpart page to add the webpart to
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Order" type="xsd:int" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Required: defines the index of the webpart in the zone
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -879,7 +903,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="WebPart" type="WebPart"
+            <xsd:element name="WebPart" type="WikiPageWebPart"
                          minOccurs="1" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:complexType>
@@ -897,15 +921,15 @@
     <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: if set, overwrites an existing page in the case of a wikipage. 
+          Optional: if set, overwrites an existing page in the case of a wikipage.
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="Layout" type="WIKIPAGELAYOUT" use="optional">
+    <xsd:attribute name="Layout" type="WIKIPAGELAYOUT" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          Optional: If defined, child webpart elements need the row and column attributes set
+          Required: Defines the layout of the wikipage
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -917,6 +941,22 @@
         Defines a File element, to describe a file that will be provisioned into the target Site
       </xsd:documentation>
     </xsd:annotation>
+
+    <xsd:all>
+      <xsd:element name="WebParts" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The webparts to add to the page, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="WebPart" type="WebPartPageWebPart"
+                         minOccurs="1" maxOccurs="unbounded" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
 
     <xsd:attribute name="Src" type="xsd:string" use="required">
       <xsd:annotation>
@@ -942,6 +982,13 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="Create" type="xsd:boolean" use="optional" default="true">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: if set to false the file will not be created. Use to add webparts to existing webpart pages.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="ComposedLook">
