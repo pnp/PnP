@@ -297,6 +297,8 @@
     <Compile Include="Framework\Provisioning\Model\Features.cs" />
     <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
     <Compile Include="Framework\Provisioning\Model\Field.cs" />
+    <Compile Include="Framework\Provisioning\Model\WebPart.cs" />
+    <Compile Include="Framework\Provisioning\Model\Page.cs" />
     <Compile Include="Framework\Provisioning\Model\File.cs" />
     <Compile Include="Framework\Provisioning\Model\ListInstance.cs" />
     <Compile Include="Framework\Provisioning\Model\PropertyBagEntry.cs" />
@@ -311,6 +313,7 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPages.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectFiles.cs" />

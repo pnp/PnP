@@ -42,6 +42,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
         
         private File[] filesField;
         
+        private Page[] pagesField;
+        
         private ComposedLook composedLookField;
         
         private Provider[] providersField;
@@ -143,6 +145,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
             }
             set {
                 this.filesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Page[] Pages {
+            get {
+                return this.pagesField;
+            }
+            set {
+                this.pagesField = value;
             }
         }
         
@@ -425,6 +438,241 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201504 {
                 this.versionFieldSpecified = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/04/ProvisioningSchema")]
+    public partial class WebPart {
+        
+        private string contentsField;
+        
+        private string titleField;
+        
+        private int rowField;
+        
+        private bool rowFieldSpecified;
+        
+        private int columnField;
+        
+        private bool columnFieldSpecified;
+        
+        private string zoneField;
+        
+        private int indexField;
+        
+        private bool indexFieldSpecified;
+        
+        /// <remarks/>
+        public string Contents {
+            get {
+                return this.contentsField;
+            }
+            set {
+                this.contentsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Title {
+            get {
+                return this.titleField;
+            }
+            set {
+                this.titleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Row {
+            get {
+                return this.rowField;
+            }
+            set {
+                this.rowField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool RowSpecified {
+            get {
+                return this.rowFieldSpecified;
+            }
+            set {
+                this.rowFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Column {
+            get {
+                return this.columnField;
+            }
+            set {
+                this.columnField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ColumnSpecified {
+            get {
+                return this.columnFieldSpecified;
+            }
+            set {
+                this.columnFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Zone {
+            get {
+                return this.zoneField;
+            }
+            set {
+                this.zoneField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Index {
+            get {
+                return this.indexField;
+            }
+            set {
+                this.indexField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool IndexSpecified {
+            get {
+                return this.indexFieldSpecified;
+            }
+            set {
+                this.indexFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/04/ProvisioningSchema")]
+    public partial class Page {
+        
+        private WebPart[] webPartsField;
+        
+        private string urlField;
+        
+        private bool overwriteField;
+        
+        private WIKIPAGELAYOUT layoutField;
+        
+        private bool layoutFieldSpecified;
+        
+        public Page() {
+            this.overwriteField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public WebPart[] WebParts {
+            get {
+                return this.webPartsField;
+            }
+            set {
+                this.webPartsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Url {
+            get {
+                return this.urlField;
+            }
+            set {
+                this.urlField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool Overwrite {
+            get {
+                return this.overwriteField;
+            }
+            set {
+                this.overwriteField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public WIKIPAGELAYOUT Layout {
+            get {
+                return this.layoutField;
+            }
+            set {
+                this.layoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LayoutSpecified {
+            get {
+                return this.layoutFieldSpecified;
+            }
+            set {
+                this.layoutFieldSpecified = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/04/ProvisioningSchema")]
+    public enum WIKIPAGELAYOUT {
+        
+        /// <remarks/>
+        OneColumn,
+        
+        /// <remarks/>
+        OneColumnSidebar,
+        
+        /// <remarks/>
+        TwoColumns,
+        
+        /// <remarks/>
+        TwoColumnsHeader,
+        
+        /// <remarks/>
+        TwoColumnsHeaderFooter,
+        
+        /// <remarks/>
+        ThreeColumns,
+        
+        /// <remarks/>
+        ThreeColumnsHeader,
+        
+        /// <remarks/>
+        ThreeColumnsHeaderFooter,
     }
     
     /// <remarks/>

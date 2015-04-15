@@ -30,14 +30,14 @@
     <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="My Columns " MaxLength="255" AllowDeletion="TRUE" />
   </pnp:SiteFields>
   <pnp:ContentTypes>
-    <ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Name="General Project Document" Group="Base Foundation Content Types" Description="General Project Document Content Type" Inherits="true" Version="0">
-      <FieldRefs>
-        <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
-        <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
-        <FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Name="ProjectManager" DisplayName="Project Manager" />
-        <FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Name="DocumentDescription" DisplayName="Document Description" />
-      </FieldRefs>
-    </ContentType>
+    <pnp:ContentType ID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Name="General Project Document" Group="Base Foundation Content Types" Description="General Project Document Content Type">
+      <pnp:FieldRefs>
+        <pnp:FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" />
+        <pnp:FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" />
+        <pnp:FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" />
+        <pnp:FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" />
+      </pnp:FieldRefs>
+    </pnp:ContentType>
   </pnp:ContentTypes>
   <pnp:Lists>
     <pnp:ListInstance Title="Project Documents" Description="Project Documents are stored here" DocumentTemplate="" TemplateType="101" Url="Lists/ProjectDocuments" EnableVersioning="true">

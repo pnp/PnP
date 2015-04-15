@@ -191,6 +191,20 @@
           </xsd:complexType>
         </xsd:element>
 
+        <xsd:element name="Pages" minOccurs="0" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The Pages to provision into the target Site through the Provisioning Template, optional element
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Page" type="Page"
+                           minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+
         <xsd:element name="ComposedLook" type="ComposedLook" minOccurs="0" maxOccurs="1">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -488,7 +502,7 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      
+
       <xsd:element name="DocumentTemplate" minOccurs="0" maxOccurs="1">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
@@ -562,7 +576,7 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    
+
     <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -643,6 +657,59 @@
       </xsd:annotation>
     </xsd:attribute>
 
+  </xsd:complexType>
+
+  <xsd:complexType name="WebPart">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a webpart to be added to a wikipage
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:all>
+      <xsd:element name="Contents" type="xsd:string" minOccurs="1" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Required: Defines the webpart XML
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+    <xsd:attribute name="Title" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Required: Defines the title of the webpart
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Row" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: Defines the row to add the webpart to
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Column" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: Defines the column to add the webpart to
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Zone" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: defines the zone of a webpart page to add the webpart to
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Index" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: defines the index of the webpart in the zone
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="FieldRef">
@@ -794,6 +861,54 @@
       </xsd:annotation>
     </xsd:attribute>
 
+  </xsd:complexType>
+
+  <xsd:complexType name="Page">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a Page element, to describe a page that will be provisioned into the target Site. If the Layout attribute is defined, the assumption is made that you're referring/creating a wikipage.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:all>
+      <xsd:element name="WebParts" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The webparts to add to the page, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="WebPart" type="WebPart"
+                         minOccurs="1" maxOccurs="unbounded" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:all>
+
+    <xsd:attribute name="Url" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Required: The server relative url of the page, supports tokens
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Overwrite" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: if set, overwrites an existing page in the case of a wikipage. 
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="Layout" type="WIKIPAGELAYOUT" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Optional: If defined, child webpart elements need the row and column attributes set
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
   </xsd:complexType>
 
   <xsd:complexType name="File">
@@ -960,6 +1075,24 @@
     </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:pattern value="(\{)?[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}(\})?"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="WIKIPAGELAYOUT">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        The column layout of a wiki page
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="OneColumn" />
+      <xsd:enumeration value="OneColumnSidebar" />
+      <xsd:enumeration value="TwoColumns" />
+      <xsd:enumeration value="TwoColumnsHeader" />
+      <xsd:enumeration value="TwoColumnsHeaderFooter" />
+      <xsd:enumeration value="ThreeColumns" />
+      <xsd:enumeration value="ThreeColumnsHeader" />
+      <xsd:enumeration value="ThreeColumnsHeaderFooter" />
     </xsd:restriction>
   </xsd:simpleType>
 

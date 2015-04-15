@@ -441,3 +441,76 @@ csomPeoplePicker.MinimalCharactersBeforeSearching = 2;
 // Hookup everything
 csomPeoplePicker.Initialize();
 ```
+# APPENDIX E: INCLUDING A PLACEHOLDER ATTRIBUTE TO THE PEOPLEPICKER (BY VINCENT VERBEEK) #
+The regular peoplepicker uses javascript and css to resemble the look and feel of a SharePoint OOTB people picker. There could be scenarios where you want to put a placeholder text in the peoplepicker to better inform your users as to what will be done with their entry. This sample will show the required modifications in order to achieve this.
+
+**STEP 1:** Add the placeholder attribute and modify the width of the textbox accordingly:
+
+```ASPX
+<div id="divSiteOwner" class="cam-peoplepicker-userlookup ms-fullWidth">
+    <span id="spanSiteOwner"></span>
+    <asp:TextBox ID="inputSiteOwner" runat="server" CssClass="cam-peoplepicker-edit" Width="155" placeholder="Who will manage this site?"></asp:TextBox>
+</div>
+<div id="divSiteOwnerSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+<asp:HiddenField ID="hdnSiteOwner" runat="server" />
+```
+
+**STEP 2.1:** Since the value of the selected user isnt stored inside the textbox, the placeholder text does not dissapear after a user has been selected. In order to change this, we need to attach a change event to the hiddenfield and have that change event modify the placeholder text. Open the app.js file and include the following line of code in the $(document).ready function:
+```JavaScript
+//Make sure the change function is executed when the value of the hidden field changes
+$('#hdnSiteOwner').change(changeSiteOwnerPlaceholder);
+```
+
+**STEP 2.2:** The function changeSiteOwnerPlaceholder alters the placeholder text if the hiddenfield has a value.
+```JavaScript
+/* Hide the placeholder text when a site owner is selected */
+function changeSiteOwnerPlaceholder() {
+    if (document.getElementById("hdnSiteOwner").value != '[]')
+    {
+        $('#inputSiteOwner').attr('placeholder', '');
+    }
+    else
+    {
+        $('#inputSiteOwner').attr('placeholder', 'Who will manage this site?');
+    }
+}
+```
+
+**STEP 3** By default, hidden fields do not fire change events. This is because the change is not done by a user, but rather through code. To make sure the change event does fire whenever a user is added or removed, we need to alter the peoplepickercontrol.js file and specifically the methods RemoveResolvedUser, RecipientsSelected and DeleteProcessedUser and fire the change() event from there.
+```JavaScript
+// Remove resolved user from the array and updates the hidden field control with a JSON string
+PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
+    var newResolvedUsers = [];
+    for (var i = 0; i < this._ResolvedUsers.length; i++) {
+        var resolvedLookupValue = this._ResolvedUsers[i].Login ? this._ResolvedUsers[i].Login : this._ResolvedUsers[i].LookupId;
+        if (resolvedLookupValue != lookupValue) {
+            newResolvedUsers.push(this._ResolvedUsers[i]);
+        }
+    }
+    this._ResolvedUsers = newResolvedUsers;
+    this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
+    this.PeoplePickerData.change();
+}
+
+// Update the people picker control to show the newly added user
+PeoplePicker.prototype.RecipientSelected = function(login, name, email) {
+    this.HideSelectionBox();
+    // Push new resolved user to list
+    this.PushResolvedUser(this.ResolvedUser(login, name, email));
+    // Update the resolved user display 
+    this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
+    // Prepare the edit control for a second user selection
+    this.PeoplePickerEdit.val('');
+    this.PeoplePickerEdit.focus();
+    this.PeoplePickerData.change();
+}
+
+// Delete a resolved user
+PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
+    this.RemoveResolvedUser(lookupValue);
+    this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
+    this.PeoplePickerEdit.focus();
+    this.PeoplePickerData.change();
+}
+```
+
