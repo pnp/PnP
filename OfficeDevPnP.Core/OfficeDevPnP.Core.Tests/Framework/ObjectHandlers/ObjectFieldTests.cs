@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web);
+                TokenParser parser = new TokenParser(ctx.Web,template);
                 new ObjectField().ProvisionObjects(ctx.Web, template, parser);
 
                 var f = ctx.Web.GetFieldById<FieldText>(fieldId);

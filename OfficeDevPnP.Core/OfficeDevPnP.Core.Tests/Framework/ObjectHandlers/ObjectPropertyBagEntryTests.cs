@@ -46,7 +46,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web);
+                TokenParser parser = new TokenParser(ctx.Web, template);
                 new ObjectPropertyBagEntry().ProvisionObjects(ctx.Web, template, parser);
 
                 var value = ctx.Web.GetPropertyBagValueString(key, "default");

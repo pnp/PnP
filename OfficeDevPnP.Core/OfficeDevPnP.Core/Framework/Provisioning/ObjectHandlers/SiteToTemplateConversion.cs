@@ -100,7 +100,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
-            tokenParser = new TokenParser(web);
+            tokenParser = new TokenParser(web,template);
 
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template, tokenParser);

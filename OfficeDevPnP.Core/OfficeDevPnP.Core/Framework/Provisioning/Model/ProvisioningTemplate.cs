@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class ProvisioningTemplate : IEquatable<ProvisioningTemplate>
     {
         #region private members
+        private Dictionary<string,string> _parameters = new Dictionary<string, string>(); 
         private List<Field> _siteFields = new List<Field>();
         private List<ContentType> _contentTypes = new List<ContentType>();
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
@@ -39,6 +40,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Any parameters that can be used throughout the template
+        /// </summary>
+        public Dictionary<string, string> Parameters
+        {
+            get { return _parameters; }
+            private set { _parameters = value; }
+        }
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>

@@ -73,7 +73,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web);
+                TokenParser parser = new TokenParser(ctx.Web, template);
                 new ObjectFiles().ProvisionObjects(ctx.Web, template, parser);
 
 
