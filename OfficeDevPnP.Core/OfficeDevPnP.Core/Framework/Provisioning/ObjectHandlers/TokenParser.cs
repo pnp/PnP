@@ -86,36 +86,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public static string Parse(string input)
-        {
-            if (!string.IsNullOrEmpty(input))
-            {
-                foreach (var token in _tokens)
-                {
-                    foreach (var regex in token.GetRegex())
-                    {
-                        if (regex.IsMatch(input))
-                        {
-                            input = regex.Replace(input, token.GetReplaceValue());
-                        }
-                    }
-                }
-            }
-            return input;
-        }
-
         public static string ToParsedString(this string input)
         {
             if (!string.IsNullOrEmpty(input))
             {
                 foreach (var token in _tokens)
                 {
-                    foreach (var regex in token.GetRegex())
+                    foreach (var regex in token.GetRegex().Where(regex => regex.IsMatch(input)))
                     {
-                        if (regex.IsMatch(input))
-                        {
-                            input = regex.Replace(input, token.GetReplaceValue());
-                        }
+                        input = regex.Replace(input, token.GetReplaceValue());
                     }
                 }
             }
