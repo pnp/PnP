@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model.Comparers
 {
-    public class ComposedLookEquator
+    public class ComposedLookEquator : IEqualityComparer<ComposedLook>
     {
         public Func<ComposedLook, bool> GetEquator(ComposedLook cl)
         {
@@ -21,6 +21,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model.Comparers
                                 cl.SiteLogo == other.SiteLogo &&
                                 cl.Version == other.Version);
             };
+        }
+
+        public bool Equals(ComposedLook x, ComposedLook y)
+        {
+            return x.Equals(y);
+        }
+
+        public int GetHashCode(ComposedLook obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Value { get; set; }
         public PropertyBagEntry()
         {
-            InstanceEquator = PropertyBagEntryEquator.GetEquator(this);
+            InstanceEquator = new PropertyBagEntryEquator().GetEquator(this);
         }
     }
 }
