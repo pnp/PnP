@@ -4,6 +4,7 @@ using System.Web.Management;
 using Microsoft.IdentityModel.Protocols.WSIdentity;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.ObjectHandlers
 {
@@ -33,7 +34,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             this.Tokens = sortedTokens.ToList();
         }
 
-        public TokenParser(Web web)
+        public TokenParser(Web web, ProvisioningTemplate template )
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
@@ -49,6 +50,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             this.Tokens.Add(new MasterPageCatalogToken(web));
             this.Tokens.Add(new SiteCollectionTermStoreIdToken(web));
             this.Tokens.Add(new KeywordsTermStoreIdToken(web));
+            this.Tokens.Add(new ThemeCatalogToken(web));
 
             // Add lists
             web.Context.Load(web.Lists, ls => ls.Include(l => l.Id, l => l.Title, l => l.RootFolder.ServerRelativeUrl));
@@ -57,6 +59,12 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             {
                 this.Tokens.Add(new ListIdToken(web, list.Title, list.Id));
                 this.Tokens.Add(new ListUrlToken(web, list.Title, list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+            }
+
+            // Add parameters
+            foreach (var parameter in template.Parameters)
+            {
+                this.Tokens.Add(new ParameterToken(web, parameter.Key,parameter.Value));
             }
 
             var sortedTokens = from t in _tokens
