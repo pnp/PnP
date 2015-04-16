@@ -96,7 +96,7 @@ alert(""Hello!"");
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web);
+                TokenParser parser = new TokenParser(ctx.Web, template);
                 new ObjectPages().ProvisionObjects(ctx.Web, template, parser);
 
                 ctx.Load(ctx.Web, w => w.ServerRelativeUrl);
