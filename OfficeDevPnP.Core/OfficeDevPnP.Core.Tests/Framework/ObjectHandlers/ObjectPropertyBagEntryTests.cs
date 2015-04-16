@@ -46,8 +46,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web, template);
-                new ObjectPropertyBagEntry().ProvisionObjects(ctx.Web, template, parser);
+                TokenParser.Initialize(ctx.Web, template);
+                new ObjectPropertyBagEntry().ProvisionObjects(ctx.Web, template);
 
                 var value = ctx.Web.GetPropertyBagValueString(key, "default");
                 Assert.IsTrue(value == "Unit Test");

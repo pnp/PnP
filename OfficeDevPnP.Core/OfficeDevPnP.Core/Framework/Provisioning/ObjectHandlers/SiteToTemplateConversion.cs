@@ -9,8 +9,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     internal class SiteToTemplateConversion
     {
-        private static TokenParser tokenParser;
-
         /// <summary>
         /// Actual implementation of extracting configuration from existing site.
         /// </summary>
@@ -100,40 +98,39 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
-            tokenParser = new TokenParser(web,template);
-
+            TokenParser.Initialize(web, template);
             // Site Security
-            new ObjectSiteSecurity().ProvisionObjects(web, template, tokenParser);
+            new ObjectSiteSecurity().ProvisionObjects(web, template);
 
             // Features
-            new ObjectFeatures().ProvisionObjects(web, template, tokenParser);
+            new ObjectFeatures().ProvisionObjects(web, template);
 
             // Site Fields
-            new ObjectField().ProvisionObjects(web, template, tokenParser);
+            new ObjectField().ProvisionObjects(web, template);
 
             // Content Types
-            new ObjectContentType().ProvisionObjects(web, template, tokenParser);
+            new ObjectContentType().ProvisionObjects(web, template);
 
             // Lists
-            new ObjectListInstance().ProvisionObjects(web, template, tokenParser);
+            new ObjectListInstance().ProvisionObjects(web, template);
 
             // Files
-            new ObjectFiles().ProvisionObjects(web, template, tokenParser);
+            new ObjectFiles().ProvisionObjects(web, template);
 
             // Pages
-            new ObjectPages().ProvisionObjects(web, template, tokenParser);
+            new ObjectPages().ProvisionObjects(web, template);
 
             // Custom actions
-            new ObjectCustomActions().ProvisionObjects(web, template, tokenParser);
+            new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Composite look 
-            new ObjectComposedLook().ProvisionObjects(web, template, tokenParser);
+            new ObjectComposedLook().ProvisionObjects(web, template);
 
             // Property Bag Entries
-            new ObjectPropertyBagEntry().ProvisionObjects(web, template, tokenParser);
+            new ObjectPropertyBagEntry().ProvisionObjects(web, template);
 
             // Extensibility Provider CallOut the last thing we do.
-            new ObjectExtensibilityProviders().ProvisionObjects(web, template, tokenParser);
+            new ObjectExtensibilityProviders().ProvisionObjects(web, template);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.ID != null ? template.ID : "");
             web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");

@@ -17,7 +17,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectListInstance : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             //var parser = new TokenParser(web);
 
@@ -44,14 +44,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.TemplateType = list.TemplateType;
                     listCreate.Title = list.Title;
                     listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
-                    listCreate.Url = parser.Parse(list.Url);
+                    listCreate.Url = list.Url.ToParsedString();
                     listCreate.TemplateFeatureId = list.TemplateFeatureID;
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
                     if (!String.IsNullOrEmpty(list.DocumentTemplate))
                     {
-                        createdList.DocumentTemplateUrl = parser.Parse(list.DocumentTemplate);
+                        createdList.DocumentTemplateUrl = list.DocumentTemplate.ToParsedString();
                     }
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
@@ -83,9 +83,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
-                    parser.AddToken(new ListIdToken(web,list.Title,createdList.Id));
+                    TokenParser.AddToken(new ListIdToken(web,list.Title,createdList.Id));
                     
-                    parser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+                    TokenParser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
 
 
                 }
@@ -98,7 +98,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Handle site columns that refer to lists that didn't exist yet
             foreach (var listInfo in createdLists)
             {
-                ParsePostponedSiteColumns(template.SiteFields, listInfo.CreatedList.Id, parser.Parse(listInfo.ListInstance.Url), web, parser);
+                ParsePostponedSiteColumns(template.SiteFields, listInfo.CreatedList.Id, listInfo.ListInstance.Url.ToParsedString(), web);
             }
 
 
@@ -172,7 +172,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 if (createField)
                                 {
-                                    var fieldXml = parser.Parse(field.SchemaXml);
+                                    var fieldXml = field.SchemaXml.ToParsedString();
                                     listInfo.CreatedList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                                 }
                             }
@@ -298,7 +298,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             public ListInstance ListInstance { get; set; }
         }
 
-        private void ParsePostponedSiteColumns(List<Model.Field> fields, Guid listId, string listUrl, Web web, TokenParser parser)
+        private void ParsePostponedSiteColumns(List<Model.Field> fields, Guid listId, string listUrl, Web web)
         {
             foreach (var field in fields)
             {
@@ -335,7 +335,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         if (!existingFieldIds.Any())
                         {
-                            var fieldXml = parser.Parse(document.ToString());
+                            var fieldXml = document.ToString().ToParsedString();
                             web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                             web.Context.ExecuteQueryRetry();
                         }

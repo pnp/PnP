@@ -11,7 +11,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectContentType : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
@@ -55,7 +55,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void CreateContentType(Web web, ContentType ct, List<Guid> skippedFields)
         {
-            var createdCT = web.CreateContentType(ct.Name, ct.Description, ct.ID, ct.Group);
+            var name = ct.Name.ToParsedString();
+            var description = ct.Description.ToParsedString();
+            var id = ct.ID.ToParsedString();
+            var group = ct.Group.ToParsedString();
+
+            var createdCT = web.CreateContentType(name, description, id, group);
             foreach (var fieldRef in ct.FieldRefs)
             {
                 if (skippedFields.FindIndex(g => g == fieldRef.ID) == -1)

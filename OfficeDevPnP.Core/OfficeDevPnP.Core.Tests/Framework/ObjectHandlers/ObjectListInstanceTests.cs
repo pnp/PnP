@@ -17,7 +17,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
     public class ObjectListInstanceTests
     {
         private string listName;
-        private static TokenParser parser;
+       
         [TestInitialize]
         public void Initialize()
         {
@@ -52,9 +52,9 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                parser = new TokenParser(ctx.Web, template);
+                TokenParser.Initialize(ctx.Web, template);
 
-                new ObjectListInstance().ProvisionObjects(ctx.Web, template, parser);
+                new ObjectListInstance().ProvisionObjects(ctx.Web, template);
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);

@@ -14,7 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         ExtensibilityManager _extManager = new ExtensibilityManager();
 
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)

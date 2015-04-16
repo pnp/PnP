@@ -3,17 +3,18 @@ using System.Linq;
 using System.Web.Management;
 using Microsoft.IdentityModel.Protocols.WSIdentity;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
-namespace OfficeDevPnP.Core.Framework.ObjectHandlers
+namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class TokenParser
+    public static class TokenParser
     {
-        private Web _web;
-        private List<TokenDefinition> _tokens = new List<TokenDefinition>();
+        public static Web _web;
+        private static List<TokenDefinition> _tokens = new List<TokenDefinition>();
 
-        public List<TokenDefinition> Tokens
+        public static List<TokenDefinition> Tokens
         {
             get {  return _tokens;}
             private set
@@ -22,81 +23,78 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             }
         }
 
-        public void AddToken(TokenDefinition tokenDefinition)
+        public static void AddToken(TokenDefinition tokenDefinition)
         {
             
-            this.Tokens.Add(tokenDefinition);
+            _tokens.Add(tokenDefinition);
              // ORDER IS IMPORTANT!
             var sortedTokens = from t in _tokens
                                orderby t.GetTokenLength() descending
                                select t;
 
-            this.Tokens = sortedTokens.ToList();
+            _tokens = sortedTokens.ToList();
         }
 
-        public TokenParser(Web web, ProvisioningTemplate template )
+        public static void Initialize(Web web, ProvisioningTemplate template)
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
-                web.Context.Load(web, w => w.ServerRelativeUrl);
+               web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQueryRetry();
             }
             _web = web;
 
-            this.Tokens = new List<TokenDefinition>();
+            _tokens = new List<TokenDefinition>();
 
-            this.Tokens.Add(new SiteCollectionToken(web));
-            this.Tokens.Add(new SiteToken(web));
-            this.Tokens.Add(new MasterPageCatalogToken(web));
-            this.Tokens.Add(new SiteCollectionTermStoreIdToken(web));
-            this.Tokens.Add(new KeywordsTermStoreIdToken(web));
-            this.Tokens.Add(new ThemeCatalogToken(web));
+            _tokens.Add(new SiteCollectionToken(web));
+            _tokens.Add(new SiteToken(web));
+            _tokens.Add(new MasterPageCatalogToken(web));
+            _tokens.Add(new SiteCollectionTermStoreIdToken(web));
+            _tokens.Add(new KeywordsTermStoreIdToken(web));
+            _tokens.Add(new ThemeCatalogToken(web));
 
             // Add lists
             web.Context.Load(web.Lists, ls => ls.Include(l => l.Id, l => l.Title, l => l.RootFolder.ServerRelativeUrl));
             web.Context.ExecuteQueryRetry();
             foreach (var list in web.Lists)
             {
-                this.Tokens.Add(new ListIdToken(web, list.Title, list.Id));
-                this.Tokens.Add(new ListUrlToken(web, list.Title, list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+                _tokens.Add(new ListIdToken(web, list.Title, list.Id));
+                _tokens.Add(new ListUrlToken(web, list.Title, list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length + 1)));
             }
 
             // Add parameters
             foreach (var parameter in template.Parameters)
             {
-                this.Tokens.Add(new ParameterToken(web, parameter.Key,parameter.Value));
+                _tokens.Add(new ParameterToken(web, parameter.Key, parameter.Value));
             }
 
             var sortedTokens = from t in _tokens
                                orderby t.GetTokenLength() descending
                                select t;
 
-            this.Tokens = sortedTokens.ToList();
+            _tokens = sortedTokens.ToList();
         }
 
-        public void Rebase(Web web)
+        public static void Rebase(Web web)
         {
             _web = web;
 
-            foreach (var token in this.Tokens)
+            foreach (var token in _tokens)
             {
                 token.ClearCache();
                 token.Web = web;
             }
         }
 
-        public string Parse(string input)
+        public static string ToParsedString(this string input)
         {
             if (!string.IsNullOrEmpty(input))
             {
                 foreach (var token in _tokens)
                 {
-                    foreach (var regex in token.GetRegex())
+                    foreach (var regex in token.GetRegex().Where(regex => regex.IsMatch(input)))
                     {
-                        if (regex.IsMatch(input))
-                        {
-                            input = regex.Replace(input, token.GetReplaceValue());
-                        }
+                        input = regex.Replace(input, token.GetReplaceValue());
                     }
                 }
             }
