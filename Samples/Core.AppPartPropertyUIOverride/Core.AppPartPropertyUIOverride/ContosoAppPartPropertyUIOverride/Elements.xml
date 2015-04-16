@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ClientWebPart Name="ContosoAppPartPropertyUIOverride" Title="Contoso.AppPartPropertyUIOverride Example" Description="An example App Part that shows the techniques required to override the App Part property UI." DefaultWidth="500" DefaultHeight="200">
+
+    <!-- Content element identifies the location of the page that will render inside the client web part
+         Properties are referenced on the query string using the pattern _propertyName_
+         Example: Src="~appWebUrl/Pages/ClientWebPart1.aspx?Property1=_property1_" -->
+    <Content Type="html" Src="~remoteAppUrl/Pages/AppPartPropertyUIOverride.aspx?{StandardTokens}&amp;BooleanProperty1=_BooleanProperty1_&amp;EnumProperty1=_EnumProperty1_&amp;IntegerProperty1=_IntegerProperty1_&amp;StringProperty1=_StringProperty1_&amp;HostWebListTitleHiddenTextBox=_HostWebListTitleHiddenTextBox_&amp;BooleanProperty2=_BooleanProperty2_" />
+
+    <!-- Define properties in the Properties element.
+         Remember to put Property Name on the Src attribute of the Content element above. -->
+    <Properties>
+
+      <Property
+        Name="BooleanProperty1"
+        Type="boolean"
+        WebDisplayName="Boolean Property 1"
+        WebDescription="If this checkbox is checked, it means true."
+        WebCategory="Custom Category 1"
+        DefaultValue="false"
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" />
+
+      <Property
+        Name="EnumProperty1"
+        Type="enum"
+        WebDisplayName="Enum Property 1"
+        WebDescription="Select a value in the drop down list."
+        WebCategory="Custom Category 1"
+        DefaultValue="EnumValue1"
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" >
+        <EnumItems>
+          <EnumItem Value="EnumValue1" WebDisplayName="EnumValue1"/>
+          <EnumItem Value="EnumValue2" WebDisplayName="EnumValue2"/>
+        </EnumItems>
+      </Property>
+
+      <Property
+        Name="IntegerProperty1"
+        Type="int"
+        WebDisplayName="Integer Property 1"
+        WebDescription="Type a number into this field."
+        WebCategory="Custom Category 1"
+        DefaultValue="0"
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" />
+
+      <Property
+        Name="StringProperty1"
+        Type="string"
+        WebDisplayName="String Property 1"
+        WebDescription="Type text into this text box."
+        WebCategory="Custom Category 1"
+        DefaultValue=""
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" />
+
+      <Property
+        Name="HostWebListTitleHiddenTextBox"
+        Type="string"
+        WebDisplayName="HostWebListTitleHiddenTextBox"
+        WebDescription="This property is hidden via JavaScript at runtime, we are using it for storage and ability to transfer data to Remote Web Page via QueryString only."
+        WebCategory="Custom Category 1"
+        DefaultValue=""
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" />
+
+      <Property
+        Name="BooleanProperty2"
+        Type="boolean"
+        WebDisplayName="Boolean Property 2"
+        WebDescription="Description for Boolean Property 2"
+        WebCategory="Custom Category 2"
+        DefaultValue="false"
+        RequiresDesignerPermission="true"
+        WebBrowsable="true" />
+
+    </Properties>
+
+  </ClientWebPart>
+</Elements>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://sp2013.set1.bertonline.info/_vti_bin/contoso.services.sitemanager/sitemanager.svc/mex?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Contoso.Services.SiteManager.Services" />
+  <xs:element name="CreateSiteCollection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Contoso.Services.SiteManager.Services" minOccurs="0" name="site" nillable="true" type="q1:SiteData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateSiteCollectionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CreateSiteCollectionResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListSiteCollections">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ListSiteCollectionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Contoso.Services.SiteManager.Services" minOccurs="0" name="ListSiteCollectionsResult" nillable="true" type="q2:ArrayOfSiteData" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateContentType">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="contentTypeId" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateContentTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CreateContentTypeResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetDocumentInformationPolicySetting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="siteColUrl" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="actionManifest" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="contentTypeId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetDocumentInformationPolicySettingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SetDocumentInformationPolicySettingResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDocumentInformationPolicySetting">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="siteColUrl" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="contentTypeId" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDocumentInformationPolicySettingResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDocumentInformationPolicySettingResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

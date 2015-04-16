@@ -1,0 +1,8 @@
+﻿body {
+    overflow: auto !important;
+}
+
+
+#ContentArea {
+    margin: 10px 10px 10px 10px;
+}

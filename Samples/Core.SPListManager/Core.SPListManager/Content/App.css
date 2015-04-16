@@ -1,0 +1,21 @@
+﻿h3.detailstable {
+    padding:7px;
+}
+
+table.detailstable {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    border: 1px solid #CCCCCC;
+}
+
+    /*odd*/
+    table.detailstable tr:nth-child(odd) td {
+        background-color: #fbfbfb;
+    }
+    /* even*/
+    table.detailstable tr:nth-child(even) td {
+        background-color: #e8ecee;
+    }
+
+

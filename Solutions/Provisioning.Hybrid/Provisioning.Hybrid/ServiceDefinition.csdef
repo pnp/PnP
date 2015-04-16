@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
+  <WebRole name="Provisioning.Hybrid.Web" vmsize="Small">
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="Endpoint1" endpointName="Endpoint1" />
+          <Binding name="AppEndpoint" endpointName="AppEndpoint" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+      <InputEndpoint name="AppEndpoint" protocol="https" port="443" certificate="SSL" />
+    </Endpoints>
+    <ConfigurationSettings>
+      <Setting name="General.SiteCollectionUrl" />
+      <Setting name="General.SiteDirectoryUrl" />
+      <Setting name="General.SiteDirectoryListName" />
+      <Setting name="General.SiteDirectoryProvisioningPage" />
+      <Setting name="General.MailSMTPServer" />
+      <Setting name="General.MailUser" />
+      <Setting name="General.MailUserPassword" />
+      <Setting name="General.MailSiteRequested" />
+      <Setting name="General.EncryptionThumbPrint" />
+    </ConfigurationSettings>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+    </Imports>
+    <Certificates>
+      <Certificate name="SSL" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WebRole>
+  <WorkerRole name="Provisioning.Hybrid.Worker" vmsize="Small">
+    <ConfigurationSettings>
+      <Setting name="AppId" />
+      <Setting name="AppSecret" />
+      <Setting name="Realm" />
+      <Setting name="TenantAdminUrl" />
+      <Setting name="General.SiteCollectionUrl" />
+      <Setting name="General.SiteDirectoryUrl" />
+      <Setting name="General.SiteDirectoryListName" />
+      <Setting name="General.MailSMTPServer" />
+      <Setting name="General.MailUser" />
+      <Setting name="General.MailUserPassword" />
+      <Setting name="ContosoCollaboration.PromotedSiteName" />
+      <Setting name="ContosoCollaboration.PromotedSiteUrl" />
+      <Setting name="General.MailSiteAvailable" />
+      <Setting name="General.EncryptionThumbPrint" />
+      <Setting name="General.SBServiceNameSpace" />
+      <Setting name="General.SBIssuerName" />
+      <Setting name="General.SBIssuerSecret" />
+      <Setting name="ContosoCollaboration.ThemeName" />
+      <Setting name="General.OnPremWebApplication" />
+    </ConfigurationSettings>
+    <Imports>
+      <Import moduleName="Diagnostics" />
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
+    <Certificates>
+      <Certificate name="SSL" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WorkerRole>
+</ServiceDefinition>

@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Simple", "Provisioning.Hybrid.Simple\Provisioning.Hybrid.Simple.csproj", "{2EAB0FA9-407C-4986-BD51-B70472BD3F46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.SimpleWeb", "Provisioning.Hybrid.SimpleWeb\Provisioning.Hybrid.SimpleWeb.csproj", "{CDD4A7C1-1A1D-4864-9ABA-1526D7D1C9DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Simple.OnPrem", "Provisioning.Hybrid.Simple.OnPrem\Provisioning.Hybrid.Simple.OnPrem.csproj", "{1C8216B0-80BB-4362-8F81-BBF4D3112CDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Simple.WebJob", "Provisioning.Hybrid.Simple.WebJob\Provisioning.Hybrid.Simple.WebJob.csproj", "{700FF1C3-4F30-4347-9BDF-A95FCE3DB0FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Simple.Common", "Provisioning.Hybrid.Simple.Common\Provisioning.Hybrid.Simple.Common.csproj", "{D810A9AB-8A38-447A-9761-8D6B78F98DE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{FADBD660-A3C1-4255-9EBE-E25EFFD987D1}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Projects", "Helper Projects", "{29D30EDA-E8C7-4065-BE30-2481D2600512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Simple.Console.SendMessage", "Provisioning.Hybrid.Simple.Console.SendMessage\Provisioning.Hybrid.Simple.Console.SendMessage.csproj", "{34A04D84-85DC-49A8-880B-A168401433B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{5E3FFD15-0E0E-43FE-975D-DD90A6104F55}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\IncreaseOnePremTimeouts.ps1 = Scripts\IncreaseOnePremTimeouts.ps1
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EAB0FA9-407C-4986-BD51-B70472BD3F46}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CDD4A7C1-1A1D-4864-9ABA-1526D7D1C9DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDD4A7C1-1A1D-4864-9ABA-1526D7D1C9DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDD4A7C1-1A1D-4864-9ABA-1526D7D1C9DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDD4A7C1-1A1D-4864-9ABA-1526D7D1C9DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C8216B0-80BB-4362-8F81-BBF4D3112CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C8216B0-80BB-4362-8F81-BBF4D3112CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C8216B0-80BB-4362-8F81-BBF4D3112CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C8216B0-80BB-4362-8F81-BBF4D3112CDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700FF1C3-4F30-4347-9BDF-A95FCE3DB0FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700FF1C3-4F30-4347-9BDF-A95FCE3DB0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700FF1C3-4F30-4347-9BDF-A95FCE3DB0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700FF1C3-4F30-4347-9BDF-A95FCE3DB0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D810A9AB-8A38-447A-9761-8D6B78F98DE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D810A9AB-8A38-447A-9761-8D6B78F98DE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D810A9AB-8A38-447A-9761-8D6B78F98DE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D810A9AB-8A38-447A-9761-8D6B78F98DE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A04D84-85DC-49A8-880B-A168401433B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A04D84-85DC-49A8-880B-A168401433B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A04D84-85DC-49A8-880B-A168401433B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A04D84-85DC-49A8-880B-A168401433B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34A04D84-85DC-49A8-880B-A168401433B6} = {29D30EDA-E8C7-4065-BE30-2481D2600512}
+	EndGlobalSection
+EndGlobal

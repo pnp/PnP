@@ -1,0 +1,8 @@
+﻿
+/* Let's center the page with 1000px center layout */
+#s4-bodyContainer {
+    width: 1000px !important; 
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+

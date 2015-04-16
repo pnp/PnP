@@ -1,0 +1,47 @@
+﻿@model Governance.ExternalSharingTimer.Web.ExternalShare
+
+@{
+    ViewBag.Title = "Warning - Sharing Expiration";
+}
+
+@{
+    double daysUntilExpiration = (Model.RefreshSharedDate == null) ? Convert.ToInt32(Model.OriginalSharedDate.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["CutoffDuration"])).Subtract(DateTime.Now).TotalDays) :
+      Convert.ToInt32(Model.RefreshSharedDate.Value.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["CutoffDuration"])).Subtract(DateTime.Now).TotalDays);
+    int cutoff = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["CutoffDuration"]);
+}
+
+<h2>Warning - Sharing Expiration</h2>
+<div>
+    <hr />
+    <p>Sharing of the site <a href="@Html.DisplayFor(model => model.SiteCollectionUrl)">@Html.DisplayFor(model => model.SiteCollectionUrl)</a> for external user @Html.DisplayFor(model => model.LoginName) is set to expire in @daysUntilExpiration days. Please review the details below and either revoke their access or extend it for another @cutoff days. If you do not act on this notice, the access for @Html.DisplayFor(model => model.LoginName) will be revoked automatically in @daysUntilExpiration days.</p>
+    <dl class="dl-horizontal">
+        <dt>
+            External User
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LoginName)
+        </dd>
+        <dt>
+            Site Collection
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SiteCollectionUrl)
+        </dd>
+        <dt>
+            Original Share Date
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OriginalSharedDate)
+        </dd>
+        <dt>
+            Expiration Last Reset
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RefreshSharedDate)
+        </dd>
+    </dl>
+</div>
+<p>
+    <a href="/Extend/@Html.DisplayFor(model => model.UniqueIdentifier)">Extend Access</a> | 
+    <a href="/Revoke/@Html.DisplayFor(model => model.UniqueIdentifier)">Revoke Access</a>
+</p>

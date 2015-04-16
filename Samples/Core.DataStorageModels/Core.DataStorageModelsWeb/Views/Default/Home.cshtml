@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Data Storage Models";
+}
+
+<div class="cdsm_home">
+    <h2>Instructions</h2>
+    <h3>Deploy The Sample</h3>
+    <div>First, click the Deploy button to deploy all of the components to the host web and the app web.  The components include List Fields, Content Types, Lists, Libraries, Page Layouts, Pages, App Parts, and Web Parts.</div>
+    <br />
+    @CreatePostForm("Deploy", "Deploy")
+    <h3>Explore The Sample</h3>
+    <div>This sample is based on a customer service scenario.  It includes many pages that provide typical functionality that a Customer Service Representative (CSR) in a call center uses to do their job.  The menu on the left side of the page allows you to navigate the different parts of the Customer Service Dashboard.  Each part of the dashboard interacts with different data storage mechanisms.  The dashboard pages associated with the menu items are described below.</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Sample Home Page</span> - This is the page you are currently viewing.
+    </div>
+    <div>DataSource: HTML</div>
+    <div>API: ASP.NET MVC View</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">My CSR Info</span> - Allows a CSR to see their rating based on customer surveys.
+    </div>
+    <div>DataSource: Azure Table Storage</div>
+    <div>API: Microsoft.WindowsAzure.Storage.Table.CloudTable</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Call Queue</span> - Lists callers in the support queue and takes calls.
+    </div>
+    <div>DataSource: Azure Storage Queue</div>
+    <div>API: Microsoft.WindowsAzure.Storage.Queue.CloudQueue</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Customer Dashboard</span> - Displays customer details.
+    </div>
+    <div>DataSource: Northwind OData Service</div>
+    <div>API: JQuery AJAX</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Recent Orders</span> - Displays recent orders for a customer.
+    </div>
+    <div>DataSource: Northwind Database (SQL Azure)</div>
+    <div>API: Entity Framework</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Support Cases</span> - Displays support cases for a customer. 
+    </div>
+    <div>DataSource: SharePoint list in the host web</div>
+    <div>APIs: SharePoint Search &amp; SP.RequestExecutor calling REST API</div>
+    <div>User Interface: Content By Search Web Part &amp; Custom App Part displaying an MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">Notes</span> - Displays CSR notes for a customer.
+    </div>
+    <div>DataSource: SharePoint list in this app's app web</div>
+    <div>API: SP.RequestExecutor calling REST API</div>
+    <div>User Interface: ASP.NET MVC View</div>
+    <br />
+    <div>
+        <span style="text-decoration:underline;">On All Pages - Customer Dropdown List</span> - Selects a customer.
+    </div>
+    <div>DataSource: Northwind OData Service</div>
+    <div>API: JQuery AJAX</div>
+    <div>User Interface: ASP.NET MVC Partial View</div>
+    <h3>List Query Thresholds</h3>
+    <div>One of the considerations you need to make when choosing where to store data in the app model is list query thresholds.</div>
+    <br />
+    <div>Click the button below to fill the Notes list in the App Web with enough data to exceed the list query threshold limit.  Each time you click the button the operation will add 500 list items to the list and you will receive a message which indicates how many more items you must add to the list to exceed the query threshold.  In total, you will click this button 10 times.  When the operations complete, click the Notes link in the menu on the left side of the page and see what happens when the list query threshold is exceeded.</div>
+    <br />
+    @CreatePostForm("FillAppWebNotesListToThreshold", "Add list items to the Notes list in the App Web")
+    <div>Click the button below to fill the Support Cases list in the Host Web with enough data to exceed the list query threshold limit.  Each time you click the button the operation will add 500 list items to the list and you will receive a message which indicates how many more items you must add to the list to exceed the query threshold.  In total, you will click this button 10 times.  When the operations complete, click the Support Cases link in the menu on the left side of the page and see what happens when the list query threshold is exceeded.</div>
+    <br />
+    @CreatePostForm("FillHostWebSupportCasesToThreshold", "Add list items to the Support Cases list in the Host Web")
+    <h3>Data Thresholds</h3>
+    <div>One of the considerations you need to make when choosing where to store data in the app model are data thresholds.</div>
+    <br />
+    <div>Click the button below to fill the Notes list in the App Web with enough data to exceed the data threshold limit. Each time you click the button the operation will add 100 list items to the list and each item have a 1MB file attachment. In total, you will click this button 11 times. When the operations complete, click the Notes link in the menu on the left side of the page and see what happens when the data threshold is exceeded.</div>
+    <br />
+    @CreatePostForm("FillAppWebNotesWith1G", "Fill the App Web Notes list with 100MB of data")
+    <h3>App Uninstall Considerations</h3>
+    <div>Click the button below to uninstall the app.  When the operation completes, the app is no longer available for use and all the data inside of it is deleted.  However, data in the host web remains intact unless it was explicitly deleted during the app uninstall process.  Navigate to the host web and view the information in the Support Cases list, you will see it remains intact.</div>
+    <br />
+    @CreatePostForm("UninstallTheApp", "Uninstall the app")
+</div>
+
+@helper CreatePostForm(string actionName, string submitButtonText)
+{
+    using (Html.BeginForm(actionName, null, new { SPHostUrl = Request["SPHostUrl"] }, FormMethod.Post, null))
+    {
+        <button type="submit" class="btn btn-default">@submitButtonText</button>
+    }
+}

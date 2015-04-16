@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Call>
+@{
+    ViewBag.Title = "Call Queue";
+
+    var calls = Model.ToArray();
+    var displayCount = (int)ViewBag.DisplayCount;
+    var totalCallCount = (int?)ViewBag.TotalCallCount;
+
+    var spHostUrl = Request["SPHostUrl"];
+    var index = 0;
+}
+
+@using (Html.BeginForm("SimulateCalls", null, new { SPHostUrl = spHostUrl }, FormMethod.Post, null))
+{
+    <button id="simulateCalls" type="submit" class="btn btn-default">Simulate Calls</button>
+}
+
+<div class="cdsm_common_display">
+    <div class="cdsm_title">Calls <small>(Only the @displayCount earliest calls are displayed.)</small></div>
+    <div class="cdsm_content">
+        <table id="calls" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Received Date</th>
+                    <th>Phone Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var call in calls)
+                {
+                    <tr>
+                        <td>@call.ReceivedDate</td>
+                        <td>@call.PhoneNumber</td>
+                        <td>@CreateActions(call, index)</td>
+                    </tr>
+                    index++;
+                }
+                @if (calls.Length == 0)
+                {
+                    <tr>
+                        <td class="empty" colspan="3">No callers are in the queue.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (totalCallCount.HasValue)
+{
+    <p>There are <strong>@totalCallCount</strong> callers in the queue.</p>
+}
+
+@helper CreateActions(Call call, int index)
+{
+    var spHostUrl = Request["SPHostUrl"];
+    if (index == 0)
+    {
+        using (Html.BeginForm("TakeCall", null, new { SPHostUrl = spHostUrl }, FormMethod.Post, null))
+        {
+            <button id="takeCall" type="submit" class="btn btn-link">Take Call</button>
+        }
+    }
+}

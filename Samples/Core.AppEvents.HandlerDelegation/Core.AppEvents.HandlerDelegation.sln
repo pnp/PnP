@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppEvents.HandlerDelegation", "Core.AppEvents.HandlerDelegation\Core.AppEvents.HandlerDelegation.csproj", "{16CB692F-013B-4A4B-A960-F8B50A3D62F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppEvents.HandlerDelegationWeb", "Core.AppEvents.HandlerDelegationWeb\Core.AppEvents.HandlerDelegationWeb.csproj", "{ED02DA0E-1B0E-4154-A5D6-14D755D57009}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F1476156-7DA9-4BC1-AD90-B16F350BCD8C}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CB692F-013B-4A4B-A960-F8B50A3D62F8}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{ED02DA0E-1B0E-4154-A5D6-14D755D57009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED02DA0E-1B0E-4154-A5D6-14D755D57009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED02DA0E-1B0E-4154-A5D6-14D755D57009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED02DA0E-1B0E-4154-A5D6-14D755D57009}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

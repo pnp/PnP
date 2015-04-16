@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Data Storage Models";
+    var sharePointContext = ViewBag.SharePointContext as SharePointContext;
+}
+
+<div class="cdsm_customerLanding">
+    @Html.Partial("Top")
+    <div class="cdsm_common_display">
+        <div class="cdsm_title">Customer Info</div>
+        <div class="cdsm_content">
+            <div class="cdsm_Name"></div>
+            <div class="cdsm_Other_Infor"></div>
+        </div>
+        <div id="customerLandingErrorMessage" class="errorMessage"></div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var appWebUrl = '@sharePointContext.SPAppWebUrl';
+        var hostUrl = '@sharePointContext.SPHostUrl';
+    </script>
+
+    @Scripts.Render("~/bundles/CustomerDashboard")
+}

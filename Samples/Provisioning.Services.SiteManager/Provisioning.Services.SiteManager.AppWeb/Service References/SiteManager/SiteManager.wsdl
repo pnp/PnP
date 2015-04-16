@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SiteManager" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_ISiteManager2_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <http:NtlmAuthentication xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http" />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Contoso.Provisioning.Services.SiteManager.Services" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISiteManager_CreateSiteCollection_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSiteCollection" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_CreateSiteCollection_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateSiteCollectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_ListSiteCollections_InputMessage">
+    <wsdl:part name="parameters" element="tns:ListSiteCollections" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_ListSiteCollections_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ListSiteCollectionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_CreateContentType_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateContentType" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_CreateContentType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateContentTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_SetDocumentInformationPolicySetting_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetDocumentInformationPolicySetting" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_SetDocumentInformationPolicySetting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetDocumentInformationPolicySettingResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_GetDocumentInformationPolicySetting_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentInformationPolicySetting" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_GetDocumentInformationPolicySetting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentInformationPolicySettingResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_SetSiteLocale_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetSiteLocale" />
+  </wsdl:message>
+  <wsdl:message name="ISiteManager_SetSiteLocale_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetSiteLocaleResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISiteManager">
+    <wsdl:operation name="CreateSiteCollection">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/CreateSiteCollection" message="tns:ISiteManager_CreateSiteCollection_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/CreateSiteCollectionResponse" message="tns:ISiteManager_CreateSiteCollection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ListSiteCollections">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/ListSiteCollections" message="tns:ISiteManager_ListSiteCollections_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/ListSiteCollectionsResponse" message="tns:ISiteManager_ListSiteCollections_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateContentType">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/CreateContentType" message="tns:ISiteManager_CreateContentType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/CreateContentTypeResponse" message="tns:ISiteManager_CreateContentType_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetDocumentInformationPolicySetting">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/SetDocumentInformationPolicySetting" message="tns:ISiteManager_SetDocumentInformationPolicySetting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/SetDocumentInformationPolicySettingResponse" message="tns:ISiteManager_SetDocumentInformationPolicySetting_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInformationPolicySetting">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/GetDocumentInformationPolicySetting" message="tns:ISiteManager_GetDocumentInformationPolicySetting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/GetDocumentInformationPolicySettingResponse" message="tns:ISiteManager_GetDocumentInformationPolicySetting_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteLocale">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISiteManager/SetSiteLocale" message="tns:ISiteManager_SetSiteLocale_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISiteManager/SetSiteLocaleResponse" message="tns:ISiteManager_SetSiteLocale_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISiteManager" type="tns:ISiteManager">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateSiteCollection">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateSiteCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSiteCollections">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/ListSiteCollections" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContentType">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateContentType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/GetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteLocale">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetSiteLocale" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ISiteManager1" type="tns:ISiteManager">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateSiteCollection">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateSiteCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSiteCollections">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/ListSiteCollections" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContentType">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateContentType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/GetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteLocale">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetSiteLocale" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ISiteManager2" type="tns:ISiteManager">
+    <wsp:PolicyReference URI="#BasicHttpBinding_ISiteManager2_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateSiteCollection">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateSiteCollection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ListSiteCollections">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/ListSiteCollections" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateContentType">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/CreateContentType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInformationPolicySetting">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/GetDocumentInformationPolicySetting" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetSiteLocale">
+      <soap:operation soapAction="http://tempuri.org/ISiteManager/SetSiteLocale" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SiteManager">
+    <wsdl:port name="BasicHttpBinding_ISiteManager" binding="tns:BasicHttpBinding_ISiteManager">
+      <soap:address location="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

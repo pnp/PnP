@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4c16c0b9-0162-43ad-a8e9-a4b810e58a56" solutionId="4c16c0b9-0162-43ad-a8e9-a4b810e58a56" resetWebServer="false" sharePointProductVersion="15.0" name="PreventDeleteSites" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="32892268-380b-4c0e-a604-eef91ba8bddc" />
+  </features>
+</package>

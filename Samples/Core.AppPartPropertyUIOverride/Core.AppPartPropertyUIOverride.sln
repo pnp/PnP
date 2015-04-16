@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppPartPropertyUIOverride", "Core.AppPartPropertyUIOverride\Core.AppPartPropertyUIOverride.csproj", "{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.AppPartPropertyUIOverrideWeb", "Core.AppPartPropertyUIOverrideWeb\Core.AppPartPropertyUIOverrideWeb.csproj", "{C681F180-7983-43CD-9BE2-6C61551FF468}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{EB3AD33E-EF3B-442A-9669-491AD111CFA6}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBA2D2FC-F2BD-4F04-B3D5-184BAF60C10E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C681F180-7983-43CD-9BE2-6C61551FF468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C681F180-7983-43CD-9BE2-6C61551FF468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C681F180-7983-43CD-9BE2-6C61551FF468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C681F180-7983-43CD-9BE2-6C61551FF468}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

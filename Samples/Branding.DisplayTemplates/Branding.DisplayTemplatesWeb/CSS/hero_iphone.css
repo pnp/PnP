@@ -1,0 +1,149 @@
+﻿/*for home page hero item display template*/
+.homePageHeroItem-ImageContainer, .homePageHeroItem-Image{
+    width: 620px;
+    height: 217px;
+}
+
+.homePageHeroItem-CaptionContainer{
+    position:relative;
+    width: 620px;
+    height: 120px;
+    cursor: pointer;
+}
+
+.homePageHeroItem-LeftCaption{
+    display:none;
+}
+
+.homePageHeroItem-RightCaption{
+    position:relative;
+    width:620px;
+    height:120px;
+    background-color:#6caedf;
+    overflow:hidden;
+}
+
+.homePageHeroItem-RightCaptionTitle, .homePageHeroItem-RightCaptionDescription{
+    color:#ffffff;
+    overflow:hidden;
+    margin:20px 20px 0px 20px;
+}
+
+.homePageHeroItem-RightCaptionTitle{
+    font-size:24px;
+    line-height: 32px;
+    height:32px;
+    margin-top:16px;
+}
+
+.homePageHeroItem-RightCaptionDescription{
+    font-size:18px;
+    line-height: 22px;
+    height:22px;
+    margin-top:10px;
+}
+
+/*for home page hero control display template*/
+.homePageHeroControl-Slideshow{
+    position:relative;
+    background-color:#ffffff;
+    color:#ffffff;
+    width:620px;
+    height:337px;
+    margin:0px;
+    box-shadow:0px 2px #000000 inset;
+    -moz-box-shadow:0px 2px #000000 inset;
+    -webkit-box-shadow:0px 2px #000000 inset;
+}
+
+.homePageHeroControl-SlideshowItems{
+    position:relative;
+}
+
+.homePageHeroControl-SlideshowImageItems, .homePageHeroControl-SlideshowCaptionItems{
+    width:620px;
+    overflow:hidden;
+}
+
+.homePageHeroControl-SlideshowImageItems {
+    height: 217px;
+}
+
+.homePageHeroControl-SlideshowCaptionItems{
+    position:relative;
+    height:120px;
+}
+
+.homePageHeroControl-SlideshowPagingBar,.homePageHeroControl-SlideshowPagingBarOverlay{
+    position:absolute;
+    height:30px;
+    bottom:-10px;
+}
+
+.homePageHeroControl-SlideshowPagingBar{
+    left:20px;
+    z-index:4;
+    color:white;
+    overflow:hidden;
+}
+
+.homePageHeroControl-SlideshowPagingBarOverlay{
+    z-index:3;
+    width:100%;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active,.homePageHeroControl-SlideshowPagingLink-Inactive,.homePageHeroControl-SlideshowPaging-More{
+    float:left;
+    height:30px;
+}
+
+a.homePageHeroControl-SlideshowPagingLink-Active,a.homePageHeroControl-SlideshowPagingLink-Inactive{
+    text-decoration:none;
+}
+
+.homePageHeroControl-SlideshowPaging-More{
+    margin-top:0.3em;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active > span,.homePageHeroControl-SlideshowPagingLink-Inactive > span{
+    display:block;
+    width:15px;
+    height:15px;
+    margin-right:15px;
+    background-repeat:no-repeat;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active > span{
+    background-image:url('../Images/Hero-nav-control-circle-blue.png');
+}
+
+.homePageHeroControl-SlideshowPaging-More{
+    color:#b0b0b0;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Inactive > span{    
+    background-image:url('../Images/Hero-nav-control-circle-white.png');
+}
+
+.homePageHeroControl-noResults{
+    padding-left:10px;
+}
+
+.homePageHeroControl-noResultsTitle{
+    padding-bottom:20px;
+}
+
+.homePageHeroControl-SlideshowItems ul {
+    padding:0px;
+	margin:0px;
+    list-style-type: none;
+}
+
+.homePageHeroControl-SlideshowItems ul li {
+    float: left;
+    width: 620px;
+}
+
+.tableCol-75 {
+    display: none !important;
+}

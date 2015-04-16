@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="Microsoft SharePoint" Title="AppPartConfiguration" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/AppPartConfiguration" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
+  <MetaData>
+    <ContentTypes>
+
+
+      <ContentType ID="0x0100e9ecdd55bacc4d8a84579d599549f44b" Name="ListFieldsContentType">
+        <FieldRefs>
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title" />
+          <FieldRef ID="{ac374dfe-6e89-4a8a-a594-126a45fe0d38}" Name="AppPartId" />
+          <FieldRef ID="{c4a9549d-6edc-4143-950c-b96402744eab}" Name="Key" />
+          <FieldRef ID="{c4270a73-4876-4c60-8a53-c3b06ffbc47f}" Name="String" />
+          <FieldRef ID="{fdb37e6e-ccc8-4e5f-af4d-9a5038792d71}" Name="Type" />
+        </FieldRefs>
+      </ContentType>
+      <ContentTypeRef ID="0x01">
+        <Folder TargetName="Item" />
+      </ContentTypeRef>
+      <ContentTypeRef ID="0x0120" />
+    </ContentTypes>
+    <Fields>
+      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field Name="AppPartId" ID="{ac374dfe-6e89-4a8a-a594-126a45fe0d38}" DisplayName="AppPartId" Type="Text" Required="TRUE" />
+      <Field Name="Key" ID="{c4a9549d-6edc-4143-950c-b96402744eab}" DisplayName="Key" Type="Text" Required="TRUE" />
+      <Field Name="String" ID="{c4270a73-4876-4c60-8a53-c3b06ffbc47f}" DisplayName="String" Type="Text" Required="TRUE" />
+      <Field Name="Type" ID="{fdb37e6e-ccc8-4e5f-af4d-9a5038792d71}" DisplayName="Type" Type="Choice" Required="FALSE" >
+        <CHOICES>
+          <CHOICE>String</CHOICE>
+          <CHOICE>Number</CHOICE>
+          <CHOICE>Boolean</CHOICE>
+          <CHOICE>Enum</CHOICE>
+          <CHOICE>Generic</CHOICE>
+        </CHOICES>
+        <Default>String</Default>
+      </Field>
+    </Fields>
+    <Views>
+
+
+      <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+
+          <FieldRef Name="LinkTitleNoMenu"></FieldRef>
+        </ViewFields>
+        <Query>
+          <OrderBy>
+
+            <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
+        </ParameterBindings>
+      </View>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="AppPartId" />
+          <FieldRef Name="Key" />
+          <FieldRef Name="String" />
+          <FieldRef Name="Type" />
+        </ViewFields>
+        <Query>
+          <OrderBy>
+
+            <FieldRef Name="ID"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
+        </ParameterBindings>
+      </View>
+    </Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

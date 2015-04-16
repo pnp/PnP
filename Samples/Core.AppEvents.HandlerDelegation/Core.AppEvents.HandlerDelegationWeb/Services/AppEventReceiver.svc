@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Core.AppEvents.HandlerDelegationWeb.Services.AppEventReceiver" CodeBehind="AppEventReceiver.svc.cs" %>

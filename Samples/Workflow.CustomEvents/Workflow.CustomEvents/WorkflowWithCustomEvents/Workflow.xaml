@@ -1,0 +1,212 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.CustomEvents.WorkflowWithCustomEvents.Workflow" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="Workflow.CustomEvents.WorkflowWithCustomEvents.Workflow_1"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdad="clr-namespace:Microsoft.SharePoint.DesignTime.Activities.Design;assembly=Microsoft.SharePoint.DesignTime.Activities.16.0.Design"
+ xmlns:p="wf://workflow.windows.net/$Activities"
+ xmlns:p1="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Workflow.CustomEvents</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Main Sequence" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="CustomEventFired" />
+      <Variable x:TypeArguments="x:String" Name="CustomEventArgument" />
+      <Variable x:TypeArguments="x:String" Name="CustomEventDescription" />
+    </Sequence.Variables>
+    <p:WriteToHistory DisplayName="Log Start to History" sap2010:WorkflowViewState.IdRef="WriteToHistory_1" Message="Workflow Started. Waiting for Custom Event ..." />
+    <p:UpdateListItem ItemGuid="{x:Null}" ListItemProperties="{x:Null}" DisplayName="CleanUp Target List Item" sap2010:WorkflowViewState.IdRef="UpdateListItem_2">
+      <p:UpdateListItem.ItemId>
+        <InArgument x:TypeArguments="x:Int32">
+          <p1:ExpressionContainerValue x:TypeArguments="x:Int32">
+            <p:GetCurrentItemId />
+          </p1:ExpressionContainerValue>
+        </InArgument>
+      </p:UpdateListItem.ItemId>
+      <p:UpdateListItem.ListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p1:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p:GetCurrentListId />
+          </p1:ExpressionContainerValue>
+        </InArgument>
+      </p:UpdateListItem.ListId>
+      <p:UpdateListItem.ListItemPropertiesDynamicValue>
+        <InArgument x:TypeArguments="p1:DynamicValue">
+          <p1:SetDynamicValueProperties>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument">
+              <InArgument x:TypeArguments="x:String" x:Key="WFEventFired">
+                <Literal x:TypeArguments="x:String" Value="" />
+              </InArgument>
+            </scg:Dictionary>
+          </p1:SetDynamicValueProperties>
+        </InArgument>
+      </p:UpdateListItem.ListItemPropertiesDynamicValue>
+    </p:UpdateListItem>
+    <Pick DisplayName="Pick - Wait for Custom Events" sap2010:WorkflowViewState.IdRef="Pick_1">
+      <PickBranch DisplayName="Custom Event One" sap2010:WorkflowViewState.IdRef="PickBranch_1">
+        <PickBranch.Trigger>
+          <p:WaitForCustomEvent DisplayName="WaitForCustomEvent One" EventName="EventOne" sap2010:WorkflowViewState.IdRef="WaitForCustomEvent_1">
+            <p:WaitForCustomEvent.Result>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">CustomEventArgument</mca:CSharpReference>
+              </OutArgument>
+            </p:WaitForCustomEvent.Result>
+          </p:WaitForCustomEvent>
+        </PickBranch.Trigger>
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">
+              <mca:CSharpReference x:TypeArguments="x:String">CustomEventFired</mca:CSharpReference>
+            </OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">EventOne</InArgument>
+          </Assign.Value>
+        </Assign>
+      </PickBranch>
+      <PickBranch DisplayName="Custom Event Two" sap2010:WorkflowViewState.IdRef="PickBranch_2">
+        <PickBranch.Trigger>
+          <p:WaitForCustomEvent DisplayName="WaitForCustomEvent Two" EventName="EventTwo" sap2010:WorkflowViewState.IdRef="WaitForCustomEvent_2">
+            <p:WaitForCustomEvent.Result>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">CustomEventArgument</mca:CSharpReference>
+              </OutArgument>
+            </p:WaitForCustomEvent.Result>
+          </p:WaitForCustomEvent>
+        </PickBranch.Trigger>
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">
+              <mca:CSharpReference x:TypeArguments="x:String">CustomEventFired</mca:CSharpReference>
+            </OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">EventTwo</InArgument>
+          </Assign.Value>
+        </Assign>
+      </PickBranch>
+    </Pick>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">CustomEventDescription</mca:CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">String.Format("Fired Custom Event: {0} - {1}", CustomEventFired, CustomEventArgument)</mca:CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <p:WriteToHistory DisplayName="Log Event Fired to History" sap2010:WorkflowViewState.IdRef="WriteToHistory_2">
+      <p:WriteToHistory.Message>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">CustomEventDescription</mca:CSharpValue>
+        </InArgument>
+      </p:WriteToHistory.Message>
+    </p:WriteToHistory>
+    <p:UpdateListItem ItemGuid="{x:Null}" ListItemProperties="{x:Null}" DisplayName="Update Target List Item" sap2010:WorkflowViewState.IdRef="UpdateListItem_1">
+      <p:UpdateListItem.ItemId>
+        <InArgument x:TypeArguments="x:Int32">
+          <p1:ExpressionContainerValue x:TypeArguments="x:Int32">
+            <p:GetCurrentItemId />
+          </p1:ExpressionContainerValue>
+        </InArgument>
+      </p:UpdateListItem.ItemId>
+      <p:UpdateListItem.ListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p1:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p:GetCurrentListId />
+          </p1:ExpressionContainerValue>
+        </InArgument>
+      </p:UpdateListItem.ListId>
+      <p:UpdateListItem.ListItemPropertiesDynamicValue>
+        <InArgument x:TypeArguments="p1:DynamicValue">
+          <p1:SetDynamicValueProperties>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument">
+              <InArgument x:TypeArguments="x:String" x:Key="WFEventFired">
+                <mca:CSharpValue x:TypeArguments="x:String">CustomEventDescription</mca:CSharpValue>
+              </InArgument>
+            </scg:Dictionary>
+          </p1:SetDynamicValueProperties>
+        </InArgument>
+      </p:UpdateListItem.ListItemPropertiesDynamicValue>
+    </p:UpdateListItem>
+    <p:WriteToHistory DisplayName="Log End to History" sap2010:WorkflowViewState.IdRef="WriteToHistory_3" Message="Workflow Completed" />
+    <sads:DebugSymbol.Symbol>d21DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5DdXN0b21FdmVudHNcV29ya2Zsb3cuQ3VzdG9tRXZlbnRzXFdvcmtmbG93V2l0aEN1c3RvbUV2ZW50c1xXb3JrZmxvdy54YW1sJykDpwEOAgEBLwUvqAECATowBUoYAgE1SwV2DAIBGncFggEOAgERgwEFiQEYAgEMigEFpAEYAgEEpQEFpQGKAQIBAi91L6UBAgE7QQtHKgIBODoLPCkCATczCzUpAgE2TAdgFAIBKGEHdRQCARt/C3+eAQIBFnoLemcCARKGAQuGAV8CAQ2bAQuhASoCAQeUAQuWASkCAQaNAQuPASkCAQWlAXOlAYcBAgEDRBFEQAIBOTsNOyMDATcBNA00IwMBNgFOC1QiAgEvVglfEgIBKWMLaSICASJrCXQSAgEcngERngFlAgEIlQENlQEjAwEGAY4BDY4BIwMBBQFOUE5aAgE0URFRagIBMF00XTwCAS5ZD1llAgEqY1BjWgIBJ2YRZmoCASNyNHI8AgEhbg9uZQIBHQ==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="698,68" />
+      <sap2010:ViewStateData Id="UpdateListItem_2" sap:VirtualizedContainerService.HintSize="698,68">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="ItemId" DisplayName="(current item)" Value="$CurrentItemId" />
+              <msdad:ViewStateNameValue x:Key="ListId" DisplayName="(current list)" Value="$CurrentListId" />
+            </scg:Dictionary>
+            <x:String x:Key="ListItemPropertiesDynamicValue.SelectedEntityType">Lists/WorkflowTargetItems</x:String>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WaitForCustomEvent_1" sap:VirtualizedContainerService.HintSize="200,68" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="PickBranch_1" sap:VirtualizedContainerService.HintSize="272,328" />
+      <sap2010:ViewStateData Id="WaitForCustomEvent_2" sap:VirtualizedContainerService.HintSize="200,68" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="PickBranch_2" sap:VirtualizedContainerService.HintSize="272,328" />
+      <sap2010:ViewStateData Id="Pick_1" sap:VirtualizedContainerService.HintSize="698,374" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="698,62" />
+      <sap2010:ViewStateData Id="WriteToHistory_2" sap:VirtualizedContainerService.HintSize="698,68" />
+      <sap2010:ViewStateData Id="UpdateListItem_1" sap:VirtualizedContainerService.HintSize="698,68">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="ItemId" DisplayName="(current item)" Value="$CurrentItemId" />
+              <msdad:ViewStateNameValue x:Key="ListId" DisplayName="(current list)" Value="$CurrentListId" />
+            </scg:Dictionary>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteToHistory_3" sap:VirtualizedContainerService.HintSize="698,68" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="720,1140">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.CustomEvents.WorkflowWithCustomEvents.Workflow_1" sap:VirtualizedContainerService.HintSize="760,1220" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

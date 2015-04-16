@@ -1,0 +1,34 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OfficeWebWidgets", "Core.OfficeWebWidgets\Core.OfficeWebWidgets.csproj", "{304F716F-584E-4BE7-B767-ECC0D7D01EA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OfficeWebWidgetsWeb", "Core.OfficeWebWidgetsWeb\Core.OfficeWebWidgetsWeb.csproj", "{AE216BCF-FEB7-4C27-9E37-4E3F1FEF226F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{386B173C-1237-42E9-B151-38E549CF1008}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{304F716F-584E-4BE7-B767-ECC0D7D01EA2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{AE216BCF-FEB7-4C27-9E37-4E3F1FEF226F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE216BCF-FEB7-4C27-9E37-4E3F1FEF226F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE216BCF-FEB7-4C27-9E37-4E3F1FEF226F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE216BCF-FEB7-4C27-9E37-4E3F1FEF226F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

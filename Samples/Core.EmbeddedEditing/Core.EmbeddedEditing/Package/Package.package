@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="d2b9847c-a62b-4b0e-a8e4-33913cf718fc" 
+        solutionId="d2b9847c-a62b-4b0e-a8e4-33913cf718fc" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Contoso.EmbeddedEditing"
+        sharePointProductVersion="15.0">
+  <features>
+        <featureReference itemId="64700cb1-5610-4cd5-9f27-3bccbb30e41a" />
+  </features>
+</package>

@@ -1,0 +1,5 @@
+UserPrincipalName,SourceUrl
+user1@contoso.onmicrosoft.com,\\server\share\user1.jpg
+user2@contoso.com,c:\temp\user2.jpg
+user3@contoso.com,http://hostname/path/user3.jpg
+user4@contoso.onmicrosoft.com,https://hostname/path/user4.jpg

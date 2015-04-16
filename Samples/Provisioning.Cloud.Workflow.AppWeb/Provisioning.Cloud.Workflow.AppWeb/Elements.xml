@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="RootModule">
+    <File Path="Pages\Default.html" Url="Pages/Default.html" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

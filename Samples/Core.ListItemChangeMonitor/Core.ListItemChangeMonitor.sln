@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ListItemChangeMonitor", "Core.ListItemChangeMonitor\Core.ListItemChangeMonitor.csproj", "{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{53A9B99E-8C22-48E7-A757-4D07B4457FD5}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug15|Any CPU = Debug15|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Release15|Any CPU = Release15|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{26FE0AF8-ED9A-4E50-9D75-5165124E2DE2}.Release15|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

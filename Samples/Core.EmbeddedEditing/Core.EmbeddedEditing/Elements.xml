@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="RootModule">
+    <File Path="fonts\glyphicons-halflings-regular.woff" Url="fonts/glyphicons-halflings-regular.woff" ReplaceContent="TRUE" />
+    <File Path="fonts\glyphicons-halflings-regular.ttf" Url="fonts/glyphicons-halflings-regular.ttf" ReplaceContent="TRUE" />
+    <File Path="fonts\glyphicons-halflings-regular.svg" Url="fonts/glyphicons-halflings-regular.svg" ReplaceContent="TRUE" />
+    <File Path="fonts\glyphicons-halflings-regular.eot" Url="fonts/glyphicons-halflings-regular.eot" ReplaceContent="TRUE" />
+    <File Path="App\app.js" Url="App/app.js" ReplaceContent="TRUE" />
+    <File Path="App\common\EE.js" Url="App/common/EE.js" ReplaceContent="TRUE" />
+    <File Path="App\common\controllers\indexController.js" Url="App/common/controllers/indexController.js" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

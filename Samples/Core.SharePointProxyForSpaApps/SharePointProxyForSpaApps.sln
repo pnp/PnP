@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharePointProxyForSpaApps", "SharePointProxyForSpaApps\SharePointProxyForSpaApps.csproj", "{83F48E63-B851-4527-88DF-FB0B09744A14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharePointProxyForSpaAppsWeb", "SharePointProxyForSpaAppsWeb\SharePointProxyForSpaAppsWeb.csproj", "{8DB3E792-AB3D-445F-845B-4AE2099D009E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00EA534C-FEED-4C96-9FF7-68A3F02B7F9C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F48E63-B851-4527-88DF-FB0B09744A14}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8DB3E792-AB3D-445F-845B-4AE2099D009E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB3E792-AB3D-445F-845B-4AE2099D009E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB3E792-AB3D-445F-845B-4AE2099D009E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB3E792-AB3D-445F-845B-4AE2099D009E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

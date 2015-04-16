@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.MMS", "Core.MMS.csproj", "{9605B68D-7375-440F-BC12-31783A88D421}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0D1C7402-8313-4CF8-B687-BF71FAEBEFD4}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9605B68D-7375-440F-BC12-31783A88D421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9605B68D-7375-440F-BC12-31783A88D421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9605B68D-7375-440F-BC12-31783A88D421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9605B68D-7375-440F-BC12-31783A88D421}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

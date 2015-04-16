@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PropertyMapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Loggers>
+    <!-- Configure verbose text logger-->
+    <Log xsi:type="TextFileLogger">
+      <TraceTypes>
+        <Trace>Verbose</Trace>
+      </TraceTypes>     
+      <LogFileLocation>C:\temp\Contoso.OneDriveUploader.log</LogFileLocation>
+    </Log>
+    <!-- Configure CSV output logger-->
+    <Log xsi:type="CsvLogger">
+      <TraceTypes>
+        <Trace>Verbose</Trace>
+      </TraceTypes>
+      <LogFileLocation>C:\temp\Contoso.OneDriveUploader.csv</LogFileLocation>
+    </Log>
+  </Loggers>
+  <Actions>
+    <Action xsi:type="OneDriveMapper">
+      <!-- CSV mapping location for OneDrive URLs and file uploads-->
+      <UserMappingCSVFile>C:\Git\PnP\Samples\Core.BulkDocumentUploader\Input\SharePointSites.csv</UserMappingCSVFile>
+      <!-- Directory location for upload files to OneDrive-->
+      <DirectoryLocation>C:\Git\PnP\Samples\Core.BulkDocumentUploader\Input\OneDriveFiles</DirectoryLocation>
+      <!-- SPO user account detials to perform operations-->
+      <UserName>admin@tenant.onmicrosoft.com</UserName>
+      <Password>******</Password>
+      <!-- Column index of sites and files in CSV mappings -->
+      <SiteIndex>0</SiteIndex>
+      <FileIndex>1</FileIndex>
+      <!-- Select either Upload or Delete for this action-->
+      <DocumentAction>Upload</DocumentAction>
+      <!-- Filename to appear in user OneDrives-->
+      <FileUploadName>_ COMPANY POLICY DOCUMENT _.xlsx</FileUploadName>
+    </Action>
+  </Actions>
+</PropertyMapper>

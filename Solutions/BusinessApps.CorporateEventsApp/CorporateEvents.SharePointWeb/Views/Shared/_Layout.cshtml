@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+
+</head>
+<body>
+    <div id="divSPChrome"></div>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Corporate Events App</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/spcontext")
+    <script type="text/javascript" src="/Scripts/app.js"></script>
+    <script type="text/javascript">
+        function chromeLoaded() {
+            $('body').show();
+        }
+
+        //function callback to render chrome after SP.UI.Controls.js loads
+        function renderSPChrome() {
+            //Set the chrome options for launching Help, Account, and Contact pages
+            var options = {
+                'appTitle': document.title,
+                'onCssLoaded': 'chromeLoaded()'
+            };
+
+            //Load the Chrome Control in the divSPChrome element of the page
+            var chromeNavigation = new SP.UI.Controls.Navigation('divSPChrome', options);
+            chromeNavigation.setVisible(true);
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+    <style type="text/css">body { overflow: auto; }</style>
+</body>
+</html>

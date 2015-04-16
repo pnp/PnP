@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Content" type="string">
+          <![CDATA[
+            <script type="text/javascript">
+                $(document).ready(function () {    
+                    var query = getQuerystring("CustomerID");        
+                    $.ajax({
+                        url: "https://odatasampleservices.azurewebsites.net/V3/Northwind/Northwind.svc/Customers?$format=json&$select=CustomerID",
+                        type: 'GET',
+                        data: null,
+                        success: function (response, status, xhr) {
+                            if (response != null && response.value.length > 0) {
+                                $.each(response.value, function (i, value) {                     
+                                   if(query == value.CustomerID)
+                                   {
+                                         $(".cdsm_dplist select").append('<option value="' + value.CustomerID + '" '+'selected="selected"'+'>' +
+                                         value.CustomerID + '</option>');
+                                   }
+                                   else
+                                   {
+                                         $(".cdsm_dplist select").append('<option value="' + value.CustomerID + '">' +
+                                         value.CustomerID + '</option>');
+                                   }
+                                });
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) { /*alert("error: " + textStatus + " " + errorThrown);*/ },
+                        dataType: "json"
+                    });
+
+                    //Dropdownlist Selectedchange event
+                    $(".cdsm_dplist select").change(function () {
+                        location.href="SupportCasesPage.aspx?CustomerID="+$(this).val();
+                    });
+                });           
+            </script>
+            <div class="cdsm_title">Northwind Customer Dashboard for:</div>
+            <div class="cdsm_dplist">
+                <select>
+                    <option value="">Select a Customer</option>
+                </select>
+            </div>
+        ​​​]]></property>
+        <property name="ChromeType" type="chrometype">None</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
+

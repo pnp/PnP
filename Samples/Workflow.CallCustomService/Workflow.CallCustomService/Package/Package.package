@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="327d6d82-7a8e-460a-96d6-5b8041d08513" solutionId="327d6d82-7a8e-460a-96d6-5b8041d08513" resetWebServer="false" sharePointProductVersion="15.0" name="Workflow.CallCustomService" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="f577e119-f826-4a60-8a3e-e0e1a0283186" />
+  </features>
+</package>

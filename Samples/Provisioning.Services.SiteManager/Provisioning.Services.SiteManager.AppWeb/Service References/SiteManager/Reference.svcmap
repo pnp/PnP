@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="802529ce-5e1f-4a5c-b24f-16db3d7cd9e4" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SiteManager.wsdl" MetadataType="Wsdl" ID="9741d32b-74f5-457d-b902-df04c0fd59ed" SourceId="1" SourceUrl="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?wsdl" />
+    <MetadataFile FileName="mex.xsd" MetadataType="Schema" ID="4454db21-136b-4779-a85e-354b96c1e83f" SourceId="1" SourceUrl="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd2" />
+    <MetadataFile FileName="mex1.xsd" MetadataType="Schema" ID="b58a3f60-3c88-48a7-94a5-544efe334ad8" SourceId="1" SourceUrl="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd1" />
+    <MetadataFile FileName="mex.disco" MetadataType="Disco" ID="f4575621-0177-4ad0-a4c7-b2f3a3026e5c" SourceId="1" SourceUrl="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?disco" />
+    <MetadataFile FileName="mex2.xsd" MetadataType="Schema" ID="f49dcca0-3710-4dd7-bb82-0d8fbc1cc43b" SourceId="1" SourceUrl="http://dev.contoso.com/_vti_bin/provisioning.services.sitemanager/sitemanager.svc/mex?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

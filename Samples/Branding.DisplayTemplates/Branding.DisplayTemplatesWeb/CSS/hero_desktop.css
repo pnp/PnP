@@ -1,0 +1,181 @@
+﻿/*for home page hero item display template*/
+.homePageHeroItem-ImageContainer, .homePageHeroItem-Image{
+    width: 999px;
+    height: 443px;
+}
+
+.homePageHeroItem-CaptionContainer{
+    position:absolute;
+    width: 999px;
+    height: 443px;
+}
+
+.homePageHeroItem-LeftCaption{
+    position:relative;
+    left:0px;
+    top:0px;
+    margin-top: 55px;
+    width:460px;
+    height:193px;
+    overflow:hidden;
+}
+
+.homePageHeroItem-LeftCaptionTitle, .homePageHeroItem-LeftCaptionTagLine{
+    color:#002d62;
+    margin-left:67px;
+    margin-right:60px;
+    overflow:hidden;
+}
+
+.homePageHeroItem-LeftCaptionTitle{
+    font-size:36px;
+    line-height:46px;
+    height:46px;
+    margin-top:25px;
+    letter-spacing:-3px;
+}
+
+.homePageHeroItem-LeftCaptionTagLine{
+    font-size:24px;
+    line-height:30px;
+    max-height:60px;
+    margin-top:28px;
+    margin-bottom:27px;
+    letter-spacing:-1px;
+}
+
+.homePageHeroItem-RightCaption{
+    position:absolute;
+    right: 0px;
+    bottom: 25px;
+    width:391px;
+    height:146px;
+    background-color:#6caedf;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    overflow:hidden;
+}
+
+.homePageHeroItem-RightCaptionTitle, .homePageHeroItem-RightCaptionDescription{
+    color:#ffffff;
+    overflow:hidden;
+}
+
+.homePageHeroItem-RightCaptionTitle{
+    margin:18px 20px 0px 20px;
+    font-size:18px;
+    line-height:24px;
+    height:24px;
+}
+
+.homePageHeroItem-RightCaptionDescription{
+    margin:10px 20px 0px 20px;
+    font-size:12px;
+    line-height:14px;
+    height:42px;
+}
+
+/*for home page hero control display template*/
+.homePageHeroControl-Slideshow{
+    position:relative;
+    background-color:#000000;
+    color:#FFFFFF;
+    width:999px;
+    height:443px;
+    margin:0px 10px 20px 0px;
+}
+
+.homePageHeroControl-SlideshowItems{
+    position:relative;
+}
+
+.homePageHeroControl-SlideshowImageItems, .homePageHeroControl-SlideshowCaptionItems{
+    width:999px;
+    height:443px;
+    overflow:hidden;
+}
+
+.homePageHeroControl-SlideshowCaptionItems{
+    position:absolute;
+    left:0px;
+    top:0px;
+}
+
+.homePageHeroControl-SlideshowPagingBar,.homePageHeroControl-SlideshowPagingBarOverlay{
+    position:absolute;
+    height:30px;
+    bottom:35px;
+}
+
+.homePageHeroControl-SlideshowPagingBar{
+    left:620px;
+    z-index:4;
+    color:white;
+    overflow:hidden;
+}
+
+.homePageHeroControl-SlideshowPagingBarOverlay{
+    z-index:3;
+    width:100%;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active,.homePageHeroControl-SlideshowPagingLink-Inactive,.homePageHeroControl-SlideshowPaging-More{
+    float:left;
+    height:30px;
+}
+
+a.homePageHeroControl-SlideshowPagingLink-Active,a.homePageHeroControl-SlideshowPagingLink-Inactive{
+    width:25px;
+    padding-left:4px;
+    padding-right:3px;
+    text-decoration:none;
+}
+
+.homePageHeroControl-SlideshowPaging-More{
+    margin-top:0.3em;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active > span,.homePageHeroControl-SlideshowPagingLink-Inactive > span{
+    display:block;
+    width:15px;
+    height:15px;
+    margin-right:15px;
+    background-repeat:no-repeat;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Active > span{
+    background-image:url('../images/Hero-nav-control-circle-blue.png');
+}
+
+.homePageHeroControl-SlideshowPaging-More{
+    color:#b0b0b0;
+}
+
+.homePageHeroControl-SlideshowPagingLink-Inactive > span{    
+    background-image:url('../images/Hero-nav-control-circle-white.png');
+}
+
+.homePageHeroControl-noResults{
+    padding-left:10px;
+}
+
+.homePageHeroControl-noResultsTitle{
+    padding-bottom:20px;
+}
+
+.homePageHeroControl-SlideshowItems ul {
+    padding:0px;
+	margin:0px;
+    list-style-type: none;
+}
+
+.homePageHeroControl-SlideshowItems ul li {
+    float: left;
+    width: 999px;
+    height: 443px;
+}
+
+.tableCol-75 {
+    display: none !important;
+}

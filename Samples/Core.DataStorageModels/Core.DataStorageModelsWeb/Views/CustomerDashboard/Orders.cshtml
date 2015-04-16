@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Core.DataStorageModelsWeb.Order>
+
+@{
+    ViewBag.Title = "Orders";
+    var sharePointContext = ViewBag.SharePointContext as SharePointContext;
+}
+
+<div class="cdsm_orders cdsm_table_list">
+    @Html.Partial("Top")
+    <div class="cdsm_common_display">
+        <div class="cdsm_title">Recent Orders</div>
+        <div>
+            <ul>
+                <li>
+                    <div>Order ID</div>
+                    <div>Salesperson</div>
+                    <div>Order Date</div>
+                    <div>Require Date</div>
+                    <div>Shipped Date</div>
+                    <div>Ship Via</div>
+                </li>
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.OrderID)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.LastName)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.RequiredDate)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.ShippedDate)
+                        </div>
+                        <div>
+                            @Html.DisplayFor(modelItem => item.Shipper.CompanyName)
+                        </div>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript">
+        var appWebUrl = '@sharePointContext.SPAppWebUrl';
+        var hostUrl = '@sharePointContext.SPHostUrl';
+    </script>
+
+    @Scripts.Render("~/bundles/CustomerDashboard")
+}

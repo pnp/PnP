@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="AppPartConfiguration" OnQuickLaunch="TRUE" TemplateType="10000" Url="Lists/AppPartConfiguration" Description="List to store configuration data specific to each app part instance of the app throughout the site."></ListInstance>
+</Elements>

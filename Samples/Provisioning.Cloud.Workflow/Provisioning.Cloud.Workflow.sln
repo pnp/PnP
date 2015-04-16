@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.Workflow", "Provisioning.Cloud.Workflow\Provisioning.Cloud.Workflow.csproj", "{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Cloud.WorkflowWeb", "Provisioning.Cloud.WorkflowWeb\Provisioning.Cloud.WorkflowWeb.csproj", "{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{166D9D33-42F4-4DCC-8CE0-1220B0074001}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B61DB6D-6A92-4B2B-9F6E-C0143EF6CE1F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{839AEE0D-299B-440C-B1C1-3E65BEC1CE28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,129 @@
+﻿@model string
+@{
+    Layout = null;
+    var sharePointContext = ViewBag.SharePointContext as SharePointContext;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
+        var hostWebUrl = '@sharePointContext.SPHostUrl';
+        var appWebUrl = '@sharePointContext.SPAppWebUrl';
+        var customerID = '@Model'; 
+
+        (function () {
+            'use strict';
+
+            if (document.URL.indexOf('?') != -1) {
+                var params = document.URL.split('?')[1].split('&');
+                for (var i = 0; i < params.length; i++) {
+                    var p = decodeURIComponent(params[i]);
+                    if (/^SPHostUrl=/i.test(p)) {
+                        hostWebUrl = p.split('=')[1];
+                        document.write('<link rel="stylesheet" href="' + hostWebUrl + '/_layouts/15/defaultcss.ashx" />');
+                        break;
+                    }
+                }
+            }
+
+            if (hostWebUrl == '') {
+                document.write('<link rel="stylesheet" href="/_layouts/15/1033/styles/themable/corev15.css" />');
+            }
+
+        })();
+
+
+        $(function () {
+            $('#supportcaseAppPart').hide();
+            if (customerID.length > 0) {
+                //Query the Support Cases list in the host web via the REST API
+                var scriptbase = hostWebUrl + "/_layouts/15/";
+                $.getScript(scriptbase + "SP.RequestExecutor.js", execCrossDomainRequest);
+            }
+        });
+
+        function getQueryStringParameter(paramToRetrieve) {
+            var params =
+                document.URL.split("?")[1].split("&");
+            var strParams = "";
+            for (var i = 0; i < params.length; i = i + 1) {
+                var singleParam = params[i].split("=");
+                if (singleParam[0] == paramToRetrieve)
+                    return singleParam[1];
+            }
+        }
+
+        //Build and execute the REST API query
+        function execCrossDomainRequest() {
+            var executor = new SP.RequestExecutor(appWebUrl);
+
+            executor.executeAsync(
+                {
+                    url: appWebUrl + "/_api/SP.AppContextSite(@@target)" +
+                        "/web/lists/getbytitle('Support Cases')/items" +
+                        "?$filter=(FTCAM_CustomerID eq '" + customerID + "')" +
+                        "&$top=30" +
+                        "&$select=Id,Title,FTCAM_Status,FTCAM_CSR" +
+                        "&@@target='" + hostWebUrl + "'",
+                    method: "GET",
+                    headers: { "Accept": "application/json; odata=verbose" },
+                    success: successHandler,
+                    error: errorHandler
+                }
+            );
+        }
+
+        //Output the results from the REST API query
+        function successHandler(data) {
+            var jsonObject = JSON.parse(data.body);
+            var results = jsonObject.d.results;
+
+            var tableBody = $('#supportCases tbody');
+            for (var i = 0; i < results.length; i++) {
+                var statusClass = "Open_status";
+                if (results[i].FTCAM_Status.toLowerCase() == "resolved")
+                {
+                    statusClass = "Resolve_status";
+                }
+                var html = '<li><div class="id">'
+                    + results[i].Id + '</div><div class="status ' + statusClass + '">'
+                    + results[i].FTCAM_Status + '</div><div class="title">' +
+                    results[i].Title + '</div><div class="csr">'
+                    + results[i].FTCAM_CSR + '</div></li>';
+                $(".cdsm_common_display ul").append(html);
+            }
+            if (results.length > 0) {
+                $("#supportcaseAppPart").show();
+            }
+        }
+
+        function errorHandler(data, errorCode, errorMessage) {
+            var value = JSON.parse(data.body);
+            var message = 'Could not complete the cross-domain call:\n' + value.error.message.value;
+            $("#supportcaseAppPart .errorMessage").html(message);
+            $('#supportcaseAppPart').show();
+        }
+    </script>
+</head>
+<body>
+    <div id="supportcaseAppPart" class="cdsm_table_list">
+        <div class="cdsm_common_display">
+            <div class="cdsm_title">Support Cases - Via REST API</div>
+            <div>
+                <ul>
+                    <li>
+                        <div class="id">ID</div>
+                        <div class="status">Status</div>
+                        <div class="title">Title</div>
+                        <div class="csr">CSR</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="errorMessage"></div>
+        </div>
+    </div>
+</body>
+</html>
