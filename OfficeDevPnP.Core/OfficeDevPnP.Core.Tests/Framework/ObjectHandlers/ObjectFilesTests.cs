@@ -73,8 +73,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                TokenParser parser = new TokenParser(ctx.Web, template);
-                new ObjectFiles().ProvisionObjects(ctx.Web, template, parser);
+                TokenParser.Initialize(ctx.Web, template);
+                new ObjectFiles().ProvisionObjects(ctx.Web, template);
 
 
                 if (!ctx.Web.IsPropertyAvailable("ServerRelativeUrl"))

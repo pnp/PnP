@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 {
@@ -29,23 +31,23 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 ctx.Load(themesCatalog, t => t.RootFolder.ServerRelativeUrl);
 
                 ctx.ExecuteQueryRetry();
-                
 
+                
                 ProvisioningTemplate template = new ProvisioningTemplate();
                 template.Parameters.Add("test", "test");
 
-                TokenParser parser = new TokenParser(ctx.Web, template);
+                TokenParser.Initialize(ctx.Web, template);
 
-                var site1 = parser.Parse("~siTE/test");
-                var site2 = parser.Parse("{site}/test");
-                var sitecol1 = parser.Parse("~siteCOLLECTION/test");
-                var sitecol2 = parser.Parse("{sitecollection}/test");
-                var masterUrl1 = parser.Parse("~masterpagecatalog/test");
-                var masterUrl2 = parser.Parse("{masterpagecatalog}/test");
-                var themeUrl1 = parser.Parse("~themecatalog/test");
-                var themeUrl2 = parser.Parse("{themecatalog}/test");
-                var parameterTest1 = parser.Parse("abc{parameter:TEST}/test");
-                var parameterTest2 = parser.Parse("abc{$test}/test");
+                var site1 = ("~siTE/test").ToParsedString();
+                var site2 = ("{site}/test").ToParsedString();
+                var sitecol1 = ("~siteCOLLECTION/test").ToParsedString();
+                var sitecol2 = ("{sitecollection}/test").ToParsedString();
+                var masterUrl1 = ("~masterpagecatalog/test").ToParsedString();
+                var masterUrl2 = ("{masterpagecatalog}/test").ToParsedString();
+                var themeUrl1 = ("~themecatalog/test").ToParsedString();
+                var themeUrl2 = ("{themecatalog}/test").ToParsedString();
+                var parameterTest1 = ("abc{parameter:TEST}/test").ToParsedString();
+                var parameterTest2 = ("abc{$test}/test").ToParsedString();
 
                 Assert.IsTrue(site1 == string.Format("{0}/test", ctx.Web.ServerRelativeUrl));
                 Assert.IsTrue(site2 == string.Format("{0}/test", ctx.Web.ServerRelativeUrl));

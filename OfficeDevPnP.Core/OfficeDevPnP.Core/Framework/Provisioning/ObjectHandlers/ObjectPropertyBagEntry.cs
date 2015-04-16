@@ -8,7 +8,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectPropertyBagEntry : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
            
             foreach (var propbagEntry in template.PropertyBagEntries)

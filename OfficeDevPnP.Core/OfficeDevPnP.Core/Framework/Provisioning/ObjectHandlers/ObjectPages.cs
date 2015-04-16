@@ -8,7 +8,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectPages : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var context = web.Context as ClientContext;
 
@@ -20,7 +20,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var page in template.Pages)
             {
-                var url = parser.Parse(page.Url);
+                var url = page.Url.ToParsedString();
 
 
                 if (!url.ToLower().StartsWith(web.ServerRelativeUrl.ToLower()))
@@ -61,7 +61,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     WebPartEntity wpEntity = new WebPartEntity();
                     wpEntity.WebPartTitle = webpart.Title;
-                    wpEntity.WebPartXml = parser.Parse(webpart.Contents);
+                    wpEntity.WebPartXml = webpart.Contents.ToParsedString();
                     web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
                 }
 

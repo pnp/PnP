@@ -9,7 +9,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectComposedLook : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             if (template.ComposedLook != null && 
                 !template.ComposedLook.Equals(ComposedLook.Empty))
@@ -19,7 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // Apply alternate CSS
                 if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
                 {
-                    var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
+                    var alternateCssUrl = template.ComposedLook.AlternateCSS.ToParsedString();
                     web.AlternateCssUrl = alternateCssUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // Apply Site logo
                 if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
                 {
-                    var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
+                    var siteLogoUrl = template.ComposedLook.SiteLogo.ToParsedString();
                     web.SiteLogoUrl = siteLogoUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -52,23 +52,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     string colorFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
                     {
-                        colorFile = parser.Parse(template.ComposedLook.ColorFile);
+                        colorFile = template.ComposedLook.ColorFile.ToParsedString();
                     }
                     string backgroundFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
                     {
-                        backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
+                        backgroundFile = template.ComposedLook.BackgroundFile.ToParsedString();
                     }
                     string fontFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
                     {
-                        fontFile = parser.Parse(template.ComposedLook.FontFile);
+                        fontFile = template.ComposedLook.FontFile.ToParsedString();
                     }
 
                     string masterUrl = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
                     {
-                        masterUrl = parser.Parse(template.ComposedLook.MasterPage);
+                        masterUrl = template.ComposedLook.MasterPage.ToParsedString();
                     }
                     web.CreateComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
                     web.SetComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);

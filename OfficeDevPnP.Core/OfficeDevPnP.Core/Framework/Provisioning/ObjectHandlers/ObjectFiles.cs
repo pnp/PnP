@@ -9,7 +9,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFiles : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var context = web.Context as ClientContext;
 
@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var file in template.Files)
             {
 
-                var folderName = parser.Parse(file.Folder);
+                var folderName = file.Folder.ToParsedString();
 
                 if (folderName.ToLower().StartsWith((web.ServerRelativeUrl.ToLower())))
                 {
@@ -59,7 +59,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         var wpEntity = new WebPartEntity();
                         wpEntity.WebPartTitle = webpart.Title;
-                        wpEntity.WebPartXml = parser.Parse(webpart.Contents);
+                        wpEntity.WebPartXml = webpart.Contents.ToParsedString();
                         wpEntity.WebPartZone = webpart.Zone;
                         wpEntity.WebPartIndex = (int) webpart.Order;
 

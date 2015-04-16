@@ -9,7 +9,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFeatures : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template, TokenParser parser)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             var context = web.Context as ClientContext;
             
