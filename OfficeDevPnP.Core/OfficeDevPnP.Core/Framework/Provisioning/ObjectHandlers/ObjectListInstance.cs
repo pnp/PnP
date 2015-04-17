@@ -289,6 +289,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             }
             #endregion
+
+            #region DataRows
+
+            foreach (var listInfo in createdLists)
+            {
+                var listInstance = listInfo.ListInstance;
+                if (listInstance.DataRows != null && listInstance.DataRows.Any())
+                {
+                    var list = listInfo.CreatedList;
+                    foreach (var dataRow in listInfo.ListInstance.DataRows)
+                    {
+                        ListItemCreationInformation listitemCI = new ListItemCreationInformation();
+                        var listitem = list.AddItem(listitemCI);
+                        foreach (var dataValue in dataRow.Values)
+                        {
+                            listitem[dataValue.Key] = dataValue.Value;
+                        }
+                        listitem.Update();
+                        web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
+                    }
+                }
+            }
+
+            #endregion
         }
 
 
