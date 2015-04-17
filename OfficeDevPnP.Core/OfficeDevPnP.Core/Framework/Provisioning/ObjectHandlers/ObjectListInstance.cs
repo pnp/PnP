@@ -304,7 +304,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         var listitem = list.AddItem(listitemCI);
                         foreach (var dataValue in dataRow.Values)
                         {
-                            listitem[dataValue.Key] = dataValue.Value;
+                            listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
                         }
                         listitem.Update();
                         web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
