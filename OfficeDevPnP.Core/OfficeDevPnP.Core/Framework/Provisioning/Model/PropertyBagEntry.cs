@@ -1,41 +1,19 @@
-﻿using System;
+﻿using OfficeDevPnP.Core.Framework.Provisioning.Model.Attributes;
+using OfficeDevPnP.Core.Framework.Provisioning.Model.Comparers;
+using OfficeDevPnP.Core.Framework.Provisioning.Model.HashFormatters;
+using System;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class PropertyBagEntry : IEquatable<PropertyBagEntry>
+    public class PropertyBagEntry : ModelBase<PropertyBagEntry>
     {
-        #region Properties
-
+        [HashCodeIdentifier]
         public string Key { get; set; }
-            
+        [HashCodeIdentifier]
         public string Value { get; set; }
-
-        #endregion
-
-        #region Comparison code
-
-        public override int GetHashCode()
+        public PropertyBagEntry()
         {
-            return (String.Format("{0}|{1}",
-                this.Key,
-                this.Value).GetHashCode());
+            InstanceEquator = new PropertyBagEntryEquator().GetEquator(this);
         }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is PropertyBagEntry))
-            {
-                return(false);
-            }
-            return (Equals((PropertyBagEntry)obj));
-        }
-
-        public bool Equals(PropertyBagEntry other)
-        {
-            return (this.Key == other.Key &&
-                this.Value == other.Value);
-        }
-
-        #endregion
     }
 }

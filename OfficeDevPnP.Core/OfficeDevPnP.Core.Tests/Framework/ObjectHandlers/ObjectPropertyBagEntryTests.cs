@@ -37,10 +37,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             var template = new ProvisioningTemplate();
 
-
             var propbagEntry = new Core.Framework.Provisioning.Model.PropertyBagEntry();
             propbagEntry.Key = key;
             propbagEntry.Value = "Unit Test";
+
+            //TODO needs other tests to validate the hashcode
+            Assert.AreNotEqual(string.Join("|", new List<string>()).GetHashCode(), propbagEntry.GetHashCode());
 
             template.PropertyBagEntries.Add(propbagEntry);
 

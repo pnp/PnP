@@ -17,6 +17,15 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
     {
 
         [TestMethod]
+        public void CanGetComposedLookHashCode()
+        {
+            var cl = new ComposedLook() { AlternateCSS = "test" };
+
+            //TODO needs other tests to validate the hashcode is in fact correct, not just not based on an empty list of string
+            Assert.AreNotEqual(string.Join("|", new List<string>()).GetHashCode(), cl.GetHashCode());
+
+        }
+        [TestMethod]
         public void CanCreateComposedLooks()
         {
             using (var ctx = TestCommon.CreateClientContext())
