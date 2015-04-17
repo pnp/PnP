@@ -48,6 +48,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             listInstance.Title = listName;
             listInstance.TemplateType = (int) ListTemplateType.GenericList;
 
+            Dictionary<string, string> dataValues = new Dictionary<string, string>();
+            dataValues.Add("Title","Test");
+            DataRow dataRow = new DataRow(dataValues);
+
+            listInstance.DataRows.Add(dataRow);
+
             template.Lists.Add(listInstance);
 
             using (var ctx = TestCommon.CreateClientContext())
@@ -58,6 +64,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);
+                
+                var items = list.GetItems(CamlQuery.CreateAllItemsQuery());
+                ctx.Load(items, itms => itms.Include(item => item["Title"]));
+                ctx.ExecuteQueryRetry();
+
+                Assert.IsTrue(items.Count == 1);
+                Assert.IsTrue(items[0]["Title"].ToString() == "Test");
             }
         }
 
