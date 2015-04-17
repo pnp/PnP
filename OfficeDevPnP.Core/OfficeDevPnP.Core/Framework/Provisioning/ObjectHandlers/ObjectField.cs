@@ -75,6 +75,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     if(createField)
                     {
+                        web.Context.Load(web.Fields);
+                        web.Context.ExecuteQueryRetry();
                         var fieldXml = parser.Parse(field.SchemaXml);
                         web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                         web.Context.Load(web.Fields);
@@ -120,6 +122,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             field.SchemaXml = document.ToString();
                         }
                     }
+
+                    // Check if we have version attribute. Remove if exists
+                    if (document.Root.Attribute("Version") != null)
+                    {
+                        document.Root.Attributes("Version").Remove();
+                        field.SchemaXml = document.ToString();
+                    }
+
                     template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
                 }
             }
