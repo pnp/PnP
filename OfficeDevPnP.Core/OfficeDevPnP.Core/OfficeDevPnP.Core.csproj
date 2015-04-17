@@ -298,6 +298,7 @@
     <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
+    <Compile Include="Framework\Provisioning\Model\DataRow.cs" />
     <Compile Include="Framework\Provisioning\Model\Features.cs" />
     <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
     <Compile Include="Framework\Provisioning\Model\Field.cs" />

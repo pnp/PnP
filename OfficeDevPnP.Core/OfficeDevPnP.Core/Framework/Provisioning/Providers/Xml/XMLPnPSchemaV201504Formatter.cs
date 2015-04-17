@@ -629,7 +629,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                   select new Model.FieldRef
                                   {
                                       ID = Guid.Parse(fieldRef.ID)
-                                  }) : null)
+                                  }) : null),
+                                  null
                          )
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,

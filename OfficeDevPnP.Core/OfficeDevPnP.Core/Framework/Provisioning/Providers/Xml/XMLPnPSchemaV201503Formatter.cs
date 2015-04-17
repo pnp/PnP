@@ -172,21 +172,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 foreach (var ct in template.ContentTypes)
                 {
                     XElement xElement = new XElement("ContentType");
-                    xElement.Add(new XAttribute("ID",ct.ID));
-                  
-                        xElement.Add(new XAttribute("Name", ct.Name));
+                    xElement.Add(new XAttribute("ID", ct.ID));
+
+                    xElement.Add(new XAttribute("Name", ct.Name));
                     if (!string.IsNullOrEmpty(ct.Group))
                     {
                         xElement.Add(new XAttribute("Group", ct.Group));
                     }
                     if (!string.IsNullOrEmpty(ct.Description))
                     {
-                        xElement.Add(new XAttribute("Description",ct.Description));
+                        xElement.Add(new XAttribute("Description", ct.Description));
                     }
-                    xElement.Add(new XAttribute("Hidden",ct.Hidden.ToString().ToLower()));
-                                       xElement.Add(new XAttribute("ReadOnly",ct.ReadOnly.ToString().ToLower()));
+                    xElement.Add(new XAttribute("Hidden", ct.Hidden.ToString().ToLower()));
+                    xElement.Add(new XAttribute("ReadOnly", ct.ReadOnly.ToString().ToLower()));
 
-                                        xElement.Add(new XAttribute("Sealed",ct.Sealed.ToString().ToLower()));
+                    xElement.Add(new XAttribute("Sealed", ct.Sealed.ToString().ToLower()));
                     if (!string.IsNullOrEmpty(ct.DocumentTemplate))
                     {
 
@@ -202,7 +202,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     }
                 }
                 result.ContentTypes.Any = ctElements.ToArray();
-                
+
             }
             else
             {
@@ -602,7 +602,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                   select new Model.FieldRef
                                   {
                                       ID = Guid.Parse(fieldRef.ID)
-                                  }) : null)
+                                  }) : null),
+                                  null
                          )
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,

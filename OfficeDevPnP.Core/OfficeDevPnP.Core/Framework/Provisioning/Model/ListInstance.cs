@@ -13,7 +13,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public ListInstance() { }
 
         public ListInstance(IEnumerable<ContentTypeBinding> contentTypeBindings,
-            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs   )
+            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs, Dictionary<string,string> dataRows    )
         {
             if (contentTypeBindings != null)
             {
@@ -43,6 +43,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private List<View> _views = new List<View>();
         private List<Field> _fields = new List<Field>(); 
         private List<FieldRef> _fieldRefs = new List<FieldRef>(); 
+        private List<DataRow> _dataRows = new List<DataRow>(); 
         #endregion
 
         #region Properties
@@ -143,6 +144,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
 
         public Guid TemplateFeatureID { get; set; }
+
+        public List<DataRow> DataRows
+        {
+            get { return this._dataRows; }
+            private set { this._dataRows = value; }
+        }
 
         #endregion
 
