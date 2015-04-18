@@ -15,6 +15,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public Guid ID { get; set; }
         public string Name { get; set; }
 
+        public int? Language { get; set; }
+
         public List<Term> Terms
         {
             get { return _terms;}
@@ -28,11 +30,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
         }
 
-        public TermSet(Guid id, string name, List<Term> terms)
+        public TermSet(Guid id, string name, int language, List<Term> terms)
         {
             this.ID = id;
             this.Name = name;
-
+            this.Language = language;
             if (terms != null)
             {
                 this.Terms.AddRange(terms);
@@ -45,9 +47,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}",
+            return (String.Format("{0}|{1}|{2}|{3}",
                 this.ID.GetHashCode(),
                 this.Name.GetHashCode(),
+                this.Language.GetHashCode(),
                  this.Terms.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }
@@ -65,6 +68,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             return (this.ID == other.ID &&
                 this.Name == other.Name &&
+                this.Language == other.Language &&
                 this.Terms.DeepEquals(other.Terms));
         }
 
