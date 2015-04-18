@@ -30,7 +30,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
         }
 
-        public TermSet(Guid id, string name, int language, List<Term> terms)
+        public TermSet(Guid id, string name, int? language, List<Term> terms)
         {
             this.ID = id;
             this.Name = name;
