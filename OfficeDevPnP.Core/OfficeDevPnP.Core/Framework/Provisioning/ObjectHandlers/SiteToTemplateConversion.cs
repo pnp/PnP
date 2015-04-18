@@ -4,6 +4,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.UPAWebService;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -25,6 +26,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template, creationInfo);
+            // Get TermGroups
+            template = new ObjectTermGroups().CreateEntities(web, template, creationInfo);
             // Site Fields
             template = new ObjectField().CreateEntities(web, template, creationInfo);
             // Content Types
@@ -104,6 +107,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Features
             new ObjectFeatures().ProvisionObjects(web, template);
+
+            // TermGroups
+            new ObjectTermGroups().ProvisionObjects(web, template);
 
             // Site Fields
             new ObjectField().ProvisionObjects(web, template);
