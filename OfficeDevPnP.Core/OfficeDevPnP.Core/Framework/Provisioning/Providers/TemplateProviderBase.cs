@@ -85,19 +85,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
 
         public abstract List<ProvisioningTemplate> GetTemplates(ITemplateFormatter formatter);
 
-        public abstract ProvisioningTemplate GetTemplate(string identifier);
+        public abstract ProvisioningTemplate GetTemplate(string uri);
 
-        public abstract ProvisioningTemplate GetTemplate(string identifier, ITemplateFormatter formatter);
+        public abstract ProvisioningTemplate GetTemplate(string uri, string identifier);
+
+        public abstract ProvisioningTemplate GetTemplate(string uri, ITemplateFormatter formatter);
+
+        public abstract ProvisioningTemplate GetTemplate(string uri, string identifier, ITemplateFormatter formatter);
 
         public abstract void Save(ProvisioningTemplate template);
 
         public abstract void Save(ProvisioningTemplate template, ITemplateFormatter formatter);
 
-        public abstract void SaveAs(ProvisioningTemplate template, string identifier);
+        public abstract void SaveAs(ProvisioningTemplate template, string uri);
 
-        public abstract void SaveAs(ProvisioningTemplate template, string identifier, ITemplateFormatter formatter);
+        public abstract void SaveAs(ProvisioningTemplate template, string uri, ITemplateFormatter formatter);
 
-        public abstract void Delete(string identifier);
+        public abstract void Delete(string uri);
 
         #endregion
     }

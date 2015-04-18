@@ -40,6 +40,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     return (new XMLPnPSchemaV201503Formatter());
                 case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04):
                     return (new XMLPnPSchemaV201504Formatter());
+                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05):
+                    return (new XMLPnPSchemaV201505Formatter());
                 default:
                     throw new ArgumentException("Unsupporter namespace URI", "namespaceUri");
             }
