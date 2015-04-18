@@ -30,6 +30,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         public void Initialize()
         {
             _termSetGuid = Guid.NewGuid();
+            _termGroupGuid = Guid.NewGuid();
         }
 
         [TestCleanup]
@@ -106,8 +107,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
                 ctx.ExecuteQueryRetry();
 
-                Assert.IsInstanceOfType(group, typeof(TermGroup));
-                Assert.IsInstanceOfType(set, typeof (TermSet));
+                Assert.IsInstanceOfType(group, typeof(Microsoft.SharePoint.Client.Taxonomy.TermGroup));
+                Assert.IsInstanceOfType(set, typeof (Microsoft.SharePoint.Client.Taxonomy.TermSet));
                 Assert.IsTrue(set.Terms.Count == 2);
 
             }
