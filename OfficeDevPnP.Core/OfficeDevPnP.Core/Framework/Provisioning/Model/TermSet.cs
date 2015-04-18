@@ -15,7 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public Guid ID { get; set; }
         public string Name { get; set; }
 
-        public int Language { get; set; }
+        public int? Language { get; set; }
 
         public List<Term> Terms
         {
