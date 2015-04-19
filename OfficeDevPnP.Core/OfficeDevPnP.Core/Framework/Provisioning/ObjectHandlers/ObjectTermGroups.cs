@@ -208,7 +208,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     isDirty = true;
                     foreach (var label in modelTerm.Labels)
                     {
-                        term.CreateLabel(label.Value.ToParsedString(), label.Language, false);
+                        // TODO: Erwin, please check this excerpt
+                        var l = term.CreateLabel(label.Value.ToParsedString(), label.Language,
+                            label.IsDefaultForLanguage.HasValue ? label.IsDefaultForLanguage.Value : false);
                     }
                 }
                 if (isDirty)
