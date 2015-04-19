@@ -46,6 +46,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             modelTermGroup.ID = Guid.NewGuid();
                         }
                         group = termStore.CreateGroup(modelTermGroup.Name.ToParsedString(), modelTermGroup.ID);
+                        
+                        // TODO: Please check this line
+                        group.Description = modelTermGroup.Description;
+
                         termStore.CommitAll();
                         web.Context.Load(group);
                         web.Context.ExecuteQueryRetry();
@@ -79,6 +83,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 set = group.CreateTermSet(modelTermSet.Name.ToParsedString(), modelTermSet.ID, modelTermSet.Language ?? termStore.DefaultLanguage);
                                 newTermSet = true;
+
+                                // TODO: Please check this line
+                                set.Description = modelTermSet.Description;
+                                
                                 termStore.CommitAll();
                                 web.Context.Load(set);
                                 web.Context.ExecuteQueryRetry();
@@ -145,6 +153,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 modelTerm.ID = Guid.NewGuid();
             }
+
             TaxonomyItem parentItem = null;
             if (parent is Term)
             {
@@ -161,6 +170,29 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
                 var isDirty = false;
+
+                // TODO: Please check the four following if blocks
+                if (!String.IsNullOrEmpty(modelTerm.Description)) 
+                {
+                    isDirty = true;
+                    term.SetDescription(modelTerm.Description, modelTerm.Language ?? termStore.DefaultLanguage);
+                }
+                if (!String.IsNullOrEmpty(modelTerm.Owner))
+                {
+                    isDirty = true;
+                    term.Owner = modelTerm.Owner;
+                }
+                if (modelTerm.IsAvailableForTagging.HasValue)
+                {
+                    isDirty = true;
+                    term.IsAvailableForTagging = modelTerm.IsAvailableForTagging.Value;
+                }
+                if (!String.IsNullOrEmpty(modelTerm.CustomSortOrder))
+                {
+                    isDirty = true;
+                    term.CustomSortOrder = modelTerm.CustomSortOrder;
+                }
+
                 if (modelTerm.Properties.Any())
                 {
                     isDirty = true;

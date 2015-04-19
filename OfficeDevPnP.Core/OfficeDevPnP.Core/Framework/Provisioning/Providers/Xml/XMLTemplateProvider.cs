@@ -45,6 +45,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     // Load it from a File Stream
                     Stream stream = this.Connector.GetFileStream(file);
 
+                    // TODO: Handle the new Provisioning Schema
+
                     // And convert it into a ProvisioningTemplate
                     ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
 
@@ -82,6 +84,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             // Get the XML document from a File Stream
             Stream stream = this.Connector.GetFileStream(uri);
+
+            // TODO: Handle the new Provisioning Schema
 
             // And convert it into a ProvisioningTemplate
             ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);

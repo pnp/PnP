@@ -332,12 +332,23 @@
         </xsd:complexType>
       </xsd:element>
 
-      <xsd:element name="TermGroup" type="pnp:TermGroup" minOccurs="0" maxOccurs="1">
+      <xsd:element name="TermGroups" minOccurs="0" maxOccurs="1">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
-            The TermGroup element to provision into the target Site through the Provisioning Template, optional element
+            The TermGroups element allows provisioning one or more TermGroups into the target Site, optional element
           </xsd:documentation>
         </xsd:annotation>
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="TermGroup" type="pnp:TermGroup" minOccurs="1" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The TermGroup element to provision into the target Site through the Provisioning Template, optional element
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
       </xsd:element>
 
       <xsd:element name="ComposedLook" type="pnp:ComposedLook" minOccurs="0" maxOccurs="1">
@@ -1531,7 +1542,13 @@
     <xsd:complexContent>
       <xsd:extension base="TermBase">
         <xsd:sequence>
-          <xsd:element name="TermSet" type="pnp:TermSet" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="TermSets">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="TermSet" type="pnp:TermSet" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
         </xsd:sequence>
       </xsd:extension>
     </xsd:complexContent>
@@ -1556,10 +1573,16 @@
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="pnp:TermBase">
-        <xsd:sequence >
-          <xsd:element name="Term" type="pnp:Term" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:sequence>
+          <xsd:element name="Terms" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="Term" type="pnp:Term" minOccurs="0" maxOccurs="unbounded"/>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
         </xsd:sequence>
-        <xsd:attribute name="LCID" type="xsd:int" use="optional" />
+        <xsd:attribute name="Language" type="xsd:int" use="optional" />
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -1596,22 +1619,35 @@
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="Labels" minOccurs="0" maxOccurs="1" type="pnp:TermLabels" />
-          <xsd:element name="Properties" minOccurs="0" maxOccurs="1">
+          <xsd:element name="CustomProperties" type="pnp:TermProperties" minOccurs="0" maxOccurs="1">
             <xsd:annotation>
               <xsd:documentation xml:lang="en">
-                The Term Properties, optional collection of elements
+                The Term CustomProperties, optional collection of elements
               </xsd:documentation>
             </xsd:annotation>
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="Property" type="pnp:StringDictionaryItem"
-                              minOccurs="1" maxOccurs="unbounded" />
-              </xsd:sequence>
-            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="LocalCustomProperties" type="pnp:TermProperties" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The Term CustomProperties, optional collection of elements
+              </xsd:documentation>
+            </xsd:annotation>
           </xsd:element>
         </xsd:all>
       </xsd:extension>
     </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TermProperties">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        A collection of Term Properties
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Property" type="pnp:StringDictionaryItem"
+                    minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
   </xsd:complexType>
 
   <xsd:complexType name="TermLabels">

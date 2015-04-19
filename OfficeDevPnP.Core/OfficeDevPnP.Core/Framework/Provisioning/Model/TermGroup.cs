@@ -14,6 +14,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Public Members
         public Guid ID { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public List<TermSet> TermSets
         {
@@ -45,9 +46,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}",
+            return (String.Format("{0}|{1}|{2}|{3}",
                 this.ID.GetHashCode(),
                 this.Name.GetHashCode(),
+                this.Description.GetHashCode(),
                  this.TermSets.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }
@@ -65,6 +67,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             return (this.ID == other.ID &&
                 this.Name == other.Name &&
+                this.Description == other.Description &&
                 this.TermSets.DeepEquals(other.TermSets));
         }
 

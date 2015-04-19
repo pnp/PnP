@@ -255,16 +255,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
     public partial class TermGroup : TermBase {
         
-        private TermSet[] termSetField;
+        private TermSet[] termSetsField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("TermSet")]
-        public TermSet[] TermSet {
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public TermSet[] TermSets {
             get {
-                return this.termSetField;
+                return this.termSetsField;
             }
             set {
-                this.termSetField = value;
+                this.termSetsField = value;
             }
         }
     }
@@ -277,42 +277,42 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
     public partial class TermSet : TermBase {
         
-        private Term[] termField;
+        private Term[] termsField;
         
-        private int lCIDField;
+        private int languageField;
         
-        private bool lCIDFieldSpecified;
+        private bool languageFieldSpecified;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Term")]
-        public Term[] Term {
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Term[] Terms {
             get {
-                return this.termField;
+                return this.termsField;
             }
             set {
-                this.termField = value;
+                this.termsField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int LCID {
+        public int Language {
             get {
-                return this.lCIDField;
+                return this.languageField;
             }
             set {
-                this.lCIDField = value;
+                this.languageField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LCIDSpecified {
+        public bool LanguageSpecified {
             get {
-                return this.lCIDFieldSpecified;
+                return this.languageFieldSpecified;
             }
             set {
-                this.lCIDFieldSpecified = value;
+                this.languageFieldSpecified = value;
             }
         }
     }
@@ -329,7 +329,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private TermLabelsLabel[] labelsField;
         
-        private StringDictionaryItem[] propertiesField;
+        private StringDictionaryItem[] customPropertiesField;
+        
+        private StringDictionaryItem[] localCustomPropertiesField;
         
         /// <remarks/>
         public TermChildTerms ChildTerms {
@@ -354,12 +356,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Property", IsNullable=false)]
-        public StringDictionaryItem[] Properties {
+        public StringDictionaryItem[] CustomProperties {
             get {
-                return this.propertiesField;
+                return this.customPropertiesField;
             }
             set {
-                this.propertiesField = value;
+                this.customPropertiesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Property", IsNullable=false)]
+        public StringDictionaryItem[] LocalCustomProperties {
+            get {
+                return this.localCustomPropertiesField;
+            }
+            set {
+                this.localCustomPropertiesField = value;
             }
         }
     }
@@ -959,7 +972,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private Page[] pagesField;
         
-        private TermGroup termGroupField;
+        private TermGroup[] termGroupsField;
         
         private ComposedLook composedLookField;
         
@@ -1077,12 +1090,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         }
         
         /// <remarks/>
-        public TermGroup TermGroup {
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public TermGroup[] TermGroups {
             get {
-                return this.termGroupField;
+                return this.termGroupsField;
             }
             set {
-                this.termGroupField = value;
+                this.termGroupsField = value;
             }
         }
         
