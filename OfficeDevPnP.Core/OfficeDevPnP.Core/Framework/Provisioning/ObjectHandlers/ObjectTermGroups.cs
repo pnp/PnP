@@ -154,7 +154,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 modelTerm.ID = Guid.NewGuid();
             }
 
-            TaxonomyItem parentItem = null;
             if (parent is Term)
             {
                 term = ((Term)parent).CreateTerm(modelTerm.Name.ToParsedString(), modelTerm.Language ?? termStore.DefaultLanguage, modelTerm.ID);
