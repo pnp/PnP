@@ -59,10 +59,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public override ProvisioningTemplate GetTemplate(string uri)
         {
             var formatter = new XMLPnPSchemaFormatter();
-            return (this.GetTemplate(uri, formatter));
+            return (this.GetTemplate(uri, default(String), formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string uri, string identifier)
+        {
+            var formatter = new XMLPnPSchemaFormatter();
+            return (this.GetTemplate(uri, identifier, formatter));
         }
 
         public override ProvisioningTemplate GetTemplate(string uri, ITemplateFormatter formatter)
+        {
+            return (this.GetTemplate(uri, default(String), formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string uri, string identifier, ITemplateFormatter formatter)
         {
             if (String.IsNullOrEmpty(uri))
             {

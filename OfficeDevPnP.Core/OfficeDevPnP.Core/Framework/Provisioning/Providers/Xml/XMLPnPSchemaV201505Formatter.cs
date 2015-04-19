@@ -627,8 +627,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                   select new Model.FieldRef
                                   {
                                       ID = Guid.Parse(fieldRef.ID)
-                                  }) : null)
-                         )
+                                  }) : null),
+                        (list.DataRows != null ?
+                                 (from dataRow in list.DataRows
+                                  select new Model.DataRow(
+                                     (from dataValue in dataRow
+                                      select dataValue).ToDictionary(k => k.FieldName, v => v.Value)
+                                  )).ToList() : null)
+                        )                         
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,
                         Description = list.Description,
