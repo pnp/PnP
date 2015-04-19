@@ -123,7 +123,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
 
-            // During the processing flow fiels which refer to to be created lists might be created
+            // During the processing flow fields which refer to to be created lists might be created
             // These fields will be created initially without a reference to the actual list
             // and then hooked up to the corresponding source list in the following method
             ProcessLookupFields(web, template);
