@@ -47,9 +47,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}|{3}",
-                this.ID.GetHashCode(),
-                this.Name.GetHashCode(),
-                this.Description.GetHashCode(),
+                this.ID,
+                this.Name,
+                this.Description,
                  this.TermSets.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }

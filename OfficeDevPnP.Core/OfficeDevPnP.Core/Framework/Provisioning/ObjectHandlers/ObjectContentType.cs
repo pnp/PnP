@@ -19,18 +19,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            var skippedFieldIds = new List<Guid>();
-            foreach (var field in template.SiteFields)
-            {
-                XElement fieldElement = XElement.Parse(field.SchemaXml);
-                var id = Guid.Parse(fieldElement.Attribute("ID").Value);
-                var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
-                if (listIdentifier != null)
-                {
-                    skippedFieldIds.Add(id);
-                }
-            }
-
             web.Context.Load(web.ContentTypes, ct => ct.Include(c => c.StringId));
             web.Context.ExecuteQueryRetry();
 
@@ -39,7 +27,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var existingCT = web.ContentTypes.FirstOrDefault(c => c.StringId.Equals(ct.ID, StringComparison.OrdinalIgnoreCase));
                 if (existingCT == null)
                 {
-                    CreateContentType(web, ct, skippedFieldIds);
+                    CreateContentType(web, ct);
                 }
                 else
                 {
@@ -47,13 +35,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCT.DeleteObject();
                         web.Context.ExecuteQueryRetry();
-                        CreateContentType(web, ct, skippedFieldIds);
+                        CreateContentType(web, ct);
                     }
                 }
             }
         }
 
-        private static void CreateContentType(Web web, ContentType ct, List<Guid> skippedFields)
+        private static void CreateContentType(Web web, ContentType ct)
         {
             var name = ct.Name.ToParsedString();
             var description = ct.Description.ToParsedString();
@@ -63,11 +51,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var createdCT = web.CreateContentType(name, description, id, group);
             foreach (var fieldRef in ct.FieldRefs)
             {
-                if (skippedFields.FindIndex(g => g == fieldRef.ID) == -1)
-                {
-                    var field = web.Fields.GetById(fieldRef.ID);
-                    web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
-                }
+                var field = web.Fields.GetById(fieldRef.ID);
+                web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
             createdCT.ReadOnly = ct.ReadOnly;

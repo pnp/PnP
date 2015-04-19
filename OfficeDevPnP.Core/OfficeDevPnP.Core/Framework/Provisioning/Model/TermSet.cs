@@ -49,10 +49,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}|{3}|{4}",
-                this.ID.GetHashCode(),
-                this.Name.GetHashCode(),
-                this.Description.GetHashCode(),
-                this.Language.GetHashCode(),
+                this.ID,
+                this.Name,
+                this.Description,
+                this.Language,
                  this.Terms.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }
