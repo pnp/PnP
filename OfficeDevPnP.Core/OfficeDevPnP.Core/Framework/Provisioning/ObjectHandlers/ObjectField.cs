@@ -35,50 +35,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var field in fields)
             {
-                XDocument document = XDocument.Parse(field.SchemaXml);
-                var fieldId = document.Root.Attribute("ID").Value;
+                XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                var fieldId = fieldElement.Attribute("ID").Value;
 
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+                    var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
 
-                    var createField = false;
                     if (listIdentifier != null)
                     {
-                        // Check if the list is already there
-                        var listGuid = Guid.Empty;
-                        if (Guid.TryParse(listIdentifier, out listGuid))
-                        {
-                            // Check if list exists
-                            if (web.ListExists(listGuid))
-                            {
-                                createField = true;
-                            }
-                        }
-                        else
-                        {
-                            var existingList = web.GetListByUrl(listIdentifier);
-
-                            if (existingList != null)
-                            {
-                                createField = true;
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        createField = true;
+                        // Temporary remove list attribute from list
+                        fieldElement.Attribute("List").Remove();
                     }
 
-                    if (createField)
-                    {
-                        var fieldXml = field.SchemaXml.ToParsedString();
-                        web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                        web.Context.Load(web.Fields);
-                        web.Context.ExecuteQueryRetry();
-                    }
+                    var fieldXml = fieldElement.ToString();
+
+                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                 }
             }
         }

@@ -35,6 +35,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var createdLists = new List<ListInfo>();
 
             #region Lists
+
             foreach (var list in template.Lists)
             {
                 if (!existingLists.Contains(UrlUtility.Combine(serverRelativeUrl, list.Url)))
@@ -83,108 +84,53 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
-                    TokenParser.AddToken(new ListIdToken(web,list.Title,createdList.Id));
-                    
-                    TokenParser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length+1)));
+                    TokenParser.AddToken(new ListIdToken(web, list.Title, createdList.Id));
+
+                    TokenParser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length + 1)));
 
 
                 }
 
             }
+
             #endregion
 
             #region Fields
-
-            // Handle site columns that refer to lists that didn't exist yet
-            foreach (var listInfo in createdLists)
-            {
-                ParsePostponedSiteColumns(template.SiteFields, listInfo.CreatedList.Id, listInfo.ListInstance.Url.ToParsedString(), web);
-            }
-
-
-            // Loop through all content types and check if fields are missing
-            foreach (var ctDef in template.ContentTypes)
-            {
-                var ct = web.ContentTypes.GetById(ctDef.ID);
-                web.Context.Load(ct.FieldLinks);
-                web.Context.ExecuteQueryRetry();
-
-                var fieldLinks = ct.FieldLinks.ToList();
-
-                foreach (var f in template.SiteFields)
-                {
-                    XDocument fieldDocument = XDocument.Parse(f.SchemaXml);
-                    var id = Guid.Parse(fieldDocument.Root.Attribute("ID").Value);
-                    if (fieldLinks.FirstOrDefault(fl => fl.Id == id) == null)
-                    {
-                        var field = web.Fields.GetById(id);
-                        FieldLinkCreationInformation fieldLinkCI = new FieldLinkCreationInformation();
-                        fieldLinkCI.Field = field;
-                        ct.FieldLinks.Add(fieldLinkCI);
-                        ct.Update(true);
-                        web.Context.ExecuteQueryRetry();
-                    }
-                }
-            }
-
-
             foreach (var listInfo in createdLists)
             {
                 if (listInfo.ListInstance.Fields.Any())
                 {
                     foreach (var field in listInfo.ListInstance.Fields)
                     {
-                        XDocument fieldDocument = XDocument.Parse(field.SchemaXml);
-                        var id = fieldDocument.Root.Attribute("ID").Value;
+                        XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                        var id = fieldElement.Attribute("ID").Value;
 
                         Guid fieldGuid = Guid.Empty;
                         if (Guid.TryParse(id, out fieldGuid))
                         {
                             if (!listInfo.CreatedList.FieldExistsById(fieldGuid))
                             {
-                                var createField = false;
-                                var listIdentifier = fieldDocument.Root.Attribute("List") != null ? fieldDocument.Root.Attribute("List").Value : null;
-                                if (!string.IsNullOrEmpty(listIdentifier))
+                                var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
+
+                                if (listIdentifier != null)
                                 {
-                                    var listGuid = Guid.Empty;
-                                    if (Guid.TryParse(listIdentifier, out listGuid))
-                                    {
-                                        // Check if list exists
-                                        if (web.ListExists(listGuid))
-                                        {
-                                            createField = true;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var existingList = web.GetListByUrl(listIdentifier);
-                                        if (existingList != null)
-                                        {
-                                            fieldDocument.Root.Attribute("List").SetValue(existingList.Id);
-                                            field.SchemaXml = fieldDocument.ToString();
-                                            createField = true;
-                                        }
-                                    }
+                                    // Temporary remove list attribute from fieldElement
+                                    fieldElement.Attribute("List").Remove();
                                 }
-                                else
-                                {
-                                    createField = true;
-                                }
-                                if (createField)
-                                {
-                                    var fieldXml = field.SchemaXml.ToParsedString();
-                                    listInfo.CreatedList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                                }
+
+                                var fieldXml = fieldElement.ToString();
+                                listInfo.CreatedList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                             }
                         }
                     }
-                    listInfo.CreatedList.Update();
-                    web.Context.ExecuteQueryRetry();
                 }
+                listInfo.CreatedList.Update();
+                web.Context.ExecuteQueryRetry();
             }
+
             #endregion
 
-           
+
             #region FieldRefs
 
             foreach (var listInfo in createdLists)
@@ -322,51 +268,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             public ListInstance ListInstance { get; set; }
         }
 
-        private void ParsePostponedSiteColumns(List<Model.Field> fields, Guid listId, string listUrl, Web web)
-        {
-            foreach (var field in fields)
-            {
-                XDocument document = XDocument.Parse(field.SchemaXml);
-                var fieldId = document.Root.Attribute("ID").Value;
-
-
-                var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
-
-                if (listIdentifier != null)
-                {
-                    var createField = false;
-                    var listGuid = Guid.Empty;
-                    if (Guid.TryParse(listIdentifier, out listGuid))
-                    {
-                        if (listGuid.Equals(listId))
-                        {
-                            createField = true;
-                        }
-                    }
-                    else
-                    {
-                        if (listIdentifier.Equals(listUrl, StringComparison.OrdinalIgnoreCase))
-                        {
-                            createField = true;
-                            document.Root.Attribute("List").SetValue(listId);
-                        }
-                    }
-                    if (createField)
-                    {
-                        var fieldGuid = Guid.Parse(fieldId);
-                        var existingFieldIds = web.Context.LoadQuery(web.Fields.Where(f => f.Id == fieldGuid));
-                        web.Context.ExecuteQuery();
-
-                        if (!existingFieldIds.Any())
-                        {
-                            var fieldXml = document.ToString().ToParsedString();
-                            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                            web.Context.ExecuteQueryRetry();
-                        }
-                    }
-                }
-            }
-        }
+      
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
