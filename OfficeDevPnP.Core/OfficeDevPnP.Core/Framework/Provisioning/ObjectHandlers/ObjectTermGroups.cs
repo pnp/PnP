@@ -163,34 +163,29 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 term = ((TermSet)parent).CreateTerm(modelTerm.Name.ToParsedString(), modelTerm.Language ?? termStore.DefaultLanguage, modelTerm.ID);
             }
+            if (!String.IsNullOrEmpty(modelTerm.Description))
+            {
+                term.SetDescription(modelTerm.Description, modelTerm.Language ?? termStore.DefaultLanguage);
+            }
+            if (!String.IsNullOrEmpty(modelTerm.Owner))
+            {
+                term.Owner = modelTerm.Owner;
+            }
+            if (modelTerm.IsAvailableForTagging.HasValue)
+            {
+                term.IsAvailableForTagging = modelTerm.IsAvailableForTagging.Value;
+            }
+            if (!String.IsNullOrEmpty(modelTerm.CustomSortOrder))
+            {
+                term.CustomSortOrder = modelTerm.CustomSortOrder;
+            }
+
             termStore.CommitAll();
             web.Context.Load(term);
             web.Context.ExecuteQueryRetry();
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
                 var isDirty = false;
-
-                // TODO: Please check the four following if blocks
-                if (!String.IsNullOrEmpty(modelTerm.Description)) 
-                {
-                    isDirty = true;
-                    term.SetDescription(modelTerm.Description, modelTerm.Language ?? termStore.DefaultLanguage);
-                }
-                if (!String.IsNullOrEmpty(modelTerm.Owner))
-                {
-                    isDirty = true;
-                    term.Owner = modelTerm.Owner;
-                }
-                if (modelTerm.IsAvailableForTagging.HasValue)
-                {
-                    isDirty = true;
-                    term.IsAvailableForTagging = modelTerm.IsAvailableForTagging.Value;
-                }
-                if (!String.IsNullOrEmpty(modelTerm.CustomSortOrder))
-                {
-                    isDirty = true;
-                    term.CustomSortOrder = modelTerm.CustomSortOrder;
-                }
 
                 if (modelTerm.Properties.Any())
                 {
