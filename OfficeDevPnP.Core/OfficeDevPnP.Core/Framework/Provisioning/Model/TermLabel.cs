@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
       
         #region Public Members
         public int Language { get; set; }
+        public bool? IsDefaultForLanguage { get; set; }
         public string Value { get; set; }
 
         #endregion

@@ -206,7 +206,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          EnableVersioning = list.EnableVersioning,
                          Hidden = list.Hidden,
                          MinorVersionLimit = list.MinorVersionLimit,
+                         MinorVersionLimitSpecified = true,
                          MaxVersionLimit = list.MaxVersionLimit,
+                         MaxVersionLimitSpecified = true,
                          OnQuickLaunch = list.OnQuickLaunch,
                          RemoveExistingContentTypes = list.RemoveExistingContentTypes,
                          TemplateFeatureID = list.TemplateFeatureID != Guid.Empty ? list.TemplateFeatureID.ToString() : null,
@@ -241,6 +243,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                           {
                               ID = fieldRef.ID.ToString(),
                           }).ToArray() : null,
+                         DataRows = list.DataRows.Count > 0 ?
+                             new List<DataValue[]>(
+                                from row in list.DataRows
+                                select new List<DataValue>(
+                                    from value in row.Values
+                                    select new DataValue { FieldName = value.Key, Value = value.Value }
+                                    ).ToArray()
+                                ).ToArray() : null,
                      }).ToArray();
             }
             else
@@ -274,8 +284,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 // TODO: This nullability check could be useless, because
                 // the WebFeatures property is initialized in the Features
                 // constructor
-                // COMMENT (PaoloPia): It is true, but someone using the code
-                // can put it to null and invalidate it, as well
                 if (template.Features.WebFeatures != null && template.Features.WebFeatures.Count > 0)
                 {
                     result.Features.WebFeatures =
@@ -446,30 +454,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Description = grp.Description,
                          TermSets = (
                             from termSet in grp.TermSets
-                            select new V201505.TermSet 
+                            select new V201505.TermSet
                             {
                                 ID = termSet.ID.ToString(),
                                 Name = termSet.Name,
                                 Description = termSet.Description,
                                 Language = termSet.Language.HasValue ? termSet.Language.Value : 0,
                                 LanguageSpecified = termSet.Language.HasValue,
-                                Terms = (
-                                    from term in termSet.Terms
-                                    select new V201505.Term 
-                                    {
-                                        ID = term.ID.ToString(),
-                                        Name = term.Name,
-                                        Description = term.Description,
-                                        Owner = term.Owner,
-                                        IsAvailableForTagging = term.IsAvailableForTagging.HasValue ? term.IsAvailableForTagging.Value : false,
-                                        IsAvailableForTaggingSpecified = term.IsAvailableForTagging.HasValue,
-                                        CustomSortOrder = term.CustomSortOrder,
-                                        // TODO: Complete this implementation
-                                        ChildTerms = null,
-                                        CustomProperties = null,
-                                        LocalCustomProperties = null,
-                                        Labels = null,
-                                    }).ToArray(),
+                                Terms = termSet.Terms.FromModelTermsToSchemaTerms(),
                             }).ToArray(),
                      }).ToArray();
             }
@@ -640,7 +632,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     );
             }
 
-
             // Translate Lists Instances, if any
             if (source.Lists != null)
             {
@@ -678,15 +669,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                      (from dataValue in dataRow
                                       select dataValue).ToDictionary(k => k.FieldName, v => v.Value)
                                   )).ToList() : null)
-                        )                         
+                        )
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,
                         Description = list.Description,
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
                         Hidden = list.Hidden,
-                        MinorVersionLimit = list.MinorVersionLimit,
-                        MaxVersionLimit = list.MaxVersionLimit,
+                        MinorVersionLimit = list.MinorVersionLimitSpecified ? list.MinorVersionLimit : 0,
+                        MaxVersionLimit = list.MaxVersionLimitSpecified ? list.MaxVersionLimit : 0,
                         OnQuickLaunch = list.OnQuickLaunch,
                         RemoveExistingContentTypes = list.RemoveExistingContentTypes,
                         TemplateFeatureID = !String.IsNullOrEmpty(list.TemplateFeatureID) ? Guid.Parse(list.TemplateFeatureID) : Guid.Empty,
@@ -839,7 +830,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 }
             }
 
-            // TODO: Implement Taxonomy elements translation
+            if (source.TermGroups != null)
+            {
+                result.TermGroups.AddRange(
+                    from termGroup in source.TermGroups
+                    select new Model.TermGroup(
+                        Guid.Parse(termGroup.ID),
+                        termGroup.Name,
+                        new List<Model.TermSet>(
+                            from termSet in termGroup.TermSets
+                            select new Model.TermSet(
+                                Guid.Parse(termSet.ID),
+                                termSet.Name,
+                                termSet.LanguageSpecified ? (int?)termSet.Language : null,
+                                termSet.Terms.FromSchemaTermsToModelTerms())
+                            {
+                                Description = termSet.Description,
+                            })
+                        )
+                        {
+                            Description = termGroup.Description,
+                        });
+            }
 
             // Translate ComposedLook, if any
             if (source.ComposedLook != null)
@@ -857,17 +869,102 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Providers, if any
             if (source.Providers != null)
             {
-                result.Providers.AddRange(
-                    from provider in source.Providers
-                    select new Model.Provider
+                foreach (var provider in source.Providers)
+                {
+                    if (!String.IsNullOrEmpty(provider.HandlerType))
                     {
-                        Assembly = !String.IsNullOrEmpty(provider.HandlerType) ? Type.GetType(provider.HandlerType, false).AssemblyQualifiedName : String.Empty,
-                        Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
-                        Enabled = provider.Enabled,
-                        Type = !String.IsNullOrEmpty(provider.HandlerType) ? Type.GetType(provider.HandlerType, false).FullName : String.Empty,
-                    });
+                        var handlerType = Type.GetType(provider.HandlerType, false);
+                        if (handlerType != null)
+                        {
+                            result.Providers.Add(
+                                new Model.Provider
+                                {
+                                    Assembly = handlerType.AssemblyQualifiedName,
+                                    Type = handlerType.FullName,
+                                    Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
+                                    Enabled = provider.Enabled,
+                                });
+                        }
+                    }
+                }
             }
-            
+
+            return (result);
+        }
+    }
+
+    internal static class TaxonomyTermExtensions
+    {
+        public static V201505.Term[] FromModelTermsToSchemaTerms(this List<Model.Term> terms)
+        {
+            V201505.Term[] result = (
+                from term in terms
+                select new V201505.Term
+                {
+                    ID = term.ID.ToString(),
+                    Name = term.Name,
+                    Description = term.Description,
+                    Owner = term.Owner,
+                    IsAvailableForTagging = term.IsAvailableForTagging.HasValue ? term.IsAvailableForTagging.Value : false,
+                    IsAvailableForTaggingSpecified = term.IsAvailableForTagging.HasValue,
+                    CustomSortOrder = term.CustomSortOrder,
+                    ChildTerms = new TermChildTerms { Items = term.Terms.FromModelTermsToSchemaTerms() },
+                    CustomProperties = term.Properties.Count > 0 ?
+                        (from p in term.Properties
+                         select new V201505.StringDictionaryItem
+                         {
+                             Key = p.Key,
+                             Value = p.Value
+                         }).ToArray() : null,
+                    LocalCustomProperties = term.LocalProperties.Count > 0 ?
+                        (from p in term.LocalProperties
+                         select new V201505.StringDictionaryItem
+                         {
+                             Key = p.Key,
+                             Value = p.Value
+                         }).ToArray() : null,
+                    Labels = term.Labels.Count > 0 ?
+                        (from l in term.Labels
+                         select new V201505.TermLabelsLabel
+                         {
+                             Language = l.Language,
+                             IsDefaultForLanguage = l.IsDefaultForLanguage.HasValue ? l.IsDefaultForLanguage.Value : false,
+                             IsDefaultForLanguageSpecified = l.IsDefaultForLanguage.HasValue,
+                             Value = l.Value,
+                         }).ToArray() : null,
+                }).ToArray();
+
+            return (result);
+        }
+
+        public static List<Model.Term> FromSchemaTermsToModelTerms(this V201505.Term[] terms)
+        {
+            List<Model.Term> result = new List<Model.Term>(
+                from term in terms
+                select new Model.Term(
+                    Guid.Parse(term.ID),
+                    term.Name,
+                    null, // TODO: language
+                    term.ChildTerms.Items.FromSchemaTermsToModelTerms(),
+                    new List<Model.TermLabel>(
+                        from label in term.Labels
+                        select new Model.TermLabel
+                        {
+                            Language = label.Language,
+                            Value = label.Value,
+                            IsDefaultForLanguage = label.IsDefaultForLanguageSpecified ? label.IsDefaultForLanguage : false,
+                        }
+                    ),
+                    term.CustomProperties.ToDictionary(k => k.Key, v => v.Value),
+                    term.LocalCustomProperties.ToDictionary(k => k.Key, v => v.Value)
+                    )
+                    {
+                        CustomSortOrder = term.CustomSortOrder,
+                        IsAvailableForTagging = term.IsAvailableForTaggingSpecified ? term.IsAvailableForTagging : false,
+                        Owner = term.Owner,
+                    }
+                );
+
             return (result);
         }
     }
