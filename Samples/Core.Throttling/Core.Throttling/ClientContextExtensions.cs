@@ -57,6 +57,10 @@ namespace Core.Throttling
                         retryAttempts++;
                         backoffInterval = backoffInterval * 2;
                     }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
             throw new MaximumRetryAttemptedException(string.Format("Maximum retry attempts {0}, has be attempted.", retryCount));
