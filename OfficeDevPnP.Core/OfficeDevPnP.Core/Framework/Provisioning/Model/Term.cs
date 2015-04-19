@@ -20,8 +20,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Public Members
         public Guid ID { get; set; }
         public string Name { get; set; }
-
+        public String Description { get; set; }
+        public String Owner { get; set; }
+        public Boolean? IsAvailableForTagging { get; set; }
         public int? Language { get; set; }
+        public String CustomSortOrder { get; set; }
+
         public List<Term> Terms
         {
             get { return _terms; }
@@ -90,10 +94,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}",
                 this.ID.GetHashCode(),
                 this.Name.GetHashCode(),
+                this.Description.GetHashCode(),
                 this.Language.GetHashCode(),
+                this.Owner.GetHashCode(),
+                this.IsAvailableForTagging.GetHashCode(),
+                this.CustomSortOrder.GetHashCode(),
                 this.Labels.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.Terms.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.Properties.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
@@ -114,7 +122,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             return (this.ID == other.ID &&
                 this.Name == other.Name &&
+                this.Description == other.Description &&
                 this.Language == other.Language &&
+                this.Owner == other.Owner &&
+                this.IsAvailableForTagging == other.IsAvailableForTagging &&
+                this.CustomSortOrder == other.CustomSortOrder &&
                 this.Labels.DeepEquals(other.Labels) &&
                 this.Terms.DeepEquals(other.Terms) &&
                 this.Properties.DeepEquals(other.Properties) &&
@@ -122,6 +134,5 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
 
         #endregion
-
     }
 }

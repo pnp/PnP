@@ -274,6 +274,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 // TODO: This nullability check could be useless, because
                 // the WebFeatures property is initialized in the Features
                 // constructor
+                // COMMENT (PaoloPia): It is true, but someone using the code
+                // can put it to null and invalidate it, as well
                 if (template.Features.WebFeatures != null && template.Features.WebFeatures.Count > 0)
                 {
                     result.Features.WebFeatures =
@@ -375,13 +377,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.Files = null;
             }
 
+            // Translate Pages, if any
             if (template.Pages != null && template.Pages.Count > 0)
             {
                 var pages = new List<V201505.Page>();
+
                 foreach (var page in template.Pages)
                 {
                     var schemaPage = new V201505.Page();
-
 
                     var pageLayout = WIKIPAGELAYOUT.OneColumn;
                     switch (page.Layout)
@@ -427,7 +430,48 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
                     pages.Add(schemaPage);
                 }
+
                 result.Pages = pages.ToArray();
+            }
+
+            // Translate Taxonomy elements, if any
+            if (template.TermGroups != null && template.TermGroups.Count > 0)
+            {
+                result.TermGroups =
+                    (from grp in template.TermGroups
+                     select new V201505.TermGroup
+                     {
+                         Name = grp.Name,
+                         ID = grp.ID.ToString(),
+                         Description = grp.Description,
+                         TermSets = (
+                            from termSet in grp.TermSets
+                            select new V201505.TermSet 
+                            {
+                                ID = termSet.ID.ToString(),
+                                Name = termSet.Name,
+                                Description = termSet.Description,
+                                Language = termSet.Language.HasValue ? termSet.Language.Value : 0,
+                                LanguageSpecified = termSet.Language.HasValue,
+                                Terms = (
+                                    from term in termSet.Terms
+                                    select new V201505.Term 
+                                    {
+                                        ID = term.ID.ToString(),
+                                        Name = term.Name,
+                                        Description = term.Description,
+                                        Owner = term.Owner,
+                                        IsAvailableForTagging = term.IsAvailableForTagging.HasValue ? term.IsAvailableForTagging.Value : false,
+                                        IsAvailableForTaggingSpecified = term.IsAvailableForTagging.HasValue,
+                                        CustomSortOrder = term.CustomSortOrder,
+                                        // TODO: Complete this implementation
+                                        ChildTerms = null,
+                                        CustomProperties = null,
+                                        LocalCustomProperties = null,
+                                        Labels = null,
+                                    }).ToArray(),
+                            }).ToArray(),
+                     }).ToArray();
             }
 
             // Translate ComposedLook, if any
@@ -627,8 +671,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                   select new Model.FieldRef
                                   {
                                       ID = Guid.Parse(fieldRef.ID)
-                                  }) : null)
-                         )
+                                  }) : null),
+                        (list.DataRows != null ?
+                                 (from dataRow in list.DataRows
+                                  select new Model.DataRow(
+                                     (from dataValue in dataRow
+                                      select dataValue).ToDictionary(k => k.FieldName, v => v.Value)
+                                  )).ToList() : null)
+                        )                         
                     {
                         ContentTypesEnabled = list.ContentTypesEnabled,
                         Description = list.Description,
@@ -788,6 +838,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
                 }
             }
+
+            // TODO: Implement Taxonomy elements translation
 
             // Translate ComposedLook, if any
             if (source.ComposedLook != null)
