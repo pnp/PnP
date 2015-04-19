@@ -137,6 +137,10 @@ public static void ExecuteQueryWithIncrementalRetry(this ClientContext context, 
                 retryAttempts++;
                 backoffInterval = backoffInterval * 2;
             }
+            else
+            {
+                throw;
+            }
         }
     }
     throw new MaximumRetryAttemptedException(string.Format("Maximum retry attempts {0}, has be attempted.", retryCount));
