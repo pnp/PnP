@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Name { get; set; }
         public String Description { get; set; }
         public String Owner { get; set; }
-        public Boolean? IsAvailableForTagging { get; set; }
+        public Boolean IsAvailableForTagging { get; set; }
         public int? Language { get; set; }
         public String CustomSortOrder { get; set; }
 

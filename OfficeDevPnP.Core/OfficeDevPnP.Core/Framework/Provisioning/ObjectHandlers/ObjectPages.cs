@@ -44,12 +44,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         exists = false;
                     }
                 }
-                if (exists && page.Overwrite)
+                if (exists)
                 {
-                    file.DeleteObject();
-                    web.Context.ExecuteQueryRetry();
-                    web.AddWikiPageByUrl(url);
-                    web.AddLayoutToWikiPage(page.Layout, url);
+                    if (page.Overwrite)
+                    {
+                        file.DeleteObject();
+                        web.Context.ExecuteQueryRetry();
+                        web.AddWikiPageByUrl(url);
+                        web.AddLayoutToWikiPage(page.Layout, url);
+                    }
                 }
                 else
                 {

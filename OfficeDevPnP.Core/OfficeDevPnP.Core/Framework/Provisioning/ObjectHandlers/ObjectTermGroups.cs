@@ -106,6 +106,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     web.Context.Load(set, s => s.Terms.Include(t => t.Id, t => t.Name, t => t));
                     web.Context.ExecuteQueryRetry();
+
+                    // do we need custom sorting?
+                    if (modelTermSet.Terms.Count(t => t.CustomSortOrder != null) > 0)
+                    {
+                        // Precreate the IDs of the terms if not set
+                        foreach (var term in modelTermSet.Terms.Where(t => t.ID == Guid.Empty))
+                        {
+                            term.ID = Guid.NewGuid();
+                        }
+
+                        var sortedTerms = modelTermSet.Terms.OrderBy(t => t.CustomSortOrder);
+
+                        var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.ID.ToString() + ":");
+                        customSortString = customSortString.TrimEnd(new [] {':'});
+
+                        set.CustomSortOrder = customSortString;
+                        termStore.CommitAll();
+
+                    }
                     foreach (var modelTerm in modelTermSet.Terms)
                     {
                         if (!newTermSet)
@@ -169,10 +188,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 term.Owner = modelTerm.Owner;
             }
-            if (modelTerm.IsAvailableForTagging.HasValue)
-            {
-                term.IsAvailableForTagging = modelTerm.IsAvailableForTagging.Value;
-            }
+
+            term.IsAvailableForTagging = modelTerm.IsAvailableForTagging;
+
             if (!String.IsNullOrEmpty(modelTerm.CustomSortOrder))
             {
                 term.CustomSortOrder = modelTerm.CustomSortOrder;
@@ -219,6 +237,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (modelTerm.Terms.Any())
             {
+                if (modelTerm.Terms.Count(t => t.CustomSortOrder != null) > 0)
+                {
+                    // Precreate the IDs of the terms if not set
+                    foreach (var termToSet in modelTerm.Terms.Where(t => t.ID == Guid.Empty))
+                    {
+                        termToSet.ID = Guid.NewGuid();
+                    }
+
+                    var sortedTerms = modelTerm.Terms.OrderBy(t => t.CustomSortOrder);
+
+                    var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.ID.ToString() + ":");
+                    customSortString = customSortString.TrimEnd(new[] { ':' });
+
+                    term.CustomSortOrder = customSortString;
+                    termStore.CommitAll();
+
+                }
+
                 CreateTerms(web, termStore, term, modelTerm.Terms);
             }
         }
