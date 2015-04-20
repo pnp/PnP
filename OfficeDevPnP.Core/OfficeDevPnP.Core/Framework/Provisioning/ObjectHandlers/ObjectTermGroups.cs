@@ -47,7 +47,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         }
                         group = termStore.CreateGroup(modelTermGroup.Name.ToParsedString(), modelTermGroup.ID);
 
-                        // TODO: Please check this line
                         group.Description = modelTermGroup.Description;
 
                         termStore.CommitAll();
@@ -84,7 +83,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 set = group.CreateTermSet(modelTermSet.Name.ToParsedString(), modelTermSet.ID, modelTermSet.Language ?? termStore.DefaultLanguage);
                                 newTermSet = true;
 
-                                // TODO: Please check this line
                                 set.Description = modelTermSet.Description;
 
                                 termStore.CommitAll();
