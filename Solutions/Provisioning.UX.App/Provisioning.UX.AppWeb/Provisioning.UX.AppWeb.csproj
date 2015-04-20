@@ -104,6 +104,9 @@
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
     <Content Include="packages.config" />
+    <Content Include="Resources\Templates\Templates.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -158,7 +161,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\SiteRequest.cs" />
-    <Compile Include="Models\SiteTemplate.cs" />
+    <Compile Include="Models\SiteTemplateResults.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -178,6 +181,10 @@
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
       <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
       <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Provisioning.Common\Provisioning.Common.csproj">
+      <Project>{77447711-3ab3-4390-a22c-75bb5a97bb95}</Project>
+      <Name>Provisioning.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

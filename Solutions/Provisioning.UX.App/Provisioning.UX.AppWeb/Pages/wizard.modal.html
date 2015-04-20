@@ -142,7 +142,7 @@
 
                         <div class="modal-right-body">
 
-                            <div class="media" ng-repeat="template in templates | orderBy: 'displayOrder'" ng-click="selectTemplate(template)" ng-class="{ 'active': template == siteConfiguration.template }">
+                            <div class="media" ng-repeat="template in templates" ng-click="selectTemplate(template)" ng-class="{ 'active': template == siteConfiguration.template }">
                                 <div class=" media-left">
                                     <img class="media-object" ng-src="{{template.imageUrl}}" alt="Template Icon">
                                 </div>

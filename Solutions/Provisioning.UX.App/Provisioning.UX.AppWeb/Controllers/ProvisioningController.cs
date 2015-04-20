@@ -1,5 +1,7 @@
 ﻿using OfficeDevPnP.Core.Utilities;
 using OfficeDevPnP.Core.WebAPI;
+using Provisioning.Common.Configuration;
+using Provisioning.Common.Configuration.Template;
 using Provisioning.UX.AppWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -29,24 +31,23 @@ namespace Provisioning.UX.AppWeb.Controllers
         [Route("api/provisioning/availabletemplates")]
         [WebAPIContextFilter]
         [HttpGet]
-        public List<SiteTemplate> GetSiteTemplates()
+        public List<SiteTemplateResults> GetSiteTemplates()
         {
-            var _returnResults = new List<SiteTemplate>();
-           
-            var _st = new SiteTemplate();
-            _st.Title = "CUSTOM1";
-            _st.Description = "My Description";
-            _st.ImageUrl = "../images/template-icon.png";
-            _st.DisplayOrder = 1;
+            var _returnResults = new List<SiteTemplateResults>();
 
-            var _st1 = new SiteTemplate();
-            _st1.Title = "Cust2";
-            _st1.Description = "TEMPLATE 2";
-            _st1.ImageUrl = "../images/template-icon.png";
-            _st1.DisplayOrder = 2;
-
-            _returnResults.Add(_st);
-            _returnResults.Add(_st1);
+            var _configFactory = ConfigurationFactory.GetInstance();
+            var _tf = _configFactory.GetTemplateFactory();
+            TemplateManager _tm = _tf.GetTemplateManager();
+            var _templates = _tm.GetAvailableTemplates();
+            foreach(var _t in _templates)
+            {
+                var _st = new SiteTemplateResults();
+                _st.Title = _t.Title;
+                _st.Description = _t.Description;
+                _st.ImageUrl = _t.ImageUrl;
+                _st.HostPath = _t.HostPath;
+                _returnResults.Add(_st);
+            }
             return _returnResults;
         }
 
@@ -72,5 +73,9 @@ namespace Provisioning.UX.AppWeb.Controllers
             return _request;
 
         }
+
+
+        #region Private Members 
+        #endregion
     }
 }

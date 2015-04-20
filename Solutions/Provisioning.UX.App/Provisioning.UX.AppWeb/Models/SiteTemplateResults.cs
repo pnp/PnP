@@ -7,7 +7,7 @@ using System.Web;
 namespace Provisioning.UX.AppWeb.Models
 {
     [DataContract]
-    public class SiteTemplate
+    public class SiteTemplateResults
     {
         [DataMember(Name = "title")]
         public string Title { get; set; }
@@ -17,8 +17,8 @@ namespace Provisioning.UX.AppWeb.Models
 
         [DataMember(Name = "imageUrl")]
         public string ImageUrl { get; set; }
-        
-        [DataMember(Name = "displayOrder")]
-        public int DisplayOrder { get; set; }
+
+        [DataMember(Name = "hostPath")]
+        public string HostPath { get; set; }
     }
 }
