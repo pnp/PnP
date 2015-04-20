@@ -46,7 +46,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             modelTermGroup.ID = Guid.NewGuid();
                         }
                         group = termStore.CreateGroup(modelTermGroup.Name.ToParsedString(), modelTermGroup.ID);
-                        
+
                         // TODO: Please check this line
                         group.Description = modelTermGroup.Description;
 
@@ -86,7 +86,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                                 // TODO: Please check this line
                                 set.Description = modelTermSet.Description;
-                                
+
                                 termStore.CommitAll();
                                 web.Context.Load(set);
                                 web.Context.ExecuteQueryRetry();
@@ -208,9 +208,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     isDirty = true;
                     foreach (var label in modelTerm.Labels)
                     {
-                        // TODO: Erwin, please check this excerpt
                         var l = term.CreateLabel(label.Value.ToParsedString(), label.Language,
-                            label.IsDefaultForLanguage.HasValue ? label.IsDefaultForLanguage.Value : false);
+                            label.IsDefaultForLanguage ?? false);
                     }
                 }
                 if (isDirty)
