@@ -37,9 +37,6 @@ namespace Provisioning.Common.Configuration
         /// </summary>
         public bool AutoApprove { get; internal set; }
 
-        //TODO
-        public bool SharePointOnPremises { get; internal set; }
-
         /// <summary>
         /// TODO
         /// </summary>

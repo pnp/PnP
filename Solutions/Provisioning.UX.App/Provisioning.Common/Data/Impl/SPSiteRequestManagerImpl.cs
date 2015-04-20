@@ -177,6 +177,7 @@ namespace Provisioning.Common.Data.Impl
                      item => item[SiteRequestFields.LCID_NAME],
                      item => item[SiteRequestFields.EXTERNALSHARING_NAME],
                      item => item[SiteRequestFields.PROVISIONING_STATUS_NAME],
+                     item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                      item => item[SiteRequestFields.LCID_NAME],
                      item => item[SiteRequestFields.TIMEZONE_NAME]));
                 ctx.ExecuteQuery();
@@ -195,7 +196,8 @@ namespace Provisioning.Common.Data.Impl
                         EnableExternalSharing = this.BaseGet<bool>(_item, SiteRequestFields.EXTERNALSHARING_NAME),
                         RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
-                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME)
+                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
+                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME)
                     };
                     _siteRequests.Add(_site);
                 }
@@ -210,8 +212,6 @@ namespace Provisioning.Common.Data.Impl
             { 
                 CamlQuery _caml = new CamlQuery();
                 _caml.ViewXml = string.Format(camlQuery, filter);
-
-            //    var web = GetWeb(_manager.GetAppSettings().SPHostUrl, ctx);
                 var web = ctx.Web;
                 var list = web.Lists.GetByTitle(SiteRequestList.TITLE);
                 var _listItemCollection = list.GetItems(_caml);
@@ -230,6 +230,7 @@ namespace Provisioning.Common.Data.Impl
                     item => item[SiteRequestFields.LCID_NAME],
                     item => item[SiteRequestFields.EXTERNALSHARING_NAME],
                     item => item[SiteRequestFields.PROVISIONING_STATUS_NAME],
+                    item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                     item => item[SiteRequestFields.LCID_NAME],
                     item => item[SiteRequestFields.TIMEZONE_NAME]));
                 ctx.ExecuteQuery();
@@ -250,7 +251,8 @@ namespace Provisioning.Common.Data.Impl
                         EnableExternalSharing = this.BaseGet<bool>(_item, SiteRequestFields.EXTERNALSHARING_NAME),
                         RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
-                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME)
+                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
+                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME)
                     };
                 }
             });
@@ -315,6 +317,7 @@ namespace Provisioning.Common.Data.Impl
                 _record[SiteRequestFields.TIMEZONE_NAME] = siteRequest.TimeZoneId;
                 _record[SiteRequestFields.POLICY_NAME] = siteRequest.SitePolicy;
                 _record[SiteRequestFields.EXTERNALSHARING_NAME] = siteRequest.EnableExternalSharing;
+                _record[SiteRequestFields.ONPREM_REQUEST_NAME] = siteRequest.SharePointOnPremises;
                 //If Settings are set to autoapprove then automatically approve the requests
                 if(_manager.GetAppSettings().AutoApprove)
                 {

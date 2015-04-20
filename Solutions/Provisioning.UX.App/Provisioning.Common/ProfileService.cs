@@ -97,15 +97,15 @@ namespace Provisioning.Common
         /// <param name="value"></param>
         public void SetUserPropertySingleValue(string accountName, string property, string value)
         {
-            if (this._settings.SharePointOnPremises) throw new NotSupportedException("Only available for Office 365");
-            UsingContext(ctx =>
-            {
-                PeopleManager peopleManager = new PeopleManager(ctx);
-                peopleManager.SetSingleValueProfileProperty(accountName, property, value);
-                ctx.ExecuteQuery();
-            //    userPropResults = props.UserProfileProperties;
+            //if (this._settings.SharePointOnPremises) throw new NotSupportedException("Only available for Office 365");
+            //UsingContext(ctx =>
+            //{
+            //    PeopleManager peopleManager = new PeopleManager(ctx);
+            //    peopleManager.SetSingleValueProfileProperty(accountName, property, value);
+            //    ctx.ExecuteQuery();
+            ////    userPropResults = props.UserProfileProperties;
 
-            });
+            //});
         }
 
         /// <summary>
@@ -116,13 +116,13 @@ namespace Provisioning.Common
         /// <param name="value"></param>
         public void SetUserProfilePropertyMultiValue(string accountName, string property, List<string> value)
         {
-            if (this._settings.SharePointOnPremises) throw new NotSupportedException("Only available for Office 365");
-            UsingContext(ctx =>
-            {
-                PeopleManager peopleManager = new PeopleManager(ctx);
-                peopleManager.SetMultiValuedProfileProperty(accountName, property, value);
-                ctx.ExecuteQuery();
-           });
+           // if (this._settings.SharePointOnPremises) throw new NotSupportedException("Only available for Office 365");
+           // UsingContext(ctx =>
+           // {
+           //     PeopleManager peopleManager = new PeopleManager(ctx);
+           //     peopleManager.SetMultiValuedProfileProperty(accountName, property, value);
+           //     ctx.ExecuteQuery();
+           //});
         }
     }
 }

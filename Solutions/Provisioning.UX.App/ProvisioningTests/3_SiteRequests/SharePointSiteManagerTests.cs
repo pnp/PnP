@@ -89,7 +89,8 @@ namespace ProvisioningTests._3_SiteRequests
                 SitePolicy = "HBI",
                 SiteOwner = _owner,
                 AdditionalAdministrators = _additionalAdmins,
-                EnableExternalSharing = true
+                EnableExternalSharing = true,
+                SharePointOnPremises = true
             };
 
             return _siteInfo;

@@ -143,20 +143,20 @@ namespace Provisioning.Common.Authentication
         {
             if (this.Credentials == null)
             {
-                //check if Onprem if so use networkcreds of not use SharePoint Online Creds
-                if (_settings.SharePointOnPremises)
-                {
-                    NetworkCredential _creds = new NetworkCredential(this.TenantAdminAccount, this.TenantAdminAccountPWD);
-                    this.Credentials = _creds;
+                ////check if Onprem if so use networkcreds of not use SharePoint Online Creds
+                //if (_settings.SharePointOnPremises)
+                //{
+                //    NetworkCredential _creds = new NetworkCredential(this.TenantAdminAccount, this.TenantAdminAccountPWD);
+                //    this.Credentials = _creds;
 
-                }
-                else
-                {
-                    SecureString passWord = new SecureString();
-                    foreach (char c in this.TenantAdminAccountPWD.ToCharArray()) passWord.AppendChar(c);
-                    SharePointOnlineCredentials _spoCreds = new SharePointOnlineCredentials(this.TenantAdminAccount, passWord);
-                    this.Credentials = _spoCreds;
-                }
+                //}
+                //else
+                //{
+                //    SecureString passWord = new SecureString();
+                //    foreach (char c in this.TenantAdminAccountPWD.ToCharArray()) passWord.AppendChar(c);
+                //    SharePointOnlineCredentials _spoCreds = new SharePointOnlineCredentials(this.TenantAdminAccount, passWord);
+                //    this.Credentials = _spoCreds;
+                //}
             }
         }
       

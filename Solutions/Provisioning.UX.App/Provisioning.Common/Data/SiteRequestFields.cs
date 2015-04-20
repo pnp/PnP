@@ -26,7 +26,15 @@ namespace Provisioning.Common.Data
         public const FieldType URL_TYPE = FieldType.Text;
         public const string URL_ATTRIB = "Required='TRUE' MaxLength='255' EnforceUniqueValues='TRUE' Indexed='TRUE'";
         public const string URL_DESC = "The path used for the site collection URL. Example: https://contoso.sharepoint.com/sites/<urlpath>";
-        
+
+        //ONPREM FLAG
+        public const string ONPREM_REQUEST_NAME = "SP_RequestOnPrem";
+        public const string ONPREM_REQUEST_DISPLAYNAME = "On Premises";
+        public static readonly Guid ONPREM_REQUEST_ID = new Guid("C9D27DA5-BDF4-4128-9E97-FC0D096201B5");
+        public const FieldType ONPREM_REQEUST_TYPE = FieldType.Boolean;
+        public const string ONPREM_REQUEST_ATTRIB = "";
+        public const string ONPREM_REQUEST_DESC = "Indicates if the Site Request is targeting SharePoint On-Premises.";
+
         //Description
         public const string DESCRIPTION_NAME = "SP_Description";
         public const string DESCRIPTION_DISPLAYNAME = "Description";

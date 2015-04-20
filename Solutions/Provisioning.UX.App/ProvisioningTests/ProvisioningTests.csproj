@@ -73,13 +73,11 @@
   <ItemGroup>
     <Compile Include="1_Configuration\AppSettingTests\AppSettingTests.cs" />
     <Compile Include="1_Configuration\ConfigHelper\ConfigurationManagerTests.cs" />
-    <Compile Include="1_Configuration\Templates\CustomActionTests.cs" />
     <Compile Include="1_Configuration\Templates\TemplateConfigurationTests.cs" />
     <Compile Include="3_SiteRequests\SiteRequestFactoryTests.cs" />
     <Compile Include="3_SiteRequests\SharePointSiteManagerTests.cs" />
     <Compile Include="4_Authentication\AuthenticationTests.cs" />
     <Compile Include="5_ProfileService\ProfileServiceTests.cs" />
-    <Compile Include="6_Provider\ProviderTests.cs" />
     <Compile Include="Mocks\MockSiteRequestInfo.cs" />
     <Compile Include="TestConstants.cs" />
     <Compile Include="Mocks\MockContentType.cs" />

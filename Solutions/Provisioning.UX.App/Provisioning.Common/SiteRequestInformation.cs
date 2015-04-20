@@ -21,6 +21,7 @@ namespace Provisioning.Common
         private uint _lcid = 1033;
         private List<SharePointUser> _additionalAdmins = new List<SharePointUser>();
         private bool _externalSharingEnabled = false;
+        private bool _sharePointOnPrem = false;
         #endregion
 
         #region Properties
@@ -160,6 +161,16 @@ namespace Provisioning.Common
             set { this._externalSharingEnabled = value; }
         }
 
+        /// <summary>
+        /// Indicates if the Site Request is targeting on-premises builds of SharePoint
+        /// Default value is false
+        /// </summary>
+        [DataMember]
+        public bool SharePointOnPremises
+        {
+            get { return this._sharePointOnPrem; }
+            set { this._sharePointOnPrem = value; }
+        }
        
         #endregion
     }

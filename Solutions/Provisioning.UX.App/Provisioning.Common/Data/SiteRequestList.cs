@@ -77,6 +77,17 @@ namespace Provisioning.Common.Data
                  SiteRequestFields.DEFAULT_FIELD_GROUP,
                  SiteRequestFields.DESCRIPTION_ATTRIB));
 
+
+            fieldsXml.Add(SiteRequestFields.ONPREM_REQUEST_NAME,
+                 FormatField(
+                 SiteRequestFields.ONPREM_REQUEST_ID,
+                 SiteRequestFields.ONPREM_REQUEST_NAME,
+                 SiteRequestFields.ONPREM_REQEUST_TYPE,
+                 SiteRequestFields.ONPREM_REQUEST_DISPLAYNAME,
+                 SiteRequestFields.ONPREM_REQUEST_DESC,
+                 SiteRequestFields.DEFAULT_FIELD_GROUP,
+                 SiteRequestFields.ONPREM_REQUEST_ATTRIB));
+
             fieldsXml.Add(SiteRequestFields.BC_NAME,
                  FormatField(
                  SiteRequestFields.BC_ID,

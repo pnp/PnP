@@ -79,9 +79,7 @@ namespace Provisioning.Common.Configuration.Application
             if(Boolean.TryParse(_autoApprove, out _result)) {
                 _appConfig.AutoApprove = _result;
             }
-            if (Boolean.TryParse(_sharePointOnPremises, out _result)) {
-                _appConfig.SharePointOnPremises = _result;
-            }
+         
             return _appConfig;
         }
         #endregion

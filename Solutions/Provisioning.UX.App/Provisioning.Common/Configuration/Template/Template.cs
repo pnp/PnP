@@ -51,6 +51,12 @@ namespace Provisioning.Common.Configuration.Template
         public string TenantAdminUrl { get; set; }
 
         /// <summary>
+        /// Defines if the Site is targeting SharePoint On-Premises or MT
+        /// </summary>
+        [XmlAttribute]
+        public bool SharePointOnPremises { get; set; }
+
+        /// <summary>
         /// Defines the Managed Path. Only Sites and Teams should be used
         /// </summary>
         [XmlAttribute]

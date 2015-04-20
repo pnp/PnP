@@ -48,43 +48,6 @@ namespace Provisioning.Common
         /// <returns></returns>
         Guid? GetSiteGuidByUrl(string url);
 
-        /// <summary>
-        /// Activates Site Features
-        /// </summary>
-        /// <param name="url">The site url</param>
-        /// <param name="featureID">The OOB feature guid</param>
-        void ActivateSiteFeature(string url, Guid featureID);
-
-        /// <summary>
-        /// Activates Web Features
-        /// </summary>
-        /// <param name="url">The site url</param>
-        /// <param name="featureID">The OOB feature guid</param>
-        void ActivateWebFeature(string url, Guid featureID);
-        
-
-        /// <summary>
-        /// Deploys CustomActions to the Site Collection
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="customAction"></param>
-        void DeployWebCustomAction(string url, CustomActionEntity customAction);
-
-        /// <summary>
-        /// Deploys Fields to the Site 
-        /// </summary>
-        /// <param name="url">The Site Url</param>
-        /// <param name="fieldXML">Represents a field XML element of the field</param>
-        void DeployFields(string url, string fieldXML);
-
-
-        /// <summary>
-        /// Deploys Content Types to a site
-        /// </summary>
-        /// <param name="url">Url of the site</param>
-        /// <param name="contentTypeXML">Represents a content type xml element</param>
-        void DeployContentType(string url, string contentTypeXML);
-
        
     }
 }

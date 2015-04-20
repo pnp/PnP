@@ -21,5 +21,8 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "hostPath")]
         public string HostPath { get; set; }
 
+        [DataMember(Name = "sharePointOnPremises")]
+        public bool SharePointOnPremises { get; set; }
+
     }
 }

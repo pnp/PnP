@@ -29,13 +29,15 @@
             //  save the site request when the wizard is complete
             var siteRequest = new Object();
             siteRequest.title = $scope.siteConfiguration.details.title;
+            siteRequest.HostPath = $scope.siteConfiguration.spNewSitePrefix;
             siteRequest.Url = $scope.siteConfiguration.details.url;
             siteRequest.Description = $scope.siteConfiguration.details.description;
             siteRequest.PrimaryOwner = $scope.siteConfiguration.primaryOwner;
+            siteRequest.SecondaryOwners = $scope.siteConfiguration.secondaryOwners;
             siteRequest.Template = $scope.siteConfiguration.template.title;
+            siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
+            siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
             saveSiteRequest(siteRequest);
-
-
             $modalInstance.close($scope.siteConfiguration);
         };
 
@@ -49,6 +51,7 @@
             $scope.siteConfiguration.template = template;
             // Add the Path to the configuration object to store the url
             $scope.siteConfiguration.spNewSitePrefix = template.hostPath;
+            $scope.siteConfiguration.spOnPrem = template.sharePointOnPremises;
         }
 
         function activate() {
