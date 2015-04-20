@@ -23,6 +23,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._ID = value; }
         }
 
+        public string DisplayName { get; set; }
+
         /// <summary>
         /// Gets or sets if the field is Required
         /// </summary>

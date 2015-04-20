@@ -143,7 +143,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         var field = web.GetFieldById<Field>(fieldRef.ID);
                         if (!listInfo.CreatedList.FieldExistsById(fieldRef.ID))
                         {
-                            listInfo.CreatedList.Fields.Add(field);
+                            var createdField = listInfo.CreatedList.Fields.Add(field);
+                            if (!string.IsNullOrEmpty(fieldRef.DisplayName))
+                            {
+                                createdField.Title = fieldRef.DisplayName;
+                                createdField.Update();
+                            }
                         }
 
                     }
