@@ -1,5 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-04-20**
+* Admin cmdlets: Get-SPOTenantSite, New-SPOTenantSite, Remove-SPOTenantSite, Set-SPOTenantSite and Get-SPOWebTemplates now automatically switch context. This means that you don't have to connect to https://<tenant>-admin.sharepoint.com first in order to execute them.
 **2015-04-08**
 * Added Apply-SPOProvisioningTemplate cmdlet
 * Added Get-SPOPRovisioningTemplate cmdlet
