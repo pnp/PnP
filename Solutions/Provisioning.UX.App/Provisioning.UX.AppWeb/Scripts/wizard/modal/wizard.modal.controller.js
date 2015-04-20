@@ -18,7 +18,8 @@
 
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
-        $scope.siteConfiguration.spNewSitePrefix = "Https://" + $utilservice.spRootHostName(spHostWebUrl) + "/sites/"; // still need to replace hardcoded /sites/        
+        //remove hard coded path now we get from template object when selected
+        //$scope.siteConfiguration.spNewSitePrefix = "Https://" + $utilservice.spRootHostName(spHostWebUrl) + "/sites/"; // still need to replace hardcoded /sites/        
 
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
@@ -47,10 +48,9 @@
 
             // Add the selected template to the configuration object
             $scope.siteConfiguration.template = template;
-
+            // Add the Path to the configuration object to store the url
+            $scope.siteConfiguration.spNewSitePrefix = template.hostPath;
         }
-
-               
 
         function activate() {
 

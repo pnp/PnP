@@ -20,5 +20,8 @@ namespace Provisioning.UX.AppWeb.Models
 
         [DataMember(Name = "hostPath")]
         public string HostPath { get; set; }
+
+        [DataMember(Name = "managedPath")]
+        public string ManagedPath { get; set; }
     }
 }
