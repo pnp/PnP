@@ -333,6 +333,59 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             }
         }
 
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML6()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath6, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath6NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML5ByIdentifier()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath5, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath5NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "SPECIALTEAM");
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML5ByFileLink()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath5, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath5NamespaceURI);
+
+                XMLTemplateProvider provider =
+                    new XMLFileSystemTemplateProvider(
+                        String.Format(@"{0}\..\..\Resources",
+                        AppDomain.CurrentDomain.BaseDirectory),
+                        "Templates");
+
+                formatter.Initialize(provider);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "WORKFLOWSITE");
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
         #endregion
 
         #region Comparison Tests

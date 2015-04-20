@@ -13,6 +13,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     /// </summary>
     public class XMLPnPSchemaFormatter : ITemplateFormatter
     {
+        private TemplateProviderBase _provider;
+
+        public void Initialize(TemplateProviderBase provider)
+        {
+            this._provider = provider;
+        }
 
         #region Static methods and properties
 
@@ -54,19 +60,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public bool IsValid(System.IO.Stream template)
         {
             ITemplateFormatter formatter = this.GetSpecificFormatterInternal(ref template);
+            formatter.Initialize(this._provider);
             return (formatter.IsValid(template));
         }
 
         public System.IO.Stream ToFormattedTemplate(Model.ProvisioningTemplate template)
         {
             ITemplateFormatter formatter = XMLPnPSchemaFormatter.LatestFormatter;
+            formatter.Initialize(this._provider);
             return (formatter.ToFormattedTemplate(template));
         }
 
         public Model.ProvisioningTemplate ToProvisioningTemplate(System.IO.Stream template)
         {
+            return (this.ToProvisioningTemplate(template, null));
+        }
+
+        public Model.ProvisioningTemplate ToProvisioningTemplate(System.IO.Stream template, String identifier)
+        {
             ITemplateFormatter formatter = this.GetSpecificFormatterInternal(ref template);
-            return (formatter.ToProvisioningTemplate(template));
+            formatter.Initialize(this._provider);
+            return (formatter.ToProvisioningTemplate(template, identifier));
         }
 
         #endregion

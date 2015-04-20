@@ -20,6 +20,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     internal class XMLPnPSchemaV201505Formatter :
         IXMLSchemaFormatter, ITemplateFormatter
     {
+        private TemplateProviderBase _provider;
+
+        public void Initialize(TemplateProviderBase provider)
+        {
+            this._provider = provider;
+        }
+
         string IXMLSchemaFormatter.NamespaceUri
         {
             get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05); }
@@ -67,6 +74,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
 
             V201505.SharePointProvisioningTemplate result = new V201505.SharePointProvisioningTemplate();
+
+            V201505.Provisioning wrappedResult = new V201505.Provisioning();
+            wrappedResult.Preferences = new V201505.Preferences
+            {
+                Generator = this.GetType().Assembly.FullName
+            };
+            wrappedResult.Templates = new V201505.Templates[] { 
+                new V201505.Templates 
+                { 
+                    ID = String.Format("CONTAINER-{0}", template.ID),
+                    SharePointProvisioningTemplate = new V201505.SharePointProvisioningTemplate[]
+                    {
+                        result
+                    }
+                }
+            };
 
             // Translate basic properties
             result.ID = template.ID;
@@ -370,14 +393,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Overwrite = file.Overwrite,
                          Src = file.Src,
                          Folder = file.Folder,
-                         WebParts = (from wp in file.WebParts
-                                     select new V201505.WebPartPageWebPart
-                                     {
-                                         Zone = wp.Zone,
-                                         Order = (int)wp.Order,
-                                         Contents = wp.Contents,
-                                         Title = wp.Title,
-                                     }).ToArray()
+                         WebParts = file.WebParts.Count > 0 ?
+                            (from wp in file.WebParts
+                             select new V201505.WebPartPageWebPart
+                             {
+                                 Zone = wp.Zone,
+                                 Order = (int)wp.Order,
+                                 Contents = wp.Contents,
+                                 Title = wp.Title,
+                             }).ToArray() : null,
                      }).ToArray();
             }
             else
@@ -425,14 +449,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     schemaPage.Layout = pageLayout;
                     schemaPage.Overwrite = page.Overwrite;
 
-                    schemaPage.WebParts = (from wp in page.WebParts
-                                           select new V201505.WikiPageWebPart
-                                           {
-                                               Column = (int)wp.Column,
-                                               Row = (int)wp.Row,
-                                               Contents = wp.Contents,
-                                               Title = wp.Title,
-                                           }).ToArray();
+                    schemaPage.WebParts = page.WebParts.Count > 0 ?
+                        (from wp in page.WebParts
+                         select new V201505.WikiPageWebPart
+                         {
+                             Column = (int)wp.Column,
+                             Row = (int)wp.Row,
+                             Contents = wp.Contents,
+                             Title = wp.Title,
+                         }).ToArray() : null;
 
                     schemaPage.Url = page.Url;
 
@@ -505,12 +530,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             ns.Add(((IXMLSchemaFormatter)this).NamespacePrefix,
                 ((IXMLSchemaFormatter)this).NamespaceUri);
 
-            var output = XMLSerializer.SerializeToStream<V201505.SharePointProvisioningTemplate>(result, ns);
+            var output = XMLSerializer.SerializeToStream<V201505.Provisioning>(wrappedResult, ns);
             output.Position = 0;
             return (output);
         }
 
         public ProvisioningTemplate ToProvisioningTemplate(Stream template)
+        {
+            return (this.ToProvisioningTemplate(template, null));
+        }
+
+        public ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier)
         {
             if (template == null)
             {
@@ -531,9 +561,77 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             sourceStream.Position = 0;
             XDocument xml = XDocument.Load(sourceStream);
-            V201505.SharePointProvisioningTemplate source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+            XNamespace pnp = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
 
+            // Prepare a variable to hold the single source formatted template
+            V201505.SharePointProvisioningTemplate source = null;
+
+            // Prepare a variable to hold the resulting ProvisioningTemplate instance
             ProvisioningTemplate result = new ProvisioningTemplate();
+
+            // Determine if we're working on a wrapped SharePointProvisioningTemplate or not
+            if (xml.Root.Name == pnp + "Provisioning")
+            {
+                // Deserialize the whole wrapper
+                V201505.Provisioning wrappedResult = XMLSerializer.Deserialize<V201505.Provisioning>(xml);
+
+                // Handle the wrapper schema parameters
+                if (wrappedResult.Preferences != null && 
+                    wrappedResult.Preferences.Parameters != null &&
+                    wrappedResult.Preferences.Parameters.Length > 0)
+                {
+                    foreach (var parameter in wrappedResult.Preferences.Parameters)
+                    {
+                        result.Parameters.Add(parameter.Key, parameter.Text != null ? parameter.Text.Aggregate(String.Empty, (acc, i) => acc + i) : null);
+                    }
+                }
+
+                foreach (var templates in wrappedResult.Templates)
+                {
+                    // Let's see if we have an in-place template with the provided ID or if we don't have a provided ID at all
+                    source = templates.SharePointProvisioningTemplate.FirstOrDefault(spt => spt.ID == identifier || String.IsNullOrEmpty(identifier));
+
+                    // If we don't have a template, but there are external file references
+                    if (source == null && templates.SharePointProvisioningTemplateFile.Length > 0)
+                    {
+                        // Otherwise let's see if we have an external file for the template
+                        var externalSource = templates.SharePointProvisioningTemplateFile.FirstOrDefault(sptf => sptf.ID == identifier);
+
+                        Stream externalFileStream = this._provider.Connector.GetFileStream(externalSource.File);
+                        xml = XDocument.Load(externalFileStream);
+
+                        if (xml.Root.Name != pnp + "SharePointProvisioningTemplate")
+                        {
+                            throw new ApplicationException("Invalid external file format. Expected a SharePointProvisioningTemplate file!");
+                        }
+                        else
+                        {
+                            source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+                        }
+                    }
+
+                    if (source != null) {
+                        break; 
+                    }
+                }
+            }
+            else if (xml.Root.Name == pnp + "SharePointProvisioningTemplate")
+            {
+                var IdAttribute = xml.Root.Attribute("ID");
+
+                // If there is a provided ID, and if it doesn't equal the current ID
+                if (!String.IsNullOrEmpty(identifier) &&
+                    IdAttribute != null && 
+                    IdAttribute.Value != identifier)
+                {
+                    // TODO: Use resource file
+                    throw new ApplicationException("The provided template identifier is not available!");
+                }
+                else
+                {
+                    source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+                }
+            }
 
             // Translate basic properties
             result.ID = source.ID;
@@ -945,8 +1043,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     Guid.Parse(term.ID),
                     term.Name,
                     null, // TODO: language
-                    term.ChildTerms.Items.FromSchemaTermsToModelTerms(),
-                    new List<Model.TermLabel>(
+                    (term.ChildTerms != null && term.ChildTerms.Items != null) ? term.ChildTerms.Items.FromSchemaTermsToModelTerms() : null,
+                    term.Labels != null ? 
+                    (new List<Model.TermLabel>(
                         from label in term.Labels
                         select new Model.TermLabel
                         {
@@ -954,9 +1053,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             Value = label.Value,
                             IsDefaultForLanguage = label.IsDefaultForLanguageSpecified ? label.IsDefaultForLanguage : false,
                         }
-                    ),
-                    term.CustomProperties.ToDictionary(k => k.Key, v => v.Value),
-                    term.LocalCustomProperties.ToDictionary(k => k.Key, v => v.Value)
+                    )) : null,
+                    term.CustomProperties != null ? term.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null,
+                    term.LocalCustomProperties != null ? term.LocalCustomProperties.ToDictionary(k => k.Key, v => v.Value) : null
                     )
                     {
                         CustomSortOrder = term.CustomSortOrder,

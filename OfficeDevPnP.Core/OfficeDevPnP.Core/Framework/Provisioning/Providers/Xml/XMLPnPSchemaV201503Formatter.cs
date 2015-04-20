@@ -17,6 +17,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     internal class XMLPnPSchemaV201503Formatter :
         IXMLSchemaFormatter, ITemplateFormatter
     {
+        private TemplateProviderBase _provider;
+
+        public void Initialize(TemplateProviderBase provider)
+        {
+            this._provider = provider;
+        }
+        
         string IXMLSchemaFormatter.NamespaceUri
         {
             get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03); }
@@ -427,6 +434,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         }
 
         public ProvisioningTemplate ToProvisioningTemplate(Stream template)
+        {
+            return (this.ToProvisioningTemplate(template, null));
+        }
+
+        public ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier)
         {
             if (template == null)
             {
