@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
@@ -36,7 +37,9 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         public void CanProvisionObjects()
         {
             var template = new ProvisioningTemplate();
-            template.ContentTypes.Add(new ContentType()
+
+
+            var contentType = new ContentType()
             {
                 ID = "0x010100503B9E20E5455344BFAC2292DC6FE805",
                 Name = "Test Content Type",
@@ -44,7 +47,14 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 Description = "Test Description",
                 Overwrite = true,
                 Hidden = false
+            };
+
+            contentType.FieldRefs.Add(new FieldRef()
+            {
+                ID = BuiltInFieldId.Category,
+                DisplayName = "Test Category",
             });
+            template.ContentTypes.Add(contentType);
 
             using (var ctx = TestCommon.CreateClientContext())
             {
