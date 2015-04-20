@@ -88,6 +88,16 @@ namespace Provisioning.Common.Data
                  SiteRequestFields.DEFAULT_FIELD_GROUP,
                  SiteRequestFields.ONPREM_REQUEST_ATTRIB));
 
+            fieldsXml.Add(SiteRequestFields.PROPS_NAME,
+                 FormatField(
+                 SiteRequestFields.PROPS_ID,
+                 SiteRequestFields.PROPS_NAME,
+                 SiteRequestFields.PROPS_TYPE,
+                 SiteRequestFields.PROPS_DISPLAYNAME,
+                 SiteRequestFields.PROPS_DESC,
+                 SiteRequestFields.DEFAULT_FIELD_GROUP,
+                 SiteRequestFields.PROPS_ATTRIB));
+
             fieldsXml.Add(SiteRequestFields.BC_NAME,
                  FormatField(
                  SiteRequestFields.BC_ID,

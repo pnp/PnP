@@ -178,6 +178,12 @@ namespace Provisioning.Common
         [DataMember]
         public string BusinessCase { get; set; }
        
+        /// <summary>
+        /// Site Request Properties stored in the repository as a JSON string
+        /// </summary>
+        [DataMember]
+        public string PropertiesJSON { get; set; }
+
         #endregion
     }
 }

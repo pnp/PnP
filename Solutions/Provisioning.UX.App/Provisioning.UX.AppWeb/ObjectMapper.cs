@@ -1,4 +1,5 @@
-﻿using Provisioning.Common;
+﻿using Newtonsoft.Json;
+using Provisioning.Common;
 using Provisioning.UX.AppWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,13 @@ namespace Provisioning.UX.AppWeb
             _newRequest.AdditionalAdministrators = _additionalAdmins;
             _newRequest.SharePointOnPremises = request.SharePointOnPremises;
             _newRequest.BusinessCase = request.BusinessCase;
+
+            if(request.Properties != null)
+            {
+                //Serialize Property Bag Entries
+                _newRequest.PropertiesJSON = JsonConvert.SerializeObject(request.Properties);
+            }
+    
 
 
             return _newRequest;

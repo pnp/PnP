@@ -180,7 +180,8 @@ namespace Provisioning.Common.Data.Impl
                      item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                      item => item[SiteRequestFields.LCID_NAME],
                      item => item[SiteRequestFields.TIMEZONE_NAME],
-                     item => item[SiteRequestFields.BC_NAME]));
+                     item => item[SiteRequestFields.BC_NAME],
+                     item => item[SiteRequestFields.PROPS_NAME]));
                 ctx.ExecuteQuery();
 
                 foreach (ListItem _item in _listItemCollection)
@@ -199,7 +200,8 @@ namespace Provisioning.Common.Data.Impl
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
                         SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
-                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME)
+                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
+                        PropertiesJSON = this.BaseSet(_item, SiteRequestFields.PROPS_NAME)
                     };
                     _siteRequests.Add(_site);
                 }
@@ -235,7 +237,8 @@ namespace Provisioning.Common.Data.Impl
                     item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                     item => item[SiteRequestFields.LCID_NAME],
                     item => item[SiteRequestFields.TIMEZONE_NAME],
-                    item => item[SiteRequestFields.BC_NAME]));
+                    item => item[SiteRequestFields.BC_NAME],
+                    item => item[SiteRequestFields.PROPS_NAME]));
                 ctx.ExecuteQuery();
 
                 if (_listItemCollection.Count > 0)
@@ -256,8 +259,11 @@ namespace Provisioning.Common.Data.Impl
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
                         SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
-                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME)
+                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
+                        PropertiesJSON = this.BaseSet(_item, SiteRequestFields.PROPS_NAME)
                     };
+
+                   
                 }
             });
 
@@ -323,6 +329,7 @@ namespace Provisioning.Common.Data.Impl
                 _record[SiteRequestFields.EXTERNALSHARING_NAME] = siteRequest.EnableExternalSharing;
                 _record[SiteRequestFields.ONPREM_REQUEST_NAME] = siteRequest.SharePointOnPremises;
                 _record[SiteRequestFields.BC_NAME] = siteRequest.BusinessCase;
+                _record[SiteRequestFields.PROPS_NAME] = siteRequest.PropertiesJSON;
                 //If Settings are set to autoapprove then automatically approve the requests
                 if(_manager.GetAppSettings().AutoApprove)
                 {

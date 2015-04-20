@@ -35,6 +35,14 @@ namespace Provisioning.Common.Data
         public const string ONPREM_REQUEST_ATTRIB = "";
         public const string ONPREM_REQUEST_DESC = "Indicates if the Site Request is targeting SharePoint On-Premises.";
 
+        //PROPERTIES
+        public const string PROPS_NAME = "SP_Props";
+        public const string PROPS_DISPLAYNAME = "Properties";
+        public static readonly Guid PROPS_ID = new Guid("FF0D9EBB-576F-45FF-8328-73D6B7C6E1A4");
+        public const FieldType PROPS_TYPE = FieldType.Note;
+        public const string PROPS_ATTRIB = "";
+        public const string PROPS_DESC = "Field that stores custom property bag entries.";
+
         //Description
         public const string DESCRIPTION_NAME = "SP_Description";
         public const string DESCRIPTION_DISPLAYNAME = "Description";

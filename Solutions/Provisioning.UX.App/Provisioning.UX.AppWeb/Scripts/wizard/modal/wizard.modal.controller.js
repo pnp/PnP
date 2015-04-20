@@ -38,6 +38,19 @@
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
+
+            var props = {};
+            if ($scope.siteConfiguration.details.region != null) {
+                props["region"] = $scope.siteConfiguration.details.region;
+            }
+            
+            if ($scope.siteConfiguration.details.division != null) {
+                props["division"] = $scope.siteConfiguration.details.division;
+            }
+            
+
+            siteRequest.Properties = props;
+
             saveSiteRequest(siteRequest);
             $modalInstance.close($scope.siteConfiguration);
         };

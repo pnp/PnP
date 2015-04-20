@@ -47,6 +47,9 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "businessCase")]
         public string BusinessCase { get; set; }
 
+        [DataMember(Name = "properties")]
+        public Dictionary<string,string> Properties { get; set; }
+
         [DataMember(Name = "success")]
         public bool Success { get; set; }
 
