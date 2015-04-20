@@ -47,10 +47,8 @@
             if ($scope.siteConfiguration.details.division != null) {
                 props["division"] = $scope.siteConfiguration.details.division;
             }
-            
-
             siteRequest.Properties = props;
-
+            
             saveSiteRequest(siteRequest);
             $modalInstance.close($scope.siteConfiguration);
         };

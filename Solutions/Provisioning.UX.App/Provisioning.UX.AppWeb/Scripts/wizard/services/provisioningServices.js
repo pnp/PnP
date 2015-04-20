@@ -31,7 +31,6 @@
                     url: '/api/provisioning/siterequest',
                     data: "=" + formData,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-                    //  headers: {'Content-Type': 'application/json; charset=utf-8', 'dataType': 'json'}
                 }).success(function (data, status, headers, config) {
                     deferred.resolve(data);
                     console.log(data);
