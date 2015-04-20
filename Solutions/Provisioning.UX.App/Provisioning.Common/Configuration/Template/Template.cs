@@ -45,6 +45,12 @@ namespace Provisioning.Common.Configuration.Template
         public string HostPath { get; set; }
 
         /// <summary>
+        /// Defines the Tenant Admin Site Url 
+        /// </summary>
+        [XmlAttribute]
+        public string TenantAdminUrl { get; set; }
+
+        /// <summary>
         /// Defines the Managed Path. Only Sites and Teams should be used
         /// </summary>
         [XmlAttribute]

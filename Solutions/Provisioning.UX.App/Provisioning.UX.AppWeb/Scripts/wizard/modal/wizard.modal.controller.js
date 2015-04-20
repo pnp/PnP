@@ -28,12 +28,11 @@
         $scope.finished = function () {
             //  save the site request when the wizard is complete
             var siteRequest = new Object();
-            siteRequest.title = $scope.siteConfiguration.details.name;
+            siteRequest.title = $scope.siteConfiguration.details.title;
             siteRequest.Url = $scope.siteConfiguration.details.url;
             siteRequest.Description = $scope.siteConfiguration.details.description;
             siteRequest.PrimaryOwner = $scope.siteConfiguration.primaryOwner;
             siteRequest.Template = $scope.siteConfiguration.template.title;
-       
             saveSiteRequest(siteRequest);
 
 
