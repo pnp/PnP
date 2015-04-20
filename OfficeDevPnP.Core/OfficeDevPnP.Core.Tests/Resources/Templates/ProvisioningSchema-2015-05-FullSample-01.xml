@@ -136,6 +136,10 @@
         <pnp:File Src="Custom.spfont" Folder="_catalogs/Theme/15" Overwrite="true" />
       </pnp:Files>
 
+      <pnp:Pages>
+        <pnp:Page Layout="TwoColumns" Overwrite="true" Url="{site}/SitePages/DemoWikiPage.aspx"></pnp:Page>
+      </pnp:Pages>
+
       <pnp:TermGroups>
         <pnp:TermGroup ID="{0E8F395E-FF58-4D45-9FF7-E331AB728BEB}" Name="{CompanyName} TermSets">
           <pnp:TermSets>

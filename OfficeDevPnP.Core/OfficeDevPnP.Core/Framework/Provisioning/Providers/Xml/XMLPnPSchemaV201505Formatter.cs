@@ -264,6 +264,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          (from fieldRef in list.FieldRefs
                           select new V201505.FieldRef
                           {
+                              DisplayName = fieldRef.DisplayName,
+                              Hidden = fieldRef.Hidden,
+                              Required = fieldRef.Required,
                               ID = fieldRef.ID.ToString(),
                           }).ToArray() : null,
                          DataRows = list.DataRows.Count > 0 ?
@@ -759,6 +762,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  (from fieldRef in list.FieldRefs
                                   select new Model.FieldRef
                                   {
+                                      DisplayName = fieldRef.DisplayName,
+                                      Hidden = fieldRef.Hidden,
+                                      Required = fieldRef.Required,
                                       ID = Guid.Parse(fieldRef.ID)
                                   }) : null),
                         (list.DataRows != null ?

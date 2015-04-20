@@ -26,7 +26,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         {
             this._provider = provider;
         }
-        
+
         string IXMLSchemaFormatter.NamespaceUri
         {
             get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04); }
@@ -368,14 +368,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Overwrite = file.Overwrite,
                          Src = file.Src,
                          Folder = file.Folder,
-                         WebParts = (from wp in file.WebParts
-                                     select new V201504.WebPartPageWebPart
-                                     {
-                                         Zone = wp.Zone,
-                                         Order = (int)wp.Order,
-                                         Contents = wp.Contents,
-                                         Title = wp.Title,
-                                     }).ToArray()
+                         WebParts = file.WebParts.Count > 0 ? (from wp in file.WebParts
+                                                               select new V201504.WebPartPageWebPart
+                                                               {
+                                                                   Zone = wp.Zone,
+                                                                   Order = (int)wp.Order,
+                                                                   Contents = wp.Contents,
+                                                                   Title = wp.Title,
+                                                               }).ToArray() : null
                      }).ToArray();
             }
             else
@@ -422,14 +422,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     schemaPage.Layout = pageLayout;
                     schemaPage.Overwrite = page.Overwrite;
 
-                    schemaPage.WebParts = (from wp in page.WebParts
-                                           select new V201504.WikiPageWebPart
-                                           {
-                                               Column = (int)wp.Column,
-                                               Row = (int)wp.Row,
-                                               Contents = wp.Contents,
-                                               Title = wp.Title,
-                                           }).ToArray();
+                    schemaPage.WebParts = page.WebParts.Count > 0 ? (from wp in page.WebParts
+                                                                     select new V201504.WikiPageWebPart
+                                                                     {
+                                                                         Column = (int)wp.Column,
+                                                                         Row = (int)wp.Row,
+                                                                         Contents = wp.Contents,
+                                                                         Title = wp.Title,
+                                                                     }).ToArray() : null;
 
                     schemaPage.Url = page.Url;
 

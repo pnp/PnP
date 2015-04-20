@@ -845,6 +845,14 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+    
+    <xsd:attribute name="DisplayName" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The display name of the field to bind, only applicable to fields that will be added to lists, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
 
     <xsd:attribute name="Required" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>

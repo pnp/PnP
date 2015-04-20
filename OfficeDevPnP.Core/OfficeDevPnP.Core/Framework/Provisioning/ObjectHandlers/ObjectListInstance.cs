@@ -147,8 +147,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             if (!string.IsNullOrEmpty(fieldRef.DisplayName))
                             {
                                 createdField.Title = fieldRef.DisplayName;
-                                createdField.Update();
                             }
+                            createdField.Hidden = fieldRef.Hidden;
+                            createdField.Required = fieldRef.Required;
+
+                            createdField.Update();
                         }
 
                     }
