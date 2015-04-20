@@ -159,7 +159,6 @@
     </Compile>
     <Compile Include="Models\SiteRequest.cs" />
     <Compile Include="Models\SiteTemplate.cs" />
-    <Compile Include="Models\SiteTemplates.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

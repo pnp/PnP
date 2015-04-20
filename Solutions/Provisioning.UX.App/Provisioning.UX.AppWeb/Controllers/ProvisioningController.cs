@@ -57,17 +57,17 @@ namespace Provisioning.UX.AppWeb.Controllers
         public SiteRequest SaveSiteRequest([FromBody]string value)
         {
             var _request = new SiteRequest();
-            _request.success = false;
+            _request.Success = false;
 
             try
             {
                 _request = JsonUtility.Deserialize<SiteRequest>(value);
                 var t = value;
-                _request.success = true;
+                _request.Success = true;
             }
             catch (Exception ex)
             {
-                _request.errorMessage = ex.Message;
+                _request.ErrorMessage = ex.Message;
             }
             return _request;
 
