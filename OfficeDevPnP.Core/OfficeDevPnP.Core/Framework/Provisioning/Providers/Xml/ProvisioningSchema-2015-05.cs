@@ -508,9 +508,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool isAvailableForTaggingField;
         
-        private bool isAvailableForTaggingFieldSpecified;
-        
         private string customSortOrderField;
+        
+        public TermSetItem() {
+            this.isAvailableForTaggingField = true;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -525,23 +527,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
         public bool IsAvailableForTagging {
             get {
                 return this.isAvailableForTaggingField;
             }
             set {
                 this.isAvailableForTaggingField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool IsAvailableForTaggingSpecified {
-            get {
-                return this.isAvailableForTaggingFieldSpecified;
-            }
-            set {
-                this.isAvailableForTaggingFieldSpecified = value;
             }
         }
         

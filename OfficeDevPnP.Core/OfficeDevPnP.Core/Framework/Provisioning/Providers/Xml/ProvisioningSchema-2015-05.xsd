@@ -1604,7 +1604,7 @@
     <xsd:complexContent>
       <xsd:extension base="pnp:TermBase">
         <xsd:attribute name="Owner" type="pnp:ReplaceableString" use="optional"/>
-        <xsd:attribute name="IsAvailableForTagging " type="xsd:boolean" use="optional"/>
+        <xsd:attribute name="IsAvailableForTagging" type="xsd:boolean" use="optional" default="true"/>
         <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:complexContent>
