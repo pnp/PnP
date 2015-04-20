@@ -14,6 +14,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
     public interface ITemplateFormatter
     {
         /// <summary>
+        /// Method to initialize the formatter with the proper TemplateProvider instance
+        /// </summary>
+        /// <param name="provider">The provider that is calling the current template formatter</param>
+        void Initialize(TemplateProviderBase provider);
+
+        /// <summary>
         /// Method to validate the content of a formatted template instace
         /// </summary>
         /// <param name="template">The formatted template instance as a Stream</param>
@@ -33,5 +39,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         /// <param name="template">The input formatted template as a Stream</param>
         /// <returns>The output ProvisioningTemplate</returns>
         ProvisioningTemplate ToProvisioningTemplate(Stream template);
+
+        /// <summary>
+        /// Method to convert a formatted template into a ProvisioningTemplate, based on a specific ID
+        /// </summary>
+        /// <param name="template">The input formatted template as a Stream</param>
+        /// <param name="identifier">The identifier of the template to convert</param>
+        /// <returns>The output ProvisioningTemplate</returns>
+        ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier);
     }
 }
