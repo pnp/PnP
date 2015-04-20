@@ -179,7 +179,8 @@ namespace Provisioning.Common.Data.Impl
                      item => item[SiteRequestFields.PROVISIONING_STATUS_NAME],
                      item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                      item => item[SiteRequestFields.LCID_NAME],
-                     item => item[SiteRequestFields.TIMEZONE_NAME]));
+                     item => item[SiteRequestFields.TIMEZONE_NAME],
+                     item => item[SiteRequestFields.BC_NAME]));
                 ctx.ExecuteQuery();
 
                 foreach (ListItem _item in _listItemCollection)
@@ -197,7 +198,8 @@ namespace Provisioning.Common.Data.Impl
                         RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
-                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME)
+                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
+                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME)
                     };
                     _siteRequests.Add(_site);
                 }
@@ -232,7 +234,8 @@ namespace Provisioning.Common.Data.Impl
                     item => item[SiteRequestFields.PROVISIONING_STATUS_NAME],
                     item => item[SiteRequestFields.ONPREM_REQUEST_NAME],
                     item => item[SiteRequestFields.LCID_NAME],
-                    item => item[SiteRequestFields.TIMEZONE_NAME]));
+                    item => item[SiteRequestFields.TIMEZONE_NAME],
+                    item => item[SiteRequestFields.BC_NAME]));
                 ctx.ExecuteQuery();
 
                 if (_listItemCollection.Count > 0)
@@ -252,7 +255,8 @@ namespace Provisioning.Common.Data.Impl
                         RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
                         Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
-                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME)
+                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
+                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME)
                     };
                 }
             });
@@ -318,6 +322,7 @@ namespace Provisioning.Common.Data.Impl
                 _record[SiteRequestFields.POLICY_NAME] = siteRequest.SitePolicy;
                 _record[SiteRequestFields.EXTERNALSHARING_NAME] = siteRequest.EnableExternalSharing;
                 _record[SiteRequestFields.ONPREM_REQUEST_NAME] = siteRequest.SharePointOnPremises;
+                _record[SiteRequestFields.BC_NAME] = siteRequest.BusinessCase;
                 //If Settings are set to autoapprove then automatically approve the requests
                 if(_manager.GetAppSettings().AutoApprove)
                 {

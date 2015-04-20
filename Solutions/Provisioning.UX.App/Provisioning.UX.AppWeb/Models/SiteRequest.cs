@@ -44,6 +44,9 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "sharePointOnPremises")]
         public bool SharePointOnPremises { get; set; }
 
+        [DataMember(Name = "businessCase")]
+        public string BusinessCase { get; set; }
+
         [DataMember(Name = "success")]
         public bool Success { get; set; }
 

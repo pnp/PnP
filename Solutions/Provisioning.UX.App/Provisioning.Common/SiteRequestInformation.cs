@@ -171,6 +171,12 @@ namespace Provisioning.Common
             get { return this._sharePointOnPrem; }
             set { this._sharePointOnPrem = value; }
         }
+
+        /// <summary>
+        /// Business Case of the site request;
+        /// </summary>
+        [DataMember]
+        public string BusinessCase { get; set; }
        
         #endregion
     }

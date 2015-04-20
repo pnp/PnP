@@ -37,6 +37,7 @@
             siteRequest.Template = $scope.siteConfiguration.template.title;
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
+            siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
             saveSiteRequest(siteRequest);
             $modalInstance.close($scope.siteConfiguration);
         };
@@ -121,7 +122,10 @@
         function saveSiteRequest(request) {
             $.when($SharePointProvisioningService.saveRequest(request)).done(function (data) {
                 if (data != null) {
-
+                    if(data.success != true)
+                    {
+                        //There was an issue posting to the service
+                    }
                 }
             }).fail(function (err) {
                 console.log(err);
