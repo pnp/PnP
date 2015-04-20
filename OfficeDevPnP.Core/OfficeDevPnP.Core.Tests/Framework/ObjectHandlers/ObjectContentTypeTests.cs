@@ -36,7 +36,15 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         public void CanProvisionObjects()
         {
             var template = new ProvisioningTemplate();
-            template.ContentTypes.Add(new ContentType() { SchemaXml = ElementSchema });
+            template.ContentTypes.Add(new ContentType()
+            {
+                ID = "0x010100503B9E20E5455344BFAC2292DC6FE805",
+                Name = "Test Content Type",
+                Group = "PnP",
+                Description = "Test Description",
+                Overwrite = true,
+                Hidden = false
+            });
 
             using (var ctx = TestCommon.CreateClientContext())
             {
