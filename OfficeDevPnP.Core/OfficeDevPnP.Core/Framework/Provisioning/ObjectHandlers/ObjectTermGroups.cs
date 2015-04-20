@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Taxonomy;
+using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -81,6 +82,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                     modelTermSet.ID = Guid.NewGuid();
                                 }
                                 set = group.CreateTermSet(modelTermSet.Name.ToParsedString(), modelTermSet.ID, modelTermSet.Language ?? termStore.DefaultLanguage);
+                                TokenParser.AddToken(new TermSetIdToken(web, modelTermGroup.Name, modelTermSet.Name, modelTermSet.ID));
                                 newTermSet = true;
 
                                 set.Description = modelTermSet.Description;
@@ -98,6 +100,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             modelTermSet.ID = Guid.NewGuid();
                         }
                         set = group.CreateTermSet(modelTermSet.Name.ToParsedString(), modelTermSet.ID, modelTermSet.Language ?? termStore.DefaultLanguage);
+                        TokenParser.AddToken(new TermSetIdToken(web, modelTermGroup.Name, modelTermSet.Name, modelTermSet.ID));
                         newTermSet = true;
                         termStore.CommitAll();
                         web.Context.Load(set);
@@ -119,7 +122,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         var sortedTerms = modelTermSet.Terms.OrderBy(t => t.CustomSortOrder);
 
                         var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.ID.ToString() + ":");
-                        customSortString = customSortString.TrimEnd(new [] {':'});
+                        customSortString = customSortString.TrimEnd(new[] { ':' });
 
                         set.CustomSortOrder = customSortString;
                         termStore.CommitAll();
