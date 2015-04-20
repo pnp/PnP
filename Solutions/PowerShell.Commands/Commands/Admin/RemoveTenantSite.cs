@@ -28,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.")]
         public SwitchParameter Force;
 
-        protected override void ProcessRecord()
+        protected override void ExecuteCmdlet()
         {
             if (Force || ShouldContinue(string.Format(Resources.RemoveSiteCollection0, Url), Resources.Confirm))
             {

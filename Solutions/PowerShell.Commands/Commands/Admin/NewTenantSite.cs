@@ -63,7 +63,7 @@ available quota.
         [Parameter(Mandatory = false)]
         public SwitchParameter Wait;
 
-        protected override void ProcessRecord()
+        protected override void ExecuteCmdlet()
         {
             Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
         }

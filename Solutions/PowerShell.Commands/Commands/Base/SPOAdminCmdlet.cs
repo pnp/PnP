@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Management.Automation;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.PowerShell.Commands;
 using Microsoft.SharePoint.Client;
@@ -35,21 +36,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
-            if (SPOnlineConnection.CurrentConnection.ConnectionType != ConnectionType.TenantAdmin)
-            {
-                Uri uri = new Uri(this.ClientContext.Url);
-                var urlParts = uri.Authority.Split(new[] { '.' });
-                if (!urlParts[0].EndsWith("-admin"))
-                {
-                    var adminUrl = string.Format("https://{0}-admin.{1}.{2}", urlParts[0], urlParts[1], urlParts[2]);
 
-                    SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(adminUrl);
-                }
-                else
-                {
-                    throw new InvalidOperationException(Resources.CurrentSiteIsNoTenantAdminSite);
-                }
+            SPOnlineConnection.CurrentConnection.CacheContext();
+
+            Uri uri = new Uri(this.ClientContext.Url);
+            var urlParts = uri.Authority.Split(new[] { '.' });
+            if (!urlParts[0].EndsWith("-admin"))
+            {
+                var adminUrl = string.Format("https://{0}-admin.{1}.{2}", urlParts[0], urlParts[1], urlParts[2]);
+
+                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(adminUrl);
             }
+            
         }
 
         protected override void EndProcessing()
