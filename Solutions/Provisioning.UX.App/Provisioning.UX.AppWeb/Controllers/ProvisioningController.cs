@@ -29,8 +29,11 @@ namespace Provisioning.UX.AppWeb.Controllers
         {
             WebAPIHelper.AddToCache(sharePointServiceContext);
         }
-        #endregion
-
+        
+        /// <summary>
+        /// Returns a list of available site templates to create
+        /// </summary>
+        /// <returns></returns>
         [Route("api/provisioning/availabletemplates")]
         [WebAPIContextFilter]
         [HttpGet]
@@ -56,8 +59,13 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             return _returnResults;
         }
-
-        // POST api/<controller>
+      
+        /// <summary>
+        /// Saves a site request to the Data Repository
+        /// POST api/<controller>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/provisioning/siterequest")]
         [WebAPIContextFilter]
         [HttpPost]
@@ -80,9 +88,13 @@ namespace Provisioning.UX.AppWeb.Controllers
             return _request;
 
         }
+        #endregion
 
-        #region Private Members 
-
+        #region Private Members
+        /// <summary>
+        /// Save the Site Request to the Data Repository
+        /// </summary>
+        /// <param name="siteRequest"></param>
         private void SaveSiteRequestToRepository(SiteRequest siteRequest)
         {
             try
