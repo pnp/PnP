@@ -66,14 +66,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        Stream ITemplateFormatter.ToFormattedTemplate(ProvisioningTemplate template)
+        Stream ITemplateFormatter.ToFormattedTemplate(Model.ProvisioningTemplate template)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
-            V201505.SharePointProvisioningTemplate result = new V201505.SharePointProvisioningTemplate();
+            V201505.ProvisioningTemplate result = new V201505.ProvisioningTemplate();
 
             V201505.Provisioning wrappedResult = new V201505.Provisioning();
             wrappedResult.Preferences = new V201505.Preferences
@@ -84,7 +84,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 new V201505.Templates 
                 { 
                     ID = String.Format("CONTAINER-{0}", template.ID),
-                    SharePointProvisioningTemplate = new V201505.SharePointProvisioningTemplate[]
+                    ProvisioningTemplate = new V201505.ProvisioningTemplate[]
                     {
                         result
                     }
@@ -121,7 +121,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Security configuration, if any
             if (template.Security != null)
             {
-                result.Security = new V201505.SharePointProvisioningTemplateSecurity();
+                result.Security = new V201505.ProvisioningTemplateSecurity();
 
                 if (template.Security.AdditionalAdministrators != null && template.Security.AdditionalAdministrators.Count > 0)
                 {
@@ -185,7 +185,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Site Columns (Fields), if any
             if (template.SiteFields != null && template.SiteFields.Count > 0)
             {
-                result.SiteFields = new V201505.SharePointProvisioningTemplateSiteFields
+                result.SiteFields = new V201505.ProvisioningTemplateSiteFields
                 {
                     Any =
                         (from field in template.SiteFields
@@ -300,7 +300,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate Features, if any
             if (template.Features != null)
             {
-                result.Features = new V201505.SharePointProvisioningTemplateFeatures();
+                result.Features = new V201505.ProvisioningTemplateFeatures();
 
                 // TODO: This nullability check could be useless, because
                 // the SiteFeatures property is initialized in the Features
@@ -344,7 +344,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Translate CustomActions, if any
             if (template.CustomActions != null)
             {
-                result.CustomActions = new V201505.SharePointProvisioningTemplateCustomActions();
+                result.CustomActions = new V201505.ProvisioningTemplateCustomActions();
 
                 if (template.CustomActions.SiteCustomActions != null && template.CustomActions.SiteCustomActions.Count > 0)
                 {
@@ -564,12 +564,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (output);
         }
 
-        public ProvisioningTemplate ToProvisioningTemplate(Stream template)
+        public Model.ProvisioningTemplate ToProvisioningTemplate(Stream template)
         {
             return (this.ToProvisioningTemplate(template, null));
         }
 
-        public ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier)
+        public Model.ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier)
         {
             if (template == null)
             {
@@ -593,10 +593,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XNamespace pnp = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
 
             // Prepare a variable to hold the single source formatted template
-            V201505.SharePointProvisioningTemplate source = null;
+            V201505.ProvisioningTemplate source = null;
 
             // Prepare a variable to hold the resulting ProvisioningTemplate instance
-            ProvisioningTemplate result = new ProvisioningTemplate();
+            Model.ProvisioningTemplate result = new Model.ProvisioningTemplate();
 
             // Determine if we're working on a wrapped SharePointProvisioningTemplate or not
             if (xml.Root.Name == pnp + "Provisioning")
@@ -618,24 +618,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 foreach (var templates in wrappedResult.Templates)
                 {
                     // Let's see if we have an in-place template with the provided ID or if we don't have a provided ID at all
-                    source = templates.SharePointProvisioningTemplate.FirstOrDefault(spt => spt.ID == identifier || String.IsNullOrEmpty(identifier));
+                    source = templates.ProvisioningTemplate.FirstOrDefault(spt => spt.ID == identifier || String.IsNullOrEmpty(identifier));
 
                     // If we don't have a template, but there are external file references
-                    if (source == null && templates.SharePointProvisioningTemplateFile.Length > 0)
+                    if (source == null && templates.ProvisioningTemplateFile.Length > 0)
                     {
                         // Otherwise let's see if we have an external file for the template
-                        var externalSource = templates.SharePointProvisioningTemplateFile.FirstOrDefault(sptf => sptf.ID == identifier);
+                        var externalSource = templates.ProvisioningTemplateFile.FirstOrDefault(sptf => sptf.ID == identifier);
 
                         Stream externalFileStream = this._provider.Connector.GetFileStream(externalSource.File);
                         xml = XDocument.Load(externalFileStream);
 
-                        if (xml.Root.Name != pnp + "SharePointProvisioningTemplate")
+                        if (xml.Root.Name != pnp + "ProvisioningTemplate")
                         {
-                            throw new ApplicationException("Invalid external file format. Expected a SharePointProvisioningTemplate file!");
+                            throw new ApplicationException("Invalid external file format. Expected a ProvisioningTemplate file!");
                         }
                         else
                         {
-                            source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+                            source = XMLSerializer.Deserialize<V201505.ProvisioningTemplate>(xml);
                         }
                     }
 
@@ -645,7 +645,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     }
                 }
             }
-            else if (xml.Root.Name == pnp + "SharePointProvisioningTemplate")
+            else if (xml.Root.Name == pnp + "ProvisioningTemplate")
             {
                 var IdAttribute = xml.Root.Attribute("ID");
 
@@ -659,7 +659,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 }
                 else
                 {
-                    source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+                    source = XMLSerializer.Deserialize<V201505.ProvisioningTemplate>(xml);
                 }
             }
 
