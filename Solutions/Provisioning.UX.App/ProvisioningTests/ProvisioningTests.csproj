@@ -101,7 +101,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Provisioning.Common\Provisioning.Common.csproj">
       <Project>{77447711-3ab3-4390-a22c-75bb5a97bb95}</Project>
-      <Name>Framework.Provisioning.Core</Name>
+      <Name>Provisioning.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
