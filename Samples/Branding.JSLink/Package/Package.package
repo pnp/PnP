@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="2c2953ec-61b9-4f22-b631-a64ff61085cf" 
+        solutionId="2c2953ec-61b9-4f22-b631-a64ff61085cf" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Branding.JSLink"
+        sharePointProductVersion="15.0">
+</package>
