@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Provisioning.TimerJob
+namespace Provisioning.Job
 {
     class Program
     {
