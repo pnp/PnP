@@ -27,6 +27,8 @@
 
         $scope.finished = function () {
             //  save the site request when the wizard is complete
+
+            
             var siteRequest = new Object();
             siteRequest.title = $scope.siteConfiguration.details.title;
             siteRequest.HostPath = $scope.siteConfiguration.spNewSitePrefix;
@@ -40,13 +42,9 @@
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
 
             var props = {};
-            if ($scope.siteConfiguration.details.region != null) {
-                props["region"] = $scope.siteConfiguration.details.region;
-            }
-            
-            if ($scope.siteConfiguration.details.division != null) {
-                props["division"] = $scope.siteConfiguration.details.division;
-            }
+            props["region"] = $scope.siteConfiguration.details.region;
+            props["division"] = $scope.siteConfiguration.details.division;
+
             siteRequest.Properties = props;
             
             saveSiteRequest(siteRequest);
