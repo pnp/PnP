@@ -10,6 +10,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Private Members
         private List<Term> _terms = new List<Term>();
         private Guid _id;
+        private Dictionary<string, string> _properties = new Dictionary<string, string>();
         #endregion
 
         #region Public Members
@@ -35,6 +36,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return _terms; }
             private set { _terms = value; }
         }
+
+        public Dictionary<string, string> Properties
+        {
+            get { return _properties; }
+            private set { _properties = value; }
+        }
+
         #endregion
 
         #region Constructors
@@ -43,7 +51,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
         }
 
-        public TermSet(Guid id, string name, int? language, bool isAvailableForTagging, bool isOpenForTermCreation, List<Term> terms)
+        public TermSet(Guid id, string name, int? language, bool isAvailableForTagging, bool isOpenForTermCreation, List<Term> terms, Dictionary<string, string> properties)
         {
             this.Id = id;
             this.Name = name;
@@ -54,6 +62,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 this.Terms.AddRange(terms);
             }
+            if (properties != null)
+            {
+                foreach (var property in properties)
+                {
+                    this.Properties.Add(property.Key, property.Value);
+                }
+            }
         }
 
         #endregion
@@ -62,7 +77,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}",
                 this.Id,
                 this.Name,
                 this.Description,
@@ -70,7 +85,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.IsOpenForTermCreation,
                 this.IsAvailableForTagging,
                 this.Owner,
-                 this.Terms.Aggregate(0, (acc, next) => acc += next.GetHashCode())
+                this.Terms.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Properties.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }
 
@@ -92,7 +108,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                     this.IsOpenForTermCreation == other.IsOpenForTermCreation &&
                     this.IsAvailableForTagging == other.IsAvailableForTagging &&
                     this.Owner == other.Owner &&
-                    this.Terms.DeepEquals(other.Terms));
+                    this.Terms.DeepEquals(other.Terms) &&
+                    this.Properties.DeepEquals(other.Properties));
         }
 
         #endregion
