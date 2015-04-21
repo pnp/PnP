@@ -10,6 +10,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using Field = Microsoft.SharePoint.Client.Field;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
@@ -19,6 +20,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Lists");
+
+
             //var parser = new TokenParser(web);
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -132,7 +136,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             #endregion
-
 
             #region FieldRefs
 
@@ -270,6 +273,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             #endregion
+
         }
 
 

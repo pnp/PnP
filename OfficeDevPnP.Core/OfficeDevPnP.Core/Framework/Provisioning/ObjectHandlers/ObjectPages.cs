@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -10,6 +11,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Pages");
+
             var context = web.Context as ClientContext;
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -69,7 +72,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
 
             }
-
         }
 
 

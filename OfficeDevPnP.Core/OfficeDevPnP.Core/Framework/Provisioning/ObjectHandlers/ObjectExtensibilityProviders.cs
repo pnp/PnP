@@ -16,6 +16,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Extensibility Providers");
+
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)
             {

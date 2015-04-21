@@ -121,7 +121,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-01.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 1);
             Assert.IsTrue(result.Files.Count == 1);
@@ -143,7 +143,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-02.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 2);
             Assert.IsTrue(result.Files.Count == 5);
@@ -182,7 +182,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-01.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 1);
             Assert.IsTrue(result.Files.Count == 1);
@@ -202,7 +202,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-02.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 2);
             Assert.IsTrue(result.Files.Count == 5);
@@ -241,7 +241,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-02.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 2);
             Assert.IsTrue(result.Files.Count == 5);
@@ -263,7 +263,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplate("ProvisioningTemplate-2015-04-Sample-02.xml");
 
-            Assert.AreEqual(_expectedID, result.ID);
+            Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);
             Assert.IsTrue(result.Lists.Count == 2);
             Assert.IsTrue(result.Files.Count == 5);

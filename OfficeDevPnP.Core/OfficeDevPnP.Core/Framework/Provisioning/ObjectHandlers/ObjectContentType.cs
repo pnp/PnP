@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -13,6 +14,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Content Types");
+
             // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
             {
@@ -39,6 +42,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                 }
             }
+
         }
 
         private static void CreateContentType(Web web, ContentType ct)

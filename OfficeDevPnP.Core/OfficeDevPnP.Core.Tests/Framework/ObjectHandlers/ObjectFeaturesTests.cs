@@ -36,7 +36,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             var template = new ProvisioningTemplate();
             template.Features.WebFeatures.Add(
                 new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature() 
-                { ID = featureId, Deactivate = true});
+                { Id = featureId, Deactivate = true});
 
 
             using (var ctx = TestCommon.CreateClientContext())

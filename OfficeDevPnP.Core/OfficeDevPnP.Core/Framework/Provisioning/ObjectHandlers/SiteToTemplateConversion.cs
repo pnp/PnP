@@ -8,6 +8,7 @@ using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.UPAWebService;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -104,6 +105,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Provisioning");
+
             TokenParser.Initialize(web, template);
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
@@ -160,6 +163,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             string jsonInfo = s.Serialize(info);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
         }
 
         private void ProcessLookupFields(Web web, ProvisioningTemplate template)

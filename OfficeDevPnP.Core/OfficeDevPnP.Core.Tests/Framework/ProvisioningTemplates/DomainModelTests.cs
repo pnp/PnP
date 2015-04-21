@@ -123,7 +123,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             var _expectedVersion = 1.0;
 
             var _pt = this.GetProvisioningTemplate();
-            Assert.AreEqual(_expectedID, _pt.ID);
+            Assert.AreEqual(_expectedID, _pt.Id);
             Assert.AreEqual(_expectedVersion, _pt.Version);
         }
 
@@ -245,7 +245,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 
             foreach(var _f in _sfs)
             {
-                Assert.IsTrue(_f.ID != Guid.Empty);
+                Assert.IsTrue(_f.Id != Guid.Empty);
             }
 
             var f = new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature();

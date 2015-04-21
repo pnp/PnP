@@ -4,6 +4,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -11,6 +12,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Features");
+
             var context = web.Context as ClientContext;
             
             // if this is a sub site then we're not enabling the site collection scoped features
