@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {

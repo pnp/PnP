@@ -810,7 +810,9 @@ namespace Microsoft.SharePoint.Client
                 }
 
                 var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-                var web = folder.ListItemAllFields.ParentList.ParentWeb;
+                var context = folder.Context as ClientContext;
+
+                var web = context.Web;
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
@@ -1058,11 +1060,12 @@ namespace Microsoft.SharePoint.Client
                             l => l.EnableModeration,
                             l => l.ForceCheckout);
 
-                var checkOutRequired = parentList.ForceCheckout;
+                var checkOutRequired = false;
 
                 try
                 {
                     context.ExecuteQueryRetry();
+                    checkOutRequired = parentList.ForceCheckout;
                     publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
                     approvalRequired = parentList.EnableModeration;
                 }

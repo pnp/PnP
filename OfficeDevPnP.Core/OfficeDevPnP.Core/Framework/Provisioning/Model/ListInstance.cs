@@ -6,14 +6,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that specifies the properties of the new list.
     /// </summary>
-    public class ListInstance : IEquatable<ListInstance>
+    public partial class ListInstance : IEquatable<ListInstance>
     {
         #region Constructors
 
         public ListInstance() { }
 
         public ListInstance(IEnumerable<ContentTypeBinding> contentTypeBindings,
-            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs   )
+            IEnumerable<View> views, IEnumerable<Field> fields, IEnumerable<FieldRef> fieldRefs, List<DataRow> dataRows)
         {
             if (contentTypeBindings != null)
             {
@@ -34,6 +34,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 this._fieldRefs.AddRange(fieldRefs);
             }
+            if (dataRows != null)
+            {
+                this._dataRows.AddRange(dataRows);
+            }
         }
 
         #endregion
@@ -41,8 +45,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Private Members
         private List<ContentTypeBinding> _ctBindings = new List<ContentTypeBinding>();
         private List<View> _views = new List<View>();
-        private List<Field> _fields = new List<Field>(); 
-        private List<FieldRef> _fieldRefs = new List<FieldRef>(); 
+        private List<Field> _fields = new List<Field>();
+        private List<FieldRef> _fieldRefs = new List<FieldRef>();
+        private List<DataRow> _dataRows = new List<DataRow>();
+        private bool _enableFolderCreation = true;
+        private bool _enableAttachments = true;
         #endregion
 
         #region Properties
@@ -50,33 +57,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets the list title
         /// </summary>
         public string Title { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the description of the list
         /// </summary>
         public string Description { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value that specifies the identifier of the document template for the new list.
         /// </summary>
         public string DocumentTemplate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
         public bool OnQuickLaunch { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value that specifies the list server template of the new list.
         /// https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.listtemplatetype.aspx
         /// </summary>
         public int TemplateType { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value that specifies whether the new list is displayed on the Quick Launch of the site.
         /// </summary>
         public string Url { get; set; }
-       
+
         /// <summary>
         /// Gets or sets whether verisioning is enabled on the list
         /// </summary>
@@ -93,10 +100,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public int MaxVersionLimit { get; set; }
 
         /// <summary>
-        /// Gets or sets whether to remove the default content type from the list
+        /// Gets or sets whether existing content types should be removed
         /// </summary>
-        public bool RemoveDefaultContentType { get; set; }
-  
+        public bool RemoveExistingContentTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether existing views should be removed
+        /// </summary>
+        public bool RemoveExistingViews { get; set; }
+
         /// <summary>
         /// Gets or sets whether content types are enabled
         /// </summary>
@@ -108,12 +120,29 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool Hidden { get; set; }
 
         /// <summary>
+        /// Gets or sets whether attachments are enabled. Defaults to true.
+        /// </summary>
+        public bool EnableAttachments
+        {
+            get { return _enableAttachments; }
+            set { _enableAttachments = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets whether folder is enabled. Defaults to true.
+        /// </summary>
+        public bool EnableFolderCreation
+        {
+            get { return _enableFolderCreation; }
+            set { _enableFolderCreation = value; }
+        }
+        /// <summary>
         /// Gets or sets the content types to associate to the list
         /// </summary>
         public List<ContentTypeBinding> ContentTypeBindings
         {
             get { return this._ctBindings; }
-            private set { this._ctBindings = value;}
+            private set { this._ctBindings = value; }
         }
 
         /// <summary>
@@ -136,13 +165,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             get { return this._fieldRefs; }
             private set { this._fieldRefs = value; }
         }
+
+        public Guid TemplateFeatureID { get; set; }
+
+        public List<DataRow> DataRows
+        {
+            get { return this._dataRows; }
+            private set { this._dataRows = value; }
+        }
+
         #endregion
 
         #region Comparison code
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}",
                 this.ContentTypesEnabled,
                 this.Description,
                 this.DocumentTemplate,
@@ -151,10 +189,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.MaxVersionLimit,
                 this.MinorVersionLimit,
                 this.OnQuickLaunch,
-                this.RemoveDefaultContentType,
+                this.EnableAttachments,
+                this.EnableFolderCreation,
+                this.RemoveExistingContentTypes,
                 this.TemplateType,
                 this.Title,
-                this.Url).GetHashCode());
+                this.Url,
+                this.TemplateFeatureID,
+                this.RemoveExistingViews).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -176,10 +218,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.MaxVersionLimit == other.MaxVersionLimit &&
                 this.MinorVersionLimit == other.MinorVersionLimit &&
                 this.OnQuickLaunch == other.OnQuickLaunch &&
-                this.RemoveDefaultContentType == other.RemoveDefaultContentType &&
+                this.EnableAttachments == other.EnableAttachments &&
+                this.EnableFolderCreation == other.EnableFolderCreation &&
+                this.RemoveExistingContentTypes == other.RemoveExistingContentTypes &&
                 this.TemplateType == other.TemplateType &&
                 this.Title == other.Title &&
-                this.Url == other.Url);
+                this.Url == other.Url &&
+                this.TemplateFeatureID == other.TemplateFeatureID &&
+                this.RemoveExistingViews == other.RemoveExistingViews);
         }
 
         #endregion

@@ -15,12 +15,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 !template.ComposedLook.Equals(ComposedLook.Empty))
             {
                 bool executeQueryNeeded = false;
-                TokenParser parser = new TokenParser(web);
                 
                 // Apply alternate CSS
                 if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
                 {
-                    var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
+                    var alternateCssUrl = template.ComposedLook.AlternateCSS.ToParsedString();
                     web.AlternateCssUrl = alternateCssUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -29,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // Apply Site logo
                 if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
                 {
-                    var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
+                    var siteLogoUrl = template.ComposedLook.SiteLogo.ToParsedString();
                     web.SiteLogoUrl = siteLogoUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -53,23 +52,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     string colorFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
                     {
-                        colorFile = parser.Parse(template.ComposedLook.ColorFile);
+                        colorFile = template.ComposedLook.ColorFile.ToParsedString();
                     }
                     string backgroundFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
                     {
-                        backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
+                        backgroundFile = template.ComposedLook.BackgroundFile.ToParsedString();
                     }
                     string fontFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
                     {
-                        fontFile = parser.Parse(template.ComposedLook.FontFile);
+                        fontFile = template.ComposedLook.FontFile.ToParsedString();
                     }
 
                     string masterUrl = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
                     {
-                        masterUrl = parser.Parse(template.ComposedLook.MasterPage);
+                        masterUrl = template.ComposedLook.MasterPage.ToParsedString();
                     }
                     web.CreateComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
                     web.SetComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
@@ -231,6 +230,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             file.Src = asset.Substring(index + 1);
             file.Folder = asset.Substring(0, index);
             file.Overwrite = true;
+            file.Create = true;
 
             return file;
         }
@@ -245,22 +245,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "~themecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "{themecatalog}");
                 }
                 if (url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "~masterpagecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "{masterpagecatalog}");
                 }
                 if (url.IndexOf(webUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Replace(webUrl, "~site");
+                    return url.Replace(webUrl, "{site}");
                 }
                 else
                 {
                     Uri r = new Uri(webUrl);
                     if (url.IndexOf(r.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
-                        return url.Replace(r.PathAndQuery, "~site");
+                        return url.Replace(r.PathAndQuery, "{site}");
                     }
                 }
 

@@ -78,6 +78,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             catch (Exception ex)
             {
+                SPOnlineConnection.CurrentConnection.RestoreCachedContext();
                 WriteError(new ErrorRecord(ex, "EXCEPTION", ErrorCategory.WriteError,null));
             }
         }

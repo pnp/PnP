@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -27,10 +28,11 @@ namespace Microsoft.SharePoint.Client
                 using (Stream stream = typeof(BaseTemplateManager).Assembly.GetManifestResourceStream(baseTemplate))
                 {
                     // Get the XML document from the stream
-                    XDocument doc = XDocument.Load(stream);
+                    ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(
+                        XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03);
 
                     // And convert it into a ProvisioningTemplate
-                    provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+                    provisioningTemplate = formatter.ToProvisioningTemplate(stream);
                 }
             }
             catch(Exception)
