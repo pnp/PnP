@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2BE5F98F-9C85-4927-8F50-938AB50694F4}</ProjectGuid>
+    <ProjectGuid>{F3D533B7-8347-4F75-A4CF-2171E3356486}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Provisioning.TimerJob</RootNamespace>
