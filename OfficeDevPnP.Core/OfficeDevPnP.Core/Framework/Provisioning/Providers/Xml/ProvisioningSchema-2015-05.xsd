@@ -419,7 +419,7 @@
     </xsd:attribute>
 
   </xsd:complexType>
-  
+
   <xsd:complexType name="UsersList">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -644,7 +644,7 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    
+
     <xsd:attribute name="EnableFolderCreation" type="xsd:boolean" use="optional" default="true">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -660,14 +660,14 @@
       <xsd:documentation xml:lang="en">
         The DataValue of a single field of a row to insert into a target ListInstance
       </xsd:documentation>
-    </xsd:annotation>    
+    </xsd:annotation>
     <xsd:simpleContent>
       <xsd:extension base="pnp:ReplaceableString">
         <xsd:attribute name="FieldName" use="required" type="xsd:string"/>
       </xsd:extension>
     </xsd:simpleContent>
   </xsd:complexType>
-  
+
   <xsd:complexType name="ContentType">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -862,7 +862,7 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    
+
     <xsd:attribute name="DisplayName" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -1565,8 +1565,8 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="TermBase">
-        <xsd:sequence>
+      <xsd:extension base="TaxonomyItem">
+        <xsd:all>
           <xsd:element name="TermSets">
             <xsd:complexType>
               <xsd:sequence>
@@ -1574,20 +1574,35 @@
               </xsd:sequence>
             </xsd:complexType>
           </xsd:element>
-        </xsd:sequence>
+        </xsd:all>
+        <xsd:attribute name="Description" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:complexType name="TermBase" >
+  <xsd:complexType name="TaxonomyItem">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
-        Base type for TermSets and TermSetItems
+        Base Type for TermGroup, TermSet and Term
       </xsd:documentation>
     </xsd:annotation>
     <xsd:attribute name="Name" type="xsd:string" use="required"/>
-    <xsd:attribute name="ID" type="pnp:GUID" use="optional"/>
-    <xsd:attribute name="Description" type="xsd:string" use="optional"/>
+    <xsd:attribute name="ID" type="pnp:GUID" use="optional" />
+  </xsd:complexType>
+
+  <xsd:complexType name="TermSetItem" >
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Base type for TermSets and Terms
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="pnp:TaxonomyItem">
+        <xsd:attribute name="Owner" type="xsd:string" use="optional" />
+        <xsd:attribute name="Description" type="xsd:string" use="optional"/>
+        <xsd:attribute name="IsAvailableForTagging" type="xsd:boolean" use="optional" default="true" />
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
 
   <xsd:complexType name="TermSet">
@@ -1597,8 +1612,15 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
-      <xsd:extension base="pnp:TermBase">
-        <xsd:sequence>
+      <xsd:extension base="pnp:TermSetItem">
+        <xsd:all>
+          <xsd:element name="CustomProperties" type="pnp:TaxonomyItemProperties" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                The CustomProperties, optional collection of elements
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element name="Terms" minOccurs="0" maxOccurs="1">
             <xsd:complexType>
               <xsd:sequence>
@@ -1606,23 +1628,9 @@
               </xsd:sequence>
             </xsd:complexType>
           </xsd:element>
-        </xsd:sequence>
+        </xsd:all>
         <xsd:attribute name="Language" type="xsd:int" use="optional" />
-      </xsd:extension>
-    </xsd:complexContent>
-  </xsd:complexType>
-  
-  <xsd:complexType name="TermSetItem" >
-    <xsd:annotation>
-      <xsd:documentation xml:lang="en">
-        A TermSet Item to provision
-      </xsd:documentation>
-    </xsd:annotation>
-    <xsd:complexContent>
-      <xsd:extension base="pnp:TermBase">
-        <xsd:attribute name="Owner" type="pnp:ReplaceableString" use="optional"/>
-        <xsd:attribute name="IsAvailableForTagging" type="xsd:boolean" use="optional" default="true"/>
-        <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
+        <xsd:attribute name="IsOpenForTermCreation" type="xsd:boolean" use="optional" default="false"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -1636,7 +1644,7 @@
     <xsd:complexContent>
       <xsd:extension base="pnp:TermSetItem">
         <xsd:all>
-          <xsd:element name="ChildTerms" minOccurs="0" maxOccurs="1">
+          <xsd:element name="Terms" minOccurs="0" maxOccurs="1">
             <xsd:complexType>
               <xsd:choice>
                 <xsd:element name="Term" type="Term"  maxOccurs="unbounded" minOccurs="0"/>
@@ -1644,14 +1652,14 @@
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="Labels" minOccurs="0" maxOccurs="1" type="pnp:TermLabels" />
-          <xsd:element name="CustomProperties" type="pnp:TermProperties" minOccurs="0" maxOccurs="1">
+          <xsd:element name="CustomProperties" type="pnp:TaxonomyItemProperties" minOccurs="0" maxOccurs="1">
             <xsd:annotation>
               <xsd:documentation xml:lang="en">
-                The Term CustomProperties, optional collection of elements
+                The CustomProperties, optional collection of elements
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="LocalCustomProperties" type="pnp:TermProperties" minOccurs="0" maxOccurs="1">
+          <xsd:element name="LocalCustomProperties" type="pnp:TaxonomyItemProperties" minOccurs="0" maxOccurs="1">
             <xsd:annotation>
               <xsd:documentation xml:lang="en">
                 The Term CustomProperties, optional collection of elements
@@ -1659,11 +1667,12 @@
             </xsd:annotation>
           </xsd:element>
         </xsd:all>
+        <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:complexType name="TermProperties">
+  <xsd:complexType name="TaxonomyItemProperties">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         A collection of Term Properties
