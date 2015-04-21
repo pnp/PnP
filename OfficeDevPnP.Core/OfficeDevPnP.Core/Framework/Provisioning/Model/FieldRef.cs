@@ -5,11 +5,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Represents a Field XML Markup that is used to define information about a field
     /// </summary>
-    public class FieldRef : IEquatable<FieldRef>
+    public partial class FieldRef : IEquatable<FieldRef>
     {
         #region Private Members
 
-        private Guid _ID = Guid.Empty;
+        private Guid _id = Guid.Empty;
         #endregion
 
         #region Public Properties
@@ -17,10 +17,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// Gets ot sets the ID of the referenced field
         /// </summary>
-        public Guid ID
+        public Guid Id
         {
-            get { return this._ID; }
-            set { this._ID = value; }
+            get { return this._id; }
+            set { this._id = value; }
         }
 
         public string DisplayName { get; set; }
@@ -41,7 +41,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}",
-                this.ID,
+                this.Id,
                 this.Required,
                 this.Hidden).GetHashCode());
         }
@@ -57,7 +57,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(FieldRef other)
         {
-            return (this.ID == other.ID &&
+            return (this.Id == other.Id &&
                 this.Required == other.Required &&
                 this.Hidden == other.Hidden);
         }

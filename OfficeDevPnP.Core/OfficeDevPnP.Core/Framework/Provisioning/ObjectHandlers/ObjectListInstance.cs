@@ -79,10 +79,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     foreach (var ctBinding in list.ContentTypeBindings)
                     {
-                        createdList.AddContentTypeToListById(ctBinding.ContentTypeID);
+                        createdList.AddContentTypeToListById(ctBinding.ContentTypeId);
                         if (ctBinding.Default)
                         {
-                            createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeID);
+                            createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeId);
                         }
                     }
                     createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
@@ -143,8 +143,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
                     {
-                        var field = web.GetFieldById<Field>(fieldRef.ID);
-                        if (!listInfo.CreatedList.FieldExistsById(fieldRef.ID))
+                        var field = web.GetFieldById<Field>(fieldRef.Id);
+                        if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
                         {
                             var createdField = listInfo.CreatedList.Fields.Add(field);
                             if (!string.IsNullOrEmpty(fieldRef.DisplayName))
@@ -343,12 +343,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 // Add the parent to the list of content types
                                 if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
                                 {
-                                    list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.Parent.StringId, Default = count == 0 ? true : false });
+                                    list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.Parent.StringId, Default = count == 0 ? true : false });
                                 }
                             }
                             else
                             {
-                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeID = ct.StringId, Default = count == 0 });
+                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.StringId, Default = count == 0 });
                             }
 
                             web.Context.Load(ct.FieldLinks);
@@ -357,7 +357,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 if (!fieldLink.Hidden)
                                 {
-                                    contentTypeFields.Add(new FieldRef() { ID = fieldLink.Id });
+                                    contentTypeFields.Add(new FieldRef() { Id = fieldLink.Id });
                                 }
                             }
                             count++;
@@ -381,9 +381,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
                                 {
-                                    if (contentTypeFields.FirstOrDefault(c => c.ID == field.Id) == null)
+                                    if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
                                     {
-                                        list.FieldRefs.Add(new FieldRef() { ID = field.Id });
+                                        list.FieldRefs.Add(new FieldRef() { Id = field.Id });
                                     }
                                 }
                                 else

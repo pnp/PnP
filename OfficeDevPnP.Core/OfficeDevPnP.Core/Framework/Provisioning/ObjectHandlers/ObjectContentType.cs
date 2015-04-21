@@ -24,7 +24,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var ct in template.ContentTypes)
             {
-                var existingCT = web.ContentTypes.FirstOrDefault(c => c.StringId.Equals(ct.ID, StringComparison.OrdinalIgnoreCase));
+                var existingCT = web.ContentTypes.FirstOrDefault(c => c.StringId.Equals(ct.Id, StringComparison.OrdinalIgnoreCase));
                 if (existingCT == null)
                 {
                     CreateContentType(web, ct);
@@ -45,13 +45,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             var name = ct.Name.ToParsedString();
             var description = ct.Description.ToParsedString();
-            var id = ct.ID.ToParsedString();
+            var id = ct.Id.ToParsedString();
             var group = ct.Group.ToParsedString();
 
             var createdCT = web.CreateContentType(name, description, id, group);
             foreach (var fieldRef in ct.FieldRefs)
             {
-                var field = web.Fields.GetById(fieldRef.ID);
+                var field = web.Fields.GetById(fieldRef.Id);
                 web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             (from fieldLink in ct.FieldLinks
                              select new FieldRef()
                              {
-                                 ID = fieldLink.Id,
+                                 Id = fieldLink.Id,
                                  Hidden = fieldLink.Hidden,
                                  Required = fieldLink.Required,
                              })
@@ -117,7 +117,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             foreach (var ct in baseTemplate.ContentTypes)
             {
-                var index = template.ContentTypes.FindIndex(f => f.ID.Equals(ct.ID, StringComparison.OrdinalIgnoreCase));
+                var index = template.ContentTypes.FindIndex(f => f.Id.Equals(ct.Id, StringComparison.OrdinalIgnoreCase));
                 if (index > -1)
                 {
                     template.ContentTypes.RemoveAt(index);

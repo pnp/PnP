@@ -8,17 +8,18 @@ using OfficeDevPnP.Core.Extensions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class Term : IEquatable<Term>
+    public partial class Term : IEquatable<Term>
     {
         #region Private Members
         private List<Term> _terms = new List<Term>();
         private List<TermLabel> _labels = new List<TermLabel>();
         private Dictionary<string, string> _properties = new Dictionary<string, string>();
         private Dictionary<string, string> _localProperties = new Dictionary<string, string>();
+        private Guid _id;
         #endregion
 
         #region Public Members
-        public Guid ID { get; set; }
+        public Guid Id { get { return _id; } set { _id = value; } }
         public string Name { get; set; }
         public String Description { get; set; }
         public String Owner { get; set; }
@@ -59,7 +60,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public Term(Guid id, string name, int? language, List<Term> terms, List<TermLabel> labels, Dictionary<string, string> properties, Dictionary<string, string> localProperties)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
             this.Language = language;
 
@@ -95,7 +96,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}",
-                this.ID,
+                this.Id,
                 this.Name,
                 this.Description,
                 this.Language,
@@ -120,7 +121,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(Term other)
         {
-            return (this.ID == other.ID &&
+            return (this.Id == other.Id &&
                 this.Name == other.Name &&
                 this.Description == other.Description &&
                 this.Language == other.Language &&
