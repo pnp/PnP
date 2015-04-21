@@ -14,15 +14,16 @@ namespace Provisioning.Common.Authentication
     public interface IAuthentication
     {
         /// <summary>
-        /// The tenant admin Url for the environment.
+        /// Gets or sets the TenantAdminUrl
         /// </summary>
         string TenantAdminUrl
         {
             get;
+            set;
         }
 
         /// <summary>
-        /// The Site Url
+        /// Gets or sets the SiteUrl
         /// </summary>
         string SiteUrl
         {

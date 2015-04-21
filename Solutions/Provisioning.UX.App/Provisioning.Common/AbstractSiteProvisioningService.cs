@@ -21,8 +21,9 @@ namespace Provisioning.Common
     /// <summary>
     /// Abstract Site Provisioning Service
     /// </summary>
-    public abstract class AbstractProvisioningService : IProvisioningService, ISharePointService
+    public abstract class AbstractSiteProvisioningService : ISiteProvisioning, ISharePointService
     {
+        #region Properties
         /// <summary>
         /// Gets or Sets the services Authentication.
         /// </summary>
@@ -31,67 +32,11 @@ namespace Provisioning.Common
             get;
             set;
         }
+        #endregion
 
-        /// <summary>
-        /// Creates a site collection.
-        /// </summary>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        public abstract Guid? ProvisionSite(SiteRequestInformation properties);
-       
-        /// <summary>
-        /// Sets Administrators for the Site Collection
-        /// </summary>
-        /// <param name="properties"></param>
-        public void SetAdministrators(SiteRequestInformation properties)
-        {
-            UsingContext(ctx =>
-            {
-                Tenant tenant = new Tenant(ctx);
-                var site = tenant.GetSiteByUrl(properties.Url);
-                var web = site.RootWeb;
-                var spOwner = web.EnsureUser(properties.SiteOwner.LoginName);
-                web.AssociatedOwnerGroup.Users.AddUser(spOwner);
-                site.Owner = spOwner;
-                ctx.ExecuteQuery();
-                foreach (var admin in properties.AdditionalAdministrators)
-                {
-                    try
-                    {
-                        tenant.SetSiteAdmin(properties.Url, admin.LoginName, true);
-                        var spAdmin = web.EnsureUser(admin.LoginName);
-                        web.AssociatedOwnerGroup.Users.AddUser(spAdmin);
-                        web.AssociatedOwnerGroup.Update();
-                        ctx.ExecuteQuery();
-                    }
-                    catch
-                    {
-                        Log.Error("SetAdministrators", "Failed to set {0} as admin of {1}", admin.LoginName, properties.Url);
-                    }
-                }
-            });
-        }
-
-        /// <summary>
-        /// Sets the Description of the Site Collection
-        /// </summary>
-        /// <param name="properties"></param>
-        public void SetSiteDescription(SiteRequestInformation properties)
-        {
-            UsingContext(ctx =>
-            {
-                Tenant tenant = new Tenant(ctx);
-                var site = tenant.GetSiteByUrl(properties.Url);
-                var web = site.RootWeb;
-                web.Description = properties.Description;
-                web.Update();
-                ctx.ExecuteQuery();
-                Log.Debug("Provisioning.Common.SetSiteDescription", "Setting Site Description {0}: for site {1}",
-                    properties.Description,
-                    properties.Url);
-            });
-        }
-
+        #region ISiteProvisioning Members
+        public abstract Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+      
         /// <summary>
         /// Returns the Site Collection ID
         /// </summary>
@@ -108,15 +53,9 @@ namespace Provisioning.Common
 
             return _siteID;
         }
+        #endregion
 
-        /// <summary>
-        /// Member to apply the Site Policy to a site collection 
-        /// <see cref="https://technet.microsoft.com/en-us/library/jj219569.aspx"/>
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="policyName"></param>
-        public abstract void ApplySitePolicy(string url, string policyName);
-       
+
         /// <summary>
         /// Sets a Property bag for the site
         /// </summary>
@@ -178,7 +117,8 @@ namespace Provisioning.Common
             });
             return _doesSiteExist;
         }
-  
+
+        #region ISharePointService Members
         /// <summary>
         /// Delegate that is used to handle creation of ClientContext that is authenticated
         /// </summary>
@@ -200,5 +140,7 @@ namespace Provisioning.Common
                 action(_ctx);
             }
         }
+        #endregion
+
     }
 }

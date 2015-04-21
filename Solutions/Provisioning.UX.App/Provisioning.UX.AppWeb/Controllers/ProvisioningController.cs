@@ -16,7 +16,6 @@ using System.Web.Http.Cors;
 
 namespace Provisioning.UX.AppWeb.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")] 
     public class ProvisioningController : ApiController
     {
         #region Instance Members

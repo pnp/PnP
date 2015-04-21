@@ -12,12 +12,12 @@ using Provisioning.Common;
 namespace Provisioning.Common.Authentication
 {
     /// <summary>
-    /// Authenticated Class for using the Tenant Api
+    /// Authenticated Class for using the App Only Permissions and using the Tenant Api
     /// </summary>
     public class AppOnlyAuthenticationTenant : IAuthentication
     {
         #region Instance Members
-        const string LOGGING_SOURCE = "AppOnlyAuthentication";
+        const string LOGGING_SOURCE = "AppOnlyAuthenticationTenant";
         private static readonly IConfigurationFactory _cf = ConfigurationFactory.GetInstance();
         private static readonly IAppSettingsManager _manager = _cf.GetAppSetingsManager();
 
@@ -33,14 +33,7 @@ namespace Provisioning.Common.Authentication
         /// </summary>
         public string SiteUrl
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get; set;
         }
 
         /// <summary>
@@ -65,6 +58,7 @@ namespace Provisioning.Common.Authentication
                 this._realm = value;
             }
         }
+
         /// <summary>
         /// AppID that is registered
         /// By Default this will read from the ClientId in your config file of your solution.
@@ -81,6 +75,7 @@ namespace Provisioning.Common.Authentication
                 this._appID = value;
             }
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -93,9 +88,9 @@ namespace Provisioning.Common.Authentication
             }
             set { this._appSecret = value; }
         }
+       
         /// <summary>
-        /// The Client secret or app secret that has been registered.
-        /// By Default this will read from the ClientSecret in your config file of your solution.
+        /// Gets or Sets the AccessToken
         /// </summary>
         private string AccessToken
         {
@@ -104,7 +99,7 @@ namespace Provisioning.Common.Authentication
         }
         /// <summary>
         /// The tenant admin Url for the environment.
-        /// By Default this will read from the TenantAdminUrl in your config file of your solution.
+        /// By Default this will read from the TenantAdminUrl in your config file of your project.
         /// </summary>
         public string TenantAdminUrl
         {
@@ -145,6 +140,7 @@ namespace Provisioning.Common.Authentication
                 this.AccessToken = _oAuthResponse.AccessToken;
             }
         }
+      
         /// <summary>
         /// Gets an HttpWebRequest that is Authenticated
         /// </summary>

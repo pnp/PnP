@@ -68,7 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractProvisioningService.cs" />
+    <Compile Include="AbstractSiteProvisioningService.cs" />
     <Compile Include="Authentication\AppOnlyAuthenticationTenant.cs" />
     <Compile Include="Authentication\AppOnlyAuthenticationSite.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
@@ -95,14 +95,14 @@
     <Compile Include="Data\SiteRequestFactory.cs" />
     <Compile Include="Data\SiteRequestFields.cs" />
     <Compile Include="Data\SiteRequestList.cs" />
-    <Compile Include="IProvisioningService.cs" />
+    <Compile Include="ISiteProvisioning.cs" />
     <Compile Include="ISharePointService.cs" />
     <Compile Include="Mail\EmailConfig.cs" />
     <Compile Include="Mail\EmailHelper.cs" />
     <Compile Include="Mail\FailureEmailMessage.cs" />
     <Compile Include="Mail\SuccessEmailMessage.cs" />
     <Compile Include="Mail\FileSizeFormatProvider.cs" />
-    <Compile Include="Office365ProvisioningService.cs" />
+    <Compile Include="Office365SiteProvisioningService.cs" />
     <Compile Include="ProfileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PCResources.Designer.cs">
@@ -111,7 +111,7 @@
       <DependentUpon>PCResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Configuration\Template\TemplateConfiguration.cs" />
-    <Compile Include="OnPremProvisioningService.cs" />
+    <Compile Include="OnPremSiteProvisioningService.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="SharePointUser.cs" />
     <Compile Include="SiteRequestInformation.cs" />

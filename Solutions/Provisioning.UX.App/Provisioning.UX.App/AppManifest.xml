@@ -9,6 +9,7 @@
   <Properties>
     <Title>Provisioning.UX.App</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+    <InstalledEventEndpoint>~remoteAppUrl/Services/AppEventReceiver.svc</InstalledEventEndpoint>
   </Properties>
 
   <AppPrincipal>
@@ -19,5 +20,6 @@
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
     <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
     <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
   </AppPermissionRequests>
 </App>
