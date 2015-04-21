@@ -47,6 +47,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
                     listCreate.Url = list.Url.ToParsedString();
                     listCreate.TemplateFeatureId = list.TemplateFeatureID;
+                   
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
@@ -54,6 +55,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         createdList.DocumentTemplateUrl = list.DocumentTemplate.ToParsedString();
                     }
+                    createdList.EnableAttachments = list.EnableAttachments;
+                    createdList.EnableFolderCreation = list.EnableFolderCreation;
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 
