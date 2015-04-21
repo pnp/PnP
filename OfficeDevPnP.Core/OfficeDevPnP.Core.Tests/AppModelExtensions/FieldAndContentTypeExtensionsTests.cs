@@ -198,6 +198,17 @@ namespace Microsoft.SharePoint.Client.Tests
 			}
 		}
 
+		[TestMethod]
+		public void GetContentTypeByIdTest()
+		{
+			using (var clientContext = TestCommon.CreateClientContext())
+			{
+				clientContext.Web.CreateContentType(TEST_CT_PNP, TEST_CT_PNP_ID, TEST_CATEGORY);
+				var ct = clientContext.Web.GetContentTypeById(TEST_CT_PNP_ID,true);
+				Assert.IsInstanceOfType(ct,typeof(ContentType));
+			}
+		}
+
 		//FIXME: Tests does not revert target to a clean slate after running.
 		//FIXME: Tests are tighthly coupled to eachother
 

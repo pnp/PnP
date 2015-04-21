@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
+using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.UPAWebService;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -24,6 +29,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template, creationInfo);
+            // Get TermGroups
+            template = new ObjectTermGroups().CreateEntities(web, template, creationInfo);
             // Site Fields
             template = new ObjectField().CreateEntities(web, template, creationInfo);
             // Content Types
@@ -38,6 +45,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template = new ObjectComposedLook().CreateEntities(web, template, creationInfo);
             // Get files
             template = new ObjectFiles().CreateEntities(web, template, creationInfo);
+            // Get Pages
+            template = new ObjectPages().CreateEntities(web, template, creationInfo);
             // Get Property Bag Entries
             template = new ObjectPropertyBagEntry().CreateEntities(web, template, creationInfo);
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
@@ -95,11 +104,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
+            TokenParser.Initialize(web, template);
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
 
             // Features
             new ObjectFeatures().ProvisionObjects(web, template);
+
+            // TermGroups
+            new ObjectTermGroups().ProvisionObjects(web, template);
 
             // Site Fields
             new ObjectField().ProvisionObjects(web, template);
@@ -110,8 +123,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
 
+            // During the processing flow fields which refer to to be created lists might be created
+            // These fields will be created initially without a reference to the actual list
+            // and then hooked up to the corresponding source list in the following method
+            ProcessLookupFields(web, template);
+
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
+
+            // Pages
+            new ObjectPages().ProvisionObjects(web, template);
 
             // Custom actions
             new ObjectCustomActions().ProvisionObjects(web, template);
@@ -139,6 +160,109 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             string jsonInfo = s.Serialize(info);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
+        }
+
+        private void ProcessLookupFields(Web web, ProvisioningTemplate template)
+        {
+            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+            web.Context.ExecuteQueryRetry();
+
+            foreach (var siteField in template.SiteFields)
+            {
+                var fieldElement = XElement.Parse(siteField.SchemaXml);
+
+                if (fieldElement.Attribute("List") != null)
+                {
+                    var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
+                    var listIdentifier = fieldElement.Attribute("List").Value;
+
+                    var field = web.Fields.GetById(fieldId);
+                    web.Context.Load(field, f => f.SchemaXml);
+                    web.Context.ExecuteQueryRetry();
+
+                    var listGuid = Guid.Empty;
+                    if (!Guid.TryParse(listIdentifier, out listGuid))
+                    {
+                        var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                        var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                        if (sourceList != null)
+                        {
+                            listGuid = sourceList.Id;
+                        }
+                    }
+                    if (listGuid != Guid.Empty)
+                    {
+                        var existingFieldElement = XElement.Parse(field.SchemaXml);
+
+                        if (existingFieldElement.Attribute("List") == null)
+                        {
+                            existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
+                        }
+                        else
+                        {
+                            existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
+                        }
+                        field.SchemaXml = existingFieldElement.ToString();
+
+                        field.UpdateAndPushChanges(true);
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+            }
+
+
+
+            foreach (var listInstance in template.Lists)
+            {
+                foreach (var listField in listInstance.Fields)
+                {
+                    var fieldElement = XElement.Parse(listField.SchemaXml);
+                    if (fieldElement.Attribute("List") != null)
+                    {
+                        var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
+                        var listIdentifier = fieldElement.Attribute("List").Value;
+
+                        var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
+
+                        var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
+
+                        if (createdList != null)
+                        {
+                            var field = createdList.Fields.GetById(fieldId);
+                            web.Context.Load(field, f => f.SchemaXml);
+                            web.Context.ExecuteQueryRetry();
+
+                            var listGuid = Guid.Empty;
+                            if (!Guid.TryParse(listIdentifier, out listGuid))
+                            {
+                                var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                                var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                                if (sourceList != null)
+                                {
+                                    listGuid = sourceList.Id;
+                                }
+                            }
+                            if (listGuid != Guid.Empty)
+                            {
+                                var existingFieldElement = XElement.Parse(field.SchemaXml);
+
+                                if (existingFieldElement.Attribute("List") == null)
+                                {
+                                    existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
+                                }
+                                else
+                                {
+                                    existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
+                                }
+                                field.SchemaXml = existingFieldElement.ToString();
+
+                                field.Update();
+                                web.Context.ExecuteQueryRetry();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

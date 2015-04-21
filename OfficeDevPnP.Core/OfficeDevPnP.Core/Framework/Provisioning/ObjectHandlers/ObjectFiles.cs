@@ -1,4 +1,7 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Linq;
+using System.Web.Configuration;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
@@ -8,7 +11,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            TokenParser parser = new TokenParser(web);
             var context = web.Context as ClientContext;
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -20,7 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var file in template.Files)
             {
 
-                var folderName = parser.Parse(file.Folder);
+                var folderName = file.Folder.ToParsedString();
 
                 if (folderName.ToLower().StartsWith((web.ServerRelativeUrl.ToLower())))
                 {
@@ -30,9 +32,39 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 var folder = web.EnsureFolderPath(folderName);
 
-                using (var stream = template.Connector.GetFileStream(file.Src))
+                Microsoft.SharePoint.Client.File targetFile = null;
+
+                if (file.Create)
                 {
-                    folder.UploadFile(file.Src, stream, true);
+
+                    using (var stream = template.Connector.GetFileStream(file.Src))
+                    {
+                        targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                    }
+                }
+                else
+                {
+                    // Get a reference to an existing file
+                    targetFile = folder.GetFile(file.Src);
+                }
+
+                if (file.WebParts != null && file.WebParts.Any())
+                {
+                    if (!targetFile.IsPropertyAvailable("ServerRelativeUrl"))
+                    {
+                        web.Context.Load(targetFile, f => f.ServerRelativeUrl);
+                        web.Context.ExecuteQuery();
+                    }
+                    foreach (var webpart in file.WebParts)
+                    {
+                        var wpEntity = new WebPartEntity();
+                        wpEntity.WebPartTitle = webpart.Title;
+                        wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                        wpEntity.WebPartZone = webpart.Zone;
+                        wpEntity.WebPartIndex = (int) webpart.Order;
+
+                        web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                    }
                 }
 
             }

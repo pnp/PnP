@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -67,6 +68,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
+                TokenParser.Initialize(ctx.Web, template);
                 new ObjectSiteSecurity().ProvisionObjects(ctx.Web, template);
 
                 var memberGroup = ctx.Web.AssociatedMemberGroup;
@@ -87,8 +89,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectSiteSecurity().CreateEntities(ctx.Web, template, null);
+                template = new ObjectSiteSecurity().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.Security.AdditionalAdministrators.Any());
             }

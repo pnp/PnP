@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     public class ProvisioningTemplate : IEquatable<ProvisioningTemplate>
     {
         #region private members
+        private Dictionary<string,string> _parameters = new Dictionary<string, string>(); 
         private List<Field> _siteFields = new List<Field>();
         private List<ContentType> _contentTypes = new List<ContentType>();
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
@@ -22,6 +23,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private CustomActions _customActions = new CustomActions();
         private List<File> _files = new List<File>();
         private List<Provider> _providers = new List<Provider>();
+        private List<Page> _pages = new List<Page>(); 
+        private List<TermGroup> _termGroups = new List<TermGroup>(); 
         private FileConnectorBase connector;
         #endregion
 
@@ -38,6 +41,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Any parameters that can be used throughout the template
+        /// </summary>
+        public Dictionary<string, string> Parameters
+        {
+            get { return _parameters; }
+            private set { _parameters = value; }
+        }
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>
@@ -137,6 +149,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             private set { this._providers = value; }
         }
 
+        /// <summary>
+        /// Gets a collection of Wiki Pages for the template
+        /// </summary>
+        public List<Page> Pages
+        {
+            get { return this._pages; }
+            private set { this._pages = value; }
+        }
+
+        /// <summary>
+        /// Gets a collection of termgroups to deploy to the site
+        /// </summary>
+        public List<TermGroup> TermGroups
+        {
+            get { return this._termGroups; }
+            private set { this._termGroups = value; }
+        }
+
         public FileConnectorBase Connector
         {
             get
@@ -155,7 +185,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}",
                 this.ComposedLook.GetHashCode(),
                 this.ContentTypes.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.CustomActions.SiteCustomActions.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
@@ -173,7 +203,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Security.AdditionalVisitors.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.SiteFields.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.SitePolicy,
-                this.Version
+                this.Version,
+                this.Pages.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.TermGroups.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                 ).GetHashCode());
         }
 
@@ -206,7 +238,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Security.AdditionalVisitors.DeepEquals(other.Security.AdditionalVisitors) &&
                 this.SiteFields.DeepEquals(other.SiteFields) &&
                 this.SitePolicy == other.SitePolicy &&
-                this.Version == other.Version);
+                this.Version == other.Version &&
+                this.Pages.DeepEquals(other.Pages) &&
+                this.TermGroups.DeepEquals(other.TermGroups)
+            );
         }
 
         #endregion

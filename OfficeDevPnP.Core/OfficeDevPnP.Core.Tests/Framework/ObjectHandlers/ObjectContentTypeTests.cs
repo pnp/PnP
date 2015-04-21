@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -35,7 +37,24 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         public void CanProvisionObjects()
         {
             var template = new ProvisioningTemplate();
-            template.ContentTypes.Add(new ContentType() { SchemaXml = ElementSchema });
+
+
+            var contentType = new ContentType()
+            {
+                ID = "0x010100503B9E20E5455344BFAC2292DC6FE805",
+                Name = "Test Content Type",
+                Group = "PnP",
+                Description = "Test Description",
+                Overwrite = true,
+                Hidden = false
+            };
+
+            contentType.FieldRefs.Add(new FieldRef()
+            {
+                ID = BuiltInFieldId.Category,
+                DisplayName = "Test Category",
+            });
+            template.ContentTypes.Add(contentType);
 
             using (var ctx = TestCommon.CreateClientContext())
             {
@@ -55,8 +74,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectContentType().CreateEntities(ctx.Web, template, null);
+                template = new ObjectContentType().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.ContentTypes.Any());
                 Assert.IsInstanceOfType(template.ContentTypes, typeof(List<ContentType>));

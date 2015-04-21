@@ -7,7 +7,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public XMLFileSystemTemplateProvider(string connectionString, string container) :
             base(new FileSystemConnector(connectionString, container))
         {
-
         }
     }
 }
