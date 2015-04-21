@@ -15,7 +15,7 @@
   </xsd:element>
 
   <!-- The main element for external references -->
-  <xsd:element name="SharePointProvisioningTemplate" type="pnp:SharePointProvisioningTemplate">
+  <xsd:element name="ProvisioningTemplate" type="pnp:ProvisioningTemplate">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         This is the base element of a referenced SharePoint Provisioning Template File.
@@ -109,21 +109,21 @@
       </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-      <xsd:element name="SharePointProvisioningTemplateFile" type="pnp:SharePointProvisioningTemplateFile" minOccurs="0">
+      <xsd:element name="ProvisioningTemplateFile" type="pnp:ProvisioningTemplateFile" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
             Reference to an external template file, which will be based on the current schema but will focus only on the SharePointProvisioningTemplate section.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="SharePointProvisioningTemplateReference" type="pnp:SharePointProvisioningTemplateReference" minOccurs="0">
+      <xsd:element name="ProvisioningTemplateReference" type="pnp:ProvisioningTemplateReference" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
             Reference to another template by ID.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element name="SharePointProvisioningTemplate" type="pnp:SharePointProvisioningTemplate" minOccurs="0" />
+      <xsd:element name="ProvisioningTemplate" type="pnp:ProvisioningTemplate" minOccurs="0" />
     </xsd:sequence>
     <xsd:attribute name="ID" type="xsd:ID" use="optional">
       <xsd:annotation>
@@ -134,7 +134,7 @@
     </xsd:attribute>
   </xsd:complexType>
 
-  <xsd:complexType name="SharePointProvisioningTemplate">
+  <xsd:complexType name="ProvisioningTemplate">
 
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -644,7 +644,8 @@
       <xsd:documentation xml:lang="en">
         The DataValue of a single field of a row to insert into a target ListInstance
       </xsd:documentation>
-    </xsd:annotation>    <xsd:simpleContent>
+    </xsd:annotation>    
+    <xsd:simpleContent>
       <xsd:extension base="pnp:ReplaceableString">
         <xsd:attribute name="FieldName" use="required" type="xsd:string"/>
       </xsd:extension>
@@ -1289,7 +1290,7 @@
 
   </xsd:complexType>
 
-  <xsd:complexType name="SharePointProvisioningTemplateFile">
+  <xsd:complexType name="ProvisioningTemplateFile">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         An element that references an external file.
@@ -1311,7 +1312,7 @@
     </xsd:attribute>
   </xsd:complexType>
 
-  <xsd:complexType name="SharePointProvisioningTemplateReference">
+  <xsd:complexType name="ProvisioningTemplateReference">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         An element that references an external file.

@@ -1,4 +1,4 @@
-<pnp:SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
+<pnp:ProvisioningTemplate ID="SPECIALTEAM" Version="1" xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
   <pnp:SitePolicy>HBI</pnp:SitePolicy>
   <pnp:PropertyBagEntries>
     <pnp:PropertyBagEntry Key="KEY1" Value="value1" />
@@ -132,4 +132,4 @@ function showAlert(){alert("Hello!")};
       </pnp:Configuration>
     </pnp:Provider>
   </pnp:Providers>
-</pnp:SharePointProvisioningTemplate>
+</pnp:ProvisioningTemplate>
