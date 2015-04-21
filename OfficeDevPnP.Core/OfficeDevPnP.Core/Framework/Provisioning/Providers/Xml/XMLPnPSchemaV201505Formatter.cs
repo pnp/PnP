@@ -83,7 +83,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             wrappedResult.Templates = new V201505.Templates[] { 
                 new V201505.Templates 
                 { 
-                    ID = String.Format("CONTAINER-{0}", template.ID),
+                    ID = String.Format("CONTAINER-{0}", template.Id),
                     ProvisioningTemplate = new V201505.ProvisioningTemplate[]
                     {
                         result
@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             #region Basic Properties
             // Translate basic properties
-            result.ID = template.ID;
+            result.ID = template.Id;
             result.Version = (Decimal)template.Version;
             result.VersionSpecified = true;
             result.SitePolicy = template.SitePolicy;
@@ -205,7 +205,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.ContentTypes = (from ct in template.ContentTypes
                                        select new V201505.ContentType
             {
-                ID = ct.ID,
+                ID = ct.Id,
                 Description = ct.Description,
                 Group = ct.Group,
                 Name = ct.Name,
@@ -213,7 +213,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     (from fieldRef in ct.FieldRefs
                      select new V201505.FieldRef
                      {
-                         ID = fieldRef.ID.ToString(),
+                         ID = fieldRef.Id.ToString(),
                          Hidden = fieldRef.Hidden,
                          Required = fieldRef.Required
                      }).ToArray() : null,
@@ -255,7 +255,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             (from contentTypeBinding in list.ContentTypeBindings
                              select new V201505.ContentTypeBinding
                              {
-                                 ContentTypeID = contentTypeBinding.ContentTypeID,
+                                 ContentTypeID = contentTypeBinding.ContentTypeId,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
@@ -280,7 +280,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                               DisplayName = fieldRef.DisplayName,
                               Hidden = fieldRef.Hidden,
                               Required = fieldRef.Required,
-                              ID = fieldRef.ID.ToString(),
+                              ID = fieldRef.Id.ToString(),
                           }).ToArray() : null,
                          DataRows = list.DataRows.Count > 0 ?
                              new List<DataValue[]>(
@@ -313,7 +313,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.SiteFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -331,7 +331,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.WebFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -501,22 +501,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                      select new V201505.TermGroup
                      {
                          Name = grp.Name,
-                         ID = grp.ID.ToString(),
+                         ID = grp.Id.ToString(),
                          Description = grp.Description,
                          TermSets = (
                             from termSet in grp.TermSets
                             select new V201505.TermSet
                             {
-                                ID = termSet.ID.ToString(),
+                                ID = termSet.Id.ToString(),
                                 Name = termSet.Name,
+                                IsAvailableForTagging = termSet.IsAvailableForTagging,
+                                IsOpenForTermCreation = termSet.IsOpenForTermCreation,
                                 Description = termSet.Description,
                                 Language = termSet.Language.HasValue ? termSet.Language.Value : 0,
                                 LanguageSpecified = termSet.Language.HasValue,
                                 Terms = termSet.Terms.FromModelTermsToSchemaTerms(),
+                                CustomProperties = termSet.Properties.Count > 0 ?
+                                     (from p in termSet.Properties
+                                      select new V201505.StringDictionaryItem
+                                      {
+                                          Key = p.Key,
+                                          Value = p.Value
+                                      }).ToArray() : null,
                             }).ToArray(),
                      }).ToArray();
             }
             #endregion
+
 
             #region Composed Looks
             // Translate ComposedLook, if any
@@ -667,7 +677,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             #region Basic Properties
             // Translate basic properties
-            result.ID = source.ID;
+            result.Id = source.ID;
             result.Version = (Double)source.Version;
             result.SitePolicy = source.SitePolicy;
             #endregion
@@ -763,7 +773,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             (from fieldRef in contentType.FieldRefs
                              select new Model.FieldRef
                              {
-                                 ID = Guid.Parse(fieldRef.ID),
+                                 Id = Guid.Parse(fieldRef.ID),
                                  Hidden = fieldRef.Hidden,
                                  Required = fieldRef.Required
                              }) : null)
@@ -783,7 +793,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 (from contentTypeBinding in list.ContentTypeBindings
                                  select new Model.ContentTypeBinding
                                  {
-                                     ContentTypeID = contentTypeBinding.ContentTypeID,
+                                     ContentTypeId = contentTypeBinding.ContentTypeID,
                                      Default = contentTypeBinding.Default,
                                  }) : null),
                         (list.Views != null ?
@@ -805,7 +815,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                       DisplayName = fieldRef.DisplayName,
                                       Hidden = fieldRef.Hidden,
                                       Required = fieldRef.Required,
-                                      ID = Guid.Parse(fieldRef.ID)
+                                      Id = Guid.Parse(fieldRef.ID)
                                   }) : null),
                         (list.DataRows != null ?
                                  (from dataRow in list.DataRows
@@ -845,7 +855,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.SiteFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -855,7 +865,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.WebFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -1000,7 +1010,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 !string.IsNullOrEmpty(termSet.ID) ? Guid.Parse(termSet.ID) : Guid.Empty,
                                 termSet.Name,
                                 termSet.LanguageSpecified ? (int?)termSet.Language : null,
-                                termSet.Terms.FromSchemaTermsToModelTerms())
+                                termSet.IsAvailableForTagging,
+                                termSet.IsOpenForTermCreation,
+                                termSet.Terms.FromSchemaTermsToModelTerms(),
+                                termSet.CustomProperties != null ? termSet.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null)
                             {
                                 Description = termSet.Description,
                             })
@@ -1059,17 +1072,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
         public static V201505.Term[] FromModelTermsToSchemaTerms(this List<Model.Term> terms)
         {
-            V201505.Term[] result = (
+            V201505.Term[] result = terms.Count > 0 ? (
                 from term in terms
                 select new V201505.Term
                 {
-                    ID = term.ID.ToString(),
+                    ID = term.Id.ToString(),
                     Name = term.Name,
                     Description = term.Description,
                     Owner = term.Owner,
                     IsAvailableForTagging = term.IsAvailableForTagging,
                     CustomSortOrder = term.CustomSortOrder,
-                    ChildTerms = new TermChildTerms { Items = term.Terms.FromModelTermsToSchemaTerms() },
+                    Terms = term.Terms.Count > 0 ? new TermTerms { Items = term.Terms.FromModelTermsToSchemaTerms() } : null,
                     CustomProperties = term.Properties.Count > 0 ?
                         (from p in term.Properties
                          select new V201505.StringDictionaryItem
@@ -1093,7 +1106,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                              IsDefaultForLanguageSpecified = l.IsDefaultForLanguage.HasValue,
                              Value = l.Value,
                          }).ToArray() : null,
-                }).ToArray();
+                }).ToArray() : null;
 
             return (result);
         }
@@ -1106,7 +1119,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     !string.IsNullOrEmpty(term.ID) ? Guid.Parse(term.ID) : Guid.Empty,
                     term.Name,
                     null, // TODO: language
-                    (term.ChildTerms != null && term.ChildTerms.Items != null) ? term.ChildTerms.Items.FromSchemaTermsToModelTerms() : null,
+                    (term.Terms != null && term.Terms.Items != null) ? term.Terms.Items.FromSchemaTermsToModelTerms() : null,
                     term.Labels != null ?
                     (new List<Model.TermLabel>(
                         from label in term.Labels

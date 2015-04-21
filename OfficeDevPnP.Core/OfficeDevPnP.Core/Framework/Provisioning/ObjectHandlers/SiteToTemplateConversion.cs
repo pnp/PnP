@@ -8,6 +8,7 @@ using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.UPAWebService;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -52,7 +53,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
             // Set default values for Template ID and Version
-            template.ID = String.Format("TEMPLATE-{0:N}", Guid.NewGuid()).ToUpper();
+            template.Id = String.Format("TEMPLATE-{0:N}", Guid.NewGuid()).ToUpper();
             template.Version = 1;
 
             // Retrieve original Template ID and remove it from Property Bag Entries
@@ -62,7 +63,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var templateId = template.PropertyBagEntries[provisioningTemplateIdIndex].Value;
                 if (!String.IsNullOrEmpty(templateId))
                 {
-                    template.ID = templateId;
+                    template.Id = templateId;
                 }
                 template.PropertyBagEntries.RemoveAt(provisioningTemplateIdIndex);
             }
@@ -78,9 +79,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 // Override any previously defined Template ID, Version, and SitePolicy
                 // with the one stored in the Template Info, if any
-                if (!String.IsNullOrEmpty(info.TemplateID))
+                if (!String.IsNullOrEmpty(info.TemplateId))
                 {
-                    template.ID = info.TemplateID;
+                    template.Id = info.TemplateId;
                 }
                 if (!String.IsNullOrEmpty(info.TemplateSitePolicy))
                 {
@@ -104,6 +105,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Provisioning");
+
             TokenParser.Initialize(web, template);
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
@@ -146,11 +149,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Extensibility Provider CallOut the last thing we do.
             new ObjectExtensibilityProviders().ProvisionObjects(web, template);
 
-            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.ID != null ? template.ID : "");
+            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.Id != null ? template.Id : "");
             web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
 
             ProvisioningTemplateInfo info = new ProvisioningTemplateInfo();
-            info.TemplateID = template.ID != null ? template.ID : "";
+            info.TemplateId = template.Id != null ? template.Id : "";
             info.TemplateVersion = template.Version;
             info.TemplateSitePolicy = template.SitePolicy;
             info.Result = true;
@@ -160,6 +163,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             string jsonInfo = s.Serialize(info);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
         }
 
         private void ProcessLookupFields(Web web, ProvisioningTemplate template)

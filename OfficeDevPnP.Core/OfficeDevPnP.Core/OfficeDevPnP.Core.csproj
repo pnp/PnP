@@ -289,7 +289,15 @@
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\SharePointConnector.cs" />
     <Compile Include="Framework\Provisioning\Deprecated\Model\ContentType.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ContentTypeBinding.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\Feature.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\FieldRef.deprecated.cs" />
     <Compile Include="Framework\Provisioning\Deprecated\Model\ListInstance.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ProvisioningTemplate.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ProvisioningTemplateInfo.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\Term.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\TermGroup.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\TermSet.deprecated.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibilityProvider.cs" />

@@ -9,10 +9,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object for the Provisioning Template
     /// </summary>
-    public class ProvisioningTemplate : IEquatable<ProvisioningTemplate>
+    public partial class ProvisioningTemplate : IEquatable<ProvisioningTemplate>
     {
         #region private members
-        private Dictionary<string,string> _parameters = new Dictionary<string, string>(); 
+        private Dictionary<string, string> _parameters = new Dictionary<string, string>();
         private List<Field> _siteFields = new List<Field>();
         private List<ContentType> _contentTypes = new List<ContentType>();
         private List<PropertyBagEntry> _propertyBags = new List<PropertyBagEntry>();
@@ -23,9 +23,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private CustomActions _customActions = new CustomActions();
         private List<File> _files = new List<File>();
         private List<Provider> _providers = new List<Provider>();
-        private List<Page> _pages = new List<Page>(); 
-        private List<TermGroup> _termGroups = new List<TermGroup>(); 
+        private List<Page> _pages = new List<Page>();
+        private List<TermGroup> _termGroups = new List<TermGroup>();
         private FileConnectorBase connector;
+        private string _id;
         #endregion
 
         #region Constructor
@@ -53,7 +54,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// <summary>
         /// Gets or sets the ID of the Provisioning Template
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// Gets or sets the Version of the Provisioning Template
@@ -193,7 +194,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Features.SiteFeatures.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.Features.WebFeatures.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.Files.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
-                this.ID,
+                this.Id,
                 this.Lists.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.PropertyBagEntries.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
                 this.Providers.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
@@ -228,7 +229,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Features.SiteFeatures.DeepEquals(other.Features.SiteFeatures) &&
                 this.Features.WebFeatures.DeepEquals(other.Features.WebFeatures) &&
                 this.Files.DeepEquals(other.Files) &&
-                this.ID == other.ID &&
+                this.Id == other.Id &&
                 this.Lists.DeepEquals(other.Lists) &&
                 this.PropertyBagEntries.DeepEquals(other.PropertyBagEntries) &&
                 this.Providers.DeepEquals(other.Providers) &&

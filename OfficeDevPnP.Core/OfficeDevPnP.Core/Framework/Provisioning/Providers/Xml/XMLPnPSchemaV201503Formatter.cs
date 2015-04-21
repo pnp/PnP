@@ -73,7 +73,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             V201503.SharePointProvisioningTemplate result = new V201503.SharePointProvisioningTemplate();
 
             // Translate basic properties
-            result.ID = template.ID;
+            result.ID = template.Id;
             result.Version = template.Version.ToString("###0.0", new CultureInfo("en-US"));
             result.SitePolicy = template.SitePolicy;
 
@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 foreach (var ct in template.ContentTypes)
                 {
                     XElement xElement = new XElement("ContentType");
-                    xElement.Add(new XAttribute("ID", ct.ID));
+                    xElement.Add(new XAttribute("ID", ct.Id));
 
                     xElement.Add(new XAttribute("Name", ct.Name));
                     if (!string.IsNullOrEmpty(ct.Group))
@@ -239,7 +239,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             (from contentTypeBinding in list.ContentTypeBindings
                              select new V201503.ContentTypeBinding
                              {
-                                 ContentTypeID = contentTypeBinding.ContentTypeID,
+                                 ContentTypeID = contentTypeBinding.ContentTypeId,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
@@ -260,7 +260,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          (from fieldRef in list.FieldRefs
                           select new V201503.FieldRef
                           {
-                              ID = fieldRef.ID.ToString(),
+                              ID = fieldRef.Id.ToString(),
                           }).ToArray() : null,
                      }).ToArray();
             }
@@ -283,7 +283,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.SiteFeatures
                          select new V201503.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -301,7 +301,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.WebFeatures
                          select new V201503.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -464,7 +464,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             ProvisioningTemplate result = new ProvisioningTemplate();
 
             // Translate basic properties
-            result.ID = source.ID;
+            result.Id = source.ID;
             result.Version = Double.Parse(!String.IsNullOrEmpty(source.Version) ? source.Version : "0", new CultureInfo("en-US"));
             result.SitePolicy = source.SitePolicy;
 
@@ -549,7 +549,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     var Overwrite = xelement.Attribute("Overwrite") != null ? bool.Parse(xelement.Attribute("Overwrite").Value) : false;
 
                     var ct = new ContentType();
-                    ct.ID = ID;
+                    ct.Id = ID;
                     ct.Name = Name;
                     ct.Description = Description;
                     ct.Group = Group;
@@ -567,7 +567,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     foreach (var fieldRef in fieldRefs)
                     {
                         FieldRef fr = new FieldRef();
-                        fr.ID = fieldRef.Attribute("ID") != null ? Guid.Parse(fieldRef.Attribute("ID").Value) : Guid.Empty;
+                        fr.Id = fieldRef.Attribute("ID") != null ? Guid.Parse(fieldRef.Attribute("ID").Value) : Guid.Empty;
                         fr.Required = fieldRef.Attribute("Required") != null ? bool.Parse(fieldRef.Attribute("Required").Value) : false;
                         fr.Hidden = fieldRef.Attribute("Hidden") != null ? bool.Parse(fieldRef.Attribute("Hidden").Value) : false;
                         ct.FieldRefs.Add(fr);
@@ -594,7 +594,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 (from contentTypeBinding in list.ContentTypeBindings
                                  select new Model.ContentTypeBinding
                                  {
-                                     ContentTypeID = contentTypeBinding.ContentTypeID,
+                                     ContentTypeId = contentTypeBinding.ContentTypeID,
                                      Default = contentTypeBinding.Default,
                                  }) : null),
                         (list.Views != null ?
@@ -613,7 +613,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  (from fieldRef in list.FieldRefs
                                   select new Model.FieldRef
                                   {
-                                      ID = Guid.Parse(fieldRef.ID)
+                                      Id = Guid.Parse(fieldRef.ID)
                                   }) : null),
                                   null
                          )
@@ -642,7 +642,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.SiteFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -652,7 +652,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.WebFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }

@@ -41,7 +41,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             var contentType = new ContentType()
             {
-                ID = "0x010100503B9E20E5455344BFAC2292DC6FE805",
+                Id = "0x010100503B9E20E5455344BFAC2292DC6FE805",
                 Name = "Test Content Type",
                 Group = "PnP",
                 Description = "Test Description",
@@ -51,7 +51,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             contentType.FieldRefs.Add(new FieldRef()
             {
-                ID = BuiltInFieldId.Category,
+                Id = BuiltInFieldId.Category,
                 DisplayName = "Test Category",
             });
             template.ContentTypes.Add(contentType);

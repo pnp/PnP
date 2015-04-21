@@ -9,6 +9,7 @@ using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -18,6 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Fields");
 
             // if this is a sub site then we're not provisioning fields. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())

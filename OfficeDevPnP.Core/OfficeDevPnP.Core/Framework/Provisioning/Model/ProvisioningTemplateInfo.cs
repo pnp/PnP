@@ -2,9 +2,16 @@
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class ProvisioningTemplateInfo
+    public partial class ProvisioningTemplateInfo
     {
-        public string TemplateID { get; set; }
+        #region Private Properties
+
+        private string _templateId;
+
+        #endregion
+
+        public string TemplateId { get { return _templateId; } set { _templateId = value; } }
+
         public Double TemplateVersion { get; set; }
         public string TemplateSitePolicy { get; set; }
         public DateTime ProvisioningTime { get; set; }

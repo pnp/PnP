@@ -148,9 +148,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         
         private void SaveToConnector(ProvisioningTemplate template, string uri, ITemplateFormatter formatter)
         {
-            if (String.IsNullOrEmpty(template.ID))
+            if (String.IsNullOrEmpty(template.Id))
             {
-                template.ID = Path.GetFileNameWithoutExtension(uri);
+                template.Id = Path.GetFileNameWithoutExtension(uri);
             }
 
             using (var stream = formatter.ToFormattedTemplate(template))
