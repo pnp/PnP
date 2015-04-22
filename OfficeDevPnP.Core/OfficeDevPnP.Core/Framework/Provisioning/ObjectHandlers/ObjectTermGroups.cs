@@ -9,6 +9,7 @@ using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -278,7 +279,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override Model.ProvisioningTemplate CreateEntities(Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
-            if (creationInfo.IncludeSiteCollectionTermGroup)
+            if (creationInfo.IncludeSiteCollectionTermGroup || creationInfo.IncludeAllTermGroups)
             {
                 // Find the site collection termgroup, if any
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(web.Context);
