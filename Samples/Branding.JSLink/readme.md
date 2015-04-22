@@ -47,16 +47,47 @@ Version  | Date | Comments
 This section describes each of the samples in more detail.
 
 ## Taxonomy Field - Cascading Dropdowns ##
-TO DO
+This currently consists of a reusable library which allows you to convert a single-select Taxonomy (Managed Metadata) field and it renders it as a set of cascading drop-downs.
+
+The drop-down values will automatically populate based on the hierarchy of the termset that the field is bound to. 
+
+You can see below the field in action using a "Microsoft Products" term set (which is included in the source code of the sample)
+
+![](readme-images/Taxonomy_Edit.png)
 
 ## Related Lookup Fields - Cascading Dropdowns and Checkboxes ##
-TO DO
+This sample consists of a reusable library where you can change the rendering of lookup fields.
+
+I allows you to change how the views render (removing the clickable links on lookup fields, and changing the multi-select lookups to a list (instead of a ";" delimited block of text)
+![](readme-images/Lookups_View.png)
+
+The editing interface allows you to perform cascading drop-downs (some limitations apply, see the [reusable framework(#reusable-framework) section below) and you can change a multi-select lookup to render as checkboxes.
+![](readme-images/Lookups_Edit.png)
 
 ## Google Maps fields ##
-TO DO
+These can be applied to any text fields (for points) or multi-line text fields (for area selection).
+
+This will automatically render thumbnail images in list views...
+![](readme-images/GoogleMaps.png)
+
+.. an inline editing experience showing a larger thumbnail ..
+![](readme-images/GoogleMaps_Edit.png)
+
+.. and dialogs allowing the editing to take place ..
+![](readme-images/GoogleMaps_Shape_Edit.png)
+
 
 ## Colour Picker ##
-TO DO
+This is a simple colour picker scenario with all of the HTML colours rendering in a drop-down list, with the actual colour being shown in the View and Display Form. 
+
+![](readme-images/Fav_Colours.png)
+
+..
+
+![](readme-images/Fav_Colours_Edit.png)
+
+This also includes an example of a "Validator" where you can control validation of data entry through the SharePoint CSR techniques
+![](readme-images/Fav_Colours_Validate.png)
 
 # Reusable Framework #
 
