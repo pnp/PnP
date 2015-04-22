@@ -867,6 +867,14 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="Name" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The name of the field used in the field reference. This is for reference/readibility only.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="Required" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">

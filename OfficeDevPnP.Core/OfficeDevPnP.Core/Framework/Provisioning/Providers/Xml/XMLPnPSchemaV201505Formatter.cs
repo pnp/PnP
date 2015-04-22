@@ -213,6 +213,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     (from fieldRef in ct.FieldRefs
                      select new V201505.ContentTypeFieldRef
                      {
+                         Name = fieldRef.Name,
                          ID = fieldRef.Id.ToString(),
                          Hidden = fieldRef.Hidden,
                          Required = fieldRef.Required
@@ -277,6 +278,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          (from fieldRef in list.FieldRefs
                           select new V201505.ListInstanceFieldRef
                           {
+                              Name = fieldRef.Name,
                               DisplayName = fieldRef.DisplayName,
                               Hidden = fieldRef.Hidden,
                               Required = fieldRef.Required,
@@ -527,7 +529,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             }
             #endregion
 
-
             #region Composed Looks
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
@@ -771,7 +772,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         contentType.Overwrite,
                         (contentType.FieldRefs != null ?
                             (from fieldRef in contentType.FieldRefs
-                             select new Model.FieldRef
+                             select new Model.FieldRef(fieldRef.Name)
                              {
                                  Id = Guid.Parse(fieldRef.ID),
                                  Hidden = fieldRef.Hidden,
@@ -810,7 +811,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  }) : null),
                         (list.FieldRefs != null ?
                                  (from fieldRef in list.FieldRefs
-                                  select new Model.FieldRef
+                                  select new Model.FieldRef(fieldRef.Name)
                                   {
                                       DisplayName = fieldRef.DisplayName,
                                       Hidden = fieldRef.Hidden,
