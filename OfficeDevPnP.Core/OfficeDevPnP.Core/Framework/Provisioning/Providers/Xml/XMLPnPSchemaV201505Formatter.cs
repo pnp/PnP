@@ -211,7 +211,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 Name = ct.Name,
                 FieldRefs = ct.FieldRefs.Count > 0 ?
                     (from fieldRef in ct.FieldRefs
-                     select new V201505.FieldRef
+                     select new V201505.ContentTypeFieldRef
                      {
                          ID = fieldRef.Id.ToString(),
                          Hidden = fieldRef.Hidden,
@@ -275,7 +275,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          } : null,
                          FieldRefs = list.FieldRefs.Count > 0 ?
                          (from fieldRef in list.FieldRefs
-                          select new V201505.FieldRef
+                          select new V201505.ListInstanceFieldRef
                           {
                               DisplayName = fieldRef.DisplayName,
                               Hidden = fieldRef.Hidden,
