@@ -46,13 +46,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Provisioning.Framework.Cloud.Async.Common\Provisioning.Framework.Cloud.Async.Common.csproj">
       <Project>{3d20927c-62a8-4392-af15-c9c8bfd51144}</Project>
       <Name>Provisioning.Framework.Cloud.Async.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
