@@ -4,7 +4,7 @@ Jump To
 * [Samples (including screenshots)](#jslink-samples)
 * [The Re-Usable Framework](#reusable-framework)
 * [Install Instructions](#install-instructions)
-* [How to use JSLink Works](#how-to-use-jslink)
+* [How to use JSLink](#how-to-use-jslink)
 
 ### Summary ###
 The JSLink sample includes sample re-usable code which demonstrate how you can use the new Client Side Rendering techniques along with JSLink hooks to modify the rendering of List Forms and Views.
