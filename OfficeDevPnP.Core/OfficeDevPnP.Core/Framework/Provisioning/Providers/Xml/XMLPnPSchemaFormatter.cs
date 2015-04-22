@@ -131,7 +131,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 return (XMLPnPSchemaFormatter.LatestFormatter);
             }
         }
-
+        
         #endregion
     }
 }

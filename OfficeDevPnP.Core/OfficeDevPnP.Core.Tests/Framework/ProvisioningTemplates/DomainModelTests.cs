@@ -18,10 +18,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         private string _provisioningTemplatePath1NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
         private string _provisioningTemplatePath2 = string.Empty;
         private string _provisioningTemplatePath2NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
-        private string _provisioningTemplatePath3 = string.Empty;
-        private string _provisioningTemplatePath3NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
-        private string _provisioningTemplatePath4 = string.Empty;
-        private string _provisioningTemplatePath4NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
         private string _provisioningTemplatePath5 = string.Empty;
         private string _provisioningTemplatePath5NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
         private string _provisioningTemplatePath6 = string.Empty;
@@ -33,8 +29,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             this._provisioningTemplatePath1 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-01.xml");
             this._provisioningTemplatePath2 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
-            this._provisioningTemplatePath3 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-01.xml");
-            this._provisioningTemplatePath4 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-02.xml");
             this._provisioningTemplatePath5 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-FullSample-01.xml");
             this._provisioningTemplatePath6 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-ReferenceSample-01.xml");
         }
