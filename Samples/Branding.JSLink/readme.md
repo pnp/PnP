@@ -1,5 +1,10 @@
 # JSLink Client Side Rendering (CSR) Samples  #
 
+Jump To
+* [Samples](#jslink-samples)
+* [Install Instructions](#install-instructions)
+* [How JSLink Works](#how-jslink-works)
+
 ### Summary ###
 The JSLink sample includes sample re-usable code which demonstrate how you can use the new Client Side Rendering techniques along with JSLink hooks to modify the rendering of List Forms and Views.
 
@@ -50,3 +55,7 @@ TO DO
 
 ## Colour Picker ##
 TO DO
+
+# Install Instructions #
+
+# How JSLink Works #
