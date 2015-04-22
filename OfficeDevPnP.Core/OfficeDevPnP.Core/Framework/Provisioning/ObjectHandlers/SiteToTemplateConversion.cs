@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
+using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.UPAWebService;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -25,6 +30,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Get Security
             template = new ObjectSiteSecurity().CreateEntities(web, template, creationInfo);
+            // Get TermGroups
+            template = new ObjectTermGroups().CreateEntities(web, template, creationInfo);
             // Site Fields
             template = new ObjectField().CreateEntities(web, template, creationInfo);
             // Content Types
@@ -46,7 +53,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // In future we could just instantiate all objects which are inherited from object handler base dynamically 
 
             // Set default values for Template ID and Version
-            template.ID = String.Format("TEMPLATE-{0:N}", Guid.NewGuid()).ToUpper();
+            template.Id = String.Format("TEMPLATE-{0:N}", Guid.NewGuid()).ToUpper();
             template.Version = 1;
 
             // Retrieve original Template ID and remove it from Property Bag Entries
@@ -56,7 +63,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var templateId = template.PropertyBagEntries[provisioningTemplateIdIndex].Value;
                 if (!String.IsNullOrEmpty(templateId))
                 {
-                    template.ID = templateId;
+                    template.Id = templateId;
                 }
                 template.PropertyBagEntries.RemoveAt(provisioningTemplateIdIndex);
             }
@@ -72,9 +79,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 // Override any previously defined Template ID, Version, and SitePolicy
                 // with the one stored in the Template Info, if any
-                if (!String.IsNullOrEmpty(info.TemplateID))
+                if (!String.IsNullOrEmpty(info.TemplateId))
                 {
-                    template.ID = info.TemplateID;
+                    template.Id = info.TemplateId;
                 }
                 if (!String.IsNullOrEmpty(info.TemplateSitePolicy))
                 {
@@ -98,12 +105,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Provisioning");
+
             TokenParser.Initialize(web, template);
             // Site Security
             new ObjectSiteSecurity().ProvisionObjects(web, template);
 
             // Features
             new ObjectFeatures().ProvisionObjects(web, template);
+
+            // TermGroups
+            new ObjectTermGroups().ProvisionObjects(web, template);
 
             // Site Fields
             new ObjectField().ProvisionObjects(web, template);
@@ -113,6 +125,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // Lists
             new ObjectListInstance().ProvisionObjects(web, template);
+
+            // During the processing flow fields which refer to to be created lists might be created
+            // These fields will be created initially without a reference to the actual list
+            // and then hooked up to the corresponding source list in the following method
+            ProcessLookupFields(web, template);
 
             // Files
             new ObjectFiles().ProvisionObjects(web, template);
@@ -132,11 +149,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Extensibility Provider CallOut the last thing we do.
             new ObjectExtensibilityProviders().ProvisionObjects(web, template);
 
-            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.ID != null ? template.ID : "");
+            web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.Id != null ? template.Id : "");
             web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
 
             ProvisioningTemplateInfo info = new ProvisioningTemplateInfo();
-            info.TemplateID = template.ID != null ? template.ID : "";
+            info.TemplateId = template.Id != null ? template.Id : "";
             info.TemplateVersion = template.Version;
             info.TemplateSitePolicy = template.SitePolicy;
             info.Result = true;
@@ -146,6 +163,111 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             string jsonInfo = s.Serialize(info);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
+        }
+
+        private void ProcessLookupFields(Web web, ProvisioningTemplate template)
+        {
+            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+            web.Context.ExecuteQueryRetry();
+
+            foreach (var siteField in template.SiteFields)
+            {
+                var fieldElement = XElement.Parse(siteField.SchemaXml);
+
+                if (fieldElement.Attribute("List") != null)
+                {
+                    var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
+                    var listIdentifier = fieldElement.Attribute("List").Value;
+
+                    var field = web.Fields.GetById(fieldId);
+                    web.Context.Load(field, f => f.SchemaXml);
+                    web.Context.ExecuteQueryRetry();
+
+                    var listGuid = Guid.Empty;
+                    if (!Guid.TryParse(listIdentifier, out listGuid))
+                    {
+                        var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                        var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                        if (sourceList != null)
+                        {
+                            listGuid = sourceList.Id;
+                        }
+                    }
+                    if (listGuid != Guid.Empty)
+                    {
+                        var existingFieldElement = XElement.Parse(field.SchemaXml);
+
+                        if (existingFieldElement.Attribute("List") == null)
+                        {
+                            existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
+                        }
+                        else
+                        {
+                            existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
+                        }
+                        field.SchemaXml = existingFieldElement.ToString();
+
+                        field.UpdateAndPushChanges(true);
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+            }
+
+
+
+            foreach (var listInstance in template.Lists)
+            {
+                foreach (var listField in listInstance.Fields)
+                {
+                    var fieldElement = XElement.Parse(listField.SchemaXml);
+                    if (fieldElement.Attribute("List") != null)
+                    {
+                        var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
+                        var listIdentifier = fieldElement.Attribute("List").Value;
+
+                        var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
+
+                        var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
+
+                        if (createdList != null)
+                        {
+                            var field = createdList.Fields.GetById(fieldId);
+                            web.Context.Load(field, f => f.SchemaXml);
+                            web.Context.ExecuteQueryRetry();
+
+                            var listGuid = Guid.Empty;
+                            if (!Guid.TryParse(listIdentifier, out listGuid))
+                            {
+                                var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                                var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                                if (sourceList != null)
+                                {
+                                    listGuid = sourceList.Id;
+                                }
+                            }
+                            if (listGuid != Guid.Empty)
+                            {
+                                var existingFieldElement = XElement.Parse(field.SchemaXml);
+
+                                if (existingFieldElement.Attribute("List") == null)
+                                {
+                                    existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
+                                }
+                                else
+                                {
+                                    existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
+                                }
+                                field.SchemaXml = existingFieldElement.ToString();
+
+                                field.Update();
+                                web.Context.ExecuteQueryRetry();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

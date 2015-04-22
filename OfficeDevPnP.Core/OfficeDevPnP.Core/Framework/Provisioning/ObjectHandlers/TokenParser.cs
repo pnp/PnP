@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Management;
 using Microsoft.IdentityModel.Protocols.WSIdentity;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
@@ -16,7 +17,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public static List<TokenDefinition> Tokens
         {
-            get {  return _tokens;}
+            get { return _tokens; }
             private set
             {
                 _tokens = value;
@@ -25,9 +26,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public static void AddToken(TokenDefinition tokenDefinition)
         {
-            
+
             _tokens.Add(tokenDefinition);
-             // ORDER IS IMPORTANT!
+            // ORDER IS IMPORTANT!
             var sortedTokens = from t in _tokens
                                orderby t.GetTokenLength() descending
                                select t;
@@ -39,7 +40,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
             {
-               web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.Load(web, w => w.ServerRelativeUrl);
                 web.Context.ExecuteQueryRetry();
             }
             _web = web;
@@ -66,6 +67,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             foreach (var parameter in template.Parameters)
             {
                 _tokens.Add(new ParameterToken(web, parameter.Key, parameter.Value));
+            }
+
+            // Add TermSetIds
+            TaxonomySession session = TaxonomySession.GetTaxonomySession(web.Context);
+            var termStore = session.GetDefaultSiteCollectionTermStore();
+            web.Context.Load(termStore.Groups,
+                g => g.Include(
+                    tg => tg.Name,
+                    tg => tg.TermSets.Include(
+                        ts => ts.Name,
+                        ts => ts.Id)
+                ));
+            web.Context.ExecuteQueryRetry();
+            foreach (var termGroup in termStore.Groups)
+            {
+                foreach (var termSet in termGroup.TermSets)
+                {
+                    _tokens.Add(new TermSetIdToken(web, termGroup.Name, termSet.Name, termSet.Id));
+                }
             }
 
             var sortedTokens = from t in _tokens

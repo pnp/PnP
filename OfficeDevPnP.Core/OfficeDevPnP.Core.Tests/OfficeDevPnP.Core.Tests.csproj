@@ -232,6 +232,7 @@
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityMockProvider.cs" />
     <Compile Include="Framework\ExtensibilityCallOut\ExtensibilityTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectComposedLookTests.cs" />
+    <Compile Include="Framework\ObjectHandlers\ObjectTermGroupsTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectPagesTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectSiteSecurityTests.cs" />
     <Compile Include="Framework\ObjectHandlers\ObjectPropertyBagEntryTests.cs" />
@@ -265,7 +266,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="App.config.sample" />
     <None Include="packages.config" />
     <None Include="Resources\custom.spcolor">
@@ -285,6 +285,8 @@
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\HelloWorldApp15.app" />
     <None Include="Resources\TestSolution.wsp" />
+    <Content Include="Resources\Templates\ProvisioningSchema-2015-05-FullSample-01.xml" />
+    <Content Include="Resources\Templates\ProvisioningSchema-2015-05-ReferenceSample-01.xml" />
     <Content Include="Resources\Templates\ProvisioningTemplate-2015-03-Sample-01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

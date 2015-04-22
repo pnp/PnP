@@ -29,6 +29,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._schemaXML = value; }
         }
 
+        /// <summary>
+        /// The ID of the Content Type
+        /// </summary>
+        [Obsolete("Use Id to set the identity of the object. This deprecated property will be removed in the June 2015 release.")]
+        public string ID { get { return _id; } set { _id = value; } }
         #endregion
         #endregion
     }
