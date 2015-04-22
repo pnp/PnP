@@ -412,6 +412,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private StringDictionaryItem[] localCustomPropertiesField;
         
+        private int languageField;
+        
+        private bool languageFieldSpecified;
+        
         private string customSortOrderField;
         
         /// <remarks/>
@@ -454,6 +458,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.localCustomPropertiesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int Language {
+            get {
+                return this.languageField;
+            }
+            set {
+                this.languageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LanguageSpecified {
+            get {
+                return this.languageFieldSpecified;
+            }
+            set {
+                this.languageFieldSpecified = value;
             }
         }
         
@@ -505,7 +531,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool isDefaultForLanguageField;
         
-        private bool isDefaultForLanguageFieldSpecified;
+        public TermLabelsLabel() {
+            this.isDefaultForLanguageField = false;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -531,23 +559,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
         public bool IsDefaultForLanguage {
             get {
                 return this.isDefaultForLanguageField;
             }
             set {
                 this.isDefaultForLanguageField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool IsDefaultForLanguageSpecified {
-            get {
-                return this.isDefaultForLanguageFieldSpecified;
-            }
-            set {
-                this.isDefaultForLanguageFieldSpecified = value;
             }
         }
     }

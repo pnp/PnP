@@ -1667,6 +1667,7 @@
             </xsd:annotation>
           </xsd:element>
         </xsd:all>
+        <xsd:attribute name="Language" type="xsd:int" use="optional"/>
         <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
       </xsd:extension>
     </xsd:complexContent>
@@ -1695,7 +1696,7 @@
         <xsd:complexType>
           <xsd:attribute name="Language" type="xsd:int" use="required" />
           <xsd:attribute name="Value" type="xsd:string" use="required" />
-          <xsd:attribute name="IsDefaultForLanguage" type="xsd:boolean" use="optional" />
+          <xsd:attribute name="IsDefaultForLanguage" type="xsd:boolean" use="optional" default="false" />
         </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
