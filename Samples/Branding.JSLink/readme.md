@@ -59,21 +59,26 @@ You can see below the field in action using a "Microsoft Products" term set (whi
 This sample consists of a reusable library where you can change the rendering of lookup fields.
 
 I allows you to change how the views render (removing the clickable links on lookup fields, and changing the multi-select lookups to a list (instead of a ";" delimited block of text)
+
 ![](readme-images/Lookups_View.png)
 
 The editing interface allows you to perform cascading drop-downs (some limitations apply, see the [reusable framework(#reusable-framework) section below) and you can change a multi-select lookup to render as checkboxes.
+
 ![](readme-images/Lookups_Edit.png)
 
 ## Google Maps fields ##
 These can be applied to any text fields (for points) or multi-line text fields (for area selection).
 
 This will automatically render thumbnail images in list views...
+
 ![](readme-images/GoogleMaps.png)
 
 .. an inline editing experience showing a larger thumbnail ..
+
 ![](readme-images/GoogleMaps_Edit.png)
 
 .. and dialogs allowing the editing to take place ..
+
 ![](readme-images/GoogleMaps_Shape_Edit.png)
 
 
@@ -87,6 +92,7 @@ This is a simple colour picker scenario with all of the HTML colours rendering i
 ![](readme-images/Fav_Colours_Edit.png)
 
 This also includes an example of a "Validator" where you can control validation of data entry through the SharePoint CSR techniques
+
 ![](readme-images/Fav_Colours_Validate.png)
 
 # Reusable Framework #
