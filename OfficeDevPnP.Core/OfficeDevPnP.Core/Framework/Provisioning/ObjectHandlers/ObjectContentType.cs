@@ -98,7 +98,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ct.DocumentTemplate,
                         false,
                             (from fieldLink in ct.FieldLinks
-                             select new FieldRef()
+                             select new FieldRef(fieldLink.Name)
                              {
                                  Id = fieldLink.Id,
                                  Hidden = fieldLink.Hidden,

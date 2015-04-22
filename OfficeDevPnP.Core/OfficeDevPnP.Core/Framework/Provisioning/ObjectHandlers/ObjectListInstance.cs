@@ -51,7 +51,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
                     listCreate.Url = list.Url.ToParsedString();
                     listCreate.TemplateFeatureId = list.TemplateFeatureID;
-                   
+
                     var createdList = web.Lists.Add(listCreate);
 
                     createdList.EnableVersioning = list.EnableVersioning;
@@ -283,7 +283,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             public ListInstance ListInstance { get; set; }
         }
 
-      
+
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
@@ -307,7 +307,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             // For each list in the site
             ListCollection lists = web.Lists;
-            web.Context.Load(lists, lc => lc.IncludeWithDefaultProperties(l => l.ContentTypes, l => l.Views, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+
+            web.Context.Load(lists,
+                lc => lc.IncludeWithDefaultProperties(
+                    l => l.ContentTypes,
+                    l => l.Views,
+                    l => l.RootFolder.ServerRelativeUrl,
+                    l => l.Fields.IncludeWithDefaultProperties(
+                        f => f.Id,
+                        f => f.Title,
+                        f => f.Hidden,
+                        f => f.InternalName,
+                        f => f.Required)));
+
             web.Context.ExecuteQuery();
             foreach (var item in lists)
             {
@@ -385,9 +397,61 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
                                 {
-                                    if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
+                                    bool addField = true;
+                                    if (item.ContentTypesEnabled && contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
                                     {
-                                        list.FieldRefs.Add(new FieldRef() { Id = field.Id });
+                                        if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
+                                        {
+                                            addField = false;
+                                        }
+                                    }
+
+                                    XElement fieldElement = XElement.Parse(field.SchemaXml);
+                                    var sourceId = fieldElement.Attribute("SourceID") != null ? fieldElement.Attribute("SourceID").Value : null;
+
+                                    if (sourceId != null && sourceId == "http://schemas.microsoft.com/sharepoint/v3")
+                                    {
+                                        if (field.InternalName == "Editor" ||
+                                            field.InternalName == "Author" ||
+                                            field.InternalName == "Title" ||
+                                            field.InternalName == "ID" ||
+                                            field.InternalName == "Created" ||
+                                            field.InternalName == "Modified" ||
+                                            field.InternalName == "Attachments" ||
+                                            field.InternalName == "_UIVersionString" ||
+                                            field.InternalName == "DocIcon" ||
+                                            field.InternalName == "LinkTitleNoMenu" ||
+                                            field.InternalName == "LinkTitle" ||
+                                            field.InternalName == "Edit" ||
+                                            field.InternalName == "AppAuthor" ||
+                                            field.InternalName == "AppEditor" ||
+                                            field.InternalName == "ContentType" ||
+                                            field.InternalName == "ItemChildCount" ||
+                                            field.InternalName == "FolderChildCount" ||
+                                            field.InternalName == "LinkFilenameNoMenu" ||
+                                            field.InternalName == "LinkFilename" ||
+                                            field.InternalName == "_CopySource" ||
+                                            field.InternalName == "ParentVersionString" ||
+                                            field.InternalName == "ParentLeafName" ||
+                                            field.InternalName == "_CheckinComment" ||
+                                            field.InternalName == "FileLeafRef" ||
+                                            field.InternalName == "FileSizeDisplay" ||
+                                            field.InternalName == "Preview" ||
+                                            field.InternalName == "ThumbnailOnForm")
+                                        {
+                                            addField = false;
+                                        }
+                                    }
+                                    if (addField)
+                                    {
+
+                                        list.FieldRefs.Add(new FieldRef(field.InternalName)
+                                        {
+                                            Id = field.Id,
+                                            DisplayName = field.Title,
+                                            Required = field.Required,
+                                            Hidden = field.Hidden,
+                                        });
                                     }
                                 }
                                 else
