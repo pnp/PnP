@@ -5,7 +5,7 @@ Jump To
 * [The Re-Usable Framework](#reusable-framework)
 * [Install Instructions](#install-instructions)
 * [How JSLink Works](#how-jslink-works)
-* [Download Visual Studio Solution](../../archive/master.zip)
+* [Download Visual Studio Solution](../../../../Branding.JSLink/archive/master.zip)
 
 ### Summary ###
 The JSLink sample includes sample re-usable code which demonstrate how you can use the new Client Side Rendering techniques along with JSLink hooks to modify the rendering of List Forms and Views.
