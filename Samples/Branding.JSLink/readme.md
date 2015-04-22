@@ -1,7 +1,7 @@
 # JSLink Client Side Rendering (CSR) Samples  #
 
 Jump To
-* [Samples](#jslink-samples)
+* [Samples (including screenshots)](#jslink-samples)
 * [Install Instructions](#install-instructions)
 * [How JSLink Works](#how-jslink-works)
 
