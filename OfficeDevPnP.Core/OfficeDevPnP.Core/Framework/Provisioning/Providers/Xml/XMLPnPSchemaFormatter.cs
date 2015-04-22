@@ -36,22 +36,39 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// <summary>
         /// Static method to retrieve a specific XMLPnPSchemaFormatter instance
         /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public static ITemplateFormatter GetSpecificFormatter(XMLPnPSchemaVersion version)
+        {
+            switch (version)
+            {
+                case XMLPnPSchemaVersion.V201503:
+                    return (new XMLPnPSchemaV201503Formatter());
+                case XMLPnPSchemaVersion.V201505:
+                    return (new XMLPnPSchemaV201505Formatter());
+                default:
+                    return (new XMLPnPSchemaV201505Formatter());
+            }
+        }
+
+        /// <summary>
+        /// Static method to retrieve a specific XMLPnPSchemaFormatter instance
+        /// </summary>
         /// <param name="namespaceUri"></param>
         /// <returns></returns>
-        public static ITemplateFormatter GetSpecificFormatter(String namespaceUri)
+        public static ITemplateFormatter GetSpecificFormatter(string namespaceUri)
         {
             switch (namespaceUri)
             {
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03):
+                case XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03:
                     return (new XMLPnPSchemaV201503Formatter());
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04):
-                    return (new XMLPnPSchemaV201504Formatter());
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05):
+                case XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05:
                     return (new XMLPnPSchemaV201505Formatter());
                 default:
-                    throw new ArgumentException("Unsupporter namespace URI", "namespaceUri");
+                    return (new XMLPnPSchemaV201505Formatter());
             }
         }
+
 
         #endregion
 
@@ -103,18 +120,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XDocument xml = XDocument.Load(template);
             template.Position = 0;
 
-            String targetNamespaceURI = xml.Root.Name.NamespaceName;
+            String targetNamespaceUri = xml.Root.Name.NamespaceName;
 
-            if (!String.IsNullOrEmpty(targetNamespaceURI))
+            if (!String.IsNullOrEmpty(targetNamespaceUri))
             {
-                return (XMLPnPSchemaFormatter.GetSpecificFormatter(targetNamespaceURI));
+                return (XMLPnPSchemaFormatter.GetSpecificFormatter(targetNamespaceUri));
             }
             else
             {
                 return (XMLPnPSchemaFormatter.LatestFormatter);
             }
         }
-        
+
         #endregion
     }
 }

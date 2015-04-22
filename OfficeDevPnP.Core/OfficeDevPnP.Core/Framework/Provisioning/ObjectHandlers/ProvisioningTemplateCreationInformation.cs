@@ -14,7 +14,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private ProvisioningTemplate baseTemplate;
         private FileConnectorBase fileConnector;
         private bool persistComposedLookFiles = false;
-        
+        private bool includeAllTermGroups = false;
+        private bool includeSiteCollectionTermGroup = false;
+
         public ProvisioningTemplateCreationInformation(Web web)
         {
             this.baseTemplate = web.GetBaseTemplate();
@@ -23,8 +25,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <summary>
         /// Base template used to compare against when we're "getting" a template
         /// </summary>
-        public ProvisioningTemplate BaseTemplate 
-        { 
+        public ProvisioningTemplate BaseTemplate
+        {
             get
             {
                 return this.baseTemplate;
@@ -66,6 +68,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
+        public bool IncludeAllTermGroups
+        {
+            get
+            {
+                return this.includeAllTermGroups;
+            }
+            set { this.includeAllTermGroups = value; }
+        }
+
+        public bool IncludeSiteCollectionTermGroup
+        {
+            get { return this.includeSiteCollectionTermGroup; }
+            set { this.includeSiteCollectionTermGroup = value; }
+        }
 
     }
 }

@@ -1080,6 +1080,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     Name = term.Name,
                     Description = term.Description,
                     Owner = term.Owner,
+                    LanguageSpecified = term.Language.HasValue,
+                    Language = term.Language.HasValue ? term.Language.Value : 1033,
                     IsAvailableForTagging = term.IsAvailableForTagging,
                     CustomSortOrder = term.CustomSortOrder,
                     Terms = term.Terms.Count > 0 ? new TermTerms { Items = term.Terms.FromModelTermsToSchemaTerms() } : null,
@@ -1102,8 +1104,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          select new V201505.TermLabelsLabel
                          {
                              Language = l.Language,
-                             IsDefaultForLanguage = l.IsDefaultForLanguage.HasValue ? l.IsDefaultForLanguage.Value : false,
-                             IsDefaultForLanguageSpecified = l.IsDefaultForLanguage.HasValue,
+                             IsDefaultForLanguage = l.IsDefaultForLanguage,
                              Value = l.Value,
                          }).ToArray() : null,
                 }).ToArray() : null;
@@ -1118,7 +1119,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 select new Model.Term(
                     !string.IsNullOrEmpty(term.ID) ? Guid.Parse(term.ID) : Guid.Empty,
                     term.Name,
-                    null, // TODO: language
+                    term.LanguageSpecified ? term.Language : (int?)null,
                     (term.Terms != null && term.Terms.Items != null) ? term.Terms.Items.FromSchemaTermsToModelTerms() : null,
                     term.Labels != null ?
                     (new List<Model.TermLabel>(
@@ -1127,7 +1128,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         {
                             Language = label.Language,
                             Value = label.Value,
-                            IsDefaultForLanguage = label.IsDefaultForLanguageSpecified ? label.IsDefaultForLanguage : false,
+                            IsDefaultForLanguage = label.IsDefaultForLanguage
                         }
                     )) : null,
                     term.CustomProperties != null ? term.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null,

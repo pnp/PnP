@@ -370,6 +370,7 @@
     </Compile>
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLEnums.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLExtensions.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaFormatter.cs" />

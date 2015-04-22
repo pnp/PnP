@@ -62,7 +62,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             this.Id = id;
             this.Name = name;
-            this.Language = language;
+            if (language.HasValue)
+            {
+                this.Language = language;
+            }
 
             if (terms != null)
             {
