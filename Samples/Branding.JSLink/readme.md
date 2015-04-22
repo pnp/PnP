@@ -112,7 +112,7 @@ The methods you can use are described in more detail in the sections below:
 ## Taxonomy Fields (jslinkTemplates.Taxonomy) ##
 This can be bound to any **TaxonomyField** although currently only single-select values are supported.
 
-* jslinkTemplates.Taxonomy.editMode - This can be bound to the NewForm or EditForm of any taxonomy field and will automatically render it as cascading drop-downs. It will dynamically pull the TermStore and TermSet from the field schema so no further configuration is required.
+* **jslinkTemplates.Taxonomy.editMode** - This can be bound to the NewForm or EditForm of any taxonomy field and will automatically render it as cascading drop-downs. It will dynamically pull the TermStore and TermSet from the field schema so no further configuration is required.
 
 ***Important Note - Taxonomy Fields cannot use the "JSLink" property on the field itself. Instead if using the actual Field.JSLink property apply it to the "Title" field within the same list, to make sure the JavaScript is executed*** 
 
@@ -120,21 +120,21 @@ This can be bound to any **TaxonomyField** although currently only single-select
 This contains two namespaces, depending on whether you want to provide the ability to select a single point (**PointValue - Text field**) or define a spacial area (**SpacialValue - Note field**).
 
 
-* jslinkGoogleMaps.PointValue
-  * jslinkGoogleMaps.PointValue.editForm - Usable on NewForm and EditForm, allows the selection of the map point using a dialog. If the field has a current value then it will be displayed in a large panel.
-  * jslinkGoogleMaps.PointValue.displayForm - Usable on the DisplayForm, shows a large panel with the map displayed.
-  * jslinkGoogleMaps.PointValue.view - Usable on the View, shows a small thumbnail
-  * 
-* jslinkGoogleMaps.SpacialValue
-  * jslinkGoogleMaps.SpacialValue.editForm - Usable on NewForm and EditForm, allows the selection of the map point using a dialog. If the field has a current value then it will be displayed in a large panel.
-  * jslinkGoogleMaps.PointValue.displayForm - Usable on the DisplayForm, shows a large panel with the map displayed.
-  * jslinkGoogleMaps.PointValue.view - Usable on the View, shows a small thumbnail
+* **jslinkGoogleMaps.PointValue**
+  * **jslinkGoogleMaps.PointValue.editForm** - Usable on NewForm and EditForm, allows the selection of the map point using a dialog. If the field has a current value then it will be displayed in a large panel.
+  * **jslinkGoogleMaps.PointValue.displayForm** - Usable on the DisplayForm, shows a large panel with the map displayed.
+  * **jslinkGoogleMaps.PointValue.view** - Usable on the View, shows a small thumbnail
+ 
+* **jslinkGoogleMaps.SpacialValue**
+  * **jslinkGoogleMaps.SpacialValue.editForm** - Usable on NewForm and EditForm, allows the selection of the map point using a dialog. If the field has a current value then it will be displayed in a large panel.
+  * **jslinkGoogleMaps.PointValue.displayForm** - Usable on the DisplayForm, shows a large panel with the map displayed.
+  * **jslinkGoogleMaps.PointValue.view** - Usable on the View, shows a small thumbnail
 
 ## Colour Picker (jslinkTemplates.Colours) ##
 This can be bound to a field of type **Text** and converts it to a drop-down colour picker, with the colour selected shown in the display forms and views.
 
-* jslinkTemplates.Colours.display - Use for DisplayForm and View, shows the current value as both a coloured box and the text value
-* jslinkTemplates.Colours.edit - Use for NewForm and EditForm, shows a drop-down picker of available colours.
+* **jslinkTemplates.Colours.display** - Use for DisplayForm and View, shows the current value as both a coloured box and the text value
+* **jslinkTemplates.Colours.edit** - Use for NewForm and EditForm, shows a drop-down picker of available colours.
 
 *Current implementation, as a demo for validators, contains a validator which stops selection of the colour blue*
 
@@ -142,14 +142,14 @@ This can be bound to a field of type **Text** and converts it to a drop-down col
 These can be bound to fields of type **Lookup** and **LookupMulti** to change the rendering behaviour.
 
 ** Standard Lookup Field Rendering **
-* jslinkTemplates.Lookups.Generic.view - Use for View. Will remove the clickable links. Dynamically changes between a single text value (for *Lookup*) or a list of values (for *LookupMulti*)
-* jslinkTemplates.Lookups.Generic.displayForm - Use for DisplayForm. Will remove the clickable links. Dynamically changes between a single text value (for *Lookup*) or a list of values (for *LookupMulti*)
+* **jslinkTemplates.Lookups.Generic.view** - Use for View. Will remove the clickable links. Dynamically changes between a single text value (for *Lookup*) or a list of values (for *LookupMulti*)
+* **jslinkTemplates.Lookups.Generic.displayForm** - Use for DisplayForm. Will remove the clickable links. Dynamically changes between a single text value (for *Lookup*) or a list of values (for *LookupMulti*)
  
-* jslinkTemplates.Lookups.Generic.SingleItem.editForm - Use for NewForm and EditForm. Render a Lookup as a drop-down box. *If using filtered lookups (below) this is required for the field you are filtering on .. to make sure the required IDs are in place for this value to be retrieved*
-* jslinkTemplates.Lookups.CheckBoxes.editForm - Use for NewForm and EditForm. Render a *LookupMulti* as a (scrollable) list of Checkboxes.
+* **jslinkTemplates.Lookups.Generic.SingleItem.editForm** - Use for NewForm and EditForm. Render a Lookup as a drop-down box. *If using filtered lookups (below) this is required for the field you are filtering on .. to make sure the required IDs are in place for this value to be retrieved*
+* **jslinkTemplates.Lookups.CheckBoxes.editForm** - Use for NewForm and EditForm. Render a *LookupMulti* as a (scrollable) list of Checkboxes.
 
 **Filtered Lookups (e.g. Cascading Drop-Downs)**
-* jslinkTemplates.Lookups.Filtered.editForm - Use for NewForm and EditForm. Allows the lookup field to filter itself based on the selection of another Lookup value on the same form. Will dynamically show either a Drop-down list (for *Lookup*) or Checkboxes (for *LookupMulti*).
+* **jslinkTemplates.Lookups.Filtered.editForm** - Use for NewForm and EditForm. Allows the lookup field to filter itself based on the selection of another Lookup value on the same form. Will dynamically show either a Drop-down list (for *Lookup*) or Checkboxes (for *LookupMulti*).
 
 This last one requires a bit more explanation. Lets take the "Project Locations" example from the included Samples. It contains three lookup fields each with different template overrides:
 * Region : jslinkTemplates.Lookups.Generic.SingleItem.editForm
