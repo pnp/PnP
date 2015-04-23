@@ -12,6 +12,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using System.Xml.Linq;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
@@ -42,7 +43,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 var fileinfo = new FileInfo(Path);
                 var fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
-                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate);
+                
+                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, (message, step, total) =>
+                {
+                    WriteProgress(new ProgressRecord(0,"Provisioning",message) { PercentComplete = (100 / total)  * step});
+                } );
             }
         }
     }
