@@ -88,6 +88,24 @@ namespace Provisioning.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RepositoryManagerType is missing from the configuration file.  Please update the configuration file..
+        /// </summary>
+        internal static string Exception_SiteRequest_Manager_Missing_Config_Message {
+            get {
+                return ResourceManager.GetString("Exception_SiteRequest_Manager_Missing_Config_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TemplateProviderType is missing from the configuration file.  Please update the configuration file..
+        /// </summary>
+        internal static string Exception_Template_Provider_Missing_Config_Message {
+            get {
+                return ResourceManager.GetString("Exception_Template_Provider_Missing_Config_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was an Error Processing Template.Config. Exception: {0} StackTrace: {1}.
         /// </summary>
         internal static string XMLTemplateManager_Error {

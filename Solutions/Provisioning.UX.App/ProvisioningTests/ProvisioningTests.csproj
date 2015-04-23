@@ -72,12 +72,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="1_Configuration\AppSettingTests\AppSettingTests.cs" />
-    <Compile Include="1_Configuration\ConfigHelper\ConfigurationManagerTests.cs" />
     <Compile Include="1_Configuration\Templates\TemplateConfigurationTests.cs" />
     <Compile Include="3_SiteRequests\SiteRequestFactoryTests.cs" />
     <Compile Include="3_SiteRequests\SharePointSiteManagerTests.cs" />
     <Compile Include="4_Authentication\AuthenticationTests.cs" />
-    <Compile Include="5_ProfileService\ProfileServiceTests.cs" />
     <Compile Include="Mocks\MockSiteRequestInfo.cs" />
     <Compile Include="TestConstants.cs" />
     <Compile Include="Mocks\MockContentType.cs" />
@@ -87,22 +85,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Templates\Templates.config">
+    <None Include="Resources\SiteTemplates\Templates.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Templates\SiteTemplates\DefaultTeamSiteTemplate.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
+      <Project>{f2077977-8ebf-409d-bbf4-8efb328928a8}</Project>
+      <Name>OfficeDevPnP.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Provisioning.Common\Provisioning.Common.csproj">
       <Project>{77447711-3ab3-4390-a22c-75bb5a97bb95}</Project>
       <Name>Provisioning.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\ContosoTemplate-01.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

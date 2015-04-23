@@ -24,12 +24,13 @@ namespace Provisioning.Common.Configuration.Application
         const string SUPPORTTEAMNOTIFICATION_KEY = "SupportTeamNotificationEmail";
         const string AUTOAPPROVESITES_KEY = "AutoApproveSites";
         const string REPOSITORYMANGERTYPE_KEY = "RepositoryManagerType";
+        const string TEMPLATEPROVIDERTYPE_KEY = "TemplateProviderType";
         const string SHAREPOINTONPREM_KEY = "SharePointOnPremises";
         const string TENANTADMINACCOUNT_KEY = "TenantAdminAccount";
         const string TENANTADMINACCOUNTPWD_KEY = "TenantAdminAccountPWD";
         const string MYSITETENANTADMINURL_KEY = "MysiteTenantAdminUrl";
         #endregion
-
+        
         #region Constructors
         /// <summary>
         /// Static constructor to handle beforefieldinit
@@ -64,16 +65,17 @@ namespace Provisioning.Common.Configuration.Application
                 ClientSecret = ConfigurationHelper.Get(CLIENTSECRET_KEY),
                 SupportEmailNotification = ConfigurationHelper.Get(SUPPORTTEAMNOTIFICATION_KEY),
                 RepositoryManager = ConfigurationHelper.Get(REPOSITORYMANGERTYPE_KEY),
-                MysiteTenantAdminUrl = ConfigurationHelper.Get(MYSITETENANTADMINURL_KEY)
+                TemplateProvider = ConfigurationHelper.Get(TEMPLATEPROVIDERTYPE_KEY)
+              //  MysiteTenantAdminUrl = ConfigurationHelper.Get(MYSITETENANTADMINURL_KEY)
             };
 
-            //TODO ENCRYPTION
-            _appConfig.TenantAdminAccount = ConfigurationHelper.Get(TENANTADMINACCOUNT_KEY);
-            _appConfig.TenantAdminAccountPwd = ConfigurationHelper.Get(TENANTADMINACCOUNTPWD_KEY);
+            ////TODO ENCRYPTION
+            //_appConfig.TenantAdminAccount = ConfigurationHelper.Get(TENANTADMINACCOUNT_KEY);
+            //_appConfig.TenantAdminAccountPwd = ConfigurationHelper.Get(TENANTADMINACCOUNTPWD_KEY);
 
             // we need to handle the boolean checks
             var _autoApprove = ConfigurationHelper.Get(AUTOAPPROVESITES_KEY);
-            var _sharePointOnPremises = ConfigurationHelper.Get(SHAREPOINTONPREM_KEY);
+          //  var _sharePointOnPremises = ConfigurationHelper.Get(SHAREPOINTONPREM_KEY);
 
             bool _result = false;
             if(Boolean.TryParse(_autoApprove, out _result)) {

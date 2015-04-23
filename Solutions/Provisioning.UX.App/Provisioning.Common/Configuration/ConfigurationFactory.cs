@@ -1,4 +1,5 @@
 ﻿using Provisioning.Common.Configuration.Application;
+using Provisioning.Common.Configuration.Template;
 using Provisioning.Common.Configuration.Template.Impl;
 using System;
 using System.Collections.Generic;
@@ -57,14 +58,11 @@ namespace Provisioning.Common.Configuration
         #endregion
 
         /// <summary>
-        /// Returns an Instance of ITemplateFactory that is responsible for working 
-        /// Site Templates
+        /// Returns an interface for working with the ISiteTemplateFactory
         /// </summary>
-        /// <returns></returns>
-        public ITemplateFactory GetTemplateFactory()
+        public ISiteTemplateFactory GetSiteTemplateFactory()
         {
-            XMLTemplateManager.Init();
-            return XMLTemplateManager.Instance;
+            return SiteTemplateFactory.GetInstance();
         }
     }
 }

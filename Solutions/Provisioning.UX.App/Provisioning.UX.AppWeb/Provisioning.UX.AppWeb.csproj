@@ -104,7 +104,7 @@
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
     <Content Include="packages.config" />
-    <Content Include="Resources\Templates\Templates.config">
+    <Content Include="Resources\SiteTemplates\Templates.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Resources\Templates\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">

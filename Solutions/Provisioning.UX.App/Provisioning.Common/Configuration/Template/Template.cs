@@ -112,46 +112,12 @@ namespace Provisioning.Common.Configuration.Template
         /// Gets or Sets the Template Configuration
         /// </summary>
         [XmlAttribute]
-        public string TemplateConfiguration { get; set; }
+        public string ProvisioningTemplateContainer { get; set; }
 
-        /// <summary>
-        /// Gets the Site Template
-        /// Will return Null if the Template is not found in the Engine
-        /// </summary>
-        /// <returns></returns>
-        public SiteTemplate GetSiteTemplate()
-        {
-            SiteTemplate _siteTemplate;
+        [XmlAttribute]
+        public string ProvisioningTemplate { get; set; }
 
-            if(!string.IsNullOrWhiteSpace(this.TemplateConfiguration))
-            {
-                string _assemblyPath = PathHelper.GetAssemblyDirectory();
-                var _fullFilePath = System.IO.Path.Combine(_assemblyPath, this.TemplateConfiguration);
-                bool _fileExist = System.IO.File.Exists(_fullFilePath);
- 
-                if(_fileExist) {
-                    XDocument _doc = XDocument.Load(_fullFilePath);
-                    _siteTemplate = XmlSerializerHelper.Deserialize<SiteTemplate>(_doc.Root.ToString());
-       
-
-                    return _siteTemplate;
-                }
-                else
-                {
-                    Log.Warning("Provisioning.Common.Configuration.Template.GetSiteTemplate", "SiteTemplate configuration file {0} was not found.", _fullFilePath);
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        #endregion
-
-        #region Private Members
-     
+  
         #endregion
     }
 }

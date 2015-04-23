@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Provisioning.Common
 {
     /// <summary>
-    /// Interface that is implemented for Site Provisioning Services for both On-prem and Office 365 Sites
+    /// Interface that is implemented for Site Provisioning Services for both On-Premises and Office 365 Sites
     /// </summary>
     public interface ISiteProvisioning
     {

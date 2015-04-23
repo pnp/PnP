@@ -48,9 +48,15 @@ namespace Provisioning.Common.Configuration
         public string TenantAdminAccountPwd { get; internal set; }
 
         public string MysiteTenantAdminUrl { get; set; }
+       
         /// <summary>
         /// TODO
         /// </summary>
         public string RepositoryManager { get; internal set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string TemplateProvider { get; internal set; }
     }
 }

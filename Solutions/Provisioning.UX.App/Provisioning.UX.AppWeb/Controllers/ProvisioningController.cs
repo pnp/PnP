@@ -41,10 +41,9 @@ namespace Provisioning.UX.AppWeb.Controllers
             var _returnResults = new List<SiteTemplateResults>();
 
             var _configFactory = ConfigurationFactory.GetInstance();
-            var _tf = _configFactory.GetTemplateFactory();
-            TemplateManager _tm = _tf.GetTemplateManager();
+            var _sf = _configFactory.GetSiteTemplateFactory();
+            var _tm = _sf.GetManager();
             var _templates = _tm.GetAvailableTemplates();
-
 
             foreach(var _t in _templates)
             {

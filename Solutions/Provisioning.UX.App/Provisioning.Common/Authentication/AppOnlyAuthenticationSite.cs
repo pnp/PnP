@@ -29,7 +29,8 @@ namespace Provisioning.Common.Authentication
         #endregion
 
         /// <summary>
-        /// The SharePoint Realm
+        /// Gets or sets the Realm. 
+        /// By Default the Realm will be return from TokenHelper
         /// </summary>
         public string Realm {
             get
@@ -115,6 +116,7 @@ namespace Provisioning.Common.Authentication
                 this._siteUrl = value;
             }
         }
+      
         /// <summary>
         /// Returns am Authenticated ClientContext
         /// </summary>

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Provisioning.Common.Authentication;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Configuration.Application;
-using Provisioning.Common.Authentication;
+
 
 namespace ProvisioningTests._4_Authentication
 {

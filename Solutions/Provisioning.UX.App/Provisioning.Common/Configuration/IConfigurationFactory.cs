@@ -1,4 +1,5 @@
 ﻿using Provisioning.Common.Configuration.Application;
+using Provisioning.Common.Configuration.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,11 @@ namespace Provisioning.Common.Configuration
         /// </summary>
         /// <returns></returns>
         IAppSettingsManager GetAppSetingsManager();
+
         /// <summary>
-        /// Returns an ITemplateFactory for working with Site Templates
+        /// Returns an ISiteTemplateFactory for working with Site Templates
         /// </summary>
         /// <returns></returns>
-        ITemplateFactory GetTemplateFactory();
+        ISiteTemplateFactory GetSiteTemplateFactory();
     }
 }

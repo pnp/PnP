@@ -23,7 +23,6 @@ namespace Provisioning.Common
     public class OnPremSiteProvisioningService : AbstractSiteProvisioningService, ISharePointService
     {
         #region Instance Members
-        const string LOGGING_SOURCE = "OnPremProvisioningService";
         IConfigurationFactory _configFactory = ConfigurationFactory.GetInstance();
         AppSettings _settings = null;
         #endregion
@@ -90,7 +89,7 @@ namespace Provisioning.Common
 
                 web.AssociateDefaultGroups(_ownerGroup, _memberGroup, _visitorGroup);
                 ctx.ExecuteQuery();
-                Log.Debug("Provisioning.Common.OnPremProvisioningService.HandleDefaultGroups", "Default Groups for site {0} created:", properties.Url);
+                Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", "Default Groups for site {0} created:", properties.Url);
 
                 using (var newSiteCtx = ctx.Clone(properties.Url))
                 {
@@ -98,7 +97,7 @@ namespace Provisioning.Common
                     newSiteCtx.Web.AddPermissionLevelToGroup(_memberGroupDisplayName, RoleType.Editor);
                     newSiteCtx.Web.AddPermissionLevelToGroup(_vistorGroupDisplayName, RoleType.Reader);
                     newSiteCtx.ExecuteQuery();
-                    Log.Debug("Provisioning.Common.OnPremProvisioningService.HandleDefaultGroups", "Setting group Security Permissions for {0}, {1}, {2}.", _ownerGroupDisplayName, _memberGroupDisplayName, _vistorGroupDisplayName);
+                    Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", "Setting group Security Permissions for {0}, {1}, {2}.", _ownerGroupDisplayName, _memberGroupDisplayName, _vistorGroupDisplayName);
                 }
             });
 
@@ -106,7 +105,7 @@ namespace Provisioning.Common
 
         public override Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
-            Log.Info("Provisioning.Common.OnPremProvisioningService.ProvisionSite", "Provisioning Site with url {0}", siteRequest.Url);
+            Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Creating Site Collection with url {0}", siteRequest.Url);
             
             Web _web = null;
             try
@@ -139,19 +138,16 @@ namespace Provisioning.Common
                         _cloneCtx.Load(_web);
                         _cloneCtx.ExecuteQuery();
                     }
-
-
                 }, 1200000);
             }
             catch(Exception ex)
             {
-                Log.Fatal("Provisioning.Common.OnPremProvisioningService.ProvisionSite", "An Error occured occured while process the site request for {0}. The Error is {1}. Inner Exception {2}", siteRequest.Url, ex, ex.InnerException);
+                Log.Fatal("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "An Error occured occured while process the site request for {0}. The Error is {1}. Inner Exception {2}", siteRequest.Url, ex, ex.InnerException);
                 throw;
             }
-            Log.Info("Provisioning.Common.OnPremProvisioningService.ProvisionSite", "Site Collection {0} created:", siteRequest.Url);
+            Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);
             this.HandleDefaultGroups(siteRequest);
             return _web;
- 
         }
     }
 }

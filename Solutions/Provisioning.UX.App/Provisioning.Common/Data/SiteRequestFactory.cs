@@ -7,6 +7,7 @@ using Microsoft.SharePoint.Client;
 using Provisioning.Common.Data.Impl;
 using Provisioning.Common.Utilities;
 using Provisioning.Common.Configuration;
+using System.Configuration;
 
 namespace Provisioning.Common.Data
 {
@@ -39,24 +40,30 @@ namespace Provisioning.Common.Data
         #endregion
 
         /// <summary>
-        /// Returns an interface for working with the SiteRequest Factory
+        /// Returns an <see cref="Provisioning.Common.Data.ISiteRequestFactory"/> interface for working with the SiteRequest Repository
         /// </summary>
         public static ISiteRequestFactory GetInstance()
         {
             return _instance;
         }
 
-        /// <summary>
-        /// Returns the the Site Request Manager Inteface
+        /// <summary
+        /// Returns an <see cref="Provisioning.Common.Data.ISiteRequestManager"/> interface for working with the SiteRequest Repository
+        /// Custom implementations must implement <see cref="Provisioning.Common.Data.ISiteRequestManager"/>
+        /// This member reads from your configuration file and the app setting RepositoryManagerType must be defined. 
+        /// <add key="RepositoryManagerType" value="Provisioning.Common.Data.Impl.SPSiteRequestManagerImpl, Provisioning.Common" />
+        /// <returns><see cref="Provisioning.Common.Data.ISiteRequestManager"/></returns>
         /// </summary>
-        /// <returns></returns>
         public ISiteRequestManager GetSiteRequestManager()
         {
             var _configFactory = ConfigurationFactory.GetInstance();
             var _manager = _configFactory.GetAppSetingsManager();
             var _settings = _manager.GetAppSettings();
             var _managerTypeString = _settings.RepositoryManager;
-
+            if (string.IsNullOrEmpty(_managerTypeString))
+            {
+                throw new ConfigurationErrorsException(PCResources.Exception_Template_Provider_Missing_Config_Message);
+            }
             try { 
                 var type = _managerTypeString.Split(',');
                 var typeName = type[0];

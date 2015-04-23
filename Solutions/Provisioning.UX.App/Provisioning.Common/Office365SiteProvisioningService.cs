@@ -23,7 +23,6 @@ namespace Provisioning.Common
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
         #region Instance Members
-        const string LOGGING_SOURCE = "ProvisioningService";
         IConfigurationFactory _configFactory = ConfigurationFactory.GetInstance();
         AppSettings _settings = null;
         #endregion
@@ -39,6 +38,20 @@ namespace Provisioning.Common
         }
         #endregion
      
+        public Web GeWebByUrl(string url)
+        {
+            Web _web = null;
+            UsingContext(ctx =>
+            {
+                Tenant _tenant = new Tenant(ctx);
+                var _site = _tenant.GetSiteByUrl(url);
+                _web = _site.RootWeb;
+                ctx.Load(_web);
+                ctx.ExecuteQuery();
+
+            });
+            return _web;
+        }
 
         public override Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
@@ -84,7 +97,7 @@ namespace Provisioning.Common
                 }
                 catch (Exception ex)
                 {
-                    Log.Fatal("Provisioning.Common.Office365ProvisioningService.ProvisionSite", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
+                    Log.Fatal("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
                     throw;
                 }
             });

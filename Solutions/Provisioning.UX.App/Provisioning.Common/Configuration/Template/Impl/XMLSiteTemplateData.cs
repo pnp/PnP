@@ -5,27 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Provisioning.Common.Configuration.Template
+namespace Provisioning.Common.Configuration.Template.Impl
 {
-    /// <summary>
-    /// TemplateConfiguration Object for Working with Templates
-    /// </summary>
     [XmlRoot(ElementName = "TemplateConfiguration")]
-    public partial class TemplateConfiguration
+    public class XMLSiteTemplateData
     {
         #region private members
-        private List<Template> _templates;
-
+        private List<Template> _templates = new List<Template>();
         #endregion
 
         #region Properties
         [XmlArray(ElementName = "Templates")]
         [XmlArrayItem("Template", typeof(Template))]
-        public List<Template> Templates {
-            get 
+        public List<Template> Templates
+        {
+            get
             {
-                return _templates ?? (_templates = new List<Template>());
-            } 
+                return _templates ;
+            }
             set { _templates = value; }
         }
 

@@ -126,6 +126,12 @@
   <data name="Exception_Message_EmptyString_Arg" xml:space="preserve">
     <value>The passed argument is a zero-length string or contains only whitespace.</value>
   </data>
+  <data name="Exception_SiteRequest_Manager_Missing_Config_Message" xml:space="preserve">
+    <value>RepositoryManagerType is missing from the configuration file.  Please update the configuration file.</value>
+  </data>
+  <data name="Exception_Template_Provider_Missing_Config_Message" xml:space="preserve">
+    <value>TemplateProviderType is missing from the configuration file.  Please update the configuration file.</value>
+  </data>
   <data name="XMLTemplateManager_Error" xml:space="preserve">
     <value>There was an Error Processing Template.Config. Exception: {0} StackTrace: {1}</value>
   </data>
