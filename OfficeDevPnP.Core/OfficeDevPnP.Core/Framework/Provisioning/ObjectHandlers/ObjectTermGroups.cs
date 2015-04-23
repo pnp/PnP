@@ -197,7 +197,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
-                var isDirty = false;
                 if (modelTerm.Labels.Any())
                 {
                     foreach (var label in modelTerm.Labels)

@@ -7,6 +7,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     {
         #region Private Members
         private List<WebPart> _webParts = new List<WebPart>();
+        private Dictionary<string, string> _properties;
         #endregion
 
         #region Properties
@@ -16,12 +17,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Overwrite { get; set; }
 
-        public bool Create { get; set; }
-
         public List<WebPart> WebParts
         {
             get { return _webParts; }
             private set { _webParts = value; }
+        }
+
+        public Dictionary<string, string> Properties
+        {
+            get { return _properties; }
+            private set { _properties = value; }
         }
 
         #endregion
@@ -29,15 +34,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Constructors
         public File() { }
 
-        public File(string src, string folder, bool overwrite, bool create, IEnumerable<WebPart> webParts)
+        public File(string src, string folder, bool overwrite, IEnumerable<WebPart> webParts, IDictionary<string,string> properties )
         {
             this.Src = src;
             this.Overwrite = overwrite;
             this.Folder = folder;
-            this.Create = create;
             if (webParts != null)
             {
                 this.WebParts.AddRange(webParts);
+            }
+            if (properties != null)
+            {
+                foreach (var property in properties)
+                {
+                    this.Properties.Add(property.Key,property.Value);
+                }
             }
         }
 
