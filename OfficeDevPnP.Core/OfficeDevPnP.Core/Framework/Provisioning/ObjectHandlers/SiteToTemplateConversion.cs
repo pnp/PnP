@@ -12,8 +12,11 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
+    public delegate void ProvisioningProgressDelegate(string message, int step, int total);
+
     internal class SiteToTemplateConversion
     {
+        
         /// <summary>
         /// Actual implementation of extracting configuration from existing site.
         /// </summary>
@@ -103,27 +106,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// </summary>
         /// <param name="web"></param>
         /// <param name="template"></param>
-        internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template)
+        internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template, ProvisioningProgressDelegate progressDelegate)
         {
+            int steps = 14;
+            if(progressDelegate != null) progressDelegate("Starting", 1,steps);
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Provisioning");
 
             TokenParser.Initialize(web, template);
             // Site Security
+            if (progressDelegate != null)  progressDelegate("Site Security", 2, steps);
             new ObjectSiteSecurity().ProvisionObjects(web, template);
 
             // Features
+            if (progressDelegate != null) progressDelegate("Features", 3, steps);
             new ObjectFeatures().ProvisionObjects(web, template);
 
             // TermGroups
+            if (progressDelegate != null) progressDelegate("Termgroups", 4, steps);
             new ObjectTermGroups().ProvisionObjects(web, template);
 
             // Site Fields
+            if (progressDelegate != null) progressDelegate("Site fields", 5, steps);
             new ObjectField().ProvisionObjects(web, template);
 
             // Content Types
+            if (progressDelegate != null) progressDelegate("Content types", 6, steps);
             new ObjectContentType().ProvisionObjects(web, template);
 
             // Lists
+            if (progressDelegate != null) progressDelegate("List instances", 7, steps);
             new ObjectListInstance().ProvisionObjects(web, template);
 
             // During the processing flow fields which refer to to be created lists might be created
@@ -132,21 +143,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             ProcessLookupFields(web, template);
 
             // Files
+            if (progressDelegate != null) progressDelegate("Files", 8, steps);
             new ObjectFiles().ProvisionObjects(web, template);
 
             // Pages
+            if (progressDelegate != null) progressDelegate("Pages", 9, steps);
             new ObjectPages().ProvisionObjects(web, template);
 
             // Custom actions
+            if (progressDelegate != null) progressDelegate("Custom actions", 10, steps);
             new ObjectCustomActions().ProvisionObjects(web, template);
 
             // Composite look 
+            if (progressDelegate != null) progressDelegate("Composed looks", 11, steps);
             new ObjectComposedLook().ProvisionObjects(web, template);
 
             // Property Bag Entries
+            if (progressDelegate != null) progressDelegate("Property bag entries", 12, steps);
             new ObjectPropertyBagEntry().ProvisionObjects(web, template);
 
             // Extensibility Provider CallOut the last thing we do.
+            if (progressDelegate != null) progressDelegate("Extensibility providers", 13, steps);
             new ObjectExtensibilityProviders().ProvisionObjects(web, template);
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.Id != null ? template.Id : "");
@@ -164,6 +181,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
 
+            if (progressDelegate != null) progressDelegate("Finished", 14, steps);
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
         }
 

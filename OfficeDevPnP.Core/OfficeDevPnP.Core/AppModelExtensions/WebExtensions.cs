@@ -1021,7 +1021,18 @@ namespace Microsoft.SharePoint.Client
         public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template)
         {
             // Call actual handler
-            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template);
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template,null);
+        }
+
+        /// <summary>
+        /// Can be used to apply custom remote provisioning template on top of existing site. 
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
+        /// <param name="progressDelegate">A delegate that will be called with progress information</param>
+        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template, ProvisioningProgressDelegate progressDelegate)
+        {
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template, progressDelegate);
         }
 
         /// <summary>
