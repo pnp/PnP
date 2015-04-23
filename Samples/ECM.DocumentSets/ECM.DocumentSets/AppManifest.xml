@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="CoreDocumentSets"
      ProductID="{909ca721-e4e7-4cb2-823d-063415d1bddf}"
-     Version="1.0.0.0"
+     Version="1.0.0.1"
      SharePointMinVersion="15.0.0.0"
 >
   <Properties>

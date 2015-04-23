@@ -3,6 +3,8 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -10,6 +12,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Features");
+
             var context = web.Context as ClientContext;
             
             // if this is a sub site then we're not enabling the site collection scoped features
@@ -44,16 +48,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         if (site != null)
                         {
-                            if (!site.IsFeatureActive(feature.ID))
+                            if (!site.IsFeatureActive(feature.Id))
                             {
-                                site.ActivateFeature(feature.ID);
+                                site.ActivateFeature(feature.Id);
                             }
                         }
                         else
                         {
-                            if (!web.IsFeatureActive(feature.ID))
+                            if (!web.IsFeatureActive(feature.Id))
                             {
-                                web.ActivateFeature(feature.ID);
+                                web.ActivateFeature(feature.Id);
                             }
                         }
 
@@ -62,17 +66,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         if (site != null)
                         {
-                            if (site.IsFeatureActive(feature.ID))
+                            if (site.IsFeatureActive(feature.Id))
                             {
-                                site.DeactivateFeature(feature.ID);
+                                site.DeactivateFeature(feature.Id);
 
                             }
                         }
                         else
                         {
-                            if (web.IsFeatureActive(feature.ID))
+                            if (web.IsFeatureActive(feature.Id))
                             {
-                                web.DeactivateFeature(feature.ID);
+                                web.DeactivateFeature(feature.Id);
                             }
                         }
                     }
@@ -99,7 +103,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var features = new Features();
             foreach (var feature in webFeatures)
             {
-                features.WebFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
+                features.WebFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
             }
 
             // if this is a sub site then we're not creating  site collection scoped feature entities
@@ -107,7 +111,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in siteFeatures)
                 {
-                    features.SiteFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
+                    features.SiteFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
                 }
             }
 
@@ -132,7 +136,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in baseTemplate.Features.SiteFeatures)
                 {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature.Id));
 
                     if (index > -1)
                     {
@@ -142,7 +146,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach(var feature in featuresToExclude)
                 {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature));
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature));
 
                     if (index > -1)
                     {
@@ -154,7 +158,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var feature in baseTemplate.Features.WebFeatures)
             {
-                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature.Id));
 
                 if (index > -1)
                 {
@@ -164,7 +168,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var feature in featuresToExclude)
             {
-                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature));
+                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature));
 
                 if (index > -1)
                 {

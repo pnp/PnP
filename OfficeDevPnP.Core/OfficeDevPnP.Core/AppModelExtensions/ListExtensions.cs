@@ -344,6 +344,34 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Checks if list exists on the particular site based on the list id property.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="id">The id of the list to be checked.</param>
+        /// <exception cref="System.ArgumentException">Thrown when listTitle is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listTitle is null</exception>
+        /// <returns>True if the list exists</returns>
+        public static bool ListExists(this Web web, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("id");
+            }
+
+            ListCollection lists = web.Lists;
+            IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Id == id));
+            web.Context.ExecuteQueryRetry();
+            List existingList = results.FirstOrDefault();
+
+            if (existingList != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Adds a default list to a site
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>

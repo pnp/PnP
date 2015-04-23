@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
         }
 
         // public string[] Token { get; private set; }
-        public Web Web { get; private set; }
+        public Web Web { get; set; }
 
         public Regex[] GetRegex()
         {
@@ -40,5 +40,9 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
 
         public abstract string GetReplaceValue();
 
+        public void ClearCache()
+        {
+            this.CacheValue = null;
+        }
     }
 }

@@ -8,8 +8,8 @@
     <link rel="Stylesheet" type="text/css" href="../Styles/peoplepickercontrol.css" />
     <script src="../Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="../Scripts/app.js?rev=1" type="text/javascript"></script>
-    <script src="../Scripts/peoplepickercontrol.js?rev=2" type="text/javascript"></script>
-    <script src="../Scripts/csompeoplepickercontrol.js?rev=2" type="text/javascript"></script>
+    <script src="../Scripts/peoplepickercontrol.js?rev=3" type="text/javascript"></script>
+    <script src="../Scripts/csompeoplepickercontrol.js?rev=3" type="text/javascript"></script>
 </head>
 <body style="display: none;">
     <form id="form1" runat="server">

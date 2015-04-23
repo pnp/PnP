@@ -44,7 +44,7 @@ Please check more information from following MSDN article:
 # Handling the throttling in the code #
 Following code example shows how to mimic throttling. In this case we are creating new folder to given document library in loop for 1000 times. This will hit the throttling limits and without any additional code considerations, request would fail. 
 
-Code does however take advantage of new **ExecuteQueryWithExponentialRetry** extension method, which is reference implementation on how to handle the throttling in your CSOM code.  
+Code does however take advantage of new **ExecuteQueryWithIncrementalRetry** extension method, which is reference implementation on how to handle the throttling in your CSOM code.  
 
 ```C#
 static void Main(string[] args)
@@ -72,7 +72,7 @@ static void Main(string[] args)
                 ctx.Load(folder);
                 folder = folder.Folders.Add(DateTime.Now.Ticks.ToString());
                 // Extension method for executing query with throttling checks
-                ctx.ExecuteQueryWithExponentialRetry(5, 30000); //5 retries, with a base delay of 10 secs.
+                ctx.ExecuteQueryWithIncrementalRetry(5, 30000); //5 retries, with a base delay of 10 secs.
                 // Status indication for execution.
                 Console.WriteLine("CSOM request successful.");
                 // For loop handling.
@@ -88,19 +88,19 @@ static void Main(string[] args)
 }
 ```
 
-Following code is actually showing the details related on the ***ExecuteQueryWithExponentialRetry*** extension method for the **ClientContext** object
+Following code is actually showing the details related on the ***ExecuteQueryWithIncrementalRetry*** extension method for the **ClientContext** object
 
 ```C#
 // This is the extension method. 
 // The first parameter takes the "this" modifier
 // and specifies the type for which the method is defined. 
 /// <summary>
-/// Extension method to invoke execute query with retry and exponential back off.
+/// Extension method to invoke execute query with retry and incremental back off.
 /// </summary>
 /// <param name="context"></param>
 /// <param name="retryCount">Maximum amount of retries before giving up.</param>
 /// <param name="delay">Initial delay in milliseconds.</param>
-public static void ExecuteQueryWithExponentialRetry(this ClientContext context, int retryCount, int delay)
+public static void ExecuteQueryWithIncrementalRetry(this ClientContext context, int retryCount, int delay)
 {
     int retryAttempts = 0;
     int backoffInterval = delay;
@@ -136,6 +136,10 @@ public static void ExecuteQueryWithExponentialRetry(this ClientContext context, 
                 //Add to retry count and increase delay.
                 retryAttempts++;
                 backoffInterval = backoffInterval * 2;
+            }
+            else
+            {
+                throw;
             }
         }
     }

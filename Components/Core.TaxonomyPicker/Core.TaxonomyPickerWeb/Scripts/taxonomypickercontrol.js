@@ -1021,7 +1021,8 @@
 
         var defs = [];
 
-        termList.forEach(function (term) {
+        for (var i = 0, len = termList.length; i < len; i++) {
+            var term = termList[i];
             var deferred = $.Deferred();
             defs.push(deferred);
 
@@ -1051,7 +1052,7 @@
 
             outHtml += tHtml;
             deferred.resolve();
-        });
+        }
 
         $.when($, defs).done(function () {
             if (cb) {

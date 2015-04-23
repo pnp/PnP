@@ -30,14 +30,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
             }
 
-            XDocument doc = XDocument.Load(Path);
+            FileInfo fileInfo = new FileInfo(Path);
 
-            ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+            XMLTemplateProvider provider =
+                new XMLFileSystemTemplateProvider(fileInfo.DirectoryName, "");
+
+            var provisioningTemplate = provider.GetTemplate(fileInfo.Name);
 
             if (provisioningTemplate != null)
             {
                 var fileinfo = new FileInfo(Path);
-                FileSystemConnector fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
+                var fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate);
             }
