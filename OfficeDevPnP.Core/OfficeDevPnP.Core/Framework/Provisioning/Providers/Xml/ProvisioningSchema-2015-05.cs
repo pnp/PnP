@@ -2375,6 +2375,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
     public partial class File {
         
+        private StringDictionaryItem[] propertiesField;
+        
         private WebPartPageWebPart[] webPartsField;
         
         private string srcField;
@@ -2388,6 +2390,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         public File() {
             this.overwriteField = false;
             this.createField = true;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Property", IsNullable=false)]
+        public StringDictionaryItem[] Properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
+            }
         }
         
         /// <remarks/>

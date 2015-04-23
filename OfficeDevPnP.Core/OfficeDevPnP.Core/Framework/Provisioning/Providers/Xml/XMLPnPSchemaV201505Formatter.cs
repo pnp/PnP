@@ -426,6 +426,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Contents = wp.Contents,
                                  Title = wp.Title,
                              }).ToArray() : null,
+                         Properties = file.Properties.Count > 0 ?
+                            (from p in file.Properties
+                             select new V201505.StringDictionaryItem
+                             {
+                                 Key = p.Key,
+                                 Value = p.Value
+                             }).ToArray() : null
                      }).ToArray();
             }
             else
@@ -929,7 +936,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     select new Model.File(file.Src,
                         file.Folder,
                         file.Overwrite,
-                        file.Create,
                         file.WebParts != null ?
                             (from wp in file.WebParts
                              select new Model.WebPart
@@ -938,8 +944,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                      Zone = wp.Zone,
                                      Title = wp.Title,
                                      Contents = wp.Contents
-                                 }) : null
-                            )
+                                 }) : null,
+                        file.Properties != null ? file.Properties.ToDictionary(k => k.Key, v => v.Value) : null
+                        )
                     );
             }
             #endregion
