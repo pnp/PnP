@@ -68,7 +68,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             template.Connector = connector;
 
-            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Overwrite = false, Src = fileName, Folder = folder });
+            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Overwrite = true, Src = fileName, Folder = folder });
             
             using (var ctx = TestCommon.CreateClientContext())
             {
