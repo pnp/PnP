@@ -5,7 +5,7 @@ Solution shows a reference sample on how to build self-service site collection p
 
 This solution shows following capabilities
 - Self service UI to request site collections
-- Request are processed asynchronously using a remote timer job pattern
+- Request are processed asynchronously using the remote timer job pattern
 - New site collection creation to Office 365
 - New site collection creation in SharePoint on-premises build
 - Apply a configuration template to existing site using xml based definition
@@ -37,7 +37,7 @@ Version  | Date | Comments
 ----------
 
 # Conceptual design #
-
+DOCUMENTATION IN PROGRESS
 
 # Solution description #
 Projects what are included in the solution and the needed configuration for them. 
@@ -53,7 +53,7 @@ WebJob project which will be deployed to the Azure Will be responsible of the ac
 
 You will need to update App ID/Secret in the app.config
 
-### Provisioning.UX.AppWebb ###
+### Provisioning.UX.AppWeb ###
 This is the user interface (UX) for self service site collection creation. 
 
 You will need to update App ID/Secret information in the web.config
