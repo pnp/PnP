@@ -45,7 +45,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (provisioningTemplateInfoIndex > -1)
             {
                 var jsonInfo = template.PropertyBagEntries[provisioningTemplateInfoIndex].Value;
-
+                jsonInfo = jsonInfo.Replace("TemplateID", "TemplateId"); // TemplateID changed into TemplateId, doing a replace for compatiblity of older template information.
                 var s = new JavaScriptSerializer();
                 ProvisioningTemplateInfo info = s.Deserialize<ProvisioningTemplateInfo>(jsonInfo);
 
