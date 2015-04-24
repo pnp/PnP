@@ -426,7 +426,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Contents = wp.Contents,
                                  Title = wp.Title,
                              }).ToArray() : null,
-                         Properties = file.Properties.Count > 0 ?
+                         Properties = file.Properties != null && file.Properties.Count > 0 ?
                             (from p in file.Properties
                              select new V201505.StringDictionaryItem
                              {
