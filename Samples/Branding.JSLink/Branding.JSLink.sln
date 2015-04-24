@@ -10,6 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TermSet", "TermSet", "{D86A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.JSLink.NCSS", "Branding.JSLink.NCSS\Branding.JSLink.NCSS.csproj", "{643AF97E-AC5C-4AA5-81AD-834679868D96}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{28A20492-A2DE-4F1D-AD8D-EDA08D1A0E46}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
