@@ -23,9 +23,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <returns></returns>
         internal ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Template Extraction");
             var progressDelegate = creationInfo.ProgressDelegate;
 
-            if (progressDelegate != null) progressDelegate("Start", 0, 0);
             // Create empty object
             ProvisioningTemplate template = new ProvisioningTemplate();
 
@@ -60,7 +60,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 template = handler.CreateEntities(web, template, creationInfo);
             }
-
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Template Extraction");
             return template;
         }
 
@@ -107,76 +107,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 handler.ProvisionObjects(web, template);
             }
-            
-            //// Site Security
-            //if (progressDelegate != null)  progressDelegate("Site Security", 2, steps);
-            //new ObjectSiteSecurity().ProvisionObjects(web, template);
-
-            //// Features
-            //if (progressDelegate != null) progressDelegate("Features", 3, steps);
-            //new ObjectFeatures().ProvisionObjects(web, template);
-
-            //// TermGroups
-            //if (progressDelegate != null) progressDelegate("Termgroups", 4, steps);
-            //new ObjectTermGroups().ProvisionObjects(web, template);
-
-            //// Site Fields
-            //if (progressDelegate != null) progressDelegate("Site fields", 5, steps);
-            //new ObjectField().ProvisionObjects(web, template);
-
-            //// Content Types
-            //if (progressDelegate != null) progressDelegate("Content types", 6, steps);
-            //new ObjectContentType().ProvisionObjects(web, template);
-
-            //// Lists
-            //if (progressDelegate != null) progressDelegate("List instances", 7, steps);
-            //new ObjectListInstance().ProvisionObjects(web, template);
-
-            //// During the processing flow fields which refer to to be created lists might be created
-            //// These fields will be created initially without a reference to the actual list
-            //// and then hooked up to the corresponding source list in the following method
-            //ProcessLookupFields(web, template);
-
-            //// Files
-            //if (progressDelegate != null) progressDelegate("Files", 8, steps);
-            //new ObjectFiles().ProvisionObjects(web, template);
-
-            //// Pages
-            //if (progressDelegate != null) progressDelegate("Pages", 9, steps);
-            //new ObjectPages().ProvisionObjects(web, template);
-
-            //// Custom actions
-            //if (progressDelegate != null) progressDelegate("Custom actions", 10, steps);
-            //new ObjectCustomActions().ProvisionObjects(web, template);
-
-            //// Composite look 
-            //if (progressDelegate != null) progressDelegate("Composed looks", 11, steps);
-            //new ObjectComposedLook().ProvisionObjects(web, template);
-
-            //// Property Bag Entries
-            //if (progressDelegate != null) progressDelegate("Property bag entries", 12, steps);
-            //new ObjectPropertyBagEntry().ProvisionObjects(web, template);
-
-            //// Extensibility Provider CallOut the last thing we do.
-            //if (progressDelegate != null) progressDelegate("Extensibility providers", 13, steps);
-            //new ObjectExtensibilityProviders().ProvisionObjects(web, template);
-
-            //web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.Id != null ? template.Id : "");
-            //web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
-
-            //ProvisioningTemplateInfo info = new ProvisioningTemplateInfo();
-            //info.TemplateId = template.Id != null ? template.Id : "";
-            //info.TemplateVersion = template.Version;
-            //info.TemplateSitePolicy = template.SitePolicy;
-            //info.Result = true;
-            //info.ProvisioningTime = DateTime.Now;
-
-            //var s = new JavaScriptSerializer();
-            //string jsonInfo = s.Serialize(info);
-
-            //web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
-
-            //if (progressDelegate != null) progressDelegate("Finished", 14, steps);
+         
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
         }
 
