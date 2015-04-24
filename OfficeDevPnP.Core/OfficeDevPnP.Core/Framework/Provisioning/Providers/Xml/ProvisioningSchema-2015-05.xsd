@@ -589,6 +589,22 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="EnableMinorVersions" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableMinorVersions flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="EnableModeration" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableModeration flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="MinorVersionLimit" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">

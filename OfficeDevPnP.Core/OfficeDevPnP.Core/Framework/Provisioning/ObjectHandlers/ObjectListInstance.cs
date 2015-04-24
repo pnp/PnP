@@ -53,17 +53,29 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
                     var createdList = web.Lists.Add(listCreate);
+                    web.Context.Load(createdList, l => l.BaseType);
+                    web.Context.ExecuteQueryRetry();
 
-                    createdList.EnableVersioning = list.EnableVersioning;
                     if (!String.IsNullOrEmpty(list.DocumentTemplate))
                     {
                         createdList.DocumentTemplateUrl = list.DocumentTemplate.ToParsedString();
                     }
-                    createdList.EnableAttachments = list.EnableAttachments;
+
+                    // EnableAttachments are not supported for DocumentLibraries and Surveys
+                    // TODO: the user should be warned
+                    if (createdList.BaseType != BaseType.DocumentLibrary && createdList.BaseType != BaseType.Survey)
+                    {
+                        createdList.EnableAttachments = list.EnableAttachments;
+                    }
+
+                    createdList.EnableVersioning = list.EnableVersioning;
+                    createdList.EnableModeration = list.EnableModeration;
+                    createdList.EnableMinorVersions = list.EnableMinorVersions;
                     createdList.EnableFolderCreation = list.EnableFolderCreation;
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-
+                    createdList.MajorVersionLimit = list.MaxVersionLimit;
+                    createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit;
                     createdList.Update();
 
                     web.Context.Load(createdList.Views);
