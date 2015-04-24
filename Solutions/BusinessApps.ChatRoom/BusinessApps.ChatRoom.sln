@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessApps.ChatRoom", "BusinessApps.ChatRoom\BusinessApps.ChatRoom.csproj", "{AD39B207-4886-4D07-AA98-F8E6AE230AA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessApps.ChatRoomWeb", "BusinessApps.ChatRoomWeb\BusinessApps.ChatRoomWeb.csproj", "{7C0ADB0C-F8A8-4802-A319-48AA291EDE53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A742D79-208E-430B-ADA6-B36CFA6893FB}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD39B207-4886-4D07-AA98-F8E6AE230AA3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7C0ADB0C-F8A8-4802-A319-48AA291EDE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C0ADB0C-F8A8-4802-A319-48AA291EDE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C0ADB0C-F8A8-4802-A319-48AA291EDE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C0ADB0C-F8A8-4802-A319-48AA291EDE53}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
