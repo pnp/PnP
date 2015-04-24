@@ -178,7 +178,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -289,7 +289,15 @@
     <Compile Include="Framework\Provisioning\Connectors\FileSystemConnector.cs" />
     <Compile Include="Framework\Provisioning\Connectors\SharePointConnector.cs" />
     <Compile Include="Framework\Provisioning\Deprecated\Model\ContentType.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ContentTypeBinding.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\Feature.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\FieldRef.deprecated.cs" />
     <Compile Include="Framework\Provisioning\Deprecated\Model\ListInstance.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ProvisioningTemplate.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\ProvisioningTemplateInfo.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\Term.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\TermGroup.deprecated.cs" />
+    <Compile Include="Framework\Provisioning\Deprecated\Model\TermSet.deprecated.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensibilityManager.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\ExtensiblityPipelineException.cs" />
     <Compile Include="Framework\Provisioning\Extensibility\IProvisioningExtensibilityProvider.cs" />
@@ -298,9 +306,14 @@
     <Compile Include="Framework\Provisioning\Model\ContentTypeBinding.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomAction.cs" />
     <Compile Include="Framework\Provisioning\Model\CustomActions.cs" />
+    <Compile Include="Framework\Provisioning\Model\DataRow.cs" />
     <Compile Include="Framework\Provisioning\Model\Features.cs" />
     <Compile Include="Framework\Provisioning\Model\FieldRef.cs" />
     <Compile Include="Framework\Provisioning\Model\Field.cs" />
+    <Compile Include="Framework\Provisioning\Model\TermLabel.cs" />
+    <Compile Include="Framework\Provisioning\Model\Term.cs" />
+    <Compile Include="Framework\Provisioning\Model\TermSet.cs" />
+    <Compile Include="Framework\Provisioning\Model\TermGroup.cs" />
     <Compile Include="Framework\Provisioning\Model\WebPart.cs" />
     <Compile Include="Framework\Provisioning\Model\Page.cs" />
     <Compile Include="Framework\Provisioning\Model\File.cs" />
@@ -317,6 +330,9 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectRetrieveTemplateInfo.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPersistTemplateInfo.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectLookupFields.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPages.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
@@ -327,9 +343,12 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectSiteSecurity.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectTermGroups.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ProvisioningTemplateApplyingInformation.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ProvisioningTemplateCreationInformation.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\KeywordsTermStoreIdToken.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\TermSetIdToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\ParameterToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\ListUrlToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteCollectionTermStoreId.cs" />
@@ -344,18 +363,19 @@
     <Compile Include="Framework\Provisioning\Providers\Json\JsonFormatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\IXMLSchemaFormatter.cs" />
-    <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-04.cs">
-      <DependentUpon>ProvisioningSchema-2015-04.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
       <DependentUpon>ProvisioningSchema-2015-03.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-05.cs">
+      <DependentUpon>ProvisioningSchema-2015-05.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLAzureStorageTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLConstants.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLEnums.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLExtensions.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLFileSystemTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaFormatter.cs" />
-    <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaV201504Formatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaV201505Formatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLPnPSchemaV201503Formatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLSharePointTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\XMLTemplateProvider.cs" />
@@ -417,7 +437,7 @@
     <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-04.xsd">
+    <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-05.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />

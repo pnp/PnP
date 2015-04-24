@@ -9,15 +9,20 @@ using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectField : ObjectHandlerBase
     {
-
+        public override string Name
+        {
+            get { return "Fields"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Fields");
 
             // if this is a sub site then we're not provisioning fields. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
@@ -35,50 +40,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var field in fields)
             {
-                XDocument document = XDocument.Parse(field.SchemaXml);
-                var fieldId = document.Root.Attribute("ID").Value;
+                XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                var fieldId = fieldElement.Attribute("ID").Value;
 
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+                    var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
 
-                    var createField = false;
                     if (listIdentifier != null)
                     {
-                        // Check if the list is already there
-                        var listGuid = Guid.Empty;
-                        if (Guid.TryParse(listIdentifier, out listGuid))
-                        {
-                            // Check if list exists
-                            if (web.ListExists(listGuid))
-                            {
-                                createField = true;
-                            }
-                        }
-                        else
-                        {
-                            var existingList = web.GetListByUrl(listIdentifier);
-
-                            if (existingList != null)
-                            {
-                                createField = true;
-
-                            }
-                        }
-                    }
-                    else
-                    {
-                        createField = true;
+                        // Temporary remove list attribute from list
+                        fieldElement.Attribute("List").Remove();
                     }
 
-                    if (createField)
-                    {
-                        var fieldXml = field.SchemaXml.ToParsedString();
-                        web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                        web.Context.Load(web.Fields);
-                        web.Context.ExecuteQueryRetry();
-                    }
+                    var fieldXml = fieldElement.ToString();
+
+                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
                 }
             }
         }
@@ -101,10 +79,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!BuiltInFieldId.Contains(field.Id))
                 {
-                    XDocument document = XDocument.Parse(field.SchemaXml);
+                    var fieldXml = field.SchemaXml;
+                    XElement element = XElement.Parse(fieldXml);
 
                     // Check if the field contains a reference to a list. If by Guid, rewrite the value of the attribute to use web relative paths
-                    var listIdentifier = document.Root.Attribute("List") != null ? document.Root.Attribute("List").Value : null;
+                    var listIdentifier = element.Attribute("List") != null ? element.Attribute("List").Value : null;
                     if (!string.IsNullOrEmpty(listIdentifier))
                     {
                         var listGuid = Guid.Empty;
@@ -115,17 +94,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             web.Context.ExecuteQueryRetry();
 
                             var listUrl = list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length).TrimStart('/');
-                            document.Root.Attribute("List").SetValue(listUrl);
-                            field.SchemaXml = document.ToString();
+                            element.Attribute("List").SetValue(listUrl);
+                            fieldXml = element.ToString();
                         }
                     }
+                  
                     // Check if we have version attribute. Remove if exists 
-                    if (document.Root.Attribute("Version") != null)
+                    if (element.Attribute("Version") != null)
                     {
-                        document.Root.Attributes("Version").Remove();
-                        field.SchemaXml = document.ToString();
+                        element.Attributes("Version").Remove();
+                        fieldXml = element.ToString();
                     }
-                    template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
+                    template.SiteFields.Add(new Field() { SchemaXml = fieldXml });
                 }
             }
             // If a base template is specified then use that one to "cleanup" the generated template model

@@ -3,14 +3,20 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectPropertyBagEntry : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Property bag entries"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-           
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Property Bag");
+
             foreach (var propbagEntry in template.PropertyBagEntries)
             {
                 if (!web.PropertyBagContainsKey(propbagEntry.Key))

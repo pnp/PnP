@@ -1,16 +1,25 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Configuration;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
+using File = Microsoft.SharePoint.Client.File;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFiles : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Files"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Files");
+
             var context = web.Context as ClientContext;
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -28,47 +37,98 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     folderName = folderName.Substring(web.ServerRelativeUrl.Length);
                 }
-                
+
 
                 var folder = web.EnsureFolderPath(folderName);
 
                 Microsoft.SharePoint.Client.File targetFile = null;
+                var checkedOut = false;
 
-                if (file.Create)
+                targetFile = folder.GetFile(file.Src);
+
+                if (targetFile != null)
                 {
-
-                    using (var stream = template.Connector.GetFileStream(file.Src))
+                    if (file.Overwrite)
                     {
-                        targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                        checkedOut = CheckOutIfNeeded(web, targetFile);
+
+                        using (var stream = template.Connector.GetFileStream(file.Src))
+                        {
+                            targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                        }
+                    }
+                    else
+                    {
+                        checkedOut = CheckOutIfNeeded(web, targetFile);
                     }
                 }
                 else
                 {
-                    // Get a reference to an existing file
-                    targetFile = folder.GetFile(file.Src);
+                    using (var stream = template.Connector.GetFileStream(file.Src))
+                    {
+                        targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                    }
+
+                    checkedOut = CheckOutIfNeeded(web, targetFile);
                 }
 
-                if (file.WebParts != null && file.WebParts.Any())
+                if (targetFile != null)
                 {
-                    if (!targetFile.IsPropertyAvailable("ServerRelativeUrl"))
+                    if (file.WebParts != null && file.WebParts.Any())
                     {
-                        web.Context.Load(targetFile, f => f.ServerRelativeUrl);
-                        web.Context.ExecuteQuery();
-                    }
-                    foreach (var webpart in file.WebParts)
-                    {
-                        var wpEntity = new WebPartEntity();
-                        wpEntity.WebPartTitle = webpart.Title;
-                        wpEntity.WebPartXml = webpart.Contents.ToParsedString();
-                        wpEntity.WebPartZone = webpart.Zone;
-                        wpEntity.WebPartIndex = (int) webpart.Order;
+                        if (!targetFile.IsPropertyAvailable("ServerRelativeUrl"))
+                        {
+                            web.Context.Load(targetFile, f => f.ServerRelativeUrl);
+                            web.Context.ExecuteQuery();
+                        }
+                        foreach (var webpart in file.WebParts)
+                        {
+                            var wpEntity = new WebPartEntity();
+                            wpEntity.WebPartTitle = webpart.Title;
+                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                            wpEntity.WebPartZone = webpart.Zone;
+                            wpEntity.WebPartIndex = (int)webpart.Order;
 
-                        web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                            web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                        }
+                    }
+                    if (file.Properties != null && file.Properties.Any())
+                    {
+                        targetFile.SetFileProperties(file.Properties,false); // if needed, the file is already checked out
+                    }
+                    if (checkedOut)
+                    {
+                        targetFile.CheckIn("", CheckinType.MajorCheckIn);
+                        web.Context.ExecuteQueryRetry();
                     }
                 }
 
             }
+        }
 
+        private static bool CheckOutIfNeeded(Web web, File targetFile)
+        {
+            var checkedOut = false;
+            try
+            {
+                web.Context.Load(targetFile, f => f.CheckOutType, f => f.ListItemAllFields.ParentList.ForceCheckout);
+                web.Context.ExecuteQueryRetry();
+
+                if (targetFile.CheckOutType == CheckOutType.None)
+                {
+                    targetFile.CheckOut();
+                }
+                checkedOut = true;
+            }
+            catch (ServerException ex)
+            {
+                // Handling the exception stating the "The object specified does not belong to a list."
+                if (ex.ServerErrorCode != -2146232832)
+                {
+                    throw;
+                }
+            }
+            return checkedOut;
         }
 
 

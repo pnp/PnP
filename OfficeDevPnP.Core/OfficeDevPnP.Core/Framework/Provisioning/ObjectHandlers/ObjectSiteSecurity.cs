@@ -3,14 +3,21 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using User = OfficeDevPnP.Core.Framework.Provisioning.Model.User;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectSiteSecurity : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Site Security"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Site Security");
+
             // if this is a sub site then we're not provisioning security as by default security is inherited from the root site
             if (web.IsSubSite())
             {
@@ -50,7 +57,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 user.Update();
                 web.Context.ExecuteQueryRetry();
             }
-
         }
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)

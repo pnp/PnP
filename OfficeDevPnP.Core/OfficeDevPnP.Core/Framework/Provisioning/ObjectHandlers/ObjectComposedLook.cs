@@ -4,13 +4,24 @@ using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using System;
 using System.IO;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectComposedLook : ObjectHandlerBase
     {
+
+        public override string Name
+        {
+            get { return "Composed Looks"; }
+        }
+
+
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,"Composed Looks");
             if (template.ComposedLook != null && 
                 !template.ComposedLook.Equals(ComposedLook.Empty))
             {
@@ -230,7 +241,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             file.Src = asset.Substring(index + 1);
             file.Folder = asset.Substring(0, index);
             file.Overwrite = true;
-            file.Create = true;
 
             return file;
         }
