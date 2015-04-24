@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TermSet", "TermSet", "{D86ADB9D-AAD6-4FB9-A170-192F1D3D2769}"
+	ProjectSection(SolutionItems) = preProject
+		TermSet\Products.csv = TermSet\Products.csv
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.JSLink.NCSS", "Branding.JSLink.NCSS\Branding.JSLink.NCSS.csproj", "{643AF97E-AC5C-4AA5-81AD-834679868D96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{643AF97E-AC5C-4AA5-81AD-834679868D96}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

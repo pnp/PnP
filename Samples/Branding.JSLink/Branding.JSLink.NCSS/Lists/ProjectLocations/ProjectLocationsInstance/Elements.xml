@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Project Locations" OnQuickLaunch="TRUE" TemplateType="10013" Url="Lists/ProjectLocations" Description="Cascading Drop-Downs and Filtered Checkboxes for the Lookup Fields."></ListInstance>
+</Elements>
