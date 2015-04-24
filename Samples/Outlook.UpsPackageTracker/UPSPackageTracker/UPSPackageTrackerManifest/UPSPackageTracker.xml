@@ -30,7 +30,7 @@
   </FormSettings>
   <Permissions>ReadItem</Permissions>
   <Rule xsi:type="RuleCollection" Mode="And">
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="ReadOrEdit" />
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
     <Rule xsi:type="ItemHasRegularExpressionMatch" RegExName="UPSTrackingNumberInBody" RegExValue="(1Z\w{16})" PropertyName="BodyAsPlaintext" />
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>

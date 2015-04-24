@@ -14,7 +14,7 @@ namespace UPSPackageTrackerWeb.Controllers
 {
     public class UPSTrackingController : ApiController
     {
-        // GET: api/UPSTracking/5
+        // GET: api/UPSTracking/1ZE680080304005492
         public UPS.TrackResponse Get(string id)
         {
             //HACK hard code local storage for simplicity
