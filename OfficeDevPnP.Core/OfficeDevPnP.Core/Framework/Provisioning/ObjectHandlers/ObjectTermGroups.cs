@@ -195,10 +195,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             term.IsAvailableForTagging = modelTerm.IsAvailableForTagging;
 
-            if (!String.IsNullOrEmpty(modelTerm.CustomSortOrder))
-            {
-                term.CustomSortOrder = modelTerm.CustomSortOrder;
-            }
+            term.CustomSortOrder = modelTerm.CustomSortOrder.ToString();
             
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
@@ -232,7 +229,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (modelTerm.Terms.Any())
             {
-                if (modelTerm.Terms.Count(t => t.CustomSortOrder != null) > 0)
+                if (modelTerm.Terms.Any(t => t.CustomSortOrder != null))
                 {
                     // Precreate the IDs of the terms if not set
                     foreach (var termToSet in modelTerm.Terms.Where(t => t.Id == Guid.Empty))
@@ -428,7 +425,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     var term = termsToReturn.FirstOrDefault(t => t.Id == Guid.Parse(id));
                     if (term != null)
                     {
-                        term.CustomSortOrder = count.ToString();
+                        term.CustomSortOrder = count;
                         count++;
                     }
                 }

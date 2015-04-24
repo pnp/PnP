@@ -7,7 +7,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     {
         #region Private Members
         private List<WebPart> _webParts = new List<WebPart>();
-        private Dictionary<string, string> _properties;
+        private Dictionary<string, string> _properties = new Dictionary<string,string>();
         #endregion
 
         #region Properties

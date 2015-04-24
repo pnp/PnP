@@ -451,32 +451,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     var schemaPage = new V201505.Page();
 
-                    var pageLayout = WIKIPAGELAYOUT.OneColumn;
+                    var pageLayout = V201505.WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
                         case WikiPageLayout.OneColumn:
-                            pageLayout = WIKIPAGELAYOUT.OneColumn;
+                            pageLayout = V201505.WikiPageLayout.OneColumn;
                             break;
                         case WikiPageLayout.OneColumnSideBar:
-                            pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
+                            pageLayout = V201505.WikiPageLayout.OneColumnSidebar;
                             break;
                         case WikiPageLayout.TwoColumns:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumns;
+                            pageLayout = V201505.WikiPageLayout.TwoColumns;
                             break;
                         case WikiPageLayout.TwoColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeader;
                             break;
                         case WikiPageLayout.TwoColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
                         case WikiPageLayout.ThreeColumns:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumns;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumns;
                             break;
                         case WikiPageLayout.ThreeColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeader;
                             break;
                         case WikiPageLayout.ThreeColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
                     schemaPage.Layout = pageLayout;
@@ -961,28 +961,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     var pageLayout = WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
-                        case WIKIPAGELAYOUT.OneColumn:
+                        case V201505.WikiPageLayout.OneColumn:
                             pageLayout = WikiPageLayout.OneColumn;
                             break;
-                        case WIKIPAGELAYOUT.OneColumnSidebar:
+                        case V201505.WikiPageLayout.OneColumnSidebar:
                             pageLayout = WikiPageLayout.OneColumnSideBar;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumns:
+                        case V201505.WikiPageLayout.TwoColumns:
                             pageLayout = WikiPageLayout.TwoColumns;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeader:
+                        case V201505.WikiPageLayout.TwoColumnsHeader:
                             pageLayout = WikiPageLayout.TwoColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.TwoColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumns:
+                        case V201505.WikiPageLayout.ThreeColumns:
                             pageLayout = WikiPageLayout.ThreeColumns;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeader:
+                        case V201505.WikiPageLayout.ThreeColumnsHeader:
                             pageLayout = WikiPageLayout.ThreeColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.ThreeColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
