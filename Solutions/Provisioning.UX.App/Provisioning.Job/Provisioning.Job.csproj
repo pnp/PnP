@@ -79,18 +79,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\EmailContent\FailEmail.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\EmailContent\NewSiteEmail.html">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\EmailContent\sharepoint.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\EmailContent\PNP.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Resources\EmailContent\FailEmail.html" />
+    <Content Include="Resources\EmailContent\NewSiteEmail.html" />
+    <Content Include="Resources\EmailContent\PNP.png" />
+    <Content Include="Resources\EmailContent\sharepoint.png" />
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\ContosoTemplate-01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

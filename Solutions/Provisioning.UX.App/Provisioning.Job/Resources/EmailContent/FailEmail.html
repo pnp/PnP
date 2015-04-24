@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Site Provisioning Failure Notification"></title>
+    <style type="text/css">
+        body {
+            font-size: 90%;
+            font-family: "Segoe UI";
+            font-weight: normal;
+        }
+
+        img {
+            height: 75%;
+            width: 100%;
+        }
+
+        #container {
+            position: relative;
+            width: 50%;
+            margin: auto;
+        }
+
+        h3 {
+            font-weight: 600;
+            font-weight: bolder;
+        }
+
+        a {
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <header>
+            <p>
+                <img src=imageid>
+            </p>
+        </header>
+        <b>Opps! Your SharePoint site is not ready:</b>
+        <a href="[SITEURL]">[SITEURL]</a>
+        <br />
+        Site Request details:
+        <ul>
+            <li>Site owner: [SITEOWNER]</li>
+            <li>Site administrator: [SITEADMIN]</li>
+        </ul>
+
+        There was an error processing your request.
+        <ul>
+            <li>[ERRORMESSAGE]</li>
+        </ul>
+        <p>I'm sorry,</p>
+         PNP Core Team
+        <p>
+                <a href="http://aka.ms/OfficeDevPnP">Office Develper Patterns and Practices</a>
+        </p>
+</div>
+
+</body>
+</html>
