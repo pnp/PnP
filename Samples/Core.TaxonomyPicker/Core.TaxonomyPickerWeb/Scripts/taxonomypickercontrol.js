@@ -47,7 +47,7 @@
         this.IsOpenForTermCreation = false; //bool indicating if the termset is open for new term creation
         this.NewTerm = null; //the new term being added
         this.FilterTermId = options.filterTermId; // To support filter terms based on Id
-        this.LevelToShowTerms = options.levelToShowTerms; // show terms only till the specified level
+        this.LevelToShowTerms = options.levelToShowTerms || 7; // show terms only till the specified level
         this.UseTermSetasRootNode = options.useTermSetasRootNode //bool indicating if termset to be shown as root node or not
     }
     $.extend(TermSet.prototype, {
@@ -107,7 +107,13 @@
                         this.FilteredFlatTerms.push(this.FlatTerms[i]);
                         var term = this.FlatTerms[i];
                         var path = term.PathOfTerm.split(';');
-                        if ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) || (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)) {
+
+                        // used when "filterTermId" option is provided
+                        if ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) || (this.FilterTermId != null && filterTerm && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)) {
+                            this.FlatTermsForSuggestion.push(term);
+                        }
+                        // if no "filterTermId" option is provided add the terms accordingly to the suggestions list
+                        else if (!this.FilterTermId && path.length <= this.LevelToShowTerms) {
                             this.FlatTermsForSuggestion.push(term);
                         }
                     }
@@ -840,7 +846,15 @@
         //used to check if focus is lost from the control (invalidate and hide suggestions)
         checkExternalClick: function (event) {
             //check if the target is outside the picker
-            if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog != null && !$.contains(this._dialog[0], event.target)) {
+            if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog == null) {
+                var rawText = this._editor.text(); //the raw text in the editor (html stripped out)
+                if (rawText) {
+                    var textValidation = this.validateText(rawText); //get the text validation
+                    var html = this.markInvalidTerms(textValidation); //mark invalid terms
+                    this._editor.html(html); //set the editor
+                    this._suggestionContainer.hide(); //hide suggestions
+                }
+            } else if (!$.contains(this._control[0], event.target) && !$.contains(this._suggestionContainer[0], event.target) && this._dialog != null && !$.contains(this._dialog[0], event.target)) {
                 var rawText = this._editor.text(); //the raw text in the editor (html stripped out)
                 var textValidation = this.validateText(rawText); //get the text validation
                 var html = this.markInvalidTerms(textValidation); //mark invalid terms
