@@ -29,6 +29,12 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         [Parameter(Mandatory = false, Position = 0, HelpMessage = "The schema of the output to use, defaults to the latest schema")]
         public XMLPnPSchemaVersion Schema = XMLPnPSchemaVersion.LATEST;
 
+        [Parameter(Mandatory = false, HelpMessage = "If specified, all term groups will be included. Overrides IncludeSiteCollectionTermGroup.")]
+        public SwitchParameter IncludeAllTermGroups;
+
+        [Parameter(Mandatory = false, HelpMessage = "If specified, all the site collection term group will be included. Overridden by IncludeAllTermGroups.")]
+        public SwitchParameter IncludeSiteCollectionTermGroup;
+
         [Parameter(Mandatory = false, HelpMessage = "Overwrites the output file if it exists.")]
         public SwitchParameter Force;
 
@@ -72,8 +78,25 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
         private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema)
         {
+            var creationInformation = new ProvisioningTemplateCreationInformation(SelectedWeb);
+            creationInformation.ProgressDelegate = (message, step, total) =>
+            {
+                WriteProgress(new ProgressRecord(0, "Extracting Template", message) { PercentComplete = (100 / total) * step });
+            };
 
-            var template = SelectedWeb.GetProvisioningTemplate();
+            if (IncludeAllTermGroups)
+            {
+                creationInformation.IncludeAllTermGroups = true;
+            }
+            else
+            {
+                if (IncludeSiteCollectionTermGroup)
+                {
+                    creationInformation.IncludeSiteCollectionTermGroup = true;
+                }
+            }
+
+            var template = SelectedWeb.GetProvisioningTemplate(creationInformation);
 
             ITemplateFormatter formatter = null;
             switch (schema)
