@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using Newtonsoft.Json;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -22,7 +23,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             this.ReportProgress = false;
         }
 
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateId", template.Id != null ? template.Id : "");
             web.AddIndexedPropertyBagKey("_PnP_ProvisioningTemplateId");
@@ -34,13 +35,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             info.Result = true;
             info.ProvisioningTime = DateTime.Now;
 
-            var s = new  JavaScriptSerializer();
-            string jsonInfo = s.Serialize(info);
-
+            string jsonInfo = JsonConvert.SerializeObject(info);
+            
             web.SetPropertyBagValue("_PnP_ProvisioningTemplateInfo", jsonInfo);
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override Model.ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             return template;
         }
