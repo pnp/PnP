@@ -12,6 +12,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectFiles : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Files"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Files");
@@ -118,6 +122,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
             catch (ServerException ex)
             {
+                // Handling the exception stating the "The object specified does not belong to a list."
                 if (ex.ServerErrorCode != -2146232832)
                 {
                     throw;

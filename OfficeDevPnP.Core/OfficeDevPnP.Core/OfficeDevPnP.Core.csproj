@@ -330,6 +330,9 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectRetrieveTemplateInfo.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPersistTemplateInfo.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectLookupFields.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPages.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
@@ -341,6 +344,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectTermGroups.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ProvisioningTemplateApplyingInformation.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ProvisioningTemplateCreationInformation.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\SiteToTemplateConversion.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\KeywordsTermStoreIdToken.cs" />

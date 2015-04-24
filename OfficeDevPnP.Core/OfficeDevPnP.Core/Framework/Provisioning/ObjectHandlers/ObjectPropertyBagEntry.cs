@@ -9,6 +9,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectPropertyBagEntry : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Property bag entries"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Property Bag");

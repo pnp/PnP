@@ -17,6 +17,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private bool includeAllTermGroups = false;
         private bool includeSiteCollectionTermGroup = false;
 
+        public ProvisioningProgressDelegate ProgressDelegate { get; set; }
+
         public ProvisioningTemplateCreationInformation(Web web)
         {
             this.baseTemplate = web.GetBaseTemplate();

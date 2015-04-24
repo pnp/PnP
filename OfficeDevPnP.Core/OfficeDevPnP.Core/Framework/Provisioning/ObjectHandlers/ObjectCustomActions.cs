@@ -9,6 +9,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectCustomActions : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Custom Actions"; }
+        }
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Custom Actions");

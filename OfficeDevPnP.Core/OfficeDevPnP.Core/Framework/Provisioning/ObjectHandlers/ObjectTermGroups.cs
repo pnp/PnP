@@ -16,6 +16,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectTermGroups : ObjectHandlerBase
     {
+
+        public override string Name
+        {
+            get { return "Term Groups"; }
+        }
         public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Term Groups");

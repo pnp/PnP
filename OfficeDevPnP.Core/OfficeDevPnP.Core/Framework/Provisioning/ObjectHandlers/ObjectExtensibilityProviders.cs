@@ -14,6 +14,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         ExtensibilityManager _extManager = new ExtensibilityManager();
 
+        public override string Name
+        {
+            get { return "Extensibility Providers"; }
+
+        }
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Extensibility Providers");
