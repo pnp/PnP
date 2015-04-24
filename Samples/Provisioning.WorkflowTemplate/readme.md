@@ -9,13 +9,13 @@ This sample shows how to provision workflow template (.wsp) in on-premises or in
 
 
 ### Prerequisites ###
-Solutions feature must be enabled in Site Settings->Web Designer Galleries in the Site Collection.
-
+- Solutions feature must be enabled in Site Settings->Web Designer Galleries in the Site Collection.
+- Keep in mind that using DesignPackage.Install will clear the composed look gallery (bug).
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.WorkflowTemplate | Ilker Karimanov (OneBitSoftware)
+Provisioning.WorkflowTemplate | Ilker Karimanov (**OneBitSoftware**)
 
 ### Version history ###
 Version  | Date | Comments
