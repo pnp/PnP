@@ -10,8 +10,8 @@ namespace ProvisioningTests
     {
         public const string EXPECTED_TENANTADMINURL = "https://spsites.marascohome.com/sites/msotenantcontex";
         public const string EXPECTED_SPHOST = "https://spsites.marascohome.com/sites/siteprovisioningdev1";
-        public const string EXPECTED_CLIENTID = "94a19a75-1e12-4d8a-a7e9-0a0fa2082ace";
-        public const string EXPECTED_CLIENTSECRET = "/FH4PHOK2H1QGw=";
+        public const string EXPECTED_CLIENTID = "[INSERT]";
+        public const string EXPECTED_CLIENTSECRET = "[INSERT]";
         public const string EXPECTED_SUPPORTTEAMNOTIFICATIONEMAIL = "samplegroup@test.com";
 
         public const string EXPECTED_MYSITETENANTURL = "https://my.test.com";
