@@ -5,11 +5,11 @@ This sample demonstrates how to create an App for Outlook which extracts data fr
 
 ### Applies to ###
 -  Outlook 2013
--  Office 365 Developer Subscription. See [Sign up for an Office 365 Developer Subscription and set up your tools and environment](https://msdn.microsoft.com/EN-US/library/office/fp179924.aspx)
--  Must have an Office 365 developer site. See [How to: Create a Developer Site within your existing Office 365 subscription](https://msdn.microsoft.com/en-us/library/office/jj692554.aspx)
 
 ### Prerequisites ###
-In order to run the sample you must create a developer account on the [UPS Developer Kit](https://www.ups.com/upsdeveloperkit) site. The username, password and access license number from UPS must be placed into the web.config file (see below).
+-  Office 365 Developer Subscription. See [Sign up for an Office 365 Developer Subscription and set up your tools and environment](https://msdn.microsoft.com/EN-US/library/office/fp179924.aspx)
+-  Must have an Office 365 developer site. See [How to: Create a Developer Site within your existing Office 365 subscription](https://msdn.microsoft.com/en-us/library/office/jj692554.aspx)
+-  In order to run the sample you must create a developer account on the [UPS Developer Kit](https://www.ups.com/upsdeveloperkit) site. The username, password and access license number from UPS must be placed into the web.config file (see below).
 
 ### Solution ###
 Solution | Author(s)
