@@ -10,8 +10,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectComposedLook : ObjectHandlerBase
     {
+
+        public override string Name
+        {
+            get { return "Composed Looks"; }
+        }
+
+
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,"Composed Looks");
             if (template.ComposedLook != null && 
                 !template.ComposedLook.Equals(ComposedLook.Empty))

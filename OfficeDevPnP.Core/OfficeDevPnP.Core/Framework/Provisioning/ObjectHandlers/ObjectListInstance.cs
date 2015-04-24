@@ -18,6 +18,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectListInstance : ObjectHandlerBase
     {
+
+        public override string Name
+        {
+            get { return "List instances"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Lists");
@@ -59,7 +64,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         createdList.DocumentTemplateUrl = list.DocumentTemplate.ToParsedString();
                     }
-                    createdList.EnableAttachments = list.EnableAttachments;
+                    if (createdList.BaseTemplate != (int)ListTemplateType.DocumentLibrary)
+                    {
+                        createdList.EnableAttachments = list.EnableAttachments;
+                    }
                     createdList.EnableFolderCreation = list.EnableFolderCreation;
                     createdList.Hidden = list.Hidden;
                     createdList.ContentTypesEnabled = list.ContentTypesEnabled;
@@ -348,6 +356,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.ContentTypesEnabled = item.ContentTypesEnabled;
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
+                        list.EnableAttachments = item.EnableAttachments;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)

@@ -10,6 +10,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectSiteSecurity : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Site Security"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Site Security");
