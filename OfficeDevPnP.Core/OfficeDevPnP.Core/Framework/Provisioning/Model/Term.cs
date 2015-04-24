@@ -25,7 +25,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public String Owner { get; set; }
         public Boolean IsAvailableForTagging { get; set; }
         public int? Language { get; set; }
-        public String CustomSortOrder { get; set; }
+        public int CustomSortOrder { get; set; }
 
         public List<Term> Terms
         {

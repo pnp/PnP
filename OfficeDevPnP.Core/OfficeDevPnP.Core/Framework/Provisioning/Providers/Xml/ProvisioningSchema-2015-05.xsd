@@ -1156,7 +1156,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="Layout" type="pnp:WIKIPAGELAYOUT" use="required">
+    <xsd:attribute name="Layout" type="pnp:WikiPageLayout" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           Required: Defines the layout of the wikipage
@@ -1719,7 +1719,7 @@
           </xsd:element>
         </xsd:all>
         <xsd:attribute name="Language" type="xsd:int" use="optional"/>
-        <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
+        <xsd:attribute name="CustomSortOrder" type="xsd:int" use="optional" default="0"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -1847,7 +1847,7 @@
     </xsd:restriction>
   </xsd:simpleType>
 
-  <xsd:simpleType name="WIKIPAGELAYOUT">
+  <xsd:simpleType name="WikiPageLayout">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         The column layout of a wiki page
