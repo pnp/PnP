@@ -71,7 +71,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <param name="template"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation provisioningInfo)
         {
-            var progressDelegate = provisioningInfo.ProgressDelegate;
+            ProvisioningProgressDelegate progressDelegate = null;
+            if (provisioningInfo != null)
+            {
+                progressDelegate = provisioningInfo.ProgressDelegate;
+            }
 
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_StartProvisioning);
 

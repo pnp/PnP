@@ -59,7 +59,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
                         var createdList = web.Lists.Add(listCreate);
-                        web.Context.Load(createdList, l => l.BaseType);
+                        createdList.Update();
+                        web.Context.Load(createdList, l => l.BaseTemplate);
                         web.Context.ExecuteQueryRetry();
 
                         if (!String.IsNullOrEmpty(list.DocumentTemplate))
