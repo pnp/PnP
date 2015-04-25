@@ -14,7 +14,7 @@ This sample demonstrates how to create an App for Outlook which extracts data fr
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-UPSPackageTracker.sln | Doug Perkes
+UPSPackageTracker.sln | Doug Perkes (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
