@@ -100,7 +100,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool EnableModeration { get; set; }
 
         /// <summary>
-        /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
+        /// Gets or sets the MinorVersionLimit  for versioning, just in case it is enabled on the list
         /// </summary>
         public int MinorVersionLimit { get; set; }
 
