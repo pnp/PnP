@@ -75,14 +75,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             createdList.EnableAttachments = list.EnableAttachments;
                         }
 
-                        createdList.EnableVersioning = list.EnableVersioning;
                         createdList.EnableModeration = list.EnableModeration;
-                        createdList.EnableMinorVersions = list.EnableMinorVersions;
+
+                        createdList.EnableVersioning = list.EnableVersioning;
+                        if (list.EnableVersioning)
+                        {
+                            createdList.MajorVersionLimit = list.MaxVersionLimit;
+                       
+                            if (createdList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
+                            {
+                                // Only supported on Document Libraries
+                                createdList.EnableMinorVersions = list.EnableMinorVersions;
+                                createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit;
+                            }
+                        }
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-                        createdList.MajorVersionLimit = list.MaxVersionLimit;
-                        createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit;
+                      
+                      
                         createdList.Update();
 
                         web.Context.Load(createdList.Views);
@@ -218,7 +229,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         // Type
                         var viewTypeString = viewDoc.Root.Attribute("Type") != null ? viewDoc.Root.Attribute("Type").Value : "None";
                         viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
-                        var viewType = (ViewType) Enum.Parse(typeof (ViewType), viewTypeString);
+                        var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
 
                         // Fields
                         string[] viewFields = null;
