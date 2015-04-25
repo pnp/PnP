@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Extensibility Providers");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ExtensibilityProviders);
 
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)

@@ -19,7 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Content Types");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ContentTypes);
 
             // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
