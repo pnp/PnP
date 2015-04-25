@@ -613,7 +613,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="TemplateFeatureID" type="GUID" use="optional">
+    <xsd:attribute name="TemplateFeatureID" type="pnp:GUID" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TemplateFeatureID for the feature on which the List Instance is based, optional attribute
@@ -708,7 +708,7 @@
       </xsd:element>
     </xsd:all>
 
-    <xsd:attribute name="ID" type="ContentTypeId" use="required">
+    <xsd:attribute name="ID" type="pnp:ContentTypeId" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The value of the content type ID, required attribute
