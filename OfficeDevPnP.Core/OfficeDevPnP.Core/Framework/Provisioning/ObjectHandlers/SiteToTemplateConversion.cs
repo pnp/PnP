@@ -23,7 +23,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// <returns></returns>
         internal ProvisioningTemplate GetRemoteTemplate(Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Template Extraction");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_StartExtraction);
             var progressDelegate = creationInfo.ProgressDelegate;
 
             // Create empty object
@@ -60,7 +60,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 template = handler.CreateEntities(web, template, creationInfo);
             }
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Template Extraction");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_FinishExtraction);
             return template;
         }
 
@@ -77,7 +77,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 progressDelegate = provisioningInfo.ProgressDelegate;
             }
 
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "START - Provisioning");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_StartProvisioning);
 
             List<ObjectHandlerBase> objectHandlers = new List<ObjectHandlerBase>();
 
@@ -111,8 +111,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 handler.ProvisionObjects(web, template);
             }
-         
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "FINISH - Provisioning");
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_FinishProvisioning);
         }
 
         private void ProcessLookupFields(Web web, ProvisioningTemplate template)
