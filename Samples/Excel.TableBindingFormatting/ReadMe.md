@@ -12,7 +12,7 @@ This code sample demonstrates techniques for creating a table binding, adding ro
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Excel.TableBindingFormatting.sln | Doug Perkes 
+Excel.TableBindingFormatting.sln | Doug Perkes (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
