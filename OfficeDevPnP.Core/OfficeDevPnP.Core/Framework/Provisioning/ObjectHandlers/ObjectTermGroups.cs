@@ -115,7 +115,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     var terms = set.Terms;
 
                     // do we need custom sorting?
-                    if (modelTermSet.Terms.Count(t => t.CustomSortOrder != null) > 0)
+                    if (modelTermSet.Terms.Any(t => t.CustomSortOrder > -1))
                     {
                         // Precreate the IDs of the terms if not set
                         foreach (var term in modelTermSet.Terms.Where(t => t.Id == Guid.Empty))
@@ -229,7 +229,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (modelTerm.Terms.Any())
             {
-                if (modelTerm.Terms.Any(t => t.CustomSortOrder != null))
+                if (modelTerm.Terms.Any(t => t.CustomSortOrder > -1))
                 {
                     // Precreate the IDs of the terms if not set
                     foreach (var termToSet in modelTerm.Terms.Where(t => t.Id == Guid.Empty))
