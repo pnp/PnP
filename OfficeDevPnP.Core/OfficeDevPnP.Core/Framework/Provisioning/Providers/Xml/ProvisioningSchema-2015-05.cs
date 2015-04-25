@@ -1636,6 +1636,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         private string urlField;
         
         private bool enableVersioningField;
+
+        private bool enableMinorVersionsField;
+
+        private bool enableModerationField;
         
         private int minorVersionLimitField;
         
@@ -1799,7 +1803,37 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
                 this.enableVersioningField = value;
             }
         }
-        
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool EnableMinorVersions
+        {
+            get
+            {
+                return this.enableMinorVersionsField;
+            }
+            set
+            {
+                this.enableMinorVersionsField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool EnableModeration
+        {
+            get
+            {
+                return this.enableModerationField;
+            }
+            set
+            {
+                this.enableModerationField = value;
+            }
+        }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int MinorVersionLimit {
