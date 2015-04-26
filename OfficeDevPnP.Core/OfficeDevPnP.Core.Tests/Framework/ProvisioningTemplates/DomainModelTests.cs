@@ -18,10 +18,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         private string _provisioningTemplatePath1NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
         private string _provisioningTemplatePath2 = string.Empty;
         private string _provisioningTemplatePath2NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03;
-        private string _provisioningTemplatePath3 = string.Empty;
-        private string _provisioningTemplatePath3NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
-        private string _provisioningTemplatePath4 = string.Empty;
-        private string _provisioningTemplatePath4NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04;
         private string _provisioningTemplatePath5 = string.Empty;
         private string _provisioningTemplatePath5NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
         private string _provisioningTemplatePath6 = string.Empty;
@@ -33,8 +29,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             this._provisioningTemplatePath1 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-01.xml");
             this._provisioningTemplatePath2 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
-            this._provisioningTemplatePath3 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-01.xml");
-            this._provisioningTemplatePath4 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-04-Sample-02.xml");
             this._provisioningTemplatePath5 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-FullSample-01.xml");
             this._provisioningTemplatePath6 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-ReferenceSample-01.xml");
         }
@@ -123,7 +117,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             var _expectedVersion = 1.0;
 
             var _pt = this.GetProvisioningTemplate();
-            Assert.AreEqual(_expectedID, _pt.ID);
+            Assert.AreEqual(_expectedID, _pt.Id);
             Assert.AreEqual(_expectedVersion, _pt.Version);
         }
 
@@ -245,7 +239,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 
             foreach(var _f in _sfs)
             {
-                Assert.IsTrue(_f.ID != Guid.Empty);
+                Assert.IsTrue(_f.Id != Guid.Empty);
             }
 
             var f = new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature();
@@ -330,6 +324,59 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
                 ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath6NamespaceURI);
                 var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
                 Assert.IsNotNull(_pt);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML6()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath6, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath6NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate);
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML5ByIdentifier()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath5, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath5NamespaceURI);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "SPECIALTEAM");
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectToXML5ByFileLink()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath5, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath5NamespaceURI);
+
+                XMLTemplateProvider provider =
+                    new XMLFileSystemTemplateProvider(
+                        String.Format(@"{0}\..\..\Resources",
+                        AppDomain.CurrentDomain.BaseDirectory),
+                        "Templates");
+
+                formatter.Initialize(provider);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "WORKFLOWSITE");
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
             }
         }
 

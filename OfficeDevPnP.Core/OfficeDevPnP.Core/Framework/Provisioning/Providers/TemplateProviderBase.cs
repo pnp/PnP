@@ -11,7 +11,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
         private bool _supportSave = false;
         private bool _supportDelete = false;
         private FileConnectorBase _connector = null;
-        private string _identifier = "";
+        private string _uri = "";
 
         #region Constructors
         
@@ -65,15 +65,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers
             }
         }
 
-        public String Identifier
+        public String Uri
         {
             get
             {
-                return _identifier;
+                return _uri;
             }
             set
             {
-                _identifier = value;
+                _uri = value;
             }
         }
 

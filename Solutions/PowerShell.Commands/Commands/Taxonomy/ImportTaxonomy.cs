@@ -37,7 +37,6 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
 
         protected override void ExecuteCmdlet()
         {
-
             string[] lines;
             if (ParameterSetName == "File")
             {

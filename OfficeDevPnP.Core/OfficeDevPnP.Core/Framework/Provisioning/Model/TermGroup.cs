@@ -5,14 +5,15 @@ using OfficeDevPnP.Core.Extensions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
-    public class TermGroup : IEquatable<TermGroup>
+    public partial class TermGroup : IEquatable<TermGroup>
     {
         #region Private Members
         private List<TermSet> _termSets = new List<TermSet>();
+        private Guid _id;
         #endregion
 
         #region Public Members
-        public Guid ID { get; set; }
+        public Guid Id { get { return _id; } set { _id = value; } }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -33,7 +34,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public TermGroup(Guid id, string name, List<TermSet> termSets)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
             if (termSets != null)
             {
@@ -47,7 +48,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}|{2}|{3}",
-                this.ID,
+                this.Id,
                 this.Name,
                 this.Description,
                  this.TermSets.Aggregate(0, (acc, next) => acc += next.GetHashCode())
@@ -65,7 +66,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(TermGroup other)
         {
-            return (this.ID == other.ID &&
+            return (this.Id == other.Id &&
                 this.Name == other.Name &&
                 this.Description == other.Description &&
                 this.TermSets.DeepEquals(other.TermSets));

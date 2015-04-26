@@ -12,6 +12,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using System.Xml.Linq;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
@@ -22,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]
         public string Path;
 
-        
+
         protected override void ExecuteCmdlet()
         {
             if (!System.IO.Path.IsPathRooted(Path))
@@ -42,7 +43,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 var fileinfo = new FileInfo(Path);
                 var fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
-                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate);
+
+                var applyingInformation = new ProvisioningTemplateApplyingInformation();
+                applyingInformation.ProgressDelegate = (message, step, total) =>
+                {
+                    WriteProgress(new ProgressRecord(0, "Provisioning", message) { PercentComplete = (100 / total) * step });
+                };
+
+                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);
             }
         }
     }

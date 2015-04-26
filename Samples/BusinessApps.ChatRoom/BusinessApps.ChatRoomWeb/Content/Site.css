@@ -1,0 +1,106 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    height: 800px;
+    font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 100%;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+#chat-room {
+    width: 100%;
+    height: 100%;
+}
+
+#message-window {
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+    border: solid 1px black;
+}
+
+#message-box {
+    height: 15%;
+    border: solid 1px black;
+}
+
+#message-box textarea {
+    width: 90%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#message-box input[type=button] {
+    width: 10%;
+    height: 100%;
+    background-color: darkblue;
+    color: white;
+    float: right;
+}
+
+.message {
+    width: 100%;
+    padding-bottom: 2%;
+    min-height: 13%;
+    clear: both;
+}
+
+
+.message-sender-image {
+    height: 8%;
+    width: 8%;
+    float: left;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+.message-right {
+    float: right;
+    width: 91%
+}
+
+.message-sender {
+    color: blue;
+    float: left;
+    padding-left: 1%;
+    padding-top: 1%;    
+}
+
+.message-timestamp {
+    float: right;
+    color: blue;
+    padding-right: 1%;
+    padding-top: 1%;
+}
+
+.message-content {
+    clear: both;
+    padding-left: 1%;
+    padding-top: 1%;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.system-message {
+    width: 100%;
+    padding-right: 1%;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-bottom: 1%;
+    min-height: 1%;
+    clear: both;
+    color: red;
+    font-style: italic;
+}

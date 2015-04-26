@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.Taxonomy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
-using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
-using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
-using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 using Term = OfficeDevPnP.Core.Framework.Provisioning.Model.Term;
 using TermGroup = OfficeDevPnP.Core.Framework.Provisioning.Model.TermGroup;
 using TermSet = OfficeDevPnP.Core.Framework.Provisioning.Model.TermSet;
@@ -66,7 +59,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             List<TermSet> termSets = new List<TermSet>();
 
-            TermSet termSet = new TermSet(_termSetGuid, "TestProvisioningTermSet", null, null);
+            TermSet termSet = new TermSet(_termSetGuid, "TestProvisioningTermSet", null, true, false, null, null);
 
             List<Term> terms = new List<Term>();
 
@@ -108,9 +101,25 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 ctx.ExecuteQueryRetry();
 
                 Assert.IsInstanceOfType(group, typeof(Microsoft.SharePoint.Client.Taxonomy.TermGroup));
-                Assert.IsInstanceOfType(set, typeof (Microsoft.SharePoint.Client.Taxonomy.TermSet));
+                Assert.IsInstanceOfType(set, typeof(Microsoft.SharePoint.Client.Taxonomy.TermSet));
                 Assert.IsTrue(set.Terms.Count == 2);
 
+            }
+        }
+
+        [TestMethod]
+        public void CanCreateEntities()
+        {
+            using (var ctx = TestCommon.CreateClientContext())
+            {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
+                var template = new ProvisioningTemplate();
+                template = new ObjectTermGroups().CreateEntities(ctx.Web, template, creationInfo);
+
+                Assert.IsTrue(template.TermGroups.Any());
+                Assert.IsInstanceOfType(template.TermGroups, typeof(List<TermGroup>));
             }
         }
     }

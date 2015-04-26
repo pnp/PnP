@@ -5,14 +5,22 @@ using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using ContentType = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentType;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectContentType : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Content Types"; }
+        }
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ContentTypes);
+
             // if this is a sub site then we're not provisioning content types. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
             {
@@ -21,13 +29,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(web.ContentTypes, ct => ct.Include(c => c.StringId));
             web.Context.ExecuteQueryRetry();
+            var existingCTs = web.ContentTypes.ToList();
 
-            foreach (var ct in template.ContentTypes)
+            foreach (var ct in template.ContentTypes.OrderBy(ct => ct.Id)) // ordering to handle references to parent content types that can be in the same template
             {
-                var existingCT = web.ContentTypes.FirstOrDefault(c => c.StringId.Equals(ct.ID, StringComparison.OrdinalIgnoreCase));
+                var existingCT = existingCTs.FirstOrDefault(c => c.StringId.Equals(ct.Id, StringComparison.OrdinalIgnoreCase));
                 if (existingCT == null)
                 {
-                    CreateContentType(web, ct);
+                    var newCT = CreateContentType(web, ct);
+                    if(newCT != null)
+                    {
+                        existingCTs.Add(newCT);
+                    }
+                    
                 }
                 else
                 {
@@ -35,23 +49,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCT.DeleteObject();
                         web.Context.ExecuteQueryRetry();
-                        CreateContentType(web, ct);
+                        var newCT= CreateContentType(web, ct);
+                        if (newCT != null)
+                        {
+                            existingCTs.Add(newCT);
+                        }
                     }
                 }
             }
+
         }
 
-        private static void CreateContentType(Web web, ContentType ct)
+        private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType ct)
         {
             var name = ct.Name.ToParsedString();
             var description = ct.Description.ToParsedString();
-            var id = ct.ID.ToParsedString();
+            var id = ct.Id.ToParsedString();
             var group = ct.Group.ToParsedString();
 
             var createdCT = web.CreateContentType(name, description, id, group);
             foreach (var fieldRef in ct.FieldRefs)
             {
-                var field = web.Fields.GetById(fieldRef.ID);
+                var field = web.Fields.GetById(fieldRef.Id);
                 web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
@@ -63,7 +82,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 createdCT.DocumentTemplate = ct.DocumentTemplate;
             }
 
+            web.Context.Load(createdCT);
             web.Context.ExecuteQueryRetry();
+
+            return createdCT;
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
@@ -94,9 +116,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ct.DocumentTemplate,
                         false,
                             (from fieldLink in ct.FieldLinks
-                             select new FieldRef()
+                             select new FieldRef(fieldLink.Name)
                              {
-                                 ID = fieldLink.Id,
+                                 Id = fieldLink.Id,
                                  Hidden = fieldLink.Hidden,
                                  Required = fieldLink.Required,
                              })
@@ -117,7 +139,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             foreach (var ct in baseTemplate.ContentTypes)
             {
-                var index = template.ContentTypes.FindIndex(f => f.ID.Equals(ct.ID, StringComparison.OrdinalIgnoreCase));
+                var index = template.ContentTypes.FindIndex(f => f.Id.Equals(ct.Id, StringComparison.OrdinalIgnoreCase));
                 if (index > -1)
                 {
                     template.ContentTypes.RemoveAt(index);

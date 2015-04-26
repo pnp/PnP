@@ -20,6 +20,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     internal class XMLPnPSchemaV201505Formatter :
         IXMLSchemaFormatter, ITemplateFormatter
     {
+        private TemplateProviderBase _provider;
+
+        public void Initialize(TemplateProviderBase provider)
+        {
+            this._provider = provider;
+        }
+
         string IXMLSchemaFormatter.NamespaceUri
         {
             get { return (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05); }
@@ -59,21 +66,40 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             return (result);
         }
 
-        Stream ITemplateFormatter.ToFormattedTemplate(ProvisioningTemplate template)
+        Stream ITemplateFormatter.ToFormattedTemplate(Model.ProvisioningTemplate template)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
-            V201505.SharePointProvisioningTemplate result = new V201505.SharePointProvisioningTemplate();
+            V201505.ProvisioningTemplate result = new V201505.ProvisioningTemplate();
 
+            V201505.Provisioning wrappedResult = new V201505.Provisioning();
+            wrappedResult.Preferences = new V201505.Preferences
+            {
+                Generator = this.GetType().Assembly.FullName
+            };
+            wrappedResult.Templates = new V201505.Templates[] { 
+                new V201505.Templates 
+                { 
+                    ID = String.Format("CONTAINER-{0}", template.Id),
+                    ProvisioningTemplate = new V201505.ProvisioningTemplate[]
+                    {
+                        result
+                    }
+                }
+            };
+
+            #region Basic Properties
             // Translate basic properties
-            result.ID = template.ID;
+            result.ID = template.Id;
             result.Version = (Decimal)template.Version;
             result.VersionSpecified = true;
             result.SitePolicy = template.SitePolicy;
+            #endregion
 
+            #region Property Bag
             // Translate PropertyBagEntries, if any
             if (template.PropertyBagEntries != null && template.PropertyBagEntries.Count > 0)
             {
@@ -89,11 +115,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries = null;
             }
+            #endregion
 
+            #region Security
             // Translate Security configuration, if any
             if (template.Security != null)
             {
-                result.Security = new V201505.SharePointProvisioningTemplateSecurity();
+                result.Security = new V201505.ProvisioningTemplateSecurity();
 
                 if (template.Security.AdditionalAdministrators != null && template.Security.AdditionalAdministrators.Count > 0)
                 {
@@ -151,11 +179,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     result.Security.AdditionalVisitors = null;
                 }
             }
+            #endregion
 
+            #region Site Columns
             // Translate Site Columns (Fields), if any
             if (template.SiteFields != null && template.SiteFields.Count > 0)
             {
-                result.SiteFields = new V201505.SharePointProvisioningTemplateSiteFields
+                result.SiteFields = new V201505.ProvisioningTemplateSiteFields
                 {
                     Any =
                         (from field in template.SiteFields
@@ -166,22 +196,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.SiteFields = null;
             }
+            #endregion
 
+            #region Content Types
             // Translate ContentTypes, if any
             if (template.ContentTypes != null && template.ContentTypes.Count > 0)
             {
                 result.ContentTypes = (from ct in template.ContentTypes
                                        select new V201505.ContentType
             {
-                ID = ct.ID,
+                ID = ct.Id,
                 Description = ct.Description,
                 Group = ct.Group,
                 Name = ct.Name,
                 FieldRefs = ct.FieldRefs.Count > 0 ?
                     (from fieldRef in ct.FieldRefs
-                     select new V201505.FieldRef
+                     select new V201505.ContentTypeFieldRef
                      {
-                         ID = fieldRef.ID.ToString(),
+                         Name = fieldRef.Name,
+                         ID = fieldRef.Id.ToString(),
                          Hidden = fieldRef.Hidden,
                          Required = fieldRef.Required
                      }).ToArray() : null,
@@ -192,7 +225,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.ContentTypes = null;
             }
+            #endregion
 
+            #region List Instances
             // Translate Lists Instances, if any
             if (template.Lists != null && template.Lists.Count > 0)
             {
@@ -204,12 +239,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Description = list.Description,
                          DocumentTemplate = list.DocumentTemplate,
                          EnableVersioning = list.EnableVersioning,
+                         EnableMinorVersions = list.EnableMinorVersions,
+                         EnableModeration = list.EnableModeration,
                          Hidden = list.Hidden,
                          MinorVersionLimit = list.MinorVersionLimit,
                          MinorVersionLimitSpecified = true,
                          MaxVersionLimit = list.MaxVersionLimit,
                          MaxVersionLimitSpecified = true,
                          OnQuickLaunch = list.OnQuickLaunch,
+                         EnableAttachments = list.EnableAttachments,
+                         EnableFolderCreation = list.EnableFolderCreation,
                          RemoveExistingContentTypes = list.RemoveExistingContentTypes,
                          TemplateFeatureID = list.TemplateFeatureID != Guid.Empty ? list.TemplateFeatureID.ToString() : null,
                          TemplateType = list.TemplateType,
@@ -219,7 +258,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             (from contentTypeBinding in list.ContentTypeBindings
                              select new V201505.ContentTypeBinding
                              {
-                                 ContentTypeID = contentTypeBinding.ContentTypeID,
+                                 ContentTypeID = contentTypeBinding.ContentTypeId,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
@@ -239,9 +278,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          } : null,
                          FieldRefs = list.FieldRefs.Count > 0 ?
                          (from fieldRef in list.FieldRefs
-                          select new V201505.FieldRef
+                          select new V201505.ListInstanceFieldRef
                           {
-                              ID = fieldRef.ID.ToString(),
+                              Name = fieldRef.Name,
+                              DisplayName = fieldRef.DisplayName,
+                              Hidden = fieldRef.Hidden,
+                              Required = fieldRef.Required,
+                              ID = fieldRef.Id.ToString(),
                           }).ToArray() : null,
                          DataRows = list.DataRows.Count > 0 ?
                              new List<DataValue[]>(
@@ -257,11 +300,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Lists = null;
             }
+            #endregion
 
+            #region Features
             // Translate Features, if any
             if (template.Features != null)
             {
-                result.Features = new V201505.SharePointProvisioningTemplateFeatures();
+                result.Features = new V201505.ProvisioningTemplateFeatures();
 
                 // TODO: This nullability check could be useless, because
                 // the SiteFeatures property is initialized in the Features
@@ -272,7 +317,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.SiteFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -290,7 +335,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.WebFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -299,11 +344,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     result.Features.WebFeatures = null;
                 }
             }
+            #endregion
 
+            #region Custom Actions
             // Translate CustomActions, if any
             if (template.CustomActions != null)
             {
-                result.CustomActions = new V201505.SharePointProvisioningTemplateCustomActions();
+                result.CustomActions = new V201505.ProvisioningTemplateCustomActions();
 
                 if (template.CustomActions.SiteCustomActions != null && template.CustomActions.SiteCustomActions.Count > 0)
                 {
@@ -359,7 +406,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     result.CustomActions.WebCustomActions = null;
                 }
             }
+            #endregion
 
+            #region Files
             // Translate Files, if any
             if (template.Files != null && template.Files.Count > 0)
             {
@@ -370,21 +419,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Overwrite = file.Overwrite,
                          Src = file.Src,
                          Folder = file.Folder,
-                         WebParts = (from wp in file.WebParts
-                                     select new V201505.WebPartPageWebPart
-                                     {
-                                         Zone = wp.Zone,
-                                         Order = (int)wp.Order,
-                                         Contents = wp.Contents,
-                                         Title = wp.Title,
-                                     }).ToArray()
+                         WebParts = file.WebParts.Count > 0 ?
+                            (from wp in file.WebParts
+                             select new V201505.WebPartPageWebPart
+                             {
+                                 Zone = wp.Zone,
+                                 Order = (int)wp.Order,
+                                 Contents = wp.Contents,
+                                 Title = wp.Title,
+                             }).ToArray() : null,
+                         Properties = file.Properties != null && file.Properties.Count > 0 ?
+                            (from p in file.Properties
+                             select new V201505.StringDictionaryItem
+                             {
+                                 Key = p.Key,
+                                 Value = p.Value
+                             }).ToArray() : null
                      }).ToArray();
             }
             else
             {
                 result.Files = null;
             }
+            #endregion
 
+            #region Pages
             // Translate Pages, if any
             if (template.Pages != null && template.Pages.Count > 0)
             {
@@ -394,45 +453,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     var schemaPage = new V201505.Page();
 
-                    var pageLayout = WIKIPAGELAYOUT.OneColumn;
+                    var pageLayout = V201505.WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
                         case WikiPageLayout.OneColumn:
-                            pageLayout = WIKIPAGELAYOUT.OneColumn;
+                            pageLayout = V201505.WikiPageLayout.OneColumn;
                             break;
                         case WikiPageLayout.OneColumnSideBar:
-                            pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
+                            pageLayout = V201505.WikiPageLayout.OneColumnSidebar;
                             break;
                         case WikiPageLayout.TwoColumns:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumns;
+                            pageLayout = V201505.WikiPageLayout.TwoColumns;
                             break;
                         case WikiPageLayout.TwoColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeader;
                             break;
                         case WikiPageLayout.TwoColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
                         case WikiPageLayout.ThreeColumns:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumns;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumns;
                             break;
                         case WikiPageLayout.ThreeColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeader;
                             break;
                         case WikiPageLayout.ThreeColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
                     schemaPage.Layout = pageLayout;
                     schemaPage.Overwrite = page.Overwrite;
 
-                    schemaPage.WebParts = (from wp in page.WebParts
-                                           select new V201505.WikiPageWebPart
-                                           {
-                                               Column = (int)wp.Column,
-                                               Row = (int)wp.Row,
-                                               Contents = wp.Contents,
-                                               Title = wp.Title,
-                                           }).ToArray();
+                    schemaPage.WebParts = page.WebParts.Count > 0 ?
+                        (from wp in page.WebParts
+                         select new V201505.WikiPageWebPart
+                         {
+                             Column = (int)wp.Column,
+                             Row = (int)wp.Row,
+                             Contents = wp.Contents,
+                             Title = wp.Title,
+                         }).ToArray() : null;
 
                     schemaPage.Url = page.Url;
 
@@ -441,7 +501,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
                 result.Pages = pages.ToArray();
             }
+            #endregion
 
+            #region Taxonomy
             // Translate Taxonomy elements, if any
             if (template.TermGroups != null && template.TermGroups.Count > 0)
             {
@@ -450,22 +512,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                      select new V201505.TermGroup
                      {
                          Name = grp.Name,
-                         ID = grp.ID.ToString(),
+                         ID = grp.Id.ToString(),
                          Description = grp.Description,
                          TermSets = (
                             from termSet in grp.TermSets
                             select new V201505.TermSet
                             {
-                                ID = termSet.ID.ToString(),
+                                ID = termSet.Id.ToString(),
                                 Name = termSet.Name,
+                                IsAvailableForTagging = termSet.IsAvailableForTagging,
+                                IsOpenForTermCreation = termSet.IsOpenForTermCreation,
                                 Description = termSet.Description,
                                 Language = termSet.Language.HasValue ? termSet.Language.Value : 0,
                                 LanguageSpecified = termSet.Language.HasValue,
                                 Terms = termSet.Terms.FromModelTermsToSchemaTerms(),
+                                CustomProperties = termSet.Properties.Count > 0 ?
+                                     (from p in termSet.Properties
+                                      select new V201505.StringDictionaryItem
+                                      {
+                                          Key = p.Key,
+                                          Value = p.Value
+                                      }).ToArray() : null,
                             }).ToArray(),
                      }).ToArray();
             }
+            #endregion
 
+            #region Composed Looks
             // Translate ComposedLook, if any
             if (template.ComposedLook != null)
             {
@@ -482,7 +555,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     VersionSpecified = true,
                 };
             }
+            #endregion
 
+            #region Providers
             // Translate Providers, if any
             if (template.Providers != null && template.Providers.Count > 0)
             {
@@ -499,18 +574,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.Providers = null;
             }
+            #endregion
 
             XmlSerializerNamespaces ns =
                 new XmlSerializerNamespaces();
             ns.Add(((IXMLSchemaFormatter)this).NamespacePrefix,
                 ((IXMLSchemaFormatter)this).NamespaceUri);
 
-            var output = XMLSerializer.SerializeToStream<V201505.SharePointProvisioningTemplate>(result, ns);
+            var output = XMLSerializer.SerializeToStream<V201505.Provisioning>(wrappedResult, ns);
             output.Position = 0;
             return (output);
         }
 
-        public ProvisioningTemplate ToProvisioningTemplate(Stream template)
+        public Model.ProvisioningTemplate ToProvisioningTemplate(Stream template)
+        {
+            return (this.ToProvisioningTemplate(template, null));
+        }
+
+        public Model.ProvisioningTemplate ToProvisioningTemplate(Stream template, String identifier)
         {
             if (template == null)
             {
@@ -531,15 +612,87 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             sourceStream.Position = 0;
             XDocument xml = XDocument.Load(sourceStream);
-            V201505.SharePointProvisioningTemplate source = XMLSerializer.Deserialize<V201505.SharePointProvisioningTemplate>(xml);
+            XNamespace pnp = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
 
-            ProvisioningTemplate result = new ProvisioningTemplate();
+            // Prepare a variable to hold the single source formatted template
+            V201505.ProvisioningTemplate source = null;
 
+            // Prepare a variable to hold the resulting ProvisioningTemplate instance
+            Model.ProvisioningTemplate result = new Model.ProvisioningTemplate();
+
+            // Determine if we're working on a wrapped SharePointProvisioningTemplate or not
+            if (xml.Root.Name == pnp + "Provisioning")
+            {
+                // Deserialize the whole wrapper
+                V201505.Provisioning wrappedResult = XMLSerializer.Deserialize<V201505.Provisioning>(xml);
+
+                // Handle the wrapper schema parameters
+                if (wrappedResult.Preferences != null &&
+                    wrappedResult.Preferences.Parameters != null &&
+                    wrappedResult.Preferences.Parameters.Length > 0)
+                {
+                    foreach (var parameter in wrappedResult.Preferences.Parameters)
+                    {
+                        result.Parameters.Add(parameter.Key, parameter.Text != null ? parameter.Text.Aggregate(String.Empty, (acc, i) => acc + i) : null);
+                    }
+                }
+
+                foreach (var templates in wrappedResult.Templates)
+                {
+                    // Let's see if we have an in-place template with the provided ID or if we don't have a provided ID at all
+                    source = templates.ProvisioningTemplate.FirstOrDefault(spt => spt.ID == identifier || String.IsNullOrEmpty(identifier));
+
+                    // If we don't have a template, but there are external file references
+                    if (source == null && templates.ProvisioningTemplateFile.Length > 0)
+                    {
+                        // Otherwise let's see if we have an external file for the template
+                        var externalSource = templates.ProvisioningTemplateFile.FirstOrDefault(sptf => sptf.ID == identifier);
+
+                        Stream externalFileStream = this._provider.Connector.GetFileStream(externalSource.File);
+                        xml = XDocument.Load(externalFileStream);
+
+                        if (xml.Root.Name != pnp + "ProvisioningTemplate")
+                        {
+                            throw new ApplicationException("Invalid external file format. Expected a ProvisioningTemplate file!");
+                        }
+                        else
+                        {
+                            source = XMLSerializer.Deserialize<V201505.ProvisioningTemplate>(xml);
+                        }
+                    }
+
+                    if (source != null)
+                    {
+                        break;
+                    }
+                }
+            }
+            else if (xml.Root.Name == pnp + "ProvisioningTemplate")
+            {
+                var IdAttribute = xml.Root.Attribute("ID");
+
+                // If there is a provided ID, and if it doesn't equal the current ID
+                if (!String.IsNullOrEmpty(identifier) &&
+                    IdAttribute != null &&
+                    IdAttribute.Value != identifier)
+                {
+                    // TODO: Use resource file
+                    throw new ApplicationException("The provided template identifier is not available!");
+                }
+                else
+                {
+                    source = XMLSerializer.Deserialize<V201505.ProvisioningTemplate>(xml);
+                }
+            }
+
+            #region Basic Properties
             // Translate basic properties
-            result.ID = source.ID;
+            result.Id = source.ID;
             result.Version = (Double)source.Version;
             result.SitePolicy = source.SitePolicy;
+            #endregion
 
+            #region Property Bag
             // Translate PropertyBagEntries, if any
             if (source.PropertyBagEntries != null)
             {
@@ -551,7 +704,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         Value = bag.Value,
                     });
             }
+            #endregion
 
+            #region Security
             // Translate Security configuration, if any
             if (source.Security != null)
             {
@@ -592,7 +747,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     });
                 }
             }
+            #endregion
 
+            #region Site Columns
             // Translate Site Columns (Fields), if any
             if ((source.SiteFields != null) && (source.SiteFields.Any != null))
             {
@@ -603,7 +760,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         SchemaXml = field.OuterXml,
                     });
             }
+            #endregion
 
+            #region Content Types
             // Translate ContentTypes, if any
             if ((source.ContentTypes != null) && (source.ContentTypes != null))
             {
@@ -622,16 +781,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         contentType.Overwrite,
                         (contentType.FieldRefs != null ?
                             (from fieldRef in contentType.FieldRefs
-                             select new Model.FieldRef
+                             select new Model.FieldRef(fieldRef.Name)
                              {
-                                 ID = Guid.Parse(fieldRef.ID),
+                                 Id = Guid.Parse(fieldRef.ID),
                                  Hidden = fieldRef.Hidden,
                                  Required = fieldRef.Required
                              }) : null)
                         )
                     );
             }
+            #endregion
 
+            #region List Instances
             // Translate Lists Instances, if any
             if (source.Lists != null)
             {
@@ -642,7 +803,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 (from contentTypeBinding in list.ContentTypeBindings
                                  select new Model.ContentTypeBinding
                                  {
-                                     ContentTypeID = contentTypeBinding.ContentTypeID,
+                                     ContentTypeId = contentTypeBinding.ContentTypeID,
                                      Default = contentTypeBinding.Default,
                                  }) : null),
                         (list.Views != null ?
@@ -659,9 +820,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  }) : null),
                         (list.FieldRefs != null ?
                                  (from fieldRef in list.FieldRefs
-                                  select new Model.FieldRef
+                                  select new Model.FieldRef(fieldRef.Name)
                                   {
-                                      ID = Guid.Parse(fieldRef.ID)
+                                      DisplayName = fieldRef.DisplayName,
+                                      Hidden = fieldRef.Hidden,
+                                      Required = fieldRef.Required,
+                                      Id = Guid.Parse(fieldRef.ID)
                                   }) : null),
                         (list.DataRows != null ?
                                  (from dataRow in list.DataRows
@@ -675,10 +839,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         Description = list.Description,
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
+                        EnableMinorVersions = list.EnableMinorVersions,
+                        EnableModeration = list.EnableModeration,
                         Hidden = list.Hidden,
                         MinorVersionLimit = list.MinorVersionLimitSpecified ? list.MinorVersionLimit : 0,
                         MaxVersionLimit = list.MaxVersionLimitSpecified ? list.MaxVersionLimit : 0,
                         OnQuickLaunch = list.OnQuickLaunch,
+                        EnableAttachments = list.EnableAttachments,
+                        EnableFolderCreation = list.EnableFolderCreation,
                         RemoveExistingContentTypes = list.RemoveExistingContentTypes,
                         TemplateFeatureID = !String.IsNullOrEmpty(list.TemplateFeatureID) ? Guid.Parse(list.TemplateFeatureID) : Guid.Empty,
                         RemoveExistingViews = list.Views != null ? list.Views.RemoveExistingViews : false,
@@ -687,7 +855,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         Url = list.Url,
                     });
             }
+            #endregion
 
+            #region Features
             // Translate Features, if any
             if (source.Features != null)
             {
@@ -697,7 +867,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.SiteFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -707,12 +877,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.WebFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
             }
+            #endregion
 
+            #region Custom Actions
             // Translate CustomActions, if any
             if (source.CustomActions != null)
             {
@@ -757,7 +929,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         });
                 }
             }
+            #endregion
 
+            #region Files
             // Translate Files, if any
             if (source.Files != null)
             {
@@ -766,7 +940,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     select new Model.File(file.Src,
                         file.Folder,
                         file.Overwrite,
-                        file.Create,
                         file.WebParts != null ?
                             (from wp in file.WebParts
                              select new Model.WebPart
@@ -775,11 +948,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                      Zone = wp.Zone,
                                      Title = wp.Title,
                                      Contents = wp.Contents
-                                 }) : null
-                            )
+                                 }) : null,
+                        file.Properties != null ? file.Properties.ToDictionary(k => k.Key, v => v.Value) : null
+                        )
                     );
             }
+            #endregion
 
+            #region Pages
             // Translate Pages, if any
             if (source.Pages != null)
             {
@@ -789,28 +965,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     var pageLayout = WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
-                        case WIKIPAGELAYOUT.OneColumn:
+                        case V201505.WikiPageLayout.OneColumn:
                             pageLayout = WikiPageLayout.OneColumn;
                             break;
-                        case WIKIPAGELAYOUT.OneColumnSidebar:
+                        case V201505.WikiPageLayout.OneColumnSidebar:
                             pageLayout = WikiPageLayout.OneColumnSideBar;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumns:
+                        case V201505.WikiPageLayout.TwoColumns:
                             pageLayout = WikiPageLayout.TwoColumns;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeader:
+                        case V201505.WikiPageLayout.TwoColumnsHeader:
                             pageLayout = WikiPageLayout.TwoColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.TwoColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumns:
+                        case V201505.WikiPageLayout.ThreeColumns:
                             pageLayout = WikiPageLayout.ThreeColumns;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeader:
+                        case V201505.WikiPageLayout.ThreeColumnsHeader:
                             pageLayout = WikiPageLayout.ThreeColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.ThreeColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
@@ -829,21 +1005,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
                 }
             }
+            #endregion
 
+            #region Taxonomy
+            // Translate Termgroups, if any
             if (source.TermGroups != null)
             {
                 result.TermGroups.AddRange(
                     from termGroup in source.TermGroups
                     select new Model.TermGroup(
-                        Guid.Parse(termGroup.ID),
+                        !string.IsNullOrEmpty(termGroup.ID) ? Guid.Parse(termGroup.ID) : Guid.Empty,
                         termGroup.Name,
                         new List<Model.TermSet>(
                             from termSet in termGroup.TermSets
                             select new Model.TermSet(
-                                Guid.Parse(termSet.ID),
+                                !string.IsNullOrEmpty(termSet.ID) ? Guid.Parse(termSet.ID) : Guid.Empty,
                                 termSet.Name,
                                 termSet.LanguageSpecified ? (int?)termSet.Language : null,
-                                termSet.Terms.FromSchemaTermsToModelTerms())
+                                termSet.IsAvailableForTagging,
+                                termSet.IsOpenForTermCreation,
+                                termSet.Terms.FromSchemaTermsToModelTerms(),
+                                termSet.CustomProperties != null ? termSet.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null)
                             {
                                 Description = termSet.Description,
                             })
@@ -852,7 +1034,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             Description = termGroup.Description,
                         });
             }
+            #endregion
 
+            #region Composed Looks
             // Translate ComposedLook, if any
             if (source.ComposedLook != null)
             {
@@ -865,7 +1049,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.ComposedLook.SiteLogo = source.ComposedLook.SiteLogo;
                 result.ComposedLook.Version = source.ComposedLook.Version;
             }
+            #endregion
 
+            #region Providers
             // Translate Providers, if any
             if (source.Providers != null)
             {
@@ -888,6 +1074,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     }
                 }
             }
+            #endregion
 
             return (result);
         }
@@ -897,18 +1084,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
         public static V201505.Term[] FromModelTermsToSchemaTerms(this List<Model.Term> terms)
         {
-            V201505.Term[] result = (
+            V201505.Term[] result = terms.Count > 0 ? (
                 from term in terms
                 select new V201505.Term
                 {
-                    ID = term.ID.ToString(),
+                    ID = term.Id.ToString(),
                     Name = term.Name,
                     Description = term.Description,
                     Owner = term.Owner,
-                    IsAvailableForTagging = term.IsAvailableForTagging.HasValue ? term.IsAvailableForTagging.Value : false,
-                    IsAvailableForTaggingSpecified = term.IsAvailableForTagging.HasValue,
+                    LanguageSpecified = term.Language.HasValue,
+                    Language = term.Language.HasValue ? term.Language.Value : 1033,
+                    IsAvailableForTagging = term.IsAvailableForTagging,
                     CustomSortOrder = term.CustomSortOrder,
-                    ChildTerms = new TermChildTerms { Items = term.Terms.FromModelTermsToSchemaTerms() },
+                    Terms = term.Terms.Count > 0 ? new TermTerms { Items = term.Terms.FromModelTermsToSchemaTerms() } : null,
                     CustomProperties = term.Properties.Count > 0 ?
                         (from p in term.Properties
                          select new V201505.StringDictionaryItem
@@ -928,11 +1116,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          select new V201505.TermLabelsLabel
                          {
                              Language = l.Language,
-                             IsDefaultForLanguage = l.IsDefaultForLanguage.HasValue ? l.IsDefaultForLanguage.Value : false,
-                             IsDefaultForLanguageSpecified = l.IsDefaultForLanguage.HasValue,
+                             IsDefaultForLanguage = l.IsDefaultForLanguage,
                              Value = l.Value,
                          }).ToArray() : null,
-                }).ToArray();
+                }).ToArray() : null;
 
             return (result);
         }
@@ -942,25 +1129,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             List<Model.Term> result = new List<Model.Term>(
                 from term in terms
                 select new Model.Term(
-                    Guid.Parse(term.ID),
+                    !string.IsNullOrEmpty(term.ID) ? Guid.Parse(term.ID) : Guid.Empty,
                     term.Name,
-                    null, // TODO: language
-                    term.ChildTerms.Items.FromSchemaTermsToModelTerms(),
-                    new List<Model.TermLabel>(
+                    term.LanguageSpecified ? term.Language : (int?)null,
+                    (term.Terms != null && term.Terms.Items != null) ? term.Terms.Items.FromSchemaTermsToModelTerms() : null,
+                    term.Labels != null ?
+                    (new List<Model.TermLabel>(
                         from label in term.Labels
                         select new Model.TermLabel
                         {
                             Language = label.Language,
                             Value = label.Value,
-                            IsDefaultForLanguage = label.IsDefaultForLanguageSpecified ? label.IsDefaultForLanguage : false,
+                            IsDefaultForLanguage = label.IsDefaultForLanguage
                         }
-                    ),
-                    term.CustomProperties.ToDictionary(k => k.Key, v => v.Value),
-                    term.LocalCustomProperties.ToDictionary(k => k.Key, v => v.Value)
+                    )) : null,
+                    term.CustomProperties != null ? term.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null,
+                    term.LocalCustomProperties != null ? term.LocalCustomProperties.ToDictionary(k => k.Key, v => v.Value) : null
                     )
                     {
                         CustomSortOrder = term.CustomSortOrder,
-                        IsAvailableForTagging = term.IsAvailableForTaggingSpecified ? term.IsAvailableForTagging : false,
+                        IsAvailableForTagging = term.IsAvailableForTagging,
                         Owner = term.Owner,
                     }
                 );

@@ -27,6 +27,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public override List<ProvisioningTemplate> GetTemplates()
         {
             var formatter = new XMLPnPSchemaFormatter();
+            formatter.Initialize(this);
             return (this.GetTemplates(formatter));
         }
 
@@ -45,8 +46,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     // Load it from a File Stream
                     Stream stream = this.Connector.GetFileStream(file);
 
-                    // TODO: Handle the new Provisioning Schema
-
                     // And convert it into a ProvisioningTemplate
                     ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
 
@@ -61,18 +60,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public override ProvisioningTemplate GetTemplate(string uri)
         {
             var formatter = new XMLPnPSchemaFormatter();
-            return (this.GetTemplate(uri, default(String), formatter));
+            formatter.Initialize(this);
+            return (this.GetTemplate(uri, null, formatter));
         }
 
         public override ProvisioningTemplate GetTemplate(string uri, string identifier)
         {
             var formatter = new XMLPnPSchemaFormatter();
+            formatter.Initialize(this);
             return (this.GetTemplate(uri, identifier, formatter));
         }
 
         public override ProvisioningTemplate GetTemplate(string uri, ITemplateFormatter formatter)
         {
-            return (this.GetTemplate(uri, default(String), formatter));
+            return (this.GetTemplate(uri, null, formatter));
         }
 
         public override ProvisioningTemplate GetTemplate(string uri, string identifier, ITemplateFormatter formatter)
@@ -85,13 +86,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // Get the XML document from a File Stream
             Stream stream = this.Connector.GetFileStream(uri);
 
-            // TODO: Handle the new Provisioning Schema
-
             // And convert it into a ProvisioningTemplate
-            ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+            ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream, identifier);
 
             // Store the identifier of this template, is needed for latter save operation
-            this.Identifier = uri;
+            this.Uri = uri;
 
             return (provisioningTemplate);
         }
@@ -109,7 +108,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ArgumentNullException("template");
             }
 
-            SaveToConnector(template, this.Identifier, formatter);
+            SaveToConnector(template, this.Uri, formatter);
         }
 
         public override void SaveAs(ProvisioningTemplate template, string uri)
@@ -149,9 +148,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         
         private void SaveToConnector(ProvisioningTemplate template, string uri, ITemplateFormatter formatter)
         {
-            if (String.IsNullOrEmpty(template.ID))
+            if (String.IsNullOrEmpty(template.Id))
             {
-                template.ID = Path.GetFileNameWithoutExtension(uri);
+                template.Id = Path.GetFileNameWithoutExtension(uri);
             }
 
             using (var stream = formatter.ToFormattedTemplate(template))

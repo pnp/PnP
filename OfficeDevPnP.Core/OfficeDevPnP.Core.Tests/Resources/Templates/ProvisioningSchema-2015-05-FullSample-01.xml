@@ -10,9 +10,9 @@
   </pnp:Preferences>
   <pnp:Templates ID="SAMPLE-TEMPLATES">
 
-    <pnp:SharePointProvisioningTemplateFile ID="WORKFLOWSITE" File="ProvisioningSchema-2015-05-ReferenceSample-01.xml" />
+    <pnp:ProvisioningTemplateFile ID="WORKFLOWSITE" File="ProvisioningSchema-2015-05-ReferenceSample-01.xml" />
 
-    <pnp:SharePointProvisioningTemplate ID="SPECIALTEAM" Version="1.0">
+    <pnp:ProvisioningTemplate ID="SPECIALTEAM" Version="1.0">
 
       <pnp:SitePolicy>HBI</pnp:SitePolicy>
 
@@ -53,10 +53,14 @@
                      Group="Base Foundation Content Types"
                      Description="General Project Document Content Type">
           <pnp:FieldRefs>
-            <pnp:FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
-            <pnp:FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
-            <pnp:FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Name="ProjectManager" DisplayName="Project Manager" />
-            <pnp:FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Name="ProjectDescription" DisplayName="Project Description" />
+            <!-- Project ID -->
+            <pnp:FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" />
+            <!-- Project Name -->
+            <pnp:FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" />
+            <!-- Project Manager -->
+            <pnp:FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" />
+            <!-- Project Description -->
+            <pnp:FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" />
           </pnp:FieldRefs>
         </pnp:ContentType>
 
@@ -136,6 +140,10 @@
         <pnp:File Src="Custom.spfont" Folder="_catalogs/Theme/15" Overwrite="true" />
       </pnp:Files>
 
+      <pnp:Pages>
+        <pnp:Page Layout="TwoColumns" Overwrite="true" Url="{site}/SitePages/DemoWikiPage.aspx"></pnp:Page>
+      </pnp:Pages>
+
       <pnp:TermGroups>
         <pnp:TermGroup ID="{0E8F395E-FF58-4D45-9FF7-E331AB728BEB}" Name="{CompanyName} TermSets">
           <pnp:TermSets>
@@ -150,7 +158,7 @@
                     <pnp:Property Key="LocalProperty1" Value="Value1" />
                     <pnp:Property Key="LocalProperty2" Value="Value2" />
                   </pnp:LocalCustomProperties>
-                  <pnp:ChildTerms>
+                  <pnp:Terms>
                     <pnp:Term Name="Cloud" ID="{87C55100-8316-4DA0-97FD-FEB5731880F6}">
                       <pnp:Labels>
                         <pnp:Label Language="1040" Value="Nuvola"/>
@@ -161,10 +169,10 @@
                         <pnp:Label Language="1040" Value="Nuova Farm"/>
                       </pnp:Labels>
                     </pnp:Term>
-                  </pnp:ChildTerms>
+                  </pnp:Terms>
                 </pnp:Term>
                 <pnp:Term Name="HSE Projects" ID="{1F1B9EE8-74EA-4D89-B502-FEAA44340385}">
-                  <pnp:ChildTerms>
+                  <pnp:Terms>
                     <pnp:Term Name="Security Assessment" ID="{3279FE80-95DB-4D35-B235-A9B2F0FB6F9E}">
                       <pnp:Labels>
                         <pnp:Label Language="1040" Value="Valutazione Sicurezza"/>
@@ -175,7 +183,7 @@
                         <pnp:Label Language="1040" Value="Programma Sicurezza"/>
                       </pnp:Labels>
                     </pnp:Term>
-                  </pnp:ChildTerms>
+                  </pnp:Terms>
                 </pnp:Term>
               </pnp:Terms>
             </pnp:TermSet>
@@ -206,7 +214,7 @@
         </pnp:Provider>
       </pnp:Providers>
 
-    </pnp:SharePointProvisioningTemplate>
+    </pnp:ProvisioningTemplate>
 
   </pnp:Templates>
 
@@ -221,7 +229,7 @@
                         Url="https://{O365TenantName}.sharepoint.com/sites/Intranet">
       <pnp:Templates>
         <!-- And let's use the SPECIALTEAM SharePointProvisioningTemplate -->
-        <pnp:SharePointProvisioningTemplateReference ID="SPECIALTEAM" />
+        <pnp:ProvisioningTemplateReference ID="SPECIALTEAM" />
       </pnp:Templates>
     </pnp:SiteCollection>
 
@@ -233,7 +241,7 @@
               Url="Workflows"
               UseSamePermissionsAsParentSite="true">
       <pnp:Templates>
-        <pnp:SharePointProvisioningTemplateReference ID="WORKFLOWSITE" />
+        <pnp:ProvisioningTemplateReference ID="WORKFLOWSITE" />
       </pnp:Templates>
     </pnp:Site>
 
@@ -252,7 +260,7 @@
                   <pnp:Property Key="LocalProperty1" Value="Value1" />
                   <pnp:Property Key="LocalProperty2" Value="Value2" />
                 </pnp:LocalCustomProperties>
-                <pnp:ChildTerms>
+                <pnp:Terms>
                   <pnp:Term Name="Cloud" ID="{87C55100-8316-4DA0-97FD-FEB5731880F6}">
                     <pnp:Labels>
                       <pnp:Label Language="1040" Value="Nuvola"/>
@@ -263,10 +271,10 @@
                       <pnp:Label Language="1040" Value="Nuova Farm"/>
                     </pnp:Labels>
                   </pnp:Term>
-                </pnp:ChildTerms>
+                </pnp:Terms>
               </pnp:Term>
               <pnp:Term Name="HSE Projects" ID="{1F1B9EE8-74EA-4D89-B502-FEAA44340385}">
-                <pnp:ChildTerms>
+                <pnp:Terms>
                   <pnp:Term Name="Security Assessment" ID="{3279FE80-95DB-4D35-B235-A9B2F0FB6F9E}">
                     <pnp:Labels>
                       <pnp:Label Language="1040" Value="Valutazione Sicurezza"/>
@@ -277,7 +285,7 @@
                       <pnp:Label Language="1040" Value="Programma Sicurezza"/>
                     </pnp:Labels>
                   </pnp:Term>
-                </pnp:ChildTerms>
+                </pnp:Terms>
               </pnp:Term>
             </pnp:Terms>
           </pnp:TermSet>

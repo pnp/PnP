@@ -13,6 +13,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     /// </summary>
     public class XMLPnPSchemaFormatter : ITemplateFormatter
     {
+        private TemplateProviderBase _provider;
+
+        public void Initialize(TemplateProviderBase provider)
+        {
+            this._provider = provider;
+        }
 
         #region Static methods and properties
 
@@ -23,7 +29,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         {
             get
             {
-                return (new XMLPnPSchemaV201504Formatter());
+                return (new XMLPnPSchemaV201505Formatter());
+            }
+        }
+
+        /// <summary>
+        /// Static method to retrieve a specific XMLPnPSchemaFormatter instance
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        public static ITemplateFormatter GetSpecificFormatter(XMLPnPSchemaVersion version)
+        {
+            switch (version)
+            {
+                case XMLPnPSchemaVersion.V201503:
+                    return (new XMLPnPSchemaV201503Formatter());
+                case XMLPnPSchemaVersion.V201505:
+                    return (new XMLPnPSchemaV201505Formatter());
+                default:
+                    return (new XMLPnPSchemaV201505Formatter());
             }
         }
 
@@ -32,20 +56,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         /// </summary>
         /// <param name="namespaceUri"></param>
         /// <returns></returns>
-        public static ITemplateFormatter GetSpecificFormatter(String namespaceUri)
+        public static ITemplateFormatter GetSpecificFormatter(string namespaceUri)
         {
             switch (namespaceUri)
             {
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03):
+                case XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03:
                     return (new XMLPnPSchemaV201503Formatter());
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_04):
-                    return (new XMLPnPSchemaV201504Formatter());
-                case (XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05):
+                case XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05:
                     return (new XMLPnPSchemaV201505Formatter());
                 default:
-                    throw new ArgumentException("Unsupporter namespace URI", "namespaceUri");
+                    return (new XMLPnPSchemaV201505Formatter());
             }
         }
+
 
         #endregion
 
@@ -54,19 +77,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         public bool IsValid(System.IO.Stream template)
         {
             ITemplateFormatter formatter = this.GetSpecificFormatterInternal(ref template);
+            formatter.Initialize(this._provider);
             return (formatter.IsValid(template));
         }
 
         public System.IO.Stream ToFormattedTemplate(Model.ProvisioningTemplate template)
         {
             ITemplateFormatter formatter = XMLPnPSchemaFormatter.LatestFormatter;
+            formatter.Initialize(this._provider);
             return (formatter.ToFormattedTemplate(template));
         }
 
         public Model.ProvisioningTemplate ToProvisioningTemplate(System.IO.Stream template)
         {
+            return (this.ToProvisioningTemplate(template, null));
+        }
+
+        public Model.ProvisioningTemplate ToProvisioningTemplate(System.IO.Stream template, String identifier)
+        {
             ITemplateFormatter formatter = this.GetSpecificFormatterInternal(ref template);
-            return (formatter.ToProvisioningTemplate(template));
+            formatter.Initialize(this._provider);
+            return (formatter.ToProvisioningTemplate(template, identifier));
         }
 
         #endregion
@@ -89,11 +120,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XDocument xml = XDocument.Load(template);
             template.Position = 0;
 
-            String targetNamespaceURI = xml.Root.Name.NamespaceName;
+            String targetNamespaceUri = xml.Root.Name.NamespaceName;
 
-            if (!String.IsNullOrEmpty(targetNamespaceURI))
+            if (!String.IsNullOrEmpty(targetNamespaceUri))
             {
-                return (XMLPnPSchemaFormatter.GetSpecificFormatter(targetNamespaceURI));
+                return (XMLPnPSchemaFormatter.GetSpecificFormatter(targetNamespaceUri));
             }
             else
             {

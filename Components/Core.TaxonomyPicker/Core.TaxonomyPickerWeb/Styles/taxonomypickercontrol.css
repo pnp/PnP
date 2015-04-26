@@ -187,6 +187,7 @@
     cursor: pointer;
 }
 
+.cam-taxpicker-suggestion-item.selected,
 .cam-taxpicker-suggestion-item:hover {
     background-color: rgb(253, 238, 219);
 }
