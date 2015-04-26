@@ -44,15 +44,26 @@ Following picture shows the conceptual design of this solution.
 
 ![](http://i.imgur.com/3S21w53.png)
 
+1. Business users will modify actual agreed sites using their browser for needed changes, like site columns, content types, list/libraries and branding
+2. There could be one or more template sites, which could be for example divided between organizations and each of them could have separate content editors. This obviously depends on the exact business requirements for each customer
+3. End users can use self-service site collection user interface to request site collections or the process could be also administrative driven using PowerShell
+4. PnP site provisioning engine will extract delta changes compared to out of the box sites from actual live sites
+5. New site collections are created using out of the box site definitions, but changes what the business users have applied to those separate template sites are automatically applied to newly created sites
 
+*Notice that this is just one possible process. Exact scenario depends on business requirements. Key poitn is that we are able to extact modifications from live sites, which we can either storage as template xml files or applied on-fly to newly created sites.*
 
 
 # Code level approach #
-Description
+Here's logical design from code perspective.
 
 ![](http://i.imgur.com/jEsw6uB.png)
 
+1. We can extract the delta changes compared to out of the box site definitions by executing *Web.GetProvisioningTemplate()* extension method. This will return us a domain object, which we can optionally also modify in code, if needed
+2. You can serialize the domain object to different formats. Main format is PnP provisioning xml, but also JSOM is already supported. PnP provisioning XML uses community standardize schema available from own [repository](https://github.com/OfficeDev/PnP-Provisioning-Schema) under Office Dev in the GitHub
+3. You can save or load serialized domain objects using Connectors. When this was written, we supported file system, SharePoint and Azure blob store connectors for loading and saving the information
+4. When you have domain object available either by loading it from some location or from live site, you can apply those changes to any site.
 
+*Notice that you could for example have multiple templates from whcih one is used for corporate branding, one for standardize library information and third one for special configuration for specific template. This would mean that you'd just apply the configuration on top of target site 3 times. Notice also that you could also use this method to move templates or sites cross tenants and environments, since template domain object is not connected to source site. *
 
 # Solution description #
 Here's individual projects what are included in the solution and the needed configuration for them. 
