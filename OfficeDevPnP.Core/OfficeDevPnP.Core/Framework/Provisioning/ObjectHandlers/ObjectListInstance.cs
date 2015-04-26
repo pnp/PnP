@@ -86,7 +86,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 // Only supported on Document Libraries
                                 createdList.EnableMinorVersions = list.EnableMinorVersions;
-                                createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit;
+                                if (list.EnableMinorVersions)
+                                {
+                                    createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit; // Set only if enabled, otherwise you'll get exception due setting value to zero.
+                                }
                             }
                         }
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
@@ -382,6 +385,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
                         list.EnableAttachments = item.EnableAttachments;
+                        list.MaxVersionLimit = item.MajorVersionLimit;
+                        list.EnableMinorVersions = item.EnableMinorVersions;
+                        list.MinorVersionLimit = item.MajorWithMinorVersionsLimit;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)
