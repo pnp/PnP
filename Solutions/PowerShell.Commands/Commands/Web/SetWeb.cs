@@ -1,13 +1,11 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using System;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOWeb")]
-    [CmdletHelp("Sets properties on a web")]
+    [CmdletHelp("Sets properties on a web", Category = "Webs")]
     public class SetWeb : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]
@@ -21,22 +19,22 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (!string.IsNullOrEmpty(SiteLogoUrl))
+            if (SiteLogoUrl != null)
             {
-                this.SelectedWeb.SiteLogoUrl = SiteLogoUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.SiteLogoUrl = SiteLogoUrl;
+                SelectedWeb.Update();
             }
             if (!string.IsNullOrEmpty(AlternateCssUrl))
             {
-                this.SelectedWeb.AlternateCssUrl = AlternateCssUrl;
-                this.SelectedWeb.Update();
+                SelectedWeb.AlternateCssUrl = AlternateCssUrl;
+                SelectedWeb.Update();
             }
             if(!string.IsNullOrEmpty(Title))
             {
-                this.SelectedWeb.Title = Title;
-                this.SelectedWeb.Update();
+                SelectedWeb.Title = Title;
+                SelectedWeb.Update();
             }
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
         }
     }
 

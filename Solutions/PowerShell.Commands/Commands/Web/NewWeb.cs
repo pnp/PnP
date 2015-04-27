@@ -1,13 +1,11 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.New, "SPOWeb")]
-    [CmdletHelp("Creates a new subweb to the current web")]
+    [CmdletHelp("Creates a new subweb to the current web", Category = "Webs")]
     [CmdletExample(Code = @"
 PS:> New-SPOWeb -Title ""Project A Web"" -Url projectA -Description ""Information about Project A"" -Locale 1033 -Template ""STS#0""", Remarks = "Creates a new subweb under the current web with url projectA", SortOrder = 1)]
     public class NewWeb : SPOWebCmdlet
@@ -34,8 +32,10 @@ PS:> New-SPOWeb -Title ""Project A Web"" -Url projectA -Description ""Informatio
         public SwitchParameter InheritNavigation = true;
         protected override void ExecuteCmdlet()
         {
-            this.SelectedWeb.CreateWeb(Title, Url, Description, Template, Locale, !BreakInheritance,InheritNavigation);
-            WriteVerbose(string.Format(Properties.Resources.Web0CreatedAt1, Title, Url));
+            var web = SelectedWeb.CreateWeb(Title, Url, Description, Template, Locale, !BreakInheritance,InheritNavigation);
+            ClientContext.Load(web, w => w.Id, w => w.Url);
+            ClientContext.ExecuteQueryRetry();
+            WriteObject(web);
         }
 
     }

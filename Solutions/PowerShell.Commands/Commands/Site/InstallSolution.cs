@@ -1,17 +1,14 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using File = System.IO.File;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsLifecycle.Install, "SPOSolution")]
-    [CmdletHelp("Installs a sandboxed solution to a site collection")]
+    [CmdletHelp("Installs a sandboxed solution to a site collection", Category = "Sites")]
     public class InstallSolution : SPOCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage="ID of the solution, from the solution manifest")]
@@ -28,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (System.IO.File.Exists(SourceFilePath))
+            if (File.Exists(SourceFilePath))
             {
                 ClientContext.Site.InstallSolution(PackageId.Id, SourceFilePath, MajorVersion, MinorVersion);
             }

@@ -45,7 +45,7 @@ namespace CorporateEvents.SharePointWeb.Models {
         [Display(Name = "Image Url")]
         public string ImageUrl { get; set; }
 
-        public string ShortDescription { get { return Description.Truncate(100, "..."); } }
+        public string ShortDescription { get { return Description.TruncateString(100, "..."); } }
 
         protected override void SetProperties(ListItem item) {
             BaseSet(item, FIELD_REGISTERED_EVENT_ID, RegisteredEventId);
@@ -54,7 +54,7 @@ namespace CorporateEvents.SharePointWeb.Models {
             BaseSet(item, FIELD_DATE, EventDate);
             BaseSet(item, FIELD_LOCATION, Location);
             BaseSet(item, FIELD_CONTACT_EMAIL, ContactEmail);
-            BaseSet(item, FIELD_STATUS, Status.ToEnumDescription());
+            BaseSet(item, FIELD_STATUS, Status.GetEnumDescription());
             BaseSet(item, FIELD_IMAGE_URL, ImageUrl);
         }
 

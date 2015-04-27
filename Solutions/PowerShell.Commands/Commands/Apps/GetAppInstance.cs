@@ -1,14 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
-using System.Management.Automation;
-using System.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOAppInstance")]
-    [CmdletHelp("Returns a SharePoint App Instance")]
+    [CmdletHelp("Returns a SharePoint App Instance", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Get-SPOAppInstance",
         Remarks = @"This will return all app instances in the site.
@@ -28,14 +26,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             
             if (Identity != null)
             {
-                var instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                var instance = SelectedWeb.GetAppInstanceById(Identity.Id);
                 ClientContext.Load(instance);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
                 WriteObject(instance);
             }
             else
             {
-                var instances = this.SelectedWeb.GetAppInstances();
+                var instances = SelectedWeb.GetAppInstances();
                 if (instances.Count > 1)
                 {
                     WriteObject(instances,true);

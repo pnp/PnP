@@ -1,21 +1,18 @@
-﻿using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
-using Microsoft.IdentityModel.S2S.Tokens;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.UI;
+using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+using Microsoft.IdentityModel.S2S.Tokens;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.WebAPI
 {
@@ -94,14 +91,14 @@ namespace OfficeDevPnP.Core.WebAPI
                     cacheItem.AccessToken = accessToken;
                     //update the cache
                     WebAPIContextCache.Instance.Put(cacheKey, cacheItem);
-                    LoggingUtility.Internal.TraceInformation((int)EventId.ServicesTokenRefreshed, CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
+                    Log.Info(CoreResources.Services_TokenRefreshed, cacheKey, cacheItem.SharePointServiceContext.HostWebUrl);
                 }
                  
                 return TokenHelper.GetClientContextWithAccessToken(cacheItem.SharePointServiceContext.HostWebUrl, cacheItem.AccessToken.AccessToken);
             }
             else
             {
-                LoggingUtility.Internal.TraceWarning((int)EventId.ServicesNoCachedItem, CoreResources.Services_CookieWithCachKeyNotFound);
+                Log.Warning(Constants.LOGGING_SOURCE, CoreResources.Services_CookieWithCachKeyNotFound);
                 throw new Exception("The cookie with the cachekey was not found...nothing can be retrieved from cache, so no clientcontext can be created.");
             }            
         }
@@ -215,15 +212,30 @@ namespace OfficeDevPnP.Core.WebAPI
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            LoggingUtility.Internal.TraceError((int)EventId.ServicesRegistrationFailed, CoreResources.Service_RegistrationFailed, apiRequest, serviceEndPoint.ToString(), cacheKey);
+                            Log.Error(CoreResources.Service_RegistrationFailed, apiRequest, serviceEndPoint.ToString(), cacheKey);
                             throw new Exception(String.Format("Service registration failed: {0}", response.StatusCode));
                         }
 
-                        LoggingUtility.Internal.TraceInformation((int)EventId.ServicesRegistered, CoreResources.Services_Registered, apiRequest, serviceEndPoint.ToString(), cacheKey);
+                        Log.Info(CoreResources.Services_Registered, apiRequest, serviceEndPoint.ToString(), cacheKey);
 
                     }
                 }
             }
+        }
+
+        private static T GetQueryString<T>(this NameValueCollection queryString, string parameterName, Func<string, T> operation, T defaultValue)
+        {
+            T returnValue = defaultValue;
+            if (!string.IsNullOrEmpty(queryString[parameterName]))
+            {
+                return operation(queryString[parameterName]);
+            }
+            return returnValue;
+        }
+
+        private static string AsString(this NameValueCollection queryString, string parameterName, string defaultValue)
+        {
+            return GetQueryString(queryString, parameterName, value => value, defaultValue);
         }
 
         private static string GetClaimValue(JsonWebSecurityToken token, string claimType)

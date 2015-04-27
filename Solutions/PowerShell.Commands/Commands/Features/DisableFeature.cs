@@ -1,19 +1,14 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
+﻿using System;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
     [Cmdlet("Disable", "SPOFeature", SupportsShouldProcess = false)]
-    [CmdletHelp("Disables a feature")]
+    [CmdletHelp("Disables a feature", Category = "Features")]
     [CmdletExample(Code = "PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe")]
     [CmdletExample(Code = "PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force")]
     [CmdletExample(Code = "PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web")]
@@ -40,12 +35,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             {
                 ClientContext.Site.DeactivateFeature(featureId);
             }
-        }
-
-        public enum FeatureScope
-        {
-            Web,
-            Site
         }
     }
 }

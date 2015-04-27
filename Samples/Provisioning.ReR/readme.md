@@ -161,6 +161,12 @@ private void HandleItemUpdated(SPRemoteEventProperties properties)
 ```
 After the site is provisioned the site request will have its status updated to “COMPLETED” or “ERROR” based on the outcome.
 
+
+## AppUninstalling event receiver ##
+When the app is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the app. This remove will trigger the app uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the app from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in app deployment when the app gets side loaded which is what Visual Studio does when you press F5.
+
+When a user uninstalls a deployed app this moves the app to the site's recycle bin and will NOT trigger the appuninstalling event handler. The app needs to be removed from all recycle bins in order to trigger the appuninstalled event.
+
 # SHAREPOINT ONLINE SETUP #
 
 The first step to create the application principal. The app principal is an actual principal in SharePoint 2013 for the app that can be granted permissions.  To register the app principal, we will use the “_layouts/AppRegNew.aspx”. 

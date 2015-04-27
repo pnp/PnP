@@ -14,12 +14,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string publishingPageTemplate = "BlankWebPartPage";
         private Guid publishingSiteFeatureId = new Guid("f6924d36-2fa8-4f0b-b16d-06b7250180fa");
         bool deactivatePublishingOnTearDown = false;
+
+        #region Test initialize and cleanup
         public Web Setup(string webTemplate = "STS#0", bool enablePublishingInfrastructure = false)
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var name = "WebExtensions";
-                ctx.ExecuteQuery();
+                ctx.ExecuteQueryRetry();
 
                 ExceptionHandlingScope scope = new ExceptionHandlingScope(ctx);
 
@@ -55,6 +57,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
+
         public void Teardown(Web web)
         {
             web.DeleteObject();
@@ -66,29 +69,31 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 }
             }
         }
-	    [TestMethod]
-        public void CanAddLayoutToWikiPage()
+        #endregion
+
+        #region Wiki page tests
+        [TestMethod]
+        public void CanAddLayoutToWikiPageTest()
         {
             var web = Setup();
 
             web.AddLayoutToWikiPage(folder, OfficeDevPnP.Core.WikiPageLayout.TwoColumns, pageName);
 
             Teardown(web);
-
         }
 
-	[TestMethod]
-        public void CanAddHtmlToWikiPage()
+	    [TestMethod]
+        public void CanAddHtmlToWikiPageTest()
         {
             var web = Setup();
 
             web.AddHtmlToWikiPage(folder, "<h1>I got text</h1>", pageName, 1, 1);
 
             Teardown(web);
-
         }
+
         [TestMethod]
-        public void ProveThatWeCanAddHtmlToPageAfterChangingLayout()
+        public void ProveThatWeCanAddHtmlToPageAfterChangingLayoutTest()
         {
             var web = Setup();
             web.AddLayoutToWikiPage(folder, OfficeDevPnP.Core.WikiPageLayout.TwoColumns, pageName);
@@ -100,32 +105,35 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             Teardown(web);
         }
+        #endregion
 
+        #region Publishing page tests
         [TestMethod]
-        public void CanCreatePublishingPage()
+        public void CanCreatePublishingPageTest()
         {
             var web = Setup("CMSPUBLISHING#0",true);
             web.Context.Load(web);
             web.AddPublishingPage(publishingPageName, publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var page = web.GetPublishingPage(string.Format("{0}.aspx",publishingPageName));
             web.Context.Load(page.ListItem, i => i["Title"]);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             
             Assert.AreEqual(page.ListItem["Title"], publishingPageName);
 
             Teardown(web);
         }
+
         [TestMethod]
-        public void PublishingPageWithInvalidCharsIsCorrectlyCreated()
+        public void PublishingPageWithInvalidCharsIsCorrectlyCreatedTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
             web.AddPublishingPage("Happy?is&good", publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var page = web.GetPublishingPage(string.Format("{0}.aspx", "Happy-is-good"));
             Assert.IsNotNull(page);
@@ -134,7 +142,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
 
         [TestMethod]
-        public void CanCreatePublishedPublishingPageWhenModerationIsEnabled()
+        public void CanCreatePublishedPublishingPageWhenModerationIsEnabledTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
@@ -142,22 +150,23 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var pagesLibrary = web.Lists.GetByTitle("Pages");
             pagesLibrary.EnableModeration = true;
             pagesLibrary.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             web.AddPublishingPage(publishingPageName, publishingPageTemplate,publish:true);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
             web.Context.Load(page.ListItem, i => i["_ModerationStatus"]);
             web.Context.Load(page.ListItem, i => i.File.MajorVersion);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Assert.AreEqual(0, page.ListItem["_ModerationStatus"]);
             Assert.AreEqual(1, page.ListItem.File.MajorVersion);
 
             Teardown(web);
         }
+
         [TestMethod]
-        public void CanCreatePublishedPublishingPageWhenModerationIsDisabled()
+        public void CanCreatePublishedPublishingPageWhenModerationIsDisabledTest()
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
@@ -165,17 +174,48 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             var pagesLibrary = web.Lists.GetByTitle("Pages");
             pagesLibrary.EnableModeration = false;
             pagesLibrary.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var page = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
             web.Context.Load(page.ListItem, i => i.File.MajorVersion);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Assert.AreEqual(1, page.ListItem.File.MajorVersion);
 
             Teardown(web);
         }
+
+        [TestMethod]
+        public void CreatedPublishingPagesSetsTitleCorrectlyTest()
+        {
+            var web = Setup("CMSPUBLISHING#0", true);
+            var customTitle = "Bad robot";
+            var customPublishingPageName = "Good-robot";
+            web.Context.Load(web);
+            //Ensure that moderation is enabled
+            var pagesLibrary = web.Lists.GetByTitle("Pages");
+            pagesLibrary.EnableModeration = true;
+            pagesLibrary.Update();
+            web.Context.ExecuteQueryRetry();
+            web.AddPublishingPage(publishingPageName, publishingPageTemplate, publish: true);
+            web.AddPublishingPage(customPublishingPageName, publishingPageTemplate, publish: true, title: customTitle);
+            web.Context.Load(web, w => w.ServerRelativeUrl);
+            web.Context.ExecuteQueryRetry();
+            var pageWithNoTitle = web.GetPublishingPage(string.Format("{0}.aspx", publishingPageName));
+            var pageWithCustomTitle = web.GetPublishingPage(string.Format("{0}.aspx", customPublishingPageName));
+            web.Context.Load(pageWithNoTitle.ListItem, i => i["Title"]);
+            web.Context.Load(pageWithCustomTitle.ListItem, i => i["Title"]);
+            web.Context.ExecuteQueryRetry();
+
+            //Check that title is set to page name
+            Assert.AreEqual(publishingPageName, pageWithNoTitle.ListItem["Title"]);
+            //Check that title is set to title
+            Assert.AreEqual(customTitle, pageWithCustomTitle.ListItem["Title"]);
+
+            Teardown(web);
+        }
+        #endregion
     }
 }

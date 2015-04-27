@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?if $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Release OR $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Debug ?>
+<?define AssemblyVersion = "16.0.0.0" ?>
+<?define ProductName = "Office 365 Developer PnP PowerShell Commands" ?>
+<?else ?>
+<?define AssemblyVersion = "15.0.0.0" ?>
+<?define ProductName = "Office 365 Developer PnP PowerShell Commands (On-Premises)" ?>
+<?endif ?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      >
-  <Product Id="*" Name="Office 365 Developer PnP PowerShell Commands" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
     <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate  EmbedCab="yes" />
@@ -26,7 +33,7 @@
 
     <Property Id="CLIENTASSEMBLIES">
       <DirectorySearch Id="Client" Path="[WindowsFolder]Microsoft.NET\assembly\GAC_MSIL" Depth="2">
-        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="16.0.0.0"/>
+        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="$(var.AssemblyVersion)"/>
       </DirectorySearch>
     </Property>
     
@@ -60,7 +67,7 @@
   </Product>
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="ProgramFiles64Folder">
         <Directory Id="APPFOLDER" Name="OfficeDevPnP">
           <Directory Id="PowerShell" Name="PowerShell">
             <Directory Id="Modules" Name="Modules">
@@ -74,13 +81,14 @@
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <WixVariable Id="WixUILicenseRtf" Value="Apache License Version 2.rtf" />
     <WixVariable Id="WixUIDialogBmp" Value="officedevpnp.bmp"/>
+    <WixVariable Id="WixUIBannerBmp" Value="setupbanner.png"/>
     <UIRef Id="WixUI_Minimal" />
 
   </Fragment>
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="PowerShellCommands" Guid="ee934ac8-fca6-42b0-8203-69ce050c1c06">
+      <Component Id="PowerShellCommands" Guid="{1F5CA574-E185-49D2-9A91-CD46A8548D3E}" Win64="yes">
         <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)" />
         <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
         <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>

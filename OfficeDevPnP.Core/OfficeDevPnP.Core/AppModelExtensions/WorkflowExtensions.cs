@@ -1,13 +1,11 @@
-﻿using Microsoft.SharePoint.Client.WorkflowServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client.WorkflowServices;
 
 namespace Microsoft.SharePoint.Client
 {
-    public static class WorkflowExtensions
+    public static partial class WorkflowExtensions
     {
         #region Subscriptions
         /// <summary>
@@ -23,7 +21,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptions = subscriptionService.EnumerateSubscriptions();
             var subscriptionQuery = from sub in subscriptions where sub.Name == name select sub;
             var subscriptionsResults = web.Context.LoadQuery(subscriptionQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var subscription = subscriptionsResults.FirstOrDefault();
             return subscription;
 
@@ -41,7 +39,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
             var subscription = subscriptionService.GetSubscription(id);
             web.Context.Load(subscription);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return subscription;
         }
 
@@ -58,7 +56,7 @@ namespace Microsoft.SharePoint.Client
             var subscriptions = subscriptionService.EnumerateSubscriptionsByList(list.Id);
             var subscriptionQuery = from sub in subscriptions where sub.Name == name select sub;
             var subscriptionResults = list.Context.LoadQuery(subscriptionQuery);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
             var subscription = subscriptionResults.FirstOrDefault();
             return subscription;
         }
@@ -67,7 +65,10 @@ namespace Microsoft.SharePoint.Client
         /// Adds a workflow subscription
         /// </summary>
         /// <param name="list"></param>
-        /// <param name="workflowDefinitionName">The name of the workflow definition <seealso cref="WorkflowExtensions.GetWorkflowDefinition"/></param>
+        /// <param name="workflowDefinitionName">The name of the workflow definition <seealso>
+        ///         <cref>WorkflowExtensions.GetWorkflowDefinition</cref>
+        ///     </seealso>
+        /// </param>
         /// <param name="subscriptionName">The name of the workflow subscription to create</param>
         /// <param name="startManually">if True the workflow can be started manually</param>
         /// <param name="startOnCreate">if True the workflow will be started on item creation</param>
@@ -87,7 +88,10 @@ namespace Microsoft.SharePoint.Client
         /// Adds a workflow subscription to a list
         /// </summary>
         /// <param name="list"></param>
-        /// <param name="workflowDefinition">The workflow definition. <seealso cref="WorkflowExtensions.GetWorkflowDefinition"/></param>
+        /// <param name="workflowDefinition">The workflow definition. <seealso>
+        ///         <cref>WorkflowExtensions.GetWorkflowDefinition</cref>
+        ///     </seealso>
+        /// </param>
         /// <param name="subscriptionName">The name of the workflow subscription to create</param>
         /// <param name="startManually">if True the workflow can be started manually</param>
         /// <param name="startOnCreate">if True the workflow will be started on item creation</param>
@@ -145,7 +149,7 @@ namespace Microsoft.SharePoint.Client
 
             var subscriptionResult = subscriptionService.PublishSubscriptionForList(sub, list.Id);
 
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
 
             return subscriptionResult.Value;
         }
@@ -165,7 +169,7 @@ namespace Microsoft.SharePoint.Client
 
             subscriptionService.DeleteSubscription(subscription.Id);
 
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
 
@@ -184,7 +188,7 @@ namespace Microsoft.SharePoint.Client
             var definitions = deploymentService.EnumerateDefinitions(publishedOnly);
             var definitionQuery = from def in definitions where def.DisplayName == displayName select def;
             var definitionResults = web.Context.LoadQuery(definitionQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var definition = definitionResults.FirstOrDefault();
             return definition;
         }
@@ -201,7 +205,7 @@ namespace Microsoft.SharePoint.Client
             var deploymentService = servicesManager.GetWorkflowDeploymentService();
             var definition = deploymentService.GetDefinition(id);
             web.Context.Load(definition);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return definition;
         }
 
@@ -211,7 +215,7 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var deploymentService = servicesManager.GetWorkflowDeploymentService();
             deploymentService.DeleteDefinition(definition.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
         #endregion
 
@@ -227,7 +231,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.EnumerateInstancesForSite();
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return instances;
         }
 
@@ -235,6 +239,7 @@ namespace Microsoft.SharePoint.Client
         /// Returns alls workflow instances for a list item
         /// </summary>
         /// <param name="web"></param>
+        /// <param name="item"></param>
         /// <returns></returns>
         public static WorkflowInstanceCollection GetWorkflowInstances(this Web web, ListItem item)
         {
@@ -242,7 +247,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.EnumerateInstancesForListItem(item.ParentList.Id, item.Id);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return instances;
         }
 
@@ -258,7 +263,7 @@ namespace Microsoft.SharePoint.Client
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             var instances = workflowInstanceService.Enumerate(subscription);
             clientContext.Load(instances);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             return instances;
         }
 
@@ -272,7 +277,7 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             workflowInstanceService.CancelWorkflow(instance);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -285,8 +290,27 @@ namespace Microsoft.SharePoint.Client
             var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
             var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
             workflowInstanceService.ResumeWorkflow(instance);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
+        #endregion
+
+        #region Messaging
+
+        /// <summary>
+        /// Publish a custom event to a target workflow instance
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="eventName">The name of the target event</param>
+        /// <param name="payload">The payload that will be sent to the event</param>
+        public static void PublishCustomEvent(this WorkflowInstance instance, String eventName, String payload)
+        {
+            var clientContext = instance.Context as ClientContext;
+            var servicesManager = new WorkflowServicesManager(clientContext, clientContext.Web);
+            var workflowInstanceService = servicesManager.GetWorkflowInstanceService();
+            workflowInstanceService.PublishCustomEvent(instance, eventName, payload);
+            clientContext.ExecuteQueryRetry();
+        }
+
         #endregion
     }
 }

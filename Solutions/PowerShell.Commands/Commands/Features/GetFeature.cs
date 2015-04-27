@@ -5,14 +5,27 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Linq;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Features
 {
     [Cmdlet(VerbsCommon.Get, "SPOFeature")]
-    [CmdletHelp("Gets all features")]
+    [CmdletHelp("Returns all activated or a specific activated feature", Category = "Features")]
+    [CmdletExample(
+     Code = @"PS:> Get-SPOFeature",
+     Remarks = @"This will return all activated web scoped features", SortOrder = 1)]
+    [CmdletExample(
+     Code = @"PS:> Get-SPOFeature -Scope Site",
+     Remarks = @"This will return all activated site scoped features", SortOrder = 2)]
+    [CmdletExample(
+     Code = @"PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22",
+     Remarks = @"This will return a specific activated web scoped feature", SortOrder = 3)]
+    [CmdletExample(
+     Code = @"PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site",
+     Remarks = @"This will return a specific activated site scoped feature", SortOrder = 3)]
     public class GetFeature : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, Position=0, ValueFromPipeline=true)]
+        [Parameter(Mandatory = false, Position = 0, ValueFromPipeline = true)]
         public FeaturePipeBind Identity;
 
         [Parameter(Mandatory = false, HelpMessage = "The scope of the feature. Defaults to Web.")]
@@ -20,21 +33,20 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
 
         protected override void ExecuteCmdlet()
         {
-            List<Feature> features = new List<Feature>();
-            FeatureCollection featureCollection = null;
+            FeatureCollection featureCollection;
             if (Scope == FeatureScope.Site)
             {
                 featureCollection = ClientContext.Site.Features;
             }
             else
             {
-                featureCollection = this.SelectedWeb.Features;
+                featureCollection = SelectedWeb.Features;
             }
-            IEnumerable<Feature> query = null;
+            IEnumerable<Feature> query;
 #if !CLIENTSDKV15
             if (ClientContext.ServerVersion.Major > 15)
             {
-                 query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
+                query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties(f => f.DisplayName));
             }
             else
             {
@@ -43,17 +55,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
 #else
             query = ClientContext.LoadQuery(featureCollection.IncludeWithDefaultProperties());
 #endif
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             if (Identity == null)
             {
                 WriteObject(query, true);
             }
             else
             {
-                if(Identity.Id != Guid.Empty)
+                if (Identity.Id != Guid.Empty)
                 {
                     WriteObject(query.Where(f => f.DefinitionId == Identity.Id));
-                } else if (!string.IsNullOrEmpty(Identity.Name))
+                }
+                else if (!string.IsNullOrEmpty(Identity.Name))
                 {
 #if !CLIENTSDKV15
                     WriteObject(query.Where(f => f.DisplayName.Equals(Identity.Name, StringComparison.OrdinalIgnoreCase)));
@@ -64,11 +77,5 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             }
         }
 
-
-        public enum FeatureScope
-        {
-            Web,
-            Site
-        }
     }
 }

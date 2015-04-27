@@ -45,12 +45,12 @@ $(document).ready(function () {
 
                 var tmpKeyName = "aboutMeValue" + expiryKeySuffix;
 
-                // Check to see if local storage expiration configuation has been set
+                // Check to see if local storage expiration configuration has been set
                 var expiryConfigSetting = localStorage.getItem(expiryConfigKey);
 
                 if (expiryConfigSetting != null) {
 
-                    // Check to see if an expiry stamp has ben set
+                    // Check to see if an expiry stamp has been set
                     var localStorageExpiry = localStorage.getItem(tmpKeyName);
 
                     if (localStorageExpiry != null) {
@@ -276,13 +276,13 @@ function isLocalStorageExpired(key, keyTimeStampName) {
         var currentTime = Math.floor((new Date().getTime()) / 1000);
 
         if (currentTime - parseInt(expiryStamp) > parseInt(expiryConfig)) {
-            cachingStatus += "\n" + "The " + key + " key timestamp has expired...";
+            cachingStatus += "\n" + "The " + key + " key time stamp has expired...";
             $('#status').val(cachingStatus);
             return true;
         }
         else {
             var estimatedSeconds = parseInt(expiryStamp) - currentTime;
-            cachingStatus += "\n" + "The " + key + " timestamp expires in " + estimatedSeconds + " seconds...";
+            cachingStatus += "\n" + "The " + key + " time stamp expires in " + estimatedSeconds + " seconds...";
             $('#status').val(cachingStatus);
             return false;
         }

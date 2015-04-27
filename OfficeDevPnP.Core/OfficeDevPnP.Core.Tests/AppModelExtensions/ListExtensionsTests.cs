@@ -25,6 +25,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private Guid _listId; // For easy reference
 
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -47,21 +48,30 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
                 var termGroup = termStore.CreateGroup(_termGroupName,_termGroupId);
                 clientContext.Load(termGroup);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Termset
                 var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
                 clientContext.Load(termSet);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Term
                 termSet.CreateTerm(_termName, 1033, _termId);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // List
 
                 _textFieldId = Guid.NewGuid();
-                var textfield = clientContext.Web.CreateField(_textFieldId, _textFieldName, FieldType.Text, "Test Text Field", "Test Group");
+
+                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = _textFieldId,
+                    InternalName = _textFieldName,
+                    DisplayName = "Test Text Field",
+                    Group = "Test Group"
+                };
+
+                var textfield = clientContext.Web.CreateField(fieldCI);
 
                 var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
 
@@ -72,7 +82,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 list.Update();
                 clientContext.Load(list);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 _listId = list.Id;
             }
@@ -89,31 +99,33 @@ namespace Microsoft.SharePoint.Client.Tests
                 var termGroup = termStore.GetGroup(_termGroupId);
                 var termSets = termGroup.TermSets;
                 clientContext.Load(termSets);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 foreach (var termSet in termSets)
                 {
                     termSet.DeleteObject();
                 }
                 termGroup.DeleteObject(); // Will delete underlying termset
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up list
                 var list = clientContext.Web.Lists.GetById(_listId);
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Clean up fields
                 var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
                 var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
                 foreach (var field in testFields)
                 {
                     field.DeleteObject();
                 }
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
+        #endregion
 
+        #region Create list tests
         [TestMethod()]
         public void CreateListTest()
         {
@@ -123,7 +135,6 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Create List
                 var web = clientContext.Web;
-
                 web.CreateList(ListTemplateType.GenericList, listName, false);
 
                 //Get List
@@ -134,10 +145,12 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Delete List
                 list.DeleteObject();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
         }
+        #endregion
 
+        #region Default value tests
         [TestMethod()]
         public void SetDefaultColumnValuesTest()
         {
@@ -166,7 +179,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 list.SetDefaultColumnValues(defaultValues);
             }
         }
-
+        #endregion
 
     }
 }

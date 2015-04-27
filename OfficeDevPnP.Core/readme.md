@@ -36,6 +36,12 @@ Core component solution structure follows the generic structure like all PnP pro
 
 ![](http://i.imgur.com/jjEgRQk.png)
 
+## Additional documentation ##
+Additional PnP Core component documentation.  
+- [SAML support](SAML authentication.md)
+- [PnP Core nuget package](nuget.md)
+- [Timer job framework](TimerJob Framework.md)
+
 ## AppModelExtensions ##
 [Extension methods](http://msdn.microsoft.com/en-us/library/bb383977.aspx) are a .Net construct that allow to extend an existing type with additional methods. This approach is extensively used in the core library. Below you'll see a method that extends the SharePoint.Client.Web type with a method named CreateContentType:
 
@@ -46,14 +52,14 @@ public static ContentType CreateContentType(this Web web, string name,
   // Load the current collection of content types
   ContentTypeCollection contentTypes = web.ContentTypes;
   web.Context.Load(contentTypes);
-  web.Context.ExecuteQuery();
+  web.Context.ExecuteQueryRetry();
   ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
   // Set the properties for the content type
   newCt.Name = name;
   newCt.Id = id;
   newCt.Group = group;
   ContentType myContentType = contentTypes.Add(newCt);
-  web.Context.ExecuteQuery();
+  web.Context.ExecuteQueryRetry();
 
   //Return the content type object
   return myContentType;
@@ -135,7 +141,7 @@ The terms *Web* and *SiteCollection* are preferred.
 If the term Site is used, it should always refer to the Site Collection; never use Site to refer to a Web.
 
 ## App Model Extensions ##
-Classes derived from ClientObject have a Context property that can be used for operations, such as ExecuteQuery.
+Classes derived from ClientObject have a Context property that can be used for operations, such as ExecuteQueryRetry.
 
 The App Model Extensions API should extend from the relevant entity object, e.g. creating a new List should extended from the Web where it should be created, adding an existing Content Type to a List should extend from a List.
 

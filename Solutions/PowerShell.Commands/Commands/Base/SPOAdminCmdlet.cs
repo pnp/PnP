@@ -1,13 +1,10 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.PowerShell.Commands;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.Commands.Enums;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
@@ -33,16 +30,29 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
             if (SPOnlineConnection.CurrentConnection == null)
             {
-                throw new InvalidOperationException(Properties.Resources.NoConnection);
+                throw new InvalidOperationException(Resources.NoConnection);
             }
             if (ClientContext == null)
             {
-                throw new InvalidOperationException(Properties.Resources.NoConnection);
+                throw new InvalidOperationException(Resources.NoConnection);
             }
-            if (SPOnlineConnection.CurrentConnection.ConnectionType != SPOnlineConnection.ConnectionTypes.TenantAdmin)
+
+            SPOnlineConnection.CurrentConnection.CacheContext();
+
+            Uri uri = new Uri(this.ClientContext.Url);
+            var urlParts = uri.Authority.Split(new[] { '.' });
+            if (!urlParts[0].EndsWith("-admin"))
             {
-                throw new InvalidOperationException(Properties.Resources.CurrentSiteIsNoTenantAdminSite);
+                var adminUrl = string.Format("https://{0}-admin.{1}.{2}", urlParts[0], urlParts[1], urlParts[2]);
+
+                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(adminUrl);
             }
+            
+        }
+
+        protected override void EndProcessing()
+        {
+            SPOnlineConnection.CurrentConnection.RestoreCachedContext();
         }
     }
 }

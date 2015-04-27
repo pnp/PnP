@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction
+      ScriptSrc="~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/jquery-1.10.2.min.js"
+      Location="ScriptLink"
+      Sequence="10">
+  </CustomAction>
+</Elements>

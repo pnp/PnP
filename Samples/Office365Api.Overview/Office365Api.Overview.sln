@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365Api.Demo", "Office365Api.Demo\Office365Api.Demo.csproj", "{0BB20115-B41D-478D-B773-3F96E76BD0E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365Api.MVCDemo", "Office365Api.MVCDemo\Office365Api.MVCDemo.csproj", "{1C08662C-7BF8-422E-8F05-9262A4B4970E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365Api.Helpers", "Office365Api.Helpers\Office365Api.Helpers.csproj", "{9B04C58C-B3DC-4690-A391-779F6D70E566}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365Api.WebFormsDemo", "Office365Api.WebFormsDemo\Office365Api.WebFormsDemo.csproj", "{5C995DA8-B4D9-4162-8447-C962195D89FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +26,18 @@ Global
 		{0BB20115-B41D-478D-B773-3F96E76BD0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB20115-B41D-478D-B773-3F96E76BD0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB20115-B41D-478D-B773-3F96E76BD0E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C08662C-7BF8-422E-8F05-9262A4B4970E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C08662C-7BF8-422E-8F05-9262A4B4970E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C08662C-7BF8-422E-8F05-9262A4B4970E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C08662C-7BF8-422E-8F05-9262A4B4970E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C995DA8-B4D9-4162-8447-C962195D89FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C995DA8-B4D9-4162-8447-C962195D89FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C995DA8-B4D9-4162-8447-C962195D89FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C995DA8-B4D9-4162-8447-C962195D89FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

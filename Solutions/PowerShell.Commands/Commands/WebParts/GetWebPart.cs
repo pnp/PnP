@@ -3,10 +3,12 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Linq;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOWebPart")]
+    [CmdletHelp("Returns a webpart definition object", Category = "Web Parts")]
     public class GetWebPart : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -17,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var definitions = this.SelectedWeb.GetWebParts(PageUrl);
+            var definitions = SelectedWeb.GetWebParts(PageUrl);
 
             if (Identity != null)
             {

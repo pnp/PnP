@@ -22,7 +22,7 @@
         /// <summary>
         /// The fed authentication cookie name
         /// </summary>
-        private const string FedAuthCookieName = "FedAuth";
+        private const string FedAuthCookieName = "SPOIDCRL";
 
         /// <summary>
         /// The profile service

@@ -1,0 +1,61 @@
+﻿@model ECM.DocumentSetsWeb.Models.AddDocumentSetViewModel
+
+@{
+    ViewBag.Title = "AddDocumentSet";
+}
+
+<h2>Add DocumentSet</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @*<h4>AddDocumentSetViewModel</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContentTypeName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.ContentTypeName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContentTypeName, "", new { @class = "text-danger" })*@
+                @Html.DisplayFor(model=>model.ContentTypeName)
+                @Html.HiddenFor(model => model.ContentTypeName)
+            </div>
+        </div>
+        @for (int i = 0; i < Model.FieldNames.Count;i++ )
+        { 
+            <div class="form-group">
+                @Html.LabelFor(model => model.FieldNames[i], htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.EditorFor(model => model.FieldName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FieldName, "", new { @class = "text-danger" })*@
+                    @Html.DisplayFor(model => model.FieldNames[i])
+                    @Html.HiddenFor(model => model.FieldNames[i])
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.DocumentLibName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DocumentLibName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DocumentLibName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

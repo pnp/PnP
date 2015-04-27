@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FB592284-617D-4E24-9530-116C6BF9E969}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Workflow.Activities</RootNamespace>
+    <AssemblyName>Workflow.Activities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+    <ProjectMode>SharePointApp</ProjectMode>
+    <AppFeaturePartId>{3e4f5a36-b433-4775-bf08-52687ae2dbae}</AppFeaturePartId>
+    <WspPartId>{c54f9db2-cddb-44ba-acc4-0e9b3d768567}</WspPartId>
+    <WorkflowPartId>{97d0faab-e9dc-4f29-95e5-4f6b23d4851f}</WorkflowPartId>
+    <CspkgPartId>{904ab5ff-4c1f-484c-baea-38558fecdfa3}</CspkgPartId>
+    <SqlPackagePartId>{9122dbe8-3464-4d7d-b016-b6bb45789509}</SqlPackagePartId>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Features\Feature2\Feature2.Template.xml">
+      <DependentUpon>Feature2.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\Feature3\Feature3.Template.xml">
+      <DependentUpon>Feature3.feature</DependentUpon>
+    </Content>
+    <Content Include="Pages\SampleSecurityActivitiesInitForm.aspx" />
+    <Content Include="SourceLibrary\EditDlg.htm" />
+    <Content Include="SourceLibrary\Elements.xml" />
+    <Content Include="SourceLibrary\FileDlg.htm" />
+    <Content Include="SourceLibrary\Repair.aspx" />
+    <Content Include="SourceLibrary\Schema.xml" />
+    <Content Include="SourceLibrary\SourceLibraryInstance\Elements.xml" />
+    <Content Include="SourceLibrary\Upload.aspx" />
+    <Content Include="TargetLibrary\EditDlg.htm" />
+    <Content Include="TargetLibrary\Elements.xml" />
+    <Content Include="TargetLibrary\FileDlg.htm" />
+    <Content Include="TargetLibrary\Repair.aspx" />
+    <Content Include="TargetLibrary\Schema.xml" />
+    <Content Include="TargetLibrary\TargetLibraryInstance\Elements.xml" />
+    <Content Include="TargetLibrary\Upload.aspx" />
+    <Content Include="WorkflowHistoryList\Elements.xml" />
+    <Content Include="WorkflowTaskList\Elements.xml" />
+    <None Include="BreakItemRoleInheritanceActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{d58bbaca-04cf-4411-8024-b6591061a24c}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature2\Feature2.feature">
+      <FeatureId>{1b7f4747-3e71-4edf-ae72-eb8bb0f28069}</FeatureId>
+    </None>
+    <None Include="Features\Feature3\Feature3.feature">
+      <FeatureId>{3c7c14e6-efa7-485a-8ebb-913b082ce28f}</FeatureId>
+    </None>
+    <None Include="MoveFileActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{6501e9aa-ea54-4b47-a312-0a52b9cb934d}</SharePointProjectItemId>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Pages\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{10af9aff-899d-4493-9f4b-77cff40b58fb}</SharePointProjectItemId>
+    </None>
+    <Content Include="Pages\Elements.xml" />
+    <Content Include="Pages\Default.aspx" />
+    <None Include="ResetItemPermissionsActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a3e009c6-2b2e-4106-974a-e6abc474b54e}</SharePointProjectItemId>
+    </None>
+    <None Include="RetrieveFormDigestActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{377a2ce5-8c47-4943-9f6a-2953e4c7da29}</SharePointProjectItemId>
+    </None>
+    <None Include="SampleMoveFile\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{972c73e9-178f-4923-bba3-d8173a59ab8d}</SharePointProjectItemId>
+    </None>
+    <None Include="SampleSecurityActivities\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{fbbf281e-03a3-4191-a144-522e90fde244}</SharePointProjectItemId>
+    </None>
+    <None Include="SampleTasksWithPredecessors\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5e6ef40c-deb9-49d5-9bbc-3fd983ff6c1a}</SharePointProjectItemId>
+    </None>
+    <None Include="SetItemPermissionsActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{09debb85-d01a-425b-a11f-8f12a3acecce}</SharePointProjectItemId>
+    </None>
+    <None Include="SetTaskPredecessorsActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{789f697c-9dc7-4a6f-a1d7-d45d52198731}</SharePointProjectItemId>
+    </None>
+    <None Include="SetWorkflowGlobalStatusActivity\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3f9857f6-069b-4400-b996-65a9410b526d}</SharePointProjectItemId>
+    </None>
+    <None Include="SourceLibrary\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{cc69d8c0-7faf-42fa-b8be-354459a3a678}</SharePointProjectItemId>
+    </None>
+    <None Include="SourceLibrary\SourceLibraryInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7c6ec05b-20de-40bf-bbf5-f1f3509915b3}</SharePointProjectItemId>
+    </None>
+    <None Include="TargetLibrary\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{1478e469-50c0-4c45-afdf-4e7922cf3d8b}</SharePointProjectItemId>
+    </None>
+    <None Include="TargetLibrary\TargetLibraryInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ecf04e08-5b4e-46ab-9092-0ea8fb48f167}</SharePointProjectItemId>
+    </None>
+    <None Include="WorkflowHistoryList\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e544fc80-da71-4a77-a1a6-1f7b4fa9805c}</SharePointProjectItemId>
+    </None>
+    <None Include="WorkflowTaskList\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4d87aec1-3b37-4191-ad27-423570e74497}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9122dbe8-3464-4d7d-b016-b6bb45789509}</SharePointProjectItemId>
+    </None>
+    <Content Include="Scripts\Elements.xml" />
+    <Content Include="Scripts\App.js" />
+    <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b8b2957a-a4ab-4b7b-bdd7-18a3ce37d88c}</SharePointProjectItemId>
+    </None>
+    <Content Include="Content\Elements.xml" />
+    <Content Include="Content\App.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="Images\Elements.xml" />
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5773b656-4cd6-43d9-98cd-6091a0314ab4}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Package\Package.package">
+      <PackageId>{c5762f29-7cc2-4853-a692-3628e9530966}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{334de30d-79c8-440e-975f-5120691ec179}</FeatureId>
+    </None>
+    <None Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppManifestFile Include="AppManifest.xml">
+      <SubType>Designer</SubType>
+    </AppManifestFile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Activities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.DesignTime.Activities.16.0">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.DesignTime.Activities.16.0.Design, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SetTaskPredecessorsActivity\SetTaskPredecessorsActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SetItemPermissionsActivity\SetItemPermissionsActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="MoveFileActivity\MoveFileActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SetWorkflowGlobalStatusActivity\SetWorkflowGlobalStatusActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="RetrieveFormDigestActivity\RetrieveFormDigestActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="ResetItemPermissionsActivity\ResetItemPermissionsActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="BreakItemRoleInheritanceActivity\BreakItemRoleInheritanceActivity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SampleSecurityActivities\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SampleMoveFile\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <ItemGroup>
+    <XamlAppDef Include="SampleTasksWithPredecessors\Workflow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </XamlAppDef>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

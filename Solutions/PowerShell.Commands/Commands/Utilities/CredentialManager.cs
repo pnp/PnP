@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management.Automation;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
+using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace OfficeDevPnP.PowerShell.Commands.Utilities
 {
@@ -42,7 +40,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Utilities
             public CRED_TYPE Type;
             public IntPtr TargetName;
             public IntPtr Comment;
-            public System.Runtime.InteropServices.ComTypes.FILETIME LastWritten;
+            public FILETIME LastWritten;
             public UInt32 CredentialBlobSize;
             public IntPtr CredentialBlob;
             public UInt32 Persist;
@@ -63,7 +61,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Utilities
                 ncred.CredentialBlobSize = (UInt32)cred.CredentialBlobSize;
                 ncred.TargetName = Marshal.StringToCoTaskMemUni(cred.TargetName);
                 ncred.CredentialBlob = Marshal.StringToCoTaskMemUni(cred.CredentialBlob);
-                ncred.UserName = Marshal.StringToCoTaskMemUni(System.Environment.UserName);
+                ncred.UserName = Marshal.StringToCoTaskMemUni(Environment.UserName);
                 return ncred;
             }
         }
@@ -75,7 +73,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Utilities
             public CRED_TYPE Type;
             public string TargetName;
             public string Comment;
-            public System.Runtime.InteropServices.ComTypes.FILETIME LastWritten;
+            public FILETIME LastWritten;
             public UInt32 CredentialBlobSize;
             public string CredentialBlob;
             public UInt32 Persist;
@@ -97,7 +95,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Utilities
             MAXIMUM_EX = (MAXIMUM + 1000),  // Allow new applications to run on old OSes
         }
 
-        public class CriticalCredentialHandle : Microsoft.Win32.SafeHandles.CriticalHandleZeroOrMinusOneIsInvalid
+        public class CriticalCredentialHandle : CriticalHandleZeroOrMinusOneIsInvalid
         {
             public CriticalCredentialHandle(IntPtr preexistingHandle)
             {

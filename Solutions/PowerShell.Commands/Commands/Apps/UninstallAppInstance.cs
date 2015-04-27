@@ -5,8 +5,8 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsLifecycle.Uninstall, "SPOAppInstance")]
-    [CmdletHelp("Removes an app from a site")]
+    [Cmdlet(VerbsLifecycle.Uninstall, "SPOAppInstance", SupportsShouldProcess = true)]
+    [CmdletHelp("Removes an app from a site", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Uninstall-SPOAppInstance -Identity $appinstance")]
     [CmdletExample(
@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            AppInstance instance = null;
+            AppInstance instance;
 
             if (Identity.Instance != null)
             {
@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             else
             {
-                instance = this.SelectedWeb.GetAppInstanceById(Identity.Id);
+                instance = SelectedWeb.GetAppInstanceById(Identity.Id);
             }
 
             if(instance != null)
@@ -37,12 +37,12 @@ namespace OfficeDevPnP.PowerShell.Commands
                 if(!instance.IsObjectPropertyInstantiated("Title"))
                 {
                     ClientContext.Load(instance, i => i.Title);
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
                 if (Force || ShouldContinue(string.Format(Properties.Resources.UninstallApp0, instance.Title), Properties.Resources.Confirm))
                 {
                     instance.Uninstall();
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                 }
             }
 

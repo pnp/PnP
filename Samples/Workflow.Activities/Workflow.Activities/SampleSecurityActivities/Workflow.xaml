@@ -1,0 +1,209 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.Activities.Sample_Security_Activities.Workflow"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdad="clr-namespace:Microsoft.SharePoint.DesignTime.Activities.Design;assembly=Microsoft.SharePoint.DesignTime.Activities.16.0.Design"
+ xmlns:p="wf://workflow.windows.net/$Current/$Activities/Workflow.Activities"
+ xmlns:p1="wf://workflow.windows.net/$Activities"
+ xmlns:p2="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="TargetRole" Type="InArgument(x:String)" />
+    <x:Property Name="TargetPrincipalEmail" Type="InArgument(x:String)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Workflow.Activities.Sample_Security_Activities.Workflow_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0.Design</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Workflow.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Sample Security Activities" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:Guid" Name="targetListId" />
+      <Variable x:TypeArguments="x:String" Name="targetListIdString" />
+      <Variable x:TypeArguments="x:Int32" Name="targetItemId" />
+      <Variable x:TypeArguments="x:Int32" Name="outcome_0" />
+    </Sequence.Variables>
+    <p:SetWorkflowGlobalStatusActivity sap2010:WorkflowViewState.IdRef="SetWorkflowGlobalStatusActivity_1" WorkflowStatus="Started" />
+    <Sequence DisplayName="Define Context Variables" sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <p1:LookupWorkflowContextProperty sap2010:WorkflowViewState.IdRef="LookupWorkflowContextProperty_1" PropertyName="ListId">
+        <p1:LookupWorkflowContextProperty.Result>
+          <OutArgument x:TypeArguments="x:String">
+            <mca:CSharpReference x:TypeArguments="x:String">targetListIdString</mca:CSharpReference>
+          </OutArgument>
+        </p1:LookupWorkflowContextProperty.Result>
+      </p1:LookupWorkflowContextProperty>
+      <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+        <Assign.To>
+          <OutArgument x:TypeArguments="s:Guid">
+            <mca:CSharpReference x:TypeArguments="s:Guid">targetListId</mca:CSharpReference>
+          </OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="s:Guid">
+            <mca:CSharpValue x:TypeArguments="s:Guid">Guid.Parse(targetListIdString)</mca:CSharpValue>
+          </InArgument>
+        </Assign.Value>
+      </Assign>
+      <p1:GetCurrentItemId sap2010:WorkflowViewState.IdRef="GetCurrentItemId_1">
+        <p1:GetCurrentItemId.Result>
+          <OutArgument x:TypeArguments="x:Int32">
+            <mca:CSharpReference x:TypeArguments="x:Int32">targetItemId</mca:CSharpReference>
+          </OutArgument>
+        </p1:GetCurrentItemId.Result>
+      </p1:GetCurrentItemId>
+    </Sequence>
+    <p:BreakItemRoleInheritanceActivity DisplayName="BreakItem Role Inheritance" sap2010:WorkflowViewState.IdRef="BreakItemRoleInheritanceActivity_1" InheritRoles="False">
+      <p:BreakItemRoleInheritanceActivity.TargetItemId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">targetItemId</mca:CSharpValue>
+        </InArgument>
+      </p:BreakItemRoleInheritanceActivity.TargetItemId>
+      <p:BreakItemRoleInheritanceActivity.TargetListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">targetListId</mca:CSharpValue>
+        </InArgument>
+      </p:BreakItemRoleInheritanceActivity.TargetListId>
+    </p:BreakItemRoleInheritanceActivity>
+    <p:SetItemPermissionsActivity DisplayName="Set Item Permissions" sap2010:WorkflowViewState.IdRef="SetItemPermissionsActivity_1">
+      <p:SetItemPermissionsActivity.TargetItemId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">targetItemId</mca:CSharpValue>
+        </InArgument>
+      </p:SetItemPermissionsActivity.TargetItemId>
+      <p:SetItemPermissionsActivity.TargetListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">targetListId</mca:CSharpValue>
+        </InArgument>
+      </p:SetItemPermissionsActivity.TargetListId>
+      <p:SetItemPermissionsActivity.TargetPrincipalEmail>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">TargetPrincipalEmail</mca:CSharpValue>
+        </InArgument>
+      </p:SetItemPermissionsActivity.TargetPrincipalEmail>
+      <p:SetItemPermissionsActivity.TargetRole>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">TargetRole</mca:CSharpValue>
+        </InArgument>
+      </p:SetItemPermissionsActivity.TargetRole>
+    </p:SetItemPermissionsActivity>
+    <p1:SingleTask TaskId="{x:Null}" TaskItemId="{x:Null}" AssignmentEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;You have a new task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" AssignmentEmailSubject="Task Assigned" Body="This document should be visibile only by you. Please check it!" CancelationEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;One of your tasks was canceled and deleted. You do not need to take any further action on that task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" CancelationEmailSubject="Task Canceled" CompletedStatus="Completed" ContentTypeId="0x0108003365C4474CAE8C42BCE396314E88E51F" DefaultTaskOutcome="0" DisplayName="Check Result" sap2010:WorkflowViewState.IdRef="SingleTask_1" OutcomeFieldName="TaskOutcome" OverdueEmailBody="&lt;html&gt;&lt;body style='font-size:11pt;font-family:Segoe UI Light,sans-serif;color:#444444;'&gt;&lt;div&gt;&lt;span style='font-size:13.5pt'&gt;You have an &lt;/span&gt;&lt;span style='font-size:13.5pt;color:#ff3b3b;'&gt;overdue&lt;/span&gt;&lt;span style='font-size:13.5pt'&gt; task.&lt;/span&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;" OverdueEmailSubject="Task Overdue" OverdueReminderRepeat="1" OverdueRepeatTimes="1" PreserveIncompleteTasks="False" SendReminderEmail="True" Title="Please check your permissions on document" WaitForTaskCompletion="True" WaiveAssignmentEmail="False" WaiveCancelationEmail="False">
+      <p1:SingleTask.AssignedTo>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">TargetPrincipalEmail</mca:CSharpValue>
+        </InArgument>
+      </p1:SingleTask.AssignedTo>
+      <p1:SingleTask.DueDate>
+        <InArgument x:TypeArguments="s:DateTime">
+          <mca:CSharpValue x:TypeArguments="s:DateTime">DateTime.UtcNow.AddDays(10)</mca:CSharpValue>
+        </InArgument>
+      </p1:SingleTask.DueDate>
+      <p1:SingleTask.Outcome>
+        <OutArgument x:TypeArguments="x:Int32">
+          <mca:CSharpReference x:TypeArguments="x:Int32">outcome_0</mca:CSharpReference>
+        </OutArgument>
+      </p1:SingleTask.Outcome>
+      <p1:SingleTask.RelatedContentLinkListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p2:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p1:GetCurrentListId />
+          </p2:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListId>
+      <p1:SingleTask.RelatedContentLinkListItemId>
+        <InArgument x:TypeArguments="s:Guid">
+          <p2:ExpressionContainerValue x:TypeArguments="s:Guid">
+            <p1:GetCurrentItemGuid />
+          </p2:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListItemId>
+      <p1:SingleTask.RelatedContentLinkListItemIntegerId>
+        <InArgument x:TypeArguments="x:Int32">
+          <p2:ExpressionContainerValue x:TypeArguments="x:Int32">
+            <p1:GetCurrentItemId />
+          </p2:ExpressionContainerValue>
+        </InArgument>
+      </p1:SingleTask.RelatedContentLinkListItemIntegerId>
+    </p1:SingleTask>
+    <p:ResetItemPermissionsActivity DisplayName="Reset Item Permissions" sap2010:WorkflowViewState.IdRef="ResetItemPermissionsActivity_1">
+      <p:ResetItemPermissionsActivity.TargetItemId>
+        <InArgument x:TypeArguments="x:Int32">
+          <mca:CSharpValue x:TypeArguments="x:Int32">targetItemId</mca:CSharpValue>
+        </InArgument>
+      </p:ResetItemPermissionsActivity.TargetItemId>
+      <p:ResetItemPermissionsActivity.TargetListId>
+        <InArgument x:TypeArguments="s:Guid">
+          <mca:CSharpValue x:TypeArguments="s:Guid">targetListId</mca:CSharpValue>
+        </InArgument>
+      </p:ResetItemPermissionsActivity.TargetListId>
+    </p:ResetItemPermissionsActivity>
+    <p:SetWorkflowGlobalStatusActivity sap2010:WorkflowViewState.IdRef="SetWorkflowGlobalStatusActivity_2" WorkflowStatus="Completed" />
+    <sads:DebugSymbol.Symbol>d2lDOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2FtcGxlU2VjdXJpdHlBY3Rpdml0aWVzXFdvcmtmbG93LnhhbWw3MQOrAQ4CAQE4BTiHAQMBjQE5BVQQAgFsVQVgKgIBXGEFdiQCAT93BZwBFQIBE50BBagBJgIBBKkBBakBiQECAQI4eziEAQMBjgE6B0AqAwGEAUEHTBACAXVNB1MdAgFtVaQBVasBAgFrWAtYVAIBZF0LXVMCAV1kC2RUAgFVbgtuXQIBTnMLc1MCAUdpC2lTAgFAd1B3rQICAT53zQd32gcCAT13kgt3lQsCATx3sAN33QUCATt3swx3ugwCATqJAQuLASkCATl37gZ38QYCATh30Qx32AwCATd3rgt3tQsCATZ32gJ3mgMCATWEAQuEAVkCAS53lgZ3oQYCAS13yAt3zgsCASyQAQuSASkCASt/C39mAgEkd9YKd+QKAgEjlwELmQEpAgEid9ULd4AMAgEhd+wHd8EKAgEgd7AGd9oGAgEfegt6XQIBGHeXDHedDAIBF3fFAnfUAgIBFnf2BXeFBgIBFXf7Cnf+CgIBFKABC6ABVAIBDKUBC6UBUwIBBakBe6kBhgECAQM9DT1lAwGGATp4OoABAwGFAUkNSWcCAX1EDURdAgF2UA1QXgIBbooBDYoBJAMBOQGRAQ2RASYDASsBmAENmAEkAwEiAQ==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="SetWorkflowGlobalStatusActivity_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="LookupWorkflowContextProperty_1" sap:VirtualizedContainerService.HintSize="242,68">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="PropertyName" DisplayName="List Id" Value="ListId" />
+            </scg:Dictionary>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="GetCurrentItemId_1" sap:VirtualizedContainerService.HintSize="242,68" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="BreakItemRoleInheritanceActivity_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SetItemPermissionsActivity_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SingleTask_1" sap:VirtualizedContainerService.HintSize="200,89" />
+      <sap2010:ViewStateData Id="ResetItemPermissionsActivity_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="SetWorkflowGlobalStatusActivity_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,614">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.Activities.Sample_Security_Activities.Workflow_1" sap:VirtualizedContainerService.HintSize="262,694" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

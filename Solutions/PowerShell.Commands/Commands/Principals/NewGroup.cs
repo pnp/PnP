@@ -1,12 +1,12 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+using OfficeDevPnP.PowerShell.Commands.Enums;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("New", "SPOGroup")]
-    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object")]
+    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> New-SPOUser -LogonName user@company.com
 ")]
@@ -27,39 +27,83 @@ PS:> New-SPOUser -LogonName user@company.com
         [Parameter(Mandatory = false)]
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
-
+        [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
+        public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
-            User groupOwner = null;
-            if (!string.IsNullOrEmpty(Owner))
-            {
-                groupOwner = this.SelectedWeb.EnsureUser(Owner);
-            }
-            GroupCreationInformation groupCI = new GroupCreationInformation();
-            groupCI.Title = Title;
-            groupCI.Description = Description;
+            var web = SelectedWeb;
 
-            var group = this.SelectedWeb.SiteGroups.Add(groupCI);
+            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
+
+            var group = web.SiteGroups.Add(groupCI);
 
             ClientContext.Load(group);
             ClientContext.Load(group.Users);
-            ClientContext.ExecuteQuery();
-
+            ClientContext.ExecuteQueryRetry();
+            var dirty = false;
             if (AllowRequestToJoinLeave)
+            {
                 group.AllowRequestToJoinLeave = true;
+                dirty = true;
+            }
 
             if (AutoAcceptRequestToJoinLeave)
+            {
                 group.AutoAcceptRequestToJoinLeave = true;
+                dirty = true;
+            }
+            if (dirty)
+            {
+                group.Update();
+                ClientContext.ExecuteQueryRetry();
+            }
+
 
             if (!string.IsNullOrEmpty(Owner))
-                group.Owner = groupOwner;
+            {
+                Principal groupOwner;
 
-            group.Update();
-            ClientContext.ExecuteQuery();
+                try
+                {
+                    groupOwner = web.EnsureUser(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQueryRetry();
+                }
+                catch
+                {
+                    groupOwner = web.SiteGroups.GetByName(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQueryRetry();
+                }
+            }
+
+
+            if (SetAssociatedGroup != AssociatedGroupType.None)
+            {
+                switch (SetAssociatedGroup)
+                {
+                    case AssociatedGroupType.Visitors:
+                        {
+                            web.AssociateDefaultGroups(null, null, group);
+                            break;
+                        }
+                    case AssociatedGroupType.Members:
+                        {
+                            web.AssociateDefaultGroups(null, group, null);
+                            break;
+                        }
+                    case AssociatedGroupType.Owners:
+                        {
+                            web.AssociateDefaultGroups(group, null, null);
+                            break;
+                        }
+                }
+            }
+            ClientContext.ExecuteQueryRetry();
             WriteObject(group);
-
-            
         }
     }
 }

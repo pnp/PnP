@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Provisioning.Cloud.Async.Console
@@ -138,7 +139,7 @@ namespace Provisioning.Cloud.Async.Console
             using (var newWebContext = TokenHelper.GetClientContextWithAccessToken(siteUri.ToString(), token))
             {
                 // Set the time out as high as possible
-                newWebContext.RequestTimeout = int.MaxValue;
+                newWebContext.RequestTimeout = Timeout.Infinite;
 
                 // Let's first upload the custom theme to host web
                 RemoteManager.DeployThemeToWeb(newWebContext.Web, "Garage",

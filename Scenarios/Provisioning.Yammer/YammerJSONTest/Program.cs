@@ -12,7 +12,7 @@ namespace YammerJSONTest
     {
         static void Main(string[] args)
         {
-            // Simple tester console to ensure that token works as expected. Details on getting token from here - https://developer.yammer.com/authentication
+            // Simple tester console to ensure that token works as expected. Details on getting token from here - https://developer.yammer.com/v1.0/docs/test-token
             string accessToken = "GetYourOwnAccessTokenFromYammer";
             YammerGroup group = YammerUtility.GetYammerGroupByName("fuu", accessToken);
         }

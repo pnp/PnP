@@ -21,6 +21,7 @@ namespace OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS
         /// <param name="password">Password of th user</param>
         /// <param name="userNameMixed">Uri to the ADFS usernamemixed endpoint</param>
         /// <param name="relyingPartyIdentifier">Identifier of the ADFS relying party that we're hitting</param>
+        /// <param name="logonTokenCacheExpirationWindow"></param>
         /// <returns>A cookiecontainer holding the FedAuth cookie</returns>
         public CookieContainer GetFedAuthCookie(string siteUrl, string userName, string password, Uri userNameMixed, string relyingPartyIdentifier, int logonTokenCacheExpirationWindow)
         {

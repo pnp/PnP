@@ -35,7 +35,7 @@ namespace ECM.AutoTaggingWeb.Services
                 }
                 _result.Status = SPRemoteEventServiceStatus.Continue;
             }
-            catch(Exception _ex)
+            catch(Exception)
             {
                 //You should log here.               
             }
