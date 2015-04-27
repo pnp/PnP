@@ -81,8 +81,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         if (list.EnableVersioning)
                         {
                             createdList.MajorVersionLimit = list.MaxVersionLimit;
-                       
-                            if (createdList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
+
+                            if (createdList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
                             {
                                 // Only supported on Document Libraries
                                 createdList.EnableMinorVersions = list.EnableMinorVersions;
@@ -95,8 +95,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-                      
-                      
+
+
                         createdList.Update();
 
                         web.Context.Load(createdList.Views);
@@ -105,13 +105,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.Load(createdList.ContentTypes);
                         web.Context.ExecuteQueryRetry();
 
-                        if (list.RemoveExistingContentTypes)
+                        // Remove existing content types only if there are custom content type bindings
+                        List<Microsoft.SharePoint.Client.ContentType> contentTypesToRemove =
+                            new List<Microsoft.SharePoint.Client.ContentType>();
+                        if (list.RemoveExistingContentTypes && list.ContentTypeBindings.Count > 0)
                         {
-                            while (createdList.ContentTypes.Any())
+                            foreach (var ct in createdList.ContentTypes)
                             {
-                                createdList.ContentTypes[0].DeleteObject();
+                                contentTypesToRemove.Add(ct);
                             }
-                            web.Context.ExecuteQueryRetry();
                         }
 
                         foreach (var ctBinding in list.ContentTypeBindings)
@@ -121,6 +123,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeId);
                             }
+                        }
+
+                        // Effectively remove existing content types, if any
+                        foreach (var ct in contentTypesToRemove)
+                        {
+                            ct.DeleteObject();
+                            web.Context.ExecuteQueryRetry();
                         }
                         createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
