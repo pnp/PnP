@@ -13,11 +13,19 @@
 
  */
 
-
 // create a safe namespace
+Type.registerNamespace('jslinkViews')
 var jslinkViews = window.jslinkViews || {};
 
-jslinkViews.itemHtml = function (ctx) {
+// our custom Template object
+jslinkViews.Templates = {};
+jslinkViews.Templates.Header = "<div id='MyCustomView'>";
+jslinkViews.Templates.Item = jslinkViews.Functions.itemHtml;
+jslinkViews.Templates.Footer = "</div>";
+jslinkViews.ListTemplateType = 104; // target this at Announcements only!
+
+jslinkViews.Functions = {};
+jslinkViews.Functions.itemHtml = function (ctx) {
     var modifiedDate = new Date(Date.parse(ctx.CurrentItem.Modified));
 
     // start with a <tr> and a <td>
@@ -28,20 +36,24 @@ jslinkViews.itemHtml = function (ctx) {
 
     return returnHtml;
 };
+jslinkViews.Functions.RegisterTemplate = function() {
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(jslinkViews);
+};
+jslinkViews.Functions.MdsRegisterTemplate = function () {
 
-(function () {
-    var viewTemplate = {};
-    viewTemplate.Templates = {};
+    // register our custom view
+    jslinkViews.RegisterTemplate();
 
-    // use my own custom header / footer
-    // note - you can also return the HTML here, instead of using a function
-    viewTemplate.Templates.Header = "<div id='MyCustomView'>";
-    viewTemplate.Templates.Item = jslinkViews.itemHtml;
-    viewTemplate.Templates.Footer = "</div>";
+    // and make sure our custom view fires each time MDS performs
+    // a page transition
+    var thisUrl = _spPageContextInfo.siteServerRelativeUrl + "Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/AnnouncementView.js";
+    RegisterModuleInit(thisUrl, jslinkViews.Functions.RegisterTemplate)
+};
 
-    // 104 is the template type for Announcements
-    viewTemplate.ListTemplateType = 104;
-    viewTemplate.BaseViewID = 1;
-    
-    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(viewTemplate);
-})();
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    // its an MDS page refresh
+    jslinkViews.Functions.MdsRegisterTemplate()
+} else {
+    // normal page load
+    jslinkViews.Functions.RegisterTemplate()
+}
