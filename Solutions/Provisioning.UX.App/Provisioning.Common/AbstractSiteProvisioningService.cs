@@ -54,8 +54,7 @@ namespace Provisioning.Common
             return _siteID;
         }
         #endregion
-
-
+        
         /// <summary>
         /// Sets a Property bag for the site
         /// </summary>
