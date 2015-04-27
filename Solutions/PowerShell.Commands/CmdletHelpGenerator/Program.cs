@@ -112,12 +112,6 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 
                     if (!string.IsNullOrWhiteSpace(detaileddescription))
                     {
-                        //var paraSplit = new Regex("\r\n");
-                        //var paragraphsText = paraSplit.Split(detaileddescription);
-                        //var paragraphsElements = paragraphsText
-                        //    .Where(p => !string.IsNullOrWhiteSpace(p))
-                        //    .Select(p => new XElement(maml + "para", p + "\r\n"));
-                        //commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", paragraphsElements.ToArray())));
                         commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
                     }
                     var syntaxElement = new XElement(command + "syntax");
@@ -343,24 +337,8 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 {
                                     docfile.WriteLine("##Detailed Description");
 
-                                    if (detaileddescription != null && detaileddescription.Contains("<para>"))
-                                    {
-                                        var paraSplit = new Regex("<para>|</para>");
-                                        var paragraphsText = paraSplit.Split(detaileddescription);
-                                        var paragraphsElements = paragraphsText
-                                            .Where(p => !string.IsNullOrWhiteSpace(p))
-                                            .Select(p => new XElement(maml + "para", p));
-                                        foreach (var paragraphText in paragraphsText.Where(p => !string.IsNullOrWhiteSpace(p)))
-                                        {
-                                            docfile.WriteLine(paragraphText.Replace("\r\n"," ").Trim());
-                                            docfile.WriteLine("");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        docfile.WriteLine(cmdletInfo.DetailedDescription);
-                                        docfile.WriteLine("");
-                                    }
+                                    docfile.WriteLine(cmdletInfo.DetailedDescription);
+                                    docfile.WriteLine("");
                                 }
                                 docfile.WriteLine("##Parameters");
                                 docfile.WriteLine("Parameter|Type|Required|Description");
