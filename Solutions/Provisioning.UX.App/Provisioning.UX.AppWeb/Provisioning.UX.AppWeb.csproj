@@ -107,6 +107,7 @@
     <Content Include="Resources\SiteTemplates\Templates.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\spsiteprov %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -25,9 +25,9 @@
     <script src="../scripts/vendor/angular-ui/ui-bootstrap-tpls-0.12.1.min.js"></script>  
 
     <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
-    <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
+<%--    <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>    
-    <script type="text/javascript" src="/_layouts/15/sp.requestexecutor.js"></script>
+    <script type="text/javascript" src="/_layouts/15/sp.requestexecutor.js"></script>--%>
 
     <script src="../scripts/peoplepickercontrol.js?rev=2" type="text/javascript"></script>   
 
