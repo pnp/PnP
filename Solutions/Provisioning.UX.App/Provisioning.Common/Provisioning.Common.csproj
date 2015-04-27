@@ -72,6 +72,7 @@
     <Compile Include="Authentication\AppOnlyAuthenticationTenant.cs" />
     <Compile Include="Authentication\AppOnlyAuthenticationSite.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
+    <Compile Include="Configuration\ConfigurationConstants.cs" />
     <Compile Include="Configuration\ConfigurationFactory.cs">
       <SubType>Code</SubType>
     </Compile>

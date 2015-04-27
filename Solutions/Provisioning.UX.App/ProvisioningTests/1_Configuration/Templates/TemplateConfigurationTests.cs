@@ -103,7 +103,7 @@ namespace ProvisioningTests._1_Configuration.Templates
             Template _template = _tm.GetTemplateByName("TEMPLATE1");
             ProvisioningTemplate _pt = null;
            // XMLFileSystemTemplateProvider _ptProvider = new XMLFileSystemTemplateProvider(_template.ProvisioningTemplateContainer, string.Empty);
-            _pt = _tm.GetProvisionTemplate(_template.ProvisioningTemplate);
+            _pt = _tm.GetProvisioningTemplate(_template.ProvisioningTemplate);
             Assert.IsNotNull(_pt);
         }
 
@@ -115,7 +115,7 @@ namespace ProvisioningTests._1_Configuration.Templates
             var _tf = _configFactory.GetSiteTemplateFactory();
             var _tm = _tf.GetManager();
             ProvisioningTemplate _pt = null;
-            _pt = _tm.GetProvisionTemplate("IDONTEXIST");
+            _pt = _tm.GetProvisioningTemplate("IDONTEXIST");
             Assert.IsNotNull(_pt);
         }
 

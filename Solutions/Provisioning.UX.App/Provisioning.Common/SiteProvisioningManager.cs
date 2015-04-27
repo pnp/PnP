@@ -42,7 +42,8 @@ namespace Provisioning.Common
 
             return _web;
        }
-        public Web Test(SiteRequestInformation siteRequest, Template template)
+
+        public Web GetWeb(SiteRequestInformation siteRequest, Template template)
         {
             var t = new Office365SiteProvisioningService();
             t.Authentication = new AppOnlyAuthenticationTenant();
@@ -56,6 +57,7 @@ namespace Provisioning.Common
         /// <param name="web"></param>
         public void ApplyProvisioningTemplates(Web web, ProvisioningTemplate provisioningTemplate)
         {
+          //  var connector;
             provisioningTemplate.Connector = new FileSystemConnector("Resources/SiteTemplates/ProvisioningTemplates/", string.Empty);
             web.ApplyProvisioningTemplate(provisioningTemplate);
         }

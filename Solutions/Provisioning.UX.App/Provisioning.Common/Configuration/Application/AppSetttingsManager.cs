@@ -29,6 +29,7 @@ namespace Provisioning.Common.Configuration.Application
         const string TENANTADMINACCOUNT_KEY = "TenantAdminAccount";
         const string TENANTADMINACCOUNTPWD_KEY = "TenantAdminAccountPWD";
         const string MYSITETENANTADMINURL_KEY = "MysiteTenantAdminUrl";
+        const string RESOURCECONNECTIONSTRING_KEY = "ResourceConnectionString";
         #endregion
         
         #region Constructors

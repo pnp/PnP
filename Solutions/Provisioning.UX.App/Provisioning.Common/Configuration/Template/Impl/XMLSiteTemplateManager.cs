@@ -1,5 +1,6 @@
 ﻿using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using Provisioning.Common.Configuration.Application;
 using Provisioning.Common.Utilities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Provisioning.Common.Configuration.Template.Impl
     {
         internal XMLSiteTemplateData _data = null;
         const string PROVISIONINGTEMPLATES_XML_CONTAINER = "Resources/SiteTemplates/ProvisioningTemplates/";
+     
         #region Constructor
         /// <summary>
         /// Default Constructor.
@@ -44,7 +46,7 @@ namespace Provisioning.Common.Configuration.Template.Impl
             return _t;
         }
 
-        public ProvisioningTemplate GetProvisionTemplate(string name)
+        public ProvisioningTemplate GetProvisioningTemplate(string name)
         {
             try
             { 

@@ -33,7 +33,12 @@ namespace Provisioning.Common.Configuration.Template
         /// <returns></returns>
         List<Template> GetSubSiteTemplates();
 
-        ProvisioningTemplate GetProvisionTemplate(string name);
+        /// <summary>
+        /// Returns the Provisioning Template by Name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        ProvisioningTemplate GetProvisioningTemplate(string name);
 
     }
 }

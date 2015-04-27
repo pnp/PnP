@@ -60,7 +60,7 @@ namespace Provisioning.Job
                 try 
                 {
                     var _template = _tm.GetTemplateByName(siterequest.Template);
-                    var _provisioningTemplate = _tm.GetProvisionTemplate(_template.ProvisioningTemplate);
+                    var _provisioningTemplate = _tm.GetProvisioningTemplate(_template.ProvisioningTemplate);
                   
                     //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
                     if (_template == null) {
@@ -68,7 +68,7 @@ namespace Provisioning.Job
                     }
 
                   //  var _web = _siteProvisioningManager.ProcessSiteRequest(siterequest, _template);
-                    var _web = _siteProvisioningManager.Test(siterequest, _template);
+                    var _web = _siteProvisioningManager.GetWeb(siterequest, _template);
                     _siteProvisioningManager.ApplyProvisioningTemplates(_web, _provisioningTemplate);
                     this.SendSuccessEmail(siterequest);
 

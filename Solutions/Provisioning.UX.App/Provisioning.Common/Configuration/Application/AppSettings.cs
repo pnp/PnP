@@ -58,5 +58,10 @@ namespace Provisioning.Common.Configuration
         /// TODO
         /// </summary>
         public string TemplateProvider { get; internal set; }
+
+        /// <summary>
+        /// Used to Reference the connection string for the PNP ProvisioningTemplates
+        /// </summary>
+        public string ResourceConnectionString { get; set; }
     }
 }
