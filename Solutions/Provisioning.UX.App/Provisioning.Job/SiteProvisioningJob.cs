@@ -69,7 +69,7 @@ namespace Provisioning.Job
 
                   //  var _web = _siteProvisioningManager.ProcessSiteRequest(siterequest, _template);
                     var _web = _siteProvisioningManager.Test(siterequest, _template);
-                    //  _siteProvisioningManager.ApplyProvisioningTemplates(_web, _provisioningTemplate);
+                    _siteProvisioningManager.ApplyProvisioningTemplates(_web, _provisioningTemplate);
                     this.SendSuccessEmail(siterequest);
 
                 }

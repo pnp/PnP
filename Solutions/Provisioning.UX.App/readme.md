@@ -1,17 +1,18 @@
-# PnP Provisioning Engine - Self service site collection provisioning #
+# PnP Provisioning - Self service site collection provisioning reference implementation#
 
 ### Summary ###
 Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine.
 
 This solution shows following capabilities
-- Self service UI to request site collections
+- User Interface to request site collections
+- Site Requests stored in a SharePoint List
 - Request are processed asynchronously using the remote timer job pattern
 - New site collection creation to Office 365
-- New site collection creation in SharePoint on-premises build
-- Apply a configuration template to existing site using xml based definition
+- New site collection creation in SharePoint on-premises builds
+- Apply a configuration template to existing site using xml based definitions
 
 
-**NOTICE THIS SOLUTION IS STILL UNDER ACTIVE DEVELOPMENT**
+**NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
 
 
 ### Applies to ###
@@ -28,7 +29,7 @@ Provisioning.UX.App | Frank Marasco & Brian Michely
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | April 22nd 2015 | Initial version
+.1  | April 22nd 2015 | Initial version
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

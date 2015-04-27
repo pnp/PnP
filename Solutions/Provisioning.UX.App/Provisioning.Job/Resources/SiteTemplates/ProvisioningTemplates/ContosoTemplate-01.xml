@@ -4,7 +4,7 @@
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <pnp:Files>
-    <pnp:File Src="PnP.png" Folder="SiteAssets" Overwrite="true" Create="true"/>
+    <pnp:File Src="PnP.png" Folder="SiteAssets" Overwrite="true"/>
     <pnp:File Src="CustomInjectedJS.js" Folder="SiteAssets" Overwrite="true" />
     <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
     <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
