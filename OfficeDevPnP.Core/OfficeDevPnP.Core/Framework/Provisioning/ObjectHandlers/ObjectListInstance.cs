@@ -25,7 +25,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Lists");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ListInstances);
 
             if (template.Lists.Any())
             {
@@ -59,19 +59,43 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
                         var createdList = web.Lists.Add(listCreate);
+                        createdList.Update();
+                        web.Context.Load(createdList, l => l.BaseTemplate);
+                        web.Context.ExecuteQueryRetry();
 
-                        createdList.EnableVersioning = list.EnableVersioning;
                         if (!String.IsNullOrEmpty(list.DocumentTemplate))
                         {
                             createdList.DocumentTemplateUrl = list.DocumentTemplate.ToParsedString();
                         }
-                        if (createdList.BaseTemplate != (int) ListTemplateType.DocumentLibrary)
+
+                        // EnableAttachments are not supported for DocumentLibraries and Surveys
+                        // TODO: the user should be warned
+                        if (createdList.BaseTemplate != (int)ListTemplateType.DocumentLibrary && createdList.BaseTemplate != (int)ListTemplateType.Survey)
                         {
                             createdList.EnableAttachments = list.EnableAttachments;
+                        }
+
+                        createdList.EnableModeration = list.EnableModeration;
+
+                        createdList.EnableVersioning = list.EnableVersioning;
+                        if (list.EnableVersioning)
+                        {
+                            createdList.MajorVersionLimit = list.MaxVersionLimit;
+
+                            if (createdList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
+                            {
+                                // Only supported on Document Libraries
+                                createdList.EnableMinorVersions = list.EnableMinorVersions;
+                                if (list.EnableMinorVersions)
+                                {
+                                    createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit; // Set only if enabled, otherwise you'll get exception due setting value to zero.
+                                }
+                            }
                         }
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
+
 
                         createdList.Update();
 
@@ -81,13 +105,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.Load(createdList.ContentTypes);
                         web.Context.ExecuteQueryRetry();
 
-                        if (list.RemoveExistingContentTypes)
+                        // Remove existing content types only if there are custom content type bindings
+                        List<Microsoft.SharePoint.Client.ContentType> contentTypesToRemove =
+                            new List<Microsoft.SharePoint.Client.ContentType>();
+                        if (list.RemoveExistingContentTypes && list.ContentTypeBindings.Count > 0)
                         {
-                            while (createdList.ContentTypes.Any())
+                            foreach (var ct in createdList.ContentTypes)
                             {
-                                createdList.ContentTypes[0].DeleteObject();
+                                contentTypesToRemove.Add(ct);
                             }
-                            web.Context.ExecuteQueryRetry();
                         }
 
                         foreach (var ctBinding in list.ContentTypeBindings)
@@ -98,7 +124,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeId);
                             }
                         }
-                        createdLists.Add(new ListInfo {CreatedList = createdList, ListInstance = list});
+
+                        // Effectively remove existing content types, if any
+                        foreach (var ct in contentTypesToRemove)
+                        {
+                            ct.DeleteObject();
+                            web.Context.ExecuteQueryRetry();
+                        }
+                        createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
                         TokenParser.AddToken(new ListIdToken(web, list.Title, createdList.Id));
 
@@ -208,7 +241,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         // Type
                         var viewTypeString = viewDoc.Root.Attribute("Type") != null ? viewDoc.Root.Attribute("Type").Value : "None";
                         viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
-                        var viewType = (ViewType) Enum.Parse(typeof (ViewType), viewTypeString);
+                        var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
 
                         // Fields
                         string[] viewFields = null;
@@ -361,6 +394,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
                         list.EnableAttachments = item.EnableAttachments;
+                        list.MaxVersionLimit = item.MajorVersionLimit;
+                        list.EnableMinorVersions = item.EnableMinorVersions;
+                        list.MinorVersionLimit = item.MajorWithMinorVersionsLimit;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)

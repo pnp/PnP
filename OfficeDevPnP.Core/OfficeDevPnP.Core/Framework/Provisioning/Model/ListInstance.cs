@@ -90,7 +90,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool EnableVersioning { get; set; }
 
         /// <summary>
-        /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
+        /// Gets or sets whether minor verisioning is enabled on the list
+        /// </summary>
+        public bool EnableMinorVersions { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether moderation/content approval is enabled on the list
+        /// </summary>
+        public bool EnableModeration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MinorVersionLimit  for versioning, just in case it is enabled on the list
         /// </summary>
         public int MinorVersionLimit { get; set; }
 
@@ -180,7 +190,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}",
                 this.ContentTypesEnabled,
                 this.Description,
                 this.DocumentTemplate,
@@ -196,7 +206,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Title,
                 this.Url,
                 this.TemplateFeatureID,
-                this.RemoveExistingViews).GetHashCode());
+                this.RemoveExistingViews,
+                this.EnableMinorVersions,
+                this.EnableModeration).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -214,6 +226,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Description == other.Description &&
                 this.DocumentTemplate == other.DocumentTemplate &&
                 this.EnableVersioning == other.EnableVersioning &&
+                this.EnableMinorVersions == other.EnableMinorVersions &&
+                this.EnableModeration == other.EnableModeration &&
                 this.Hidden == other.Hidden &&
                 this.MaxVersionLimit == other.MaxVersionLimit &&
                 this.MinorVersionLimit == other.MinorVersionLimit &&

@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
 
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,"Composed Looks");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ComposedLooks);
             if (template.ComposedLook != null && 
                 !template.ComposedLook.Equals(ComposedLook.Empty))
             {
@@ -108,9 +108,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             // Information coming from the site
-            template.ComposedLook.AlternateCSS = Tokenize(web.AlternateCssUrl, web.Url);
+            template.ComposedLook.AlternateCSS = web.IsObjectPropertyInstantiated("AlternateCssUrl") ? Tokenize(web.AlternateCssUrl, web.Url) : null;
             template.ComposedLook.MasterPage = Tokenize(web.MasterUrl, web.Url);
-            template.ComposedLook.SiteLogo = Tokenize(web.SiteLogoUrl, web.Url);
+            template.ComposedLook.SiteLogo = web.IsObjectPropertyInstantiated("SiteLogoUrl") ? Tokenize(web.SiteLogoUrl, web.Url) : null;
 
             var theme = web.GetCurrentComposedLook();
 

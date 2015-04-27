@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
+using System.Linq;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Utilities;
 
@@ -17,50 +18,54 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Features");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Features);
 
             var context = web.Context as ClientContext;
-            
+
             // if this is a sub site then we're not enabling the site collection scoped features
             if (!web.IsSubSite())
             {
                 var siteFeatures = template.Features.SiteFeatures;
-                ProvisionFeaturesImplementation(context.Site, siteFeatures);
+                ProvisionFeaturesImplementation<Site>(context.Site, siteFeatures);
             }
 
             var webFeatures = template.Features.WebFeatures;
-            ProvisionFeaturesImplementation(web, webFeatures);
+            ProvisionFeaturesImplementation<Web>(web, webFeatures);
         }
 
-        private static void ProvisionFeaturesImplementation(object parent, List<Feature> webFeatures)
+        private static void ProvisionFeaturesImplementation<T>(T parent, List<Feature> features)
         {
+            var activeFeatures = new List<Microsoft.SharePoint.Client.Feature>();
             Web web = null;
             Site site = null;
             if (parent is Site)
             {
                 site = parent as Site;
+                site.Context.Load(site.Features, fs => fs.Include(f => f.DefinitionId));
+                site.Context.ExecuteQueryRetry();
+                activeFeatures = site.Features.ToList();
             }
             else
             {
                 web = parent as Web;
+                web.Context.Load(web.Features, fs => fs.Include(f => f.DefinitionId));
+                web.Context.ExecuteQueryRetry();
+                activeFeatures = web.Features.ToList();
             }
 
-            if (webFeatures != null)
+            if (features != null)
             {
-                foreach (var feature in webFeatures)
+                foreach (var feature in features)
                 {
                     if (!feature.Deactivate)
                     {
-                        if (site != null)
+                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) == null)
                         {
-                            if (!site.IsFeatureActive(feature.Id))
+                            if (site != null)
                             {
                                 site.ActivateFeature(feature.Id);
                             }
-                        }
-                        else
-                        {
-                            if (!web.IsFeatureActive(feature.Id))
+                            else
                             {
                                 web.ActivateFeature(feature.Id);
                             }
@@ -69,23 +74,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     else
                     {
-                        if (site != null)
+                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) != null)
                         {
-                            if (site.IsFeatureActive(feature.Id))
+                            if (site != null)
                             {
                                 site.DeactivateFeature(feature.Id);
-
                             }
-                        }
-                        else
-                        {
-                            if (web.IsFeatureActive(feature.Id))
+                            else
                             {
                                 web.DeactivateFeature(feature.Id);
                             }
                         }
                     }
-
                 }
             }
         }
@@ -149,7 +149,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                 }
 
-                foreach(var feature in featuresToExclude)
+                foreach (var feature in featuresToExclude)
                 {
                     int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature));
 

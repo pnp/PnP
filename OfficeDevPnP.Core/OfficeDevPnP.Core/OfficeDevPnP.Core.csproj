@@ -440,6 +440,7 @@
     <EmbeddedResource Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-05.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Framework\Provisioning\Providers\Xml\readme.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

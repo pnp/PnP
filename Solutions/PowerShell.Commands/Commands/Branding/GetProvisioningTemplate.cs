@@ -79,6 +79,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema)
         {
             var creationInformation = new ProvisioningTemplateCreationInformation(SelectedWeb);
+            creationInformation.BaseTemplate = this.SelectedWeb.GetBaseTemplate();
             creationInformation.ProgressDelegate = (message, step, total) =>
             {
                 WriteProgress(new ProgressRecord(0, "Extracting Template", message) { PercentComplete = (100 / total) * step });

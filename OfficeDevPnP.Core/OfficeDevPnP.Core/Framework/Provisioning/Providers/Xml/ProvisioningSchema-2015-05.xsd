@@ -589,6 +589,22 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="EnableMinorVersions" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableMinorVersions flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="EnableModeration" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableModeration flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="MinorVersionLimit" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -613,7 +629,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="TemplateFeatureID" type="GUID" use="optional">
+    <xsd:attribute name="TemplateFeatureID" type="pnp:GUID" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TemplateFeatureID for the feature on which the List Instance is based, optional attribute
@@ -708,7 +724,7 @@
       </xsd:element>
     </xsd:all>
 
-    <xsd:attribute name="ID" type="ContentTypeId" use="required">
+    <xsd:attribute name="ID" type="pnp:ContentTypeId" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The value of the content type ID, required attribute
@@ -1104,14 +1120,6 @@
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Overwrite flag for the File, optional attribute
-        </xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-
-    <xsd:attribute name="Create" type="xsd:boolean" use="optional" default="true">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">
-          Optional: if set to false the file will not be created. Use to add WebParts to existing WebPart Pages.
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>

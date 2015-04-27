@@ -3,6 +3,8 @@
 ### Summary ###
 This code sample demonstrates techniques for creating a table binding, adding rows to an existing binding, applying table styles and applying cell formatting.
 
+![](http://i.imgur.com/dex6lyr.png)
+
 ### Applies to ###
 -  Excel 2013
 -  Excel Online 2013
@@ -10,7 +12,7 @@ This code sample demonstrates techniques for creating a table binding, adding ro
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Excel.TableBindingFormatting.sln | Doug Perkes 
+Excel.TableBindingFormatting.sln | Doug Perkes (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -34,11 +36,18 @@ To get started, run the solution as described above. Once running, specify a num
 
 - Once the table has been inserted, the additional buttons on the app become available for use. Clicking Add Rows adds the specified number of rows of random data to the table.
 
+![](http://i.imgur.com/2n4kNew.png)
+
 - Select a table style from the Table Options drop down list and click the Table Options button to apply the style.
 
+![](http://i.imgur.com/4tkMndG.png)
+
 - Use the Range Formatting section to apply a border around the cells specified by the start and end row/col input boxes.
+![](http://i.imgur.com/dgzD5kp.png)
 
 > Note: The rows and columns are zero based and relative to the start of the table. They are not representative of the row numbers and column letters in Excel.
+
+![](http://i.imgur.com/RT9YLob.png)
 
 - To clear all formatting from the table, click the Clear Format button.
 
