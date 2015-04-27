@@ -35,10 +35,9 @@ Here follows the list of root elements available in the PnP Provisioning Schema.
 
 ##Child Elements and Complex Types
 Here follows the list of all the other child elements and complex types that can be used in the PnP Provisioning Schema.
-<xsl:for-each select="/xsd:schema/xsd:complexType[@name != 'Provisioning' and @name != 'ProvisioningTemplate']">
+<xsl:for-each select="/xsd:schema/xsd:complexType/child::*/xsd:element[not(@type)]/xsd:complexType | /xsd:schema/xsd:complexType[@name != 'Provisioning' and @name != 'ProvisioningTemplate']">
 <xsl:call-template name="RenderComplexType">
 <xsl:with-param name="complexType" select="." />
-<xsl:with-param name="renderTitle" select="number(1)" />
 </xsl:call-template>
 </xsl:for-each>
 
@@ -49,8 +48,18 @@ Here follows the list of all the other child elements and complex types that can
 
 <xsl:if test="not(/xsd:schema/xsd:complexType//xsd:extension[@base = $complexType/@name])">
     
-<xsl:if test="$complexType/@name">
-<xsl:call-template name="LinkXmlTag"><xsl:with-param name="tagName" select="$complexType/@name" /></xsl:call-template>
+<xsl:if test="$complexType/@name | $complexType/parent::xsd:element/@name">
+<xsl:variable name="typeName">
+<xsl:choose>
+<xsl:when test="$complexType/@name">
+<xsl:value-of select="$complexType/@name" />
+</xsl:when>
+<xsl:otherwise>
+<xsl:value-of select="$complexType/parent::xsd:element/@name" />
+</xsl:otherwise>
+</xsl:choose> 
+</xsl:variable>
+<xsl:call-template name="LinkXmlTag"><xsl:with-param name="tagName" select="$typeName" /></xsl:call-template>
 ###<xsl:value-of select="$complexType/@name"/><xsl:call-template name="CRLF" />
 </xsl:if>
 
