@@ -118,11 +118,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
-                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId);
-                            if (ctBinding.Default)
-                            {
-                                createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeId);
-                            }
+                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true, defaultContent:ctBinding.Default);
                         }
 
                         // Effectively remove existing content types, if any
