@@ -88,10 +88,10 @@ Here follows the list of all the other child elements and complex types that can
 <xsl:if test="$currentTypeElements">
 Here follow the available child elements for the <xsl:value-of select="@name"/> element.<xsl:call-template name="CRLF" />
 
-Element|Description
--------|-----------
+Element|Type|Description
+-------|----|-----------
 <xsl:for-each select="$currentTypeElements">
-<xsl:text>[</xsl:text><xsl:value-of select="./@name"/><xsl:text>](#</xsl:text><xsl:value-of select="translate(./@name, 'ABCDEFGHILMNOPQRSTUVZWYJKX', 'abcdefghilmnopqrstuvzwyjkx')" /><xsl:text>)|</xsl:text><xsl:if test="./xsd:annotation/xsd:documentation != ''"><xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" /></xsl:if><xsl:call-template name="CRLF" />
+<xsl:value-of select="./@name"/><xsl:text>|</xsl:text><xsl:text>[</xsl:text><xsl:value-of select="./@name"/><xsl:text>](#</xsl:text><xsl:value-of select="translate(./@name, 'ABCDEFGHILMNOPQRSTUVZWYJKX', 'abcdefghilmnopqrstuvzwyjkx')" /><xsl:text>)|</xsl:text><xsl:if test="./xsd:annotation/xsd:documentation != ''"><xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" /></xsl:if><xsl:call-template name="CRLF" />
 </xsl:for-each>
 </xsl:if>
 

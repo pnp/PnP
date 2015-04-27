@@ -29,12 +29,12 @@ Here follows the list of root elements available in the PnP Provisioning Schema.
 Here follow the available child elements for the Provisioning element.
 
 
-Element|Description
--------|-----------
-[Preferences](#preferences)|The mandatory section of preferences for the current provisioning definition
-[Templates](#templates)|
-[Sequence](#sequence)|
-[ImportSequence](#importsequence)|Imports sequences from an external file. All current properties should be sent to that file.
+Element|Type|Description
+-------|----|-----------
+Preferences|[Preferences](#preferences)|The mandatory section of preferences for the current provisioning definition
+Templates|[Templates](#templates)|
+Sequence|[Sequence](#sequence)|
+ImportSequence|[ImportSequence](#importsequence)|Imports sequences from an external file. All current properties should be sent to that file.
 <a name="provisioningtemplate"></a>
 ###ProvisioningTemplate
 Represents the root element of the SharePoint Provisioning Template
@@ -63,21 +63,21 @@ Represents the root element of the SharePoint Provisioning Template
 Here follow the available child elements for the ProvisioningTemplate element.
 
 
-Element|Description
--------|-----------
-[SitePolicy](#sitepolicy)|The Site Policy of the Provisioning Template, optional element
-[PropertyBagEntries](#propertybagentries)|The Property Bag entries of the Provisioning Template, optional collection of elements
-[Security](#security)|The Security Groups Members of the Provisioning Template, optional collection of elements
-[SiteFields](#sitefields)|The Site Columns of the Provisioning Template, optional element
-[ContentTypes](#contenttypes)|The Content Types of the Provisioning Template, optional element
-[Lists](#lists)|The Lists instances of the Provisioning Template, optional element
-[Features](#features)|The Features (Site or Web) to activate or deactivate while applying the Provisioning Template, optional collection of elements
-[CustomActions](#customactions)|The Custom Actions (Site or Web) to provision with the Provisioning Template, optional element
-[Files](#files)|The Files to provision into the target Site through the Provisioning Template, optional element
-[Pages](#pages)|The Pages to provision into the target Site through the Provisioning Template, optional element
-[TermGroups](#termgroups)|The TermGroups element allows provisioning one or more TermGroups into the target Site, optional element
-[ComposedLook](#composedlook)|The ComposedLook for the Provisioning Template, optional element
-[Providers](#providers)|The Extensiblity Providers to invoke while applying the Provisioning Template, optional collection of elements
+Element|Type|Description
+-------|----|-----------
+SitePolicy|[SitePolicy](#sitepolicy)|The Site Policy of the Provisioning Template, optional element
+PropertyBagEntries|[PropertyBagEntries](#propertybagentries)|The Property Bag entries of the Provisioning Template, optional collection of elements
+Security|[Security](#security)|The Security Groups Members of the Provisioning Template, optional collection of elements
+SiteFields|[SiteFields](#sitefields)|The Site Columns of the Provisioning Template, optional element
+ContentTypes|[ContentTypes](#contenttypes)|The Content Types of the Provisioning Template, optional element
+Lists|[Lists](#lists)|The Lists instances of the Provisioning Template, optional element
+Features|[Features](#features)|The Features (Site or Web) to activate or deactivate while applying the Provisioning Template, optional collection of elements
+CustomActions|[CustomActions](#customactions)|The Custom Actions (Site or Web) to provision with the Provisioning Template, optional element
+Files|[Files](#files)|The Files to provision into the target Site through the Provisioning Template, optional element
+Pages|[Pages](#pages)|The Pages to provision into the target Site through the Provisioning Template, optional element
+TermGroups|[TermGroups](#termgroups)|The TermGroups element allows provisioning one or more TermGroups into the target Site, optional element
+ComposedLook|[ComposedLook](#composedlook)|The ComposedLook for the Provisioning Template, optional element
+Providers|[Providers](#providers)|The Extensiblity Providers to invoke while applying the Provisioning Template, optional collection of elements
 
 Here follow the available attributes for the ProvisioningTemplate element.
 
@@ -107,9 +107,9 @@ General settins of this Provisioning file
 Here follow the available child elements for the Preferences element.
 
 
-Element|Description
--------|-----------
-[Parameters](#parameters)|Definition of parameters
+Element|Type|Description
+-------|----|-----------
+Parameters|[Parameters](#parameters)|Definition of parameters
 
 Here follow the available attributes for the Preferences element.
 
@@ -132,9 +132,9 @@ Generator|xsd:string|Optional Name of tool generating this file
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[Parameter](#parameter)|
+Element|Type|Description
+-------|----|-----------
+Parameter|[Parameter](#parameter)|
 <a name="templates"></a>
 ###Templates
 SharePoint Templates, which can be inline or references to external files
@@ -152,11 +152,11 @@ SharePoint Templates, which can be inline or references to external files
 Here follow the available child elements for the Templates element.
 
 
-Element|Description
--------|-----------
-[ProvisioningTemplateFile](#provisioningtemplatefile)|Reference to an external template file, which will be based on the current schema but will focus only on the SharePointProvisioningTemplate section.
-[ProvisioningTemplateReference](#provisioningtemplatereference)|Reference to another template by ID.
-[ProvisioningTemplate](#provisioningtemplate)|
+Element|Type|Description
+-------|----|-----------
+ProvisioningTemplateFile|[ProvisioningTemplateFile](#provisioningtemplatefile)|Reference to an external template file, which will be based on the current schema but will focus only on the SharePointProvisioningTemplate section.
+ProvisioningTemplateReference|[ProvisioningTemplateReference](#provisioningtemplatereference)|Reference to another template by ID.
+ProvisioningTemplate|[ProvisioningTemplate](#provisioningtemplate)|
 
 Here follow the available attributes for the Templates element.
 
@@ -177,9 +177,9 @@ ID|xsd:ID|A unique identifier of the Templates collection, optional attribute
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[PropertyBagEntry](#propertybagentry)|
+Element|Type|Description
+-------|----|-----------
+PropertyBagEntry|[PropertyBagEntry](#propertybagentry)|
 <a name="security"></a>
 ###Security
 
@@ -196,12 +196,12 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[AdditionalAdministrators](#additionaladministrators)|List of additional Administrators for the Site, optional collection of elements
-[AdditionalOwners](#additionalowners)|List of additional Owners for the Site, optional collection of elements
-[AdditionalMembers](#additionalmembers)|List of additional Members for the Site, optional collection of elements
-[AdditionalVisitors](#additionalvisitors)|List of additional Visitors for the Site, optional collection of elements
+Element|Type|Description
+-------|----|-----------
+AdditionalAdministrators|[AdditionalAdministrators](#additionaladministrators)|List of additional Administrators for the Site, optional collection of elements
+AdditionalOwners|[AdditionalOwners](#additionalowners)|List of additional Owners for the Site, optional collection of elements
+AdditionalMembers|[AdditionalMembers](#additionalmembers)|List of additional Members for the Site, optional collection of elements
+AdditionalVisitors|[AdditionalVisitors](#additionalvisitors)|List of additional Visitors for the Site, optional collection of elements
 <a name="sitefields"></a>
 ###SiteFields
 
@@ -223,9 +223,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[ContentType](#contenttype)|
+Element|Type|Description
+-------|----|-----------
+ContentType|[ContentType](#contenttype)|
 <a name="lists"></a>
 ###Lists
 
@@ -239,9 +239,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[ListInstance](#listinstance)|
+Element|Type|Description
+-------|----|-----------
+ListInstance|[ListInstance](#listinstance)|
 <a name="features"></a>
 ###Features
 
@@ -256,10 +256,10 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[SiteFeatures](#sitefeatures)|The Site Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
-[WebFeatures](#webfeatures)|The Web Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
+Element|Type|Description
+-------|----|-----------
+SiteFeatures|[SiteFeatures](#sitefeatures)|The Site Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
+WebFeatures|[WebFeatures](#webfeatures)|The Web Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
 <a name="customactions"></a>
 ###CustomActions
 
@@ -274,10 +274,10 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[SiteCustomActions](#sitecustomactions)|The Site Custom Actions to provision while applying the Provisioning Template, optional element
-[WebCustomActions](#webcustomactions)|The Web Custom Actions to provision while applying the Provisioning Template, optional element
+Element|Type|Description
+-------|----|-----------
+SiteCustomActions|[SiteCustomActions](#sitecustomactions)|The Site Custom Actions to provision while applying the Provisioning Template, optional element
+WebCustomActions|[WebCustomActions](#webcustomactions)|The Web Custom Actions to provision while applying the Provisioning Template, optional element
 <a name="files"></a>
 ###Files
 
@@ -291,9 +291,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[File](#file)|
+Element|Type|Description
+-------|----|-----------
+File|[File](#file)|
 <a name="pages"></a>
 ###Pages
 
@@ -307,9 +307,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[Page](#page)|
+Element|Type|Description
+-------|----|-----------
+Page|[Page](#page)|
 <a name="termgroups"></a>
 ###TermGroups
 
@@ -323,9 +323,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[TermGroup](#termgroup)|The TermGroup element to provision into the target Site through the Provisioning Template, optional element
+Element|Type|Description
+-------|----|-----------
+TermGroup|[TermGroup](#termgroup)|The TermGroup element to provision into the target Site through the Provisioning Template, optional element
 <a name="providers"></a>
 ###Providers
 
@@ -339,9 +339,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[Provider](#provider)|
+Element|Type|Description
+-------|----|-----------
+Provider|[Provider](#provider)|
 <a name="stringdictionaryitem"></a>
 ###StringDictionaryItem
 Defines a StringDictionary element
@@ -375,9 +375,9 @@ List of Users for the Site Security, collection of elements
 Here follow the available child elements for the UsersList element.
 
 
-Element|Description
--------|-----------
-[User](#user)|
+Element|Type|Description
+-------|----|-----------
+User|[User](#user)|
 <a name="user"></a>
 ###User
 The base abstract type for a User element
@@ -430,13 +430,13 @@ Defines a ListInstance element
 Here follow the available child elements for the ListInstance element.
 
 
-Element|Description
--------|-----------
-[ContentTypeBindings](#contenttypebindings)|The ContentTypeBindings entries of the List Instance, optional collection of elements
-[Views](#views)|The Views entries of the List Instance, optional collection of elements
-[Fields](#fields)|The Fields entries of the List Instance, optional collection of elements
-[FieldRefs](#fieldrefs)|The FieldRefs entries of the List Instance, optional collection of elements
-[DataRows](#datarows)|
+Element|Type|Description
+-------|----|-----------
+ContentTypeBindings|[ContentTypeBindings](#contenttypebindings)|The ContentTypeBindings entries of the List Instance, optional collection of elements
+Views|[Views](#views)|The Views entries of the List Instance, optional collection of elements
+Fields|[Fields](#fields)|The Fields entries of the List Instance, optional collection of elements
+FieldRefs|[FieldRefs](#fieldrefs)|The FieldRefs entries of the List Instance, optional collection of elements
+DataRows|[DataRows](#datarows)|
 
 Here follow the available attributes for the ListInstance element.
 
@@ -473,9 +473,9 @@ EnableFolderCreation|xsd:boolean|The EnableFolderCreation flag for the List Inst
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[ContentTypeBinding](#contenttypebinding)|
+Element|Type|Description
+-------|----|-----------
+ContentTypeBinding|[ContentTypeBinding](#contenttypebinding)|
 <a name="views"></a>
 ###Views
 
@@ -513,9 +513,9 @@ RemoveExistingViews|xsd:boolean|A flag to declare if the existing views of the L
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[FieldRef](#fieldref)|
+Element|Type|Description
+-------|----|-----------
+FieldRef|[FieldRef](#fieldref)|
 <a name="datarows"></a>
 ###DataRows
 
@@ -529,9 +529,9 @@ Element|Description
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[DataRow](#datarow)|
+Element|Type|Description
+-------|----|-----------
+DataRow|[DataRow](#datarow)|
 <a name="datavalue"></a>
 ###DataValue
 The DataValue of a single field of a row to insert into a target ListInstance
@@ -572,10 +572,10 @@ Defines a content type
 Here follow the available child elements for the ContentType element.
 
 
-Element|Description
--------|-----------
-[FieldRefs](#fieldrefs)|The FieldRefs entries of the List Instance, optional collection of elements
-[DocumentTemplate](#documenttemplate)|Specifies the document template for the content type. This is the file which SharePoint Foundation opens as a template when a user requests a new item of this content type.
+Element|Type|Description
+-------|----|-----------
+FieldRefs|[FieldRefs](#fieldrefs)|The FieldRefs entries of the List Instance, optional collection of elements
+DocumentTemplate|[DocumentTemplate](#documenttemplate)|Specifies the document template for the content type. This is the file which SharePoint Foundation opens as a template when a user requests a new item of this content type.
 
 Here follow the available attributes for the ContentType element.
 
@@ -603,9 +603,9 @@ Overwrite|xsd:boolean|Optional Boolean. TRUE to overwrite an existing content ty
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[FieldRef](#fieldref)|
+Element|Type|Description
+-------|----|-----------
+FieldRef|[FieldRef](#fieldref)|
 <a name="documenttemplate"></a>
 ###DocumentTemplate
 
@@ -655,9 +655,9 @@ Defines a collection of elements of type Feature
 Here follow the available child elements for the FeaturesList element.
 
 
-Element|Description
--------|-----------
-[Feature](#feature)|
+Element|Type|Description
+-------|----|-----------
+Feature|[Feature](#feature)|
 <a name="feature"></a>
 ###Feature
 Defines a single Site or Web Feature, which will be activated or deactivated while applying the Provisioning Template
@@ -741,9 +741,9 @@ Defines a collection of elements of type CustomAction
 Here follow the available child elements for the CustomActionsList element.
 
 
-Element|Description
--------|-----------
-[CustomAction](#customaction)|
+Element|Type|Description
+-------|----|-----------
+CustomAction|[CustomAction](#customaction)|
 <a name="customaction"></a>
 ###CustomAction
 Defines a Custom Action, which will be provisioned while applying the Provisioning Template
@@ -797,9 +797,9 @@ A collection of File Properties
 Here follow the available child elements for the FileProperties element.
 
 
-Element|Description
--------|-----------
-[Property](#property)|
+Element|Type|Description
+-------|----|-----------
+Property|[Property](#property)|
 <a name="file"></a>
 ###File
 Defines a File element, to describe a file that will be provisioned into the target Site
@@ -818,10 +818,10 @@ Defines a File element, to describe a file that will be provisioned into the tar
 Here follow the available child elements for the File element.
 
 
-Element|Description
--------|-----------
-[Properties](#properties)|The File Properties, optional collection of elements
-[WebParts](#webparts)|The webparts to add to the page, optional collection of elements
+Element|Type|Description
+-------|----|-----------
+Properties|[Properties](#properties)|The File Properties, optional collection of elements
+WebParts|[WebParts](#webparts)|The webparts to add to the page, optional collection of elements
 
 Here follow the available attributes for the File element.
 
@@ -844,9 +844,9 @@ Overwrite|xsd:boolean|The Overwrite flag for the File, optional attribute
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[WebPart](#webpart)|
+Element|Type|Description
+-------|----|-----------
+WebPart|[WebPart](#webpart)|
 <a name="page"></a>
 ###Page
 Defines a Page element, to describe a page that will be provisioned into the target Site. Because of the Layout attribute, the assumption is made that you're referring/creating a WikiPage.
@@ -864,9 +864,9 @@ Defines a Page element, to describe a page that will be provisioned into the tar
 Here follow the available child elements for the Page element.
 
 
-Element|Description
--------|-----------
-[WebParts](#webparts)|The webparts to add to the page, optional collection of elements
+Element|Type|Description
+-------|----|-----------
+WebParts|[WebParts](#webparts)|The webparts to add to the page, optional collection of elements
 
 Here follow the available attributes for the Page element.
 
@@ -889,9 +889,9 @@ Layout|pnp:WikiPageLayout|Required: Defines the layout of the wikipage
 Here follow the available child elements for the  element.
 
 
-Element|Description
--------|-----------
-[WebPart](#webpart)|
+Element|Type|Description
+-------|----|-----------
+WebPart|[WebPart](#webpart)|
 <a name="wikipagewebpart"></a>
 ###WikiPageWebPart
 Defines a WebPart to be added to a WikiPage
@@ -909,9 +909,9 @@ Defines a WebPart to be added to a WikiPage
 Here follow the available child elements for the WikiPageWebPart element.
 
 
-Element|Description
--------|-----------
-[Contents](#contents)|Required: Defines the WebPart XML
+Element|Type|Description
+-------|----|-----------
+Contents|[Contents](#contents)|Required: Defines the WebPart XML
 
 Here follow the available attributes for the WikiPageWebPart element.
 
@@ -938,9 +938,9 @@ Defines a webpart to be added to a WebPart Page
 Here follow the available child elements for the WebPartPageWebPart element.
 
 
-Element|Description
--------|-----------
-[Contents](#contents)|Required: Defines the WebPart XML
+Element|Type|Description
+-------|----|-----------
+Contents|[Contents](#contents)|Required: Defines the WebPart XML
 
 Here follow the available attributes for the WebPartPageWebPart element.
 
@@ -997,9 +997,9 @@ Defines an Extensibility Provider
 Here follow the available child elements for the Provider element.
 
 
-Element|Description
--------|-----------
-[Configuration](#configuration)|Defines an optional configuration section for the Extensibility Provider. The configuration section can be any XML
+Element|Type|Description
+-------|----|-----------
+Configuration|[Configuration](#configuration)|Defines an optional configuration section for the Extensibility Provider. The configuration section can be any XML
 
 Here follow the available attributes for the Provider element.
 
@@ -1071,12 +1071,12 @@ Each Provisioning file is split into a set of Sequence elements. The Sequence el
 Here follow the available child elements for the Sequence element.
 
 
-Element|Description
--------|-----------
-[SiteCollection](#sitecollection)|
-[Site](#site)|
-[TermStore](#termstore)|
-[Extensions](#extensions)|
+Element|Type|Description
+-------|----|-----------
+SiteCollection|[SiteCollection](#sitecollection)|
+Site|[Site](#site)|
+TermStore|[TermStore](#termstore)|
+Extensions|[Extensions](#extensions)|
 
 Here follow the available attributes for the Sequence element.
 
@@ -1100,9 +1100,9 @@ Defines a SiteCollection that will be created into the target tenant/farm
 Here follow the available child elements for the SiteCollection element.
 
 
-Element|Description
--------|-----------
-[Templates](#templates)|
+Element|Type|Description
+-------|----|-----------
+Templates|[Templates](#templates)|
 
 Here follow the available attributes for the SiteCollection element.
 
@@ -1126,9 +1126,9 @@ Defines a Site that will be created into a target Site Collection
 Here follow the available child elements for the Site element.
 
 
-Element|Description
--------|-----------
-[Templates](#templates)|
+Element|Type|Description
+-------|----|-----------
+Templates|[Templates](#templates)|
 
 Here follow the available attributes for the Site element.
 
@@ -1152,9 +1152,9 @@ A TermStore to use for provisioning of TermGroups
 Here follow the available child elements for the TermStore element.
 
 
-Element|Description
--------|-----------
-[TermGroup](#termgroup)|The TermGroup element to provision into the target TermStore through, optional element
+Element|Type|Description
+-------|----|-----------
+TermGroup|[TermGroup](#termgroup)|The TermGroup element to provision into the target TermStore through, optional element
 
 Here follow the available attributes for the TermStore element.
 
@@ -1256,9 +1256,9 @@ A collection of Term Properties
 Here follow the available child elements for the TaxonomyItemProperties element.
 
 
-Element|Description
--------|-----------
-[Property](#property)|
+Element|Type|Description
+-------|----|-----------
+Property|[Property](#property)|
 <a name="termlabels"></a>
 ###TermLabels
 A collection of Term Labels, in order to support multi-language terms
@@ -1273,9 +1273,9 @@ A collection of Term Labels, in order to support multi-language terms
 Here follow the available child elements for the TermLabels element.
 
 
-Element|Description
--------|-----------
-[Label](#label)|
+Element|Type|Description
+-------|----|-----------
+Label|[Label](#label)|
 <a name="label"></a>
 ###Label
 
@@ -1310,9 +1310,9 @@ A collection of TermSets to provision
 Here follow the available child elements for the TermSets element.
 
 
-Element|Description
--------|-----------
-[TermSet](#termset)|
+Element|Type|Description
+-------|----|-----------
+TermSet|[TermSet](#termset)|
 <a name="extensions"></a>
 ###Extensions
 Extensions are custom XML elements and instructions that can be extensions of this default schema or vendor or engine specific extensions.
