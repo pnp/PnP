@@ -60,8 +60,7 @@ Here follows the list of all the other child elements and complex types that can
 </xsl:choose> 
 </xsl:variable>
 <xsl:call-template name="LinkXmlTag"><xsl:with-param name="tagName" select="$typeName" /></xsl:call-template>
-###<xsl:value-of select="$complexType/@name"/><xsl:call-template name="CRLF" />
-</xsl:if>
+###<xsl:value-of select="$typeName"/><xsl:call-template name="CRLF" />
 
 <!-- Write the complexType description -->
 <xsl:if test="$complexType/xsd:annotation/xsd:documentation != ''">
@@ -75,14 +74,14 @@ Here follows the list of all the other child elements and complex types that can
   
 <!-- Show an XML preview of the element -->
 ```xml
-<xsl:call-template name="OpenXmlTag"><xsl:with-param name="tagName" select="$complexType/@name" /><xsl:with-param name="attributes" select="$currentTypeAttributes" /></xsl:call-template>
+<xsl:call-template name="OpenXmlTag"><xsl:with-param name="tagName" select="$typeName" /><xsl:with-param name="attributes" select="$currentTypeAttributes" /></xsl:call-template>
 <xsl:call-template name="CRLF" />
 <!-- If there are any child elements in the complexType, show them in a table -->
 <xsl:for-each select="$currentTypeElements">
 <xsl:text>   </xsl:text><xsl:call-template name="SelfClosingSimpleXmlTag"><xsl:with-param name="tagName" select="./@name" /></xsl:call-template>
 <xsl:call-template name="CRLF" />
 </xsl:for-each>
-<xsl:call-template name="CloseXmlTag"><xsl:with-param name="tagName" select="@name" /></xsl:call-template>
+<xsl:call-template name="CloseXmlTag"><xsl:with-param name="tagName" select="$typeName" /></xsl:call-template>
 ```
 
 <!-- If there are any child elements in the complexType, show them in a table -->
@@ -109,6 +108,7 @@ Attibute|Type|Description
 </xsl:for-each>
 </xsl:if>
 
+</xsl:if>
 </xsl:if>
 
 </xsl:template>

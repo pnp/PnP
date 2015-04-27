@@ -1,7 +1,7 @@
 ﻿
 #PnP Provisioning Schema
 ----------
-*Topic automatically generated on *
+*Topic automatically generated on 27/04/2015*
 
 ##Namespace
 The namespace of the PnP Provisioning Schema is:
@@ -120,12 +120,12 @@ Version|xsd:string|Optional version number.
 Author|xsd:string|Optional Author name
 Generator|xsd:string|Optional Name of tool generating this file
 <a name="parameters"></a>
-###
+###Parameters
 
 ```xml
-<>
+<Parameters>
    <Parameter />
-</>
+</Parameters>
 ```
 
 
@@ -165,12 +165,12 @@ Attibute|Type|Description
 --------|----|-----------
 ID|xsd:ID|A unique identifier of the Templates collection, optional attribute
 <a name="propertybagentries"></a>
-###
+###PropertyBagEntries
 
 ```xml
-<>
+<PropertyBagEntries>
    <PropertyBagEntry />
-</>
+</PropertyBagEntries>
 ```
 
 
@@ -181,15 +181,15 @@ Element|Description
 -------|-----------
 [PropertyBagEntry](#propertybagentry)|
 <a name="security"></a>
-###
+###Security
 
 ```xml
-<>
+<Security>
    <AdditionalAdministrators />
    <AdditionalOwners />
    <AdditionalMembers />
    <AdditionalVisitors />
-</>
+</Security>
 ```
 
 
@@ -203,20 +203,20 @@ Element|Description
 [AdditionalMembers](#additionalmembers)|List of additional Members for the Site, optional collection of elements
 [AdditionalVisitors](#additionalvisitors)|List of additional Visitors for the Site, optional collection of elements
 <a name="sitefields"></a>
-###
+###SiteFields
 
 ```xml
-<>
-</>
+<SiteFields>
+</SiteFields>
 ```
 
 <a name="contenttypes"></a>
-###
+###ContentTypes
 
 ```xml
-<>
+<ContentTypes>
    <ContentType />
-</>
+</ContentTypes>
 ```
 
 
@@ -227,12 +227,12 @@ Element|Description
 -------|-----------
 [ContentType](#contenttype)|
 <a name="lists"></a>
-###
+###Lists
 
 ```xml
-<>
+<Lists>
    <ListInstance />
-</>
+</Lists>
 ```
 
 
@@ -243,13 +243,13 @@ Element|Description
 -------|-----------
 [ListInstance](#listinstance)|
 <a name="features"></a>
-###
+###Features
 
 ```xml
-<>
+<Features>
    <SiteFeatures />
    <WebFeatures />
-</>
+</Features>
 ```
 
 
@@ -261,13 +261,13 @@ Element|Description
 [SiteFeatures](#sitefeatures)|The Site Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
 [WebFeatures](#webfeatures)|The Web Features to activate or deactivate while applying the Provisioning Template, optional collection of elements
 <a name="customactions"></a>
-###
+###CustomActions
 
 ```xml
-<>
+<CustomActions>
    <SiteCustomActions />
    <WebCustomActions />
-</>
+</CustomActions>
 ```
 
 
@@ -279,12 +279,12 @@ Element|Description
 [SiteCustomActions](#sitecustomactions)|The Site Custom Actions to provision while applying the Provisioning Template, optional element
 [WebCustomActions](#webcustomactions)|The Web Custom Actions to provision while applying the Provisioning Template, optional element
 <a name="files"></a>
-###
+###Files
 
 ```xml
-<>
+<Files>
    <File />
-</>
+</Files>
 ```
 
 
@@ -295,12 +295,12 @@ Element|Description
 -------|-----------
 [File](#file)|
 <a name="pages"></a>
-###
+###Pages
 
 ```xml
-<>
+<Pages>
    <Page />
-</>
+</Pages>
 ```
 
 
@@ -311,12 +311,12 @@ Element|Description
 -------|-----------
 [Page](#page)|
 <a name="termgroups"></a>
-###
+###TermGroups
 
 ```xml
-<>
+<TermGroups>
    <TermGroup />
-</>
+</TermGroups>
 ```
 
 
@@ -327,12 +327,12 @@ Element|Description
 -------|-----------
 [TermGroup](#termgroup)|The TermGroup element to provision into the target Site through the Provisioning Template, optional element
 <a name="providers"></a>
-###
+###Providers
 
 ```xml
-<>
+<Providers>
    <Provider />
-</>
+</Providers>
 ```
 
 
@@ -461,12 +461,12 @@ Hidden|xsd:boolean|The Hidden flag for the List Instance, optional attribute
 EnableAttachments|xsd:boolean|The EnableAttachments flag for the List Instance, optional attribute
 EnableFolderCreation|xsd:boolean|The EnableFolderCreation flag for the List Instance, optional attribute
 <a name="contenttypebindings"></a>
-###
+###ContentTypeBindings
 
 ```xml
-<>
+<ContentTypeBindings>
    <ContentTypeBinding />
-</>
+</ContentTypeBindings>
 ```
 
 
@@ -477,12 +477,12 @@ Element|Description
 -------|-----------
 [ContentTypeBinding](#contenttypebinding)|
 <a name="views"></a>
-###
+###Views
 
 ```xml
-<
+<Views
       RemoveExistingViews="xsd:boolean">
-</>
+</Views>
 ```
 
 
@@ -493,20 +493,20 @@ Attibute|Type|Description
 --------|----|-----------
 RemoveExistingViews|xsd:boolean|A flag to declare if the existing views of the List Instance have to be removed, befire adding the custom views, optional attribute
 <a name="fields"></a>
-###
+###Fields
 
 ```xml
-<>
-</>
+<Fields>
+</Fields>
 ```
 
 <a name="fieldrefs"></a>
-###
+###FieldRefs
 
 ```xml
-<>
+<FieldRefs>
    <FieldRef />
-</>
+</FieldRefs>
 ```
 
 
@@ -517,12 +517,12 @@ Element|Description
 -------|-----------
 [FieldRef](#fieldref)|
 <a name="datarows"></a>
-###
+###DataRows
 
 ```xml
-<>
+<DataRows>
    <DataRow />
-</>
+</DataRows>
 ```
 
 
@@ -591,12 +591,12 @@ Sealed|xsd:boolean|Optional Boolean. True to prevent changes to this content typ
 ReadOnly|xsd:boolean|Optional Boolean. TRUE to specify that the content type cannot be edited without explicitly removing the read-only setting. This can be done either in the user interface or in code.
 Overwrite|xsd:boolean|Optional Boolean. TRUE to overwrite an existing content type with the same ID.
 <a name="fieldrefs"></a>
-###
+###FieldRefs
 
 ```xml
-<>
+<FieldRefs>
    <FieldRef />
-</>
+</FieldRefs>
 ```
 
 
@@ -607,12 +607,12 @@ Element|Description
 -------|-----------
 [FieldRef](#fieldref)|
 <a name="documenttemplate"></a>
-###
+###DocumentTemplate
 
 ```xml
-<
+<DocumentTemplate
       TargetName="xsd:string">
-</>
+</DocumentTemplate>
 ```
 
 
@@ -832,12 +832,12 @@ Src|xsd:string|The Src of the File, required attribute
 Folder|xsd:string|The TargetFolder of the File, required attribute
 Overwrite|xsd:boolean|The Overwrite flag for the File, optional attribute
 <a name="webparts"></a>
-###
+###WebParts
 
 ```xml
-<>
+<WebParts>
    <WebPart />
-</>
+</WebParts>
 ```
 
 
@@ -877,12 +877,12 @@ Url|xsd:string|Required: The server relative url of the page, supports tokens
 Overwrite|xsd:boolean|Optional: if set, overwrites an existing page in the case of a wikipage.
 Layout|pnp:WikiPageLayout|Required: Defines the layout of the wikipage
 <a name="webparts"></a>
-###
+###WebParts
 
 ```xml
-<>
+<WebParts>
    <WebPart />
-</>
+</WebParts>
 ```
 
 
@@ -1009,11 +1009,11 @@ Attibute|Type|Description
 Enabled|xsd:boolean|Defines whether the Extensibility Provider is enabled or not, optional attribute
 HandlerType|xsd:string|The type of the handler. It can be a FQN of a .NET type, the URL of a node.js file, or whatever else, required attribute
 <a name="configuration"></a>
-###
+###Configuration
 
 ```xml
-<>
-</>
+<Configuration>
+</Configuration>
 ```
 
 <a name="provisioningtemplatefile"></a>
@@ -1277,14 +1277,14 @@ Element|Description
 -------|-----------
 [Label](#label)|
 <a name="label"></a>
-###
+###Label
 
 ```xml
-<
+<Label
       Language="xsd:int"
       Value="xsd:string"
       IsDefaultForLanguage="xsd:boolean">
-</>
+</Label>
 ```
 
 
