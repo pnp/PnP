@@ -22,10 +22,6 @@ namespace Provisioning.Common
     /// </summary>
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
-        #region Instance Members
-        IConfigurationFactory _configFactory = ConfigurationFactory.GetInstance();
-        AppSettings _settings = null;
-        #endregion
 
         #region Constructor
         /// <summary>
@@ -33,8 +29,6 @@ namespace Provisioning.Common
         /// </summary>
         public Office365SiteProvisioningService() : base()
         {
-            IAppSettingsManager _appManager = _configFactory.GetAppSetingsManager();
-            _settings = _appManager.GetAppSettings();
         }
         #endregion
      

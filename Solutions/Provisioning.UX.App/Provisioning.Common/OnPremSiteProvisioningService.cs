@@ -18,28 +18,21 @@ using System.Threading.Tasks;
 namespace Provisioning.Common
 {
     /// <summary>
-    /// Site Provisioning Service Implementation for On-premises and Office 365 SPO-D Legacy
+    /// Site Provisioning Service Implementation for On-premises and Office 365 SPO-D
     /// </summary>
     public class OnPremSiteProvisioningService : AbstractSiteProvisioningService, ISharePointService
     {
-        #region Instance Members
-        IConfigurationFactory _configFactory = ConfigurationFactory.GetInstance();
-        AppSettings _settings = null;
-        #endregion
-
         #region Constructor
         /// <summary>
         /// Constructor
         /// </summary>
         public OnPremSiteProvisioningService() : base()
         {
-            IAppSettingsManager _appManager = _configFactory.GetAppSetingsManager();
-            _settings = _appManager.GetAppSettings();
         }
         #endregion
        
         /// <summary>
-        /// With on-premieses builds default groups are not created during the site provisoning 
+        /// With on-premieses builds default groups are not created during site provisioning 
         /// so we have to create them.
         /// </summary>
         /// <param name="properties"></param>
