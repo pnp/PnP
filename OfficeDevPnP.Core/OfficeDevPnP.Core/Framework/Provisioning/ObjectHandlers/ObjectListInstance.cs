@@ -121,9 +121,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
                         }
 
+                        ContentTypeBinding defaultCtBinding = null;
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
-                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true, defaultContent:ctBinding.Default);
+                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true);
+                            if (ctBinding.Default)
+                            {
+                                defaultCtBinding = ctBinding;
+                            }
+                        }
+
+                        // default ContentTypeBinding should be set last because 
+                        // list extension .SetDefaultContentTypeToList() re-sets 
+                        // the list.RootFolder UniqueContentTypeOrder property
+                        // which may cause missing CTs from the "New Button"
+                        if (defaultCtBinding != null)
+                        {
+                            createdList.SetDefaultContentTypeToList(defaultCtBinding.ContentTypeId);
                         }
 
                         // Effectively remove existing content types, if any
