@@ -6,7 +6,7 @@ using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.New, "SPOTaxonomyTermGroup", SupportsShouldProcess = false)]
+    [Cmdlet(VerbsCommon.New, "SPOTermGroup", SupportsShouldProcess = false)]
     [CmdletHelp(@"Creates a taxonomy term group",Category = "Taxonomy")]
     public class NewTermGroup : SPOCmdlet
     {

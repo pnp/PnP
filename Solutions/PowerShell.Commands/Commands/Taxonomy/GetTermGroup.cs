@@ -5,7 +5,7 @@ using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Get, "SPOTaxonomyTermGroup", SupportsShouldProcess = false)]
+    [Cmdlet(VerbsCommon.Get, "SPOTermGroup", SupportsShouldProcess = false)]
     [CmdletHelp(@"Returns a taxonomy term group",Category = "Taxonomy")]
     public class GetTermGroup : SPOCmdlet
     {
