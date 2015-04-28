@@ -152,12 +152,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     // do we need custom sorting?
                     if (modelTermSet.Terms.Any(t => t.CustomSortOrder > -1))
                     {
-                        //// Precreate the IDs of the terms if not set
-                        //foreach (var term in modelTermSet.Terms.Where(t => t.Id == Guid.Empty))
-                        //{
-                        //    term.Id = Guid.NewGuid();
-                        //}
-
                         var sortedTerms = modelTermSet.Terms.OrderBy(t => t.CustomSortOrder);
 
                         var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.Id.ToString() + ":");
@@ -202,8 +196,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             term.IsAvailableForTagging = modelTerm.IsAvailableForTagging;
-
-            //term.CustomSortOrder = modelTerm.CustomSortOrder.ToString();
 
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
