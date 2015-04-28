@@ -114,25 +114,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Context.ExecuteQueryRetry();
                     var terms = set.Terms;
 
-                    // do we need custom sorting?
-                    if (modelTermSet.Terms.Any(t => t.CustomSortOrder > -1))
-                    {
-                        // Precreate the IDs of the terms if not set
-                        foreach (var term in modelTermSet.Terms.Where(t => t.Id == Guid.Empty))
-                        {
-                            term.Id = Guid.NewGuid();
-                        }
-
-                        var sortedTerms = modelTermSet.Terms.OrderBy(t => t.CustomSortOrder);
-
-                        var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.Id.ToString() + ":");
-                        customSortString = customSortString.TrimEnd(new[] { ':' });
-
-                        set.CustomSortOrder = customSortString;
-                        termStore.CommitAll();
-
-                    }
-
                     foreach (var modelTerm in modelTermSet.Terms)
                     {
                         if (!newTermSet)
@@ -145,19 +126,46 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                     term = terms.FirstOrDefault(t => t.Name == modelTerm.Name);
                                     if (term == null)
                                     {
-                                        CreateTerm<TermSet>(web, modelTerm, set, termStore);
+                                        modelTerm.Id = CreateTerm<TermSet>(web, modelTerm, set, termStore);
                                     }
+                                    else
+                                    {
+                                        modelTerm.Id = term.Id;
+                                    }
+                                }
+                                else
+                                {
+                                    modelTerm.Id = term.Id;
                                 }
                             }
                             else
                             {
-                                CreateTerm<TermSet>(web, modelTerm, set, termStore);
+                                modelTerm.Id = CreateTerm<TermSet>(web, modelTerm, set, termStore);
                             }
                         }
                         else
                         {
-                            CreateTerm<TermSet>(web, modelTerm, set, termStore);
+                            modelTerm.Id = CreateTerm<TermSet>(web, modelTerm, set, termStore);
                         }
+                    }
+
+                    // do we need custom sorting?
+                    if (modelTermSet.Terms.Any(t => t.CustomSortOrder > -1))
+                    {
+                        //// Precreate the IDs of the terms if not set
+                        //foreach (var term in modelTermSet.Terms.Where(t => t.Id == Guid.Empty))
+                        //{
+                        //    term.Id = Guid.NewGuid();
+                        //}
+
+                        var sortedTerms = modelTermSet.Terms.OrderBy(t => t.CustomSortOrder);
+
+                        var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.Id.ToString() + ":");
+                        customSortString = customSortString.TrimEnd(new[] { ':' });
+
+                        set.CustomSortOrder = customSortString;
+                        termStore.CommitAll();
+                        web.Context.ExecuteQueryRetry();
                     }
                 }
 
@@ -166,7 +174,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        private void CreateTerm<T>(Web web, Model.Term modelTerm, TaxonomyItem parent, TermStore termStore) where T : TaxonomyItem
+        private Guid CreateTerm<T>(Web web, Model.Term modelTerm, TaxonomyItem parent, TermStore termStore) where T : TaxonomyItem
         {
             Term term;
             if (modelTerm.Id == Guid.Empty)
@@ -195,8 +203,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             term.IsAvailableForTagging = modelTerm.IsAvailableForTagging;
 
-            term.CustomSortOrder = modelTerm.CustomSortOrder.ToString();
-            
+            //term.CustomSortOrder = modelTerm.CustomSortOrder.ToString();
+
             if (modelTerm.Properties.Any() || modelTerm.Labels.Any() || modelTerm.LocalProperties.Any())
             {
                 if (modelTerm.Labels.Any())
@@ -229,14 +237,38 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (modelTerm.Terms.Any())
             {
+                foreach (var modelTermTerm in modelTerm.Terms)
+                {
+                    web.Context.Load(term.Terms);
+                    web.Context.ExecuteQueryRetry();
+                    var termTerms = term.Terms;
+                    if (termTerms.Any())
+                    {
+                        var termTerm = termTerms.FirstOrDefault(t => t.Id == modelTermTerm.Id);
+                        if (termTerm == null)
+                        {
+                            termTerm = termTerms.FirstOrDefault(t => t.Name == modelTermTerm.Name);
+                            if (termTerm == null)
+                            {
+                                modelTermTerm.Id = CreateTerm<Term>(web, modelTermTerm, term, termStore);
+                            }
+                            else
+                            {
+                                modelTermTerm.Id = termTerm.Id;
+                            }
+                        }
+                        else
+                        {
+                            modelTermTerm.Id = termTerm.Id;
+                        }
+                    }
+                    else
+                    {
+                        modelTermTerm.Id = CreateTerm<Term>(web, modelTermTerm, term, termStore);
+                    }
+                }
                 if (modelTerm.Terms.Any(t => t.CustomSortOrder > -1))
                 {
-                    // Precreate the IDs of the terms if not set
-                    foreach (var termToSet in modelTerm.Terms.Where(t => t.Id == Guid.Empty))
-                    {
-                        termToSet.Id = Guid.NewGuid();
-                    }
-
                     var sortedTerms = modelTerm.Terms.OrderBy(t => t.CustomSortOrder);
 
                     var customSortString = sortedTerms.Aggregate(string.Empty, (a, i) => a + i.Id.ToString() + ":");
@@ -246,37 +278,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     termStore.CommitAll();
 
                 }
-
-                CreateTerms(web, termStore, term, modelTerm.Terms);
             }
+            return modelTerm.Id;
         }
-
-        private void CreateTerms(Web web, TermStore store, Term parent, List<OfficeDevPnP.Core.Framework.Provisioning.Model.Term> modelTerms)
-        {
-            foreach (var modelTerm in modelTerms)
-            {
-                web.Context.Load(parent.Terms);
-                web.Context.ExecuteQueryRetry();
-                var terms = parent.Terms;
-                if (terms.Any())
-                {
-                    var term = terms.FirstOrDefault(t => t.Id == modelTerm.Id);
-                    if (term == null)
-                    {
-                        term = terms.FirstOrDefault(t => t.Name == modelTerm.Name);
-                        if (term == null)
-                        {
-                            CreateTerm<Term>(web, modelTerm, parent, store);
-                        }
-                    }
-                }
-                else
-                {
-                    CreateTerm<Term>(web, modelTerm, parent, store);
-                }
-            }
-        }
-
 
         public override Model.ProvisioningTemplate CreateEntities(Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
@@ -316,7 +320,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         web.Context.ExecuteQueryRetry();
 
-                        termGroups = new List<TermGroup>() {termGroup};
+                        termGroups = new List<TermGroup>() { termGroup };
                     }
                 }
 
