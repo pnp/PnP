@@ -54,7 +54,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         listCreate.Description = list.Description;
                         listCreate.TemplateType = list.TemplateType;
                         listCreate.Title = list.Title;
+                        
+                        // the line of code below doesn't add the list to QuickLaunch
+                        // the OnQuickLaunch property is re-set on the Created List object
                         listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
+                        
                         listCreate.Url = list.Url.ToParsedString();
                         listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
@@ -92,10 +96,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                             }
                         }
+                        
+                        createdList.OnQuickLaunch = list.OnQuickLaunch;
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-                      
                       
                         createdList.Update();
 
@@ -111,9 +116,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 createdList.ContentTypes[0].DeleteObject();
                             }
-                            web.Context.ExecuteQueryRetry();
+                            try
+                            {
+                                web.Context.ExecuteQueryRetry();
+                            }
+                            catch (ServerException ex)
+                            {
+                                //TODO: Throws exception message with these properties:
+                                // Message: "The last content type on a list cannot be deleted."
+                                // ex.ServerCode = -2146232832
+                                // ex.ServerErrorDetails = null
+                                // ex.ServerErrorTypeName = Microsoft.SharePoint.SPException
+                                // This should be handle properly. Matching strings(with the error message) is not an option because Site Collections can have different Default Languages.
+                                // Localization should be kept in mind
+                            }
                         }
-
+                        
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
                             createdList.AddContentTypeToListById(ctBinding.ContentTypeId);
@@ -127,8 +145,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         TokenParser.AddToken(new ListIdToken(web, list.Title, createdList.Id));
 
                         TokenParser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length + 1)));
-
-
                     }
 
                 }
@@ -257,7 +273,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
                             viewRowLimit = uint.Parse(rowLimitElement.Value);
                         }
-
+                        
                         // Query
                         var viewQuery = new StringBuilder();
                         foreach (var queryElement in viewDoc.Descendants("Query").Elements())
@@ -282,7 +298,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
 
+                    // Removing existing views set the OnQuickLaunch option to false and need to be re-set.
+                    if (list.OnQuickLaunch && list.RemoveExistingViews && list.Views.Count > 0)
+                    {
+                        createdList.RefreshLoad();
+                        web.Context.ExecuteQueryRetry();
+                        createdList.OnQuickLaunch = list.OnQuickLaunch;
+                        createdList.Update();
+                        web.Context.ExecuteQueryRetry();
+                    }
                 }
+
+               
 
                 #endregion
 
