@@ -1,12 +1,15 @@
 #Import-SPOAppPackage
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Adds a SharePoint App to a site
 ##Syntax
 ```powershell
-Import-SPOAppPackage [-Path [<String>]] [-Force [<SwitchParameter>]] [-LoadOnly [<SwitchParameter>]] [-Locale [<Int32>]] [-Web [<WebPipeBind>]]
+Import-SPOAppPackage -Path [<String>] [-Force [<SwitchParameter>]] [-LoadOnly [<SwitchParameter>]] [-Locale [<Int32>]] [-Web [<WebPipeBind>]]
 ```
 &nbsp;
+
+##Detailed Description
+This commands requires that you have an app package to deploy
 
 ##Parameters
 Parameter|Type|Required|Description
@@ -14,7 +17,7 @@ Parameter|Type|Required|Description
 Force|SwitchParameter|False|Will forcibly install the app by activating the app sideloading feature, installing the app, and deactivating the sideloading feature
 LoadOnly|SwitchParameter|False|Will only upload the app, but not install it
 Locale|Int32|False|Will install the app for the specified locale
-Path|String|False|Path pointing to the .app file
+Path|String|True|Path pointing to the .app file
 Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
 ##Examples
 

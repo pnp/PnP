@@ -1,10 +1,10 @@
-#Get-SPOTaxonomyTermGroup
-*Topic automatically generated on: 2015-04-01*
+#Get-SPOTermGroup
+*Topic automatically generated on: 2015-04-28*
 
 Returns a taxonomy term group
 ##Syntax
 ```powershell
-Get-SPOTaxonomyTermGroup -GroupName <String> [-TermStoreName <String>]
+Get-SPOTermGroup -GroupName [<String>] [-TermStoreName [<String>]]
 ```
 &nbsp;
 

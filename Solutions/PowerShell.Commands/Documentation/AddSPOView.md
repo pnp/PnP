@@ -1,5 +1,5 @@
 #Add-SPOView
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Adds a view to a list
 ##Syntax

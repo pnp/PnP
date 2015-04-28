@@ -1,5 +1,5 @@
 #Add-SPOPublishingPageLayout
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Adds a publishing page layout
 ##Syntax

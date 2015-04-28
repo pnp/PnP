@@ -1,5 +1,5 @@
 #New-SPOTenantSite
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Office365 only: Creates a new site collection for the current tenant
 ##Syntax
@@ -12,9 +12,6 @@ New-SPOTenantSite -Title [<String>] -Url [<String>] [-Description [<String>]] [-
 
 The New-SPOTenantSite cmdlet creates a new site collection for the current company. However, creating a new SharePoint
 Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-
 
 ##Parameters
 Parameter|Type|Required|Description

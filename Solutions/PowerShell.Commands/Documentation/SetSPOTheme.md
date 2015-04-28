@@ -1,5 +1,5 @@
 #Set-SPOTheme
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Sets the theme of the current web.
 ##Syntax
