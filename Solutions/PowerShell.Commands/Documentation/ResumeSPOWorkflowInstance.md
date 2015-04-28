@@ -1,5 +1,5 @@
 #Resume-SPOWorkflowInstance
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Resumes a previously stopped workflow instance
 ##Syntax

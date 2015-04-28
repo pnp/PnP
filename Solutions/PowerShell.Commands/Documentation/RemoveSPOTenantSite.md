@@ -1,5 +1,5 @@
 #Remove-SPOTenantSite
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Office365 only: Removes a site collection from the current tenant
 ##Syntax
@@ -7,12 +7,6 @@ Office365 only: Removes a site collection from the current tenant
 Remove-SPOTenantSite [-SkipRecycleBin [<SwitchParameter>]] [-FromRecycleBin [<SwitchParameter>]] [-Force [<SwitchParameter>]] -Url [<String>]
 ```
 &nbsp;
-
-##Detailed Description
-
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-
 
 ##Parameters
 Parameter|Type|Required|Description

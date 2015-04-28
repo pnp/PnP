@@ -1,5 +1,5 @@
 #Get-SPOUserProfileProperty
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Office365 only: Uses the tenant API to retrieve site information.
 
@@ -10,6 +10,9 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 Get-SPOUserProfileProperty -Account [<String[]>]
 ```
 &nbsp;
+
+##Detailed Description
+Requires a connection to a SharePoint Tenant Admin site.
 
 ##Parameters
 Parameter|Type|Required|Description

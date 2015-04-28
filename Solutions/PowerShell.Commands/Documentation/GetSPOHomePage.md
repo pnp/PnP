@@ -1,5 +1,5 @@
 #Get-SPOHomePage
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Returns the URL to the home page
 ##Syntax

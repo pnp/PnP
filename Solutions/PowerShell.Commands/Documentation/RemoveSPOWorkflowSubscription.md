@@ -1,5 +1,5 @@
 #Remove-SPOWorkflowSubscription
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Removes a workflow subscription
 ##Syntax

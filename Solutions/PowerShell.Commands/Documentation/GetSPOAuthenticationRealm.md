@@ -1,5 +1,5 @@
 #Get-SPOAuthenticationRealm
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Gets the authentication realm for the current web
 ##Syntax

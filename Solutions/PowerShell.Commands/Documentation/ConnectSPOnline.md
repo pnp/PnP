@@ -1,5 +1,5 @@
 #Connect-SPOnline
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Connects to a SharePoint site and creates an in-memory context
 ##Syntax
@@ -38,11 +38,11 @@ This will prompt for username and password and creates a context for the other P
  
 
 ###Example 2
-    PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'
-This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
+    PS:> Connect-SPOnline -Url http://yourlocalserver -CurrentCredentials
+This will use the current user credentials and connects to the server specified by the Url parameter.
     
 
 ###Example 3
-    PS:> Connect-SPOnline -Url http://yourlocalserver -CurrentCredentials
-This will use the current user credentials and connects to the server specified by the Url parameter.
+    PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'
+This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
     

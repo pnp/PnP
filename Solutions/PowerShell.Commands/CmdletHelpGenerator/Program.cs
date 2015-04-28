@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 {
@@ -63,6 +64,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 
                     //System.Attribute.GetCustomAttributes(t); 
 
+                    // Get info from attributes
                     foreach (var attr in attrs)
                     {
                         if (attr is CmdletAttribute)
@@ -85,11 +87,10 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         {
                             var a = (CmdletExampleAttribute)attr;
                             examples.Add(a);
-
-
                         }
                     }
 
+                    // Store in CmdletInfo structure
                     var cmdletInfo = new CmdletInfo(verb, noun);
                     cmdletInfo.Description = description;
                     cmdletInfo.DetailedDescription = detaileddescription;
@@ -97,7 +98,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     cmdletInfo.Copyright = copyright;
                     cmdletInfo.Category = category;
 
-
+                    // Build XElement for command
                     var commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
                     var detailsElement = new XElement(command + "details");
                     commandElement.Add(detailsElement);
@@ -109,11 +110,14 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     detailsElement.Add(new XElement(command + "noun", noun));
                     detailsElement.Add(new XElement(dev + "version", version));
 
-                    commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
-
+                    if (!string.IsNullOrWhiteSpace(detaileddescription))
+                    {
+                        commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
+                    }
                     var syntaxElement = new XElement(command + "syntax");
                     commandElement.Add(syntaxElement);
 
+                    // Store syntaxes in CmdletInfo structure (if not AllParameterSets), and also in all syntaxItems list
                     var fields = t.GetFields();
                     var syntaxItems = new List<SyntaxItem>();
                     foreach (var field in fields)
@@ -137,21 +141,22 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         }
 
                                         cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
-                                    }
 
-                                    var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
-                                    if (syntaxItem == null)
-                                    {
-                                        syntaxItem = new SyntaxItem(a.ParameterSetName);
-                                        syntaxItems.Add(syntaxItem);
+                                        var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
+                                        if (syntaxItem == null)
+                                        {
+                                            syntaxItem = new SyntaxItem(a.ParameterSetName);
+                                            syntaxItems.Add(syntaxItem);
+                                        }
+                                        syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                     }
-                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                 }
                             }
                         }
                     }
 
                     // all parameters
+                    // Add AllParameterSets to all CmdletInfo syntax sets and syntaxItems sets (first checking there is at least one, i.e. if all are marked AllParameterSets)
                     foreach (var field in fields)
                     {
                         foreach (Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
@@ -163,6 +168,10 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 {
                                     if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
                                     {
+                                        if (syntaxItems.Count == 0)
+                                        {
+                                            syntaxItems.Add(new SyntaxItem(ParameterAttribute.AllParameterSets));
+                                        }
                                         foreach (var si in syntaxItems)
                                         {
                                             si.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
@@ -182,7 +191,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
-                    //
+                    // Build XElement for parameters from syntaxItems list (note: syntax element is set above)
                     foreach (var syntaxItem in syntaxItems)
                     {
                         var syntaxItemElement = new XElement(command + "syntaxItem");
@@ -197,12 +206,13 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             parameterElement.Add(new XElement(maml + "name", parameter.Name));
 
                             parameterElement.Add(new XElement(maml + "description", new XElement(maml + "para", parameter.Description)));
-                            parameterElement.Add(new XElement(command + "parameterValue", parameter.Type));
+                            parameterElement.Add(new XElement(command + "parameterValue", new XAttribute("required", parameter.Type != "SwitchParameter"), parameter.Type));
 
                             syntaxItemElement.Add(parameterElement);
                         }
                     }
 
+                    // Also store parameters in cmdletInfo.Parameters (all parameters) and XElement parameters
                     var parametersElement = new XElement(command + "parameters");
                     commandElement.Add(parametersElement);
 
@@ -239,6 +249,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
+                    // XElement inputTypes
                     commandElement.Add(
                         new XElement(command + "inputTypes",
                             new XElement(command + "inputType",
@@ -249,6 +260,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         new XElement(maml + "para", "description"))))));
                     helpItems.Add(commandElement);
 
+                    // XElement return values
                     commandElement.Add(
                         new XElement(command + "returnValues",
                             new XElement(command + "returnValue",
@@ -258,6 +270,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     new XElement(maml + "description",
                                         new XElement(maml + "para", "description"))))));
 
+                    // XElement examples
                     var examplesElement = new XElement(command + "examples");
                     var exampleCount = 1;
                     foreach (var exampleAttr in examples.OrderBy(e => e.SortOrder))
@@ -276,6 +289,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     }
                     commandElement.Add(examplesElement);
 
+                    // Markdown from CmdletInfo
                     if (generateMarkdown)
                     {
                         if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
@@ -284,7 +298,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
                             {
                                 docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
-                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
+                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy'-'MM'-'dd"));
                                 docfile.WriteLine("");
                                 docfile.WriteLine(cmdletInfo.Description);
                                 docfile.WriteLine("##Syntax");
@@ -299,7 +313,14 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         {
                                             syntaxText.Append("[");
                                         }
-                                        syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                        if (par.Type == "SwitchParameter")
+                                        {
+                                            syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                        }
+                                        else
+                                        {
+                                            syntaxText.AppendFormat("-{0} <{1}>", par.Name, par.Type);
+                                        }
                                         if (!par.Required)
                                         {
                                             syntaxText.Append("]");
@@ -315,6 +336,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
                                 {
                                     docfile.WriteLine("##Detailed Description");
+
                                     docfile.WriteLine(cmdletInfo.DetailedDescription);
                                     docfile.WriteLine("");
                                 }

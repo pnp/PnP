@@ -1,5 +1,5 @@
 #Get-SPOIndexedPropertyKeys
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Returns the keys of the property bag values that have been marked for indexing by search
 ##Syntax

@@ -1,5 +1,5 @@
 #Uninstall-SPOAppInstance
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-28*
 
 Removes an app from a site
 ##Syntax
@@ -17,9 +17,9 @@ Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the cu
 ##Examples
 
 ###Example 1
-    PS:> Uninstall-SPOAppInstance -Identity $appinstance
+    PS:> Uninstall-SPOAppInstance -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
 ###Example 2
-    PS:> Uninstall-SPOAppInstance -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+    PS:> Uninstall-SPOAppInstance -Identity $appinstance
 
