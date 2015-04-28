@@ -10,9 +10,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectSiteSecurity : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Site Security"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Site Security");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_SiteSecurity);
 
             // if this is a sub site then we're not provisioning security as by default security is inherited from the root site
             if (web.IsSubSite())

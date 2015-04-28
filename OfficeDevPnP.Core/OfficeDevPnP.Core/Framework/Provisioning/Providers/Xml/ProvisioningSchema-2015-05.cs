@@ -412,7 +412,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private StringDictionaryItem[] localCustomPropertiesField;
         
-        private string customSortOrderField;
+        private int languageField;
+        
+        private bool languageFieldSpecified;
+        
+        private int customSortOrderField;
+        
+        public Term() {
+            this.customSortOrderField = 0;
+        }
         
         /// <remarks/>
         public TermTerms Terms {
@@ -459,7 +467,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CustomSortOrder {
+        public int Language {
+            get {
+                return this.languageField;
+            }
+            set {
+                this.languageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool LanguageSpecified {
+            get {
+                return this.languageFieldSpecified;
+            }
+            set {
+                this.languageFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(0)]
+        public int CustomSortOrder {
             get {
                 return this.customSortOrderField;
             }
@@ -505,7 +536,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool isDefaultForLanguageField;
         
-        private bool isDefaultForLanguageFieldSpecified;
+        public TermLabelsLabel() {
+            this.isDefaultForLanguageField = false;
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -531,23 +564,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
         public bool IsDefaultForLanguage {
             get {
                 return this.isDefaultForLanguageField;
             }
             set {
                 this.isDefaultForLanguageField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool IsDefaultForLanguageSpecified {
-            get {
-                return this.isDefaultForLanguageFieldSpecified;
-            }
-            set {
-                this.isDefaultForLanguageFieldSpecified = value;
             }
         }
     }
@@ -1305,7 +1328,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
     public partial class ContentType {
         
-        private FieldRef[] fieldRefsField;
+        private ContentTypeFieldRef[] fieldRefsField;
         
         private ContentTypeDocumentTemplate documentTemplateField;
         
@@ -1335,8 +1358,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public FieldRef[] FieldRefs {
+        [System.Xml.Serialization.XmlArrayItemAttribute("FieldRef", IsNullable=false)]
+        public ContentTypeFieldRef[] FieldRefs {
             get {
                 return this.fieldRefsField;
             }
@@ -1465,19 +1488,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
-    public partial class FieldRef {
+    public partial class ContentTypeFieldRef : FieldRefBase {
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ContentTypeFieldRef))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(ListInstanceFieldRef))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
+    public partial class FieldRefBase {
         
         private string idField;
         
-        private string displayNameField;
+        private string nameField;
         
         private bool requiredField;
         
         private bool hiddenField;
         
-        private System.Xml.XmlAttribute[] anyAttrField;
-        
-        public FieldRef() {
+        public FieldRefBase() {
             this.requiredField = false;
             this.hiddenField = false;
         }
@@ -1495,12 +1527,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string DisplayName {
+        public string Name {
             get {
-                return this.displayNameField;
+                return this.nameField;
             }
             set {
-                this.displayNameField = value;
+                this.nameField = value;
             }
         }
         
@@ -1527,15 +1559,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
                 this.hiddenField = value;
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
+    public partial class ListInstanceFieldRef : FieldRefBase {
+        
+        private string displayNameField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyAttributeAttribute()]
-        public System.Xml.XmlAttribute[] AnyAttr {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string DisplayName {
             get {
-                return this.anyAttrField;
+                return this.displayNameField;
             }
             set {
-                this.anyAttrField = value;
+                this.displayNameField = value;
             }
         }
     }
@@ -1576,7 +1619,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private ListInstanceFields fieldsField;
         
-        private FieldRef[] fieldRefsField;
+        private ListInstanceFieldRef[] fieldRefsField;
         
         private DataValue[][] dataRowsField;
         
@@ -1593,6 +1636,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         private string urlField;
         
         private bool enableVersioningField;
+        
+        private bool enableMinorVersionsField;
+        
+        private bool enableModerationField;
         
         private int minorVersionLimitField;
         
@@ -1617,6 +1664,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         public ListInstance() {
             this.onQuickLaunchField = false;
             this.enableVersioningField = false;
+            this.enableMinorVersionsField = false;
+            this.enableModerationField = false;
             this.removeExistingContentTypesField = false;
             this.contentTypesEnabledField = false;
             this.hiddenField = false;
@@ -1656,8 +1705,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public FieldRef[] FieldRefs {
+        [System.Xml.Serialization.XmlArrayItemAttribute("FieldRef", IsNullable=false)]
+        public ListInstanceFieldRef[] FieldRefs {
             get {
                 return this.fieldRefsField;
             }
@@ -1754,6 +1803,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.enableVersioningField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool EnableMinorVersions {
+            get {
+                return this.enableMinorVersionsField;
+            }
+            set {
+                this.enableMinorVersionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool EnableModeration {
+            get {
+                return this.enableModerationField;
+            }
+            set {
+                this.enableModerationField = value;
             }
         }
         
@@ -2337,6 +2410,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
     public partial class File {
         
+        private StringDictionaryItem[] propertiesField;
+        
         private WebPartPageWebPart[] webPartsField;
         
         private string srcField;
@@ -2345,11 +2420,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool overwriteField;
         
-        private bool createField;
-        
         public File() {
             this.overwriteField = false;
-            this.createField = true;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Property", IsNullable=false)]
+        public StringDictionaryItem[] Properties {
+            get {
+                return this.propertiesField;
+            }
+            set {
+                this.propertiesField = value;
+            }
         }
         
         /// <remarks/>
@@ -2394,18 +2477,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.overwriteField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(true)]
-        public bool Create {
-            get {
-                return this.createField;
-            }
-            set {
-                this.createField = value;
             }
         }
     }
@@ -2484,7 +2555,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool overwriteField;
         
-        private WIKIPAGELAYOUT layoutField;
+        private WikiPageLayout layoutField;
         
         public Page() {
             this.overwriteField = false;
@@ -2526,7 +2597,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public WIKIPAGELAYOUT Layout {
+        public WikiPageLayout Layout {
             get {
                 return this.layoutField;
             }
@@ -2600,7 +2671,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
-    public enum WIKIPAGELAYOUT {
+    public enum WikiPageLayout {
         
         /// <remarks/>
         OneColumn,
