@@ -1,6 +1,7 @@
 ﻿function TaxonomyPickerConsts() { };
 TaxonomyPickerConsts.SUGGESTIONS_HEADER = 'Suggestions';
 TaxonomyPickerConsts.DIALOG_HEADER = 'Select: ';
+TaxonomyPickerConsts.BUTTON_TEXT = 'Select';
 TaxonomyPickerConsts.AMBIGUOUS_ENTRY = 'Ambiguous Entry';
 TaxonomyPickerConsts.DIALOG_ADD_TITLE = 'New items are added under the currently selected item.';
 TaxonomyPickerConsts.DIALOG_ADD_LINK = 'Add New Item';
