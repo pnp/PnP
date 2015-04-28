@@ -54,11 +54,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         listCreate.Description = list.Description;
                         listCreate.TemplateType = list.TemplateType;
                         listCreate.Title = list.Title;
-                        
+
                         // the line of code below doesn't add the list to QuickLaunch
                         // the OnQuickLaunch property is re-set on the Created List object
                         listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
-                        
+
                         listCreate.Url = list.Url.ToParsedString();
                         listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
@@ -85,8 +85,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         if (list.EnableVersioning)
                         {
                             createdList.MajorVersionLimit = list.MaxVersionLimit;
-                       
-                            if (createdList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
+
+                            if (createdList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
                             {
                                 // Only supported on Document Libraries
                                 createdList.EnableMinorVersions = list.EnableMinorVersions;
@@ -96,12 +96,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                             }
                         }
-                        
+
                         createdList.OnQuickLaunch = list.OnQuickLaunch;
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-                      
+
                         createdList.Update();
 
                         web.Context.Load(createdList.Views);
@@ -131,15 +131,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 // Localization should be kept in mind
                             }
                         }
-                        
+
+                        ContentTypeBinding defaultCtBinding = null;
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
                             createdList.AddContentTypeToListById(ctBinding.ContentTypeId);
                             if (ctBinding.Default)
                             {
-                                createdList.SetDefaultContentTypeToList(ctBinding.ContentTypeId);
+                                defaultCtBinding = ctBinding;
                             }
                         }
+                        
+                        // default ContentTypeBinding should be set last because 
+                        // list extension .SetDefaultContentTypeToList() re-sets 
+                        // the list.RootFolder UniqueContentTypeOrder property
+                        // which may cause missing CTs from the "New Button"
+                        if (defaultCtBinding != null)
+                        {
+                            createdList.SetDefaultContentTypeToList(defaultCtBinding.ContentTypeId);
+                        }
+
                         createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
                         TokenParser.AddToken(new ListIdToken(web, list.Title, createdList.Id));
@@ -273,7 +284,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
                             viewRowLimit = uint.Parse(rowLimitElement.Value);
                         }
-                        
+
                         // Query
                         var viewQuery = new StringBuilder();
                         foreach (var queryElement in viewDoc.Descendants("Query").Elements())
@@ -309,7 +320,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                 }
 
-               
+
 
                 #endregion
 
