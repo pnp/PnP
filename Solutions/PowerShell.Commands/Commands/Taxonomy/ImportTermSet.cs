@@ -23,13 +23,13 @@ In contrast to the web interface import, this is not a one-off import but runs s
 
 The import file also supports an expanded syntax for the Term Set Name and term names (Level 1 Term, Level 2 Term, etc). These columns support values with the format 'Name | GUID', with the name and GUID separated by a pipe character (note that the pipe character is invalid to use within a taxomony item name). This expanded syntax is not required, but can be used to ensure all terms have fixed IDs.")]
     [CmdletExample(Code = @"
-PS:> Import-SPOTaxonomyTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchroniseDeletions",
+PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchronizeDeletions",
            Remarks = "Creates (or updates) the term set specified in the import file, in the group specified, removing any existing terms not in the file.")]
     [CmdletExample(Code = @"
-PS:> Import-SPOTaxonomyTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' ",
+PS:> Import-SPOTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' ",
            Remarks = "Creates (or updates) the term set specified in the import file, in the term store and group specified, using the specified ID.")]
     [CmdletExample(Code = @"
-PS:> Import-SPOTaxonomyTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'",
+PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'",
            Remarks = "Creates (or updates) the term set specified in the import file, setting the IsOpen, Contact, and Owner properties as specified.")]
     public class ImportTermSet : SPOCmdlet
     {
