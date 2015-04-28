@@ -110,52 +110,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.Load(createdList.ContentTypes);
                         web.Context.ExecuteQueryRetry();
 
-                        if (list.RemoveExistingContentTypes)
+                        // Remove existing content types only if there are custom content type bindings
+                        List<Microsoft.SharePoint.Client.ContentType> contentTypesToRemove =
+                            new List<Microsoft.SharePoint.Client.ContentType>();
+                        if (list.RemoveExistingContentTypes && list.ContentTypeBindings.Count > 0)
                         {
-                            while (createdList.ContentTypes.Any())
+                            foreach (var ct in createdList.ContentTypes)
                             {
-                                createdList.ContentTypes[0].DeleteObject();
-                            }
-                            try
-                            {
-                                web.Context.ExecuteQueryRetry();
-                            }
-                            catch (ServerException ex)
-                            {
-                                //TODO: Throws exception message with these properties:
-                                // Message: "The last content type on a list cannot be deleted."
-                                // ex.ServerCode = -2146232832
-                                // ex.ServerErrorDetails = null
-                                // ex.ServerErrorTypeName = Microsoft.SharePoint.SPException
-                                // This should be handle properly. Matching strings(with the error message) is not an option because Site Collections can have different Default Languages.
-                                // Localization should be kept in mind
+                                contentTypesToRemove.Add(ct);
                             }
                         }
 
-                        ContentTypeBinding defaultCtBinding = null;
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
-                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId);
-                            if (ctBinding.Default)
-                            {
-                                defaultCtBinding = ctBinding;
-                            }
-                        }
-                        
-                        // default ContentTypeBinding should be set last because 
-                        // list extension .SetDefaultContentTypeToList() re-sets 
-                        // the list.RootFolder UniqueContentTypeOrder property
-                        // which may cause missing CTs from the "New Button"
-                        if (defaultCtBinding != null)
-                        {
-                            createdList.SetDefaultContentTypeToList(defaultCtBinding.ContentTypeId);
+                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true, defaultContent:ctBinding.Default);
                         }
 
+                        // Effectively remove existing content types, if any
+                        foreach (var ct in contentTypesToRemove)
+                        {
+                            ct.DeleteObject();
+                            web.Context.ExecuteQueryRetry();
+                        }
                         createdLists.Add(new ListInfo { CreatedList = createdList, ListInstance = list });
 
                         TokenParser.AddToken(new ListIdToken(web, list.Title, createdList.Id));
 
                         TokenParser.AddToken(new ListUrlToken(web, list.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length + 1)));
+
+
                     }
 
                 }
