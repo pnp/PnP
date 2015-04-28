@@ -67,6 +67,11 @@ PS:> Import-SPOTaxonomyTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\Impo
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(Path))
+            {
+                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+            }
+
             var taxonomySession = TaxonomySession.GetTaxonomySession(ClientContext);
             // Get Term Store
             var termStore = default(TermStore);
