@@ -28,6 +28,8 @@ Solution | Author(s)
 ---------|----------
 Provisioning.Framework.Cloud.Async | Vesa Juvonen
 
+*PnP remote provisioning Core Engine work done by •Erwin van Hunen (Knowit AB), Paolo Pialorsi (PiaSys.com), Bet Jansen (Microsoft), Frank Marasco (Microsoft), Vesa Juvonen (Microsoft) *
+
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
