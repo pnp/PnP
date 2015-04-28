@@ -40,8 +40,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
             if (provisioningTemplate != null)
             {
-                var fileinfo = new FileInfo(Path);
-                var fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
+                var fileSystemConnector = new FileSystemConnector(fileInfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
 
                 var applyingInformation = new ProvisioningTemplateApplyingInformation();

@@ -6,6 +6,7 @@ using System.Management.Automation;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers;
@@ -35,12 +36,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         [Parameter(Mandatory = false, HelpMessage = "If specified, all the site collection term group will be included. Overridden by IncludeAllTermGroups.")]
         public SwitchParameter IncludeSiteCollectionTermGroup;
 
+        [Parameter(Mandatory = false, HelpMessage = "If specified the files making up the composed look (background image, font file and color file) will be saved.")]
+        public SwitchParameter PersistComposedLookFiles;
+
         [Parameter(Mandatory = false, HelpMessage = "Overwrites the output file if it exists.")]
         public SwitchParameter Force;
 
+
         [Parameter(Mandatory = false)]
         public Encoding Encoding = System.Text.Encoding.Unicode;
-
 
 
         protected override void ExecuteCmdlet()
@@ -56,29 +60,33 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 {
                     if (Force || ShouldContinue(string.Format(Resources.File0ExistsOverwrite, Out), Resources.Confirm))
                     {
-                        var xml = GetProvisioningTemplateXML(Schema);
+                        var xml = GetProvisioningTemplateXML(Schema, new FileInfo(Out).DirectoryName);
 
                         File.WriteAllText(Out, xml, Encoding);
                     }
                 }
                 else
                 {
-                    var xml = GetProvisioningTemplateXML(Schema);
+                    var xml = GetProvisioningTemplateXML(Schema, new FileInfo(Out).DirectoryName);
 
                     File.WriteAllText(Out, xml, Encoding);
                 }
             }
             else
             {
-                var xml = GetProvisioningTemplateXML(Schema);
+                var xml = GetProvisioningTemplateXML(Schema, SessionState.Path.CurrentFileSystemLocation.Path);
 
                 WriteObject(xml);
             }
         }
 
-        private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema)
+        private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema, string path)
         {
             var creationInformation = new ProvisioningTemplateCreationInformation(SelectedWeb);
+
+            creationInformation.PersistComposedLookFiles = PersistComposedLookFiles;
+            creationInformation.FileConnector = new FileSystemConnector(path, "");
+
             creationInformation.BaseTemplate = this.SelectedWeb.GetBaseTemplate();
             creationInformation.ProgressDelegate = (message, step, total) =>
             {
@@ -103,20 +111,20 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
             switch (schema)
             {
                 case XMLPnPSchemaVersion.LATEST:
-                {
-                    formatter = XMLPnPSchemaFormatter.LatestFormatter;
-                    break;
-                }
+                    {
+                        formatter = XMLPnPSchemaFormatter.LatestFormatter;
+                        break;
+                    }
                 case XMLPnPSchemaVersion.V201503:
-                {
-                    formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03);
-                    break;
-                }
+                    {
+                        formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03);
+                        break;
+                    }
                 case XMLPnPSchemaVersion.V201505:
-                {
-                    formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05);
-                    break;
-                }
+                    {
+                        formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05);
+                        break;
+                    }
             }
             var _outputStream = formatter.ToFormattedTemplate(template);
             StreamReader reader = new StreamReader(_outputStream);
