@@ -17,17 +17,16 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsData.Import, "SPOTermGroup", SupportsShouldProcess = true)]
-    [CmdletHelp("Imports a taxonomy TermGroup from either the input or from a file.", Category = "Taxonomy")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup", Remarks = "Exports all term groups in the default site collection term store to the standard output")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup -Out output.txt", Remarks = "Exports all term groups in the default site collection term store to the file 'output.txt' in the current folder")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup -Out c:\output.txt -TermGroup ""Test Group""", Remarks = "Exports the term group with the specified name to the file 'output.txt' located in the root folder of the C: drive.")]
-    public class ImportTermGroup : SPOCmdlet
+    [Cmdlet(VerbsData.Import, "SPOTermGroupFromXml", SupportsShouldProcess = true)]
+    [CmdletHelp("Imports a taxonomy TermGroup from either the input or from an XML file.", Category = "Taxonomy")]
+    [CmdletExample(Code = @"PS:> Import-SPOTermGroup -Xml $xml", Remarks = "Imports the XML based termgroup information located in the $xml variable")]
+    [CmdletExample(Code = @"PS:> Import-SPOTermGroup -Path input.xml", Remarks = "Imports the XML file specified by the path.")]
+    public class ImportTermGroupFromXml : SPOCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "The XML to process", Position = 0, ValueFromPipeline = true)]
+        [Parameter(Mandatory = false, HelpMessage = "The XML to process", Position = 0, ValueFromPipeline = true, ParameterSetName = "XML")]
         public string Xml;
 
-        [Parameter(Mandatory = false, HelpMessage = "File to import the data from.")]
+        [Parameter(Mandatory = false, HelpMessage = "The XML File to import the data from", ParameterSetName = "File")]
         public string Path;
 
 

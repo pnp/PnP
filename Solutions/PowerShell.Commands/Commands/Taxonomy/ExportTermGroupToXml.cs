@@ -17,11 +17,11 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsData.Export, "SPOTermGroup", SupportsShouldProcess = true)]
-    [CmdletHelp("Exports a taxonomy TermGroup to either the output or to a file.", Category = "Taxonomy")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup", Remarks = "Exports all term groups in the default site collection term store to the standard output")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup -Out output.txt", Remarks = "Exports all term groups in the default site collection term store to the file 'output.txt' in the current folder")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroup -Out c:\output.txt -TermGroup ""Test Group""", Remarks = "Exports the term group with the specified name to the file 'output.txt' located in the root folder of the C: drive.")]
+    [Cmdlet(VerbsData.Export, "SPOTermGroupToXml", SupportsShouldProcess = true)]
+    [CmdletHelp("Exports a taxonomy TermGroup to either the output or to an XML file.", Category = "Taxonomy")]
+    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml", Remarks = "Exports all term groups in the default site collection term store to the standard output")]
+    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml -Out output.xml", Remarks = "Exports all term groups in the default site collection term store to the file 'output.xml' in the current folder")]
+    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml -Out c:\output.xml -TermGroup ""Test Group""", Remarks = "Exports the term group with the specified name to the file 'output.xml' located in the root folder of the C: drive.")]
     public class ExportTermGroup : SPOCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The ID or name of the termgroup")]
