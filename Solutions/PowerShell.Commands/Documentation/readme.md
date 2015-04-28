@@ -110,6 +110,9 @@ Cmdlet|Description
 **[Set&#8209;SPOTaxonomyFieldValue](SetSPOTaxonomyFieldValue.md)** |Sets a taxonomy term value in a listitem field
 **[Get&#8209;SPOTaxonomyItem](GetSPOTaxonomyItem.md)** |Returns a taxonomy item
 **[Get&#8209;SPOTaxonomySession](GetSPOTaxonomySession.md)** |Returns a taxonomy session
+**[New&#8209;SPOTaxonomyTermGroup](NewSPOTaxonomyTermGroup.md)** |Creates a taxonomy term group
+**[Get&#8209;SPOTaxonomyTermGroup](GetSPOTaxonomyTermGroup.md)** |Returns a taxonomy term group
+**[Import&#8209;SPOTaxonomyTermSet](ImportSPOTaxonomyTermSet.md)** |Imports a taxonomy term set from a file in the standard format.
 ##Tenant Administration
 Cmdlet|Description
 :-----|:----------
