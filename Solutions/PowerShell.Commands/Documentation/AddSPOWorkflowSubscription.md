@@ -1,11 +1,10 @@
 #Add-SPOWorkflowSubscription
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Adds a workflow subscription to a list
 ##Syntax
 ```powershell
-Add-SPOWorkflowSubscription -Name [<String>] -DefinitionName [<String>] -List [<ListPipeBind>] [-StartManually [<SwitchParameter>]] [-StartOnCreated [<SwitchParameter>]] [-StartOnChanged [<SwitchParameter>]] -HistoryListName [<String>] -TaskListName [<String>] [-AssociationValues [<Dictionary`2>]] [-Web [<WebPipeBind>]]
-```
+Add-SPOWorkflowSubscription -Name <String> -DefinitionName <String> -List <ListPipeBind> [-StartManually [<SwitchParameter>]] [-StartOnCreated [<SwitchParameter>]] [-StartOnChanged [<SwitchParameter>]] -HistoryListName <String> -TaskListName <String> [-AssociationValues <Dictionary`2>] [-Web <WebPipeBind>]```
 &nbsp;
 
 ##Parameters
@@ -20,4 +19,5 @@ StartManually|SwitchParameter|False|
 StartOnChanged|SwitchParameter|False|
 StartOnCreated|SwitchParameter|False|
 TaskListName|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
+<!-- Ref: EB522F03C594887B49D3F5F00A6342BA -->

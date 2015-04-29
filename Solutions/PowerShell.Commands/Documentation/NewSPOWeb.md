@@ -1,11 +1,10 @@
 #New-SPOWeb
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Creates a new subweb to the current web
 ##Syntax
 ```powershell
-New-SPOWeb -Title [<String>] -Url [<String>] [-Description [<String>]] [-Locale [<Int32>]] -Template [<String>] [-BreakInheritance [<SwitchParameter>]] [-InheritNavigation [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-```
+New-SPOWeb -Title <String> -Url <String> [-Description <String>] [-Locale <Int32>] -Template <String> [-BreakInheritance [<SwitchParameter>]] [-InheritNavigation [<SwitchParameter>]] [-Web <WebPipeBind>]```
 &nbsp;
 
 ##Parameters
@@ -18,10 +17,11 @@ Locale|Int32|False|
 Template|String|True|The site definition template to use for the new web, e.g. STS#0
 Title|String|True|The title of the new web
 Url|String|True|The Url of the new web
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
     
 PS:> New-SPOWeb -Title "Project A Web" -Url projectA -Description "Information about Project A" -Locale 1033 -Template "STS#0"
 Creates a new subweb under the current web with url projectA
+<!-- Ref: 1B85B31B196605FF987A3166A189F10A -->

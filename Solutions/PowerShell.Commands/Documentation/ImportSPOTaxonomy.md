@@ -1,16 +1,14 @@
 #Import-SPOTaxonomy
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Imports a taxonomy from either a string array or a file
 ##Syntax
 ```powershell
-Import-SPOTaxonomy [-Terms [<String[]>]] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-```
+Import-SPOTaxonomy [-Terms <String[]>] [-Lcid <Int32>] [-TermStoreName <String>] [-Delimiter <String>] [-SynchronizeDeletions [<SwitchParameter>]]```
 &nbsp;
 
 ```powershell
-Import-SPOTaxonomy -Path [<String>] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-```
+Import-SPOTaxonomy -Path <String> [-Lcid <Int32>] [-TermStoreName <String>] [-Delimiter <String>] [-SynchronizeDeletions [<SwitchParameter>]]```
 &nbsp;
 
 ##Parameters
@@ -26,10 +24,11 @@ TermStoreName|String|False|
 
 ###Example 1
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
-Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
+Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
 
 ###Example 2
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
-Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
+Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
+<!-- Ref: 451EF1CC0ADD8742309128E95C1762DC -->

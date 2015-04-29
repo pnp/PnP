@@ -18,6 +18,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
     [Cmdlet("Apply", "SPOProvisioningTemplate")]
     [CmdletHelp("Applies a provisioning template to a web", Category = "Branding")]
+    [CmdletExample(
+     Code = @"
+    PS:> Apply-SPOProvisioningTemplate -Path template.xml
+",
+     Remarks = "Applies a provisioning template in XML format to the current web.")]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]

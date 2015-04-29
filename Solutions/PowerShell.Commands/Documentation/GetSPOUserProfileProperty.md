@@ -1,5 +1,5 @@
 #Get-SPOUserProfileProperty
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Office365 only: Uses the tenant API to retrieve site information.
 
@@ -7,8 +7,7 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
 
 ##Syntax
 ```powershell
-Get-SPOUserProfileProperty -Account [<String[]>]
-```
+Get-SPOUserProfileProperty -Account <String[]>```
 &nbsp;
 
 ##Detailed Description
@@ -22,10 +21,11 @@ Account|String[]|True|The account of the user, formatted either as a login name,
 
 ###Example 1
     
-PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'
-Returns the profile properties for the specified users
+PS:> Get-SPOUserProfileProperty -Account 'user@domain.com'
+Returns the profile properties for the specified user
 
 ###Example 2
     
-PS:> Get-SPOUserProfileProperty -Account 'user@domain.com'
-Returns the profile properties for the specified user
+PS:> Get-SPOUserProfileProperty -Account 'user@domain.com','user2@domain.com'
+Returns the profile properties for the specified users
+<!-- Ref: 535B4C9EB469F70C16B5BEF860C1794A -->

@@ -1,11 +1,10 @@
 #Enable-SPOFeature
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Enables a feature
 ##Syntax
 ```powershell
-Enable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] [-Sandboxed [<SwitchParameter>]] -Identity [<GuidPipeBind>]
-```
+Enable-SPOFeature [-Force [<SwitchParameter>]] [-Scope <FeatureScope>] [-Sandboxed [<SwitchParameter>]] -Identity <GuidPipeBind>```
 &nbsp;
 
 ##Parameters
@@ -28,3 +27,4 @@ Scope|FeatureScope|False|
 ###Example 3
     PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
+<!-- Ref: 6035DEC5BC5D3A509F117F1BF8827FF6 -->
