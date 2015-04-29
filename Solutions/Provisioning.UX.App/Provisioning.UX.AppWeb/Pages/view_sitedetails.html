@@ -1,0 +1,90 @@
+﻿<div class="modal-right-heading">
+    <h1>Site Details</h1>
+</div>
+
+<div class="modal-right-body">
+
+    <div class="form-group has-feedback" ng-class="{ 'has-error' : formWizard.detailsName.$invalid && !formWizard.detailsName.$pristine, 'has-success' : formWizard.detailsName.$valid && !formWizard.detailsName.$pristine }">
+        <label class="control-label" for="detailsName">Give your site a title</label>
+        <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" required />
+        <div class="error-messages" ng-if="!formWizard.detailsName.$pristine" ng-messages="formWizard.detailsName.$error">
+            <div ng-message="required">You did not give your site a title</div>
+        </div>
+    </div>
+
+    <div class="form-group form-inline has-feedback" ng-class="{ 'has-error' : formWizard.detailsUrl.$invalid && !formWizard.detailsUrl.$pristine, 'has-success' : formWizard.detailsUrl.$valid && !formWizard.detailsUrl.$pristine }">
+        <label class="control-label" for="detailsUrl">Give your site a URL</label><br />
+        <span>{{siteConfiguration.spNewSitePrefix}}</span>
+        <input type="text" name="detailsUrl" class="form-control" id="detailsUrl" ng-model="siteConfiguration.details.url" ng-minlength="3" ng-maxlength="50" ng-model-options="{ debounce: 2000 }" site-availability-validator required />
+        <div class="error-messages" ng-if="!formWizard.detailsUrl.$pristine" ng-messages="formWizard.detailsUrl.$error">
+            <div ng-message="required">You did not enter a site url</div>
+            <div ng-message="minlength">Your field is too short</div>
+            <div ng-message="maxlength">Your field is too long</div>
+            <div ng-message="site-loading">Checking for site availability...</div>
+            <div ng-message="site-available">Sorry, but this site url is already taken</div>
+        </div>
+
+    </div>
+
+    <div class="form-group has-feedback" ng-class="{ 'has-error' : formWizard.detailsDescription.$invalid && !formWizard.detailsDescription.$pristine, 'has-success' : formWizard.detailsDescription.$valid && !formWizard.detailsDescription.$pristine }">
+        <label class="control-label" for="detailsDescription">Give it a description</label>
+        <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" required></textarea>
+        <div class="error-messages" ng-if="!formWizard.detailsDescription.$pristine" ng-messages="formWizard.detailsDescription.$error">
+            <div ng-message="required">You did not enter a description</div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label class="control-label" for="detailsRegion">Region</label>
+                <select class="form-control" name="detailsRegion" id="detailsRegion" ng-model="siteConfiguration.details.region" required>
+                    <option>North America</option>
+                    <option>LATAM</option>
+                    <option>APAC</option>
+                    <option>EMEA</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="detailsFunction">Function</label>
+                <select class="form-control" name="detailsFunction" id="detailsFunction" ng-model="siteConfiguration.details.function" required>
+                    <option>Information Technology</option>
+                    <option>Human Resources</option>
+                    <option>Legal</option>
+                    <option>Accounting</option>
+                    <option>Administrative</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label class="control-label" for="detailsDivision">Division</label>
+                <select class="form-control" name="detailsDivision" id="detailsDivision" ng-model="siteConfiguration.details.division" required>
+                    <option>Corporate</option>
+                    <option>Ipsum</option>
+                    <option>Dolor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="detailsLanguage">Language</label>
+                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.details.language" required>
+                    <option>English</option>
+                    <option>Spanish</option>
+                    <option>French</option>
+                    <option>Russian</option>
+                    <option>Mandarin</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

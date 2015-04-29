@@ -104,6 +104,14 @@
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
     <Content Include="packages.config" />
+    <Content Include="Pages\view_confirmation.html" />
+    <Content Include="Pages\view_dataprivacy.html" />
+    <Content Include="Pages\view_intendeduse.html" />
+    <Content Include="Pages\view_responsibilities.html" />
+    <Content Include="Pages\view_sitedetails.html" />
+    <Content Include="Pages\view_sitetemplates.html" />
+    <Content Include="Pages\view_welcome.html" />
+    <Content Include="Pages\view_owners.html" />
     <Content Include="Resources\SiteTemplates\Templates.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

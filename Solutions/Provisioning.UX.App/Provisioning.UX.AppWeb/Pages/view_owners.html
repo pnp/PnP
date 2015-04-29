@@ -1,0 +1,44 @@
+﻿<div class="modal-right-heading">
+    <h1>Specify owners and grant permissions</h1>
+</div>
+
+<div class="modal-right-body" ng-controller="PeoplePickerController">
+
+    <div id="divFieldOwners" class="form-group">
+        <label for="inputAdditionalOwnersPrimary" class="control-label" style="margin-top: 15px !important;">Add additional owners (everyone can use a backup)</label>
+        <div class="ms-core-form-line">
+            <div id="divAdditionalOwnersPrimary" class="form-control">
+                <span id="spanAdditionalOwnersPrimary"></span>
+                <input type="text" id="inputAdditionalOwnersPrimary" name="inputAdditionalOwnersPrimary" class="cam-peoplepicker-edit" placeholder="[names or email addresses]" required>
+            </div>
+            <div id="divAdditionalOwnersPrimarySearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+            <input type="hidden" id="hdnAdditionalOwnersPrimary" name="hdnAdditionalOwnersPrimary" />
+        </div>
+    </div>
+
+
+    <div id="divFieldMembers" class="form-group">
+        <label for="inputMembers" class="control-label" style="margin-top: 15px !important;">Add members: (optional)</label>
+        <div class="ms-core-form-line">
+            <div id="divMembers" class="form-control">
+                <span id="spanMembers"></span>
+                <input type="text" id="inputMembers" class="cam-peoplepicker-edit" placeholder="[names or email addresses]">
+            </div>
+            <div id="divMembersSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+            <input type="hidden" id="hdnMembers" />
+        </div>
+    </div>
+
+    <div id="divFieldVisitors" class="form-group">
+        <label for="inputVisitors" class="control-label" style="margin-top: 15px !important;">Add visitors: (optional)</label>
+        <div class="ms-core-form-line">
+            <div id="divVisitors" class="form-control">
+                <span id="spanVisitors"></span>
+                <input type="text" id="inputVisitors" class="cam-peoplepicker-edit" placeholder="[names or email addresses]">
+            </div>
+            <div id="divVisitorsSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+            <input type="hidden" id="hdnVisitors" />
+        </div>
+    </div>
+
+</div>
