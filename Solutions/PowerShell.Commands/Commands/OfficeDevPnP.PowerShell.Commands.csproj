@@ -329,7 +329,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml" "$(SolutionDir)
 
 C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>
