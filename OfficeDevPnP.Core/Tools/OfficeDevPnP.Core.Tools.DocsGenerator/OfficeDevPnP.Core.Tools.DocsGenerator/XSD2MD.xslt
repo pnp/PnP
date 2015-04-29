@@ -46,8 +46,10 @@ Here follows the list of all the other child elements and complex types that can
 <xsl:template name="RenderComplexType">
 <xsl:param name="complexType" />
 
+<!-- Skip any abstract complexType -->
 <xsl:if test="not(/xsd:schema/xsd:complexType//xsd:extension[@base = $complexType/@name])">
     
+<!-- Get the complexType name -->
 <xsl:if test="$complexType/@name | $complexType/parent::xsd:element/@name">
 <xsl:variable name="typeName">
 <xsl:choose>
@@ -59,17 +61,33 @@ Here follows the list of all the other child elements and complex types that can
 </xsl:otherwise>
 </xsl:choose> 
 </xsl:variable>
+
+<!-- Create an anchor to the current complexType -->
 <xsl:call-template name="LinkXmlTag"><xsl:with-param name="tagName" select="$typeName" /></xsl:call-template>
 ###<xsl:value-of select="$typeName"/><xsl:call-template name="CRLF" />
 
 <!-- Write the complexType description -->
-<xsl:if test="$complexType/xsd:annotation/xsd:documentation != ''">
-<xsl:value-of select="normalize-space($complexType/xsd:annotation/xsd:documentation)" /><xsl:call-template name="CRLF" />
+<xsl:variable name="documentation">
+<xsl:choose>
+<xsl:when test="$complexType/xsd:annotation/xsd:documentation != ''">
+<xsl:value-of select="$complexType/xsd:annotation/xsd:documentation"/>
+</xsl:when>
+<xsl:when test="$complexType/parent::xsd:element/xsd:annotation/xsd:documentation != ''">
+<xsl:value-of select="$complexType/parent::xsd:element/xsd:annotation/xsd:documentation"/>
+</xsl:when>
+<xsl:otherwise>
+</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+<xsl:if test="$documentation">
+<xsl:value-of select="normalize-space($documentation)" /><xsl:call-template name="CRLF" />
 </xsl:if>
 
-<!-- Save the current type, which will be something like pnp:complexType -->
+<!-- Save the current type of the complexType, which will be something like pnp:complexType -->
 <xsl:variable name="currentType" select="substring($complexType/@type, 5)" />
+<!-- Save the child elements of the current complexType -->
 <xsl:variable name="currentTypeElements" select="$complexType/child::*/xsd:element | $complexType/child::*/child::*/xsd:element" />
+<!-- Save the attributes of the current complexType -->
 <xsl:variable name="currentTypeAttributes" select="$complexType/xsd:attribute | /xsd:schema/xsd:complexType[@name = $complexType//xsd:extension/@base]/xsd:attribute | /xsd:schema/xsd:attributeGroup[@name = substring(/xsd:schema/xsd:complexType[@name = $complexType//xsd:extension/@base]/xsd:attributeGroup/@ref, 5)]/xsd:attribute | $complexType//xsd:extension/xsd:attribute" />
   
 <!-- Show an XML preview of the element -->
@@ -81,6 +99,11 @@ Here follows the list of all the other child elements and complex types that can
 <xsl:text>   </xsl:text><xsl:call-template name="SelfClosingSimpleXmlTag"><xsl:with-param name="tagName" select="./@name" /></xsl:call-template>
 <xsl:call-template name="CRLF" />
 </xsl:for-each>
+<!-- If the current complexType includes an xsd:any element -->
+<xsl:if test="$complexType/child::*/xsd:any">
+<xsl:text disable-output-escaping="yes">   &lt;!-- Any other XML content --&gt;</xsl:text>
+<xsl:call-template name="CRLF" />
+</xsl:if>
 <xsl:call-template name="CloseXmlTag"><xsl:with-param name="tagName" select="$typeName" /></xsl:call-template>
 ```
 
@@ -91,7 +114,35 @@ Here follow the available child elements for the <xsl:value-of select="@name"/> 
 Element|Type|Description
 -------|----|-----------
 <xsl:for-each select="$currentTypeElements">
-<xsl:value-of select="./@name"/><xsl:text>|</xsl:text><xsl:text>[</xsl:text><xsl:value-of select="./@name"/><xsl:text>](#</xsl:text><xsl:value-of select="translate(./@name, 'ABCDEFGHILMNOPQRSTUVZWYJKX', 'abcdefghilmnopqrstuvzwyjkx')" /><xsl:text>)|</xsl:text><xsl:if test="./xsd:annotation/xsd:documentation != ''"><xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" /></xsl:if><xsl:call-template name="CRLF" />
+
+<!-- Get the name of the current child element -->
+<xsl:variable name="currentElementName" select="./@name" />
+
+<!-- Get the type of the current child element -->
+<xsl:variable name="currentElementType">
+<xsl:choose>
+<xsl:when test="./@type and substring(./@type, 1, 4) = 'pnp:'">
+<xsl:value-of select="substring(./@type, 5)"/>
+</xsl:when>
+<xsl:when test="./@type">
+<xsl:value-of select="./@type"/>
+</xsl:when>
+<xsl:otherwise>
+<xsl:value-of select="./@name"/>
+</xsl:otherwise>
+</xsl:choose>
+
+</xsl:variable>
+
+<!-- Show the current child element -->
+<xsl:choose>
+<xsl:when test="substring($currentElementType, 1, 4) = 'xsd:'">
+<xsl:value-of select="$currentElementName"/><xsl:text>|</xsl:text><xsl:value-of select="$currentElementType"/><xsl:text>|</xsl:text><xsl:if test="./xsd:annotation/xsd:documentation != ''"><xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" /></xsl:if><xsl:call-template name="CRLF" />
+</xsl:when>
+<xsl:otherwise>
+<xsl:value-of select="$currentElementName"/><xsl:text>|</xsl:text><xsl:text>[</xsl:text><xsl:value-of select="$currentElementType"/><xsl:text>](#</xsl:text><xsl:value-of select="translate($currentElementType, 'ABCDEFGHILMNOPQRSTUVZWYJKX', 'abcdefghilmnopqrstuvzwyjkx')" /><xsl:text>)|</xsl:text><xsl:if test="./xsd:annotation/xsd:documentation != ''"><xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" /></xsl:if><xsl:call-template name="CRLF" />
+</xsl:otherwise>
+</xsl:choose>
 </xsl:for-each>
 </xsl:if>
 
@@ -102,7 +153,20 @@ Here follow the available attributes for the <xsl:value-of select="@name"/> elem
 Attibute|Type|Description
 --------|----|-----------
 <xsl:for-each select="$currentTypeAttributes">
-<xsl:value-of select="./@name"/>|<xsl:value-of select="./@type"/>|<xsl:if test="./xsd:annotation/xsd:documentation != ''">
+
+<!-- Determine the attribute type -->  
+<xsl:variable name="attibuteType">
+<xsl:choose>
+<xsl:when test="substring(./@type, 1, 4) = 'pnp:'">
+<xsl:value-of select="substring(./@type, 5)"/>
+</xsl:when>
+<xsl:otherwise>
+<xsl:value-of select="./@type"/>
+</xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
+  
+<xsl:value-of select="./@name"/>|<xsl:value-of select="$attibuteType"/>|<xsl:if test="./xsd:annotation/xsd:documentation != ''">
 <xsl:value-of select="normalize-space(./xsd:annotation/xsd:documentation)" />
 </xsl:if><xsl:call-template name="CRLF" />
 </xsl:for-each>
