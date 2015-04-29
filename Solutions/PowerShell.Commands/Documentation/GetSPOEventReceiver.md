@@ -1,11 +1,10 @@
 #Get-SPOEventReceiver
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-29*
 
 Returns all or a specific event receiver
 ##Syntax
 ```powershell
-Get-SPOEventReceiver [-List [<ListPipeBind>]] [-Identity [<GuidPipeBind>]] [-Web [<WebPipeBind>]]
-```
+Get-SPOEventReceiver [-List <ListPipeBind>] [-Identity <GuidPipeBind>] [-Web <WebPipeBind>]```
 &nbsp;
 
 ##Parameters
@@ -13,7 +12,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Identity|GuidPipeBind|False|
 List|ListPipeBind|False|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
@@ -31,3 +30,4 @@ This will return all registered event receivers in the list with the name Projec
 ###Example 4
     PS:> Get-SPOEventReceiver -List "ProjectList" -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22
 This will return a specific registered event receiver in the list with the name ProjectList
+<!-- Ref: 2D7AAE161CF6CFD4ABEF9DBF07AE39B2 -->

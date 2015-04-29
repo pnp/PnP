@@ -1,16 +1,14 @@
 #Set-SPOTaxonomyFieldValue
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-29*
 
 Sets a taxonomy term value in a listitem field
 ##Syntax
 ```powershell
-Set-SPOTaxonomyFieldValue -Label [<String>] -TermId [<GuidPipeBind>] -ListItem [<ListItem>] -InternalFieldName [<String>]
-```
+Set-SPOTaxonomyFieldValue -Label <String> -TermId <GuidPipeBind> -ListItem <ListItem> -InternalFieldName <String>```
 &nbsp;
 
 ```powershell
-Set-SPOTaxonomyFieldValue -TermPath [<String>] -ListItem [<ListItem>] -InternalFieldName [<String>]
-```
+Set-SPOTaxonomyFieldValue -TermPath <String> -ListItem <ListItem> -InternalFieldName <String>```
 &nbsp;
 
 ##Parameters
@@ -34,3 +32,4 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
 PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -TermPath 'CORPORATE|DEPARTMENTS|HR'
     
 
+<!-- Ref: 1E69929A37144256796130C96FEA086E -->

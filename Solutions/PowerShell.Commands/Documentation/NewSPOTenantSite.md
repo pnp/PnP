@@ -1,20 +1,16 @@
 #New-SPOTenantSite
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-29*
 
 Office365 only: Creates a new site collection for the current tenant
 ##Syntax
 ```powershell
-New-SPOTenantSite -Title [<String>] -Url [<String>] [-Description [<String>]] [-Owner [<String>]] [-Lcid [<UInt32>]] [-Template [<String>]] -TimeZone [<Int32>] [-ResourceQuota [<Double>]] [-ResourceQuotaWarningLevel [<Double>]] [-StorageQuota [<Int64>]] [-StorageQuotaWarningLevel [<Int64>]] [-RemoveDeletedSite [<SwitchParameter>]] [-Wait [<SwitchParameter>]]
-```
+New-SPOTenantSite -Title <String> -Url <String> [-Description <String>] [-Owner <String>] [-Lcid <UInt32>] [-Template <String>] -TimeZone <Int32> [-ResourceQuota <Double>] [-ResourceQuotaWarningLevel <Double>] [-StorageQuota <Int64>] [-StorageQuotaWarningLevel <Int64>] [-RemoveDeletedSite [<SwitchParameter>]] [-Wait [<SwitchParameter>]]```
 &nbsp;
 
 ##Detailed Description
 
 The New-SPOTenantSite cmdlet creates a new site collection for the current company. However, creating a new SharePoint
 Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-
 
 ##Parameters
 Parameter|Type|Required|Description
@@ -44,3 +40,4 @@ Url|String|True|Specifies the full URL of the new site collection. It must be in
 For example, for company contoso, valid managed paths are https://contoso.sharepoint.com/sites and
 https://contoso.sharepoint.com/teams.
 Wait|SwitchParameter|False|
+<!-- Ref: 8C640D03D33A93E71242897F087112DB -->
