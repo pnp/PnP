@@ -16,7 +16,7 @@ Publishing Feature
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.ListRatingSettings | Akhilesh Nirapure (RapidCircle)
+Core.ListRatingSettings | Akhilesh Nirapure (**RapidCircle**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -56,9 +56,4 @@ Steps Performed:
 5. Add selected experience field to default view, e.g. Ratings as shown in above code.
 
 
-Note: The RatingsEnabler (constructor) takes dependency on Logger which for the sake of sample uses ConsoleLogger. You can implement your own logger as far as it is implementing ILogger interface. 
-
-
-# Future Enhacement? #
-
-Add *PowerShell CommandLets* which can used with Office365
+**Note:** The RatingsEnabler (constructor) takes dependency on Logger which for the sake of sample uses ConsoleLogger. You can implement your own logger as far as it is implementing ILogger interface. 
