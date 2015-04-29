@@ -1,11 +1,10 @@
 #Uninstall-SPOAppInstance
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-04-29*
 
 Removes an app from a site
 ##Syntax
 ```powershell
-Uninstall-SPOAppInstance -Identity [<AppPipeBind>] [-Force [<SwitchParameter>]] [-Web [<WebPipeBind>]]
-```
+Uninstall-SPOAppInstance -Identity <AppPipeBind> [-Force [<SwitchParameter>]] [-Web <WebPipeBind>]```
 &nbsp;
 
 ##Parameters
@@ -13,7 +12,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 Force|SwitchParameter|False|
 Identity|AppPipeBind|True|Appinstance or Id of the app to remove.
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
@@ -23,3 +22,4 @@ Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the cu
 ###Example 2
     PS:> Uninstall-SPOAppInstance -Identity $appinstance
 
+<!-- Ref: 8B209E5F919395582DB8EF1636287A7C -->
