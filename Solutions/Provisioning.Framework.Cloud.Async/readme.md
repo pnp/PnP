@@ -52,7 +52,7 @@ Following picture shows the conceptual design of this solution.
 4. PnP site provisioning engine will extract delta changes compared to out of the box sites from actual live sites
 5. New site collections are created using out of the box site definitions, but changes what the business users have applied to those separate template sites are automatically applied to newly created sites
 
-*Notice that this is just one possible process. Exact scenario depends on business requirements. Key poitn is that we are able to extact modifications from live sites, which we can either storage as template xml files or applied on-fly to newly created sites.*
+*Notice that this is just one possible process. Exact scenario depends on business requirements. Key point is that we are able to extact modifications from live sites, which we can either storage as template xml files or applied on-fly to newly created sites.*
 
 
 # Code level approach #
