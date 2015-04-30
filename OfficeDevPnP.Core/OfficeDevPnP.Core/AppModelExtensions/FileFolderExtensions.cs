@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
@@ -936,7 +937,7 @@ namespace Microsoft.SharePoint.Client
                 foreach (var kvp in properties)
                 {
                     var propertyName = kvp.Key;
-                    var propertyValue = kvp.Value;
+                    var propertyValue = kvp.Value.ToParsedString();
 
                     var fieldValues = file.ListItemAllFields.FieldValues;
                     var currentValue = string.Empty;
