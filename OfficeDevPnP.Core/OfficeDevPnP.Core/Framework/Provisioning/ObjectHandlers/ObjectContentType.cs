@@ -55,21 +55,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingCTs.Add(newCT);
                         }
                     }
-                    else
-                    {
-                        UpdateContetType(web, existingCT, ct);
-                    }
                 }
-            }
-
-        }
-
-        private static void UpdateContetType(Web web, Microsoft.SharePoint.Client.ContentType existingCT, ContentType ct)
-        {
-            foreach (var fieldRef in ct.FieldRefs)
-            {
-                var field = web.Fields.GetById(fieldRef.Id);
-                web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
         }
