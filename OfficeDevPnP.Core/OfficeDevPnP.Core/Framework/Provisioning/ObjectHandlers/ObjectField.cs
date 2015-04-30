@@ -11,6 +11,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
+using SPField = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -34,8 +35,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
             web.Context.ExecuteQueryRetry();
-            var existingFieldIds = existingFields.Select(l => l.Id).ToList();
-
+            var existingFieldIds = existingFields.AsEnumerable<SPField>().Select(l => l.Id).ToList();
             var fields = template.SiteFields;
 
             foreach (var field in fields)
@@ -98,7 +98,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             fieldXml = element.ToString();
                         }
                     }
-                  
+
                     // Check if we have version attribute. Remove if exists 
                     if (element.Attribute("Version") != null)
                     {
