@@ -25,10 +25,11 @@ Here follows the list of root elements available in the PnP Provisioning Schema.
 
 <!-- Save the current type, which will be something like pnp:complexType -->
 <xsl:variable name="currentType" select="substring(@type, 5)" />
-
+<xsl:variable name="namespaceDeclaration">xmlns:pnp="<xsl:value-of select="/xsd:schema/@targetNamespace" />"</xsl:variable>
+    
 <xsl:call-template name="RenderComplexType">
 <xsl:with-param name="complexType" select="/xsd:schema/xsd:complexType[@name = $currentType]" />
-<xsl:with-param name="renderTitle" select="number(0)" />
+<xsl:with-param name="namespaceDeclaration" select="$namespaceDeclaration" />
 </xsl:call-template>
   
 </xsl:for-each>
@@ -45,7 +46,9 @@ Here follows the list of all the other child elements and complex types that can
 
 <xsl:template name="RenderComplexType">
 <xsl:param name="complexType" />
+<xsl:param name="namespaceDeclaration" />
 
+  
 <!-- Skip any abstract complexType -->
 <xsl:if test="not(/xsd:schema/xsd:complexType//xsd:extension[@base = $complexType/@name])">
     
@@ -92,7 +95,7 @@ Here follows the list of all the other child elements and complex types that can
   
 <!-- Show an XML preview of the element -->
 ```xml
-<xsl:call-template name="OpenXmlTag"><xsl:with-param name="tagName" select="$typeName" /><xsl:with-param name="attributes" select="$currentTypeAttributes" /></xsl:call-template>
+<xsl:call-template name="OpenXmlTag"><xsl:with-param name="tagName" select="$typeName" /><xsl:with-param name="attributes" select="$currentTypeAttributes" /><xsl:with-param name="namespaceDeclaration" select="$namespaceDeclaration" /></xsl:call-template>
 <xsl:call-template name="CRLF" />
 <!-- If there are any child elements in the complexType, show them in a table -->
 <xsl:for-each select="$currentTypeElements">
@@ -186,17 +189,19 @@ Attibute|Type|Description
 <xsl:template name="OpenXmlTag">
 <xsl:param name="tagName" />
 <xsl:param name="attributes" />
-<xsl:text disable-output-escaping="yes">&lt;</xsl:text><xsl:value-of select="$tagName"/><xsl:for-each select="$attributes"><xsl:call-template name="CRLF" /><xsl:text>      </xsl:text><xsl:value-of select="./@name"/>="<xsl:value-of select="./@type"/>"</xsl:for-each><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+<xsl:param name="namespaceDeclaration" />
+<xsl:text disable-output-escaping="yes">&lt;pnp:</xsl:text><xsl:value-of select="$tagName"/><xsl:if test="$namespaceDeclaration"><xsl:call-template name="CRLF" /><xsl:text>      </xsl:text><xsl:value-of select="$namespaceDeclaration" disable-output-escaping="yes" /></xsl:if><xsl:for-each select="$attributes"><xsl:call-template name="CRLF" /><xsl:text>      </xsl:text><xsl:value-of select="./@name"/>="<xsl:value-of select="./@type"/>"</xsl:for-each><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 </xsl:template>
 
 <xsl:template name="CloseXmlTag">
 <xsl:param name="tagName" />
-<xsl:text disable-output-escaping="yes">&lt;/</xsl:text><xsl:value-of select="$tagName"/><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+<xsl:text disable-output-escaping="yes">&lt;/pnp:</xsl:text><xsl:value-of select="$tagName"/><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 </xsl:template>
 
 <xsl:template name="SelfClosingSimpleXmlTag">
 <xsl:param name="tagName" />
-<xsl:text disable-output-escaping="yes">&lt;</xsl:text><xsl:value-of select="$tagName"/><xsl:text disable-output-escaping="yes"> /&gt;</xsl:text>
+<xsl:param name="namespaceDeclaration" />
+<xsl:text disable-output-escaping="yes">&lt;pnp:</xsl:text><xsl:value-of select="$tagName"/><xsl:if test="$namespaceDeclaration"><xsl:call-template name="CRLF" /><xsl:text>      </xsl:text><xsl:value-of select="$namespaceDeclaration" disable-output-escaping="yes" /></xsl:if><xsl:text disable-output-escaping="yes"> /&gt;</xsl:text>
 </xsl:template>
 
 <xsl:template name="LinkXmlTag">
