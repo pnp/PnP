@@ -9,6 +9,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using Provisioning.Common.Authentication;
 using Provisioning.Common.Data.Templates;
+using Provisioning.Common.Configuration;
 
 namespace Provisioning.Common
 {
@@ -57,10 +58,32 @@ namespace Provisioning.Common
         public void ApplyProvisioningTemplates(Web web, ProvisioningTemplate provisioningTemplate)
         {
           //  var connector;
-            provisioningTemplate.Connector = new FileSystemConnector("Resources/SiteTemplates/ProvisioningTemplates/", string.Empty);
+            provisioningTemplate.Connector = this.GetProvisioningConnector();
             web.ApplyProvisioningTemplate(provisioningTemplate);
         }
 
+        private FileConnectorBase GetProvisioningConnector()
+        {
+            var _configManager = new ConfigManager();
+            var _module = _configManager.GetModuleByName(ModuleKeys.PROVISIONINGCONNECTORS_KEY);
+            var _managerTypeString = _module.ModuleType;
+
+            try
+            {
+                var type = _managerTypeString.Split(',');
+                var typeName = type[0];
+                var assemblyName = type[1];
+                var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
+                instance.AddParameter("ConnectionString", _module.ConnectionString);
+                return instance;
+            }
+            catch (Exception _ex)
+            {
+              //  throw new DataStoreException("Exception Occured while Creating Instance", _ex);
+              throw;
+            }
+
+        }
 
     }
 }

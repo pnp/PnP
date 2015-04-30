@@ -15,11 +15,9 @@ namespace Provisioning.Common.Configuration
         public static readonly string CLIENTSECRET_KEY = "ClientSecret";
         public static readonly string SUPPORTTEAMNOTIFICATION_KEY = "SupportTeamNotificationEmail";
         public static readonly string AUTOAPPROVESITES_KEY = "AutoApproveSites";
-        public static readonly string SHAREPOINTONPREM_KEY = "SharePointOnPremises";
         public static readonly string TENANTADMINACCOUNT_KEY = "TenantAdminAccount";
         public static readonly string TENANTADMINACCOUNTPWD_KEY = "TenantAdminAccountPWD";
         public static readonly string MYSITETENANTADMINURL_KEY = "MysiteTenantAdminUrl";
-        public static readonly string RESOURCECONNECTIONSTRING_KEY = "ResourceConnectionString";
-        
+       
     }
 }

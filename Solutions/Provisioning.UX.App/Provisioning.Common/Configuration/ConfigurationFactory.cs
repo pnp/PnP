@@ -56,12 +56,5 @@ namespace Provisioning.Common.Configuration
 
         #endregion
 
-        /// <summary>
-        /// Returns an interface for working with the ISiteTemplateFactory
-        /// </summary>
-        public ISiteTemplateFactory GetSiteTemplateFactory()
-        {
-            return SiteTemplateFactory.GetInstance();
-        }
     }
 }

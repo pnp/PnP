@@ -19,7 +19,7 @@ namespace Provisioning.Job
         #region Instance Members
         ISiteRequestFactory _requestFactory;
         IConfigurationFactory _configFactory;
-        ISiteTemplateFactory _stTemplateFactory;
+        ISiteTemplateFactory _siteTemplateFactory;
         IAppSettingsManager _appManager;
         AppSettings _settings;
         #endregion
@@ -27,11 +27,11 @@ namespace Provisioning.Job
         #region Constructors
         public SiteProvisioningJob()
         {
-            this._requestFactory = SiteRequestFactory.GetInstance();
-            var _siteFactory = SiteTemplateFactory.GetInstance();
-            var _tm = _siteFactory.GetManager();
+            this._configFactory = ConfigurationFactory.GetInstance();
             this._appManager = _configFactory.GetAppSetingsManager();
             this._settings = _appManager.GetAppSettings();
+            this._requestFactory = SiteRequestFactory.GetInstance();
+            this._siteTemplateFactory = SiteTemplateFactory.GetInstance();
         }
         #endregion
 
@@ -53,7 +53,7 @@ namespace Provisioning.Job
 
         public void ProvisionSites(ICollection<SiteRequestInformation> siterequests)
         {
-            var _tm = this._stTemplateFactory.GetManager();
+            var _tm = this._siteTemplateFactory.GetManager();
             SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager();
 
             foreach (var siterequest in siterequests)

@@ -10,5 +10,6 @@ namespace Provisioning.Common.Configuration
     {
         public static readonly string REPOSITORYMANGER_KEY = "RepositoryManager";
         public static readonly string TEMPLATEPROVIDER_KEY = "TemplateProvider";
+        public static readonly string PROVISIONINGCONNECTORS_KEY = "ProvisioningConnectors";
     }
 }
