@@ -107,6 +107,11 @@ Remarks = "Extracts a provisioning template in XML format from the current web a
 
         private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema, string path)
         {
+            if (!this.SelectedWeb.IsPropertyAvailable("Url"))
+            {
+                ClientContext.Load(this.SelectedWeb, w => w.Url);
+                ClientContext.ExecuteQueryRetry();
+            }
             var creationInformation = new ProvisioningTemplateCreationInformation(SelectedWeb);
 
             creationInformation.PersistComposedLookFiles = PersistComposedLookFiles;
@@ -115,7 +120,7 @@ Remarks = "Extracts a provisioning template in XML format from the current web a
             creationInformation.BaseTemplate = this.SelectedWeb.GetBaseTemplate();
             creationInformation.ProgressDelegate = (message, step, total) =>
             {
-                WriteProgress(new ProgressRecord(0, "Extracting Template", message) { PercentComplete = (100 / total) * step });
+                WriteProgress(new ProgressRecord(0, string.Format("Extracting Template from {0}",SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
             };
 
             if (IncludeAllTermGroups)
