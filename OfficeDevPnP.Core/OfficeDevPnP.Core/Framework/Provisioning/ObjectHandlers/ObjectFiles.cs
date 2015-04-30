@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
 using Microsoft.SharePoint.Client;
@@ -94,7 +95,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     if (file.Properties != null && file.Properties.Any())
                     {
-                        targetFile.SetFileProperties(file.Properties,false); // if needed, the file is already checked out
+                        Dictionary<string, string> transformedProperties = file.Properties.ToDictionary(property => property.Key, property => property.Value.ToParsedString());
+                        targetFile.SetFileProperties(transformedProperties,false); // if needed, the file is already checked out
                     }
                     if (checkedOut)
                     {
