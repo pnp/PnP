@@ -14,11 +14,12 @@ It's important that the provider hosted app that's running the taxonomy picker i
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Contoso.Components.TaxonomyPicker | Richard diZerega (**Microsoft**)
+Contoso.Components.TaxonomyPicker | Patrik Björklund (**Cognit Consulting AB**), Richard diZerega, Anand Malli (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+3.0  | April 30th 2015 | Merge taxonomy picker sample capabilities in this version
 2.0  | March 26th 2014 | Updates
 1.0  | October 30th 2013 | Initial release
 
@@ -29,9 +30,9 @@ Version  | Date | Comments
 ----------
 
 
-# How to use the taxonomy picker in your provider hosted sp app #
+# How to use the taxonomy picker in your provider hosted SharePoint app #
 
-Using the Taxonomy Picker in your provider hosted app does not require many steps ?
+Using the Taxonomy Picker in your provider hosted app does not require many steps?
 
 ## Ensure you trigger the creation of an app web ##
 When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. 
@@ -213,3 +214,161 @@ If you would like to add additional languages you need to create the appropriate
 Such a resource file is simple collection of global constants:
 
 ![Screenshot of resource files](http://i.imgur.com/pNQpQst.png "Screenshot of resource files")
+
+
+# Appendix A: Using the taxonomypicker on hierarchical termsets #
+The taxonomy picker can be used when a cascaded taxonomy picker control is required in your SharePoint Provider Hosted App and you have Term Set structure similar to mentioned below:
+![Typical Term Set](http://i.imgur.com/bQk27IP.png)
+
+And you wanted to represent them like this with cascading filter functionality:
+
+![Sample Picker UI](http://i.imgur.com/h2XkNXw.png)
+
+To implement this you'll need to instantiate multiple taxonomy picker controls in app.js:
+
+```JavaScript
+// variable used for cross site CSOM calls
+var context;
+// variable to hold index of intialized taxPicker controls
+var taxPickerIndex = {};
+
+//Wait for the page to load
+$(document).ready(function () {
+
+    //Get the URI decoded SharePoint site url from the SPHostUrl parameter.
+    var spHostUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
+    var appWebUrl = decodeURIComponent(getQueryStringParameter('SPAppWebUrl'));
+    var spLanguage = decodeURIComponent(getQueryStringParameter('SPLanguage'));
+
+    //Build absolute path to the layouts root with the spHostUrl
+    var layoutsRoot = spHostUrl + '/_layouts/15/';
+
+    //load all appropriate scripts for the page to function
+    $.getScript(layoutsRoot + 'SP.Runtime.js',
+        function () {
+            $.getScript(layoutsRoot + 'SP.js',
+                function () {
+                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
+
+                    //load scripts for cross site calls (needed to use the people picker control in an IFrame)
+                    $.getScript(layoutsRoot + 'SP.RequestExecutor.js', function () {
+                        context = new SP.ClientContext(appWebUrl);
+                        var factory = new SP.ProxyWebRequestExecutorFactory(appWebUrl);
+                        context.set_webRequestExecutorFactory(factory);
+                    });
+
+                    //load scripts for calling taxonomy APIs
+                    $.getScript(layoutsRoot + 'init.js',
+                        function () {
+                            $.getScript(layoutsRoot + 'sp.taxonomy.js',
+                                function () {
+                                    //bind the taxonomy picker to the default keywords termset
+                                    $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
+
+                                    $('#taxPickerContinent').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", levelToShowTerms: 1 }, context, initializeCountryTaxPicker);
+                                    taxPickerIndex["#taxPickerContinent"] = 0;
+                                });
+                        });
+                });
+        });
+});
+
+function initializeCountryTaxPicker() {
+    if (this._selectedTerms.length > 0) {
+        $('#taxPickerCountry').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false }, context, initializeRegionTaxPicker);
+        taxPickerIndex["#taxPickerCountry"] = 4;
+    }
+}
+
+function initializeRegionTaxPicker() {
+    if (this._selectedTerms.length > 0) {
+        $('#taxPickerRegion').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false }, context);
+        taxPickerIndex["#taxPickerRegion"] = 5;
+    }
+}
+
+function getValue(propertyName) {
+    if (taxPickerIndex != null) {
+        return taxPickerIndex[propertyName];
+    }
+};
+
+//function to get a parameter value by a specific key
+function getQueryStringParameter(urlParameterKey) {
+    var params = document.URL.split('?')[1].split('&');
+    var strParams = '';
+    for (var i = 0; i < params.length; i = i + 1) {
+        var singleParam = params[i].split('=');
+        if (singleParam[0] == urlParameterKey)
+            return singleParam[1];
+    }
+}
+
+function chromeLoaded() {
+    $('body').show();
+}
+
+//function callback to render chrome after SP.UI.Controls.js loads
+function renderSPChrome() {
+    var icon = decodeURIComponent(getQueryStringParameter('SPHostLogoUrl'));
+
+    //Set the chrome options for launching Help, Account, and Contact pages
+    var options = {
+        'appTitle': document.title,
+        'appIconUrl': icon,
+        'onCssLoaded': 'chromeLoaded()'
+    };
+
+    //Load the Chrome Control in the divSPChrome element of the page
+    var chromeNavigation = new SP.UI.Controls.Navigation('divSPChrome', options);
+    chromeNavigation.setVisible(true);
+}
+```
+
+And properly define them in the aspx page:
+```ASPX
+<body style="display: none;">
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="True" />
+        <div id="divSPChrome"></div>
+        <div style="left: 50%; width: 600px; margin-left: -300px; position: absolute;">
+            <table>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Keywords:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <input type="hidden" id="taxPickerKeywords" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Continent:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerContinent" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Country:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerCountry" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Region:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerRegion" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</body>
+```
+
