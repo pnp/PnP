@@ -54,7 +54,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         listCreate.Description = list.Description;
                         listCreate.TemplateType = list.TemplateType;
                         listCreate.Title = list.Title;
+
+                        // the line of code below doesn't add the list to QuickLaunch
+                        // the OnQuickLaunch property is re-set on the Created List object
                         listCreate.QuickLaunchOption = list.OnQuickLaunch ? QuickLaunchOptions.On : QuickLaunchOptions.Off;
+
                         listCreate.Url = list.Url.ToParsedString();
                         listCreate.TemplateFeatureId = list.TemplateFeatureID;
 
@@ -92,10 +96,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                             }
                         }
+
+                        createdList.OnQuickLaunch = list.OnQuickLaunch;
                         createdList.EnableFolderCreation = list.EnableFolderCreation;
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
-
 
                         createdList.Update();
 
@@ -116,9 +121,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
                         }
 
+                        ContentTypeBinding defaultCtBinding = null;
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
-                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true, defaultContent:ctBinding.Default);
+                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true);
+                            if (ctBinding.Default)
+                            {
+                                defaultCtBinding = ctBinding;
+                            }
+                        }
+
+                        // default ContentTypeBinding should be set last because 
+                        // list extension .SetDefaultContentTypeToList() re-sets 
+                        // the list.RootFolder UniqueContentTypeOrder property
+                        // which may cause missing CTs from the "New Button"
+                        if (defaultCtBinding != null)
+                        {
+                            createdList.SetDefaultContentTypeToList(defaultCtBinding.ContentTypeId);
                         }
 
                         // Effectively remove existing content types, if any
@@ -287,7 +306,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
 
+                    // Removing existing views set the OnQuickLaunch option to false and need to be re-set.
+                    if (list.OnQuickLaunch && list.RemoveExistingViews && list.Views.Count > 0)
+                    {
+                        createdList.RefreshLoad();
+                        web.Context.ExecuteQueryRetry();
+                        createdList.OnQuickLaunch = list.OnQuickLaunch;
+                        createdList.Update();
+                        web.Context.ExecuteQueryRetry();
+                    }
                 }
+
+
 
                 #endregion
 

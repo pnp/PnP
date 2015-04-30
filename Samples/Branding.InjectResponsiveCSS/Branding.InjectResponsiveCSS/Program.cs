@@ -1,11 +1,8 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using System.Linq;
+using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Branding.InjectResponsiveCSS
 {
@@ -46,6 +43,20 @@ namespace Branding.InjectResponsiveCSS
                 web.Update();
                 web.Context.ExecuteQuery();
 
+                // get features collection on web
+                FeatureCollection features = web.Features;
+                web.Context.Load(features);
+                web.Context.ExecuteQuery();
+
+
+                // disable the 'Mobile Browser View' web feature 
+                Guid featureId = new Guid("d95c97f3-e528-4da2-ae9f-32b3535fbb59");
+                if (Enumerable.Any(features, feature => feature.DefinitionId == featureId))
+                {
+                    features.Remove(new Guid("d95c97f3-e528-4da2-ae9f-32b3535fbb59"), false);
+                    web.Context.ExecuteQuery();
+                } 
+
                 /// Uncomment to clear
                 //web.AlternateCssUrl = "";
                 //web.Update();
@@ -67,10 +78,12 @@ namespace Branding.InjectResponsiveCSS
             string cssFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources/spe-seattle-responsive.css");
 
             // Use CSOM to upload the file in
-            FileCreationInformation newFile = new FileCreationInformation();
-            newFile.Content = System.IO.File.ReadAllBytes(cssFile);
-            newFile.Url = "spe-seattle-responsive.css";
-            newFile.Overwrite = true;
+            FileCreationInformation newFile = new FileCreationInformation
+            {
+                Content = System.IO.File.ReadAllBytes(cssFile),
+                Url = "spe-seattle-responsive.css",
+                Overwrite = true
+            };
             Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
             web.Context.Load(uploadFile);
             web.Context.ExecuteQuery();
@@ -134,7 +147,7 @@ namespace Branding.InjectResponsiveCSS
             string siteUrl = string.Empty;
             try
             {
-                Console.Write("Give Office365 site URL: ");
+                Console.Write("Give Office365 site URL : ");
                 siteUrl = Console.ReadLine();
             }
             catch (Exception e)

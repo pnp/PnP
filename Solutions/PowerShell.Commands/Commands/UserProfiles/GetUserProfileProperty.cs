@@ -10,7 +10,7 @@ namespace OfficeDevPnP.PowerShell.Commands.UserProfiles
     [CmdletHelp(@"Office365 only: Uses the tenant API to retrieve site information.
 
 You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.", Category = "User Profiles")]
+", DetailedDescription = "Requires a connection to a SharePoint Tenant Admin site.", Category = "User Profiles")]
     [CmdletExample(Code = @"
 PS:> Get-SPOUserProfileProperty -Account 'user@domain.com'", Remarks = "Returns the profile properties for the specified user")]
     [CmdletExample(Code = @"

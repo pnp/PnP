@@ -22,18 +22,39 @@
   associated with this sample.
  */
 
-(function () {
-    var fieldOverrides = {
-        Templates: {
-            Fields: {
-                'MicrosoftProducts': {
-                    'NewForm': jslinkTemplates.Taxonomy.editMode,
-                    'EditForm': jslinkTemplates.Taxonomy.editMode
-                }
-            }
+// create a safe namespace
+Type.registerNamespace('jslinkOverride')
+var jslinkOverride = window.jslinkOverride || {};
+jslinkOverride.Taxonomy = {};
+
+jslinkOverride.Taxonomy.Templates = {
+    Fields: {
+        'MicrosoftProducts': {
+            'NewForm': jslinkTemplates.Taxonomy.editMode,
+            'EditForm': jslinkTemplates.Taxonomy.editMode
         }
     }
+};
 
-    // register our templates
-    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(fieldOverrides);
-})();
+jslinkOverride.Taxonomy.Functions = {};
+jslinkOverride.Taxonomy.Functions.RegisterTemplate = function () {
+    // register our object, which contains our templates
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(jslinkOverride.Taxonomy);
+};
+jslinkOverride.Taxonomy.Functions.MdsRegisterTemplate = function () {
+    // register our custom template
+    jslinkOverride.Taxonomy.Functions.RegisterTemplate();
+
+    // and make sure our custom view fires each time MDS performs
+    // a page transition
+    var thisUrl = _spPageContextInfo.siteServerRelativeUrl + "Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/TaxonomyOverrides.js";
+    RegisterModuleInit(thisUrl, jslinkOverride.Taxonomy.Functions.RegisterTemplate)
+};
+
+if (typeof _spPageContextInfo != "undefined" && _spPageContextInfo != null) {
+    // its an MDS page refresh
+    jslinkOverride.Taxonomy.Functions.MdsRegisterTemplate()
+} else {
+    // normal page load
+    jslinkOverride.Taxonomy.Functions.RegisterTemplate()
+}

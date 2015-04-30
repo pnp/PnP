@@ -28,13 +28,25 @@
       <xsd:element name="Preferences" type="pnp:Preferences" minOccurs="1" maxOccurs="1">
         <xsd:annotation>
           <xsd:documentation>
-            The mandatory section of preferences for the current provisioning definition
+            The mandatory section of preferences for the current provisioning definition.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-        <xsd:element name="Templates" type="pnp:Templates" minOccurs="0"/>
-        <xsd:element name="Sequence" type="pnp:Sequence" minOccurs="0"/>
+        <xsd:element name="Templates" type="pnp:Templates" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              An optional section made of provisioning templates.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Sequence" type="pnp:Sequence" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              An optional section made of provisioning sequences, which can include Sites, Site Collections, Taxonomies, Provisioning Templates, etc.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
         <xsd:element name="ImportSequence" type="pnp:ImportSequence" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -48,18 +60,25 @@
 
   <xsd:complexType name="Preferences" >
     <xsd:annotation>
-      <xsd:documentation>General settins of this Provisioning file</xsd:documentation>
+      <xsd:documentation>
+        General settings for a Provisioning file.
+      </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="Parameters" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            Definition of parameters
+            Definition of parameters that can be used as replacement within templates and provisioning objects.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="Parameter" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                  A Parameter that can be used as a replacement within templates and provisioning objects.
+                </xsd:documentation>
+              </xsd:annotation>
               <xsd:complexType mixed="true">
                 <xsd:attribute name="Key" use="required" type="xsd:string">
                   <xsd:annotation>
