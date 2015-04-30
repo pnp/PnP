@@ -16,14 +16,14 @@
         <div id="divSPChrome"></div>
         <div style="left: 50%; width: 600px; margin-left: -300px; position: absolute;">
             <table>
-                <%--<tr>
-                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Keywords Termset:</h3></td>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Keywords:</h3></td>
                     <td class="ms-formbody" valign="top">
                         <div class="ms-core-form-line" style="margin-bottom: 0px;">
                             <input type="hidden" id="taxPickerKeywords" />
                         </div>
                     </td>
-                </tr>--%>
+                </tr>
                 <tr>
                     <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Continent:</h3></td>
                     <td class="ms-formbody" valign="top">

@@ -35,9 +35,9 @@ $(document).ready(function () {
                             $.getScript(layoutsRoot + 'sp.taxonomy.js',
                                 function () {
                                     //bind the taxonomy picker to the default keywords termset
-                                    //$('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
+                                    $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
 
-                                    $('#taxPickerContinent').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "0cc96f04-d32c-41e7-995f-0401c1f4fda8", levelToShowTerms: 1 }, context, initializeCountryTaxPicker);
+                                    $('#taxPickerContinent').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", levelToShowTerms: 1 }, context, initializeCountryTaxPicker);
                                     taxPickerIndex["#taxPickerContinent"] = 0;
                                 });
                         });
@@ -47,14 +47,14 @@ $(document).ready(function () {
 
 function initializeCountryTaxPicker() {
     if (this._selectedTerms.length > 0) {
-        $('#taxPickerCountry').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "0cc96f04-d32c-41e7-995f-0401c1f4fda8", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false }, context, initializeRegionTaxPicker);
+        $('#taxPickerCountry').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false }, context, initializeRegionTaxPicker);
         taxPickerIndex["#taxPickerCountry"] = 4;
     }
 }
 
 function initializeRegionTaxPicker() {
     if (this._selectedTerms.length > 0) {
-        $('#taxPickerRegion').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "0cc96f04-d32c-41e7-995f-0401c1f4fda8", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false }, context);
+        $('#taxPickerRegion').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false }, context);
         taxPickerIndex["#taxPickerRegion"] = 5;
     }
 }
