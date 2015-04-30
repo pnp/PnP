@@ -15,8 +15,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
             {
                 Web.Context.Load(Web, w => w.ServerRelativeUrl);
                 Web.Context.ExecuteQueryRetry();
-                CacheValue = Web.ServerRelativeUrl;
-                CacheValue = CacheValue.TrimEnd('/');
+                CacheValue = Web.ServerRelativeUrl.TrimEnd('/');
             }
             return CacheValue;
         }
