@@ -224,6 +224,21 @@ And you wanted to represent them like this with cascading filter functionality:
 
 ![Sample Picker UI](http://i.imgur.com/h2XkNXw.png)
 
+Below you'll find the app.js file, containing initialization methods to set up the cascading taxonomy picker control. 
+
+Please ensure that you are already having a Term Set containing terms for at least 2 level.
+
+Find out the GUID of the Term Set to bind (using Site Settings --> Term Store Management) & update below line with actual Term Set GUID.
+
+```JavaScript
+$('#taxPickerContinent').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "<<TERMSET GUID>>", levelToShowTerms: 1 }, context, initializeCountryTaxPicker);
+
+$('#taxPickerCountry').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "<<TERMSET GUID>>", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false }, context, initializeRegionTaxPicker);
+
+$('#taxPickerRegion').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: "<<TERMSET GUID>>", filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false }, context);
+
+```
+
 To implement this you'll need to instantiate multiple taxonomy picker controls in app.js:
 
 ```JavaScript
