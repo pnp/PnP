@@ -37,11 +37,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingCT == null)
                 {
                     var newCT = CreateContentType(web, ct);
-                    if(newCT != null)
+                    if (newCT != null)
                     {
                         existingCTs.Add(newCT);
                     }
-                    
+
                 }
                 else
                 {
@@ -49,13 +49,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCT.DeleteObject();
                         web.Context.ExecuteQueryRetry();
-                        var newCT= CreateContentType(web, ct);
+                        var newCT = CreateContentType(web, ct);
                         if (newCT != null)
                         {
                             existingCTs.Add(newCT);
                         }
                     }
+                    else
+                    {
+                        UpdateContetType(web, existingCT, ct);
+                    }
                 }
+            }
+
+        }
+
+        private static void UpdateContetType(Web web, Microsoft.SharePoint.Client.ContentType existingCT, ContentType ct)
+        {
+            foreach (var fieldRef in ct.FieldRefs)
+            {
+                var field = web.Fields.GetById(fieldRef.Id);
+                web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
         }
