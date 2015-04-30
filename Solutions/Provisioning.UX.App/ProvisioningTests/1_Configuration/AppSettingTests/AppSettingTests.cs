@@ -5,6 +5,7 @@ using Provisioning.Common.Utilities;
 
 using ProvisioningTests;
 using Provisioning.Common.Configuration.Application;
+using System.Configuration;
 
 namespace ProvisioningTests._1_Configuration.AppSettingTests
 {
@@ -32,11 +33,30 @@ namespace ProvisioningTests._1_Configuration.AppSettingTests
             var _manager = _configFactory.GetAppSetingsManager();
             var settings = _manager.GetAppSettings();
 
-            Assert.AreEqual(TestConstants.EXPECTED_CLIENTID, settings.ClientID);
-            Assert.AreEqual(TestConstants.EXPECTED_CLIENTSECRET, settings.ClientSecret);
             Assert.AreEqual(TestConstants.EXPECTED_SPHOST, settings.SPHostUrl);
             Assert.AreEqual(TestConstants.EXPECTED_SUPPORTTEAMNOTIFICATIONEMAIL, settings.SupportEmailNotification);
             Assert.AreEqual(TestConstants.EXPECTED_TENANTADMINURL, settings.TenantAdminUrl);
+        }
+
+        [TestMethod]
+        [TestCategory("Configuration")]
+
+        public void CanGetModulesSections()
+        {
+            ConfigManager _cm = new ConfigManager();
+            var _mes = _cm.ModulesElements;
+            var module = _mes[ModuleKeys.REPOSITORYMANGER_KEY];
+            Assert.IsNotNull(_mes);
+        }
+
+        [TestMethod]
+        [TestCategory("Configuration")]
+        public void CanGetModulesByKey()
+        {
+            ConfigManager _cm = new ConfigManager();
+            var module = _cm.GetModuleByName(ModuleKeys.REPOSITORYMANGER_KEY);
+            Assert.IsNotNull(module.Name);
+            Assert.IsNotNull(module);
         }
     }
 }

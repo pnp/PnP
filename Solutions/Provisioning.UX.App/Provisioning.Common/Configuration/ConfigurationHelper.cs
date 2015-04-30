@@ -32,7 +32,6 @@ namespace Provisioning.Common.Configuration
 
             try
             {
-            //    Log.Debug(LOGGING_SOURCE, PCResources.AppSettings_GetKey, key);
                 if(SC.ConfigurationManager.AppSettings.AllKeys.Contains(key))
                 { 
                     _returnValue = SC.ConfigurationManager.AppSettings.Get(key);

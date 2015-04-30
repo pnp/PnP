@@ -65,9 +65,6 @@ namespace Provisioning.Common.Configuration.Application
                 ClientID = ConfigurationHelper.Get(CLIENTID_KEY),
                 ClientSecret = ConfigurationHelper.Get(CLIENTSECRET_KEY),
                 SupportEmailNotification = ConfigurationHelper.Get(SUPPORTTEAMNOTIFICATION_KEY),
-                RepositoryManager = ConfigurationHelper.Get(REPOSITORYMANGERTYPE_KEY),
-                TemplateProvider = ConfigurationHelper.Get(TEMPLATEPROVIDERTYPE_KEY)
-              //  MysiteTenantAdminUrl = ConfigurationHelper.Get(MYSITETENANTADMINURL_KEY)
             };
 
             ////TODO ENCRYPTION
@@ -76,7 +73,6 @@ namespace Provisioning.Common.Configuration.Application
 
             // we need to handle the boolean checks
             var _autoApprove = ConfigurationHelper.Get(AUTOAPPROVESITES_KEY);
-          //  var _sharePointOnPremises = ConfigurationHelper.Get(SHAREPOINTONPREM_KEY);
 
             bool _result = false;
             if(Boolean.TryParse(_autoApprove, out _result)) {

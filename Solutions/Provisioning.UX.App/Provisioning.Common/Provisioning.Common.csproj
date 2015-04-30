@@ -72,29 +72,37 @@
     <Compile Include="Authentication\AppOnlyAuthenticationTenant.cs" />
     <Compile Include="Authentication\AppOnlyAuthenticationSite.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
+    <Compile Include="Configuration\Application\AppSettings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="Configuration\ConfigurationConstants.cs" />
     <Compile Include="Configuration\ConfigurationFactory.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Configuration\IConfigurationFactory.cs" />
-    <Compile Include="Configuration\Template\Impl\XMLSiteTemplateManager.cs" />
-    <Compile Include="Configuration\Template\ISiteTemplateFactory.cs" />
-    <Compile Include="Configuration\Template\ISiteTemplateManager.cs" />
-    <Compile Include="Configuration\Template\SiteTemplate.cs" />
-    <Compile Include="Configuration\Template\SiteTemplateFactory.cs" />
-    <Compile Include="Configuration\Template\Template.cs" />
+    <Compile Include="Configuration\ModuleElement.cs" />
+    <Compile Include="Configuration\ModuleElementCollection.cs" />
+    <Compile Include="Configuration\ModuleKeys.cs" />
+    <Compile Include="Configuration\ModulesSection.cs" />
+    <Compile Include="Data\AbstractModule.cs" />
+    <Compile Include="Data\Templates\Impl\XMLSiteTemplateManager.cs" />
+    <Compile Include="Data\Templates\ISiteTemplateFactory.cs" />
+    <Compile Include="Data\Templates\ISiteTemplateManager.cs" />
+    <Compile Include="Data\Templates\SiteTemplate.cs" />
+    <Compile Include="Data\Templates\SiteTemplateFactory.cs" />
+    <Compile Include="Data\Templates\Template.cs" />
     <Compile Include="Configuration\ConfigurationHelper.cs" />
     <Compile Include="Configuration\IAppSettingsManager.cs" />
     <Compile Include="Configuration\Application\AppSetttingsManager.cs" />
-    <Compile Include="Configuration\Application\AppSettings.cs" />
-    <Compile Include="Configuration\Template\Impl\XMLSiteTemplateData.cs" />
+    <Compile Include="Data\Templates\XMLSiteTemplateData.cs" />
     <Compile Include="Data\DataStoreException.cs" />
-    <Compile Include="Data\Impl\SPSiteRequestManagerImpl.cs" />
-    <Compile Include="Data\ISiteRequestFactory.cs" />
-    <Compile Include="Data\ISiteRequestManager.cs" />
-    <Compile Include="Data\SiteRequestFactory.cs" />
-    <Compile Include="Data\SiteRequestFields.cs" />
-    <Compile Include="Data\SiteRequestList.cs" />
+    <Compile Include="Data\SiteRequests\Impl\SPSiteRequestManagerImpl.cs" />
+    <Compile Include="Data\SiteRequests\ISiteRequestFactory.cs" />
+    <Compile Include="Data\SiteRequests\ISiteRequestManager.cs" />
+    <Compile Include="Data\SiteRequests\SiteRequestFactory.cs" />
+    <Compile Include="Data\SiteRequests\SiteRequestFields.cs" />
+    <Compile Include="Data\SiteRequests\SiteRequestList.cs" />
     <Compile Include="ISiteProvisioning.cs" />
     <Compile Include="ISharePointService.cs" />
     <Compile Include="Mail\EmailConfig.cs" />

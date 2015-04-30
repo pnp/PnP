@@ -1,7 +1,6 @@
 ﻿using Provisioning.Common.Authentication;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Configuration.Application;
-using Provisioning.Common.Configuration.Template;
 using Provisioning.Common.Utilities;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
@@ -14,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Provisioning.Common.Data.Templates;
 
 
 namespace Provisioning.Common

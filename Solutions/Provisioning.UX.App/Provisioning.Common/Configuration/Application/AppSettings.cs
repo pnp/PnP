@@ -36,32 +36,16 @@ namespace Provisioning.Common.Configuration
         /// should be set to false
         /// </summary>
         public bool AutoApprove { get; internal set; }
-
         /// <summary>
         /// TODO
         /// </summary>
         public string TenantAdminAccount { get; internal set; }
-
         /// <summary>
         /// TODO - SHOULD BE ENCRYPTED
         /// </summary>
         public string TenantAdminAccountPwd { get; internal set; }
 
         public string MysiteTenantAdminUrl { get; set; }
-       
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public string RepositoryManager { get; internal set; }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public string TemplateProvider { get; internal set; }
-
-        /// <summary>
-        /// Used to Reference the connection string for the PNP ProvisioningTemplates
-        /// </summary>
-        public string ResourceConnectionString { get; set; }
+      
     }
 }

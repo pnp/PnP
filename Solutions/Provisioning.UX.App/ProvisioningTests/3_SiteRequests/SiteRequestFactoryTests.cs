@@ -6,6 +6,7 @@ using Provisioning.Common;
 using Microsoft.SharePoint.Client;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Data;
+using Provisioning.Common.Data.SiteRequests;
 
 namespace ProvisioningTests._3_SiteRequests
 {

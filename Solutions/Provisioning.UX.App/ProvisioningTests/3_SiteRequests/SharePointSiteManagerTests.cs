@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Provisioning.Common.Data;
 using Provisioning.Common;
 using System.Collections.Generic;
+using Provisioning.Common.Data.SiteRequests;
 
 namespace ProvisioningTests._3_SiteRequests
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace Provisioning.Common.Configuration.Template.Impl
+namespace Provisioning.Common.Data.Templates
 {
     [XmlRoot(ElementName = "TemplateConfiguration")]
     public class XMLSiteTemplateData

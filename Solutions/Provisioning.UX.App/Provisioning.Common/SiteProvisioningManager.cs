@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.SharePoint.Client;
-
-using Provisioning.Common.Configuration.Template;
-using Provisioning.Common.Authentication;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using Provisioning.Common.Authentication;
+using Provisioning.Common.Data.Templates;
 
 namespace Provisioning.Common
 {

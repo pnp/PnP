@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Provisioning.Common.Data
+namespace Provisioning.Common.Data.SiteRequests
 {
     public interface ISiteRequestManager
     {

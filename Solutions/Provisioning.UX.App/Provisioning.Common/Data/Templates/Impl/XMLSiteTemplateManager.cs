@@ -9,18 +9,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Provisioning.Common.Configuration.Template.Impl
+namespace Provisioning.Common.Data.Templates.Impl
 {
-    internal class XMLSiteTemplateManager : ISiteTemplateManager
+    internal class XMLSiteTemplateManager : AbstractModule, ISiteTemplateManager
     {
         internal XMLSiteTemplateData _data = null;
-        const string PROVISIONINGTEMPLATES_XML_CONTAINER = "Resources/SiteTemplates/ProvisioningTemplates/";
+    //    const string PROVISIONINGTEMPLATES_XML_CONTAINER = "Resources/SiteTemplates/ProvisioningTemplates/";
      
         #region Constructor
         /// <summary>
         /// Default Constructor.
         /// </summary>
-        public XMLSiteTemplateManager()
+        public XMLSiteTemplateManager() : base()
         {
             this.LoadXML();
         }
@@ -50,7 +50,7 @@ namespace Provisioning.Common.Configuration.Template.Impl
         {
             try
             { 
-                XMLFileSystemTemplateProvider _xmlProvider = new XMLFileSystemTemplateProvider(PROVISIONINGTEMPLATES_XML_CONTAINER, string.Empty);
+                XMLFileSystemTemplateProvider _xmlProvider = new XMLFileSystemTemplateProvider(this.ConnectionString, string.Empty);
                 var _pt = _xmlProvider.GetTemplate(name);
                 return _pt;
             }

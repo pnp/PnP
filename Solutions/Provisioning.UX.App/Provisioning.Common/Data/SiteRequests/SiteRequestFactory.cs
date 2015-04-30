@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
-using Provisioning.Common.Data.Impl;
 using Provisioning.Common.Utilities;
 using Provisioning.Common.Configuration;
 using System.Configuration;
 
-namespace Provisioning.Common.Data
+namespace Provisioning.Common.Data.SiteRequests
 {
     /// <summary>
     /// Factory for working with the Site Request Repository
@@ -56,10 +55,10 @@ namespace Provisioning.Common.Data
         /// </summary>
         public ISiteRequestManager GetSiteRequestManager()
         {
-            var _configFactory = ConfigurationFactory.GetInstance();
-            var _manager = _configFactory.GetAppSetingsManager();
-            var _settings = _manager.GetAppSettings();
-            var _managerTypeString = _settings.RepositoryManager;
+            var _configManager = new ConfigManager();
+            var _module = _configManager.GetModuleByName(ModuleKeys.REPOSITORYMANGER_KEY);
+            var _managerTypeString = _module.ModuleType;
+
             if (string.IsNullOrEmpty(_managerTypeString))
             {
                 throw new ConfigurationErrorsException(PCResources.Exception_Template_Provider_Missing_Config_Message);

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Provisioning.Common.Configuration.Template
+namespace Provisioning.Common.Data.Templates
 {
     /// <summary>
     /// Interface

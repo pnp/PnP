@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace Provisioning.Common.Configuration.Template
+namespace Provisioning.Common.Data.Templates
 {
     /// <summary>
     /// Domain Object for the MasterTemplate

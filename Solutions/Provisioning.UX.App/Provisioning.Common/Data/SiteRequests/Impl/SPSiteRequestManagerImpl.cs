@@ -10,13 +10,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Provisioning.Common.Utilities;
+using Provisioning.Common.Data.SiteRequests;
 
-namespace Provisioning.Common.Data.Impl
+namespace Provisioning.Common.Data.SiteRequests.Impl
 {
     /// <summary>
     /// Implmentation class for the Site Request Repository that leverages SharePoint as the datasource.
     /// </summary>
-    internal class SPSiteRequestManagerImpl : ISiteRequestManager, ISharePointService
+    internal class SPSiteRequestManagerImpl : AbstractModule, ISiteRequestManager, ISharePointService
     {
         #region Private Instance Members
         private static readonly IConfigurationFactory _cf = ConfigurationFactory.GetInstance();

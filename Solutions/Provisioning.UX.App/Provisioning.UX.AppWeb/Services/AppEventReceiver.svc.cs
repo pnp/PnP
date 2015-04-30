@@ -6,6 +6,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using Provisioning.Common.Data;
 using System.Diagnostics;
+using Provisioning.Common.Data.SiteRequests;
 
 namespace Provisioning.UX.AppWeb.Services
 {

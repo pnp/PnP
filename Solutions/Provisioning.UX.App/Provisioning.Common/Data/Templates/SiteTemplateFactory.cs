@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Provisioning.Common.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Provisioning.Common.Configuration.Template
+namespace Provisioning.Common.Data.Templates
 {
     /// <summary>
     /// 
@@ -41,10 +42,9 @@ namespace Provisioning.Common.Configuration.Template
         /// <exception cref="System.Configuration.ConfigurationErrorsException"></exception>
         public ISiteTemplateManager GetManager()
         {
-            var _configFactory = ConfigurationFactory.GetInstance();
-            var _manager = _configFactory.GetAppSetingsManager();
-            var _settings = _manager.GetAppSettings();
-            var _managerTypeString = _settings.TemplateProvider;
+            var _configManager = new ConfigManager();
+            var _module = _configManager.GetModuleByName(ModuleKeys.TEMPLATEPROVIDER_KEY);
+            var _managerTypeString = _module.ModuleType;
             if(string.IsNullOrEmpty(_managerTypeString))
             {
                 //TODO LOG
@@ -55,8 +55,9 @@ namespace Provisioning.Common.Configuration.Template
                 var type = _managerTypeString.Split(',');
                 var typeName = type[0];
                 var assemblyName = type[1];
-                var instance = (ISiteTemplateManager)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                return instance;
+                var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
+                instance.ConnectionString = _module.ConnectionString;
+                return (ISiteTemplateManager)instance;
             }
             catch (Exception _ex)
             {

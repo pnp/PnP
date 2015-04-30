@@ -3,8 +3,9 @@ using OfficeDevPnP.Core.Utilities;
 using OfficeDevPnP.Core.WebAPI;
 using Provisioning.Common;
 using Provisioning.Common.Configuration;
-using Provisioning.Common.Configuration.Template;
 using Provisioning.Common.Data;
+using Provisioning.Common.Data.SiteRequests;
+using Provisioning.Common.Data.Templates;
 using Provisioning.UX.AppWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -40,9 +41,9 @@ namespace Provisioning.UX.AppWeb.Controllers
         {
             var _returnResults = new List<SiteTemplateResults>();
 
-            var _configFactory = ConfigurationFactory.GetInstance();
-            var _sf = _configFactory.GetSiteTemplateFactory();
-            var _tm = _sf.GetManager();
+            var _siteFactory = SiteTemplateFactory.GetInstance();
+            var _tm = _siteFactory.GetManager();
+            
             var _templates = _tm.GetAvailableTemplates();
 
             foreach(var _t in _templates)

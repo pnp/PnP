@@ -1,6 +1,5 @@
 ﻿using Provisioning.Common.Configuration.Application;
-using Provisioning.Common.Configuration.Template;
-using Provisioning.Common.Configuration.Template.Impl;
+using Provisioning.Common.Data.Templates;
 using System;
 using System.Collections.Generic;
 using System.Linq;

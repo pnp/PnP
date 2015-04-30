@@ -2,8 +2,9 @@
 using Provisioning.Common.Authentication;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Configuration.Application;
-using Provisioning.Common.Configuration.Template;
 using Provisioning.Common.Data;
+using Provisioning.Common.Data.SiteRequests;
+using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Mail;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,8 @@ namespace Provisioning.Job
         public SiteProvisioningJob()
         {
             this._requestFactory = SiteRequestFactory.GetInstance();
-            this._configFactory = ConfigurationFactory.GetInstance();
-            this._stTemplateFactory = this._configFactory.GetSiteTemplateFactory();
+            var _siteFactory = SiteTemplateFactory.GetInstance();
+            var _tm = _siteFactory.GetManager();
             this._appManager = _configFactory.GetAppSetingsManager();
             this._settings = _appManager.GetAppSettings();
         }
@@ -67,8 +68,8 @@ namespace Provisioning.Job
                        //TODO LOG
                     }
 
-                  //  var _web = _siteProvisioningManager.ProcessSiteRequest(siterequest, _template);
-                    var _web = _siteProvisioningManager.GetWeb(siterequest, _template);
+                    var _web = _siteProvisioningManager.ProcessSiteRequest(siterequest, _template);
+                  //  var _web = _siteProvisioningManager.GetWeb(siterequest, _template);
                     _siteProvisioningManager.ApplyProvisioningTemplates(_web, _provisioningTemplate);
                     this.SendSuccessEmail(siterequest);
 
