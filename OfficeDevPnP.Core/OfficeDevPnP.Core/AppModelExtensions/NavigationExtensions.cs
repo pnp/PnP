@@ -406,7 +406,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(web.UserCustomActions);
             web.Context.ExecuteQueryRetry();
 
-            var customActions = web.UserCustomActions.Cast<UserCustomAction>();
+            var customActions = web.UserCustomActions.AsEnumerable<UserCustomAction>();
             foreach (var customAction in customActions)
             {
                 var customActionName = customAction.Name;
@@ -433,7 +433,7 @@ namespace Microsoft.SharePoint.Client
             site.Context.Load(site.UserCustomActions);
             site.Context.ExecuteQueryRetry();
 
-            var customActions = site.UserCustomActions.Cast<UserCustomAction>();
+            var customActions = site.UserCustomActions.AsEnumerable<UserCustomAction>();
             foreach (var customAction in customActions)
             {
                 var customActionName = customAction.Name;
