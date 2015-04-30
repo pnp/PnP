@@ -28,4 +28,4 @@ Version  | Date | Comments
 ----------
 
 # IMPORTANT #
-The unique cascading taxonomy picker controls on a hierarchical termset has been integrated into the [Core.TaxonomyPicker project in the components folder](https://github.com/OfficeDev/PnP/tree/dev/Components/Core.TaxonomyPicker). We've done this avoid maintaining 2 almost identical taxonomy picker controls.
+The unique cascading taxonomy picker controls on a hierarchical termset has been integrated into the [Core.TaxonomyPicker project in the components folder](https://github.com/OfficeDev/PnP/tree/dev/Components/Core.TaxonomyPicker). We've done this to avoid maintaining 2 almost identical taxonomy picker controls.
