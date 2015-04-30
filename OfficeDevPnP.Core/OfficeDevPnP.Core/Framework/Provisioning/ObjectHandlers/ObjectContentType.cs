@@ -41,6 +41,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCTs.Add(newCT);
                     }
+
                 }
                 else
                 {
