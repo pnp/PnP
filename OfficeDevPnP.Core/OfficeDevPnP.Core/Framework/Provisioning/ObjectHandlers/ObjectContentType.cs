@@ -37,7 +37,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingCT == null)
                 {
                     var newCT = CreateContentType(web, ct);
-                    if (newCT != null)
+                    if(newCT != null)
                     {
                         existingCTs.Add(newCT);
                     }
@@ -49,7 +49,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCT.DeleteObject();
                         web.Context.ExecuteQueryRetry();
-                        var newCT = CreateContentType(web, ct);
+                        var newCT= CreateContentType(web, ct);
                         if (newCT != null)
                         {
                             existingCTs.Add(newCT);
