@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
 using Microsoft.SharePoint.Client;
@@ -74,6 +75,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (targetFile != null)
                 {
+                    if (file.Properties != null && file.Properties.Any())
+                    {
+                        Dictionary<string, string> transformedProperties = file.Properties.ToDictionary(property => property.Key, property => property.Value.ToParsedString());
+                        targetFile.SetFileProperties(transformedProperties, false); // if needed, the file is already checked out
+                    }
+
                     if (file.WebParts != null && file.WebParts.Any())
                     {
                         if (!targetFile.IsPropertyAvailable("ServerRelativeUrl"))
@@ -81,21 +88,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             web.Context.Load(targetFile, f => f.ServerRelativeUrl);
                             web.Context.ExecuteQuery();
                         }
+                        var existingWebParts = web.GetWebParts(targetFile.ServerRelativeUrl);
                         foreach (var webpart in file.WebParts)
                         {
-                            var wpEntity = new WebPartEntity();
-                            wpEntity.WebPartTitle = webpart.Title;
-                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
-                            wpEntity.WebPartZone = webpart.Zone;
-                            wpEntity.WebPartIndex = (int)webpart.Order;
+                            // check if the webpart is already set on the page
+                            if (existingWebParts.FirstOrDefault(w => w.WebPart.Title == webpart.Title) == null)
+                            {
+                                var wpEntity = new WebPartEntity();
+                                wpEntity.WebPartTitle = webpart.Title;
+                                wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                                wpEntity.WebPartZone = webpart.Zone;
+                                wpEntity.WebPartIndex = (int) webpart.Order;
 
-                            web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                                web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                            }
                         }
                     }
-                    if (file.Properties != null && file.Properties.Any())
-                    {
-                        targetFile.SetFileProperties(file.Properties,false); // if needed, the file is already checked out
-                    }
+                  
                     if (checkedOut)
                     {
                         targetFile.CheckIn("", CheckinType.MajorCheckIn);

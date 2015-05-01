@@ -7,7 +7,10 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
     public sealed class CmdletHelpAttribute : Attribute
     {
         readonly string description;
+
+        [Obsolete("Is not used. Use DetailedDescription instead.")]
         public string Details { get; set; }
+
         public string DetailedDescription { get; set; }
         public string Copyright { get; set; }
         public string Version { get; set; }

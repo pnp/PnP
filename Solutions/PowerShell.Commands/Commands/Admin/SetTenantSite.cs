@@ -8,7 +8,7 @@ using OfficeDevPnP.PowerShell.Commands.Base;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOTenantSite")]
-    [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.", Details = "", Category = "Tenant Administration")]
+    [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.", Category = "Tenant Administration")]
     public class SetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]

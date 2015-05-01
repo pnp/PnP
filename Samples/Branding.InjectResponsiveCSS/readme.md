@@ -3,7 +3,7 @@
 ### Summary ###
 Demonstrate how to update out of the box seattle.master user expirience responsive without a need to modify the mater page as such, but rather to take advantage of the AlternateCssUrl property in Web level. Responsive CSS design has been done by Heather Solomon and you can read more information about the CSS details from following blog post.
 
-* Heather Solomon - [Making Seattle master responsive](http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive/)
+* Heather Solomon (SharePoint Experts, Inc) - [Making Seattle master responsive](http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive/)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -18,7 +18,9 @@ Any special pre-requisites?
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Branding.InjectResponsiveCSS | Heather Solomon (CSS and responsive design), Vesa Juvonen (Only the provisioning part)
+Branding.InjectResponsiveCSS | Heather Solomon, SharePoint Experts, Inc 
+
+Packaging and remote provisioning with AlternateCSSUrl approach done by Vesa Juvonen, Microsoft
 
 ### Version history ###
 Version  | Date | Comments

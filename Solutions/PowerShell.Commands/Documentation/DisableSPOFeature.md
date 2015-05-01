@@ -1,11 +1,10 @@
 #Disable-SPOFeature
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-29*
 
 Disables a feature
 ##Syntax
 ```powershell
-Disable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
-```
+Disable-SPOFeature [-Force [<SwitchParameter>]] [-Scope <FeatureScope>] -Identity <GuidPipeBind>```
 &nbsp;
 
 ##Parameters
@@ -21,9 +20,10 @@ Scope|FeatureScope|False|
 
 
 ###Example 2
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
 ###Example 3
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
+<!-- Ref: 5DEAB74B6B1D5663C55C7F1A014B7E9B -->
