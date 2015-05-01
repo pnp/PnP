@@ -246,7 +246,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     // if we've found the file use the provided writer to persist the downloaded file
                     String originalFileUrl = f.Src;
                     String regexStrip = @"(\\|/|:|\*|\?|""|>|<|\||=)*";
-                    String fileNameToSave = Regex.Replace(originalFileUrl.Substring(0, originalFileUrl.IndexOf("?")), regexStrip, "", RegexOptions.IgnorePatternWhitespace);
+                    String fileNameToSave = Regex.Replace(originalFileUrl.Substring(0,
+                        originalFileUrl.IndexOf("?") > 0 ? originalFileUrl.IndexOf("?") : originalFileUrl.Length),
+                        regexStrip, "", RegexOptions.IgnorePatternWhitespace);
                     writer.SaveFileStream(fileNameToSave, s);
                 }
             }
