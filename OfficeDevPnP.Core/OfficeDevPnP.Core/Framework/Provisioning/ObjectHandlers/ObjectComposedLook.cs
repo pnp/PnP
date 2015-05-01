@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using System;
 using System.IO;
 using OfficeDevPnP.Core.Utilities;
+using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -243,7 +244,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (s != null)
                 {
                     // if we've found the file use the provided writer to persist the downloaded file
-                    writer.SaveFileStream(f.Src, s);
+                    String originalFileUrl = f.Src;
+                    String regexStrip = @"(\\|/|:|\*|\?|""|>|<|\||=)*";
+                    String fileNameToSave = Regex.Replace(originalFileUrl.Substring(0, originalFileUrl.IndexOf("?")), regexStrip, "", RegexOptions.IgnorePatternWhitespace);
+                    writer.SaveFileStream(fileNameToSave, s);
                 }
             }
         }
