@@ -30,6 +30,8 @@ namespace Provisioning.Common
         /// <returns></returns>
         Guid? GetSiteGuidByUrl(string url);
 
+        Web GetWebByUrl(string url);
+
        
     }
 }

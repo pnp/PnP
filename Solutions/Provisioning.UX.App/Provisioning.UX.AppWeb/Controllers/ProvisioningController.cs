@@ -76,7 +76,6 @@ namespace Provisioning.UX.AppWeb.Controllers
             try
             {
                 _request = JsonConvert.DeserializeObject<SiteRequest>(value);
-                var t = value;
                 this.SaveSiteRequestToRepository(_request);
                 _request.Success = true;
             }

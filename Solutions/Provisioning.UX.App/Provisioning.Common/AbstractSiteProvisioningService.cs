@@ -36,7 +36,20 @@ namespace Provisioning.Common
 
         #region ISiteProvisioning Members
         public abstract Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
-      
+
+        public Web GetWebByUrl(string url)
+        {
+            Web _web = null;
+            UsingContext(ctx =>
+            {
+                _web = ctx.Site.RootWeb;
+                ctx.Load(_web);
+                ctx.ExecuteQuery();
+            });
+
+            return _web;
+        }
+     
         /// <summary>
         /// Returns the Site Collection ID
         /// </summary>
@@ -54,53 +67,7 @@ namespace Provisioning.Common
             return _siteID;
         }
         #endregion
-        
-        /// <summary>
-        /// Sets a Property bag for the site
-        /// </summary>
-        /// <param name="web"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyValue"></param>
-        public void SetPropertyBag(Web web, string propertyName, string propertyValue)
-        {
-            try
-            {
-                web.SetPropertyBagValue(propertyName, propertyValue);
-                web.AddIndexedPropertyBagKey(propertyName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Provisioning.Common.SetSitePropertyBag", "Exception occured during processing the request for Site {0}. TraceCorrelationId: {1}  Message: {2} Stack: {3} ",
-                           web.Url,
-                           web.Context.TraceCorrelationId,
-                           ex.Message,
-                           ex.StackTrace);
-            }
-        }
-
-        /// <summary>
-        /// Sets a Property bag for the site
-        /// </summary>
-        /// <param name="web"></param>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyValue"></param>
-        public void SetPropertyBag(Web web, string propertyName, int propertyValue)
-        {
-            try
-            {
-                web.SetPropertyBagValue(propertyName, propertyValue);
-                web.AddIndexedPropertyBagKey(propertyName);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Provisioning.Common.SetSitePropertyBag", "Exception occured during processing the request for Site {0}. TraceCorrelationId: {1}  Message: {2} Stack: {3} ",
-                          web.Url,
-                          web.Context.TraceCorrelationId,
-                          ex.Message,
-                          ex.StackTrace);
-            }
-        }
-
+     
         /// <summary>
         /// Checks to see if a site already exists.
         /// </summary>

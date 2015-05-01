@@ -18,16 +18,11 @@ namespace Provisioning.Common
     /// </summary>
     public class SiteProvisioningManager
     {
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="siteRequest"></param>
-        /// <param name="template"></param>
-        public Web ProcessSiteRequest(SiteRequestInformation siteRequest, Template template)
-        {
-            AbstractSiteProvisioningService _siteprovisioningService;
+        AbstractSiteProvisioningService _siteprovisioningService;
 
-            if(template.SharePointOnPremises)
+        public SiteProvisioningManager(SiteRequestInformation siteRequest, Template template)
+        {
+            if (template.SharePointOnPremises)
             {
                 _siteprovisioningService = new OnPremSiteProvisioningService();
             }
@@ -35,6 +30,14 @@ namespace Provisioning.Common
             {
                 _siteprovisioningService = new Office365SiteProvisioningService();
             }
+        }
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="siteRequest"></param>
+        /// <param name="template"></param>
+        public Web ProcessSiteRequest(SiteRequestInformation siteRequest, Template template)
+        {
 
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
@@ -42,26 +45,25 @@ namespace Provisioning.Common
 
             return _web;
        }
-
-        public Web GetWeb(SiteRequestInformation siteRequest, Template template)
-        {
-            var t = new Office365SiteProvisioningService();
-            t.Authentication = new AppOnlyAuthenticationTenant();
-            var web = t.GeWebByUrl(siteRequest.Url);
-            return web;
-
-        }
         /// <summary>
         /// TODO
         /// </summary>
         /// <param name="web"></param>
-        public void ApplyProvisioningTemplates(Web web, ProvisioningTemplate provisioningTemplate)
+        public void ApplyProvisioningTemplates(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
-          //  var connector;
+            this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
+            this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
+            var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
+
             provisioningTemplate.Connector = this.GetProvisioningConnector();
-            web.ApplyProvisioningTemplate(provisioningTemplate);
+            provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
+            _web.ApplyProvisioningTemplate(provisioningTemplate);
         }
 
+        /// <summary>
+        /// Returns Connectors
+        /// </summary>
+        /// <returns></returns>
         private FileConnectorBase GetProvisioningConnector()
         {
             var _configManager = new ConfigManager();
@@ -75,6 +77,7 @@ namespace Provisioning.Common
                 var assemblyName = type[1];
                 var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
                 instance.AddParameter("ConnectionString", _module.ConnectionString);
+                instance.AddParameter("Container", string.Empty);
                 return instance;
             }
             catch (Exception _ex)

@@ -32,21 +32,6 @@ namespace Provisioning.Common
         }
         #endregion
      
-        public Web GeWebByUrl(string url)
-        {
-            Web _web = null;
-            UsingContext(ctx =>
-            {
-                Tenant _tenant = new Tenant(ctx);
-                var _site = _tenant.GetSiteByUrl(url);
-                _web = _site.RootWeb;
-                ctx.Load(_web);
-                ctx.ExecuteQuery();
-
-            });
-            return _web;
-        }
-
         public override Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
             Web _web = null;

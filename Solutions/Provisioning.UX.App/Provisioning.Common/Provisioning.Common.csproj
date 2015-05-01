@@ -52,6 +52,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -95,6 +99,7 @@
     <Compile Include="Configuration\ConfigurationHelper.cs" />
     <Compile Include="Configuration\IAppSettingsManager.cs" />
     <Compile Include="Configuration\Application\AppSetttingsManager.cs" />
+    <Compile Include="Data\Templates\TemplateConversion.cs" />
     <Compile Include="Data\Templates\XMLSiteTemplateData.cs" />
     <Compile Include="Data\DataStoreException.cs" />
     <Compile Include="Data\SiteRequests\Impl\SPSiteRequestManagerImpl.cs" />
@@ -139,7 +144,10 @@
       <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

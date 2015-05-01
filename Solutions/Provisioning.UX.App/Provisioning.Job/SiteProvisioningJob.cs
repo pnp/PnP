@@ -51,16 +51,16 @@ namespace Provisioning.Job
             }
         }
 
-        public void ProvisionSites(ICollection<SiteRequestInformation> siterequests)
+        public void ProvisionSites(ICollection<SiteRequestInformation> siteRequests)
         {
             var _tm = this._siteTemplateFactory.GetManager();
-            SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager();
+         
 
-            foreach (var siterequest in siterequests)
+            foreach (var siteRequest in siteRequests)
             {
                 try 
                 {
-                    var _template = _tm.GetTemplateByName(siterequest.Template);
+                    var _template = _tm.GetTemplateByName(siteRequest.Template);
                     var _provisioningTemplate = _tm.GetProvisioningTemplate(_template.ProvisioningTemplate);
                   
                     //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
@@ -68,15 +68,16 @@ namespace Provisioning.Job
                        //TODO LOG
                     }
 
-                    var _web = _siteProvisioningManager.ProcessSiteRequest(siterequest, _template);
-                  //  var _web = _siteProvisioningManager.GetWeb(siterequest, _template);
-                    _siteProvisioningManager.ApplyProvisioningTemplates(_web, _provisioningTemplate);
-                    this.SendSuccessEmail(siterequest);
+                    SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
+                    var _web = _siteProvisioningManager.ProcessSiteRequest(siteRequest, _template);
+                    _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
+                    
+                    this.SendSuccessEmail(siteRequest);
 
                 }
                 catch(Exception _ex)
                 {
-                    this.SendFailureEmail(siterequest, _ex.Message);
+                    this.SendFailureEmail(siteRequest, _ex.Message);
                 }
                
             }
