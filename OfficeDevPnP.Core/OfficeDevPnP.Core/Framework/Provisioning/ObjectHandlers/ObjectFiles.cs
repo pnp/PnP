@@ -88,15 +88,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             web.Context.Load(targetFile, f => f.ServerRelativeUrl);
                             web.Context.ExecuteQuery();
                         }
+                        var existingWebParts = web.GetWebParts(targetFile.ServerRelativeUrl);
                         foreach (var webpart in file.WebParts)
                         {
-                            var wpEntity = new WebPartEntity();
-                            wpEntity.WebPartTitle = webpart.Title;
-                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
-                            wpEntity.WebPartZone = webpart.Zone;
-                            wpEntity.WebPartIndex = (int)webpart.Order;
+                            // check if the webpart is already set on the page
+                            if (existingWebParts.FirstOrDefault(w => w.WebPart.Title == webpart.Title) == null)
+                            {
+                                var wpEntity = new WebPartEntity();
+                                wpEntity.WebPartTitle = webpart.Title;
+                                wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                                wpEntity.WebPartZone = webpart.Zone;
+                                wpEntity.WebPartIndex = (int) webpart.Order;
 
-                            web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                                web.AddWebPartToWebPartPage(targetFile.ServerRelativeUrl, wpEntity);
+                            }
                         }
                     }
                   

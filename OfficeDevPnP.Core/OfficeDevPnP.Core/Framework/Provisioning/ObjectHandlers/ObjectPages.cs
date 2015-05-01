@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
@@ -68,15 +69,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.AddWikiPageByUrl(url);
                     web.AddLayoutToWikiPage(page.Layout, url);
                 }
-
-                foreach (var webpart in page.WebParts)
+                if (page.WebParts != null & page.WebParts.Any())
                 {
-                    WebPartEntity wpEntity = new WebPartEntity();
-                    wpEntity.WebPartTitle = webpart.Title;
-                    wpEntity.WebPartXml = webpart.Contents.ToParsedString();
-                    web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
-                }
+                    var existingWebParts = web.GetWebParts(url);
 
+                    foreach (var webpart in page.WebParts)
+                    {
+                        if (existingWebParts.FirstOrDefault(w => w.WebPart.Title == webpart.Title) == null)
+                        {
+                            WebPartEntity wpEntity = new WebPartEntity();
+                            wpEntity.WebPartTitle = webpart.Title;
+                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                            web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
+                        }
+                    }
+                }
             }
         }
 
