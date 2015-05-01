@@ -34,8 +34,8 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
         protected override void ExecuteCmdlet()
         {
             Field field = ListItem.ParentList.Fields.GetByInternalNameOrTitle(InternalFieldName);
-            ClientContext.Load(field);
-            ClientContext.ExecuteQueryRetry();
+            ListItem.Context.Load(field);
+            ListItem.Context.ExecuteQueryRetry();
 
             switch (ParameterSetName)
             {

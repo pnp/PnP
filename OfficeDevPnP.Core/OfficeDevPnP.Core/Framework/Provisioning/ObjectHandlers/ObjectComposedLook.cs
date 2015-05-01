@@ -91,27 +91,42 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {            
             // Load object if not there
             bool executeQueryNeeded = false;
-            if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))
+            if (!web.IsPropertyAvailable("AlternateCssUrl"))
             {
-                web.Context.Load(web);
+                web.Context.Load(web, w => w.AlternateCssUrl);
                 executeQueryNeeded = true;
             }
-            if (!web.IsObjectPropertyInstantiated("Url"))
+            if (!web.IsPropertyAvailable("Url"))
             {
-                web.Context.Load(web);
+                web.Context.Load(web, w => w.Url);
                 executeQueryNeeded = true;
             }
-
+#if !CLIENTSDKV15
+            if (!web.IsPropertyAvailable("AlternateCssUrl"))
+            {
+                web.Context.Load(web, w => w.AlternateCssUrl);
+                executeQueryNeeded = true;
+            }
+            if (!web.IsPropertyAvailable("SiteLogoUrl"))
+            {
+                web.Context.Load(web, w => w.SiteLogoUrl);
+                executeQueryNeeded = true;
+            }
+#endif
             if (executeQueryNeeded)
             {
                 web.Context.ExecuteQuery();
             }
 
             // Information coming from the site
-            template.ComposedLook.AlternateCSS = web.IsObjectPropertyInstantiated("AlternateCssUrl") ? Tokenize(web.AlternateCssUrl, web.Url) : null;
             template.ComposedLook.MasterPage = Tokenize(web.MasterUrl, web.Url);
-            template.ComposedLook.SiteLogo = web.IsObjectPropertyInstantiated("SiteLogoUrl") ? Tokenize(web.SiteLogoUrl, web.Url) : null;
-
+#if !CLIENTSDKV15
+            template.ComposedLook.AlternateCSS = Tokenize(web.AlternateCssUrl, web.Url);
+            template.ComposedLook.SiteLogo = Tokenize(web.SiteLogoUrl, web.Url);
+#else
+             template.ComposedLook.AlternateCSS = null;
+            template.ComposedLook.SiteLogo = null;
+#endif
             var theme = web.GetCurrentComposedLook();
 
             if (theme != null)

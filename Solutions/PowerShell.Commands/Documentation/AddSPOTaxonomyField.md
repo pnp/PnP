@@ -1,11 +1,10 @@
 #Add-SPOTaxonomyField
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-04-29*
 
 Adds a taxonomy field to a list or as a site column.
 ##Syntax
 ```powershell
-Add-SPOTaxonomyField [-List [<ListPipeBind>]] -DisplayName [<String>] -InternalName [<String>] -TermSetPath [<String>] [-TermPathDelimiter [<String>]] [-Group [<String>]] [-Id [<GuidPipeBind>]] [-AddToDefaultView [<SwitchParameter>]] [-MultiValue [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-FieldOptions [<AddFieldOptions>]] [-Web [<WebPipeBind>]]
-```
+Add-SPOTaxonomyField [-List <ListPipeBind>] -DisplayName <String> -InternalName <String> -TermSetPath <String> [-TermPathDelimiter <String>] [-Group <String>] [-Id <GuidPipeBind>] [-AddToDefaultView [<SwitchParameter>]] [-MultiValue [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-FieldOptions <AddFieldOptions>] [-Web <WebPipeBind>]```
 &nbsp;
 
 ##Parameters
@@ -22,4 +21,5 @@ MultiValue|SwitchParameter|False|
 Required|SwitchParameter|False|
 TermPathDelimiter|String|False|
 TermSetPath|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
+<!-- Ref: 67877B591ED1668F2BFADBE98AF418A4 -->

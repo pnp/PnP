@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.New, "SPOTenantSite")]
     [CmdletHelp("Office365 only: Creates a new site collection for the current tenant", DetailedDescription = @"
 The New-SPOTenantSite cmdlet creates a new site collection for the current company. However, creating a new SharePoint
-Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.", Details = "Office365 only", Category = "Tenant Administration")]
+Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.", Category = "Tenant Administration")]
     public class NewTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = true)]
