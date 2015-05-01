@@ -141,28 +141,28 @@
             // Use the metadata factory to retrieve a list of functions
             BusinessMetadata.getFunctions().then(function (functionsdata) {
 
-                // Store region data 
+                // Store functions data 
                 $scope.functions = functionsdata;
             });
 
             // Use the metadata factory to retrieve a list of divisions
             BusinessMetadata.getDivisions().then(function (divisionsdata) {
 
-                // Store region data 
+                // Store divisions data 
                 $scope.divisions = divisionsdata;
             });
 
             // Use the metadata factory to retrieve a list of languages
             BusinessMetadata.getLanguages().then(function (languagesdata) {
 
-                // Store region data 
+                // Store langauges data 
                 $scope.languages = languagesdata;
             });
 
             // Use the metadata factory to retrieve a list of site classifications
             BusinessMetadata.getSiteClassifications().then(function (classificationdata) {
 
-                // Store region data 
+                // Store site classification data 
                 $scope.siteclassifications = classificationdata;
             });
         }
