@@ -117,6 +117,13 @@
     </Content>
     <None Include="Properties\PublishProfiles\spsiteprov %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
+    <Content Include="Scripts\data\json\divisions.json" />
+    <Content Include="Scripts\data\json\functions.json" />
+    <Content Include="Scripts\data\json\languages.json" />
+    <Content Include="Scripts\data\json\regions.json" />
+    <Content Include="Scripts\data\json\siteclassifications.json" />
+    <Content Include="Scripts\data\json\templates.json" />
+    <Content Include="Scripts\data\json\timezones.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -136,6 +143,7 @@
     <Content Include="Pages\Default.aspx" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\app.module.js" />
+    <Content Include="Scripts\data\metadata.factory.js" />
     <Content Include="Scripts\data\templates.json" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Pages\wizard.html" />

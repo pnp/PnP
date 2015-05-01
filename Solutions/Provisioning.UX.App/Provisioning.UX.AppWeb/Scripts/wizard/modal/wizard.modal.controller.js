@@ -6,9 +6,9 @@
         .controller('WizardModalInstanceController', WizardModalInstanceController);
         //.value('urlparams', null);
 
-    WizardModalInstanceController.$inject = ['$scope', '$log', '$modalInstance', 'Templates', 'utilservice', '$SharePointProvisioningService'];
+    WizardModalInstanceController.$inject = ['$scope', '$log', '$modalInstance', 'Templates', 'BusinessMetadata', 'utilservice', '$SharePointProvisioningService'];
 
-    function WizardModalInstanceController($scope, $log, $modalInstance, Templates, $utilservice, $SharePointProvisioningService) {
+    function WizardModalInstanceController($scope, $log, $modalInstance, Templates, BusinessMetadata, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardModalInstanceController';
         
         var spHostWebUrl = $scope.spHostWebUrl;
@@ -71,7 +71,8 @@
 
             // Initialize modal dialog box information
             initModal();
-            getTemplates();           
+            getTemplates();
+            getBusinessMetadata();
 
         }
 
@@ -125,6 +126,44 @@
 
             }).fail(function (err) {
                 console.info(JSON.stringify(err));
+            });
+        }
+
+        function getBusinessMetadata() {
+
+            // Use the metadata factory to retrieve a list of regions
+            BusinessMetadata.getRegions().then(function (regionsdata) {
+
+                // Store region data 
+                $scope.regions = regionsdata;
+            });
+
+            // Use the metadata factory to retrieve a list of functions
+            BusinessMetadata.getFunctions().then(function (functionsdata) {
+
+                // Store region data 
+                $scope.functions = functionsdata;
+            });
+
+            // Use the metadata factory to retrieve a list of divisions
+            BusinessMetadata.getDivisions().then(function (divisionsdata) {
+
+                // Store region data 
+                $scope.divisions = divisionsdata;
+            });
+
+            // Use the metadata factory to retrieve a list of languages
+            BusinessMetadata.getLanguages().then(function (languagesdata) {
+
+                // Store region data 
+                $scope.languages = languagesdata;
+            });
+
+            // Use the metadata factory to retrieve a list of site classifications
+            BusinessMetadata.getSiteClassifications().then(function (classificationdata) {
+
+                // Store region data 
+                $scope.siteclassifications = classificationdata;
             });
         }
 

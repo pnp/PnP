@@ -1,0 +1,29 @@
+﻿{    
+    "languages": [
+        {
+            "key": "English",
+            "value": "English",
+            "displayOrder": 1
+        },
+        {
+            "key": "Spanish",
+            "value": "Spanish",
+            "displayOrder": 2
+        },
+        {
+            "key": "French",
+            "value": "French",
+            "displayOrder": 3
+        },
+        {
+            "key": "Russian",
+            "value": "Russian",
+            "displayOrder": 4
+        },
+        {
+            "key": "Mandarin",
+            "value": "Mandarin",
+            "displayOrder": 5
+        }
+    ]
+}

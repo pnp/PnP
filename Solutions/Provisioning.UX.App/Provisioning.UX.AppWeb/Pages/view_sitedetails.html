@@ -41,21 +41,14 @@
             <div class="form-group">
                 <label class="control-label" for="detailsRegion">Region</label>
                 <select class="form-control" name="detailsRegion" id="detailsRegion" ng-model="siteConfiguration.details.region" required>
-                    <option>North America</option>
-                    <option>LATAM</option>
-                    <option>APAC</option>
-                    <option>EMEA</option>
+                    <option ng-repeat="region in regions | orderBy: 'displayOrder'" value="{{region.value}}">{{region.key}}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label class="control-label" for="detailsFunction">Function</label>
                 <select class="form-control" name="detailsFunction" id="detailsFunction" ng-model="siteConfiguration.details.function" required>
-                    <option>Information Technology</option>
-                    <option>Human Resources</option>
-                    <option>Legal</option>
-                    <option>Accounting</option>
-                    <option>Administrative</option>
+                    <option ng-repeat="function in functions | orderBy: 'displayOrder'" value="{{function.value}}">{{function.key}}</option>
                 </select>
             </div>
 
@@ -66,20 +59,14 @@
             <div class="form-group">
                 <label class="control-label" for="detailsDivision">Division</label>
                 <select class="form-control" name="detailsDivision" id="detailsDivision" ng-model="siteConfiguration.details.division" required>
-                    <option>Corporate</option>
-                    <option>Ipsum</option>
-                    <option>Dolor</option>
+                    <option ng-repeat="division in divisions | orderBy: 'displayOrder'" value="{{division.value}}">{{division.key}}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label class="control-label" for="detailsLanguage">Language</label>
                 <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.details.language" required>
-                    <option>English</option>
-                    <option>Spanish</option>
-                    <option>French</option>
-                    <option>Russian</option>
-                    <option>Mandarin</option>
+                    <option ng-repeat="language in languages | orderBy: 'displayOrder'" value="{{language.value}}">{{language.key}}</option>
                 </select>
             </div>
 

@@ -1,0 +1,22 @@
+﻿{
+    "timezones": [
+        {
+            "key": "TZ1",
+            "description": "Ut fusce varius nisl ac ",
+            "value": "TZ1",
+            "displayOrder": 1
+        },
+        {
+            "key": "TZ2",
+            "description": "Ut fusce varius nisl ac ",
+            "value": "TZ2",
+            "displayOrder": 2
+        },
+        {
+            "key": "TZ3",
+            "description": "Ut fusce varius nisl ac ",
+            "value": "TZ3",
+            "displayOrder": 3
+        }
+    ]
+}
