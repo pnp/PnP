@@ -381,6 +381,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(lists,
                 lc => lc.IncludeWithDefaultProperties(
+                    l => l.OnQuickLaunch,
                     l => l.ContentTypes,
                     l => l.Views,
                     l => l.RootFolder.ServerRelativeUrl,
@@ -423,6 +424,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.MaxVersionLimit = item.MajorVersionLimit;
                         list.EnableMinorVersions = item.EnableMinorVersions;
                         list.MinorVersionLimit = item.MajorWithMinorVersionsLimit;
+                        list.OnQuickLaunch = item.OnQuickLaunch;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)
