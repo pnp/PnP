@@ -4,23 +4,33 @@ using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using System;
 using System.IO;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectComposedLook : ObjectHandlerBase
     {
+
+        public override string Name
+        {
+            get { return "Composed Looks"; }
+        }
+
+
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ComposedLooks);
             if (template.ComposedLook != null && 
                 !template.ComposedLook.Equals(ComposedLook.Empty))
             {
                 bool executeQueryNeeded = false;
-                TokenParser parser = new TokenParser(web);
                 
                 // Apply alternate CSS
                 if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
                 {
-                    var alternateCssUrl = parser.Parse(template.ComposedLook.AlternateCSS);
+                    var alternateCssUrl = template.ComposedLook.AlternateCSS.ToParsedString();
                     web.AlternateCssUrl = alternateCssUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -29,7 +39,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // Apply Site logo
                 if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
                 {
-                    var siteLogoUrl = parser.Parse(template.ComposedLook.SiteLogo);
+                    var siteLogoUrl = template.ComposedLook.SiteLogo.ToParsedString();
                     web.SiteLogoUrl = siteLogoUrl;
                     web.Update();
                     executeQueryNeeded = true;
@@ -53,23 +63,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     string colorFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.ColorFile))
                     {
-                        colorFile = parser.Parse(template.ComposedLook.ColorFile);
+                        colorFile = template.ComposedLook.ColorFile.ToParsedString();
                     }
                     string backgroundFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
                     {
-                        backgroundFile = parser.Parse(template.ComposedLook.BackgroundFile);
+                        backgroundFile = template.ComposedLook.BackgroundFile.ToParsedString();
                     }
                     string fontFile = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.FontFile))
                     {
-                        fontFile = parser.Parse(template.ComposedLook.FontFile);
+                        fontFile = template.ComposedLook.FontFile.ToParsedString();
                     }
 
                     string masterUrl = null;
                     if (!string.IsNullOrEmpty(template.ComposedLook.MasterPage))
                     {
-                        masterUrl = parser.Parse(template.ComposedLook.MasterPage);
+                        masterUrl = template.ComposedLook.MasterPage.ToParsedString();
                     }
                     web.CreateComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
                     web.SetComposedLookByUrl(template.ComposedLook.Name, colorFile, fontFile, backgroundFile, masterUrl);
@@ -81,27 +91,42 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {            
             // Load object if not there
             bool executeQueryNeeded = false;
-            if (!web.IsObjectPropertyInstantiated("AlternateCssUrl"))
+            if (!web.IsPropertyAvailable("AlternateCssUrl"))
             {
-                web.Context.Load(web);
+                web.Context.Load(web, w => w.AlternateCssUrl);
                 executeQueryNeeded = true;
             }
-            if (!web.IsObjectPropertyInstantiated("Url"))
+            if (!web.IsPropertyAvailable("Url"))
             {
-                web.Context.Load(web);
+                web.Context.Load(web, w => w.Url);
                 executeQueryNeeded = true;
             }
-
+#if !CLIENTSDKV15
+            if (!web.IsPropertyAvailable("AlternateCssUrl"))
+            {
+                web.Context.Load(web, w => w.AlternateCssUrl);
+                executeQueryNeeded = true;
+            }
+            if (!web.IsPropertyAvailable("SiteLogoUrl"))
+            {
+                web.Context.Load(web, w => w.SiteLogoUrl);
+                executeQueryNeeded = true;
+            }
+#endif
             if (executeQueryNeeded)
             {
                 web.Context.ExecuteQuery();
             }
 
             // Information coming from the site
-            template.ComposedLook.AlternateCSS = Tokenize(web.AlternateCssUrl, web.Url);
             template.ComposedLook.MasterPage = Tokenize(web.MasterUrl, web.Url);
+#if !CLIENTSDKV15
+            template.ComposedLook.AlternateCSS = Tokenize(web.AlternateCssUrl, web.Url);
             template.ComposedLook.SiteLogo = Tokenize(web.SiteLogoUrl, web.Url);
-
+#else
+             template.ComposedLook.AlternateCSS = null;
+            template.ComposedLook.SiteLogo = null;
+#endif
             var theme = web.GetCurrentComposedLook();
 
             if (theme != null)
@@ -245,22 +270,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "~themecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/theme", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/theme", "{themecatalog}");
                 }
                 if (url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "~masterpagecatalog");
+                    return url.Substring(url.IndexOf("/_catalogs/masterpage", StringComparison.InvariantCultureIgnoreCase)).Replace("/_catalogs/masterpage", "{masterpagecatalog}");
                 }
                 if (url.IndexOf(webUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
                 {
-                    return url.Replace(webUrl, "~site");
+                    return url.Replace(webUrl, "{site}");
                 }
                 else
                 {
                     Uri r = new Uri(webUrl);
                     if (url.IndexOf(r.PathAndQuery, StringComparison.InvariantCultureIgnoreCase) > -1)
                     {
-                        return url.Replace(r.PathAndQuery, "~site");
+                        return url.Replace(r.PathAndQuery, "{site}");
                     }
                 }
 

@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOAppPackage")]
     [CmdletHelp("Adds a SharePoint App to a site",
-        Details = "This commands requires that you have an app package to deploy", Category = "Apps")]
+        DetailedDescription = "This commands requires that you have an app package to deploy", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -LoadOnly",
         Remarks = @"This will load the app in the demo.app package, but will not install it to the site.
@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     ")]
     public class ImportAppPackage : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "Path pointing to the .app file")]
+        [Parameter(Mandatory = true, HelpMessage = "Path pointing to the .app file")]
         public string Path = string.Empty;
 
         [Parameter(Mandatory = false, HelpMessage = "Will forcibly install the app by activating the app sideloading feature, installing the app, and deactivating the sideloading feature")]

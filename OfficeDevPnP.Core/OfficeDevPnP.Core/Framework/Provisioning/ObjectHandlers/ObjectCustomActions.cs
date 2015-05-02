@@ -3,13 +3,21 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectCustomActions : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Custom Actions"; }
+        }
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_CustomActions);
+
             var context = web.Context as ClientContext;
             var site = context.Site;
 
@@ -26,18 +34,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
         {
-            TokenParser parser = null;
             Web web = null;
             Site site = null;
             if (parent is Site)
             {
                 site = parent as Site;
-                parser = new TokenParser(site.RootWeb);
+
+                // Switch parser context;
+                TokenParser.Rebase(site.RootWeb);
             }
             else
             {
                 web = parent as Web;
-                parser = new TokenParser(web);
             }
             foreach (var customAction in customActions)
             {
@@ -53,10 +61,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (!caExists)
                 {
                     var customActionEntity = new CustomActionEntity();
-                    customActionEntity.CommandUIExtension = customAction.CommandUIExtension;
+                    customActionEntity.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
+                    
+                    
                     customActionEntity.Description = customAction.Description;
                     customActionEntity.Group = customAction.Group;
-                    customActionEntity.ImageUrl = parser.Parse(customAction.ImageUrl);
+                    customActionEntity.ImageUrl = customAction.ImageUrl.ToParsedString();
                     customActionEntity.Location = customAction.Location;
                     customActionEntity.Name = customAction.Name;
                     customActionEntity.RegistrationId = customAction.RegistrationId;
@@ -64,10 +74,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     customActionEntity.Remove = customAction.Remove;
                     customActionEntity.Rights = customAction.Rights;
                     customActionEntity.ScriptBlock = customAction.ScriptBlock;
-                    customActionEntity.ScriptSrc = parser.Parse(customAction.ScriptSrc);
+                    customActionEntity.ScriptSrc = customAction.ScriptSrc.ToParsedString();
                     customActionEntity.Sequence = customAction.Sequence;
                     customActionEntity.Title = customAction.Title;
-                    customActionEntity.Url = parser.Parse(customAction.Url);
+                    customActionEntity.Url = customAction.Url.ToParsedString();
 
                     if (site != null)
                     {
@@ -80,6 +90,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
             }
 
+            // Rebase parser context to current web
+            TokenParser.Rebase(web);
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)

@@ -37,14 +37,14 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
 
         protected override void ExecuteCmdlet()
         {
-            if (!System.IO.Path.IsPathRooted(Path))
-            {
-                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
-            }
-
             string[] lines;
             if (ParameterSetName == "File")
             {
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                }
+
                 lines = File.ReadAllLines(Path);
             }
             else

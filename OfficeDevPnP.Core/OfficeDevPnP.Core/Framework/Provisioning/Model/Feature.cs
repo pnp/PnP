@@ -5,14 +5,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// <summary>
     /// Domain Object that represents an Feature.
     /// </summary>
-    public class Feature : IEquatable<Feature>
+    public partial class Feature : IEquatable<Feature>
     {
+        #region Private Members
+
+        private Guid _id;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
-        /// Gets or sets the feature ID
+        /// Gets or sets the feature Id
         /// </summary>
-        public Guid ID { get; set; }
+        public Guid Id { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// Gets or sets if the feature should be deactivated
@@ -22,12 +28,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #endregion
 
         #region Comparison code
-        
+
         public override int GetHashCode()
         {
             return (String.Format("{0}|{1}",
                 this.Deactivate,
-                this.ID).GetHashCode());
+                this.Id).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -42,7 +48,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool Equals(Feature other)
         {
             return (this.Deactivate == other.Deactivate &&
-                this.ID == other.ID);
+                this.Id == other.Id);
         }
 
         #endregion
