@@ -36,15 +36,13 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="siteRequest"></param>
         /// <param name="template"></param>
-        public Web ProcessSiteRequest(SiteRequestInformation siteRequest, Template template)
+        public void ProcessSiteRequest(SiteRequestInformation siteRequest, Template template)
         {
-
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
-            var _web = _siteprovisioningService.CreateSiteCollection(siteRequest, template);
+            _siteprovisioningService.CreateSiteCollection(siteRequest, template);
 
-            return _web;
-       }
+        }
         /// <summary>
         /// TODO
         /// </summary>

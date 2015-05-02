@@ -32,10 +32,8 @@ namespace Provisioning.Common
         }
         #endregion
      
-        public override Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
+        public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
-            Web _web = null;
-
             UsingContext(ctx =>
             {
                 try
@@ -67,20 +65,18 @@ namespace Provisioning.Common
                     }
 
                     var _site = _tenant.GetSiteByUrl(siteRequest.Url);
-                    _web = _site.RootWeb;
+                    var _web = _site.RootWeb;
                     _web.Description = siteRequest.Description;
                     _web.Update();
                     ctx.Load(_web);
                     ctx.ExecuteQuery();
-         //           this.SetPropertyBag(_web, Constants.PropertyBags.SITE_TEMPLATE_TYPE, siteRequest.Template);
-                }
+                 }
                 catch (Exception ex)
                 {
                     Log.Fatal("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
                     throw;
                 }
             });
-            return _web;
         }
     }
 }

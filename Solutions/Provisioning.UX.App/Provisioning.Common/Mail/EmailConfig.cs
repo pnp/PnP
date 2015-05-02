@@ -21,7 +21,6 @@ namespace Provisioning.Common.Mail
         private const string CONFIG_NEWSITETEMPLATE = "EmailNewSiteTemplate";
         private const string CONFIG_NEWSITETEMPLATEIMAGE = "EmailNewSiteTemplateImage";
         private const string CONFIG_FAILEMAILTEMPLATE = "EmailFailureSiteTemplate";
-        private const string CONFIG_FAILEMAILTEMPLATEIMAGE = "EmailFailureTemplateImage";
         public const string TOKEN_TEMPLATEIMAGE = "imageid";
         private const string TOKEN_SITEURL = "[SITEURL]";
         private const string TOKEN_SITEOWNER = "[SITEOWNER]";
@@ -69,15 +68,7 @@ namespace Provisioning.Common.Mail
             {
                 Log.Warning("Provisioning.Common.Mail.EmailConfig", "Your Email Template doesn't exist");
             }
-            string failImage = ConfigurationManager.AppSettings[CONFIG_FAILEMAILTEMPLATEIMAGE];
-            if (File.Exists(failImage))
-            {
-                this.FailEmailTemplateImage = File.OpenRead(failImage);
-            }
-            else
-            {
-                Log.Warning("Provisioning.Common.Mail.EmailConfig", "Your Email Template Image doesn't exist");
-            }
+            
         }
         #endregion
 

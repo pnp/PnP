@@ -21,7 +21,7 @@ namespace Provisioning.Common
         /// <param name="siteRequest">The Site Request to create</param>
         /// <param name="template">The Master Configuration Template</param>
         /// <returns><see cref="Web"/>The newly created Web</returns>
-        Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+        void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
         /// <summary>
         /// Returns the Site Collection ID

@@ -35,7 +35,7 @@ namespace Provisioning.Common
         #endregion
 
         #region ISiteProvisioning Members
-        public abstract Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+        public abstract void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
         public Web GetWebByUrl(string url)
         {

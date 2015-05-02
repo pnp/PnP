@@ -96,7 +96,7 @@ namespace Provisioning.Common
 
         }
 
-        public override Web CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
+        public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
             Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Creating Site Collection with url {0}", siteRequest.Url);
             
@@ -140,7 +140,6 @@ namespace Provisioning.Common
             }
             Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);
             this.HandleDefaultGroups(siteRequest);
-            return _web;
         }
     }
 }

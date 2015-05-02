@@ -54,7 +54,7 @@ namespace Provisioning.Job
         public void ProvisionSites(ICollection<SiteRequestInformation> siteRequests)
         {
             var _tm = this._siteTemplateFactory.GetManager();
-         
+            var _requestManager = this._requestFactory.GetSiteRequestManager();
 
             foreach (var siteRequest in siteRequests)
             {
@@ -68,15 +68,17 @@ namespace Provisioning.Job
                        //TODO LOG
                     }
 
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Processing);
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
-                    var _web = _siteProvisioningManager.ProcessSiteRequest(siteRequest, _template);
+                    _siteProvisioningManager.ProcessSiteRequest(siteRequest, _template);
                     _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
                     
                     this.SendSuccessEmail(siteRequest);
-
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }
                 catch(Exception _ex)
                 {
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception);
                     this.SendFailureEmail(siteRequest, _ex.Message);
                 }
                
