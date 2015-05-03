@@ -91,14 +91,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {            
             // Load object if not there
             bool executeQueryNeeded = false;
-            if (!web.IsPropertyAvailable("AlternateCssUrl"))
-            {
-                web.Context.Load(web, w => w.AlternateCssUrl);
-                executeQueryNeeded = true;
-            }
             if (!web.IsPropertyAvailable("Url"))
             {
                 web.Context.Load(web, w => w.Url);
+                executeQueryNeeded = true;
+            }
+            if (!web.IsPropertyAvailable("MasterUrl"))
+            {
+                web.Context.Load(web, w => w.MasterUrl);
                 executeQueryNeeded = true;
             }
 #if !CLIENTSDKV15
@@ -124,7 +124,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             template.ComposedLook.AlternateCSS = Tokenize(web.AlternateCssUrl, web.Url);
             template.ComposedLook.SiteLogo = Tokenize(web.SiteLogoUrl, web.Url);
 #else
-             template.ComposedLook.AlternateCSS = null;
+            template.ComposedLook.AlternateCSS = null;
             template.ComposedLook.SiteLogo = null;
 #endif
             var theme = web.GetCurrentComposedLook();
@@ -135,7 +135,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (theme.IsCustomComposedLook)
                 {
-                    if (creationInfo.PersistComposedLookFiles && creationInfo.FileConnector != null)
+                    if (creationInfo != null && creationInfo.PersistComposedLookFiles && creationInfo.FileConnector != null)
                     {
                         Site site = (web.Context as ClientContext).Site;
                         if (!site.IsObjectPropertyInstantiated("Url"))
@@ -189,7 +189,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
 
                     // If a base template is specified then use that one to "cleanup" the generated template model
-                    if (creationInfo.BaseTemplate != null)
+                    if (creationInfo != null && creationInfo.BaseTemplate != null)
                     {
                         template = CleanupEntities(template, creationInfo.BaseTemplate);
                     }
