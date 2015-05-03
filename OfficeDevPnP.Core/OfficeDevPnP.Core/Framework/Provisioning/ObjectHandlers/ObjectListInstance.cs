@@ -39,7 +39,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 web.Context.Load(web.Lists, lc => lc.IncludeWithDefaultProperties(l => l.RootFolder.ServerRelativeUrl));
                 web.Context.ExecuteQueryRetry();
-                var existingLists = web.Lists.Select(existingList => existingList.RootFolder.ServerRelativeUrl).ToList();
+                var existingLists = web.Lists.AsEnumerable<List>().Select(existingList => existingList.RootFolder.ServerRelativeUrl).ToList();
                 var serverRelativeUrl = web.ServerRelativeUrl;
 
                 var createdLists = new List<ListInfo>();
@@ -124,7 +124,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ContentTypeBinding defaultCtBinding = null;
                         foreach (var ctBinding in list.ContentTypeBindings)
                         {
-                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy:true);
+                            createdList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy: true);
                             if (ctBinding.Default)
                             {
                                 defaultCtBinding = ctBinding;
@@ -381,7 +381,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(lists,
                 lc => lc.IncludeWithDefaultProperties(
-                    l => l.OnQuickLaunch,
                     l => l.ContentTypes,
                     l => l.Views,
                     l => l.RootFolder.ServerRelativeUrl,
@@ -421,10 +420,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
                         list.EnableAttachments = item.EnableAttachments;
-                        list.MaxVersionLimit = item.MajorVersionLimit;
+                        list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
                         list.EnableMinorVersions = item.EnableMinorVersions;
-                        list.MinorVersionLimit = item.MajorWithMinorVersionsLimit;
-                        list.OnQuickLaunch = item.OnQuickLaunch;
+                        list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
                         int count = 0;
 
                         foreach (var ct in item.ContentTypes)
