@@ -167,9 +167,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, theme.Font);
                     }
 
-                    template.ComposedLook.BackgroundFile = Tokenize(theme.BackgroundImage, web.Url);
-                    template.ComposedLook.ColorFile = Tokenize(theme.Theme, web.Url);
-                    template.ComposedLook.FontFile = Tokenize(theme.Font, web.Url);
+                    template.ComposedLook.BackgroundFile = FixFileUrl(Tokenize(theme.BackgroundImage, web.Url));
+                    template.ComposedLook.ColorFile = FixFileUrl(Tokenize(theme.Theme, web.Url));
+                    template.ComposedLook.FontFile = FixFileUrl(Tokenize(theme.Font, web.Url));
 
                     // Create file entries for the custom theme files  
                     if (!string.IsNullOrEmpty(template.ComposedLook.BackgroundFile))
@@ -243,23 +243,41 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (s != null)
                 {
-                    // if we've found the file use the provided writer to persist the downloaded file
-                    String originalFileUrl = f.Src;
-                    String regexStrip = @"(\\|/|:|\*|\?|""|>|<|\||=)*";
-                    String fileNameToSave = Regex.Replace(originalFileUrl.Substring(0,
-                        originalFileUrl.IndexOf("?") > 0 ? originalFileUrl.IndexOf("?") : originalFileUrl.Length),
-                        regexStrip, "", RegexOptions.IgnorePatternWhitespace);
-                    writer.SaveFileStream(fileNameToSave, s);
+                    writer.SaveFileStream(f.Src, s);
                 }
             }
         }
 
+        private String FixFileName(string originalFileName)
+        {
+            // if we've found the file use the provided writer to persist the downloaded file
+            String regexStrip = @"(\\|/|:|\*|\?|""|>|<|\||=)*";
+            String result = Regex.Replace(originalFileName.Substring(0,
+                originalFileName.IndexOf("?") > 0 ? originalFileName.IndexOf("?") : originalFileName.Length),
+                regexStrip, "", RegexOptions.IgnorePatternWhitespace);
+
+            return (result);
+        }
+        private String FixFileUrl(string originalFileUrl)
+        {
+            if (string.IsNullOrEmpty(originalFileUrl))
+            {
+                return "";
+            }
+
+            String fileUrl = originalFileUrl.Substring(0, originalFileUrl.LastIndexOf("/"));
+            String fileName = FixFileName(originalFileUrl.Substring(originalFileUrl.LastIndexOf("/") + 1));
+
+            String result = String.Format("{0}/{1}", fileUrl, fileName);
+
+            return (result);
+        }
 
         private Model.File GetComposedLookFile(string asset)
         {
             int index = asset.LastIndexOf("/");
             Model.File file = new Model.File();
-            file.Src = asset.Substring(index + 1);
+            file.Src = FixFileName(asset.Substring(index + 1));
             file.Folder = asset.Substring(0, index);
             file.Overwrite = true;
 
