@@ -37,7 +37,10 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                     var template = new ProvisioningTemplate();
                     template = new ObjectComposedLook().CreateEntities(cc.Web, template, null);
 
+                    // Switch to OOB theme
                     template.ComposedLook.Name = "Green";
+                    // Cleanup detected files
+                    template.Files.Clear();
                     template.Id = "bertdemo";
 
                     cc.Web.ApplyProvisioningTemplate(template);
