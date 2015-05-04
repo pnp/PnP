@@ -58,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 // Load the base template which will be used for the comparison work
-                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = null };
 
                 var template = new ProvisioningTemplate();
                 template = new ObjectFeatures().CreateEntities(ctx.Web, template, creationInfo);
