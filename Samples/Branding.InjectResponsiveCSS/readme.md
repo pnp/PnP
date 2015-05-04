@@ -1,9 +1,13 @@
 # Making out of the box Seattle master responsive #
 
 ### Summary ###
-Demonstrate how to update out of the box seattle.master user expirience responsive without a need to modify the mater page as such, but rather to take advantage of the AlternateCssUrl property in Web level. Responsive CSS design has been done by Heather Solomon and you can read more information about the CSS details from following blog post.
+Demonstrate how to update out of the box seattle.master user expirience responsive without a need to modify the master page as such, but rather to take advantage of the AlternateCssUrl property in Web level. Responsive CSS design has been done by Heather Solomon and you can read more information about the CSS details from following blog post.
 
 * Heather Solomon (SharePoint Experts, Inc) - [Making Seattle master responsive](http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive/)
+
+To make sure the css is rendered correctly on hardware devices a viewport html meta tag needs to be added to the master page. This can be accomplied by using the Search Engine Optimization Settings. Again the master page doesn't need to be edited. More details on this are covered in the following blog post.
+
+* Stefan Bauer (n8d) - [How to add viewport meta without editing the master page](http://www.n8d.at/blog/how-to-add-viewport-meta-without-editing-the-master-page/)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -13,7 +17,12 @@ Demonstrate how to update out of the box seattle.master user expirience responsi
 Experience might be slightly different, but the same thinking and process applies to on-premises as well.
 
 ### Prerequisites ###
-Any special pre-requisites?
+To add valid viewport settings to the master page the site collection feature "SharePoint Server Publishing Infrastructure" needs to be activated. No other publishing related feature needs to be activated.
+Alternatively the viewport meta tag can be added through a custom action. This is currently not covered in this solution. The HTML element that needs to be added is:
+
+```HTML
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+```
 
 ### Solution ###
 Solution | Author(s)
@@ -21,11 +30,13 @@ Solution | Author(s)
 Branding.InjectResponsiveCSS | Heather Solomon, SharePoint Experts, Inc 
 
 Packaging and remote provisioning with AlternateCSSUrl approach done by Vesa Juvonen, Microsoft
+Provisioning of viewport meta tage settings done by Stefan Bauer, n8d
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | April 26th 2015 | Initial release
+1.1  | May 2nd 2015 | Viewport meta tag added
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -63,24 +74,29 @@ Here's the code for uploading css to the site assets library using *FileCreation
 /// Uploads used CSS and site logo to host web
 /// </summary>
 /// <param name="web"></param>
-private static void UploadAssetsToHostWeb(Web web)
-{
-    // Instance to site assets
-    List assetLibrary = web.Lists.GetByTitle("Site Assets");
-    web.Context.Load(assetLibrary, l => l.RootFolder);
+    private static void UploadAssetsToHostWeb(Web web)
+    {
+        // Ensure site asset library exists in case of a publishing web site
+        web.Lists.EnsureSiteAssetsLibrary();
 
-    // Get the path to the file which we are about to deploy
-    string cssFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources/spe-seattle-responsive.css");
+        // Instance to site assets
+        List assetLibrary = web.Lists.GetByTitle("Site Assets");
+        web.Context.Load(assetLibrary, l => l.RootFolder);
 
-    // Use CSOM to upload the file in
-    FileCreationInformation newFile = new FileCreationInformation();
-    newFile.Content = System.IO.File.ReadAllBytes(cssFile);
-    newFile.Url = "spe-seattle-responsive.css";
-    newFile.Overwrite = true;
-    Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
-    web.Context.Load(uploadFile);
-    web.Context.ExecuteQuery();
-}
+        // Get the path to the file which we are about to deploy
+        string cssFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "resources/spe-seattle-responsive.css");
+
+        // Use CSOM to upload the file in
+        FileCreationInformation newFile = new FileCreationInformation
+        {
+            Content = System.IO.File.ReadAllBytes(cssFile),
+            Url = "spe-seattle-responsive.css",
+            Overwrite = true
+        };
+        Microsoft.SharePoint.Client.File uploadFile = assetLibrary.RootFolder.Files.Add(newFile);
+        web.Context.Load(uploadFile);
+        web.Context.ExecuteQuery();
+    }
 
 ```
 
@@ -90,4 +106,17 @@ After the CSS is available, we can just set the AlternateCssUrl property, so tha
 web.AlternateCssUrl = ctx.Web.ServerRelativeUrl + "/SiteAssets/spe-seattle-responsive.css";
 web.Update();
 web.Context.ExecuteQuery();
+```
+
+After setting the CSS Url, the viewport meta tag will be added to the "Search Engine Optimization Settings". This makes sure that the CSS values will be shown correctly on any hardware device.
+
+```C#
+    if (allProperties.FieldValues.ContainsKey("seoincludecustommetatagpropertyname")) {
+        allProperties["seoincludecustommetatagpropertyname"] = true.ToString();
+    }
+    // Add value of custom meta tag
+    if (allProperties.FieldValues.ContainsKey("seocustommetatagpropertyname"))
+    {
+        allProperties["seocustommetatagpropertyname"] = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />";
+    }
 ```
