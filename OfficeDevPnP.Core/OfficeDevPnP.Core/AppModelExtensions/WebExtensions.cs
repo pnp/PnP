@@ -275,6 +275,13 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        public static bool IsPublishingWeb(this Web web)
+        {
+            var featureActivated = GetPropertyBagValueInternal(web, "__PublishingFeatureActivated");
+
+            return (bool) (featureActivated ?? false);
+        }
+
 
         private static bool IsCannotGetSiteException(Exception ex)
         {
@@ -745,6 +752,7 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+        
 
         /// <summary>
         /// Checks if the given property bag entry exists

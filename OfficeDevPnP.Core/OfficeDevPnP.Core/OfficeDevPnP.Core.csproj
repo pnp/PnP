@@ -235,6 +235,7 @@
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\ListExtensions.cs" />
+    <Compile Include="AppModelExtensions\ListRatingExtensions.cs" />
     <Compile Include="AppModelExtensions\ProvisioningExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\SearchExtensions.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Enums\SharePointPlatform.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
+    <Compile Include="Enums\VotingExperience.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
