@@ -1,7 +1,7 @@
 ﻿
 #PnP Provisioning Schema
 ----------
-*Topic automatically generated on 29/04/2015*
+*Topic automatically generated on 30/04/2015*
 
 ##Namespace
 The namespace of the PnP Provisioning Schema is:
@@ -18,12 +18,13 @@ Here follows the list of root elements available in the PnP Provisioning Schema.
 
 
 ```xml
-<Provisioning>
-   <Preferences />
-   <Templates />
-   <Sequence />
-   <ImportSequence />
-</Provisioning>
+<pnp:Provisioning
+      xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
+   <pnp:Preferences />
+   <pnp:Templates />
+   <pnp:Sequence />
+   <pnp:ImportSequence />
+</pnp:Provisioning>
 ```
 
 
@@ -41,23 +42,24 @@ ImportSequence|[ImportSequence](#importsequence)|Imports sequences from an exter
 Represents the root element of the SharePoint Provisioning Template
 
 ```xml
-<ProvisioningTemplate
+<pnp:ProvisioningTemplate
+      xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema"
       ID="xsd:ID"
       Version="xsd:decimal">
-   <SitePolicy />
-   <PropertyBagEntries />
-   <Security />
-   <SiteFields />
-   <ContentTypes />
-   <Lists />
-   <Features />
-   <CustomActions />
-   <Files />
-   <Pages />
-   <TermGroups />
-   <ComposedLook />
-   <Providers />
-</ProvisioningTemplate>
+   <pnp:SitePolicy />
+   <pnp:PropertyBagEntries />
+   <pnp:Security />
+   <pnp:SiteFields />
+   <pnp:ContentTypes />
+   <pnp:Lists />
+   <pnp:Features />
+   <pnp:CustomActions />
+   <pnp:Files />
+   <pnp:Pages />
+   <pnp:TermGroups />
+   <pnp:ComposedLook />
+   <pnp:Providers />
+</pnp:ProvisioningTemplate>
 ```
 
 
@@ -96,12 +98,12 @@ Here follows the list of all the other child elements and complex types that can
 General settings for a Provisioning file.
 
 ```xml
-<Preferences
+<pnp:Preferences
       Version="xsd:string"
       Author="xsd:string"
       Generator="xsd:string">
-   <Parameters />
-</Preferences>
+   <pnp:Parameters />
+</pnp:Preferences>
 ```
 
 
@@ -125,9 +127,9 @@ Generator|xsd:string|Optional Name of tool generating this file
 Definition of parameters that can be used as replacement within templates and provisioning objects.
 
 ```xml
-<Parameters>
-   <Parameter />
-</Parameters>
+<pnp:Parameters>
+   <pnp:Parameter />
+</pnp:Parameters>
 ```
 
 
@@ -142,12 +144,12 @@ Parameter|[Parameter](#parameter)|A Parameter that can be used as a replacement 
 SharePoint Templates, which can be inline or references to external files
 
 ```xml
-<Templates
+<pnp:Templates
       ID="xsd:ID">
-   <ProvisioningTemplateFile />
-   <ProvisioningTemplateReference />
-   <ProvisioningTemplate />
-</Templates>
+   <pnp:ProvisioningTemplateFile />
+   <pnp:ProvisioningTemplateReference />
+   <pnp:ProvisioningTemplate />
+</pnp:Templates>
 ```
 
 
@@ -171,9 +173,9 @@ ID|xsd:ID|A unique identifier of the Templates collection, optional attribute
 The Property Bag entries of the Provisioning Template, optional collection of elements
 
 ```xml
-<PropertyBagEntries>
-   <PropertyBagEntry />
-</PropertyBagEntries>
+<pnp:PropertyBagEntries>
+   <pnp:PropertyBagEntry />
+</pnp:PropertyBagEntries>
 ```
 
 
@@ -188,12 +190,12 @@ PropertyBagEntry|[StringDictionaryItem](#stringdictionaryitem)|
 The Security Groups Members of the Provisioning Template, optional collection of elements
 
 ```xml
-<Security>
-   <AdditionalAdministrators />
-   <AdditionalOwners />
-   <AdditionalMembers />
-   <AdditionalVisitors />
-</Security>
+<pnp:Security>
+   <pnp:AdditionalAdministrators />
+   <pnp:AdditionalOwners />
+   <pnp:AdditionalMembers />
+   <pnp:AdditionalVisitors />
+</pnp:Security>
 ```
 
 
@@ -211,9 +213,9 @@ AdditionalVisitors|[UsersList](#userslist)|List of additional Visitors for the S
 The Site Columns of the Provisioning Template, optional element
 
 ```xml
-<SiteFields>
+<pnp:SiteFields>
    <!-- Any other XML content -->
-</SiteFields>
+</pnp:SiteFields>
 ```
 
 <a name="contenttypes"></a>
@@ -221,9 +223,9 @@ The Site Columns of the Provisioning Template, optional element
 The Content Types of the Provisioning Template, optional element
 
 ```xml
-<ContentTypes>
-   <ContentType />
-</ContentTypes>
+<pnp:ContentTypes>
+   <pnp:ContentType />
+</pnp:ContentTypes>
 ```
 
 
@@ -238,9 +240,9 @@ ContentType|[ContentType](#contenttype)|
 The Lists instances of the Provisioning Template, optional element
 
 ```xml
-<Lists>
-   <ListInstance />
-</Lists>
+<pnp:Lists>
+   <pnp:ListInstance />
+</pnp:Lists>
 ```
 
 
@@ -255,10 +257,10 @@ ListInstance|[ListInstance](#listinstance)|
 The Features (Site or Web) to activate or deactivate while applying the Provisioning Template, optional collection of elements
 
 ```xml
-<Features>
-   <SiteFeatures />
-   <WebFeatures />
-</Features>
+<pnp:Features>
+   <pnp:SiteFeatures />
+   <pnp:WebFeatures />
+</pnp:Features>
 ```
 
 
@@ -274,10 +276,10 @@ WebFeatures|[FeaturesList](#featureslist)|The Web Features to activate or deacti
 The Custom Actions (Site or Web) to provision with the Provisioning Template, optional element
 
 ```xml
-<CustomActions>
-   <SiteCustomActions />
-   <WebCustomActions />
-</CustomActions>
+<pnp:CustomActions>
+   <pnp:SiteCustomActions />
+   <pnp:WebCustomActions />
+</pnp:CustomActions>
 ```
 
 
@@ -293,9 +295,9 @@ WebCustomActions|[CustomActionsList](#customactionslist)|The Web Custom Actions 
 The Files to provision into the target Site through the Provisioning Template, optional element
 
 ```xml
-<Files>
-   <File />
-</Files>
+<pnp:Files>
+   <pnp:File />
+</pnp:Files>
 ```
 
 
@@ -310,9 +312,9 @@ File|[File](#file)|
 The Pages to provision into the target Site through the Provisioning Template, optional element
 
 ```xml
-<Pages>
-   <Page />
-</Pages>
+<pnp:Pages>
+   <pnp:Page />
+</pnp:Pages>
 ```
 
 
@@ -327,9 +329,9 @@ Page|[Page](#page)|
 The TermGroups element allows provisioning one or more TermGroups into the target Site, optional element
 
 ```xml
-<TermGroups>
-   <TermGroup />
-</TermGroups>
+<pnp:TermGroups>
+   <pnp:TermGroup />
+</pnp:TermGroups>
 ```
 
 
@@ -344,9 +346,9 @@ TermGroup|[TermGroup](#termgroup)|The TermGroup element to provision into the ta
 The Extensiblity Providers to invoke while applying the Provisioning Template, optional collection of elements
 
 ```xml
-<Providers>
-   <Provider />
-</Providers>
+<pnp:Providers>
+   <pnp:Provider />
+</pnp:Providers>
 ```
 
 
@@ -361,10 +363,10 @@ Provider|[Provider](#provider)|
 Defines a StringDictionary element
 
 ```xml
-<StringDictionaryItem
+<pnp:StringDictionaryItem
       Key="xsd:string"
       Value="xsd:string">
-</StringDictionaryItem>
+</pnp:StringDictionaryItem>
 ```
 
 
@@ -380,9 +382,9 @@ Value|xsd:string|The Value of the property to store in the StringDictionary, req
 List of Users for the Site Security, collection of elements
 
 ```xml
-<UsersList>
-   <User />
-</UsersList>
+<pnp:UsersList>
+   <pnp:User />
+</pnp:UsersList>
 ```
 
 
@@ -397,9 +399,9 @@ User|[User](#user)|
 The base abstract type for a User element
 
 ```xml
-<User
+<pnp:User
       Name="xsd:string">
-</User>
+</pnp:User>
 ```
 
 
@@ -414,7 +416,7 @@ Name|xsd:string|The Name of the User, required attribute
 Defines a ListInstance element
 
 ```xml
-<ListInstance
+<pnp:ListInstance
       Title="xsd:string"
       Description="xsd:string"
       DocumentTemplate="xsd:string"
@@ -432,12 +434,12 @@ Defines a ListInstance element
       Hidden="xsd:boolean"
       EnableAttachments="xsd:boolean"
       EnableFolderCreation="xsd:boolean">
-   <ContentTypeBindings />
-   <Views />
-   <Fields />
-   <FieldRefs />
-   <DataRows />
-</ListInstance>
+   <pnp:ContentTypeBindings />
+   <pnp:Views />
+   <pnp:Fields />
+   <pnp:FieldRefs />
+   <pnp:DataRows />
+</pnp:ListInstance>
 ```
 
 
@@ -479,9 +481,9 @@ EnableFolderCreation|xsd:boolean|The EnableFolderCreation flag for the List Inst
 The ContentTypeBindings entries of the List Instance, optional collection of elements
 
 ```xml
-<ContentTypeBindings>
-   <ContentTypeBinding />
-</ContentTypeBindings>
+<pnp:ContentTypeBindings>
+   <pnp:ContentTypeBinding />
+</pnp:ContentTypeBindings>
 ```
 
 
@@ -496,10 +498,10 @@ ContentTypeBinding|[ContentTypeBinding](#contenttypebinding)|
 The Views entries of the List Instance, optional collection of elements
 
 ```xml
-<Views
+<pnp:Views
       RemoveExistingViews="xsd:boolean">
    <!-- Any other XML content -->
-</Views>
+</pnp:Views>
 ```
 
 
@@ -514,9 +516,9 @@ RemoveExistingViews|xsd:boolean|A flag to declare if the existing views of the L
 The Fields entries of the List Instance, optional collection of elements
 
 ```xml
-<Fields>
+<pnp:Fields>
    <!-- Any other XML content -->
-</Fields>
+</pnp:Fields>
 ```
 
 <a name="fieldrefs"></a>
@@ -524,9 +526,9 @@ The Fields entries of the List Instance, optional collection of elements
 The FieldRefs entries of the List Instance, optional collection of elements
 
 ```xml
-<FieldRefs>
-   <FieldRef />
-</FieldRefs>
+<pnp:FieldRefs>
+   <pnp:FieldRef />
+</pnp:FieldRefs>
 ```
 
 
@@ -541,9 +543,9 @@ FieldRef|[ListInstanceFieldRef](#listinstancefieldref)|
 
 
 ```xml
-<DataRows>
-   <DataRow />
-</DataRows>
+<pnp:DataRows>
+   <pnp:DataRow />
+</pnp:DataRows>
 ```
 
 
@@ -558,9 +560,9 @@ DataRow|[DataRow](#datarow)|
 The DataValue of a single field of a row to insert into a target ListInstance
 
 ```xml
-<DataValue
+<pnp:DataValue
       FieldName="xsd:string">
-</DataValue>
+</pnp:DataValue>
 ```
 
 
@@ -575,7 +577,7 @@ FieldName|xsd:string|
 Defines a content type
 
 ```xml
-<ContentType
+<pnp:ContentType
       ID="pnp:ContentTypeId"
       Name="xsd:string"
       Description="xsd:string"
@@ -584,9 +586,9 @@ Defines a content type
       Sealed="xsd:boolean"
       ReadOnly="xsd:boolean"
       Overwrite="xsd:boolean">
-   <FieldRefs />
-   <DocumentTemplate />
-</ContentType>
+   <pnp:FieldRefs />
+   <pnp:DocumentTemplate />
+</pnp:ContentType>
 ```
 
 
@@ -616,9 +618,9 @@ Overwrite|xsd:boolean|Optional Boolean. TRUE to overwrite an existing content ty
 The FieldRefs entries of the List Instance, optional collection of elements
 
 ```xml
-<FieldRefs>
-   <FieldRef />
-</FieldRefs>
+<pnp:FieldRefs>
+   <pnp:FieldRef />
+</pnp:FieldRefs>
 ```
 
 
@@ -633,9 +635,9 @@ FieldRef|[ContentTypeFieldRef](#contenttypefieldref)|
 Specifies the document template for the content type. This is the file which SharePoint Foundation opens as a template when a user requests a new item of this content type.
 
 ```xml
-<DocumentTemplate
+<pnp:DocumentTemplate
       TargetName="xsd:string">
-</DocumentTemplate>
+</pnp:DocumentTemplate>
 ```
 
 
@@ -650,10 +652,10 @@ TargetName|xsd:string|The value of the content type ID, required attribute
 Defines the binding between a ListInstance and a ContentType
 
 ```xml
-<ContentTypeBinding
+<pnp:ContentTypeBinding
       ContentTypeID="pnp:ContentTypeId"
       Default="xsd:boolean">
-</ContentTypeBinding>
+</pnp:ContentTypeBinding>
 ```
 
 
@@ -669,9 +671,9 @@ Default|xsd:boolean|Declares if the Content Type should be the default Content T
 Defines a collection of elements of type Feature
 
 ```xml
-<FeaturesList>
-   <Feature />
-</FeaturesList>
+<pnp:FeaturesList>
+   <pnp:Feature />
+</pnp:FeaturesList>
 ```
 
 
@@ -686,11 +688,11 @@ Feature|[Feature](#feature)|
 Defines a single Site or Web Feature, which will be activated or deactivated while applying the Provisioning Template
 
 ```xml
-<Feature
+<pnp:Feature
       ID="pnp:GUID"
       Deactivate="xsd:boolean"
       Description="xsd:string">
-</Feature>
+</pnp:Feature>
 ```
 
 
@@ -707,13 +709,13 @@ Description|xsd:string|The Description of the feature, optional attribute
 Defines the binding between a ListInstance and a Field
 
 ```xml
-<ListInstanceFieldRef
+<pnp:ListInstanceFieldRef
       ID="pnp:GUID"
       Name="xsd:string"
       Required="xsd:boolean"
       Hidden="xsd:boolean"
       DisplayName="xsd:string">
-</ListInstanceFieldRef>
+</pnp:ListInstanceFieldRef>
 ```
 
 
@@ -732,12 +734,12 @@ DisplayName|xsd:string|The display name of the field to bind, only applicable to
 Defines the binding between a ContentType and a Field
 
 ```xml
-<ContentTypeFieldRef
+<pnp:ContentTypeFieldRef
       ID="pnp:GUID"
       Name="xsd:string"
       Required="xsd:boolean"
       Hidden="xsd:boolean">
-</ContentTypeFieldRef>
+</pnp:ContentTypeFieldRef>
 ```
 
 
@@ -755,9 +757,9 @@ Hidden|xsd:boolean|The Hidden flag for the field to bind, optional attribute
 Defines a collection of elements of type CustomAction
 
 ```xml
-<CustomActionsList>
-   <CustomAction />
-</CustomActionsList>
+<pnp:CustomActionsList>
+   <pnp:CustomAction />
+</pnp:CustomActionsList>
 ```
 
 
@@ -772,7 +774,7 @@ CustomAction|[CustomAction](#customaction)|
 Defines a Custom Action, which will be provisioned while applying the Provisioning Template
 
 ```xml
-<CustomAction
+<pnp:CustomAction
       Name="xsd:string"
       Description="xsd:string"
       Group="xsd:string"
@@ -785,7 +787,7 @@ Defines a Custom Action, which will be provisioned while applying the Provisioni
       ScriptBlock="xsd:string"
       ImageUrl="xsd:string"
       ScriptSrc="xsd:string">
-</CustomAction>
+</pnp:CustomAction>
 ```
 
 
@@ -811,9 +813,9 @@ ScriptSrc|xsd:string|The ScriptSrc of the CustomAction, optional attribute
 A collection of File Properties
 
 ```xml
-<FileProperties>
-   <Property />
-</FileProperties>
+<pnp:FileProperties>
+   <pnp:Property />
+</pnp:FileProperties>
 ```
 
 
@@ -828,13 +830,13 @@ Property|[StringDictionaryItem](#stringdictionaryitem)|
 Defines a File element, to describe a file that will be provisioned into the target Site
 
 ```xml
-<File
+<pnp:File
       Src="xsd:string"
       Folder="xsd:string"
       Overwrite="xsd:boolean">
-   <Properties />
-   <WebParts />
-</File>
+   <pnp:Properties />
+   <pnp:WebParts />
+</pnp:File>
 ```
 
 
@@ -859,9 +861,9 @@ Overwrite|xsd:boolean|The Overwrite flag for the File, optional attribute
 The webparts to add to the page, optional collection of elements
 
 ```xml
-<WebParts>
-   <WebPart />
-</WebParts>
+<pnp:WebParts>
+   <pnp:WebPart />
+</pnp:WebParts>
 ```
 
 
@@ -876,12 +878,12 @@ WebPart|[WebPartPageWebPart](#webpartpagewebpart)|
 Defines a Page element, to describe a page that will be provisioned into the target Site. Because of the Layout attribute, the assumption is made that you're referring/creating a WikiPage.
 
 ```xml
-<Page
+<pnp:Page
       Url="xsd:string"
       Overwrite="xsd:boolean"
       Layout="pnp:WikiPageLayout">
-   <WebParts />
-</Page>
+   <pnp:WebParts />
+</pnp:Page>
 ```
 
 
@@ -905,9 +907,9 @@ Layout|WikiPageLayout|Required: Defines the layout of the wikipage
 The webparts to add to the page, optional collection of elements
 
 ```xml
-<WebParts>
-   <WebPart />
-</WebParts>
+<pnp:WebParts>
+   <pnp:WebPart />
+</pnp:WebParts>
 ```
 
 
@@ -922,12 +924,12 @@ WebPart|[WikiPageWebPart](#wikipagewebpart)|
 Defines a WebPart to be added to a WikiPage
 
 ```xml
-<WikiPageWebPart
+<pnp:WikiPageWebPart
       Title="xsd:string"
       Row="xsd:int"
       Column="xsd:int">
-   <Contents />
-</WikiPageWebPart>
+   <pnp:Contents />
+</pnp:WikiPageWebPart>
 ```
 
 
@@ -951,12 +953,12 @@ Column|xsd:int|Required: Defines the column to add the WebPart to
 Defines a webpart to be added to a WebPart Page
 
 ```xml
-<WebPartPageWebPart
+<pnp:WebPartPageWebPart
       Title="xsd:string"
       Zone="xsd:string"
       Order="xsd:int">
-   <Contents />
-</WebPartPageWebPart>
+   <pnp:Contents />
+</pnp:WebPartPageWebPart>
 ```
 
 
@@ -980,7 +982,7 @@ Order|xsd:int|Required: defines the index of the WebPart in the zone
 Defines a ComposedLook element
 
 ```xml
-<ComposedLook
+<pnp:ComposedLook
       Name="xsd:string"
       ColorFile="xsd:string"
       FontFile="xsd:string"
@@ -989,7 +991,7 @@ Defines a ComposedLook element
       SiteLogo="xsd:string"
       AlternateCSS="xsd:string"
       Version="xsd:int">
-</ComposedLook>
+</pnp:ComposedLook>
 ```
 
 
@@ -1011,11 +1013,11 @@ Version|xsd:int|The Version of the ComposedLook, optional attribute
 Defines an Extensibility Provider
 
 ```xml
-<Provider
+<pnp:Provider
       Enabled="xsd:boolean"
       HandlerType="xsd:string">
-   <Configuration />
-</Provider>
+   <pnp:Configuration />
+</pnp:Provider>
 ```
 
 
@@ -1038,9 +1040,9 @@ HandlerType|xsd:string|The type of the handler. It can be a FQN of a .NET type, 
 Defines an optional configuration section for the Extensibility Provider. The configuration section can be any XML
 
 ```xml
-<Configuration>
+<pnp:Configuration>
    <!-- Any other XML content -->
-</Configuration>
+</pnp:Configuration>
 ```
 
 <a name="provisioningtemplatefile"></a>
@@ -1048,10 +1050,10 @@ Defines an optional configuration section for the Extensibility Provider. The co
 An element that references an external file.
 
 ```xml
-<ProvisioningTemplateFile
+<pnp:ProvisioningTemplateFile
       File="xsd:string"
       ID="xsd:ID">
-</ProvisioningTemplateFile>
+</pnp:ProvisioningTemplateFile>
 ```
 
 
@@ -1067,9 +1069,9 @@ ID|xsd:ID|ID of the referenced template
 An element that references an external file.
 
 ```xml
-<ProvisioningTemplateReference
+<pnp:ProvisioningTemplateReference
       ID="xsd:IDREF">
-</ProvisioningTemplateReference>
+</pnp:ProvisioningTemplateReference>
 ```
 
 
@@ -1084,14 +1086,14 @@ ID|xsd:IDREF|ID of the referenced template
 Each Provisioning file is split into a set of Sequence elements. The Sequence element groups the artefacts to be provisioned into groups. The Sequences must be evaluated by the provisioning engine in the order in which they appear.
 
 ```xml
-<Sequence
+<pnp:Sequence
       SequenceType=""
       ID="xsd:ID">
-   <SiteCollection />
-   <Site />
-   <TermStore />
-   <Extensions />
-</Sequence>
+   <pnp:SiteCollection />
+   <pnp:Site />
+   <pnp:TermStore />
+   <pnp:Extensions />
+</pnp:Sequence>
 ```
 
 
@@ -1117,10 +1119,10 @@ ID|xsd:ID|A unique identifier of the Sequence
 Defines a SiteCollection that will be created into the target tenant/farm
 
 ```xml
-<SiteCollection
+<pnp:SiteCollection
       Url="pnp:ReplaceableString">
-   <Templates />
-</SiteCollection>
+   <pnp:Templates />
+</pnp:SiteCollection>
 ```
 
 
@@ -1142,11 +1144,11 @@ Url|ReplaceableString|Absolute Url to the site
 Defines a Site that will be created into a target Site Collection
 
 ```xml
-<Site
+<pnp:Site
       UseSamePermissionsAsParentSite="xsd:boolean"
       Url="pnp:ReplaceableString">
-   <Templates />
-</Site>
+   <pnp:Templates />
+</pnp:Site>
 ```
 
 
@@ -1169,10 +1171,10 @@ Url|ReplaceableString|Relative Url to the site
 A TermStore to use for provisioning of TermGroups
 
 ```xml
-<TermStore
+<pnp:TermStore
       Scope="">
-   <TermGroup />
-</TermStore>
+   <pnp:TermGroup />
+</pnp:TermStore>
 ```
 
 
@@ -1194,11 +1196,11 @@ Scope||The scope of the term store.
 A TermGroup to use for provisioning of TermSets and Terms
 
 ```xml
-<TermGroup
+<pnp:TermGroup
       Description="xsd:string"
       Name="xsd:string"
       ID="pnp:GUID">
-</TermGroup>
+</pnp:TermGroup>
 ```
 
 
@@ -1215,11 +1217,11 @@ ID|GUID|
 Base type for TermSets and Terms
 
 ```xml
-<TermSetItem
+<pnp:TermSetItem
       Owner="xsd:string"
       Description="xsd:string"
       IsAvailableForTagging="xsd:boolean">
-</TermSetItem>
+</pnp:TermSetItem>
 ```
 
 
@@ -1236,10 +1238,10 @@ IsAvailableForTagging|xsd:boolean|
 A TermSet to provision
 
 ```xml
-<TermSet
+<pnp:TermSet
       Language="xsd:int"
       IsOpenForTermCreation="xsd:boolean">
-</TermSet>
+</pnp:TermSet>
 ```
 
 
@@ -1255,10 +1257,10 @@ IsOpenForTermCreation|xsd:boolean|
 A Term to provision into a TermSet or a hyerarchical Term
 
 ```xml
-<Term
+<pnp:Term
       Language="xsd:int"
       CustomSortOrder="xsd:int">
-</Term>
+</pnp:Term>
 ```
 
 
@@ -1274,9 +1276,9 @@ CustomSortOrder|xsd:int|
 A collection of Term Properties
 
 ```xml
-<TaxonomyItemProperties>
-   <Property />
-</TaxonomyItemProperties>
+<pnp:TaxonomyItemProperties>
+   <pnp:Property />
+</pnp:TaxonomyItemProperties>
 ```
 
 
@@ -1291,9 +1293,9 @@ Property|[StringDictionaryItem](#stringdictionaryitem)|
 A collection of Term Labels, in order to support multi-language terms
 
 ```xml
-<TermLabels>
-   <Label />
-</TermLabels>
+<pnp:TermLabels>
+   <pnp:Label />
+</pnp:TermLabels>
 ```
 
 
@@ -1308,11 +1310,11 @@ Label|[Label](#label)|
 
 
 ```xml
-<Label
+<pnp:Label
       Language="xsd:int"
       Value="xsd:string"
       IsDefaultForLanguage="xsd:boolean">
-</Label>
+</pnp:Label>
 ```
 
 
@@ -1329,9 +1331,9 @@ IsDefaultForLanguage|xsd:boolean|
 A collection of TermSets to provision
 
 ```xml
-<TermSets>
-   <TermSet />
-</TermSets>
+<pnp:TermSets>
+   <pnp:TermSet />
+</pnp:TermSets>
 ```
 
 
@@ -1346,9 +1348,9 @@ TermSet|[TermSet](#termset)|
 Extensions are custom XML elements and instructions that can be extensions of this default schema or vendor or engine specific extensions.
 
 ```xml
-<Extensions>
+<pnp:Extensions>
    <!-- Any other XML content -->
-</Extensions>
+</pnp:Extensions>
 ```
 
 <a name="importsequence"></a>
@@ -1356,9 +1358,9 @@ Extensions are custom XML elements and instructions that can be extensions of th
 Imports sequences from an external file. All current properties should be sent to that file.
 
 ```xml
-<ImportSequence
+<pnp:ImportSequence
       File="xsd:string">
-</ImportSequence>
+</pnp:ImportSequence>
 ```
 
 

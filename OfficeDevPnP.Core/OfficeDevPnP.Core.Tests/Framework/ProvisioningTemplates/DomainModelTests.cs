@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Json;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
@@ -255,7 +256,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             var _pt = this.GetProvisioningTemplate();
             var _csa = _pt.CustomActions.SiteCustomActions.FirstOrDefault();
             Assert.IsNotNull(_csa.Rights);
-      
         }
      
         [TestMethod]
@@ -272,8 +272,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
-                var template = ctx.Web.GetProvisioningTemplate();
-                string xml = XMLSerializer.Serialize(template);
+                var _pt = ctx.Web.GetProvisioningTemplate();
+
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.LatestFormatter;
+                var _formattedTemplate = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsNotNull(_formattedTemplate);
             }
         }
 
