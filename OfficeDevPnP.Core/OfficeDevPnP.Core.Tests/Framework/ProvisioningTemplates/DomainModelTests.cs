@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Json;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
