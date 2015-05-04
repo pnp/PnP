@@ -18,7 +18,7 @@ Experience might be slightly different, but the same thinking and process applie
 
 ### Prerequisites ###
 To add valid viewport settings to the master page the site collection feature "SharePoint Server Publishing Infrastructure" needs to be activated. No other publishing related feature needs to be activated.
-Alternatively the viewport meta tag can be added through a custom action. This is currently not covered in this solution. The HTML element that needs to be added is:
+Alternatively the viewport meta tag can be added through a custom action[https://github.com/OfficeDev/PnP/tree/master/Samples/Core.EmbedJavaScript](https://github.com/OfficeDev/PnP/tree/master/Samples/Core.EmbedJavaScript). This is currently not covered in this solution. The HTML element that needs to be added is:
 
 ```HTML
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -27,16 +27,18 @@ Alternatively the viewport meta tag can be added through a custom action. This i
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Branding.InjectResponsiveCSS | Heather Solomon, SharePoint Experts, Inc 
+Branding.InjectResponsiveCSS | Heather Solomon (**SharePoint Experts, Inc**) 
 
 Packaging and remote provisioning with AlternateCSSUrl approach done by Vesa Juvonen, Microsoft
-Provisioning of viewport meta tage settings done by Stefan Bauer, n8d
+Provisioning of viewport meta tag settings done by Stefan Bauer, n8d
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | April 26th 2015 | Initial release
 1.1  | May 2nd 2015 | Viewport meta tag added
+
+
+> 1.0  | April 26th 2015 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
