@@ -1,29 +1,65 @@
 ﻿{    
     "languages": [
         {
-            "key": "English",
-            "value": "English",
+            "key": "Chinese (Simplified)",
+            "value": "2052",
             "displayOrder": 1
         },
         {
-            "key": "Spanish",
-            "value": "Spanish",
+            "key": "Hindi",
+            "value": "1081",
             "displayOrder": 2
         },
         {
-            "key": "French",
-            "value": "French",
+            "key": "Spanish (Traditional)",
+            "value": "1034",
             "displayOrder": 3
         },
         {
-            "key": "Russian",
-            "value": "Russian",
+            "key": "English U.S.",
+            "value": "1033",
             "displayOrder": 4
         },
         {
-            "key": "Mandarin",
-            "value": "Mandarin",
+            "key": "English U.K.",
+            "value": "2057",
             "displayOrder": 5
+        },
+        {
+            "key": "Finnish",
+            "value": "1035",
+            "displayOrder": 6
+        },
+        {
+            "key": "Arabic",
+            "value": "1025",
+            "displayOrder": 7
+        },
+        {
+            "key": "Portuguese",
+            "value": "2070",
+            "displayOrder": 8
+        },
+        {
+            "key": "Bengali",
+            "value": "1093",
+            "displayOrder": 9
+        },
+        {
+            "key": "Russian",
+            "value": "1049",
+            "displayOrder": 10
+        },
+        {
+            "key": "Japanese",
+            "value": "1041",
+            "displayOrder": 11
+        },
+        {
+            "key": "German",
+            "value": "1031",
+            "displayOrder": 12
         }
+
     ]
 }
