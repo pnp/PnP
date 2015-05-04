@@ -1,16 +1,14 @@
 #Import-SPOTaxonomy
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-05-04*
 
 Imports a taxonomy from either a string array or a file
 ##Syntax
 ```powershell
-Import-SPOTaxonomy [-Terms [<String[]>]] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-```
+Import-SPOTaxonomy [-Terms <String[]>] [-Lcid <Int32>] [-TermStoreName <String>] [-Delimiter <String>] [-SynchronizeDeletions [<SwitchParameter>]]```
 &nbsp;
 
 ```powershell
-Import-SPOTaxonomy -Path [<String>] [-Lcid [<Int32>]] [-TermStoreName [<String>]] [-Delimiter [<String>]] [-SynchronizeDeletions [<SwitchParameter>]]
-```
+Import-SPOTaxonomy -Path <String> [-Lcid <Int32>] [-TermStoreName <String>] [-Delimiter <String>] [-SynchronizeDeletions [<SwitchParameter>]]```
 &nbsp;
 
 ##Parameters
@@ -33,3 +31,4 @@ Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' an
     
 PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
 Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
+<!-- Ref: 5E7BCF2938E4977F2EB4CA1BADB2AA3B -->

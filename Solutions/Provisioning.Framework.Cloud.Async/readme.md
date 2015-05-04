@@ -1,11 +1,11 @@
-# PnP Provisioning Engine - Self service site collection provisioning #
+# PnP Provisioning Engine - Self-service site collection provisioning #
 
 ### Summary ###
 Solution shows how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine.
 
 This solution shows following capabilities
 - Self service UI to request site collections
-- Request are processed asynchroniously using Azure storage queues and Azure WebJobs
+- Request are processed asynchronously using Azure storage queues and Azure WebJobs
 - New site collection creation to Office 365
 - Apply configuration template to existing site using xml based definition
 - Apply configuration template which is extracted from existing site during process and applied on top of the newly created site
@@ -14,7 +14,7 @@ This solution shows following capabilities
 
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT)
+-  Office 365 Multi-Tenant (MT)
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises*
 
@@ -52,7 +52,7 @@ Following picture shows the conceptual design of this solution.
 4. PnP site provisioning engine will extract delta changes compared to out of the box sites from actual live sites
 5. New site collections are created using out of the box site definitions, but changes what the business users have applied to those separate template sites are automatically applied to newly created sites
 
-*Notice that this is just one possible process. Exact scenario depends on business requirements. Key poitn is that we are able to extact modifications from live sites, which we can either storage as template xml files or applied on-fly to newly created sites.*
+*Notice that this is just one possible process. Exact scenario depends on business requirements. Key point is that we are able to extract modifications from live sites, which we can either storage as template xml files or applied on-fly to newly created sites.*
 
 
 # Code level approach #
@@ -65,7 +65,7 @@ Here's logical design from code perspective.
 3. You can save or load serialized domain objects using Connectors. When this was written, we supported file system, SharePoint and Azure blob store connectors for loading and saving the information
 4. When you have domain object available either by loading it from some location or from live site, you can apply those changes to any site.
 
-*Notice that you could for example have multiple templates from whcih one is used for corporate branding, one for standardize library information and third one for special configuration for specific template. This would mean that you'd just apply the configuration on top of target site 3 times. Notice also that you could also use this method to move templates or sites cross tenants and environments, since template domain object is not connected to source site. *
+*Notice that you could for example have multiple templates from which one is used for corporate branding, one for standardize library information and third one for special configuration for specific template. This would mean that you'd just apply the configuration on top of target site 3 times. Notice also that you could also use this method to move templates or sites cross tenants and environments, since template domain object is not connected to source site. *
 
 # Solution description #
 Here's individual projects what are included in the solution and the needed configuration for them. 
@@ -97,7 +97,7 @@ WebJob project which will be deployed to the Azure. Will be responsible of the a
 You will need to update Azure storage queue and App Id information accordingly in the app.config or directly in the Azure admin UIs.
 
 ### Provisioning.Framework.Cloud.AsyncWeb ###
-This is the actual web UI for self service site collection creation. Notice again that this is just a one way of exposing options for end user. You could just as well ask additional metadata or implement the UI using asp.net MVC project.
+This is the actual web UI for self-service site collection creation. Notice again that this is just a one way of exposing options for end user. You could just as well ask additional metadata or implement the UI using asp.net MVC project.
 
 You will need to update correct Azure storage key for the web.config.
 

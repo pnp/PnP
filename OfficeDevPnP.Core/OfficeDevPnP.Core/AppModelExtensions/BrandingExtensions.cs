@@ -920,8 +920,13 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            // if name still is "Current" then we can't correctly determine the set composed look...so return null
-            if (theme.Name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase))
+            String designPreviewThemedCssFolderUrl = web.GetPropertyBagValueString("DesignPreviewThemedCssFolderUrl", null);
+
+            // If name still is "Current" and there isn't a PreviewThemedCssFolderUrl 
+            // property in the property bag then we can't correctly determine the set 
+            // composed look...so return null
+            if (theme.Name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase) 
+                && String.IsNullOrEmpty(designPreviewThemedCssFolderUrl))
             {
                 return null;
             }

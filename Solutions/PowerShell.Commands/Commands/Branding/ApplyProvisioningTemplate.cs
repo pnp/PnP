@@ -18,6 +18,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
     [Cmdlet("Apply", "SPOProvisioningTemplate")]
     [CmdletHelp("Applies a provisioning template to a web", Category = "Branding")]
+    [CmdletExample(
+     Code = @"
+    PS:> Apply-SPOProvisioningTemplate -Path template.xml
+",
+     Remarks = "Applies a provisioning template in XML format to the current web.")]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]
@@ -26,6 +31,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
         protected override void ExecuteCmdlet()
         {
+            if (!SelectedWeb.IsPropertyAvailable("Url"))
+            {
+                ClientContext.Load(SelectedWeb, w => w.Url);
+                ClientContext.ExecuteQueryRetry();
+            }
             if (!System.IO.Path.IsPathRooted(Path))
             {
                 Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
@@ -46,7 +56,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 var applyingInformation = new ProvisioningTemplateApplyingInformation();
                 applyingInformation.ProgressDelegate = (message, step, total) =>
                 {
-                    WriteProgress(new ProgressRecord(0, "Provisioning", message) { PercentComplete = (100 / total) * step });
+                    WriteProgress(new ProgressRecord(0, string.Format("Applying template to {0}", SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
                 };
 
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);

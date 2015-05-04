@@ -1,11 +1,10 @@
 #Import-SPOTermSet
-*Topic automatically generated on: 2015-04-28*
+*Topic automatically generated on: 2015-05-04*
 
 Imports a taxonomy term set from a file in the standard format.
 ##Syntax
 ```powershell
-Import-SPOTermSet -GroupName [<String>] -Path [<String>] [-TermSetId [<Guid>]] [-SynchronizeDeletions [<SwitchParameter>]] [-IsOpen [<Nullable`1>]] [-Contact [<String>]] [-Owner [<String>]] [-TermStoreName [<String>]]
-```
+Import-SPOTermSet -GroupName <String> -Path <String> [-TermSetId <Guid>] [-SynchronizeDeletions [<SwitchParameter>]] [-IsOpen <Nullable`1>] [-Contact <String>] [-Owner <String>] [-TermStoreName <String>]```
 &nbsp;
 
 ##Detailed Description
@@ -50,3 +49,4 @@ Creates (or updates) the term set specified in the import file, setting the IsOp
     
 PS:> Import-SPOTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' 
 Creates (or updates) the term set specified in the import file, in the term store and group specified, using the specified ID.
+<!-- Ref: B446E9C86210555A1139DD329D3278F0 -->

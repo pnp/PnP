@@ -160,6 +160,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         [TestCategory(TEST_CATEGORY)]
         public void XMLAzureStorageGetTemplatesTest()
         {
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            }
+            
             XMLTemplateProvider provider = 
                 new XMLAzureStorageTemplateProvider(
                     TestCommon.AzureStorageKey, testContainer);
@@ -175,6 +180,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         [TestCategory(TEST_CATEGORY)]
         public void XMLAzureStorageGetTemplate1Test()
         {
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            } 
+            
             var _expectedID = "SPECIALTEAM";
             var _expectedVersion = 1.0;
 
@@ -197,6 +207,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         {
             var _expectedID = "SPECIALTEAM";
             var _expectedVersion = 1.0;
+
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            }
 
             XMLTemplateProvider provider =
                 new XMLAzureStorageTemplateProvider(

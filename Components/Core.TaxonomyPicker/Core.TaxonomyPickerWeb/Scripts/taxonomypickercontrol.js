@@ -36,6 +36,7 @@
         this.UseKeywords = options.useKeywords; //bool indicating if the Keywords termset is used during initalization
         this.Terms = new Array(); //Terms of the termset listed in a heirarchy (if applicable)
         this.FlatTerms = new Array(); //Flat representation of terms in the Termset
+        this.FlatTermsForSuggestions = new Array();
         this.RawTerms = null; //Raw terms returned from CSOM
         this.TermsLoaded = false; //boolean indicating if the terms have been returned and loaded from CSOM
         this.OnTermsLoaded = null; //optional callback when terms are loaded
@@ -44,6 +45,11 @@
         this.TermSetLoaded = false; //boolean indicating if the termset details are loaded
         this.IsOpenForTermCreation = false; //bool indicating if the termset is open for new term creation
         this.NewTerm = null; //the new term being added
+
+        //TODO NEW STUFF HERE
+        this.FilterTermId = options.filterTermId; // To support filter terms based on Id
+        this.LevelToShowTerms = options.levelToShowTerms; // show terms only till the specified level
+        this.UseTermSetasRootNode = options.useTermSetasRootNode //bool indicating if termset to be shown as root node or not
     }
     $.extend(TermSet.prototype, {
         //initializes the Termset, including loading all terms using CSOM
@@ -95,16 +101,33 @@
                 return 0;
             });
 
+
+            var filterTerm;
+            if (this.FilterTermId != null && this.FilterTermId) {
+                filterTerm = this.getTermById(this.FilterTermId);
+            }
+
             //build a hierarchical representation of Terms by iterating through all of the terms for each level
             for (var currentLevel = 0; currentLevel <= topLevel; currentLevel++) {
-                for (var i = 0; i < this.FlatTerms.length; i++) {
-                    var term = this.FlatTerms[i];
-                    if (term.Level == currentLevel) {
-                        if (currentLevel == 0) {
-                            this.Terms.push(term.clone());
-                        }
-                        else {
-                            this.getTermParentCollectionByPath(term.PathOfTerm).push(term);
+                if (this.LevelToShowTerms > currentLevel || typeof(this.LevelToShowTerms) === 'undefined') {
+                    for (var i = 0; i < this.FlatTerms.length; i++) {
+                        var term = this.FlatTerms[i];
+                        if (term.Level == currentLevel) {
+                            var path = term.PathOfTerm.split(';');
+                            if (
+                                ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) ||
+                                (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)
+                                ) || typeof(filterTerm) == 'undefined')
+                            {
+                                if (currentLevel == 0) {
+                                    this.Terms.push(term.clone());
+                                    this.FlatTermsForSuggestions.push(term);
+                                }
+                                else {
+                                    this.getTermParentCollectionByPath(term.PathOfTerm).push(term);
+                                    this.FlatTermsForSuggestions.push(term);
+                                }
+                            }
                         }
                     }
                 }
@@ -136,12 +159,13 @@
                     }
                 }
             }
+
             return termList;
         },
         //get suggestions based on the values typed by user
         getSuggestions: function (text) {
             var matches = new Array();
-            $(this.FlatTerms).each(function (i, e) {
+            $(this.FlatTermsForSuggestions).each(function (i, e) {
                 if (e.Name.toLowerCase().indexOf(text.toLowerCase()) == 0)
                     matches.push(e);
             });
@@ -219,9 +243,10 @@
 
     //********************** START TaxonomyPicker Class **********************
     //constructor for TaxonomyPicker
-    function TaxonomyPicker(control, options, changeCallback) {
+    function TaxonomyPicker(control, options, context, changeCallback) {
         this.TermSet = new TermSet(options); //the termset the taxonomy picker is bound to...loaded in the inialize function
 
+        this._context = context; //Context passed in from control
         this._changeCallback = changeCallback; //event callback for when the control value changes
         this.LCID = (options.lcid) ? options.lcid : 1033; //the locale id for term creation (default is 1033)
         this.Language = (options.language) ? options.language : 'en-us'; //the language code for the control (default is en-us)
@@ -921,7 +946,6 @@
                     var dlgBodyContainer = $('<div class="cam-taxpicker-dialog-tree-container"></div>');
 
                     //build the termset hierarchy
-
                     dlgBodyContainer.append($('<ul id="rootNode" class="cam-taxpicker-treenode-ul root" style="height: 100%;"></ul>'));
 
                     //build the dialog editor area
@@ -1164,6 +1188,6 @@
             $.taxpicker = [];
 
         //create new TaxonomyPicker instance and increment index (in case we need to re-reference)
-        $.taxpicker[taxIndex] = new TaxonomyPicker(this, options, changeCallback);
+        $.taxpicker[taxIndex] = new TaxonomyPicker(this, options, ctx, changeCallback);
     };
 })(CAMControl || (CAMControl = {}));

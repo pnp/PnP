@@ -5,7 +5,6 @@ Below you can find a list of all the available cmdlets. Many commands provide bu
 Get-Help Connect-SPOnline -Detailed
 ```
 
-
 ##Apps
 Cmdlet|Description
 :-----|:----------

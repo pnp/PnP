@@ -22,6 +22,31 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
     [Cmdlet(VerbsCommon.Get, "SPOProvisioningTemplate", SupportsShouldProcess = true)]
     [CmdletHelp("Generates a provisioning template from a web", Category = "Branding")]
+    [CmdletExample(
+       Code = @"
+    PS:> Get-SPOProvisioningTemplate -Out template.xml
+",
+       Remarks = "Extracts a provisioning template in XML format from the current web.")]
+    [CmdletExample(
+Code = @"
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -Schema V201503
+",
+Remarks = "Extracts a provisioning template in XML format from the current web and saves it in the V201503 version of the schema.")]
+    [CmdletExample(
+   Code = @"
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeAllTermGroups
+",
+   Remarks = "Extracts a provisioning template in XML format from the current web and includes all term groups, term sets and terms from the Managed Metadata Service Taxonomy.")]
+    [CmdletExample(
+  Code = @"
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeSiteCollectionTermGroup
+",
+  Remarks = "Extracts a provisioning template in XML format from the current web and includes the term group currently (if set) assigned to the site collection.")]
+    [CmdletExample(
+Code = @"
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -PersistComposedLookFiles
+",
+Remarks = "Extracts a provisioning template in XML format from the current web and saves the files that make up the composed look to the same folder as where the template is saved.")]
     public class GetProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position = 0, HelpMessage = "Filename to write to, optionally including full path")]
@@ -33,7 +58,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         [Parameter(Mandatory = false, HelpMessage = "If specified, all term groups will be included. Overrides IncludeSiteCollectionTermGroup.")]
         public SwitchParameter IncludeAllTermGroups;
 
-        [Parameter(Mandatory = false, HelpMessage = "If specified, all the site collection term group will be included. Overridden by IncludeAllTermGroups.")]
+        [Parameter(Mandatory = false, HelpMessage = "If specified, all the site collection term groups will be included. Overridden by IncludeAllTermGroups.")]
         public SwitchParameter IncludeSiteCollectionTermGroup;
 
         [Parameter(Mandatory = false, HelpMessage = "If specified the files making up the composed look (background image, font file and color file) will be saved.")]
@@ -82,6 +107,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
         private string GetProvisioningTemplateXML(XMLPnPSchemaVersion schema, string path)
         {
+            if (!this.SelectedWeb.IsPropertyAvailable("Url"))
+            {
+                ClientContext.Load(this.SelectedWeb, w => w.Url);
+                ClientContext.ExecuteQueryRetry();
+            }
             var creationInformation = new ProvisioningTemplateCreationInformation(SelectedWeb);
 
             creationInformation.PersistComposedLookFiles = PersistComposedLookFiles;
@@ -90,7 +120,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
             creationInformation.BaseTemplate = this.SelectedWeb.GetBaseTemplate();
             creationInformation.ProgressDelegate = (message, step, total) =>
             {
-                WriteProgress(new ProgressRecord(0, "Extracting Template", message) { PercentComplete = (100 / total) * step });
+                WriteProgress(new ProgressRecord(0, string.Format("Extracting Template from {0}",SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
             };
 
             if (IncludeAllTermGroups)

@@ -255,7 +255,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             var _pt = this.GetProvisioningTemplate();
             var _csa = _pt.CustomActions.SiteCustomActions.FirstOrDefault();
             Assert.IsNotNull(_csa.Rights);
-      
         }
      
         [TestMethod]
@@ -272,8 +271,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
-                var template = ctx.Web.GetProvisioningTemplate();
-                string xml = XMLSerializer.Serialize(template);
+                var _pt = ctx.Web.GetProvisioningTemplate();
+
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.LatestFormatter;
+                var _formattedTemplate = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsNotNull(_formattedTemplate);
             }
         }
 
