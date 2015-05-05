@@ -9,6 +9,9 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class ListRatingExtensions
     {
+        /// TODO: Replace Logging throughout 
+
+
         #region Rating Field
 
         private static readonly Guid RatingsFieldGuid_AverageRating = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c742");
@@ -19,6 +22,7 @@ namespace Microsoft.SharePoint.Client
         private static readonly Guid LikeFieldGuid_LikeCount = new Guid("6e4d832b-f610-41a8-b3e0-239608efda41");
 
         private static List _library;
+
         #endregion
 
         /// <summary>
@@ -149,18 +153,7 @@ namespace Microsoft.SharePoint.Client
             //_logger.WriteSuccess(string.Format("Ensured {0} Property.", experience));
         }
 
-        //private static uint GetWebCulture(Web web)
-        //{
-        //    _context.Load(web, p => p.Language);
-        //    _context.ExecuteQuery();
-        //    return web.Language;
-        //}
-
-        //private void SetCulture(uint culture)
-        //{
-        //    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(CultureInfo.GetCultureInfo((int)culture).ToString());
-        //    Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(CultureInfo.GetCultureInfo((int)culture).ToString());
-        //}
+        
     }
 
     [Serializable]
