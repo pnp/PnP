@@ -1,7 +1,7 @@
 ﻿/* CSS for the PnP User Interface Prototype */
 .container {
-    margin-left: 50px;
-    margin-top: 50px;
+    margin-left: 25px;
+    margin-top: 25px;
 }
 /*#region Bootstrap Overrides */
 .modal {
@@ -43,6 +43,7 @@
 .modal-pnp .modal-content {
     position: relative;
     font-family: 'Segoe UI', Segoe, Tahoma, Verdana, Arial, sans-serif;
+    font-size: 12px;
     border-radius: 0;
 }
 
@@ -104,7 +105,7 @@
 /*#region Right Column */
 .modal-pnp .modal-right {
     background: #FFF;
-    padding: 40px 40px 80px;
+    padding: 20px 20px 80px;
     position: relative;
 }
 
@@ -265,3 +266,17 @@
   border-width:5px;
 }
 /*endregion Validation Messages*/
+
+/*region Other bootstrap overrides*/
+.has-feedback .form-control {
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-left: 2px;
+    padding-bottom: 2px;
+}
+
+.form-control {
+    height: 30px;
+    font-size: 12px;
+}
+/*endregion Other bootstrap overrides*/
