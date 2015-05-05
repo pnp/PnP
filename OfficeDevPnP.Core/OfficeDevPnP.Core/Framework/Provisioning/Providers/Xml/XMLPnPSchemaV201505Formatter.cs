@@ -1065,7 +1065,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             result.Providers.Add(
                                 new Model.Provider
                                 {
-                                    Assembly = handlerType.AssemblyQualifiedName,
+                                    Assembly = handlerType.Assembly.FullName,
                                     Type = handlerType.FullName,
                                     Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
                                     Enabled = provider.Enabled,
