@@ -279,7 +279,7 @@ namespace Microsoft.SharePoint.Client
         {
             var featureActivated = GetPropertyBagValueInternal(web, "__PublishingFeatureActivated");
 
-            return (bool) (featureActivated ?? false);
+            return featureActivated != null && bool.Parse(featureActivated.ToString());
         }
 
 

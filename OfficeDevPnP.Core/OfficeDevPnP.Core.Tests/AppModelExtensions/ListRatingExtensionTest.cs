@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Policy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Tests;
@@ -9,9 +10,14 @@ namespace Microsoft.SharePoint.Client.Tests
     [TestClass()]
     public class ListRatingExtensionTest
     {
+        //SharePoint Server Publishing Infrastructure - Site
+        private const string PublishingSiteFeature = "f6924d36-2fa8-4f0b-b16d-06b7250180fa";
+        //SharePoint Server Publishing - Web
+        private const string PublishingWebFeature = "94c94ca6-b32f-4da9-a9e3-1f3d343d7ecb";
+
         private Guid _listId; // For easy reference
 
-        private static readonly Guid RatingsFieldGuid_AverageRating = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c742");
+        private static readonly Guid RatingsFieldGuid_AverageRating = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c741"); //2
         private static readonly Guid RatingsFieldGuid_RatingCount = new Guid("b1996002-9167-45e5-a4df-b2c41c6723c7");
         private static readonly Guid RatingsFieldGuid_RatedBy = new Guid("4D64B067-08C3-43DC-A87B-8B8E01673313");
         private static readonly Guid RatingsFieldGuid_Ratings = new Guid("434F51FB-FFD2-4A0E-A03B-CA3131AC67BA");
@@ -25,7 +31,6 @@ namespace Microsoft.SharePoint.Client.Tests
         public void Initialize()
         {
             /*** Make sure that the user defined in the App.config has permissions to Manage Terms ***/
-
             _clientContext = TestCommon.CreateClientContext();
 
             // Create Simple List
@@ -53,7 +58,6 @@ namespace Microsoft.SharePoint.Client.Tests
         [ExpectedException(typeof(NotPublishingWebException))]
         public void EnableRating_On_Non_Publishing_Web_Expect_Exception()
         {
-
             _list = _clientContext.Web.Lists.GetById(_listId);
             
              _list.SetRating();
@@ -73,7 +77,13 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestMethod()]
         public void EnableRating()
         {
-            // Enable Publishing Feature
+            // Enable Publishing Feature on Site and Web 
+
+            if(!_clientContext.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
+                _clientContext.Site.ActivateFeature(new Guid(PublishingSiteFeature));
+
+            if (!_clientContext.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
+                _clientContext.Web.ActivateFeature(new Guid(PublishingWebFeature));
 
             _list = _clientContext.Web.Lists.GetById(_listId);
 
@@ -109,7 +119,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
         private bool HasRatingFields()
         {
-            _clientContext.Load(_list.Fields);
+            _clientContext.Load(_list.Fields,p=>p.Include(i=>i.Id));
             _clientContext.ExecuteQueryRetry();
 
             var avgRating = _list.Fields.GetById(RatingsFieldGuid_AverageRating);
@@ -119,12 +129,14 @@ namespace Microsoft.SharePoint.Client.Tests
             var likeCount = _list.Fields.GetById(LikeFieldGuid_LikeCount);
             var likedBy = _list.Fields.GetById(LikeFieldGuid_LikedBy);
 
-            return  avgRating == null || 
-                    ratedBy == null || 
-                    ratingCount == null || 
-                    ratings == null || 
-                    likeCount == null ||
-                    likedBy == null;
+            var fieldsExist = avgRating.Id.Equals(RatingsFieldGuid_AverageRating) &&
+                             ratedBy.Id.Equals(RatingsFieldGuid_RatedBy) &&
+                             ratingCount.Id.Equals(RatingsFieldGuid_RatingCount) &&
+                             ratings.Id.Equals(RatingsFieldGuid_Ratings) &&
+                             likeCount.Id.Equals(LikeFieldGuid_LikeCount) &&
+                             likedBy.Id.Equals(LikeFieldGuid_LikedBy);
+
+            return !fieldsExist;
 
 
         }

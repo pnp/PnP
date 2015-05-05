@@ -79,7 +79,7 @@ namespace Microsoft.SharePoint.Client
         {
             //  Add LikesCount and LikeBy (Explicit) to view fields
             _library.Context.Load(_library.DefaultView, p => p.ViewFields);
-            _library.Context.ExecuteQuery();
+            _library.Context.ExecuteQueryRetry();
 
             var defaultView = _library.DefaultView;
 
@@ -141,7 +141,7 @@ namespace Microsoft.SharePoint.Client
         private static void AddProperty(VotingExperience experience)
         {
             _library.Context.Load(_library.RootFolder, p => p.Properties);
-            _library.Context.ExecuteQuery();
+            _library.Context.ExecuteQueryRetry();
 
             _library.RootFolder.Properties["Ratings_VotingExperience"] = experience.ToString();
             _library.RootFolder.Update();
