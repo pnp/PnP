@@ -28,7 +28,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">Current List</param>
         /// <param name="experience">Likes/Ratings</param>
-        public static void SetRating(this List list, VotingExperience experience = VotingExperience.Ratings)
+        public static void SetRating(this List list, VotingExperience experience)
         {
             /*  Validate if current web is publishing web
              *  Add property to RootFolder of List/Library : key: Ratings_VotingExperience value:Likes

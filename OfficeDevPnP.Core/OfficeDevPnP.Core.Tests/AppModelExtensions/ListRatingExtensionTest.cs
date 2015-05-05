@@ -14,19 +14,20 @@ namespace Microsoft.SharePoint.Client.Tests
         private const string PublishingSiteFeature = "f6924d36-2fa8-4f0b-b16d-06b7250180fa";
         //SharePoint Server Publishing - Web
         private const string PublishingWebFeature = "94c94ca6-b32f-4da9-a9e3-1f3d343d7ecb";
+        
+        private const string Averagerating = "AverageRating";
+        private const string Ratedby = "RatedBy";
+        private const string Ratingcount = "RatingCount";
+        private const string Likescount = "LikesCount";
+        private const string Ratings = "Ratings";
+        private const string Likedby = "LikedBy";
+        private const string RatingsVotingexperience = "Ratings_VotingExperience";
 
-        private Guid _listId; // For easy reference
-
-        private static readonly Guid RatingsFieldGuid_AverageRating = new Guid("5a14d1ab-1513-48c7-97b3-657a5ba6c741"); //2
-        private static readonly Guid RatingsFieldGuid_RatingCount = new Guid("b1996002-9167-45e5-a4df-b2c41c6723c7");
-        private static readonly Guid RatingsFieldGuid_RatedBy = new Guid("4D64B067-08C3-43DC-A87B-8B8E01673313");
-        private static readonly Guid RatingsFieldGuid_Ratings = new Guid("434F51FB-FFD2-4A0E-A03B-CA3131AC67BA");
-        private static readonly Guid LikeFieldGuid_LikedBy = new Guid("2cdcd5eb-846d-4f4d-9aaf-73e8e73c7312");
-        private static readonly Guid LikeFieldGuid_LikeCount = new Guid("6e4d832b-f610-41a8-b3e0-239608efda41");
         private ClientContext _clientContext;
         private List _list;
 
         #region Test initialize and cleanup
+        
         [TestInitialize()]
         public void Initialize()
         {
@@ -34,11 +35,9 @@ namespace Microsoft.SharePoint.Client.Tests
             _clientContext = TestCommon.CreateClientContext();
 
             // Create Simple List
-            var list = _clientContext.Web.CreateList(ListTemplateType.Contacts, "Test_list_" + DateTime.Now.ToFileTime(), false);
-            _clientContext.Load(list);
+            _list = _clientContext.Web.CreateList(ListTemplateType.Contacts, "Test_list_" + DateTime.Now.ToFileTime(), false);
+            _clientContext.Load(_list);
             _clientContext.ExecuteQueryRetry();
-
-            _listId = list.Id;
 
         }
 
@@ -46,36 +45,22 @@ namespace Microsoft.SharePoint.Client.Tests
         public void Cleanup()
         {
             // Clean up list
-            var list = _clientContext.Web.Lists.GetById(_listId);
-            list.DeleteObject();
+            _list.DeleteObject();
             _clientContext.ExecuteQueryRetry();
         }
         #endregion
 
-        #region Enable Rating on List
+        #region Rating's Test Scenarios
         
         [TestMethod()]
         [ExpectedException(typeof(NotPublishingWebException))]
-        public void EnableRating_On_Non_Publishing_Web_Expect_Exception()
+        public void Enable_Rating_On_Non_Publishing_Web_Expect_Exception()
         {
-            _list = _clientContext.Web.Lists.GetById(_listId);
-            
-             _list.SetRating();
-
-            //  Check if the Rating Fields are added to List, Views and Root Folder Property 
-
-            Assert.IsTrue(IsRootFolderPropertySet());
-            Assert.IsTrue(HasRatingFields());
-            Assert.IsTrue(RatingFieldSetOnDefaultView());
-
-            //Delete List
-            _list.DeleteObject();
-            _clientContext.ExecuteQueryRetry();
-
+             _list.SetRating(VotingExperience.Ratings);
         }
 
         [TestMethod()]
-        public void EnableRating()
+        public void Enable_Rating_Experience()
         {
             // Enable Publishing Feature on Site and Web 
 
@@ -85,22 +70,45 @@ namespace Microsoft.SharePoint.Client.Tests
             if (!_clientContext.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
                 _clientContext.Web.ActivateFeature(new Guid(PublishingWebFeature));
 
-            _list = _clientContext.Web.Lists.GetById(_listId);
-
-            _list.SetRating();
+            _list.SetRating(VotingExperience.Ratings);
 
             //  Check if the Rating Fields are added to List, Views and Root Folder Property 
 
-            Assert.IsTrue(IsRootFolderPropertySet());
-            Assert.IsTrue(HasRatingFields());
-            Assert.IsTrue(RatingFieldSetOnDefaultView());
-
-            //Delete List
-            _list.DeleteObject();
-            _clientContext.ExecuteQueryRetry();
+            Assert.IsTrue(IsRootFolderPropertySet(), "Root Folder property not set");
+            Assert.IsTrue(HasRatingFields(), "Missing Rating Fields in List.");
+            Assert.IsTrue(RatingFieldSetOnDefaultView(), "Required rating fields not added to default view.");
 
         }
 
+        [TestMethod()]
+        public void Enable_Likes_Experience()
+        {
+            // Enable Publishing Feature on Site and Web 
+
+            if (!_clientContext.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
+                _clientContext.Site.ActivateFeature(new Guid(PublishingSiteFeature));
+
+            if (!_clientContext.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
+                _clientContext.Web.ActivateFeature(new Guid(PublishingWebFeature));
+
+            _list.SetRating(VotingExperience.Likes);
+
+            //  Check if the Rating Fields are added to List, Views and Root Folder Property 
+
+            Assert.IsTrue(IsRootFolderPropertySet(VotingExperience.Likes), "Required Root Folder property not set.");
+            Assert.IsTrue(HasRatingFields(), "Missing Rating Fields in List.");
+            Assert.IsTrue(RatingFieldSetOnDefaultView(VotingExperience.Likes), "Required rating fields not added to default view.");
+
+        }
+
+        #endregion
+
+
+        /// <summary>
+        /// Validate if required experience selected fields are added to default view
+        /// </summary>
+        /// <param name="experience"></param>
+        /// <returns></returns>
         private bool RatingFieldSetOnDefaultView(VotingExperience experience = VotingExperience.Ratings)
         {
             _clientContext.Load(_list.DefaultView.ViewFields);
@@ -109,50 +117,59 @@ namespace Microsoft.SharePoint.Client.Tests
             switch (experience)
             {
                 case VotingExperience.Ratings:
-                    return _list.DefaultView.ViewFields.Contains("AverageRating");
+                    return _list.DefaultView.ViewFields.Contains(Averagerating);
                 case VotingExperience.Likes:
-                    return _list.DefaultView.ViewFields.Contains("LikesCount");
+                    return _list.DefaultView.ViewFields.Contains(Likescount);
                 default:
                     throw new ArgumentOutOfRangeException("experience");
             }
         }
 
+        /// <summary>
+        /// Validates if required rating fields are present in the list.
+        /// </summary>
+        /// <returns></returns>
         private bool HasRatingFields()
         {
-            _clientContext.Load(_list.Fields,p=>p.Include(i=>i.Id));
+            _clientContext.Load(_list.Fields, p => p.Include(prop => prop.InternalName));
             _clientContext.ExecuteQueryRetry();
 
-            var avgRating = _list.Fields.GetById(RatingsFieldGuid_AverageRating);
-            var ratedBy = _list.Fields.GetById(RatingsFieldGuid_RatedBy);
-            var ratingCount = _list.Fields.GetById(RatingsFieldGuid_RatingCount);
-            var ratings = _list.Fields.GetById(RatingsFieldGuid_Ratings);
-            var likeCount = _list.Fields.GetById(LikeFieldGuid_LikeCount);
-            var likedBy = _list.Fields.GetById(LikeFieldGuid_LikedBy);
+            var avgRating = _list.Fields.FirstOrDefault(p => p.InternalName == Averagerating);
+            var ratedBy = _list.Fields.FirstOrDefault(p => p.InternalName == Ratedby);
+            var ratingCount = _list.Fields.FirstOrDefault(p => p.InternalName == Ratingcount);
+            var likeCount = _list.Fields.FirstOrDefault(p => p.InternalName == Likescount);
+            var ratings = _list.Fields.FirstOrDefault(p => p.InternalName == Ratings);
+            var likedBy = _list.Fields.FirstOrDefault(p => p.InternalName == Likedby);
 
-            var fieldsExist = avgRating.Id.Equals(RatingsFieldGuid_AverageRating) &&
-                             ratedBy.Id.Equals(RatingsFieldGuid_RatedBy) &&
-                             ratingCount.Id.Equals(RatingsFieldGuid_RatingCount) &&
-                             ratings.Id.Equals(RatingsFieldGuid_Ratings) &&
-                             likeCount.Id.Equals(LikeFieldGuid_LikeCount) &&
-                             likedBy.Id.Equals(LikeFieldGuid_LikedBy);
+            var fieldsExist = avgRating != null && ratedBy != null && ratingCount != null && ratings != null &&
+                              likeCount != null && likedBy != null;
 
-            return !fieldsExist;
-
-
+            return fieldsExist;
         }
 
-        private bool IsRootFolderPropertySet()
+
+        /// <summary>
+        /// Validate if the RootFolder property is set appropriately
+        /// </summary>
+        /// <returns></returns>
+        private bool IsRootFolderPropertySet(VotingExperience experience = VotingExperience.Ratings)
         {
             _clientContext.Load(_list.RootFolder.Properties);
             _clientContext.ExecuteQueryRetry();
 
-            return _list.RootFolder.Properties.FieldValues.ContainsKey("Ratings_VotingExperience");
+            if (_list.RootFolder.Properties.FieldValues.ContainsKey(RatingsVotingexperience))
+            {
+                object exp;
+                if (_list.RootFolder.Properties.FieldValues.TryGetValue(RatingsVotingexperience, out exp))
+                {
+                    return string.Compare(exp.ToString(),experience.ToString(),StringComparison.InvariantCultureIgnoreCase) == 0;    
+                }
+            }
+
+            return false;
         }
 
-        #endregion
-
-
-
+        
 
     }
 }
