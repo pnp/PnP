@@ -94,7 +94,7 @@ namespace Microsoft.SharePoint.Client
                 int currentDynamicChildLimit = web.AllProperties.GetPropertyAsInt(CurrentDynamicChildLimit);
                 if (currentDynamicChildLimit > -1)
                 {
-                    nav.CurrentNavigation.MaxDynamicItems = (uint)currentDynamicChildLimit;
+                    nav.CurrentNavigation.MaxDynamicItems = currentDynamicChildLimit;
                 }
 
                 // For the current navigation there's an option to show the sites siblings in structural navigation
@@ -120,7 +120,7 @@ namespace Microsoft.SharePoint.Client
                 int globalDynamicChildLimit = web.AllProperties.GetPropertyAsInt(GlobalDynamicChildLimit);
                 if (globalDynamicChildLimit > -1)
                 {
-                    nav.GlobalNavigation.MaxDynamicItems = (uint)globalDynamicChildLimit;
+                    nav.GlobalNavigation.MaxDynamicItems = globalDynamicChildLimit;
                 }
             }
 
@@ -165,16 +165,17 @@ namespace Microsoft.SharePoint.Client
             {
                 int globalNavigationIncludeType = MapToNavigationIncludeTypes(navigationSettings.GlobalNavigation);
                 web.AllProperties[GlobalNavigationIncludeTypes] = globalNavigationIncludeType;
-                web.AllProperties[GlobalDynamicChildLimit] = (int)navigationSettings.GlobalNavigation.MaxDynamicItems;
+                web.AllProperties[GlobalDynamicChildLimit] = navigationSettings.GlobalNavigation.MaxDynamicItems;
             }
 
             if (!navigationSettings.CurrentNavigation.ManagedNavigation)
             {
                 int currentNavigationIncludeType = MapToNavigationIncludeTypes(navigationSettings.CurrentNavigation);
                 web.AllProperties[CurrentNavigationIncludeTypes] = currentNavigationIncludeType;
+                web.AllProperties[CurrentDynamicChildLimit] = navigationSettings.CurrentNavigation.MaxDynamicItems;
 
-                web.AllProperties[CurrentDynamicChildLimit] = (int)navigationSettings.CurrentNavigation.MaxDynamicItems;
-
+                // Call web.update before the IsSubSite call as this might do an ExecuteQuery. Without the update called the changes will be lost
+                web.Update();
                 // For the current navigation there's an option to show the sites siblings in structural navigation
                 if (web.IsSubSite())
                 {
