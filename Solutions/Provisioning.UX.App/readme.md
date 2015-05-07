@@ -91,7 +91,8 @@ The site details view contains a field where the user specifies the url of their
 Once user is done with the views in the wizard, they will be presented with a confirmation view and the chance to change their inputs. Once they click the checkmark icon, the site request object data will be submitted to the engine. 
 
 #### Coming Updates ####
-We are currently working an update to this interface which uses an angular schema form approach and aloows you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+
 
 You will need to update App ID/Secret information in the web.config
 

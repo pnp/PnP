@@ -73,7 +73,7 @@ namespace Provisioning.Common
                  }
                 catch (Exception ex)
                 {
-                    Log.Fatal("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
+                    Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
                     throw;
                 }
             });

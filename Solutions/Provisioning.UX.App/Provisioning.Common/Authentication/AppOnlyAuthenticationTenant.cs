@@ -136,7 +136,6 @@ namespace Provisioning.Common.Authentication
                     TokenHelper.SharePointPrincipal,
                     new Uri(this.TenantAdminUrl).Authority,
                     this.Realm);
-
                 this.AccessToken = _oAuthResponse.AccessToken;
             }
         }

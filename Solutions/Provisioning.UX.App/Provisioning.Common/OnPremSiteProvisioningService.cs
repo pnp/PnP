@@ -135,7 +135,7 @@ namespace Provisioning.Common
             }
             catch(Exception ex)
             {
-                Log.Fatal("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "An Error occured occured while process the site request for {0}. The Error is {1}. Inner Exception {2}", siteRequest.Url, ex, ex.InnerException);
+                Log.Error("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "An Error occured occured while process the site request for {0}. The Error is {1}. Inner Exception {2}", siteRequest.Url, ex, ex.InnerException);
                 throw;
             }
             Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);

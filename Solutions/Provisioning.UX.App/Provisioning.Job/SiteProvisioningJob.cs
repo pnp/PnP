@@ -6,6 +6,7 @@ using Provisioning.Common.Data;
 using Provisioning.Common.Data.SiteRequests;
 using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Mail;
+using Provisioning.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,13 +73,12 @@ namespace Provisioning.Job
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
                     _siteProvisioningManager.ProcessSiteRequest(siteRequest, _template);
                     _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
-                    
                     this.SendSuccessEmail(siteRequest);
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }
                 catch(Exception _ex)
                 {
-                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception);
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
                     this.SendFailureEmail(siteRequest, _ex.Message);
                 }
                
@@ -91,21 +91,33 @@ namespace Provisioning.Job
         /// <param name="info"></param>
         protected void SendSuccessEmail(SiteRequestInformation info)
         {
-            StringBuilder _admins = new StringBuilder();
-            SuccessEmailMessage _message = new SuccessEmailMessage();
-            _message.SiteUrl = info.Url;
-            _message.SiteOwner = info.SiteOwner.Name;
-            _message.Subject = "Notification: Your new SharePoint site is ready";
+            //TODO CLEAN UP EMAILS
+            try
+            { 
+                StringBuilder _admins = new StringBuilder();
+                SuccessEmailMessage _message = new SuccessEmailMessage();
+                _message.SiteUrl = info.Url;
+                _message.SiteOwner = info.SiteOwner.Name;
+                _message.Subject = "Notification: Your new SharePoint site is ready";
 
-            _message.To.Add(info.SiteOwner.Email);
-            foreach (var admin in info.AdditionalAdministrators)
-            {
-                _message.Cc.Add(admin.Email);
-                _admins.Append(admin.Name);
-                _admins.Append(" ");
+                _message.To.Add(info.SiteOwner.Email);
+                foreach (var admin in info.AdditionalAdministrators)
+                {
+                    _message.Cc.Add(admin.Email);
+                    _admins.Append(admin.Name);
+                    _admins.Append(" ");
+                }
+                _message.SiteAdmin = _admins.ToString();
+                EmailHelper.SendNewSiteSuccessEmail(_message);
             }
-            _message.SiteAdmin = _admins.ToString();
-            EmailHelper.SendNewSiteSuccessEmail(_message);
+            catch(Exception ex)
+            {
+                Log.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
+                    "There was an error sending email. The Error Message: {0}, Exception: {1}", 
+                     ex.Message,
+                     ex);
+         
+            }
         }
 
         /// <summary>
@@ -115,31 +127,42 @@ namespace Provisioning.Job
         /// <param name="errorMessage"></param>
         protected void SendFailureEmail(SiteRequestInformation info, string errorMessage)
         {
-            StringBuilder _admins = new StringBuilder();
-            FailureEmailMessage _message = new FailureEmailMessage();
-            _message.SiteUrl = info.Url;
-            _message.SiteOwner = info.SiteOwner.Name;
-            _message.Subject = "Alert: Your new SharePoint site request had a problem.";
-            _message.ErrorMessage = errorMessage;
-            _message.To.Add(info.SiteOwner.Email);
-
-            if (!string.IsNullOrEmpty(this._settings.SupportEmailNotification))
+            try
             {
-                string[] supportAdmins = this._settings.SupportEmailNotification.Split(';');
-                foreach (var supportAdmin in supportAdmins)
+                StringBuilder _admins = new StringBuilder();
+                FailureEmailMessage _message = new FailureEmailMessage();
+                _message.SiteUrl = info.Url;
+                _message.SiteOwner = info.SiteOwner.Name;
+                _message.Subject = "Alert: Your new SharePoint site request had a problem.";
+                _message.ErrorMessage = errorMessage;
+                _message.To.Add(info.SiteOwner.Email);
+
+                if (!string.IsNullOrEmpty(this._settings.SupportEmailNotification))
                 {
-                    _message.To.Add(supportAdmin);
+                    string[] supportAdmins = this._settings.SupportEmailNotification.Split(';');
+                    foreach (var supportAdmin in supportAdmins)
+                    {
+                        _message.To.Add(supportAdmin);
 
+                    }
                 }
+                foreach (var admin in info.AdditionalAdministrators)
+                {
+                    _message.Cc.Add(admin.Email);
+                    _admins.Append(admin.Name);
+                    _admins.Append(" ");
+                }
+                _message.SiteAdmin = _admins.ToString();
+                EmailHelper.SendFailEmail(_message);
             }
-            foreach (var admin in info.AdditionalAdministrators)
+            catch(Exception ex)
             {
-                _message.Cc.Add(admin.Email);
-                _admins.Append(admin.Name);
-                _admins.Append(" ");
+                Log.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
+                    "There was an error sending email. The Error Message: {0}, Exception: {1}",
+                     ex.Message,
+                     ex);
             }
-            _message.SiteAdmin = _admins.ToString();
-            EmailHelper.SendFailEmail(_message);
+          
         }
 
     }

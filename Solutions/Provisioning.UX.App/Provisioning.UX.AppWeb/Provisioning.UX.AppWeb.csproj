@@ -66,7 +66,8 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Cors">
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -82,7 +83,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Http.Cors">
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -103,7 +105,6 @@
     <Content Include="images\gears16.gif" />
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
-    <Content Include="packages.config" />
     <Content Include="Pages\view_confirmation.html" />
     <Content Include="Pages\view_dataprivacy.html" />
     <Content Include="Pages\view_intendeduse.html" />
@@ -115,6 +116,7 @@
     <Content Include="Resources\SiteTemplates\Templates.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\spsiteprov %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
     <Content Include="Scripts\data\json\divisions.json" />
@@ -124,6 +126,9 @@
     <Content Include="Scripts\data\json\siteclassifications.json" />
     <Content Include="Scripts\data\json\templates.json" />
     <Content Include="Scripts\data\json\timezones.json" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -151,9 +156,6 @@
     <Content Include="Scripts\data\data.module.js" />
     <Content Include="Scripts\data\templates.factory.js" />
     <Content Include="Scripts\wizard\directives\restrict.js" />
-    <Content Include="Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\peoplepickercontrol.js" />
     <Content Include="Scripts\peoplepickercontrol_resources.en.js" />
@@ -194,8 +196,8 @@
     <Compile Include="Services\AppEventReceiver.svc.cs">
       <DependentUpon>AppEventReceiver.svc</DependentUpon>
     </Compile>
-    <Compile Include="SharePointContext.cs" />
     <Compile Include="ObjectMapper.cs" />
+    <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
     <Compile Include="WebApiConfig.cs" />
   </ItemGroup>
