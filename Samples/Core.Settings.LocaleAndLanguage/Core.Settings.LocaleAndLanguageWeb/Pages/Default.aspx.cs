@@ -111,6 +111,10 @@ namespace Core.Settings.LocaleAndLanguageWeb
 
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
+                
+                // Site needs to be set in multi lingual, without you can't add additional languages
+                clientContext.Web.IsMultilingual = true;
+
                 clientContext.Web.AddSupportedUILanguage(1035);
                 clientContext.Web.Update();
                 clientContext.ExecuteQuery();
@@ -131,6 +135,7 @@ namespace Core.Settings.LocaleAndLanguageWeb
                 clientContext.Web.Update();
                 clientContext.ExecuteQuery();
 
+                UpdateLanguageList(clientContext);
                 lblStatus2.Text = string.Format("Language settings updated to <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString() + "/_layouts/15/muisetng.aspx");
  
             }
