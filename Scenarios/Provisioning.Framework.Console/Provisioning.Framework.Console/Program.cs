@@ -1,15 +1,9 @@
 ﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.Provisioning;
-using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Framework.Provisioning.Providers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Provisioning.Framework
 {
@@ -20,6 +14,8 @@ namespace Provisioning.Framework
             bool interactiveLogin = true;
             string templateSiteUrl = "https://bertonline.sharepoint.com/sites/130049";
             string targetSiteUrl = "https://bertonline.sharepoint.com/sites/pr1";
+            // Office 365: username@tenant.onmicrosoft.com
+            // OnPrem: DOMAIN\Username
             string loginId = "bert.jansen@bertonline.onmicrosoft.com";
 
             // Get pwd from environment variable, so that we do to need to show that.
@@ -30,13 +26,13 @@ namespace Provisioning.Framework
             }
             else
             {
-                pwd = System.Environment.GetEnvironmentVariable("MSOPWD", EnvironmentVariableTarget.User);
+                pwd = Environment.GetEnvironmentVariable("MSOPWD", EnvironmentVariableTarget.User);
             }
 
             if (string.IsNullOrEmpty(pwd))
             {
-                System.Console.WriteLine("MSOPWD user environment variable empty or no password was specified, cannot continue. Press any key to abort.");
-                System.Console.ReadKey();
+                Console.WriteLine("MSOPWD user environment variable empty or no password was specified, cannot continue. Press any key to abort.");
+                Console.ReadKey();
                 return;
             }
 
@@ -47,9 +43,7 @@ namespace Provisioning.Framework
             using (var ctx = new ClientContext(templateSiteUrl))
             {
                 //Provide count and pwd for connecting to the source
-                var passWord = new SecureString();
-                foreach (char c in pwd.ToCharArray()) passWord.AppendChar(c);
-                ctx.Credentials = new SharePointOnlineCredentials(loginId, passWord);
+                ctx.Credentials = GetCredentials(loginId, pwd);
 
                 // Get template from existing site
                 template = ctx.Web.GetProvisioningTemplate();
@@ -59,24 +53,22 @@ namespace Provisioning.Framework
             XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
             string templateName = "template.xml";
             provider.SaveAs(template, templateName);
-            
+
             // Load the saved model again
             ProvisioningTemplate p2 = provider.GetTemplate(templateName);
 
             // Get the available, valid templates
             var templates = provider.GetTemplates();
-            foreach(var template1 in templates)
+            foreach (var template1 in templates)
             {
-                Console.WriteLine("Found template with ID {0}", template1.ID);
+                Console.WriteLine("Found template with ID {0}", template1.Id);
             }
 
             // Get access to target site and apply template
             using (var ctx = new ClientContext(targetSiteUrl))
             {
-                //Provide count and pwd for connecting to the source
-                var passWord = new SecureString();
-                foreach (char c in pwd.ToCharArray()) passWord.AppendChar(c);
-                ctx.Credentials = new SharePointOnlineCredentials(loginId, passWord);
+                //Provide count and pwd for connecting to the source               
+                ctx.Credentials = GetCredentials(loginId, pwd);
 
                 // Apply template to existing site
                 ctx.Web.ApplyProvisioningTemplate(template);
@@ -121,6 +113,19 @@ namespace Provisioning.Framework
             Console.WriteLine("");
 
             return strPwd;
+        }
+
+        private static ICredentials GetCredentials(string loginId, string pwd)
+        {
+            var passWord = new SecureString();
+            foreach (char c in pwd.ToCharArray()) passWord.AppendChar(c);
+
+            if (loginId.Contains("@"))
+            {
+                return new SharePointOnlineCredentials(loginId, passWord);
+            }
+
+            return new NetworkCredential(loginId, passWord);
         }
     }
 }

@@ -259,10 +259,12 @@
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
     <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Entities\AreaNavigationEntity.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
     <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
     <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
+    <Compile Include="Entities\StructuralNavigationEntity.cs" />
     <Compile Include="Entities\TaxonomyFieldCreationInformation.cs" />
     <Compile Include="Entities\FieldCreationInformation.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
@@ -282,6 +284,8 @@
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\NavigationType.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
+    <Compile Include="Enums\StructuralNavigationSortBy.cs" />
+    <Compile Include="Enums\StructuralNavigationSorting.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />

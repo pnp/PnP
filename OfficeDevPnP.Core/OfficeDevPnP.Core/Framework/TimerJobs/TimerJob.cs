@@ -1022,14 +1022,14 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (!IsValidUrl(site))
                 {
-                    throw new ArgumentException(string.Format(CoreResources.TimerJob_AddSite_Done, site), "site");
+                    throw new ArgumentException(string.Format(CoreResources.TimerJob_AddSite_InvalidUrl, site), "site");
                 }
             }
 
             if (!requestedSites.Contains(site))
             {
                 this.requestedSites.Add(site);
-                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_AddSite_InvalidUrl, site);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_AddSite_Done, site);
             }
         }
 
