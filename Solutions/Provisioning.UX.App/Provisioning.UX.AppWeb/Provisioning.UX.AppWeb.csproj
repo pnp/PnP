@@ -164,8 +164,9 @@
     <Content Include="Scripts\vendor\angular-ui\ui-bootstrap-tpls-0.12.1.min.js" />
     <Content Include="Scripts\vendor\jquery\jquery-2.1.3.min.js" />
     <Content Include="Scripts\wizard\directives\formDirectives.js" />
-    <Content Include="Scripts\wizard\modal\modal.peoplepicker.controller.js" />
+    <Content Include="Scripts\wizard\modal\siteowners.peoplepicker.controller.js" />
     <Content Include="Scripts\wizard\modal\wizard.modal.controller.js" />
+    <Content Include="Scripts\wizard\services\peoplepickerfactory.js" />
     <Content Include="Scripts\wizard\services\provisioningServices.js" />
     <Content Include="Scripts\wizard\services\siteQueryService.js" />
     <Content Include="Scripts\wizard\services\utilservice.js" />

@@ -42,12 +42,13 @@
     <script src="../scripts/app.module.js"></script>    
     <script src="../scripts/wizard/modules/wizard.module.js"></script>    
     <script src="../scripts/wizard/services/utilservice.js"></script>
+    <script src="../scripts/wizard/services/peoplepickerfactory.js"></script>
     <script src="../scripts/wizard/controllers/wizard.controller.js"></script>
     <script src="../scripts/wizard/services/siteQueryService.js"></script>    
     <script src="../scripts/wizard/directives/restrict.js"></script>    
     <script src="../scripts/wizard/directives/formDirectives.js"></script>    
     <script src="../scripts/wizard/modal/wizard.modal.controller.js"></script>
-    <script src="../scripts/wizard/modal/modal.peoplepicker.controller.js"></script>    
+    <script src="../scripts/wizard/modal/siteowners.peoplepicker.controller.js"></script>    
     <script src="../scripts/data/data.module.js"></script>
     <script src="../scripts/data/templates.factory.js"></script>
     <script src="../scripts/data/metadata.factory.js"></script>

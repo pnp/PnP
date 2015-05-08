@@ -5,7 +5,7 @@ var additionalOwnersEmail;
     var PeoplePicker = (function () {
 
         // Constructor
-        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData) {
+        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData, PeoplePickerInstanceName) {
             //public properties
             this.SharePointContext = SharePointContext;
             this.PeoplePickerControl = PeoplePickerControl;
@@ -190,8 +190,23 @@ var additionalOwnersEmail;
                 }
             }
             
-            // Update siteconfiguration object for site request
-            angular.element($("#divFieldOwners")).scope().updateSecondaryOwners(this._ResolvedUsersEmail);
+            // Need to find a bettwer way to get the data into the angular scope variables
+            if (this.InstanceName == "additionalOwnersPicker") {
+                // Update siteconfiguration object for site request
+                angular.element($("#divFieldOwners")).scope().updateSecondaryOwners(this._ResolvedUsersEmail);
+            }
+
+            // Need to find a bettwer way to get the data into the angular scope variables
+            if (this.InstanceName == "membersPicker") {
+                // Update siteconfiguration object for site request
+                angular.element($("#divFieldMembers")).scope().updateMembers(this._ResolvedUsersEmail);
+            }
+
+            // Need to find a bettwer way to get the data into the angular scope variables
+            if (this.InstanceName == "visitorsPicker") {
+                // Update siteconfiguration object for site request
+                angular.element($("#divFieldVisitors")).scope().updateVisitors(this._ResolvedUsersEmail);
+            }
             
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
         }

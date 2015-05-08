@@ -36,7 +36,7 @@
 
 /*#region Layout */
 .modal-pnp .modal-dialog {
-    height: 670px;
+    height: 725px;
     overflow: hidden;
 }
 
@@ -276,7 +276,28 @@
 }
 
 .form-control {
-    height: 30px;
-    font-size: 12px;
+    height: 28px;
+    font-size: 10px;
+}
+
+.control-label {
+    font-size: 10px;
+}
+
+.btn btn-primary {
+    background:rgb(230,120,30); /* #DC3C00 */
+    color:white;
+}
+
+.table table-striped {
+    font-size: 10px;
+}
+
+a {
+    font-size: 10px;
+}
+
+.leftnav {
+    font-size: 14px;
 }
 /*endregion Other bootstrap overrides*/
