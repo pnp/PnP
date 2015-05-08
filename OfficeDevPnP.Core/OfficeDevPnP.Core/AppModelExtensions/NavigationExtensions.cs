@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Collections;
+using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -160,6 +161,35 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentException("Structural navigation settings are only supported for publishing sites");
             }
+
+            // Use publishing CSOM API to switch between managed metadata and structural navigation
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
+            web.Context.Load(taxonomySession);
+            web.Context.ExecuteQueryRetry();
+            Microsoft.SharePoint.Client.Publishing.Navigation.WebNavigationSettings webNav = new Publishing.Navigation.WebNavigationSettings(web.Context, web);
+            if (!navigationSettings.GlobalNavigation.ManagedNavigation)
+            {
+                webNav.GlobalNavigation.Source = Publishing.Navigation.StandardNavigationSource.PortalProvider;
+            }
+            else
+            {
+                webNav.GlobalNavigation.Source = Publishing.Navigation.StandardNavigationSource.TaxonomyProvider;
+            }
+
+            if (!navigationSettings.CurrentNavigation.ManagedNavigation)
+            {
+                webNav.CurrentNavigation.Source = Publishing.Navigation.StandardNavigationSource.PortalProvider;
+            }
+            else
+            {
+                webNav.CurrentNavigation.Source = Publishing.Navigation.StandardNavigationSource.TaxonomyProvider;
+            }
+            webNav.Update(taxonomySession);            
+            web.Context.ExecuteQueryRetry();
+
+            //Read all the properties of the web again after the above update
+            web.Context.Load(web, w => w.AllProperties);
+            web.Context.ExecuteQueryRetry();
 
             if (!navigationSettings.GlobalNavigation.ManagedNavigation)
             {
