@@ -15,7 +15,7 @@ namespace OfficeDevPnP.Core.Entities
             ShowPages = false;
         }
 
-        public bool ManagedNavigation { get; internal set; }
+        public bool ManagedNavigation { get; set; }
         public bool ShowSubsites { get; set; }
         public bool ShowPages { get; set; }
         public int MaxDynamicItems { get; set; }
