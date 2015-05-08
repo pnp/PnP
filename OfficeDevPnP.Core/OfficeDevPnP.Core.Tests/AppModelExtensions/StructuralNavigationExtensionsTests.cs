@@ -99,10 +99,12 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 clientContext.ExecuteQueryRetry();
                 
                 AreaNavigationEntity nav = new AreaNavigationEntity();
+                nav.GlobalNavigation.ManagedNavigation = false;
                 nav.GlobalNavigation.MaxDynamicItems = 13;
                 nav.GlobalNavigation.ShowSubsites = true;
                 nav.GlobalNavigation.ShowPages = true;
 
+                nav.CurrentNavigation.ManagedNavigation = false;
                 nav.CurrentNavigation.MaxDynamicItems = 15;
                 nav.CurrentNavigation.ShowSubsites = true;
                 nav.CurrentNavigation.ShowPages = true;
