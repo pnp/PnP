@@ -36,7 +36,7 @@
         <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="$(var.AssemblyVersion)"/>
       </DirectorySearch>
     </Property>
-    
+
     <Condition Message="PowerShell 3.0 is required. Please install PowerShell 3.0 then run this installer again.">
       <![CDATA[Installed OR (POWERSHELLCOMPATIBLE >< "3.0")]]>
     </Condition>
@@ -51,7 +51,7 @@
             <![CDATA[<a href="http://www.microsoft.com/en-us/download/details.aspx?id=42038">Download the SharePoint Online Client Components SDK</a>]]>
           </Text>
         </Control>
-        
+
         <Control Id="Return" Type="PushButton" X="110" Y="72" Width="70" Height="17" Default="yes" Cancel="yes" Text="&amp;Cancel install">
           <Publish Event="EndDialog" Value="Exit">1</Publish>
         </Control>
@@ -95,6 +95,12 @@
         <File Id="CmdletHelpAttributes" Source="$(var.OfficeDevPnP.PowerShell.CmdletHelpAttributes.TargetPath)"/>
         <File Id="FormatFile" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.Format.ps1xml" />
         <File Id="PSD1File" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1" />
+        <File Id="ClientSDKDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.dll" />
+        <File Id="ClientSDKRuntimeDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Runtime.dll" />
+        <File Id="ClientSDKTaxonomyDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Taxonomy.dll" />
+        <File Id="ClientSDKUserProfilesDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.UserProfiles.dll" />
+        <File Id="ClientSDKWorkflowServicesDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+        <File Id="NewtonSoft" Source="$(var.OfficeDevPnP.Core.ProjectDir)bin\$(var.OfficeDevPnP.Core.Configuration)\Newtonsoft.Json.Dll" />
         <File Id="TenantDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
         <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
       </Component>
