@@ -415,6 +415,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.TemplateType = item.BaseTemplate;
                         list.Title = item.Title;
                         list.Hidden = item.Hidden;
+                        list.EnableFolderCreation = item.EnableFolderCreation;
                         list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
                         list.ContentTypesEnabled = item.ContentTypesEnabled;
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
