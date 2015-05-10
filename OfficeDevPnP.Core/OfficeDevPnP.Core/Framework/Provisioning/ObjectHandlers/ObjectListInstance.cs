@@ -90,9 +90,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 // Only supported on Document Libraries
                                 createdList.EnableMinorVersions = list.EnableMinorVersions;
+                                createdList.DraftVersionVisibility = (DraftVisibilityType)list.DraftVersionVisibility;
+
+                                // TODO: User should be notified that MinorVersionLimit and DraftVersionVisibility will not be applied
                                 if (list.EnableMinorVersions)
                                 {
                                     createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit; // Set only if enabled, otherwise you'll get exception due setting value to zero.
+                                    
+                                    // DraftVisibilityType.Approver is available only when the EnableModeration option of the list is true
+                                    if (DraftVisibilityType.Approver ==
+                                        (DraftVisibilityType)list.DraftVersionVisibility)
+                                    {
+                                        if (list.EnableModeration)
+                                        {
+                                            createdList.DraftVersionVisibility =
+                                                (DraftVisibilityType)list.DraftVersionVisibility;
+                                        }
+                                        else
+                                        {
+                                            // TODO: User should be notified that DraftVersionVisibility is not applied because .EnableModeration is false
+                                        }
+                                    }
+                                    else
+                                    {
+                                        createdList.DraftVersionVisibility = (DraftVisibilityType)list.DraftVersionVisibility;
+                                    }
                                 }
                             }
                         }
