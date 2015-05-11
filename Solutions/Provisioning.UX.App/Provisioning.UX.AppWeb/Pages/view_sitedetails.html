@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label class="control-label" for="detailsLanguage">Language</label>
                 <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.details.language" required>
-                    <option ng-repeat="language in languages | orderBy: 'displayOrder'" value="{{language.value}}">{{language.key}}</option>
+                    <option ng-repeat="language in languages | orderBy: 'displayOrder'" ng-selected="{{language.value == 1033}}" value="{{language.value}}">{{language.key}}</option>
                 </select>
             </div>
 
