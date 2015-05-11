@@ -1,8 +1,8 @@
 ﻿{    
     "languages": [
         {
-            "key": "Chinese (Simplified)",
-            "value": "2052",
+            "key": "English U.S.",
+            "value": "1033",
             "displayOrder": 1
         },
         {
@@ -16,50 +16,44 @@
             "displayOrder": 3
         },
         {
-            "key": "English U.S.",
-            "value": "1033",
-            "displayOrder": 4
-        },
-        {
             "key": "English U.K.",
             "value": "2057",
-            "displayOrder": 5
+            "displayOrder": 4
         },
         {
             "key": "Finnish",
             "value": "1035",
-            "displayOrder": 6
+            "displayOrder": 5
         },
         {
             "key": "Arabic",
             "value": "1025",
-            "displayOrder": 7
+            "displayOrder": 6
         },
         {
             "key": "Portuguese",
             "value": "2070",
-            "displayOrder": 8
+            "displayOrder": 7
         },
         {
             "key": "Bengali",
             "value": "1093",
-            "displayOrder": 9
+            "displayOrder": 8
         },
         {
             "key": "Russian",
             "value": "1049",
-            "displayOrder": 10
+            "displayOrder": 9
         },
         {
             "key": "Japanese",
             "value": "1041",
-            "displayOrder": 11
+            "displayOrder": 10
         },
         {
             "key": "German",
             "value": "1031",
-            "displayOrder": 12
+            "displayOrder": 11
         }
-
     ]
 }

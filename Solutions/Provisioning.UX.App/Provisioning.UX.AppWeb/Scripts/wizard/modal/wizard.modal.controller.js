@@ -45,7 +45,6 @@
             var props = {};
             props["region"] = $scope.siteConfiguration.details.region;
             props["division"] = $scope.siteConfiguration.details.division;
-
             siteRequest.Properties = props;
             
             saveSiteRequest(siteRequest);
