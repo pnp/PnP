@@ -10,6 +10,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using Provisioning.Common.Authentication;
 using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Configuration;
+using Provisioning.Common.Utilities;
 
 namespace Provisioning.Common
 {
@@ -18,7 +19,11 @@ namespace Provisioning.Common
     /// </summary>
     public class SiteProvisioningManager
     {
+        #region instance Members
         AbstractSiteProvisioningService _siteprovisioningService;
+        const string CONNECTIONSTRING_KEY = "ConnectionString";
+        const string CONTAINERSTRING_KEY = "Container";
+        #endregion
 
         public SiteProvisioningManager(SiteRequestInformation siteRequest, Template template)
         {
@@ -74,17 +79,17 @@ namespace Provisioning.Common
                 var typeName = type[0];
                 var assemblyName = type[1];
                 var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                instance.AddParameter("ConnectionString", _module.ConnectionString);
-                instance.AddParameter("Container", string.Empty);
+                instance.AddParameter(CONNECTIONSTRING_KEY, _module.ConnectionString);
+                instance.AddParameter(CONTAINERSTRING_KEY, string.Empty);
                 return instance;
             }
             catch (Exception _ex)
             {
-              //  throw new DataStoreException("Exception Occured while Creating Instance", _ex);
+                Log.Error("Provisioning.Common.SiteProvisioningManager", 
+                    "There was an error loading Provisioning Connector. Exception {0}", 
+                    _ex);
               throw;
             }
-
         }
-
     }
 }

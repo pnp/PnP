@@ -28,23 +28,23 @@
         $scope.finished = function () {
             //  save the site request when the wizard is complete
 
-            
             var siteRequest = new Object();
             siteRequest.title = $scope.siteConfiguration.details.title;
             siteRequest.HostPath = $scope.siteConfiguration.spNewSitePrefix;
             siteRequest.Url = $scope.siteConfiguration.details.url;
             siteRequest.Description = $scope.siteConfiguration.details.description;
+            siteRequest.LanguageID = $scope.siteConfiguration.details.language;
             siteRequest.PrimaryOwner = $scope.siteConfiguration.primaryOwner;
             siteRequest.SecondaryOwners = $scope.siteConfiguration.secondaryOwners;
+            siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
             siteRequest.Template = $scope.siteConfiguration.template.title;
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
-            siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
+       
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
-
+    
             var props = {};
             props["region"] = $scope.siteConfiguration.details.region;
             props["division"] = $scope.siteConfiguration.details.division;
-
             siteRequest.Properties = props;
             
             saveSiteRequest(siteRequest);
