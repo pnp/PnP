@@ -25,6 +25,9 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
+        [DataMember(Name = "languageID")]
+        public uint LanguageID { get; set; }
+
         [DataMember(Name = "primaryOwner")]
         public string PrimaryOwner { get; set; }
 

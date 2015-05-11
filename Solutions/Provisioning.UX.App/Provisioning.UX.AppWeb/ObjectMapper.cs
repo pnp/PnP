@@ -30,6 +30,7 @@ namespace Provisioning.UX.AppWeb
             _newRequest.Title = request.Title;
             _newRequest.Description = request.Description;
             _newRequest.Url = string.Format("{0}{1}", request.HostPath, request.Url);
+            _newRequest.Lcid = request.LanguageID;
             _newRequest.Template = request.Template;
             _newRequest.SitePolicy = request.SitePolicy;
             _newRequest.SiteOwner = _owner;
