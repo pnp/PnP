@@ -1,16 +1,640 @@
 ﻿{
     "timezones": [
         {
-            "key": "Eastern Standard Time (EST)",
-            "description": "Eastern Standard Time (EST)",
-            "value": "Eastern Standard Time (EST)",
+            "key": "(UTC-12:00) International Date Line West",
+            "description": "(UTC-12:00) International Date Line West",
+            "value": "39",
             "displayOrder": 1
         },
         {
-            "key": "Central Standard Time (CST)",
-            "description": "Central Standard Time (CST)",
-            "value": "Central Standard Time (CST)",
+            "key": "(UTC-11:00) Coordinated Universal Time-11",
+            "description": "(UTC-11:00) Coordinated Universal Time-11",
+            "value": "95",
             "displayOrder": 2
+        },
+        {
+            "key": "(UTC-10:00) Hawaii",
+            "description": "(UTC-10:00) Hawaii",
+            "value": "15",
+            "displayOrder": 3
+        },
+        {
+            "key": "(UTC-09:00) Alaska",
+            "description": "(UTC-09:00) Alaska",
+            "value": "14",
+            "displayOrder": 4
+        },
+        {
+            "key": "(UTC-08:00) Baja California",
+            "description": "(UTC-08:00) Baja California",
+            "value": "78",
+            "displayOrder": 5
+        },
+        {
+            "key": "(UTC-08:00) Pacific Time (US and Canada)",
+            "description": "(UTC-08:00) Pacific Time (US and Canada)",
+            "value": "13",
+            "displayOrder": 6
+        },
+        {
+            "key": "(UTC-07:00) Arizona",
+            "description": "(UTC-07:00) Arizona",
+            "value": "38",
+            "displayOrder": 7
+        },
+        {
+            "key": "(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+            "description": "(UTC-07:00) Chihuahua, La Paz, Mazatlan",
+            "value": "77",
+            "displayOrder": 8
+        },
+        {
+            "key": "(UTC-07:00) Mountain Time (US and Canada)",
+            "description": "(UTC-07:00) Mountain Time (US and Canada)",
+            "value": "12",
+            "displayOrder": 9
+        },
+        {
+            "key": "(UTC-06:00) Central America",
+            "description": "(UTC-06:00) Central America",
+            "value": "55",
+            "displayOrder": 10
+        },
+        {
+            "key": "(UTC-06:00) Central Time (US and Canada)",
+            "description": "(UTC-06:00) Central Time (US and Canada)",
+            "value": "11",
+            "displayOrder": 11
+        },
+        {
+            "key": "(UTC-06:00) Guadalajara, Mexico City, Monterrey",
+            "description": "(UTC-06:00) Guadalajara, Mexico City, Monterrey",
+            "value": "37",
+            "displayOrder": 12
+        },
+        {
+            "key": "(UTC-06:00) Saskatchewan",
+            "description": "(UTC-06:00) Saskatchewan",
+            "value": "36",
+            "displayOrder": 13
+        },
+        {
+            "key": "(UTC-05:00) Bogota, Lima, Quito",
+            "description": "(UTC-05:00) Bogota, Lima, Quito",
+            "value": "35",
+            "displayOrder": 14
+        },
+        {
+            "key": "(UTC-05:00) Eastern Time (US and Canada)",
+            "description": "(UTC-05:00) Eastern Time (US and Canada)",
+            "value": "10",
+            "displayOrder": 15
+        },
+        {
+            "key": "(UTC-05:00) Indiana (East)",
+            "description": "(UTC-05:00) Indiana (East)",
+            "value": "34",
+            "displayOrder": 16
+        },
+        {
+            "key": "(UTC-04:30) Caracas",
+            "description": "(UTC-04:30) Caracas",
+            "value": "88",
+            "displayOrder": 17
+        },
+        {
+            "key": "(UTC-04:00) Asuncion",
+            "description": "(UTC-04:00) Asuncion",
+            "value": "91",
+            "displayOrder": 18
+        },
+        {
+            "key": "(UTC-04:00) Atlantic Time (Canada)",
+            "description": "(UTC-04:00) Atlantic Time (Canada)",
+            "value": "9",
+            "displayOrder": 19
+        },
+        {
+            "key": "(UTC-04:00) Cuiaba",
+            "description": "(UTC-04:00) Cuiaba",
+            "value": "81",
+            "displayOrder": 20
+        },
+        {
+            "key": "(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",
+            "description": "(UTC-04:00) Georgetown, La Paz, Manaus, San Juan",
+            "value": "33",
+            "displayOrder": 21
+        },
+        {
+            "key": "(UTC-04:00) Santiago",
+            "description": "(UTC-04:00) Santiago",
+            "value": "65",
+            "displayOrder": 22
+        },
+        {
+            "key": "(UTC-03:30) Newfoundland",
+            "description": "(UTC-03:30) Newfoundland",
+            "value": "28",
+            "displayOrder": 23
+        },
+        {
+            "key": "(UTC-03:00) Brasilia",
+            "description": "(UTC-03:00) Brasilia",
+            "value": "8",
+            "displayOrder": 24
+        },
+        {
+            "key": "(UTC-03:00) Buenos Aires",
+            "description": "(UTC-03:00) Buenos Aires",
+            "value": "85",
+            "displayOrder": 25
+        },
+        {
+            "key": "(UTC-03:00) Cayenne, Fortaleza",
+            "description": "(UTC-03:00) Cayenne, Fortaleza",
+            "value": "32",
+            "displayOrder": 26
+        },
+        {
+            "key": "(UTC-03:00) Greenland",
+            "description": "(UTC-03:00) Greenland",
+            "value": "60",
+            "displayOrder": 27
+        },
+        {
+            "key": "(UTC-03:00) Montevideo",
+            "description": "(UTC-03:00) Montevideo",
+            "value": "90",
+            "displayOrder": 28
+        },
+        {
+            "key": "(UTC-03:00) Salvador",
+            "description": "(UTC-03:00) Salvador",
+            "value": "103",
+            "displayOrder": 29
+        },
+        {
+            "key": "(UTC-02:00) Coordinated Universal Time-02",
+            "description": "(UTC-02:00) Coordinated Universal Time-02",
+            "value": "96",
+            "displayOrder": 30
+        },
+        {
+            "key": "(UTC-02:00) Mid-Atlantic",
+            "description": "(UTC-02:00) Mid-Atlantic",
+            "value": "30",
+            "displayOrder": 31
+        },
+        {
+            "key": "(UTC-01:00) Azores",
+            "description": "(UTC-01:00) Azores",
+            "value": "29",
+            "displayOrder": 32
+        },
+        {
+            "key": "(UTC-01:00) Cabo Verde",
+            "description": "(UTC-01:00) Cabo Verde",
+            "value": "53",
+            "displayOrder": 33
+        },
+        {
+            "key": "(UTC) Casablanca",
+            "description": "(UTC) Casablanca",
+            "value": "86",
+            "displayOrder": 34
+        },
+        {
+            "key": "(UTC) Coordinated Universal Time",
+            "description": "(UTC) Coordinated Universal Time",
+            "value": "93",
+            "displayOrder": 35
+        },
+        {
+            "key": "(UTC) Dublin, Edinburgh, Lisbon, London",
+            "description": "(UTC) Dublin, Edinburgh, Lisbon, London",
+            "value": "2",
+            "displayOrder": 36
+        },
+        {
+            "key": "(UTC) Monrovia, Reykjavik",
+            "description": "(UTC) Monrovia, Reykjavik",
+            "value": "31",
+            "displayOrder": 37
+        },
+        {
+            "key": "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+            "description": "(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+            "value": "4",
+            "displayOrder": 38
+        },
+        {
+            "key": "(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
+            "description": "(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague",
+            "value": "6",
+            "displayOrder": 39
+        },
+        {
+            "key": "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",
+            "description": "(UTC+01:00) Brussels, Copenhagen, Madrid, Paris",
+            "value": "3",
+            "displayOrder": 40
+        },
+        {
+            "key": "(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
+            "description": "(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb",
+            "value": "57",
+            "displayOrder": 41
+        },
+        {
+            "key": "(UTC+01:00) West Central Africa",
+            "description": "(UTC+01:00) West Central Africa",
+            "value": "69",
+            "displayOrder": 42
+        },
+        {
+            "key": "(UTC+01:00) Windhoek",
+            "description": "(UTC+01:00) Windhoek",
+            "value": "83",
+            "displayOrder": 43
+        },
+        {
+            "key": "(UTC+02:00) Amman",
+            "description": "(UTC+02:00) Amman",
+            "value": "79",
+            "displayOrder": 44
+        },
+        {
+            "key": "(UTC+02:00) Athens, Bucharest, Istanbul",
+            "description": "(UTC+02:00) Athens, Bucharest, Istanbul",
+            "value": "5",
+            "displayOrder": 45
+        },
+        {
+            "key": "(UTC+02:00) Beirut",
+            "description": "(UTC+02:00) Beirut",
+            "value": "80",
+            "displayOrder": 46
+        },
+        {
+            "key": "(UTC+02:00) Cairo",
+            "description": "(UTC+02:00) Cairo",
+            "value": "49",
+            "displayOrder": 47
+        },
+        {
+            "key": "(UTC+02:00) Damascus",
+            "description": "(UTC+02:00) Damascus",
+            "value": "98",
+            "displayOrder": 48
+        },
+        {
+            "key": "(UTC+02:00) Harare, Pretoria",
+            "description": "(UTC+02:00) Harare, Pretoria",
+            "value": "50",
+            "displayOrder": 49
+        },
+        {
+            "key": "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
+            "description": "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
+            "value": "59",
+            "displayOrder": 50
+        },
+        {
+            "key": "(UTC+02:00) Istanbul",
+            "description": "(UTC+02:00) Istanbul",
+            "value": "101",
+            "displayOrder": 51
+        },
+        {
+            "key": "(UTC+02:00) Jerusalem",
+            "description": "(UTC+02:00) Jerusalem",
+            "value": "27",
+            "displayOrder": 52
+        },
+        {
+            "key": "(UTC+02:00) Minsk (old)",
+            "description": "(UTC+02:00) Minsk (old)",
+            "value": "7",
+            "displayOrder": 53
+        },
+        {
+            "key": "(UTC+02:00) E. Europe",
+            "description": "(UTC+02:00) E. Europe",
+            "value": "104",
+            "displayOrder": 52
+        },
+        {
+            "key": "(UTC+02:00) Kaliningrad (RTZ 1)",
+            "description": "(UTC+02:00) Kaliningrad (RTZ 1)",
+            "value": "100",
+            "displayOrder": 53
+        },
+        {
+            "key": "(UTC+03:00) Baghdad",
+            "description": "(UTC+03:00) Baghdad",
+            "value": "26",
+            "displayOrder": 54
+        },
+        {
+            "key": "(UTC+03:00) Kuwait, Riyadh",
+            "description": "(UTC+03:00) Kuwait, Riyadh",
+            "value": "74",
+            "displayOrder": 55
+        },
+        {
+            "key": "(UTC+03:00) Minsk",
+            "description": "(UTC+03:00) Minsk",
+            "value": "109",
+            "displayOrder": 56
+        },
+        {
+            "key": "(UTC+03:00) Moscow, St. Petersburg, Volgograd (RTZ 2)",
+            "description": "(UTC+03:00) Moscow, St. Petersburg, Volgograd (RTZ 2)",
+            "value": "51",
+            "displayOrder": 57
+        },
+        {
+            "key": "(UTC+03:00) Nairobi",
+            "description": "(UTC+03:00) Nairobi",
+            "value": "56",
+            "displayOrder": 58
+        },
+        {
+            "key": "(UTC+03:30) Tehran",
+            "description": "(UTC+03:30) Tehran",
+            "value": "25",
+            "displayOrder": 59
+        },
+        {
+            "key": "(UTC+04:00) Abu Dhabi, Muscat",
+            "description": "(UTC+04:00) Abu Dhabi, Muscat",
+            "value": "24",
+            "displayOrder": 60
+        },
+        {
+            "key": "(UTC+04:00) Baku",
+            "description": "(UTC+04:00) Baku",
+            "value": "54",
+            "displayOrder": 61
+        },
+        {
+            "key": "(UTC+04:00) Izhevsk, Samara (RTZ 3)",
+            "description": "(UTC+04:00) Izhevsk, Samara (RTZ 3)",
+            "value": "106",
+            "displayOrder": 62
+        },
+        {
+            "key": "(UTC+04:00) Port Louis",
+            "description": "(UTC+04:00) Port Louis",
+            "value": "89",
+            "displayOrder": 63
+        },
+        {
+            "key": "(UTC+04:00) Tbilisi",
+            "description": "(UTC+04:00) Tbilisi",
+            "value": "82",
+            "displayOrder": 64
+        },
+        {
+            "key": "(UTC+04:00) Yerevan",
+            "description": "(UTC+04:00) Yerevan",
+            "value": "84",
+            "displayOrder": 65
+        },
+        {
+            "key": "(UTC+04:30) Kabul",
+            "description": "(UTC+04:30) Kabul",
+            "value": "48",
+            "displayOrder": 66
+        },
+        {
+            "key": "(UTC+05:00) Ekaterinburg (RTZ 4)",
+            "description": "(UTC+05:00) Ekaterinburg (RTZ 4)",
+            "value": "58",
+            "displayOrder": 67
+        },
+        {
+            "key": "(UTC+05:00) Islamabad, Karachi",
+            "description": "(UTC+05:00) Islamabad, Karachi",
+            "value": "87",
+            "displayOrder": 68
+        },
+        {
+            "key": "(UTC+05:00) Tashkent",
+            "description": "(UTC+05:00) Tashkent",
+            "value": "47",
+            "displayOrder": 69
+        },
+        {
+            "key": "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",
+            "description": "(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi",
+            "value": "23",
+            "displayOrder": 70
+        },
+        {
+            "key": "(UTC+05:30) Sri Jayawardenepura",
+            "description": "(UTC+05:30) Sri Jayawardenepura",
+            "value": "66",
+            "displayOrder": 71
+        },
+        {
+            "key": "(UTC+05:45) Kathmandu",
+            "description": "(UTC+05:45) Kathmandu",
+            "value": "62",
+            "displayOrder": 72
+        },
+        {
+            "key": "(UTC+06:00) Astana",
+            "description": "(UTC+06:00) Astana",
+            "value": "71",
+            "displayOrder": 73
+        },
+        {
+            "key": "(UTC+06:00) Dhaka",
+            "description": "(UTC+06:00) Dhaka",
+            "value": "102",
+            "displayOrder": 74
+        },
+        {
+            "key": "(UTC+06:00) Novosibirsk (RTZ 5)",
+            "description": "(UTC+06:00) Novosibirsk (RTZ 5)",
+            "value": "46",
+            "displayOrder": 75
+        },
+        {
+            "key": "(UTC+06:30) Yangon (Rangoon)",
+            "description": "(UTC+06:30) Yangon (Rangoon)",
+            "value": "61",
+            "displayOrder": 76
+        },
+        {
+            "key": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+            "description": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+            "value": "22",
+            "displayOrder": 77
+        },
+        {
+            "key": "(UTC+07:00) Krasnoyarsk (RTZ 6)",
+            "description": "(UTC+07:00) Krasnoyarsk (RTZ 6)",
+            "value": "64",
+            "displayOrder": 78
+        },
+        {
+            "key": "(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
+            "description": "(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi",
+            "value": "45",
+            "displayOrder": 79
+        },
+        {
+            "key": "(UTC+08:00) Irkutsk (RTZ 7)",
+            "description": "(UTC+08:00) Irkutsk (RTZ 7)",
+            "value": "63",
+            "displayOrder": 80
+        },
+        {
+            "key": "(UTC+08:00) Kuala Lumpur, Singapore",
+            "description": "(UTC+08:00) Kuala Lumpur, Singapore",
+            "value": "21",
+            "displayOrder": 81
+        },
+        {
+            "key": "(UTC+08:00) Perth",
+            "description": "(UTC+08:00) Perth",
+            "value": "73",
+            "displayOrder": 82
+        },
+        {
+            "key": "(UTC+08:00) Taipei",
+            "description": "(UTC+08:00) Taipei",
+            "value": "75",
+            "displayOrder": 83
+        },
+        {
+            "key": "(UTC+08:00) Ulaanbaatar",
+            "description": "(UTC+08:00) Ulaanbaatar",
+            "value": "94",
+            "displayOrder": 84
+        },
+        {
+            "key": "(UTC+09:00) Osaka, Sapporo, Tokyo",
+            "description": "(UTC+09:00) Osaka, Sapporo, Tokyo",
+            "value": "20",
+            "displayOrder": 85
+        },
+        {
+            "key": "(UTC+09:00) Seoul",
+            "description": "(UTC+09:00) Seoul",
+            "value": "72",
+            "displayOrder": 86
+        },
+        {
+            "key": "(UTC+09:00) Yakutsk (RTZ 8)",
+            "description": "(UTC+09:00) Yakutsk (RTZ 8)",
+            "value": "70",
+            "displayOrder": 87
+        },
+        {
+            "key": "(UTC+09:30) Adelaide",
+            "description": "(UTC+09:30) Adelaide",
+            "value": "19",
+            "displayOrder": 88
+        },
+        {
+            "key": "(UTC+09:30) Darwin",
+            "description": "(UTC+09:30) Darwin",
+            "value": "44",
+            "displayOrder": 89
+        },
+        {
+            "key": "(UTC+10:00) Brisbane",
+            "description": "(UTC+10:00) Brisbane",
+            "value": "18",
+            "displayOrder": 90
+        },
+        {
+            "key": "(UTC+10:00) Canberra, Melbourne, Sydney",
+            "description": "(UTC+10:00) Canberra, Melbourne, Sydney",
+            "value": "76",
+            "displayOrder": 91
+        },
+        {
+            "key": "(UTC+10:00) Guam, Port Moresby",
+            "description": "(UTC+10:00) Guam, Port Moresby",
+            "value": "43",
+            "displayOrder": 92
+        },
+        {
+            "key": "(UTC+10:00) Hobart",
+            "description": "(UTC+10:00) Hobart",
+            "value": "42",
+            "displayOrder": 93
+        },
+        {
+            "key": "(UTC+10:00) Magadan",
+            "description": "(UTC+10:00) Magadan",
+            "value": "99",
+            "displayOrder": 94
+        },
+        {
+            "key": "(UTC+10:00) Vladivostok, Magadan (RTZ 9)",
+            "description": "(UTC+10:00) Vladivostok, Magadan (RTZ 9)",
+            "value": "68",
+            "displayOrder": 95
+        },
+        {
+            "key": "(UTC+11:00) Chokurdakh (RTZ 10)",
+            "description": "(UTC+11:00) Chokurdakh (RTZ 10)",
+            "value": "107",
+            "displayOrder": 96
+        },
+        {
+            "key": "(UTC+11:00) Solomon Is., New Caledonia",
+            "description": "(UTC+11:00) Solomon Is., New Caledonia",
+            "value": "41",
+            "displayOrder": 97
+        },
+        {
+            "key": "(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
+            "description": "(UTC+12:00) Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
+            "value": "108",
+            "displayOrder": 98
+        },
+        {
+            "key": "(UTC+12:00) Auckland, Wellington",
+            "description": "(UTC+12:00) Auckland, Wellington",
+            "value": "17",
+            "displayOrder": 99
+        },
+        {
+            "key": "(UTC+12:00) Coordinated Universal Time+12",
+            "description": "(UTC+12:00) Coordinated Universal Time+12",
+            "value": "97",
+            "displayOrder": 100
+        },
+        {
+            "key": "(UTC+12:00) Fiji",
+            "description": "(UTC+12:00) Fiji",
+            "value": "40",
+            "displayOrder": 101
+        },
+        {
+            "key": "(UTC+12:00) Petropavlovsk-Kamchatsky - Old",
+            "description": "(UTC+12:00) Petropavlovsk-Kamchatsky - Old",
+            "value": "92",
+            "displayOrder": 102
+        },
+        {
+            "key": "(UTC+13:00) Nuku'alofa",
+            "description": "(UTC+13:00) Nuku'alofa",
+            "value": "67",
+            "displayOrder": 103
+        },
+        {
+            "key": "(UTC+13:00) Samoa",
+            "description": "(UTC+13:00) Samoa",
+            "value": "16",
+            "displayOrder": 104
         }
     ]
 }
