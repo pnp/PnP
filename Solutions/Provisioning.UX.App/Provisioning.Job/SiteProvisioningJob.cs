@@ -41,6 +41,7 @@ namespace Provisioning.Job
             var _srManager = _requestFactory.GetSiteRequestManager();
             var _requests = _srManager.GetApprovedRequests();
 
+            Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is {0} Site Request Messages pending in the queue.", _requests.Count);
             //TODO LOG HOW MANY ITEMS
             if(_requests.Count > 0)
             {
@@ -48,7 +49,7 @@ namespace Provisioning.Job
             }
             else
             {
-                //LOG NO ITEMS
+                Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is no Site Request Messages pending in the queue");
             }
         }
 
@@ -66,12 +67,14 @@ namespace Provisioning.Job
                   
                     //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
                     if (_template == null) {
-                       //TODO LOG
+                        Log.Warning("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Template {0} was not found for Site Url {1}.", siteRequest.Template, siteRequest.Url);
                     }
 
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Processing);
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
+                    Log.Info("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
                     _siteProvisioningManager.ProcessSiteRequest(siteRequest, _template);
+              
                     _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
                     this.SendSuccessEmail(siteRequest);
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
