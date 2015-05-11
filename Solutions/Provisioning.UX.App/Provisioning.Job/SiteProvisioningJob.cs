@@ -49,7 +49,7 @@ namespace Provisioning.Job
             }
             else
             {
-                Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is no Site Request Messages pending in the queue");
+                Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is no Site Request pending in the queue");
             }
         }
 

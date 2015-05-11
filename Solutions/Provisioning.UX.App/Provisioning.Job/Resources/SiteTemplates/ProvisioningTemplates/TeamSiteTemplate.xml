@@ -4,7 +4,7 @@
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <pnp:Files>
-    <pnp:File Src="PnP.png" Folder="SiteAssets" Overwrite="true"/>
+    <pnp:File Src="siteLogo.png" Folder="SiteAssets" Overwrite="true"/>
     <pnp:File Src="CustomInjectedJS.js" Folder="SiteAssets" Overwrite="true" />
     <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
     <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
@@ -25,15 +25,6 @@
                     Title="SubSiteOveride"
                     ScriptSrc="~site/PnP_Provisioning_JS/PnP_EmbeddedJS.js"/>
     </pnp:SiteCustomActions>
-    <pnp:WebCustomActions>
-      <pnp:CustomAction Name="CA_WEB_DOCLIB_MENU_SAMPLE"
-                    Description="Document Library Custom Menu"
-                    Group="ActionsMenu"
-                    Location="Microsoft.SharePoint.StandardMenu"
-                    Title="DocLib Custom Menu"
-                    Sequence="100"
-                    Url="/_layouts/CustomActionsHello.aspx?ActionsMenu" />
-    </pnp:WebCustomActions>
   </pnp:CustomActions>
   <pnp:ComposedLook Name="Contoso" Version="1"
                 ColorFile="~themecatalog/15/custom.spcolor"
@@ -41,5 +32,5 @@
                 BackgroundFile="~themecatalog/15/custombg.jpg"
                 MasterPage="~masterpagecatalog/seattle.master"
                 AlternateCSS=""
-                SiteLogo="~site/SiteAssets/PnP.png" />
+                SiteLogo="~site/SiteAssets/siteLogo.png" />
 </pnp:SharePointProvisioningTemplate>

@@ -88,7 +88,7 @@
     <Content Include="Resources\EmailContent\sharepoint.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\ContosoTemplate-01.xml">
+    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\custombg.jpg">
@@ -97,7 +97,7 @@
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\CustomInjectedJS.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\PnP.png">
+    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\siteLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
