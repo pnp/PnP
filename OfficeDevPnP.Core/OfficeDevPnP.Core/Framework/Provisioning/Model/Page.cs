@@ -28,7 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Constructors
         public Page() { }
 
-        public Page(string url, bool overwrite, WikiPageLayout layout, IEnumerable<WebPart> webParts, bool welcomePage)
+        public Page(string url, bool overwrite, WikiPageLayout layout, IEnumerable<WebPart> webParts, bool welcomePage = false)
         {
             this.Url = url;
             this.Overwrite = overwrite;
