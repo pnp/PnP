@@ -72,6 +72,17 @@
 
         </div>
 
+        <div class="col-sm-6">            
+
+            <div class="form-group has-feedback">
+                <label class="control-label" for="detailsTimezone">Time Zone</label>
+                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.details.timezone" required>
+                    <option ng-repeat="timezone in timezones | orderBy: 'displayOrder'" ng-selected="{{timezone.value == 13}}" value="{{timezone.value}}">{{timezone.key}}</option>
+                </select>
+            </div>
+
+        </div>
+
     </div>
 
 </div>

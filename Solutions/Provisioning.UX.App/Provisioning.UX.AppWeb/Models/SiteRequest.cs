@@ -28,6 +28,9 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "languageID")]
         public uint LanguageID { get; set; }
 
+        [DataMember(Name = "timezoneID")]
+        public uint TimeZoneID { get; set; }
+
         [DataMember(Name = "primaryOwner")]
         public string PrimaryOwner { get; set; }
 

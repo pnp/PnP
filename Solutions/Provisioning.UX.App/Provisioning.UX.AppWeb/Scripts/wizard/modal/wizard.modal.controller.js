@@ -39,6 +39,7 @@
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
             siteRequest.Template = $scope.siteConfiguration.template.title;
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
+            
        
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
     
@@ -157,6 +158,13 @@
 
                 // Store langauges data 
                 $scope.languages = languagesdata;
+            });
+
+            // Use the metadata factory to retrieve a list of timezones
+            BusinessMetadata.getTimeZones().then(function (timezonesdata) {
+
+                // Store time zones data 
+                $scope.timezones = timezonesdata;
             });
 
             // Use the metadata factory to retrieve a list of site classifications
