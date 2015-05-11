@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.SharePoint.Client.Utilities;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
+using Utility = OfficeDevPnP.Core.Utilities.Utility;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -1302,6 +1304,33 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
         }
 
+        /// <summary>
+        /// Sets the web home page by Server Relative Path
+        /// </summary>
+        /// <param name="web">The Web to process</param>
+        /// <param name="serverRelativePath">The server relative path , e.g. /sites/teamsite/SitePages/Home.aspx</param>
+        public static void SetHomePageByServerRelativePath(this Web web, string serverRelativePath)
+        {
+            Folder folder = web.RootFolder;
+            
+            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
+            {
+                web.Context.Load(web, w => w.ServerRelativeUrl);
+                web.Context.ExecuteQueryRetry();
+            }
 
+            var webUrl = HttpUtility.UrlKeyValueDecode(web.ServerRelativeUrl);
+            serverRelativePath = HttpUtility.UrlKeyValueDecode(serverRelativePath);
+
+            var webRelativeUrl = serverRelativePath.Remove(0, webUrl.Length);
+            if (webRelativeUrl.FirstOrDefault() == '/')
+            {
+                webRelativeUrl = webRelativeUrl.Remove(0, 1);
+            }
+
+            folder.WelcomePage = HttpUtility.UrlKeyValueEncode(webRelativeUrl);
+            folder.Update();
+            web.Context.ExecuteQueryRetry();
+        }
     }
 }
