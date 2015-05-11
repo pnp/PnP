@@ -1305,7 +1305,7 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// Sets the web home page by Server Relative Path
+        /// Sets the web home page by Server Relative Path. The page should be in the same web
         /// </summary>
         /// <param name="web">The Web to process</param>
         /// <param name="serverRelativePath">The server relative path , e.g. /sites/teamsite/SitePages/Home.aspx</param>
