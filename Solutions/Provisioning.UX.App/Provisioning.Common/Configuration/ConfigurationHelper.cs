@@ -14,8 +14,6 @@ namespace Provisioning.Common.Configuration
     /// </summary>
     internal static class ConfigurationHelper
     {
-        const string LOGGING_SOURCE = "ConfigurationHelper";
-
         #region Public Static Members
 
         /// <summary>
@@ -38,7 +36,7 @@ namespace Provisioning.Common.Configuration
                 }
                 else
                 {
-                    Log.Warning(LOGGING_SOURCE, PCResources.AppSettings_KeyNotFound, key);
+                    Log.Warning("Provisioning.Common.Configuration.ConfigurationHelper", PCResources.AppSettings_KeyNotFound, key);
                 }
                 return _returnValue;
             }

@@ -34,6 +34,7 @@ namespace Provisioning.Common
      
         public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
+            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "Creating Site Collection with url {0}", siteRequest.Url);
             UsingContext(ctx =>
             {
                 try
@@ -76,6 +77,7 @@ namespace Provisioning.Common
                     Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "An Error occured occured while provisioning the site {0}. The Error Message: {1}, Exception: {2}", siteRequest.Url, ex.Message, ex);
                     throw;
                 }
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);
             });
         }
     }

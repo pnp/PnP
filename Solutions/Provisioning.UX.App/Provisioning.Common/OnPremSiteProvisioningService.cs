@@ -90,7 +90,10 @@ namespace Provisioning.Common
                     newSiteCtx.Web.AddPermissionLevelToGroup(_memberGroupDisplayName, RoleType.Editor);
                     newSiteCtx.Web.AddPermissionLevelToGroup(_vistorGroupDisplayName, RoleType.Reader);
                     newSiteCtx.ExecuteQuery();
-                    Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", "Setting group Security Permissions for {0}, {1}, {2}.", _ownerGroupDisplayName, _memberGroupDisplayName, _vistorGroupDisplayName);
+                    Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", "Setting group Security Permissions for {0}, {1}, {2}.", 
+                        _ownerGroupDisplayName, 
+                        _memberGroupDisplayName, 
+                        _vistorGroupDisplayName);
                 }
             });
 
