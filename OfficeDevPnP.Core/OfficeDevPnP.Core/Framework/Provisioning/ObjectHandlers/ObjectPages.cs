@@ -69,6 +69,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.AddWikiPageByUrl(url);
                     web.AddLayoutToWikiPage(page.Layout, url);
                 }
+
+                if (page.WelcomePage)
+                {
+                   web.SetHomePageByServerRelativePath(url);
+                }
+
                 if (page.WebParts != null & page.WebParts.Any())
                 {
                     var existingWebParts = web.GetWebParts(url);

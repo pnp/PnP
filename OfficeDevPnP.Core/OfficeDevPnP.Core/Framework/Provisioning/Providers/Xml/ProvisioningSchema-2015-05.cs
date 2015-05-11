@@ -2583,8 +2583,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private WikiPageLayout layoutField;
         
+        private bool welcomePageField;
+        
         public Page() {
             this.overwriteField = false;
+            this.welcomePageField = false;
         }
         
         /// <remarks/>
@@ -2629,6 +2632,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.layoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool WelcomePage {
+            get {
+                return this.welcomePageField;
+            }
+            set {
+                this.welcomePageField = value;
             }
         }
     }

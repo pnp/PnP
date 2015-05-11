@@ -1201,6 +1201,15 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+
+    <xsd:attribute name="WelcomePage" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines whether the page should be set as Welcomepage of the web rootfolder
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
   </xsd:complexType>
 
   <xsd:complexType name="WikiPageWebPart">
