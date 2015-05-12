@@ -119,6 +119,7 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\spsiteprov %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
+    <Content Include="Scripts\data\appsettings.factory.js" />
     <Content Include="Scripts\data\json\divisions.json" />
     <Content Include="Scripts\data\json\functions.json" />
     <Content Include="Scripts\data\json\languages.json" />
@@ -129,6 +130,7 @@
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Scripts\data\json\appsettings.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

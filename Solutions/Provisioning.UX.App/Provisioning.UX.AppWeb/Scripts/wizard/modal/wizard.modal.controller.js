@@ -17,9 +17,9 @@
         activate();
 
         // Set language and time zone defaults
-        $scope.siteConfiguration.language = "1033";
-        $scope.siteConfiguration.timezone = "13";
-
+        $scope.siteConfiguration.language = $scope.appSettings[0].value;
+        $scope.siteConfiguration.timezone = $scope.appSettings[1].value;
+        
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
         //remove hard coded path now we get from template object when selected
