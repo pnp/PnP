@@ -38,6 +38,7 @@
             siteRequest.Url = $scope.siteConfiguration.details.url;
             siteRequest.Description = $scope.siteConfiguration.details.description;
             siteRequest.LanguageID = $scope.siteConfiguration.language;
+            siteRequest.TimeZoneID = $scope.siteConfiguration.timezone;
             siteRequest.PrimaryOwner = $scope.siteConfiguration.primaryOwner;
             siteRequest.SecondaryOwners = $scope.siteConfiguration.secondaryOwners;
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;

@@ -43,7 +43,7 @@ namespace Provisioning.Common.Data.Templates
         public ISiteTemplateManager GetManager()
         {
             var _configManager = new ConfigManager();
-            var _module = _configManager.GetModuleByName(ModuleKeys.TEMPLATEPROVIDER_KEY);
+            var _module = _configManager.GetModuleByName(ModuleKeys.MASTERTEMPLATEPROVIDER_KEY);
             var _managerTypeString = _module.ModuleType;
             if(string.IsNullOrEmpty(_managerTypeString))
             {
@@ -57,6 +57,7 @@ namespace Provisioning.Common.Data.Templates
                 var assemblyName = type[1];
                 var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
                 instance.ConnectionString = _module.ConnectionString;
+                instance.Container = _module.Container;
                 return (ISiteTemplateManager)instance;
             }
             catch (Exception _ex)

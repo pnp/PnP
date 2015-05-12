@@ -28,5 +28,12 @@ namespace Provisioning.Common.Configuration
             get { return (string)base["connectionString"]; }
             set { base["connectionString"] = value; }
         }
+
+        [ConfigurationProperty("container", DefaultValue = "", IsKey = false, IsRequired = true)]
+        public string Container
+        {
+            get { return (string)base["container"]; }
+            set { base["container"] = value; }
+        }
     }
 }
