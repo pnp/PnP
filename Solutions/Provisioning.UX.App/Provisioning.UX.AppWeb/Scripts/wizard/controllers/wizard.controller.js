@@ -5,9 +5,9 @@
         .module('app.wizard')
         .controller('WizardController', WizardController);
 
-    WizardController.$inject = ['$scope', '$log', '$modal', 'utilservice'];
+    WizardController.$inject = ['$scope', '$log', '$modal', 'AppSettings', 'utilservice'];
 
-    function WizardController($scope, $log, $modal, $utilservice) {
+    function WizardController($scope, $log, $modal, AppSettings, $utilservice) {
         $scope.title = 'WizardController';
         
         $scope.spHostWebUrl = $utilservice.spHostUrl();
@@ -18,7 +18,9 @@
         function activate() {
 
             $log.info($scope.title + ' Activated');         
+            $scope.appSettings = {};
 
+            getAppSettings();
             initModal();
         }
 
@@ -47,6 +49,19 @@
             };
 
         }
+
+        function getAppSettings() {
+
+            // Use the app settings factory to retrieve app settings data
+            AppSettings.getAppSettings().then(function (settingsdata) {
+
+                // Store settings data 
+                $scope.appSettings = settingsdata;
+
+            });
+
+        }
+
 
     }
 })();

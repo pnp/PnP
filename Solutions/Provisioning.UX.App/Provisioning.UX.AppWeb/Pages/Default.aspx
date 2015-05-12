@@ -52,6 +52,7 @@
     <script src="../scripts/data/data.module.js"></script>
     <script src="../scripts/data/templates.factory.js"></script>
     <script src="../scripts/data/metadata.factory.js"></script>
+    <script src="../scripts/data/appsettings.factory.js"></script>
     <script src="../scripts/wizard/services/provisioningServices.js"></script>
 
     
