@@ -44,13 +44,13 @@ DOCUMENTATION IN PROGRESS
 Projects what are included in the solution and the needed configuration for them. 
 
 ### Provisioning.UX.App###
-SharePoint Application 
+SharePoint Add-In 
 
 ### Provisioning.Common ###
-Reusable component  
+Reusable component for that implements the site provisioning logic
 
 ### Provisioning.Job ###
-WebJob project which will be deployed to the Azure Will be responsible of the actual site collection creation and the logic on how to apply configuration/customization on newly created site.
+Remote Timer job project which maybe deployed to Azure.  Will be responsible of the actual site collection creation and the logic on how to apply configuration/customization on newly created site.
 
 You will need to update App ID/Secret in the app.config
 

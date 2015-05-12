@@ -81,8 +81,10 @@ var visitorsPicker;
             //5. $('#hdnAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
 
             additionalOwnersPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanAdditionalOwnersPrimary'), $('#inputAdditionalOwnersPrimary'), $('#divAdditionalOwnersPrimarySearch'), $('#hdnAdditionalOwnersPrimary'), "additionalOwnersPicker", spLanguage);
-            membersPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanMembers'), $('#inputMembers'), $('#divMembersSearch'), $('#hdnMembers'), "membersPicker", spLanguage);
-            visitorsPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanVisitors'), $('#inputVisitors'), $('#divVisitorsSearch'), $('#hdnVisitors'), "visitorsPicker", spLanguage);
+
+            //Removed fjm if you wish to add additional people pickers this shows the pattern and look at the view_owners.html file
+            //membersPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanMembers'), $('#inputMembers'), $('#divMembersSearch'), $('#hdnMembers'), "membersPicker", spLanguage);
+            //visitorsPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanVisitors'), $('#inputVisitors'), $('#divVisitorsSearch'), $('#hdnVisitors'), "visitorsPicker", spLanguage);
 
 
         }
