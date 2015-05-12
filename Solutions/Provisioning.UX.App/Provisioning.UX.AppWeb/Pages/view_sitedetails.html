@@ -65,8 +65,7 @@
 
             <div class="form-group">
                 <label class="control-label" for="detailsLanguage">Language</label>
-                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.details.language" required>
-                    <option ng-repeat="language in languages | orderBy: 'displayOrder'" ng-selected="{{language.value == 1033}}" value="{{language.value}}">{{language.key}}</option>
+                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.language" ng-options="l.value as l.key for l in languages" required>                    
                 </select>
             </div>
 
@@ -76,8 +75,7 @@
 
             <div class="form-group has-feedback">
                 <label class="control-label" for="detailsTimezone">Time Zone</label>
-                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.details.timezone" required>
-                    <option ng-repeat="timezone in timezones | orderBy: 'displayOrder'" ng-selected="{{timezone.value == 13}}" value="{{timezone.value}}">{{timezone.key}}</option>
+                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.timezone" ng-options="tz.value as tz.key for tz in timezones" required>                    
                 </select>
             </div>
 

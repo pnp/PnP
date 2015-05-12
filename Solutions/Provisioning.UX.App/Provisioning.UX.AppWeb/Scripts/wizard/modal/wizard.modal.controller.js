@@ -16,6 +16,10 @@
 
         activate();
 
+        // Set language and time zone defaults
+        $scope.siteConfiguration.language = "1033";
+        $scope.siteConfiguration.timezone = "13";
+
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
         //remove hard coded path now we get from template object when selected
@@ -33,7 +37,7 @@
             siteRequest.HostPath = $scope.siteConfiguration.spNewSitePrefix;
             siteRequest.Url = $scope.siteConfiguration.details.url;
             siteRequest.Description = $scope.siteConfiguration.details.description;
-            siteRequest.LanguageID = $scope.siteConfiguration.details.language;
+            siteRequest.LanguageID = $scope.siteConfiguration.language;
             siteRequest.PrimaryOwner = $scope.siteConfiguration.primaryOwner;
             siteRequest.SecondaryOwners = $scope.siteConfiguration.secondaryOwners;
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
