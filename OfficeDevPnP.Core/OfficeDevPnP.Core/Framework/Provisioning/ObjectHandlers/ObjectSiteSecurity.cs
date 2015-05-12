@@ -55,7 +55,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var user = web.EnsureUser(admin.Name);
                 user.IsSiteAdmin = true;
                 user.Update();
-                web.Context.ExecuteQueryRetry();
+                try
+                {
+                    web.Context.ExecuteQueryRetry();
+                }
+                catch (ServerException serverEx) //most likely user doesn't exist anymore
+                {
+                    Log.Error(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,
+                        CoreResources.Provisioning_ObjectHandlers_SiteSecurity, serverEx.Message);                    
+                }
             }
         }
 
