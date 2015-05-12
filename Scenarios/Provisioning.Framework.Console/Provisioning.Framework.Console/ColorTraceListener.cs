@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.SiteProvisioning.Console
+namespace Provisioning.Framework
 {
     public class ColorTraceListener : CustomTraceListener
     {
@@ -64,5 +64,4 @@ namespace Core.SiteProvisioning.Console
 
         }
     }
-
 }
