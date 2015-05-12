@@ -105,6 +105,7 @@
     <Content Include="images\gears16.gif" />
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
+    <Content Include="images\template-icon.png" />
     <Content Include="Pages\view_confirmation.html" />
     <Content Include="Pages\view_dataprivacy.html" />
     <Content Include="Pages\view_intendeduse.html" />
@@ -146,7 +147,6 @@
     <Content Include="images\button-next.png" />
     <Content Include="images\o365-pnp-logo.png" />
     <Content Include="images\o365-pnp-logo2.png" />
-    <Content Include="images\template-icon.png" />
     <Content Include="Pages\Default.aspx" />
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\app.module.js" />
