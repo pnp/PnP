@@ -202,7 +202,8 @@
                        method: "GET",
                        headers:
                        {
-                           "accept": "application/json;odata=nometadata"
+                           "Accept": "application/json;odata=nometadata"
+                   
                        },
                        success: function (data) {
                            var jsonResults = JSON.parse(data.body);
