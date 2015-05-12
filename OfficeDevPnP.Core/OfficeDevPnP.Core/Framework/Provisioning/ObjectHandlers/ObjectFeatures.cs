@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     catch (ServerException serverEx)
                     {
                         Log.Error(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,
-                            CoreResources.Provisioning_ObjectHandlers_Features, serverEx.Message);
+                            CoreResources.Provisioning_ObjectHandlers_Features_Exception, serverEx.Message);
                     }
                 }
             }

@@ -62,7 +62,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 catch (ServerException serverEx) //most likely user doesn't exist anymore
                 {
                     Log.Error(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,
-                        CoreResources.Provisioning_ObjectHandlers_SiteSecurity, serverEx.Message);                    
+                        CoreResources.Provisioning_ObjectHandlers_SiteSecurity_Exception, serverEx.Message);                    
                 }
             }
         }

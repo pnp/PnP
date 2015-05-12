@@ -108,14 +108,7 @@ namespace OfficeDevPnP.Core.Utilities
                     message = message.Replace("{", "{{").Replace("}", "}}");
                 }
 
-                StringBuilder msg = new StringBuilder(message);
-                //parse all arguments
-                for (int i = 0; i < args.Length; i++)
-                {
-                    msg.Append(", ");
-                    msg.Append(args[i].ToString());
-                }
-                
+                string msg = String.Format(CultureInfo.CurrentCulture, message, args);
                 string log = string.Format(CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg.ToString());
                 return log;
             }

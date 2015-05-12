@@ -678,4 +678,10 @@
   <data name="Provisioning_ObjectHandlers_TermGroups" xml:space="preserve">
     <value>Term Groups</value>
   </data>
+  <data name="Provisioning_ObjectHandlers_Features_Exception" xml:space="preserve">
+    <value>Feature provisioning error {0}</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_SiteSecurity_Exception" xml:space="preserve">
+    <value>Site security error {0}</value>
+  </data>
 </root>
