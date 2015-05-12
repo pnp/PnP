@@ -24,6 +24,31 @@
                         </div>
                     </td>
                 </tr>
+
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Continent:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerContinent" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Country:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerCountry" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Region:</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" ID="taxPickerRegion" />
+                        </div>
+                    </td>
+                </tr>
             </table>
 
             <asp:Button runat="server" OnClick="SubmitButton_Click" Text="Submit" />
