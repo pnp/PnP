@@ -79,6 +79,10 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (Exception ex)
             {
+                Log.Error("Provisioning.UX.AppWeb.Controllers.ProvisioningController", 
+                    "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
+                    ex.Message,
+                    ex);
                 _request.ErrorMessage = ex.Message;
             }
             return _request;
@@ -96,7 +100,6 @@ namespace Provisioning.UX.AppWeb.Controllers
             try
             {
                 var _newRequest = ObjectMapper.ToSiteRequestInformation(siteRequest);
-
                 ///Save the Site Request
                 ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
                 var _manager = _srf.GetSiteRequestManager();

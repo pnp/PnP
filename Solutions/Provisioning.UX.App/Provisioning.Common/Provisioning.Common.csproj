@@ -123,6 +123,7 @@
       <DependentUpon>PCResources.resx</DependentUpon>
     </Compile>
     <Compile Include="OnPremSiteProvisioningService.cs" />
+    <Compile Include="ProvisioningTemplateException.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="SharePointUser.cs" />
     <Compile Include="SiteRequestInformation.cs" />

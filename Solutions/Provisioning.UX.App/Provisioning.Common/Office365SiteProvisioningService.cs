@@ -22,7 +22,6 @@ namespace Provisioning.Common
     /// </summary>
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
-
         #region Constructor
         /// <summary>
         /// Constructor

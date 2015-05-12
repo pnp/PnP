@@ -21,9 +21,12 @@ namespace Provisioning.UX.AppWeb
 
             foreach (var secondaryOwner in request.SecondaryOwners)
             {
-                var _sharePointUser = new SharePointUser();
-                _sharePointUser.Email = secondaryOwner;
-                _additionalAdmins.Add(_sharePointUser);
+                if(!string.IsNullOrEmpty(secondaryOwner))
+                {
+                    var _sharePointUser = new SharePointUser();
+                    _sharePointUser.Email = secondaryOwner;
+                    _additionalAdmins.Add(_sharePointUser);
+                }
             }
 
             var _newRequest = new SiteRequestInformation();
@@ -44,9 +47,6 @@ namespace Provisioning.UX.AppWeb
                 //Serialize Property Bag Entries
                 _newRequest.PropertiesJSON = JsonConvert.SerializeObject(request.Properties);
             }
-    
-
-
             return _newRequest;
         }
 

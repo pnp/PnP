@@ -41,7 +41,7 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="siteRequest"></param>
         /// <param name="template"></param>
-        public void ProcessSiteRequest(SiteRequestInformation siteRequest, Template template)
+        public void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
@@ -52,15 +52,26 @@ namespace Provisioning.Common
         /// TODO
         /// </summary>
         /// <param name="web"></param>
+        /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
         public void ApplyProvisioningTemplates(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
-            this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
-            this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
-            var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
+            try
+            {
+                this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
+                this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
+                var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
 
-            provisioningTemplate.Connector = this.GetProvisioningConnector();
-            provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
-            _web.ApplyProvisioningTemplate(provisioningTemplate);
+                provisioningTemplate.Connector = this.GetProvisioningConnector();
+                provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
+                _web.ApplyProvisioningTemplate(provisioningTemplate);
+            }
+            catch(Exception _ex)
+            {
+                //TODO RESOURCE FILES
+                var _message = "Error Occured when applying the template";
+                throw new ProvisioningTemplateException(_message, _ex);
+            }
+           
         }
 
         /// <summary>
@@ -80,7 +91,7 @@ namespace Provisioning.Common
                 var assemblyName = type[1];
                 var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
                 instance.AddParameter(CONNECTIONSTRING_KEY, _module.ConnectionString);
-                instance.AddParameter(CONTAINERSTRING_KEY, string.Empty);
+                instance.AddParameter(CONTAINERSTRING_KEY, _module.Container);
                 return instance;
             }
             catch (Exception _ex)
