@@ -29,7 +29,7 @@ namespace Provisioning.UX.AppWeb.Models
         public uint LanguageID { get; set; }
 
         [DataMember(Name = "timezoneID")]
-        public uint TimeZoneID { get; set; }
+        public int TimeZoneID { get; set; }
 
         [DataMember(Name = "primaryOwner")]
         public string PrimaryOwner { get; set; }

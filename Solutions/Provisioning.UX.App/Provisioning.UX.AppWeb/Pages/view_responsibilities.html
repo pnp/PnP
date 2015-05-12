@@ -3,10 +3,13 @@
 </div>
 
 <div class="modal-right-body">
-    <p>Being a site owned has its responsibilites...</p>
-    <p>Ensuring that the Site has the correct permissions<p>
-    <p>Correct data classifications: LBI, MBI, and HBI</p>
-    <p>Valid primary and secondary owners</p>
+    <p>
+        It is the responsibility of site owners to manage site user permissions to ensure that the information and data they create and have in their care is protected from unauthorized disclosure,
+        exposure through enterprise search, destruction, alteration, or modification. Furthermore, any personal information, including any information that permits an individual to be identified
+        or contacted (such as name, postal address, email address, phone number, financial information or account numbers, or any government-issued ID numbers) must be used for Contosoo business purposes only.
+        Any use, transfer, or storage of personal information must be in accordance with our policies, the terms of any privacy statement(s) under which the information was originally collected,
+        and any contact or other usage preferences expressed by the individual to whom the information relates.
+    </p>
 
     <div class="form-group" ng-class="{'has-success': siteConfiguration.responsibilities.read }">
         <div class="checkbox">
@@ -16,14 +19,4 @@
             </label>
         </div>
     </div>
-
-    <div class="form-group" ng-class="{'has-success': siteConfiguration.responsibilities.agreed }">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="" ng-model="siteConfiguration.responsibilities.agreed" required>
-                I agree to...
-            </label>
-        </div>
-    </div>
-
 </div>
