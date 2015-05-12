@@ -1,5 +1,5 @@
 #Add-SPOView
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-05-04*
 
 Adds a view to a list
 ##Syntax
@@ -17,11 +17,11 @@ Query|String|False|
 RowLimit|UInt32|False|
 SetAsDefault|SwitchParameter|False|
 Title|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ViewType|ViewType|False|
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
     Add-SPOView -List "Demo List" -Title "Demo View" -Fields "Title","Address"
 
-<!-- Ref: FA453D0AB89B21296FB7B18B91042479 -->
+<!-- Ref: 43387171A4788BBD404FA39A20E547D0 -->

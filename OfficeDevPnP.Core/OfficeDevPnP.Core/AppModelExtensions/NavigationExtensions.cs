@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Enums;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using System.Collections;
+using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -12,6 +17,326 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class NavigationExtensions
     {
+
+        #region Area Navigation (publishing sites)
+        const string PublishingFeatureActivated = "__PublishingFeatureActivated";
+        const string WebNavigationSettings = "_webnavigationsettings";
+        const string CurrentNavigationIncludeTypes = "__CurrentNavigationIncludeTypes";
+        const string CurrentDynamicChildLimit = "__CurrentDynamicChildLimit";
+        const string GlobalNavigationIncludeTypes = "__GlobalNavigationIncludeTypes";
+        const string GlobalDynamicChildLimit = "__GlobalDynamicChildLimit";
+        const string NavigationOrderingMethod = "__NavigationOrderingMethod";
+        const string NavigationAutomaticSortingMethod = "__NavigationAutomaticSortingMethod";
+        const string NavigationSortAscending = "__NavigationSortAscending";
+        const string NavigationShowSiblings = "__NavigationShowSiblings";
+
+        public static AreaNavigationEntity GetNavigationSettings(this Web web)
+        {
+            AreaNavigationEntity nav = new AreaNavigationEntity();
+
+            //Read all the properties of the web
+            web.Context.Load(web, w => w.AllProperties);
+            web.Context.ExecuteQueryRetry();
+
+            if (!ArePublishingFeaturesActivated(web.AllProperties))
+            {
+                throw new ArgumentException("Structural navigation settings are only supported for publishing sites");
+            }
+
+            // Determine if managed navigation is used...if so the other properties are not relevant
+            string webNavigationSettings = web.AllProperties.GetPropertyAsString(WebNavigationSettings);
+            if (webNavigationSettings == null)
+            {
+                nav.CurrentNavigation.ManagedNavigation = false;
+                nav.GlobalNavigation.ManagedNavigation = false;
+            }
+            else
+            {
+                var navigationSettings = XElement.Parse(webNavigationSettings);
+                IEnumerable<XElement> navNodes = navigationSettings.XPathSelectElements("./SiteMapProviderSettings/TaxonomySiteMapProviderSettings");
+                foreach (var node in navNodes)
+                {
+                    if (node.Attribute("Name").Value.Equals("CurrentNavigationTaxonomyProvider", StringComparison.InvariantCulture))
+                    {
+                        bool managedNavigation = true;
+                        if (node.Attribute("Disabled") != null)
+                        {
+                            if (bool.TryParse(node.Attribute("Disabled").Value, out managedNavigation))
+                            {
+                                managedNavigation = false;
+                            }
+                        }
+                        nav.CurrentNavigation.ManagedNavigation = managedNavigation;
+                    }
+                    else if (node.Attribute("Name").Value.Equals("GlobalNavigationTaxonomyProvider", StringComparison.InvariantCulture))
+                    {
+                        bool managedNavigation = true;
+                        if (node.Attribute("Disabled") != null)
+                        {
+                            if (bool.TryParse(node.Attribute("Disabled").Value, out managedNavigation))
+                            {
+                                managedNavigation = false;
+                            }
+                        }
+                        nav.GlobalNavigation.ManagedNavigation = managedNavigation;
+                    }
+                }
+            }
+
+            // Only read the other values that make sense when not using managed navigation
+            if (!nav.CurrentNavigation.ManagedNavigation)
+            {
+                int currentNavigationIncludeTypes = web.AllProperties.GetPropertyAsInt(CurrentNavigationIncludeTypes);
+                if (currentNavigationIncludeTypes > -1)
+                {
+                    MapFromNavigationIncludeTypes(nav.CurrentNavigation, currentNavigationIncludeTypes);
+                }
+
+                int currentDynamicChildLimit = web.AllProperties.GetPropertyAsInt(CurrentDynamicChildLimit);
+                if (currentDynamicChildLimit > -1)
+                {
+                    nav.CurrentNavigation.MaxDynamicItems = currentDynamicChildLimit;
+                }
+
+                // For the current navigation there's an option to show the sites siblings in structural navigation
+                if (web.IsSubSite())
+                {
+                    bool showSiblings = false;
+                    string navigationShowSiblings = web.AllProperties.GetPropertyAsString(NavigationShowSiblings);
+                    if (bool.TryParse(navigationShowSiblings, out showSiblings))
+                    {
+                        nav.CurrentNavigation.ShowSiblings = showSiblings;
+                    }
+                }
+            }
+
+            if (!nav.GlobalNavigation.ManagedNavigation)
+            {
+                int globalNavigationIncludeTypes = web.AllProperties.GetPropertyAsInt(GlobalNavigationIncludeTypes);
+                if (globalNavigationIncludeTypes > -1)
+                {
+                    MapFromNavigationIncludeTypes(nav.GlobalNavigation, globalNavigationIncludeTypes);
+                }
+
+                int globalDynamicChildLimit = web.AllProperties.GetPropertyAsInt(GlobalDynamicChildLimit);
+                if (globalDynamicChildLimit > -1)
+                {
+                    nav.GlobalNavigation.MaxDynamicItems = globalDynamicChildLimit;
+                }
+            }
+
+            // Read the sorting value 
+            int navigationOrderingMethod = web.AllProperties.GetPropertyAsInt(NavigationOrderingMethod);
+            if (navigationOrderingMethod > -1)
+            {
+                nav.Sorting = (StructuralNavigationSorting)navigationOrderingMethod;
+            }
+
+            // Read the sort by value
+            int navigationAutomaticSortingMethod = web.AllProperties.GetPropertyAsInt(NavigationAutomaticSortingMethod);
+            if (navigationAutomaticSortingMethod > -1)
+            {
+                nav.SortBy = (StructuralNavigationSortBy)navigationAutomaticSortingMethod;
+            }
+
+            // Read the ordering setting
+            bool navigationSortAscending = true;
+            string navProp = web.AllProperties.GetPropertyAsString(NavigationSortAscending);
+
+            if (bool.TryParse(navProp, out navigationSortAscending))
+            {
+                nav.SortAscending = navigationSortAscending;
+            }
+
+            return nav;
+        }
+
+        public static void UpdateNavigationSettings(this Web web, AreaNavigationEntity navigationSettings)
+        {
+            //Read all the properties of the web
+            web.Context.Load(web, w => w.AllProperties);
+            web.Context.ExecuteQueryRetry();
+
+            if (!ArePublishingFeaturesActivated(web.AllProperties))
+            {
+                throw new ArgumentException("Structural navigation settings are only supported for publishing sites");
+            }
+
+            // Use publishing CSOM API to switch between managed metadata and structural navigation
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
+            web.Context.Load(taxonomySession);
+            web.Context.ExecuteQueryRetry();
+            Microsoft.SharePoint.Client.Publishing.Navigation.WebNavigationSettings webNav = new Publishing.Navigation.WebNavigationSettings(web.Context, web);
+            if (!navigationSettings.GlobalNavigation.ManagedNavigation)
+            {
+                webNav.GlobalNavigation.Source = Publishing.Navigation.StandardNavigationSource.PortalProvider;
+            }
+            else
+            {
+                webNav.GlobalNavigation.Source = Publishing.Navigation.StandardNavigationSource.TaxonomyProvider;
+            }
+
+            if (!navigationSettings.CurrentNavigation.ManagedNavigation)
+            {
+                webNav.CurrentNavigation.Source = Publishing.Navigation.StandardNavigationSource.PortalProvider;
+            }
+            else
+            {
+                webNav.CurrentNavigation.Source = Publishing.Navigation.StandardNavigationSource.TaxonomyProvider;
+            }
+            webNav.Update(taxonomySession);            
+            web.Context.ExecuteQueryRetry();
+
+            //Read all the properties of the web again after the above update
+            web.Context.Load(web, w => w.AllProperties);
+            web.Context.ExecuteQueryRetry();
+
+            if (!navigationSettings.GlobalNavigation.ManagedNavigation)
+            {
+                int globalNavigationIncludeType = MapToNavigationIncludeTypes(navigationSettings.GlobalNavigation);
+                web.AllProperties[GlobalNavigationIncludeTypes] = globalNavigationIncludeType;
+                web.AllProperties[GlobalDynamicChildLimit] = navigationSettings.GlobalNavigation.MaxDynamicItems;
+            }
+
+            if (!navigationSettings.CurrentNavigation.ManagedNavigation)
+            {
+                int currentNavigationIncludeType = MapToNavigationIncludeTypes(navigationSettings.CurrentNavigation);
+                web.AllProperties[CurrentNavigationIncludeTypes] = currentNavigationIncludeType;
+                web.AllProperties[CurrentDynamicChildLimit] = navigationSettings.CurrentNavigation.MaxDynamicItems;
+
+                // Call web.update before the IsSubSite call as this might do an ExecuteQuery. Without the update called the changes will be lost
+                web.Update();
+                // For the current navigation there's an option to show the sites siblings in structural navigation
+                if (web.IsSubSite())
+                {
+                    web.AllProperties[NavigationShowSiblings] = navigationSettings.CurrentNavigation.ShowSiblings.ToString();
+                }
+            }
+
+            // if there's either global or current structural navigation then update the sorting settings
+            if (!navigationSettings.GlobalNavigation.ManagedNavigation || !navigationSettings.CurrentNavigation.ManagedNavigation)
+            {
+                // If there's automatic sorting or pages are shown with automatic page sorting then we can set all sort options
+                if ((navigationSettings.Sorting == StructuralNavigationSorting.Automatically) ||
+                    (navigationSettings.Sorting == StructuralNavigationSorting.ManuallyButPagesAutomatically && (navigationSettings.GlobalNavigation.ShowPages || navigationSettings.CurrentNavigation.ShowPages)))
+                {
+                    // All sort options can be set
+                    web.AllProperties[NavigationOrderingMethod] = (int)navigationSettings.Sorting;
+                    web.AllProperties[NavigationAutomaticSortingMethod] = (int)navigationSettings.SortBy;
+                    web.AllProperties[NavigationSortAscending] = navigationSettings.SortAscending.ToString();
+                }
+                else
+                {
+                    // if pages are not shown we can set sorting to either automatic or manual
+                    if (!navigationSettings.GlobalNavigation.ShowPages && !navigationSettings.CurrentNavigation.ShowPages)
+                    {
+                        if (navigationSettings.Sorting == StructuralNavigationSorting.ManuallyButPagesAutomatically)
+                        {
+                            throw new ArgumentException("Sorting can only be set to StructuralNavigationSorting.ManuallyButPagesAutomatically when ShowPages has been selected in either the global or current structural navigation settings");
+                        }
+                    }
+
+                    web.AllProperties[NavigationOrderingMethod] = (int)navigationSettings.Sorting;
+                }
+            }
+
+            //Persist all property updates at once
+            web.Update();
+            web.Context.ExecuteQueryRetry();
+        }
+
+        private static int MapToNavigationIncludeTypes(StructuralNavigationEntity sne)
+        {
+            int navigationIncludeType = -1;
+
+            if (!sne.ShowPages && !sne.ShowSubsites)
+            {
+                navigationIncludeType = 0;
+            }
+            else if (!sne.ShowPages && sne.ShowSubsites)
+            {
+                navigationIncludeType = 1;
+            }
+            else if (sne.ShowPages && !sne.ShowSubsites)
+            {
+                navigationIncludeType = 2;
+            }
+            else if (sne.ShowPages && sne.ShowSubsites)
+            {
+                navigationIncludeType = 3;
+            }
+
+            return navigationIncludeType;
+        }
+
+
+        private static void MapFromNavigationIncludeTypes(StructuralNavigationEntity sne, int navigationIncludeTypes)
+        {
+            if (navigationIncludeTypes == 0)
+            {
+                sne.ShowPages = false;
+                sne.ShowSubsites = false;
+            }
+            else if (navigationIncludeTypes == 1)
+            {
+                sne.ShowPages = false;
+                sne.ShowSubsites = true;
+            }
+            else if (navigationIncludeTypes == 2)
+            {
+                sne.ShowPages = true;
+                sne.ShowSubsites = false;
+            }
+            else if (navigationIncludeTypes == 3)
+            {
+                sne.ShowPages = true;
+                sne.ShowSubsites = true;
+            }
+        }
+
+        private static bool ArePublishingFeaturesActivated(PropertyValues props)
+        {
+            bool activated = false;
+
+            if (bool.TryParse(props.GetPropertyAsString(PublishingFeatureActivated), out activated))
+            { 
+            }
+            
+            return activated;
+        }
+
+        private static string GetPropertyAsString(this PropertyValues props, string key)
+        {
+            if (props.FieldValues.ContainsKey(key))
+            {
+                return props.FieldValues[key].ToString();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private static int GetPropertyAsInt(this PropertyValues props, string key)
+        {
+            if (props.FieldValues.ContainsKey(key))
+            {
+                int res;
+                if (int.TryParse(props.FieldValues[key].ToString(), out res))
+                {
+                    return res;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        #endregion
+
         #region Navigation elements - quicklaunch, top navigation, search navigation
         /// <summary>
         /// Add a node to quick launch, top navigation bar or search navigation. The node will be added as the last node in the
@@ -406,7 +731,7 @@ namespace Microsoft.SharePoint.Client
             web.Context.Load(web.UserCustomActions);
             web.Context.ExecuteQueryRetry();
 
-            var customActions = web.UserCustomActions.Cast<UserCustomAction>();
+            var customActions = web.UserCustomActions.AsEnumerable<UserCustomAction>();
             foreach (var customAction in customActions)
             {
                 var customActionName = customAction.Name;
@@ -433,7 +758,7 @@ namespace Microsoft.SharePoint.Client
             site.Context.Load(site.UserCustomActions);
             site.Context.ExecuteQueryRetry();
 
-            var customActions = site.UserCustomActions.Cast<UserCustomAction>();
+            var customActions = site.UserCustomActions.AsEnumerable<UserCustomAction>();
             foreach (var customAction in customActions)
             {
                 var customActionName = customAction.Name;

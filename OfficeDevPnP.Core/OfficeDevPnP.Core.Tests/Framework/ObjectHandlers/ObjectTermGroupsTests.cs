@@ -104,23 +104,18 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 Assert.IsInstanceOfType(set, typeof(Microsoft.SharePoint.Client.Taxonomy.TermSet));
                 Assert.IsTrue(set.Terms.Count == 2);
 
-            }
-        }
 
-        [TestMethod]
-        public void CanCreateEntities()
-        {
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                // Load the base template which will be used for the comparison work
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
-                var template = new ProvisioningTemplate();
-                template = new ObjectTermGroups().CreateEntities(ctx.Web, template, creationInfo);
+                var template2 = new ProvisioningTemplate();
+                template2 = new ObjectTermGroups().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.TermGroups.Any());
                 Assert.IsInstanceOfType(template.TermGroups, typeof(List<TermGroup>));
             }
+
+
         }
+
     }
 }

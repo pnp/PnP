@@ -37,11 +37,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingCT == null)
                 {
                     var newCT = CreateContentType(web, ct);
-                    if(newCT != null)
+                    if (newCT != null)
                     {
                         existingCTs.Add(newCT);
                     }
-                    
+
                 }
                 else
                 {
@@ -49,7 +49,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingCT.DeleteObject();
                         web.Context.ExecuteQueryRetry();
-                        var newCT= CreateContentType(web, ct);
+                        var newCT = CreateContentType(web, ct);
                         if (newCT != null)
                         {
                             existingCTs.Add(newCT);
@@ -115,7 +115,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ct.ReadOnly,
                         ct.DocumentTemplate,
                         false,
-                            (from fieldLink in ct.FieldLinks
+                            (from fieldLink in ct.FieldLinks.AsEnumerable<FieldLink>()
                              select new FieldRef(fieldLink.Name)
                              {
                                  Id = fieldLink.Id,
