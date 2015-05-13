@@ -71,10 +71,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="1_Configuration\AppSettingTests\AppSettingTests.cs" />
-    <Compile Include="1_Configuration\Templates\TemplateConfigurationTests.cs" />
-    <Compile Include="3_SiteRequests\SiteRequestFactoryTests.cs" />
-    <Compile Include="3_SiteRequests\SharePointSiteManagerTests.cs" />
+    <Compile Include="1_Configuration\ConfigurationTests.cs" />
+    <Compile Include="3_Data\TemplateConfigurationTests.cs" />
+    <Compile Include="3_Data\SiteRequestFactoryTests.cs" />
+    <Compile Include="3_Data\SharePointSiteManagerTests.cs" />
     <Compile Include="4_Authentication\AuthenticationTests.cs" />
     <Compile Include="Mocks\MockSiteRequestInfo.cs" />
     <Compile Include="TestConstants.cs" />
@@ -106,6 +106,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

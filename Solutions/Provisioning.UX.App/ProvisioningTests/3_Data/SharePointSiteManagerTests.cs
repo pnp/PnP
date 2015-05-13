@@ -5,7 +5,7 @@ using Provisioning.Common;
 using System.Collections.Generic;
 using Provisioning.Common.Data.SiteRequests;
 
-namespace ProvisioningTests._3_SiteRequests
+namespace ProvisioningTests._3_Data
 {
     [TestClass]
     public class SharePointSiteManagerTests

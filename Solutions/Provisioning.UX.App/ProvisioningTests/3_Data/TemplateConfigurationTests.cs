@@ -10,7 +10,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Data.Templates.Impl;
 
-namespace ProvisioningTests._1_Configuration.Templates
+namespace ProvisioningTests._3_Data
 {
     [TestClass]
     public class TemplateConfigurationTests

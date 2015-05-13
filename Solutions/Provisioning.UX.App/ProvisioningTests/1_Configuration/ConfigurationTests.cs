@@ -6,15 +6,15 @@ using Provisioning.Common.Utilities;
 using ProvisioningTests;
 using Provisioning.Common.Configuration.Application;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
-namespace ProvisioningTests._1_Configuration.AppSettingTests
+namespace ProvisioningTests._1_Configuration
 {
     [TestClass]
-    public class AppSettingTests
+    public class ConfigurationTests
     {
-       
         [TestMethod]
-        [TestCategory("APP Settings Test")]
+        [TestCategory("Configuration")]
         public void AppSettingsCanGetAppSettingsManager()
         {
             var _configFactory = ConfigurationFactory.GetInstance();
@@ -25,7 +25,7 @@ namespace ProvisioningTests._1_Configuration.AppSettingTests
         }
 
         [TestMethod]
-        [TestCategory("APP Settings Test")]
+        [TestCategory("Configuration")]
         public void AppSettingsCanReadAppSettingsConfiguration()
         {
             //TODO CHANGE THE TEST CONSTANTS TO MATCH YOUR ENVIRONEMNT
@@ -58,5 +58,46 @@ namespace ProvisioningTests._1_Configuration.AppSettingTests
             Assert.IsNotNull(module.Name);
             Assert.IsNotNull(module);
         }
+        
+        [TestMethod]
+        [TestCategory("Configuration")]
+        public void CanParseEnvironmentToken()
+        {
+            ConfigManager _cm = new ConfigManager();
+            var _expected = "C:\\ProgramData/Resources/SiteTemplate";
+            var _actual = _cm.GetAppSettingsKey("ENVRTEST1");
+
+            Regex r = new Regex(@"(?:(?<=\().+?(?=\))|(?<=\[).+?(?=\]))");
+            Regex r1 = new Regex(@"\[(.*?)\]");
+
+            Match _outPut = r.Match(_actual);
+            if(_outPut.Success)
+            {
+                var _env = Environment.GetEnvironmentVariable(_outPut.Value);
+                _actual = r1.Replace(_actual, _env);
+            }
+            Assert.AreEqual(_expected, _actual);
+        }
+
+        [TestMethod]
+        [TestCategory("Configuration")]
+        public void CanParseEnvironmentTokenFromConfigManager()
+        {
+            ConfigManager _cm = new ConfigManager();
+            var _expected = "C:\\ProgramData/Resources/SiteTemplate";
+            var _actual = _cm.GetAppSettingsKey("ENVRTEST1");
+            Assert.AreEqual(_expected, _actual);
+        }
+
+        [TestMethod]
+        [TestCategory("Configuration")]
+        public void CanParseConfigWithNoEnvironmentFromConfigManager()
+        {
+            ConfigManager _cm = new ConfigManager();
+            var _expected = "Resources/SiteTemplate";
+            var _actual = _cm.GetAppSettingsKey("ENVRTEST2");
+            Assert.AreEqual(_expected, _actual);
+        }
+        
     }
 }

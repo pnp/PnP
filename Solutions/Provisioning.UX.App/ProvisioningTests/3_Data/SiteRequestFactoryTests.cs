@@ -8,7 +8,7 @@ using Provisioning.Common.Configuration;
 using Provisioning.Common.Data;
 using Provisioning.Common.Data.SiteRequests;
 
-namespace ProvisioningTests._3_SiteRequests
+namespace ProvisioningTests._3_Data
 {
     [TestClass]
     public class SiteRequestFactoryTests
