@@ -158,6 +158,7 @@
     <Content Include="Pages\wizard.modal.html" />
     <Content Include="Scripts\data\data.module.js" />
     <Content Include="Scripts\data\templates.factory.js" />
+    <Content Include="Scripts\SubSiteOverride.js" />
     <Content Include="Scripts\wizard\directives\restrict.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\peoplepickercontrol.js" />
