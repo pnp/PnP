@@ -58,23 +58,22 @@
   <Choose>
     <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
       <ItemGroup>
-        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
-          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
-          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
@@ -140,6 +139,7 @@
     <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
+    <Compile Include="Base\PipeBinds\TermGroupPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowDefinitionPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowSubscriptionPipeBind.cs" />
@@ -202,6 +202,11 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="Taxonomy\ImportTermGroupFromXml.cs" />
+    <Compile Include="Taxonomy\ExportTermGroupToXml.cs" />
+    <Compile Include="Taxonomy\NewTermGroup.cs" />
+    <Compile Include="Taxonomy\GetTermGroup.cs" />
+    <Compile Include="Taxonomy\ImportTermSet.cs" />
     <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Branding\RemoveJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptLink.cs" />
@@ -324,9 +329,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml" "$(SolutionDir)
 
-C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
+C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy bypass -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

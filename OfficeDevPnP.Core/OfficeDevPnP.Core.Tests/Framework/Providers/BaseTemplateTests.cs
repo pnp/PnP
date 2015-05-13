@@ -34,7 +34,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                     creationInfo.BaseTemplate = null;
 
                     ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
-                    p.ID = "STS0template";
+                    p.Id = "STS0template";
 
                     // Cleanup before saving
                     p.Security.AdditionalAdministrators.Clear();

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Style Library\" Type="ElementManifest" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\Colours.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\GenericTemplates.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\GoogleMaps.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\Lookups.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\ManagedMetadata.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\dot.png" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\DrawMap.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\DrawMapSpacial.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\GoogleMapPointDialog.aspx" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\GoogleMapSpacialDialog.aspx" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\jquery.ui.map.min.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Pages\json2.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Pages\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementView.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\FavouriteColours.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\GoogleMapOverrides.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\ProjectLocations.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\TaxonomyOverrides.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\jquery-1.10.2.min.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

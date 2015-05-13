@@ -1,15 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using User = OfficeDevPnP.Core.Framework.Provisioning.Model.User;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
     public class ObjectSiteSecurity : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Site Security"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_SiteSecurity);
+
             // if this is a sub site then we're not provisioning security as by default security is inherited from the root site
             if (web.IsSubSite())
             {
@@ -22,15 +30,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
 
+
             web.Context.Load(ownerGroup, o => o.Users);
             web.Context.Load(memberGroup, o => o.Users);
             web.Context.Load(visitorGroup, o => o.Users);
 
             web.Context.ExecuteQueryRetry();
 
-            AddUserToGroup(web, ownerGroup, siteSecurity.AdditionalOwners);
-            AddUserToGroup(web, memberGroup, siteSecurity.AdditionalMembers);
-            AddUserToGroup(web, visitorGroup, siteSecurity.AdditionalVisitors);
+            if (!ownerGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, ownerGroup, siteSecurity.AdditionalOwners);
+            }
+            if (!memberGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, memberGroup, siteSecurity.AdditionalMembers);
+            }
+            if (!visitorGroup.ServerObjectIsNull.Value)
+            {
+                AddUserToGroup(web, visitorGroup, siteSecurity.AdditionalVisitors);
+            }
 
             foreach (var admin in siteSecurity.AdditionalAdministrators)
             {
@@ -39,22 +57,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 user.Update();
                 web.Context.ExecuteQueryRetry();
             }
-
         }
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)
         {
-            web.Context.Load(group, o => o.Users);
-
-            if (group.Users.Any())
+            foreach (var user in members)
             {
-                foreach (var user in members)
-                {
-                    var existingUser = web.EnsureUser(user.Name);
-                    group.Users.AddUser(existingUser);
-                }
-                web.Context.ExecuteQueryRetry();
+                var existingUser = web.EnsureUser(user.Name);
+                group.Users.AddUser(existingUser);
             }
+            web.Context.ExecuteQueryRetry();
+
         }
 
 
@@ -70,45 +83,63 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
+            web.Context.ExecuteQueryRetry();
 
-            web.Context.Load(ownerGroup, o => o.Users);
-            web.Context.Load(memberGroup, o => o.Users);
-            web.Context.Load(visitorGroup, o => o.Users);
+            if (!ownerGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(ownerGroup, o => o.Users);
+            }
+            if (!memberGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(memberGroup, o => o.Users);
+            }
+            if (!visitorGroup.ServerObjectIsNull.Value)
+            {
+                web.Context.Load(visitorGroup, o => o.Users);
 
+            }
             web.Context.ExecuteQueryRetry();
 
             var owners = new List<User>();
             var members = new List<User>();
             var visitors = new List<User>();
-
-            foreach (var member in ownerGroup.Users)
+            if (!ownerGroup.ServerObjectIsNull.Value)
             {
-                owners.Add(new User() {Name = member.LoginName});
+                foreach (var member in ownerGroup.Users)
+                {
+                    owners.Add(new User() { Name = member.LoginName });
+                }
             }
-            foreach (var member in memberGroup.Users)
+            if (!memberGroup.ServerObjectIsNull.Value)
             {
-                members.Add(new User() { Name = member.LoginName });
+                foreach (var member in memberGroup.Users)
+                {
+                    members.Add(new User() { Name = member.LoginName });
+                }
             }
-            foreach (var member in visitorGroup.Users)
+            if (!visitorGroup.ServerObjectIsNull.Value)
             {
-                visitors.Add(new User() { Name = member.LoginName });
+                foreach (var member in visitorGroup.Users)
+                {
+                    visitors.Add(new User() { Name = member.LoginName });
+                }
             }
             var siteSecurity = new SiteSecurity();
             siteSecurity.AdditionalOwners.AddRange(owners);
             siteSecurity.AdditionalMembers.AddRange(members);
             siteSecurity.AdditionalVisitors.AddRange(visitors);
 
-            var allUsers = web.SiteUsers;
-            web.Context.Load(allUsers, users => users.Include(u => u.LoginName, u => u.IsSiteAdmin));
+            var query = from user in web.SiteUsers
+                        where user.IsSiteAdmin
+                        select user;
+            var allUsers = web.Context.LoadQuery(query);
+
             web.Context.ExecuteQueryRetry();
 
             var admins = new List<User>();
             foreach (var member in allUsers)
             {
-                if (member.IsSiteAdmin)
-                {
-                    admins.Add(new User() {Name = member.LoginName});
-                }
+                admins.Add(new User() { Name = member.LoginName });
             }
             siteSecurity.AdditionalAdministrators.AddRange(admins);
 

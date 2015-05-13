@@ -1,16 +1,14 @@
 #Get-SPOFile
-*Topic automatically generated on: 2015-04-02*
+*Topic automatically generated on: 2015-05-04*
 
 Downloads a file.
 ##Syntax
 ```powershell
-Get-SPOFile [-Path [<String>]] [-Filename [<String>]] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
-```
+Get-SPOFile -AsString [<SwitchParameter>] [-Web <WebPipeBind>] -ServerRelativeUrl <String>```
 &nbsp;
 
 ```powershell
-Get-SPOFile -AsString [<SwitchParameter>] [-Web [<WebPipeBind>]] -ServerRelativeUrl [<String>]
-```
+Get-SPOFile [-Path <String>] [-Filename <String>] [-Web <WebPipeBind>] -ServerRelativeUrl <String>```
 &nbsp;
 
 ##Parameters
@@ -20,7 +18,7 @@ AsString|SwitchParameter|True|
 Filename|String|False|
 Path|String|False|
 ServerRelativeUrl|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
@@ -37,3 +35,4 @@ Downloads the file and saves it to c:\temp\company.spcolor
     
 PS:> Get-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor -AsString
 Downloads the file and outputs its contents to the console
+<!-- Ref: 82583DE5570ADD78040D924F662E437E -->

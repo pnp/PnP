@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -34,11 +36,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             var template = new ProvisioningTemplate();
             template.Features.WebFeatures.Add(
                 new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature() 
-                { ID = featureId, Deactivate = true});
+                { Id = featureId, Deactivate = true});
 
 
             using (var ctx = TestCommon.CreateClientContext())
             {
+                TokenParser.Initialize(ctx.Web, template);
                 new ObjectFeatures().ProvisionObjects(ctx.Web, template);
 
                 var f = ctx.Web.IsFeatureActive(featureId);
@@ -54,8 +57,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = null };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectFeatures().CreateEntities(ctx.Web, template, null);
+                template = new ObjectFeatures().CreateEntities(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.Features.SiteFeatures.Any());
                 Assert.IsTrue(template.Features.WebFeatures.Any());

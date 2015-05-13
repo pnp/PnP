@@ -37,8 +37,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                     var template = new ProvisioningTemplate();
                     template = new ObjectComposedLook().CreateEntities(cc.Web, template, null);
 
+                    // Switch to OOB theme
                     template.ComposedLook.Name = "Green";
-                    template.ID = "bertdemo";
+                    // Cleanup detected files
+                    template.Files.Clear();
+                    template.Id = "bertdemo";
 
                     cc.Web.ApplyProvisioningTemplate(template);
                 }
@@ -55,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                     var template = new ProvisioningTemplate();
                     template = new ObjectComposedLook().CreateEntities(cc.Web, template, null);
 
-                    template.ID = "bertdemo";
+                    template.Id = "bertdemo";
                     template.Connector = new FileSystemConnector("./Resources", "");
 
                     using (ClientContext cc2 = ctx.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))

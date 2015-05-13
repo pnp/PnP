@@ -1,5 +1,18 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-04-24**
+* Updated Get-SPOProvisioningTemplate and Apply-SPOProvisioningTemplate to show a progress bar
+* Updated GEt-SPOProvisioningTemplate with optional switches to export either Site Collection Term Group (if available) or all Term Groups in the default site collection termstore.
+* Added Export-SPOTermGroup cmdlet that supports the provisioning engine XML format
+* Added Import-SPOTermGroup cmdlet that supports the provisioning engine XML format
+
+**2015-04-20**
+* Admin cmdlets: Get-SPOTenantSite, New-SPOTenantSite, Remove-SPOTenantSite, Set-SPOTenantSite and Get-SPOWebTemplates now automatically switch context. This means that you don't have to connect to https://<tenant>-admin.sharepoint.com first in order to execute them.
+**2015-04-08**
+* Added Apply-SPOProvisioningTemplate cmdlet
+* Added Get-SPOPRovisioningTemplate cmdlet
+* Extended Enable-SPOFeature cmdlet to handle Sandboxed features
+
 **2015-03-11**
 * Added Get-SPOJavaScript link cmdlet
 * Refactored JavaScript related cmdlets to use -Name parameter instead of -Key (-Key still works for backwards compatibility reasons)

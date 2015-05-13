@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Regions"
+                OnQuickLaunch="TRUE" TemplateType="10009" Url="Lists/Regions">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="ID">1</Field>
+          <Field Name="Title">East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">2</Field>
+          <Field Name="Title">Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">3</Field>
+          <Field Name="Title">Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">4</Field>
+          <Field Name="Title">Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">5</Field>
+          <Field Name="Title">North America</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">6</Field>
+          <Field Name="Title">Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">7</Field>
+          <Field Name="Title">South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">8</Field>
+          <Field Name="Title">South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">9</Field>
+          <Field Name="Title">Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">10</Field>
+          <Field Name="Title">West &amp; Central Africa</Field>
+        </Row>
+
+      </Rows>
+    </Data>
+  </ListInstance>
+</Elements>

@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 
             var _mockctx = new ClientContext(ExtensibilityTestConstants.MOCK_URL);
             var _mockTemplate = new ProvisioningTemplate();
-            _mockTemplate.ID = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
+            _mockTemplate.Id = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
 
             var _em = new ExtensibilityManager();
             _em.ExecuteExtensibilityCallOut(_mockctx, _mockProvider, _mockTemplate);
@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 
             var _mockctx = new ClientContext(ExtensibilityTestConstants.MOCK_URL);
             var _mockTemplate = new ProvisioningTemplate();
-            _mockTemplate.ID = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
+            _mockTemplate.Id = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
 
             var _em = new ExtensibilityManager();
             _em.ExecuteExtensibilityCallOut(_mockctx, _mockProvider, _mockTemplate);
@@ -58,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 
             var _mockctx = new ClientContext(ExtensibilityTestConstants.MOCK_URL);
             var _mockTemplate = new ProvisioningTemplate();
-            _mockTemplate.ID = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
+            _mockTemplate.Id = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
 
             var _em = new ExtensibilityManager();
             _em.ExecuteExtensibilityCallOut(_mockctx, _mockProvider, _mockTemplate);
@@ -76,7 +76,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 
             var _mockctx = new ClientContext(ExtensibilityTestConstants.MOCK_URL);
             var _mockTemplate = new ProvisioningTemplate();
-            _mockTemplate.ID = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
+            _mockTemplate.Id = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
 
             var _em = new ExtensibilityManager();
             _em.ExecuteExtensibilityCallOut(_mockctx, _mockProvider, _mockTemplate);
@@ -94,7 +94,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ExtensibilityCallOut
 
             ClientContext _mockCtx = null;
             var _mockTemplate = new ProvisioningTemplate();
-            _mockTemplate.ID = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
+            _mockTemplate.Id = ExtensibilityTestConstants.PROVISIONINGTEMPLATE_ID;
 
             var _em = new ExtensibilityManager();
             _em.ExecuteExtensibilityCallOut(_mockCtx, _mockProvider, _mockTemplate);

@@ -9,10 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.New, "SPOTenantSite")]
     [CmdletHelp("Office365 only: Creates a new site collection for the current tenant", DetailedDescription = @"
 The New-SPOTenantSite cmdlet creates a new site collection for the current company. However, creating a new SharePoint
-Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Office365 only", Category = "Tenant Administration")]
+Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.", Category = "Tenant Administration")]
     public class NewTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -66,7 +63,7 @@ available quota.
         [Parameter(Mandatory = false)]
         public SwitchParameter Wait;
 
-        protected override void ProcessRecord()
+        protected override void ExecuteCmdlet()
         {
             Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
         }
