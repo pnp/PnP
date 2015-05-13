@@ -86,13 +86,13 @@
             };
 
             var nav = new SP.UI.Controls.Navigation(
-                                    "chrome_ctrl_placeholder",
+                                    "divSPChrome",
                                     options
                                 );
             nav.setVisible(true);
         }
 
-        // Function to retrieve a query string value.
+        // Function to retrieve a query string value
         // For production purposes you may want to use
         //  a library to handle the query string.
         function getQueryStringParameter(paramToRetrieve) {
@@ -109,14 +109,11 @@
 
 </head>
 <body>    
-    <div id="chrome_ctrl_placeholder"></div>            
+    <div id="divSPChrome"></div>            
         
     <!-- Include the Wizard View -->
     <div data-ng-include="'wizard.html'"></div>
-
-          
     <!-- App JS -->
-             
     <script src="../scripts/app.module.js"></script>    
     <script src="../scripts/wizard/modules/wizard.module.js"></script>    
     <script src="../scripts/wizard/services/utilservice.js"></script>
@@ -132,9 +129,6 @@
     <script src="../scripts/data/metadata.factory.js"></script>
     <script src="../scripts/data/appsettings.factory.js"></script>
     <script src="../scripts/wizard/services/provisioningServices.js"></script>
-
-    
     <script src="../scripts/app.js"></script>    
-    
 </body>
 </html>
