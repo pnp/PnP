@@ -206,6 +206,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Pages\SiteClassification\" />
+    <Folder Include="Pages\SubSite\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
