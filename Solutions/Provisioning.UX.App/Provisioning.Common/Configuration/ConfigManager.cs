@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Provisioning.Common.Configuration
@@ -35,6 +36,8 @@ namespace Provisioning.Common.Configuration
         public string GetAppSettingsKey(string key)
         {
             string _returnValue = string.Empty;
+            Regex r = new Regex(@"(?:(?<=\().+?(?=\))|(?<=\[).+?(?=\]))");
+            Regex r1 = new Regex(@"\[(.*?)\]");
 
             try
             {
@@ -42,6 +45,12 @@ namespace Provisioning.Common.Configuration
                 if (ConfigurationManager.AppSettings.AllKeys.Contains(key))
                 {
                     _returnValue = ConfigurationManager.AppSettings.Get(key);
+                    Match _outPut = r.Match(_returnValue);
+                    if (_outPut.Success)
+                    {
+                        var _envPath = Environment.GetEnvironmentVariable(_outPut.Value);
+                        _returnValue = r1.Replace(_returnValue, _envPath);
+                    }
                 }
                 else
                 {

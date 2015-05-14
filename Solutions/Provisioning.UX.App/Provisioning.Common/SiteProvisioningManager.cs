@@ -71,9 +71,7 @@ namespace Provisioning.Common
                 var _message = "Error Occured when applying the template";
                 throw new ProvisioningTemplateException(_message, _ex);
             }
-           
         }
-
         /// <summary>
         /// Returns Connectors
         /// </summary>

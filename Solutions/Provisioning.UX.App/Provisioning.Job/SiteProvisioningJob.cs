@@ -76,7 +76,7 @@ namespace Provisioning.Job
                     _siteProvisioningManager.CreateSiteCollection(siteRequest, _template);
                     _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
                     this.SendSuccessEmail(siteRequest);
-                   _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }
                 catch(ProvisioningTemplateException _pte)
                 {
@@ -84,8 +84,8 @@ namespace Provisioning.Job
                 }
                 catch(Exception _ex)
                 {
-                   _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
-                    this.SendFailureEmail(siteRequest, _ex.Message);
+                  _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
+                  this.SendFailureEmail(siteRequest, _ex.Message);
                 }
                
             }

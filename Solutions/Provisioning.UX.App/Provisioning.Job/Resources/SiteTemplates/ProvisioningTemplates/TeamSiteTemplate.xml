@@ -11,20 +11,38 @@
   </pnp:Files>
   <pnp:CustomActions>
     <pnp:SiteCustomActions>
+      <pnp:CustomAction Name="CA_SITE_SUBSITE_OVERRIDE"
+                    Description="Override new sub-site link"
+                    Location="ScriptLink"
+                    Title="SubSiteOveride"
+                    ScriptSrc=""
+                    ScriptBlock="
+                        var SubSiteSettings_Web_Url = 'https://spsiteprov.azurewebsites.net';
+                        var headID = document.getElementsByTagName('head')[0]; 
+                        var subsiteScriptTag = document.createElement('script');
+                        subsiteScriptTag.type = 'text/javascript';
+                        subsiteScriptTag.src = 'https://spsiteprov.azurewebsites.net/scripts/SubSiteOverride.js';
+                        headID.appendChild(subsiteScriptTag);     
+                    "/>
+    </pnp:SiteCustomActions>
+    <pnp:WebCustomActions>
       <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION"
                     Description="Site Classification Application"
                     Group="SiteTasks"
                     Location="Microsoft.SharePoint.SiteSettings"
                     Title="Site Classification"
                     Sequence="1000"
-                    Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}"
+                    Url="https://spsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
                     Rights="31"/>
-      <pnp:CustomAction Name="CA_SUBSITE_OVERRIDE"
-                    Description="Override new sub-site link"
-                    Location="ScriptLink"
-                    Title="SubSiteOveride"
-                    ScriptSrc="~site/PnP_Provisioning_JS/PnP_EmbeddedJS.js"/>
-    </pnp:SiteCustomActions>
+      <pnp:CustomAction Name="CA_SITE_STDMENU_SITECLASSIFICATION"
+                   Description="Site Classification Module"
+                   Group="SiteActions"
+                   Location="Microsoft.SharePoint.StandardMenu"
+                   Title="Site Classification"
+                   Sequence="1000"
+                   Url="https://spsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
+                   Rights="31"/>
+    </pnp:WebCustomActions>
   </pnp:CustomActions>
   <pnp:ComposedLook Name="Contoso" Version="1"
                 ColorFile="~themecatalog/15/custom.spcolor"
