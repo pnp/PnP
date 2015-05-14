@@ -107,6 +107,7 @@
     <Content Include="images\progress.gif" />
     <Content Include="images\template-icon.png" />
     <Content Include="Pages\SiteClassification\SiteEdit.aspx" />
+    <Content Include="Pages\subsite\newsbweb.aspx" />
     <Content Include="Pages\view_confirmation.html" />
     <Content Include="Pages\view_dataprivacy.html" />
     <Content Include="Pages\view_intendeduse.html" />
@@ -204,6 +205,13 @@
     <Compile Include="Pages\SiteClassification\SiteEdit.aspx.designer.cs">
       <DependentUpon>SiteEdit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\subsite\newsbweb.aspx.cs">
+      <DependentUpon>newsbweb.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\subsite\newsbweb.aspx.designer.cs">
+      <DependentUpon>newsbweb.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppEventReceiver.svc.cs">
       <DependentUpon>AppEventReceiver.svc</DependentUpon>
@@ -215,7 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Pages\SubSite\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj">
