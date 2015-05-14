@@ -322,14 +322,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 #endregion
 
                 #region DataRows
-
-                foreach (var listInfo in createdLists)
+                
+                //Allow DataRows from separate Template (after List instances created and Lookups have been resolved)
+                foreach (var listInstance in template.Lists)
                 {
-                    var listInstance = listInfo.ListInstance;
+                    if (!existingLists.Contains(UrlUtility.Combine(serverRelativeUrl, listInstance.Url)))
+                    {
+                        continue;
+                    }
+
                     if (listInstance.DataRows != null && listInstance.DataRows.Any())
                     {
-                        var list = listInfo.CreatedList;
-                        foreach (var dataRow in listInfo.ListInstance.DataRows)
+                        var list = web.GetListByUrl(UrlUtility.Combine(serverRelativeUrl, listInstance.Url));
+
+                        foreach (var dataRow in listInstance.DataRows)
                         {
                             ListItemCreationInformation listitemCI = new ListItemCreationInformation();
                             var listitem = list.AddItem(listitemCI);
