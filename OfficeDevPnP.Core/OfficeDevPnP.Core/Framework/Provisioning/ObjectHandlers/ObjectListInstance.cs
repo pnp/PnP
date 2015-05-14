@@ -333,18 +333,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     if (listInstance.DataRows != null && listInstance.DataRows.Any())
                     {
+                        
                         var list = web.GetListByUrl(UrlUtility.Combine(serverRelativeUrl, listInstance.Url));
+                        web.Context.Load(list, l => l.ItemCount);
+                        web.Context.ExecuteQueryRetry();
 
-                        foreach (var dataRow in listInstance.DataRows)
+                        //Only add data if List is empty (implying recently created or the addition of a new template with DataRows)
+                        if (list.ItemCount == 0)
                         {
-                            ListItemCreationInformation listitemCI = new ListItemCreationInformation();
-                            var listitem = list.AddItem(listitemCI);
-                            foreach (var dataValue in dataRow.Values)
+                            foreach (var dataRow in listInstance.DataRows)
                             {
-                                listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
+                                ListItemCreationInformation listitemCI = new ListItemCreationInformation();
+                                var listitem = list.AddItem(listitemCI);
+                                foreach (var dataValue in dataRow.Values)
+                                {
+                                    listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
+                                }
+                                listitem.Update();
+                                web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                             }
-                            listitem.Update();
-                            web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                         }
                     }
                 }
