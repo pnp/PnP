@@ -5,7 +5,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <pnp:Files>
     <pnp:File Src="siteLogo.png" Folder="SiteAssets" Overwrite="true"/>
-    <pnp:File Src="CustomInjectedJS.js" Folder="SiteAssets" Overwrite="true" />
     <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
     <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
   </pnp:Files>
@@ -17,7 +16,7 @@
                     Title="SubSiteOveride"
                     ScriptSrc=""
                     ScriptBlock="
-                        var SubSiteSettings_Web_Url = 'https://spsiteprov.azurewebsites.net';
+                        var SubSiteSettings_Web_Url = 'https://spsiteprov.azurewebsites.net/pages/subsite/newsbweb.aspx?SPHostUrl=';
                         var headID = document.getElementsByTagName('head')[0]; 
                         var subsiteScriptTag = document.createElement('script');
                         subsiteScriptTag.type = 'text/javascript';

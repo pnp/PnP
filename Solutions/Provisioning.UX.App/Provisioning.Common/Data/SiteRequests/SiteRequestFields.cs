@@ -88,7 +88,7 @@ namespace Provisioning.Common.Data.SiteRequests
         public const string PROVISIONING_STATUS_DISPLAYNAME = "Provisioning Status";
         public static readonly Guid PROVISIONING_STATUS_ID = new Guid("E7BD867C-79F0-46B7-B2D9-02FF239E4947");
         public const FieldType PROVISIONING_STATUS_TYPE = FieldType.Text;
-        public const string PROVISIONING_STATUS_ATTRIB = "Required='TRUE' ReadOnly='TRUE' Indexed='TRUE' ShowInDisplayForm='TRUE'";
+        public const string PROVISIONING_STATUS_ATTRIB = "Required='TRUE' Indexed='TRUE' ShowInDisplayForm='TRUE'";
         public const string PROVISIONING_STATUS_DESC = "Status of the site request.";
         
         //LCID
@@ -112,7 +112,7 @@ namespace Provisioning.Common.Data.SiteRequests
         public const string APPROVEDDATE_DISPLAYNAME = "Request Approved Date";
         public static readonly Guid APPROVEDATE_ID = new Guid("33CA4A33-6BD5-42E5-A28F-09EBA9409C6B");
         public const FieldType APPROVEDATE_TYPE = FieldType.DateTime;
-        public const string APPROVEDATE_ATTRIB = "ReadOnly='TRUE' Format='DateOnly' ShowInDisplayForm='TRUE'";
+        public const string APPROVEDATE_ATTRIB = "Format='DateOnly' ShowInDisplayForm='TRUE'";
         public const string APPROVEDATE_DESC = "Date the request was approved";
 
         //Status Message
