@@ -20,5 +20,9 @@
     <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\ProjectLocations.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
     <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\TaxonomyOverrides.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
     <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\jquery-1.10.2.min.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementAccordionView.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Generics\AnnouncementAccordion.js" Target="Style Library\OfficeDevPnP\Branding.JSLink\Generics\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Styles\accordion_sprite.png" Target="Style Library\OfficeDevPnP\Branding.JSLink\Styles\" Type="ElementFile" />
+    <ProjectItemFile Source="OfficeDevPnP\Branding.JSLink\Styles\accordion.css" Target="Style Library\OfficeDevPnP\Branding.JSLink\Styles\" Type="ElementFile" />
   </Files>
 </ProjectItem>
