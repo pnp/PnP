@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
-using System.Web.Configuration;
-using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
@@ -321,42 +317,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
-                #region DataRows
-                
-                //Allow DataRows from separate Template (after List instances created and Lookups have been resolved)
-                foreach (var listInstance in template.Lists)
-                {
-                    if (!existingLists.Contains(UrlUtility.Combine(serverRelativeUrl, listInstance.Url)))
-                    {
-                        continue;
-                    }
-
-                    if (listInstance.DataRows != null && listInstance.DataRows.Any())
-                    {
-                        
-                        var list = web.GetListByUrl(UrlUtility.Combine(serverRelativeUrl, listInstance.Url));
-                        web.Context.Load(list, l => l.ItemCount);
-                        web.Context.ExecuteQueryRetry();
-
-                        //Only add data if List is empty (implying recently created or the addition of a new template with DataRows)
-                        if (list.ItemCount == 0)
-                        {
-                            foreach (var dataRow in listInstance.DataRows)
-                            {
-                                ListItemCreationInformation listitemCI = new ListItemCreationInformation();
-                                var listitem = list.AddItem(listitemCI);
-                                foreach (var dataValue in dataRow.Values)
-                                {
-                                    listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
-                                }
-                                listitem.Update();
-                                web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
-                            }
-                        }
-                    }
-                }
-
-                #endregion
             }
         }
 

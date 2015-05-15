@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             objectHandlers.Add(new ObjectField());
             objectHandlers.Add(new ObjectContentType());
             objectHandlers.Add(new ObjectListInstance());
-            objectHandlers.Add(new ObjectLookupFields());
+            objectHandlers.Add(new ObjectListPostProcessing());
             objectHandlers.Add(new ObjectFiles());
             objectHandlers.Add(new ObjectPages());
             objectHandlers.Add(new ObjectCustomActions());

@@ -678,4 +678,7 @@
   <data name="Provisioning_ObjectHandlers_TermGroups" xml:space="preserve">
     <value>Term Groups</value>
   </data>
+  <data name="Provisioning_ObjectHandlers_ListPostProcess" xml:space="preserve">
+    <value>List post-processing</value>
+  </data>
 </root>
