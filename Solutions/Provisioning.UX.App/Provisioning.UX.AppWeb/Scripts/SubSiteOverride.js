@@ -32,7 +32,7 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
 
     //Update create new site link point to our custom page.
     var link = document.getElementById('createnewsite');
-    var url = SubSiteSettings_Web_Url + "/pages/subsite/newsbweb.aspx?SPHostUrl=" + encodeURIComponent(_spPageContextInfo.webAbsoluteUrl);
+    var url = SubSiteSettings_Web_Url + encodeURIComponent(_spPageContextInfo.webAbsoluteUrl);
     if (link != undefined) {
         // Could be get from SPSite root web property bag - now hard coded for demo purposes
         link.href = url;

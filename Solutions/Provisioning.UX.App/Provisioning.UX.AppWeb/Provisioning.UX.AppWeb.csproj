@@ -100,6 +100,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\chromeloader.js" />
     <Content Include="images\checkmark16.png" />
     <Content Include="images\error16.png" />
     <Content Include="images\gears16.gif" />
