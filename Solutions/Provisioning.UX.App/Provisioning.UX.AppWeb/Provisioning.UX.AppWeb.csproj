@@ -107,7 +107,7 @@
     <Content Include="images\gears24.gif" />
     <Content Include="images\progress.gif" />
     <Content Include="images\template-icon.png" />
-    <Content Include="Pages\SiteClassification\SiteEdit.aspx" />
+    <Content Include="Pages\SiteClassification\siteedit.aspx" />
     <Content Include="Pages\subsite\newsbweb.aspx" />
     <Content Include="Pages\view_confirmation.html" />
     <Content Include="Pages\view_dataprivacy.html" />
@@ -199,12 +199,12 @@
     <Compile Include="Pages\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SiteClassification\SiteEdit.aspx.cs">
-      <DependentUpon>SiteEdit.aspx</DependentUpon>
+    <Compile Include="Pages\SiteClassification\siteedit.aspx.cs">
+      <DependentUpon>siteedit.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\SiteClassification\SiteEdit.aspx.designer.cs">
-      <DependentUpon>SiteEdit.aspx</DependentUpon>
+    <Compile Include="Pages\SiteClassification\siteedit.aspx.designer.cs">
+      <DependentUpon>siteedit.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\subsite\newsbweb.aspx.cs">
       <DependentUpon>newsbweb.aspx</DependentUpon>
