@@ -27,7 +27,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            web.Context.Load(web.ContentTypes, ct => ct.Include(c => c.StringId));
+
+            web.Context.Load(web.ContentTypes, ct => ct.IncludeWithDefaultProperties(c => c.StringId, c => c.FieldLinks));
             web.Context.ExecuteQueryRetry();
             var existingCTs = web.ContentTypes.ToList();
 
@@ -53,6 +54,65 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         if (newCT != null)
                         {
                             existingCTs.Add(newCT);
+                        }
+                    }
+                    else
+                    {
+                        var isDirty = false;
+                        if (existingCT.Hidden != ct.Hidden)
+                        {
+                            existingCT.Hidden = ct.Hidden;
+                            isDirty = true;
+                        }
+                        if (existingCT.ReadOnly != ct.ReadOnly)
+                        {
+                            existingCT.ReadOnly = ct.ReadOnly;
+                            isDirty = true;
+                        }
+                        if (existingCT.Sealed != ct.Sealed)
+                        {
+                            existingCT.Sealed = ct.Sealed;
+                            isDirty = true;
+                        }
+                        if (ct.Description != null && existingCT.Description != ct.Description)
+                        {
+                            existingCT.Description = ct.Description;
+                            isDirty = true;
+                        }
+                        if (ct.DocumentTemplate != null && existingCT.DocumentTemplate != ct.DocumentTemplate)
+                        {
+                            existingCT.DocumentTemplate = ct.DocumentTemplate;
+                            isDirty = true;
+                        }
+                        if (existingCT.Name != ct.Name)
+                        {
+                            existingCT.Name = ct.Name;
+                            isDirty = true;
+                        }
+                        if (ct.Group != null && existingCT.Group != ct.Group)
+                        {
+                            existingCT.Group = ct.Group;
+                            isDirty = true;
+                        }
+                        if (isDirty)
+                        {
+                            existingCT.Update(true);
+                            web.Context.ExecuteQueryRetry();
+                        }
+                        // Delta handling
+                        List<Guid> targetIds = existingCT.FieldLinks.Select(c1 => c1.Id).ToList();
+                        List<Guid> sourceIds = ct.FieldRefs.Select(c1 => c1.Id).ToList();
+
+                        var fieldsNotPresentInTarget = sourceIds.Except(targetIds);
+
+                        if (fieldsNotPresentInTarget.Any())
+                        {
+                            foreach (var fieldId in fieldsNotPresentInTarget)
+                            {
+                                var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
+                                var field = web.Fields.GetById(fieldId);
+                                web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
+                            }
                         }
                     }
                 }
@@ -96,16 +156,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return template;
             }
 
+            template.ContentTypes.AddRange(GetEntities(web));
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (creationInfo.BaseTemplate != null)
+            {
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
+            }
+
+            return template;
+        }
+
+        private IEnumerable<ContentType> GetEntities(Web web)
+        {
             var cts = web.ContentTypes;
             web.Context.Load(cts, ctCollection => ctCollection.IncludeWithDefaultProperties(ct => ct.FieldLinks));
             web.Context.ExecuteQueryRetry();
+
+            List<ContentType> ctsToReturn = new List<ContentType>();
 
             foreach (var ct in cts)
             {
                 if (!BuiltInContentTypeId.Contains(ct.StringId))
                 {
-                    //   template.ContentTypes.Add(new ContentType() { SchemaXml = ct.SchemaXml });
-                    template.ContentTypes.Add(new ContentType
+                    ctsToReturn.Add(new ContentType
                         (ct.StringId,
                         ct.Name,
                         ct.Description,
@@ -125,14 +199,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ));
                 }
             }
-
-            // If a base template is specified then use that one to "cleanup" the generated template model
-            if (creationInfo.BaseTemplate != null)
-            {
-                template = CleanupEntities(template, creationInfo.BaseTemplate);
-            }
-
-            return template;
+            return ctsToReturn;
         }
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
