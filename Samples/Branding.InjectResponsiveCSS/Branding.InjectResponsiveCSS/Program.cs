@@ -31,7 +31,10 @@ namespace Branding.InjectResponsiveCSS
                 ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
 
                 Web web = ctx.Web;
+                var allProperties = web.AllProperties;
+
                 ctx.Load(web);
+                ctx.Load(allProperties);
                 ctx.ExecuteQuery();
 
                 UploadAssetsToHostWeb(web);
@@ -40,6 +43,24 @@ namespace Branding.InjectResponsiveCSS
                 // Set the properties accordingly
                 // Notice that these are new properties in 2014 April CU of 15 hive CSOM and July release of MSO CSOM
                 web.AlternateCssUrl = ctx.Web.ServerRelativeUrl + "/SiteAssets/spe-seattle-responsive.css";
+
+                // Ensure proper meta tag for viewport is set
+                // Make sure that hardware devices scale CSS definitions properly
+                // More details can be found http://www.n8d.at/blog/how-to-add-viewport-meta-without-editing-the-master-page/
+              
+                // Check if SEO is enabled and property for custom meta tags exists
+                // This can be enabled on any team site based site collection by enabling
+                // the site collection feature "Publishing Infastructure"
+                // No other publishing related feature needs to be activated
+                // Enable custom meta tags
+                if (allProperties.FieldValues.ContainsKey("seoincludecustommetatagpropertyname")) {
+                    allProperties["seoincludecustommetatagpropertyname"] = true.ToString();
+                }
+                // Add value of custom meta tag
+                if (allProperties.FieldValues.ContainsKey("seocustommetatagpropertyname"))
+                {
+                    allProperties["seocustommetatagpropertyname"] = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />";
+                }
                 web.Update();
                 web.Context.ExecuteQuery();
 
@@ -57,8 +78,20 @@ namespace Branding.InjectResponsiveCSS
                     web.Context.ExecuteQuery();
                 } 
 
+
                 /// Uncomment to clear
+                // Removes alternate CSS URL
                 //web.AlternateCssUrl = "";
+                // Clear viewport meta tag form SEO settings
+                //if (allProperties.FieldValues.ContainsKey("seoincludecustommetatagpropertyname"))
+                //{
+                //    allProperties["seoincludecustommetatagpropertyname"] = false.ToString();
+                //}
+                // Add value of custom meta tag
+                //if (allProperties.FieldValues.ContainsKey("seocustommetatagpropertyname"))
+                //{
+                //    allProperties["seocustommetatagpropertyname"] = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />";
+                //}
                 //web.Update();
                 //web.Context.ExecuteQuery();
             }
@@ -70,8 +103,8 @@ namespace Branding.InjectResponsiveCSS
         /// <param name="web"></param>
         private static void UploadAssetsToHostWeb(Web web)
         {
-            // Instance to site assets
-            List assetLibrary = web.Lists.GetByTitle("Site Assets");
+            // Ensure site asset library exists and return list
+            List assetLibrary = web.Lists.EnsureSiteAssetsLibrary();
             web.Context.Load(assetLibrary, l => l.RootFolder);
 
             // Get the path to the file which we are about to deploy
