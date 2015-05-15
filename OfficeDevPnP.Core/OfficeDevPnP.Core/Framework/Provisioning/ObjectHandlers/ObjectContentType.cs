@@ -114,6 +114,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
                             }
                         }
+                        foreach (var fieldToRemove in ct.FieldRefs.Where(fr => fr.Remove))
+                        {
+                            var fieldLink = existingCT.FieldLinks.FirstOrDefault(fl => fl.Id == fieldToRemove.Id);
+                            if (fieldLink != null)
+                            {
+                                fieldLink.DeleteObject();
+                            }
+                            existingCT.Update(true);
+                            web.Context.ExecuteQueryRetry();
+                        }
                     }
                 }
             }
