@@ -684,6 +684,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     source = XMLSerializer.Deserialize<V201505.ProvisioningTemplate>(xml);
                 }
             }
+            else //in this case the XML is not according to this schema and should exit
+            {
+                throw new ApplicationException("Invalid external file format. Expected a ProvisioningTemplate file!");
+            }
 
             #region Basic Properties
             // Translate basic properties

@@ -47,7 +47,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     Stream stream = this.Connector.GetFileStream(file);
 
                     // And convert it into a ProvisioningTemplate
-                    ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+                    ProvisioningTemplate provisioningTemplate;
+                    try
+                    {
+                         provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+                    }
+                    catch (ApplicationException appEx)
+                    {
+                        Log.Warning("XMLTemplateProvider GetTemplates", "Cannot process XML file " + file);
+                        continue;
+                    }
+
+                    if (provisioningTemplate == null) continue;
 
                     // Add the template to the result
                     result.Add(provisioningTemplate);

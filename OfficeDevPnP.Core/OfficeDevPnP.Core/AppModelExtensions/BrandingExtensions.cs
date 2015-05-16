@@ -920,6 +920,8 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
+            if (theme == null) return null; //return null if there is nothing to work on
+
             String designPreviewThemedCssFolderUrl = web.GetPropertyBagValueString("DesignPreviewThemedCssFolderUrl", null);
 
             // If name still is "Current" and there isn't a PreviewThemedCssFolderUrl 

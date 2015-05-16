@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -108,7 +109,7 @@ namespace OfficeDevPnP.Core.Utilities
                 }
 
                 string msg = String.Format(CultureInfo.CurrentCulture, message, args);
-                string log = string.Format(CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg);
+                string log = string.Format(CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg.ToString());
                 return log;
             }
             catch (Exception e)

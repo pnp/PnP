@@ -57,34 +57,43 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in features)
                 {
-                    if (!feature.Deactivate)
+                    try
                     {
-                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) == null)
-                        {
-                            if (site != null)
-                            {
-                                site.ActivateFeature(feature.Id);
-                            }
-                            else
-                            {
-                                web.ActivateFeature(feature.Id);
-                            }
-                        }
 
-                    }
-                    else
-                    {
-                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) != null)
+                        if (!feature.Deactivate)
                         {
-                            if (site != null)
+                            if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) == null)
                             {
-                                site.DeactivateFeature(feature.Id);
+                                if (site != null)
+                                {
+                                    site.ActivateFeature(feature.Id);
+                                }
+                                else
+                                {
+                                    web.ActivateFeature(feature.Id);
+                                }
                             }
-                            else
+
+                        }
+                        else
+                        {
+                            if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) != null)
                             {
-                                web.DeactivateFeature(feature.Id);
+                                if (site != null)
+                                {
+                                    site.DeactivateFeature(feature.Id);
+                                }
+                                else
+                                {
+                                    web.DeactivateFeature(feature.Id);
+                                }
                             }
                         }
+                    }
+                    catch (ServerException serverEx)
+                    {
+                        Log.Error(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING,
+                            CoreResources.Provisioning_ObjectHandlers_Features_Exception, serverEx.Message);
                     }
                 }
             }
