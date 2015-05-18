@@ -100,6 +100,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\HBI.png" />
+    <Content Include="images\LBI.png" />
+    <Content Include="images\MBI.png" />
+    <Content Include="images\MicrosoftLogo.png" />
+    <Content Include="images\spinningwheel.gif" />
     <Content Include="Scripts\chromeloader.js" />
     <Content Include="images\checkmark16.png" />
     <Content Include="images\error16.png" />
@@ -123,6 +128,7 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\spsiteprov %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
+    <Content Include="Scripts\commonapp.js" />
     <Content Include="Scripts\data\appsettings.factory.js" />
     <Content Include="Scripts\data\json\divisions.json" />
     <Content Include="Scripts\data\json\functions.json" />
@@ -161,6 +167,7 @@
     <Content Include="Scripts\data\data.module.js" />
     <Content Include="Scripts\data\templates.factory.js" />
     <Content Include="Scripts\SubSiteOverride.js" />
+    <Content Include="Scripts\vendor\jquery\jquery.tipsy.js" />
     <Content Include="Scripts\wizard\directives\restrict.js" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\peoplepickercontrol.js" />
@@ -181,6 +188,7 @@
     <Content Include="Services\AppEventReceiver.svc" />
     <Content Include="Styles\app.css" />
     <Content Include="Styles\peoplepickercontrol.css" />
+    <Content Include="Styles\site.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
