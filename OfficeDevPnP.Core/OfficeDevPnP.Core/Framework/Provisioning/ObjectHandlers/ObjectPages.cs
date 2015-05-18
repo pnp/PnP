@@ -72,7 +72,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 if (page.WelcomePage)
                 {
-                   web.SetHomePageByServerRelativePath(url);
+                    if (!web.IsPropertyAvailable("RootFolder"))
+                    {
+                        web.Context.Load(web.RootFolder);
+                        web.Context.ExecuteQueryRetry();
+                    }
+
+                    var rootFolderRelativeUrl = url.Substring(web.RootFolder.ServerRelativeUrl.Length);
+                    web.SetHomePage(rootFolderRelativeUrl);
                 }
 
                 if (page.WebParts != null & page.WebParts.Any())
