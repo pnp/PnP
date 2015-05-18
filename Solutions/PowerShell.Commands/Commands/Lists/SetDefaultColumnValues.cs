@@ -11,7 +11,9 @@ using System.Linq;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPODefaultColumnValues")]
-    [CmdletHelp("Sets default column values for a document library", DetailedDescription="Sets default column values for a document library, per folder, or for the root folder if the folder parameter has not been specified. Supports both text and taxonomy fields.")]
+    [CmdletHelp("Sets default column values for a document library", 
+        DetailedDescription="Sets default column values for a document library, per folder, or for the root folder if the folder parameter has not been specified. Supports both text and taxonomy fields.", 
+        Category = "Lists")]
     [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field TaxKeyword -Value \"Company|Locations|Stockholm\"", SortOrder = 1, Remarks = "Sets a default value for the enterprise keywords field on a library to a term called \"Stockholm\", located in the \"Locations\" term set, which is part of the \"Company\" term group")]
     [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field MyTextField -Value \"DefaultValue\"", SortOrder = 2, Remarks = "Sets a default value for the MyTextField text field on a library to a value of \"DefaultValue\"")]
     public class SetDefaultColumnValues : SPOWebCmdlet
@@ -33,7 +35,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             List list = null;
             if (List != null)
             {
-                list = this.SelectedWeb.GetList(List);
+                list = SelectedWeb.GetList(List);
             }
             if (list != null)
             {
@@ -53,19 +55,19 @@ namespace OfficeDevPnP.PowerShell.Commands
                             ClientContext.Load(field, f => f.InternalName);
                         }
                         ClientContext.Load(field);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     else if (Field.Id != Guid.Empty)
                     {
                         field = list.Fields.GetById(Field.Id);
                         ClientContext.Load(field, f => f.InternalName, f => f.TypeAsString);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     else if (!string.IsNullOrEmpty(Field.Name))
                     {
                         field = list.Fields.GetByInternalNameOrTitle(Field.Name);
                         ClientContext.Load(field, f => f.InternalName, f => f.TypeAsString);
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                     }
                     if (field != null)
                     {

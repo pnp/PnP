@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core;
 using System.Reflection;
-
+using OfficeDevPnP.Core;
 
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
     /// Class that deals with records management functionality
     /// </summary>
-    public static class RecordsManagementExtensions
+    public static partial class RecordsManagementExtensions
     {
         public const string INPLACE_RECORDS_MANAGEMENT_FEATURE_ID = "da2e115b-07e4-49d9-bb2c-35e93bb9fca9";
         public const string ECM_SITE_RECORD_DECLARATION_DEFAULT = "ecm_siterecorddeclarationdefault";
@@ -209,10 +204,9 @@ namespace Microsoft.SharePoint.Client
         {
             string by = site.RootWeb.GetPropertyBagValueString(ECM_SITE_RECORD_DECLARATION_BY, "");
 
-            EcmRecordDeclarationBy result;
-
             if (!String.IsNullOrEmpty(by))
             {
+                EcmRecordDeclarationBy result;
                 if (Enum.TryParse<EcmRecordDeclarationBy>(by, out result))
                 {
                     return result;
@@ -243,10 +237,9 @@ namespace Microsoft.SharePoint.Client
         {
             string by = site.RootWeb.GetPropertyBagValueString(ECM_SITE_RECORD_UNDECLARATION_BY, "");
 
-            EcmRecordDeclarationBy result;
-
             if (!String.IsNullOrEmpty(by))
             {
+                EcmRecordDeclarationBy result;
                 if (Enum.TryParse<EcmRecordDeclarationBy>(by, out result))
                 {
                     return result;
@@ -372,7 +365,7 @@ namespace Microsoft.SharePoint.Client
         public static void SetListAutoRecordDeclaration(this List list, bool autoDeclareRecords)
         {
             //Determine the SharePoint version based on the loaded CSOM library
-            Assembly asm = Assembly.GetAssembly(typeof(Microsoft.SharePoint.Client.Site));
+            Assembly asm = Assembly.GetAssembly(typeof(Site));
             int sharePointVersion = asm.GetName().Version.Major;
 
             if (autoDeclareRecords)
@@ -384,7 +377,7 @@ namespace Microsoft.SharePoint.Client
 
                 //Hookup the needed event handlers
                 list.Context.Load(list.EventReceivers);
-                list.Context.ExecuteQuery();
+                list.Context.ExecuteQueryRetry();
 
                 List<EventReceiverDefinition> currentEventReceivers = new List<EventReceiverDefinition>(list.EventReceivers.Count);
                 currentEventReceivers.AddRange(list.EventReceivers);
@@ -438,7 +431,7 @@ namespace Microsoft.SharePoint.Client
                 if (eventReceiverAdded)
                 {
                     list.Update();
-                    list.Context.ExecuteQuery();
+                    list.Context.ExecuteQueryRetry();
                 }
 
                 //Set the property that dictates the auto declaration

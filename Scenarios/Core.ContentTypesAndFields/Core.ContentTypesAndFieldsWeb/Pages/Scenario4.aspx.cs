@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Entities;
 
 namespace Core.ContentTypesAndFieldsWeb.Pages
 {
@@ -54,14 +55,21 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 // Add site colummn to the content type, create column if it does not exist
                 if (!ctx.Web.FieldExistsByName("LitwareFieldText"))
                 {
-                    ctx.Web.CreateField(fieldId, "LitwareFieldText", FieldType.Text, "Litware Field Text", "Contoso Fields");
+                    FieldCreationInformation field = new FieldCreationInformation(FieldType.Text)
+                    {
+                        Id = fieldId,
+                        InternalName = "LitwareFieldText",
+                        DisplayName = "Litware Field Text",
+                        Group = "Contoso Fields"
+                    };
+                    ctx.Web.CreateField(field);
                 }
                 // Add field to content type
                 //ctx.Web.AddFieldToContentTypeById(contentTypeId, fieldId);
                 // Create list and associate document to the list
                 if (!ctx.Web.ListExists(txtListName.Text))
                 {
-                    ctx.Web.AddList(ListTemplateType.DocumentLibrary, txtListName.Text, false);
+                    ctx.Web.CreateList(ListTemplateType.DocumentLibrary, txtListName.Text, false);
                     // Enable content types in list
                     List list = ctx.Web.GetListByTitle(txtListName.Text);
                     list.ContentTypesEnabled = true;
@@ -85,11 +93,11 @@ namespace Core.ContentTypesAndFieldsWeb.Pages
                 ctx.Web.SetLocalizationForField(fieldId, "fi-fi", "Litware Teksti kenttä", "Litware Teksti kenttä");
                 ctx.Web.SetLocalizationForField(fieldId, "es-es", "Field Name (es)", "Field Name (es)");
 
-                //Set translations to list
-                ctx.Web.SetLocalizationLabelsForList(txtListName.Text, "fi-fi", "Listan nimi suomeksi", "Listan nimi suomeksi.");
-                ctx.Web.SetLocalizationLabelsForList(txtListName.Text, "es-es", "List name (es)", "List description (es)");
+                //Set translations to list - Seems to have issues right now, so commented
+                // ctx.Web.SetLocalizationLabelsForList(txtListName.Text, "fi-fi", "Listan nimi suomeksi", "Listan nimi suomeksi.");
+                // ctx.Web.SetLocalizationLabelsForList(txtListName.Text, "es-es", "List name (es)", "List description (es)");
 
-                lblStatus4.Text = "Created new contnet type and list with translations. Check the blog posts for requirements to seeing translations in practice.";
+                lblStatus4.Text = "Created new content type and list with translations. Check the blog posts for requirements for end users to see translations in practice.";
                 
             }
         }

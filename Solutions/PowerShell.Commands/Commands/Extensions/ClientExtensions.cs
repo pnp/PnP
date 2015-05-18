@@ -1,9 +1,4 @@
 ﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Extensions
 {
@@ -14,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Extensions
             if (collection.ServerObjectIsNull == null || collection.ServerObjectIsNull == true)
             {
                 collection.Context.Load(collection);
-                collection.Context.ExecuteQuery();
+                collection.Context.ExecuteQueryRetry();
                 return collection;
             }
             else

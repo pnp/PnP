@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="12bdcdf5-90c9-4766-b63c-d8a8d819c769" 
+        solutionId="12bdcdf5-90c9-4766-b63c-d8a8d819c769" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="cdnManager"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="5b08c0b2-6729-4de8-bdca-8ce1f3e0bbfe" />
+  </features>
+</package>

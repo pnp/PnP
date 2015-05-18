@@ -1,16 +1,14 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.SharePoint.Client;
+﻿#if !CLIENTSDKV15
 using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base;
+using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
-    [Cmdlet(VerbsCommon.Remove, "SPOTenantSite", ConfirmImpact = ConfirmImpact.High)]
-    [CmdletHelp("Office365 only: Removes a site collection from the current tenant", DetailedDescription = @"
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Office365 only")]
+    [Cmdlet(VerbsCommon.Remove, "SPOTenantSite", ConfirmImpact = ConfirmImpact.High, SupportsShouldProcess = true)]
+    [CmdletHelp("Office365 only: Removes a site collection from the current tenant", DetailedDescription = "", Category = "Tenant Administration")]
     public class RemoveSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true)]
@@ -30,20 +28,21 @@ You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) w
         [Parameter(Mandatory = false, HelpMessage = "Do not ask for confirmation.")]
         public SwitchParameter Force;
 
-        protected override void ProcessRecord()
+        protected override void ExecuteCmdlet()
         {
-            if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveSiteCollection0, Url), Properties.Resources.Confirm))
+            if (Force || ShouldContinue(string.Format(Resources.RemoveSiteCollection0, Url), Resources.Confirm))
             {
                 if (!FromRecycleBin)
                 {
-                    this.Tenant.DeleteSiteCollection(Url, !SkipRecycleBin);
+                    Tenant.DeleteSiteCollection(Url, !SkipRecycleBin);
                 }
                 else
                 {
-                    this.Tenant.DeleteSiteCollectionFromRecycleBin(Url);
+                    Tenant.DeleteSiteCollectionFromRecycleBin(Url);
                 }
             }
         }
 
     }
 }
+#endif

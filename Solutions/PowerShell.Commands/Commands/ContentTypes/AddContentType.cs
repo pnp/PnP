@@ -6,7 +6,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
 
     [Cmdlet(VerbsCommon.Add, "SPOContentType")]
-    [CmdletHelp("Adds a new content type")]
+    [CmdletHelp("Adds a new content type", Category = "Content Types")]
     [CmdletExample(
       Code = @"PS:> Add-SPOContentType -Name ""Project Document"" -Description ""Use for Contoso projects"" -Group ""Contoso Content Types"" -ParentContentType $ct",
       Remarks = @"This will add a new content type based on the parent content type stored in the $ct variable.", SortOrder = 1)]
@@ -29,7 +29,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var ct = this.SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType);
+            var ct = SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType);
             WriteObject(ct);
         }
 

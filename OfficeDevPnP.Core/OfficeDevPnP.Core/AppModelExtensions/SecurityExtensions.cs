@@ -1,21 +1,18 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
-using OfficeDevPnP.Core.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.Online.SharePoint.TenantManagement;
+using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Utilities;
 
 namespace Microsoft.SharePoint.Client
 {
     /// <summary>
     /// This manager class holds security related methods
     /// </summary>
-    public static class SecurityExtensions
+    public static partial class SecurityExtensions
     {
         #region Site collection administrator management
         /// <summary>
@@ -27,7 +24,7 @@ namespace Microsoft.SharePoint.Client
         {
             var users = web.SiteUsers;
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             List<UserEntity> admins = new List<UserEntity>();
 
@@ -66,7 +63,7 @@ namespace Microsoft.SharePoint.Client
                 //User addedAdmin = users.Add(newAdmin);
                 User addedAdmin = web.EnsureUser(newAdmin.LoginName);
                 web.Context.Load(addedAdmin);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //now that the user exists in the context, update to be an admin
                 addedAdmin.IsSiteAdmin = true;
@@ -77,7 +74,7 @@ namespace Microsoft.SharePoint.Client
                     web.AssociatedOwnerGroup.Users.AddUser(addedAdmin);
                     web.AssociatedOwnerGroup.Update();
                 }
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -90,48 +87,18 @@ namespace Microsoft.SharePoint.Client
         {
             var users = web.SiteUsers;
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
-            var adminToRemove = users.Where(u => u.LoginName == admin.LoginName).FirstOrDefault();
+            var adminToRemove = users.FirstOrDefault(u => String.Equals(u.LoginName, admin.LoginName, StringComparison.CurrentCultureIgnoreCase));
             if (adminToRemove != null && adminToRemove.IsSiteAdmin)
             {
                 adminToRemove.IsSiteAdmin = false;
                 adminToRemove.Update();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
         }
 
-        /// <summary>
-        /// Adds additional administrators to a site collection using the Tenant administration csom. See AddAdministrators for a method
-        /// that does not have a dependency on the Tenant administration csom.
-        /// </summary>
-        /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="adminLogins">Array of logins for the additional admins</param>
-        /// <param name="siteUrl">Url of the site to operate on</param>
-        [Obsolete("Use Tenant.AddAdministrators() extension method")]
-        public static void AddAdministratorsTenant(this Web web, String[] adminLogins, Uri siteUrl)
-        {
-            Tenant tenant = new Tenant(web.Context);
-
-            tenant.AddAdministrators(adminLogins, siteUrl);
-        }
-
-        /// <summary>
-        /// Add a site collection administrator to a site collection
-        /// </summary>
-        /// <param name="web">Site to operate on</param>
-        /// <param name="adminLogins">Array of admins loginnames to add</param>
-        /// <param name="siteUrl">Url of the site to operate on</param>
-        /// <param name="addToOwnersGroup">Optionally the added admins can also be added to the Site owners group</param>
-        [Obsolete("Use Tenant.AddAdministrator() extension method")]
-        public static void AddAdministratorsTenant(this Web web, IEnumerable<UserEntity> adminLogins, Uri siteUrl, bool addToOwnersGroup = false)
-        {
-            Tenant tenant = new Tenant(web.Context);
-
-            tenant.AddAdministrators(adminLogins, siteUrl, addToOwnersGroup);
-
-        }
 
         #endregion
 
@@ -161,14 +128,14 @@ namespace Microsoft.SharePoint.Client
             {
                 case BuiltInIdentity.Everyone:
                     {
-                        string userIdentity = "c:0(.s|true";
+                        const string userIdentity = "c:0(.s|true";
                         User spReader = web.EnsureUser(userIdentity);
                         web.Context.Load(spReader);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         return spReader;
                     }
                 case BuiltInIdentity.EveryoneButExternalUsers:
@@ -180,7 +147,7 @@ namespace Microsoft.SharePoint.Client
                             string userIdentity = string.Format("c:0-.f|rolemanager|spo-grid-all-users/{0}", web.GetAuthenticationRealm());
                             spReader = web.EnsureUser(userIdentity);
                             web.Context.Load(spReader);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
                         }
                         catch (ServerException)
                         {
@@ -188,7 +155,7 @@ namespace Microsoft.SharePoint.Client
                             string userIdentity = string.Empty;
 
                             web.Context.Load(web, w => w.Language);
-                            web.Context.ExecuteQuery();
+                            web.Context.ExecuteQueryRetry();
 
                             switch (web.Language)
                             {
@@ -329,7 +296,7 @@ namespace Microsoft.SharePoint.Client
                             {
                                 spReader = web.EnsureUser(userIdentity);
                                 web.Context.Load(spReader);
-                                web.Context.ExecuteQuery();
+                                web.Context.ExecuteQueryRetry();
                             }
                             else
                             {
@@ -338,7 +305,7 @@ namespace Microsoft.SharePoint.Client
                         }
                         web.AssociatedVisitorGroup.Users.AddUser(spReader);
                         web.AssociatedVisitorGroup.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
                         return spReader;
                     }
             }
@@ -363,7 +330,7 @@ namespace Microsoft.SharePoint.Client
             Tenant tenant = new Tenant(web.Context);
             SiteProperties site = tenant.GetSitePropertiesByUrl(siteUrl.OriginalString, true);
             web.Context.Load(site);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             return site.SharingCapability.ToString();
         }
 
@@ -378,15 +345,14 @@ namespace Microsoft.SharePoint.Client
             Office365Tenant tenant = new Office365Tenant(web.Context);
 
             List<ExternalUserEntity> externalUsers = new List<ExternalUserEntity>();
-            int pageSize = 50;
+            const int pageSize = 50;
             int position = 0;
-            GetExternalUsersResults results = null;
 
             while (true)
             {
-                results = tenant.GetExternalUsers(position, pageSize, string.Empty, SortOrder.Ascending);
+                var results = tenant.GetExternalUsers(position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 foreach (var externalUser in results.ExternalUserCollection)
                 {
@@ -430,25 +396,24 @@ namespace Microsoft.SharePoint.Client
             web = site.RootWeb;
 
             List<ExternalUserEntity> externalUsers = new List<ExternalUserEntity>();
-            int pageSize = 50;
+            const int pageSize = 50;
             int position = 0;
-            GetExternalUsersResults results = null;
 
             while (true)
             {
-                results = tenant.GetExternalUsersForSite(siteUrl.OriginalString, position, pageSize, string.Empty, SortOrder.Ascending);
+                var results = tenant.GetExternalUsersForSite(siteUrl.OriginalString, position, pageSize, string.Empty, SortOrder.Ascending);
                 web.Context.Load(results, r => r.UserCollectionPosition, r => r.TotalUserCount, r => r.ExternalUserCollection);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 foreach (var externalUser in results.ExternalUserCollection)
                 {
 
                     User user = web.SiteUsers.GetByEmail(externalUser.AcceptedAs);
                     web.Context.Load(user);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
 
                     var permission = web.GetUserEffectivePermissions(user.LoginName);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     var doesUserHavePermission = permission.Value.Has(PermissionKind.ViewPages);
                     if (doesUserHavePermission)
                     {
@@ -494,7 +459,7 @@ namespace Microsoft.SharePoint.Client
 
             var manageMessageGroup = web.SiteGroups.GetByName(groupName);
             web.Context.Load(manageMessageGroup);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (manageMessageGroup != null)
             {
                 groupID = manageMessageGroup.Id;
@@ -531,7 +496,7 @@ namespace Microsoft.SharePoint.Client
 
             if (updateAndExecuteQuery)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             return group;
@@ -564,7 +529,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -586,12 +551,12 @@ namespace Microsoft.SharePoint.Client
             userToAdd.LoginName = userLoginName;
             User user = web.EnsureUser(userToAdd.LoginName);
             web.Context.Load(user);
-            //web.Context.ExecuteQuery();
+            //web.Context.ExecuteQueryRetry();
 
             //Add the user to the group
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 web.AddUserToGroup(group, user);
@@ -612,7 +577,7 @@ namespace Microsoft.SharePoint.Client
             Group group = web.SiteGroups.GetById(groupId);
             web.Context.Load(group);
             User user = web.EnsureUser(userLoginName);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (user != null && group != null)
             {
@@ -635,7 +600,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("user");
 
             group.Users.AddUser(user);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -653,11 +618,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("userLoginName");
 
             User user = web.EnsureUser(userLoginName);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (user != null)
             {
                 group.Users.AddUser(user);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
         }
 
@@ -675,8 +640,31 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
-            web.AddPermissionLevelImplementation(user, permissionLevel, removeExistingPermissionLevels);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
+        }
+
+        /// <summary>
+        /// Add a role definition (e.g.Contribute, Read, Approve) to a user
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="userLoginName">Loginname of the user</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Hierarchy|Restricted Read. Use the correct name of the language of the root site you are using</param>
+        /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that user</param>
+        public static void AddPermissionLevelToUser(this Web web, string userLoginName, string roleDefinitionName, bool removeExistingPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("roleDefinitionName");
+
+            User user = web.EnsureUser(userLoginName);
+            web.Context.Load(user);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.AddPermissionLevelImplementation(user, roleDefinition, removeExistingPermissionLevels);
         }
 
         /// <summary>
@@ -693,11 +681,34 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
-            web.AddPermissionLevelImplementation(group, permissionLevel, removeExistingPermissionLevels);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
         }
 
-        private static void AddPermissionLevelImplementation(this Web web, Principal principal, RoleType permissionLevel, bool removeExistingPermissionLevels = false)
+        /// <summary>
+        /// Add a role definition (e.g.Contribute, Read, Approve) to a group
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="groupName">Name of the group</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Hierarchy|Restricted Read. Use the correct name of the language of the root site you are using</param>
+        /// <param name="removeExistingPermissionLevels">Set to true to remove all other permission levels for that group</param>
+        public static void AddPermissionLevelToGroup(this Web web, string groupName, string roleDefinitionName, bool removeExistingPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("roleDefinitionName");
+
+            var group = web.SiteGroups.GetByName(groupName);
+            web.Context.Load(group);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.AddPermissionLevelImplementation(group, roleDefinition, removeExistingPermissionLevels);
+        }
+
+        private static void AddPermissionLevelImplementation(this Web web, Principal principal, RoleDefinition roleDefinition, bool removeExistingPermissionLevels = false)
         {
             if (principal != null)
             {
@@ -705,7 +716,7 @@ namespace Microsoft.SharePoint.Client
 
                 RoleAssignmentCollection rac = web.RoleAssignments;
                 web.Context.Load(rac);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //Find the roles assigned to the principal
                 foreach (RoleAssignment ra in rac)
@@ -717,10 +728,10 @@ namespace Microsoft.SharePoint.Client
                         RoleDefinitionBindingCollection rdc = ra.RoleDefinitionBindings;
                         web.Context.Load(rdc);
                         web.Context.Load(web.RoleDefinitions);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Load the role definition to add (e.g. contribute)
-                        RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+                        //RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                         if (removeExistingPermissionLevels)
                         {
                             // Remove current role definitions by removing all current role definitions
@@ -732,7 +743,7 @@ namespace Microsoft.SharePoint.Client
                         //update                        
                         ra.ImportRoleDefinitionBindings(rdc);
                         ra.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Leave the for each loop
                         processed = true;
@@ -744,10 +755,9 @@ namespace Microsoft.SharePoint.Client
                 if (!processed)
                 {
                     RoleDefinitionBindingCollection rdc = new RoleDefinitionBindingCollection(web.Context);
-                    RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                     rdc.Add(roleDefinition);
                     web.RoleAssignments.Add(principal, rdc);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
         }
@@ -766,8 +776,28 @@ namespace Microsoft.SharePoint.Client
 
             User user = web.EnsureUser(userLoginName);
             web.Context.Load(user);
-            web.Context.ExecuteQuery();
-            web.RemovePermissionLevelImplementation(user, permissionLevel, removeAllPermissionLevels);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
+        }
+
+        /// <summary>
+        /// Removes a permission level from a user
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="userLoginName">Loginname of user</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Heirarchy|Restricted Read. Use the correct name of the language of the site you are using</param>
+        /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
+        public static void RemovePermissionLevelFromUser(this Web web, string userLoginName, string roleDefinitionName, bool removeAllPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(userLoginName))
+                throw new ArgumentNullException("userLoginName");
+
+            User user = web.EnsureUser(userLoginName);
+            web.Context.Load(user);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.RemovePermissionLevelImplementation(user, roleDefinition, removeAllPermissionLevels);
         }
 
         /// <summary>
@@ -784,17 +814,37 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
-            web.RemovePermissionLevelImplementation(group, permissionLevel, removeAllPermissionLevels);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
+            web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
         }
 
-        private static void RemovePermissionLevelImplementation(this Web web, Principal principal, RoleType permissionLevel, bool removeAllPermissionLevels = false)
+        /// <summary>
+        /// Removes a permission level from a group
+        /// </summary>
+        /// <param name="web">Web to operate against</param>
+        /// <param name="groupName">name of the group</param>
+        /// <param name="roleDefinitionName">Name of the role definition to add, Full Control|Design|Contribute|Read|Approve|Manage Heirarchy|Restricted Read. Use the correct name of the language of the site you are using</param>
+        /// <param name="removeAllPermissionLevels">Set to true to remove all permission level.</param>
+        public static void RemovePermissionLevelFromGroup(this Web web, string groupName, string roleDefinitionName, bool removeAllPermissionLevels = false)
+        {
+            if (string.IsNullOrEmpty(groupName))
+                throw new ArgumentNullException("groupName");
+
+            var group = web.SiteGroups.GetByName(groupName);
+            web.Context.Load(group);
+            web.Context.ExecuteQueryRetry();
+            RoleDefinition roleDefinition = web.RoleDefinitions.GetByName(roleDefinitionName);
+            web.RemovePermissionLevelImplementation(group, roleDefinition, removeAllPermissionLevels);
+        }
+
+        private static void RemovePermissionLevelImplementation(this Web web, Principal principal, RoleDefinition roleDefinition, bool removeAllPermissionLevels = false)
         {
             if (principal != null)
             {
                 RoleAssignmentCollection rac = web.RoleAssignments;
                 web.Context.Load(rac);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 //Find the roles assigned to the principal
                 foreach (RoleAssignment ra in rac)
@@ -806,7 +856,7 @@ namespace Microsoft.SharePoint.Client
                         RoleDefinitionBindingCollection rdc = ra.RoleDefinitionBindings;
                         web.Context.Load(rdc);
                         web.Context.Load(web.RoleDefinitions);
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         if (removeAllPermissionLevels)
                         {
@@ -816,14 +866,13 @@ namespace Microsoft.SharePoint.Client
                         else
                         {
                             // Load the role definition to remove (e.g. contribute)
-                            RoleDefinition roleDefinition = web.RoleDefinitions.GetByType(permissionLevel);
                             rdc.Remove(roleDefinition);
                         }
 
                         //update                      
                         ra.ImportRoleDefinitionBindings(rdc);
                         ra.Update();
-                        web.Context.ExecuteQuery();
+                        web.Context.ExecuteQueryRetry();
 
                         // Leave the for each loop
                         break;
@@ -845,7 +894,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 User user = group.Users.GetByLoginName(userLoginName);
@@ -872,7 +921,7 @@ namespace Microsoft.SharePoint.Client
 
             group.Users.Remove(user);
             group.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -887,7 +936,7 @@ namespace Microsoft.SharePoint.Client
 
             var group = web.SiteGroups.GetByName(groupName);
             web.Context.Load(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 web.RemoveGroup(group);
@@ -906,7 +955,7 @@ namespace Microsoft.SharePoint.Client
 
             GroupCollection groups = web.SiteGroups;
             groups.Remove(group);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -930,7 +979,7 @@ namespace Microsoft.SharePoint.Client
             var users = group.Users;
             web.Context.Load(group);
             web.Context.Load(users);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (group != null)
             {
                 result = users.Any(u => u.LoginName.Contains(userLoginName));
@@ -945,7 +994,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to operate against</param>
         /// <param name="groupName">Name of the group</param>
         /// <returns>True if the group exists, false otherwise</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2200:RethrowToPreserveStackDetails")]
         public static bool GroupExists(this Web web, string groupName)
         {
             if (string.IsNullOrEmpty(groupName))
@@ -957,15 +1005,15 @@ namespace Microsoft.SharePoint.Client
             {
                 var group = web.SiteGroups.GetByName(groupName);
                 web.Context.Load(group);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 if (group != null)
                 {
                     result = true;
                 }
             }
-            catch (Microsoft.SharePoint.Client.ServerException ex)
+            catch (ServerException ex)
             {
-                if (ex.Message.IndexOf("Group cannot be found", StringComparison.InvariantCultureIgnoreCase) > -1)
+                if (IsGroupCannotBeFoundException(ex))
                 {
                     //eat the exception
                 }
@@ -979,6 +1027,24 @@ namespace Microsoft.SharePoint.Client
             return result;
         }
 
+        private static bool IsGroupCannotBeFoundException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2146232832 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.SharePoint.SPException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         public static Guid GetAuthenticationRealm(this Web web)
@@ -988,10 +1054,10 @@ namespace Microsoft.SharePoint.Client
             if (!web.IsPropertyAvailable("Url"))
             {
                 web.Context.Load(web, w => w.Url);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
-            returnGuid = new Guid(OfficeDevPnP.Core.Utilities.TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));
+            returnGuid = new Guid(TokenHelper.GetRealmFromTargetUrl(new Uri(web.Url)));
 
             return returnGuid;
 

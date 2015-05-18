@@ -14,11 +14,12 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-OD4B.NavLinksInjection | Brian Michely (Microsoft) 
+OD4B.NavLinksInjection | Brian Michely (Microsoft), Vesa Juvonen (Microsoft) 
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.0  | November 24th 2014 | Adjusted to work with any sites and styles updated to work with app hub
 1.0  | October 6th 2014 | Initial release
 
 ### Disclaimer ###
@@ -33,9 +34,9 @@ This samples demonstrates the ability to add a secondary level of navigation to 
 
 This sample also uses HTML5 localstorage for caching a timeout key to reduce the number of calls made to load link data. This can be changed to use cookies as well.
 
-Currently for the purposes of this sample, the links are static. With slight modifications this sample will pull links from a source that you implement. Following picture is showing the second level navigation in practice. "MSDN" and "TechNet" text are coming from custom navigation.
+Currently for the purposes of this sample, the links are static. With slight modifications this sample will pull links from a source that you implement. Following picture is showing the second level navigation in practice. "Intranet" and "Tools" text are coming from custom navigation.
 
-![](http://i.imgur.com/FPuXFS7.png)
+![](http://i.imgur.com/ZpJCYAi.png)
 
 *Note. You should NOT modify actual suite bar (Office navigation bar), since that is not SharePoint specific and is used cross other services in Office 365 as well, like yammer and Delve. By adding the links as secondary level navigation, you clearly indicate that these are for SharePoint and end user will not get confused with the changes cross other services. *
 

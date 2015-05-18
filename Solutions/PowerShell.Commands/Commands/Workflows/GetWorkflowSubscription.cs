@@ -1,11 +1,14 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.WorkflowServices;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Workflows
 {
     [Cmdlet(VerbsCommon.Get, "SPOWorkflowSubscription")]
+    [CmdletHelp("Returns a workflow subscriptions from a list", Category = "Workflows")]
+
     public class GetWorkflowSubscription : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The name of the workflow", Position = 0)]
@@ -17,17 +20,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
 
                 if (string.IsNullOrEmpty(Name))
                 {
-                    var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                    var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                     var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
                     var subscriptions = subscriptionService.EnumerateSubscriptionsByList(list.Id);
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else
@@ -39,18 +42,18 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
             {
                 if (string.IsNullOrEmpty(Name))
                 {
-                    var servicesManager = new WorkflowServicesManager(ClientContext, this.SelectedWeb);
+                    var servicesManager = new WorkflowServicesManager(ClientContext, SelectedWeb);
                     var subscriptionService = servicesManager.GetWorkflowSubscriptionService();
                     var subscriptions = subscriptionService.EnumerateSubscriptions();
 
                     ClientContext.Load(subscriptions);
 
-                    ClientContext.ExecuteQuery();
+                    ClientContext.ExecuteQueryRetry();
                     WriteObject(subscriptions, true);
                 }
                 else
                 {
-                    WriteObject(this.SelectedWeb.GetWorkflowSubscription(Name));
+                    WriteObject(SelectedWeb.GetWorkflowSubscription(Name));
                 }
             }
         }

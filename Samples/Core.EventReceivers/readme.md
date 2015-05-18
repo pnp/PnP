@@ -21,7 +21,7 @@ Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Us
 *Sample has been tested and configured for Office 365 MT, but model works as such with other platforms as well. *
 
 ### Prerequisites ###
-Any special pre-requisites?
+
 
 ### Solution ###
 Solution | Author(s)
@@ -31,7 +31,7 @@ Core.EventReceivers | Kirk Evans (Microsoft), Vesa Juvonen (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-2.0  | August 24th 2014 (to update/remove)| Updated to be on-demain example with additional notes with AppInstalled event.
+2.0  | August 24th 2014 | Updated to be on-demain example with additional notes with AppInstalled event.
 1.0  | April 26th 2014 | Initial release
 
 ### Disclaimer ###
@@ -75,6 +75,10 @@ public SPRemoteEventResult ProcessEvent(SPRemoteEventProperties properties)
     return result;
 }
 ```
+
+Note:
+*  The **AppUninstalling** event only fires when a user completely removes the app: the app needs to be deleted from the site recycle bins in an end-user scenario. In a development scenario the app needs to be removed from the “Apps in testing” library.
+
 Our code runs the centrally located code to see if a list named “Remote Event Receiver Jobs” exists in the host web and, if it does not, it creates it.  The code then checks to see if that list has a remote event receiver attached to it for the ItemAdded event and, if it does not, it attaches one.
 
 ```C#

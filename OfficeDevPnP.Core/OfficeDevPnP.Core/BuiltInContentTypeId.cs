@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core
 {
@@ -21,10 +17,12 @@ namespace OfficeDevPnP.Core
         public const string Discussion = "0x012002";
         public const string DisplayTemplateJS = "0x0101002039C03B61C64EC4A04F5361F3851068";
         public const string Document = "0x0101";
+
         /// <summary>
         /// Contains the content identifier (ID) for the DocumentSet content type. To get content type from a list, use BestMatchContentTypeId().
         /// </summary>
         public const string DocumentSet = "0x0120D520";
+
         public const string DocumentWorkflowItem = "0x010107";
         public const string DomainGroup = "0x010C";
         public const string DublinCoreName = "0x01010B";
@@ -38,10 +36,12 @@ namespace OfficeDevPnP.Core
         public const string Holiday = "0x01009BE2AB5291BF4C1A986910BD278E4F18";
         public const string IMEDictionaryItem = "0x010018F21907ED4E401CB4F14422ABC65304";
         public const string Issue = "0x0103";
+
         /// <summary>
         /// Contains the content identifier (ID) for the Item content type.
         /// </summary>
         public const string Item = "0x01";
+
         public const string Link = "0x0105";
         public const string LinkToDocument = "0x01010A";
         public const string MasterPage = "0x010105";
@@ -70,5 +70,72 @@ namespace OfficeDevPnP.Core
         public const string WorkflowTask = "0x010801";
         public const string XMLDocument = "0x010101";
         public const string XSLStyle = "0x010100734778F2B7DF462491FC91844AE431CF";
+
+
+        private static Dictionary<string, bool> s_dict = (Dictionary<string, bool>) null;
+
+
+        public static bool Contains(string id)
+        {
+            if (s_dict == null)
+            {
+                s_dict = new Dictionary<string, bool>();
+                s_dict.Add(AdminTask, true);
+                s_dict.Add(Announcement, true);
+                s_dict.Add(BasicPage, true);
+                s_dict.Add(BlogComment, true);
+                s_dict.Add(CallTracking, true);
+                s_dict.Add(Contact, true);
+                s_dict.Add(Discussion, true);
+                s_dict.Add(DisplayTemplateJS, true);
+                s_dict.Add(Document, true);
+                s_dict.Add(DocumentSet, true);
+                s_dict.Add(DocumentWorkflowItem, true);
+                s_dict.Add(DomainGroup, true);
+                s_dict.Add(DublinCoreName, true);
+                s_dict.Add(Event, true);
+                s_dict.Add(FarEastContact, true);
+                s_dict.Add(Folder, true);
+                s_dict.Add(GbwCirculationCTName, true);
+                s_dict.Add(GbwOfficeNoticeCTName, true);
+                s_dict.Add(HealthReport, true);
+                s_dict.Add(HealthRuleDefinition, true);
+                s_dict.Add(Holiday, true);
+                s_dict.Add(IMEDictionaryItem, true);
+                s_dict.Add(Issue, true);
+                s_dict.Add(Item, true);
+                s_dict.Add(Link, true);
+                s_dict.Add(LinkToDocument, true);
+                s_dict.Add(MasterPage, true);
+                s_dict.Add(Message, true);
+                s_dict.Add(ODCDocument, true);
+                s_dict.Add(Person, true);
+                s_dict.Add(Picture, true);
+                s_dict.Add(Resource, true);
+                s_dict.Add(ResourceGroup, true);
+                s_dict.Add(ResourceReservation, true);
+                s_dict.Add(RootOfList, true);
+                s_dict.Add(Schedule, true);
+                s_dict.Add(ScheduleAndResourceReservation, true);
+                s_dict.Add(SharePointGroup, true);
+                s_dict.Add(SummaryTask, true);
+                s_dict.Add(System, true);
+                s_dict.Add(Task, true);
+                s_dict.Add(Timecard, true);
+                s_dict.Add(UDCDocument, true);
+                s_dict.Add(UntypedDocument, true);
+                s_dict.Add(WebPartPage, true);
+                s_dict.Add(WhatsNew, true);
+                s_dict.Add(Whereabouts, true);
+                s_dict.Add(WikiDocument, true);
+                s_dict.Add(WorkflowHistory, true);
+                s_dict.Add(WorkflowTask, true);
+                s_dict.Add(XMLDocument, true);
+                s_dict.Add(XSLStyle, true);
+            }
+            bool flag = false;
+            s_dict.TryGetValue(id, out flag);
+            return flag;
+        }
     }
 }

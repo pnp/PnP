@@ -1,9 +1,11 @@
 ﻿using System.Management.Automation;
 using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommunications.Send, "SPOMail")]
+    [CmdletHelp("Sends an email using the Office 365 SMTP Service", Category = "Utilities")]
     public class SendMail : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

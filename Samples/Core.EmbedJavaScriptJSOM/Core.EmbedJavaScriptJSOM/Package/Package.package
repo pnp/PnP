@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="4ef36c19-be2d-48db-9a0a-2fecadb83fb9" 
+        solutionId="4ef36c19-be2d-48db-9a0a-2fecadb83fb9" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Core.EmbedJavaScriptJSOM"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="2134b548-c347-4ea6-9911-d2bf4d534528" />
+  </features>
+</package>

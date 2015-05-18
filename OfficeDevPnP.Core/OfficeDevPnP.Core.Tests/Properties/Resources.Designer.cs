@@ -93,6 +93,16 @@ namespace OfficeDevPnP.Core.Tests.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] HelloWorldApp15 {
+            get {
+                object obj = ResourceManager.GetObject("HelloWorldApp15", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] TestSolution {
             get {
                 object obj = ResourceManager.GetObject("TestSolution", resourceCulture);

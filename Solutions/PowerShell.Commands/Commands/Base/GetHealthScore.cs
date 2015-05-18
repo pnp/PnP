@@ -6,7 +6,7 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet("Get", "SPOHealthScore")]
-    [CmdletHelp("Retrieves the current health score value of the server")]
+    [CmdletHelp("Retrieves the current health score value of the server", Category = "Base Cmdlets")]
     [CmdletExample(Code = "PS:> Get-SPOHealthScore")]
     public class GetHealthScore : PSCmdlet
     {
@@ -15,7 +15,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            string url = string.Empty;
+            string url;
             if (Url != null)
             {
                 url = Url;

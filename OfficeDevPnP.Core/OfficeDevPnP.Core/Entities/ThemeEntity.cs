@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OfficeDevPnP.Core.Entities
+﻿namespace OfficeDevPnP.Core.Entities
 {
     public class ThemeEntity
     {
+        public string Name { get; set; }
+
+        public bool IsCustomComposedLook { get; set; }
+
         public string MasterPage { get; set; }
 
         public string CustomMasterPage { get; set; }

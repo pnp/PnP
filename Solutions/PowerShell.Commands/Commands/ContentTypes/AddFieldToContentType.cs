@@ -1,19 +1,14 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
-using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Management.Automation;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
 
     [Cmdlet(VerbsCommon.Add, "SPOFieldToContentType")]
-    [CmdletHelp("Adds an existing site column to a content type")]
+    [CmdletHelp("Adds an existing site column to a content type", Category = "Content Types")]
     [CmdletExample(
      Code = @"PS:> Add-SPOFieldToContentType -Field ""Project_Name"" -ContentType ""Project Document""",
      Remarks = @"This will add an existing site column with an internal name of ""Project_Name"" to a content type called ""Project Document""", SortOrder = 1)]
@@ -38,36 +33,36 @@ namespace OfficeDevPnP.PowerShell.Commands
             {
                 if (Field.Id != Guid.Empty)
                 {
-                    field = this.SelectedWeb.Fields.GetById(Field.Id);
+                    field = SelectedWeb.Fields.GetById(Field.Id);
                 }
                 else if (!string.IsNullOrEmpty(Field.Name))
                 {
-                    field = this.SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
+                    field = SelectedWeb.Fields.GetByInternalNameOrTitle(Field.Name);
                 }
                 ClientContext.Load(field);
-                ClientContext.ExecuteQuery();
+                ClientContext.ExecuteQueryRetry();
             }
             if (field != null)
             {
                 if (ContentType.ContentType != null)
                 {
-                    this.SelectedWeb.AddFieldToContentType(ContentType.ContentType, field, Required, Hidden);
+                    SelectedWeb.AddFieldToContentType(ContentType.ContentType, field, Required, Hidden);
                 }
                 else
                 {
-                    ContentType ct = null;
+                    ContentType ct;
                     if (!string.IsNullOrEmpty(ContentType.Id))
                     {
-                        ct = this.SelectedWeb.GetContentTypeById(ContentType.Id);
+                        ct = SelectedWeb.GetContentTypeById(ContentType.Id);
                       
                     }
                     else
                     {
-                        ct = this.SelectedWeb.GetContentTypeByName(ContentType.Name);
+                        ct = SelectedWeb.GetContentTypeByName(ContentType.Name);
                     }
                     if (ct != null)
                     {
-                        this.SelectedWeb.AddFieldToContentType(ct, field, Required, false);
+                        SelectedWeb.AddFieldToContentType(ct, field, Required, false);
                     }
                 }
             }

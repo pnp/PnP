@@ -60,7 +60,23 @@ namespace Core.FileUploadWeb
 
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
-                ctx.Web.UploadDocumentToLibrary(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SP2013_LargeFile.pptx")), "Docs", true);
+                string libraryName = "Docs";                
+                List library = null;
+                
+                // create library if it not exists
+                if (!ctx.Web.ListExists(libraryName))
+                {
+                    ctx.Web.CreateDocumentLibrary(libraryName);
+                }
+
+                // get the root folder
+                library = ctx.Web.Lists.GetByTitle(libraryName);
+                ctx.Load(library, l => l.RootFolder); 
+                ctx.ExecuteQuery();
+
+                // upload the file
+                library.RootFolder.UploadFile("SP2013_LargeFile.pptx", HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SP2013_LargeFile.pptx")), true); 
+
                 lblStatus1.Text = "Document has been uploaded to host web to new library called Docs, which was created unless it already existed.";
             }
         }
@@ -72,8 +88,19 @@ namespace Core.FileUploadWeb
 
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
-                ctx.Web.UploadDocumentToFolder(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SP2013_LargeFile.pptx")), "hiddentest", true);
-                lblStatus1.Text = "Document has been uploaded to host web to folder called hiddentest, which was created unless it already existed.<br/>Folder are not visible from the browser UI, but if you request the URL in browser, you can verify that the file is there.";
+                string folderName = "hiddentest";
+                if (!ctx.Web.DoesFolderExists(folderName))
+                {
+                    ctx.Web.Folders.Add(folderName);
+                }
+
+                // Upload document to the folder
+                var destinationFolder = ctx.Web.Folders.GetByUrl(folderName);
+
+                // upload the file to the folder
+                destinationFolder.UploadFile("SP2013_LargeFile.pptx", HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/SP2013_LargeFile.pptx")), true);
+
+                lblStatus2.Text = "Document has been uploaded to host web to folder called hiddentest, which was created unless it already existed.<br/>Folder are not visible from the browser UI, but if you request the URL in browser, you can verify that the file is there.";
             }
         }
     }

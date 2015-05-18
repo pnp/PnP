@@ -1,12 +1,12 @@
 # Creating simple remote timer job #
 
 ### Summary ###
-Shows how to create "remote timer job", which could be instaled to be running as a WebJob to Windows Azure or scheduled to windows scheduler for on-premises deployment.
+Shows how to create "remote timer job", which could be installed to be running as a WebJob to Windows Azure or scheduled to windows scheduler for on-premises deployment.
 
 For more information on this scenario, see the blog post: [http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx](http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx) & [http://blogs.msdn.com/b/shariq/archive/2013/12/09/simulate-timer-job-solution-for-sharepoint-2013-online-using-csom.aspx](http://blogs.msdn.com/b/shariq/archive/2013/12/09/simulate-timer-job-solution-for-sharepoint-2013-online-using-csom.aspx)
 
 
-### Walkthrough Video ###
+### Walk-through Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Simple-remote-timer-job-that-interacts-with-SharePoint-Online-Office-365-Developer-Patterns-and-Prac](http://channel9.msdn.com/Blogs/Office-365-Dev/Simple-remote-timer-job-that-interacts-with-SharePoint-Online-Office-365-Developer-Patterns-and-Prac)
 
 ![](http://i.imgur.com/VL82DfK.png)

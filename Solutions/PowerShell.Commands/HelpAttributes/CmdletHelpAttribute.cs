@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
 {
-    [System.AttributeUsage(System.AttributeTargets.Class,
+    [AttributeUsage(AttributeTargets.Class,
                        AllowMultiple = false)]
     public sealed class CmdletHelpAttribute : Attribute
     {
-        string description;
+        readonly string description;
+
+        [Obsolete("Is not used. Use DetailedDescription instead.")]
         public string Details { get; set; }
+
         public string DetailedDescription { get; set; }
         public string Copyright { get; set; }
         public string Version { get; set; }
+
+        public string Category { get; set; }
         public CmdletHelpAttribute(string description)
         {
             this.description = description;
@@ -24,7 +25,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpAttributes
         {
             get
             {
-                return this.description;
+                return description;
             }
         }
     }

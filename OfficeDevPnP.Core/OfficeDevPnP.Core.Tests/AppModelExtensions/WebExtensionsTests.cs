@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core.Tests;
 using System.IO;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+
 namespace Microsoft.SharePoint.Client.Tests
 {
     [TestClass()]
@@ -19,7 +22,7 @@ namespace Microsoft.SharePoint.Client.Tests
         const string APPNAME = "HelloWorldApp";
         private ClientContext clientContext;
 
-        #region SETUP AND TEARDOWN
+        #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
@@ -30,7 +33,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
             // Activate sideloading in order to test apps
             clientContext.Load(clientContext.Site, s => s.Id);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             clientContext.Site.ActivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
         }
 
@@ -39,12 +42,12 @@ namespace Microsoft.SharePoint.Client.Tests
         {
             // Deactivate sideloading
             clientContext.Load(clientContext.Site);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             clientContext.Site.DeactivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
 
             var props = clientContext.Web.AllProperties;
             clientContext.Load(props);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             if (props.FieldValues.ContainsKey(_key))
             {
@@ -57,17 +60,23 @@ namespace Microsoft.SharePoint.Client.Tests
                 props.FieldValues.Remove(INDEXED_PROPERTY_KEY);
             }
             clientContext.Web.Update();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             var instances = AppCatalog.GetAppInstances(clientContext, clientContext.Web);
             clientContext.Load(instances);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
+
+            string appToRemove = APPNAME;
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif            
+
             foreach (var instance in instances)
             {
-                if (string.Equals(instance.Title, APPNAME, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(instance.Title, appToRemove, StringComparison.OrdinalIgnoreCase))
                 {
                     instance.Uninstall();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                     break;
                 }
             }
@@ -75,27 +84,41 @@ namespace Microsoft.SharePoint.Client.Tests
         }
         #endregion
 
-        #region PROPBAG tests
+        #region Property bag tests
         [TestMethod()]
-        public void SetPropertyBagValueTest()
+        public void SetPropertyBagValueIntTest()
         {
             clientContext.Web.SetPropertyBagValue(_key, _value_int);
 
             var props = clientContext.Web.AllProperties;
             clientContext.Load(props);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             Assert.IsTrue(props.FieldValues.ContainsKey(_key));
             Assert.AreEqual(_value_int, props.FieldValues[_key] as int?);
         }
 
         [TestMethod()]
-        public void SetPropertyBagValueTest1()
+        public void SetPropertyBagValueStringTest()
         {
             clientContext.Web.SetPropertyBagValue(_key, _value_string);
 
             var props = clientContext.Web.AllProperties;
             clientContext.Load(props);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
+            Assert.IsTrue(props.FieldValues.ContainsKey(_key), "Entry not added");
+            Assert.AreEqual(_value_string, props.FieldValues[_key] as string, "Entry not set with correct value");
+        }
+
+        [TestMethod()]
+        public void SetPropertyBagValueMultipleRunsTest()
+        {
+            string key2 = _key + "_multiple";
+            clientContext.Web.SetPropertyBagValue(key2, _value_string);
+            clientContext.Web.SetPropertyBagValue(_key, _value_string);
+
+            var props = clientContext.Web.AllProperties;
+            clientContext.Load(props);
+            clientContext.ExecuteQueryRetry();
             Assert.IsTrue(props.FieldValues.ContainsKey(_key), "Entry not added");
             Assert.AreEqual(_value_string, props.FieldValues[_key] as string, "Entry not set with correct value");
         }
@@ -106,17 +129,17 @@ namespace Microsoft.SharePoint.Client.Tests
             var web = clientContext.Web;
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             props[_key] = _value_string;
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             web.RemovePropertyBagValue(_key);
 
             props.RefreshLoad();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             Assert.IsFalse(props.FieldValues.ContainsKey(_key), "Entry not removed");
         }
 
@@ -126,12 +149,12 @@ namespace Microsoft.SharePoint.Client.Tests
             var web = clientContext.Web;
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             props[_key] = _value_int;
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var intValue = web.GetPropertyBagValueInt(_key, -1);
 
@@ -151,12 +174,12 @@ namespace Microsoft.SharePoint.Client.Tests
             var web = clientContext.Web;
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             props[_key] = _value_string;
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var stringValue = web.GetPropertyBagValueString(_key, notExistingKey);
 
@@ -175,12 +198,12 @@ namespace Microsoft.SharePoint.Client.Tests
             var web = clientContext.Web;
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             props[_key] = _value_string;
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Assert.IsTrue(web.PropertyBagContainsKey(_key));
         }
@@ -202,23 +225,23 @@ namespace Microsoft.SharePoint.Client.Tests
                 var encodedValues = GetEncodedValueForSearchIndexProperty(keysList);
 
                 web.Context.Load(props);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 props[INDEXED_PROPERTY_KEY] = encodedValues;
 
                 web.Update();
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
             keys = web.GetIndexedPropertyBagKeys();
             Assert.IsTrue(keys.Contains(_key), "Key not present");
 
             // Local Cleanup
             props.RefreshLoad();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             props[INDEXED_PROPERTY_KEY] = null;
             props.FieldValues.Remove(INDEXED_PROPERTY_KEY);
             web.Update();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
 
         [TestMethod()]
@@ -227,12 +250,12 @@ namespace Microsoft.SharePoint.Client.Tests
             var web = clientContext.Web;
             var props = web.AllProperties;
             clientContext.Load(props);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             web.AddIndexedPropertyBagKey(_key);
 
             props.RefreshLoad();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             Assert.IsTrue(props.FieldValues.ContainsKey(INDEXED_PROPERTY_KEY));
 
@@ -240,7 +263,7 @@ namespace Microsoft.SharePoint.Client.Tests
             props[INDEXED_PROPERTY_KEY] = null;
             props.FieldValues.Remove(INDEXED_PROPERTY_KEY);
             web.Update();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
 
         [TestMethod()]
@@ -253,34 +276,36 @@ namespace Microsoft.SharePoint.Client.Tests
             var encodedValues = GetEncodedValueForSearchIndexProperty(new List<string>() { _key });
 
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             props[INDEXED_PROPERTY_KEY] = encodedValues;
 
             web.Update();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             // Remove the key
             Assert.IsTrue(web.RemoveIndexedPropertyBagKey(_key));
             props.RefreshLoad();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             // All keys should be gone
             Assert.IsFalse(props.FieldValues.ContainsKey(_key), "Key still present");
         }
-
-        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (string current in keys)
-            {
-                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
-                stringBuilder.Append('|');
-            }
-            return stringBuilder.ToString();
-        }
-
         #endregion
 
+        #region Provisioning Tests
+
+        [TestMethod]
+        public void GetProvisioningTemplateTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var template = clientContext.Web.GetProvisioningTemplate();
+                Assert.IsInstanceOfType(template, typeof (ProvisioningTemplate));
+            }
+        }
+        #endregion
+
+        #region App instance tests
         [TestMethod()]
         public void GetAppInstancesTest()
         {
@@ -290,10 +315,16 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
             instances = web.GetAppInstances();
@@ -309,19 +340,33 @@ namespace Microsoft.SharePoint.Client.Tests
             Assert.IsInstanceOfType(instances, typeof(ClientObjectList<AppInstance>), "Incorrect return value");
             int instanceCount = instances.Count;
 
-            using (MemoryStream stream = new MemoryStream(OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp))
+            #if !CLIENTSDKV15
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp;
+            #else
+            byte[] appToLoad = OfficeDevPnP.Core.Tests.Properties.Resources.HelloWorldApp15;
+            #endif
+
+            using (MemoryStream stream = new MemoryStream(appToLoad))
             {
                 web.LoadApp(stream, 1033);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
             }
 
-            Assert.IsTrue(web.RemoveAppInstanceByTitle(APPNAME));
+            string appToRemove = APPNAME;
+            
+            #if CLIENTSDKV15
+            appToRemove += "15";
+            #endif
+            
+            Assert.IsTrue(web.RemoveAppInstanceByTitle(appToRemove));
 
             instances = web.GetAppInstances();
 
             Assert.AreEqual(instances.Count, instanceCount);
         }
+        #endregion
 
+        #region Install solution tests
         // DO NOT RUN. The DesignPackage.Install() function, used by this test, wipes the composed look gallery, breaking other tests.")]
         [Ignore()]
         [TestMethod()]
@@ -351,7 +396,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 var solutions = solutionGallery.GetItems(camlQuery);
                 clientContext.Load(solutions);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 // Test
 
@@ -359,7 +404,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 // Check if we can activate Test Feature on rootweb
                 clientContext.Load(clientContext.Web);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
               //  clientContext.Web.ActivateFeature(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid));
               //  Assert.IsTrue(clientContext.Web.IsFeatureActive(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid)), "Test feature not activated");
@@ -400,7 +445,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
             var solutions = solutionGallery.GetItems(camlQuery);
             clientContext.Load(solutions);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             Assert.IsFalse(solutions.Any(),"There are still solutions installed");
 
             Assert.IsFalse(clientContext.Web.IsFeatureActive(new Guid(OfficeDevPnP.Core.Tests.Properties.Resources.TestSolutionFeatureGuid)));
@@ -408,5 +453,20 @@ namespace Microsoft.SharePoint.Client.Tests
             // Teardown
             System.IO.File.Delete(solutionpath);
         }
+        #endregion
+
+        #region Helper methods
+        private static string GetEncodedValueForSearchIndexProperty(IEnumerable<string> keys)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (string current in keys)
+            {
+                stringBuilder.Append(Convert.ToBase64String(Encoding.Unicode.GetBytes(current)));
+                stringBuilder.Append('|');
+            }
+            return stringBuilder.ToString();
+        }
+        #endregion
+
     }
 }

@@ -1,11 +1,11 @@
-﻿using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
-using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("New", "SPOUser")]
-    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object")]
+    [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object", Category = "User and group management")]
     [CmdletExample(Code = @"
 PS:> New-SPOUser -LogonName user@company.com
 ")]
@@ -17,9 +17,9 @@ PS:> New-SPOUser -LogonName user@company.com
 
         protected override void ExecuteCmdlet()
         {
-            var user = this.SelectedWeb.EnsureUser(LoginName);
+            var user = SelectedWeb.EnsureUser(LoginName);
             ClientContext.Load(user, u => u.Email, u => u.Id, u => u.IsSiteAdmin, u => u.Groups, u => u.PrincipalType, u => u.Title, u => u.IsHiddenInUI, u => u.UserId, u => u.LoginName);
-            ClientContext.ExecuteQuery();
+            ClientContext.ExecuteQueryRetry();
             WriteObject(user);
         }
     }

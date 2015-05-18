@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using Microsoft.Online.SharePoint.TenantAdministration;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +82,9 @@ namespace Provisioning.CreateSiteWeb.Pages
 
             using (var ctx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), accessToken))
             {
-                if (ctx.Web.SiteExistsInTenant(webUrl))
+                Tenant tenant = new Tenant(ctx);
+
+                if (tenant.SiteExists(webUrl))
                 {
                     lblStatus1.Text = string.Format("Site already existed. Used URL - {0}", webUrl);
                 }
@@ -89,7 +92,6 @@ namespace Provisioning.CreateSiteWeb.Pages
                 {
                     lblStatus1.Text = string.Format("Site with given URL does not exist. Used URL - {0}", webUrl);
                 }
-                //ctx.Web.CreateSiteCollectionTenant(webUrl, txtName.Text, currUser.Email, drpContentTypes.SelectedValue, 500, 400, 7, 7, 1, 1033);
             }
 
         }
@@ -114,14 +116,16 @@ namespace Provisioning.CreateSiteWeb.Pages
 
             using (var ctx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), accessToken))
             {
-                if (ctx.Web.SiteExistsInTenant(webUrl))
+                Tenant tenant = new Tenant(ctx);
+
+                if (tenant.SiteExists(webUrl))
                 {
                     lblStatus1.Text = string.Format("Site already existed. Used URL - {0}", webUrl);
                 }
                 else
                 {
                     // Create new site collection with some storage limts and English locale
-                    ctx.Web.CreateSiteCollectionTenant(webUrl, txtName.Text, currUser.Email, drpContentTypes.SelectedValue, 500, 400, 7, 7, 1, 1033);
+                    tenant.CreateSiteCollection(webUrl, txtName.Text, currUser.Email, drpContentTypes.SelectedValue, 500, 400, 7, 7, 1, 1033);
 
                     // Let's get instance to the newly added site collection using URLs
                     var siteUri = new Uri(webUrl);
@@ -138,7 +142,7 @@ namespace Provisioning.CreateSiteWeb.Pages
                         newWeb.CreateDocumentLibrary("Presentations");
 
                         // Let's also apply theme to the site to demonstrate how easy this is
-                        newWeb.SetThemeToWeb("Characters");
+                        newWeb.SetComposedLookByUrl("Characters");
                     }
 
                     lblStatus1.Text = string.Format("Created a new site collection to address <a href='{0}'>{1}</a>", webUrl, webUrl);

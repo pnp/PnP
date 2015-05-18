@@ -1,10 +1,12 @@
-﻿using OfficeDevPnP.PowerShell.Commands.Base;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOAppSideLoading")]
+    [CmdletHelp("Enables the App Side Loading Feature on a site", Category = "Sites")]
     public class SetAppSideLoading : SPOCmdlet
     {
         [Parameter(ParameterSetName = "On", Mandatory = true)]
@@ -16,11 +18,11 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (On)
             {
-                ClientContext.Site.ActivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.ActivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
             else
             {
-                ClientContext.Site.DeactivateFeature(OfficeDevPnP.Core.Constants.APPSIDELOADINGFEATUREID);
+                ClientContext.Site.DeactivateFeature(Constants.APPSIDELOADINGFEATUREID);
             }
         }
 

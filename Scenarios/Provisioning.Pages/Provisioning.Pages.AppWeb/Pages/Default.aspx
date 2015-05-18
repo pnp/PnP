@@ -22,7 +22,7 @@
         <br />
         HTML text to add:
         <br />
-        <asp:TextBox runat="server" ID="txtHtml" Rows="6" TextMode="MultiLine" Width="400px" Text="Hello <strong>Office AMS</strong>!"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtHtml" Rows="6" TextMode="MultiLine" Width="400px" Text="Hello <strong>Office 365 Dev PnP</strong>!"></asp:TextBox>
         <br />
         <br />
         <asp:Button runat="server" ID="btnScenario1" Text="Run scenario 1" OnClick="btnScenario1_Click" />

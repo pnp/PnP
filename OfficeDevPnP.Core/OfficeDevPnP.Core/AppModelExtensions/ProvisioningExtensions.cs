@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
 
@@ -14,7 +11,7 @@ namespace Microsoft.SharePoint.Client
     /// <summary>
     /// File-based (CAML) provisioning extensions
     /// </summary>
-    public static class ProvisioningExtensions
+    public static partial class ProvisioningExtensions
     {
         const string SharePointNamespaceName = "http://schemas.microsoft.com/sharepoint/";
 
@@ -26,11 +23,11 @@ namespace Microsoft.SharePoint.Client
         public static void ProvisionElementFile(this Web web, string path)
         {
             if (path == null) { throw new ArgumentNullException("path"); }
-            if (string.IsNullOrWhiteSpace(path)) { throw new ArgumentException("Path to the element file is required", "path"); }
+            if (string.IsNullOrWhiteSpace(path)) { throw new ArgumentException(CoreResources.ProvisioningExtensions_ProvisionElementFile_Path_to_the_element_file_is_required, "path"); }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.ProvisionElementFile, CoreResources.ProvisioningExtensions_ProvisionElementFile0, path);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.ProvisioningExtensions_ProvisionElementFile0, path);
 
-            var baseFolder = System.IO.Path.GetDirectoryName(path);
+            var baseFolder = Path.GetDirectoryName(path);
             using (var sr = System.IO.File.OpenText(path))
             {
                 var xdoc = XDocument.Load(sr);
@@ -48,10 +45,10 @@ namespace Microsoft.SharePoint.Client
         public static void ProvisionElementXml(this Web web, string baseFolder, XElement elementsXml)
         {
             // TODO: Maybe some sort of stream provider for resolving references (instead of baseFolder)
-            if (elementsXml == null) { throw new ArgumentNullException("xml"); }
+            if (elementsXml == null) { throw new ArgumentNullException("elementsXml"); }
             if (elementsXml.Name != XName.Get("Elements", SharePointNamespaceName))
             {
-                throw new ArgumentException("Expected element 'Elements'.", "xml");
+                throw new ArgumentException(CoreResources.ProvisioningExtensions_ProvisionElementXml_Expected_element__Elements__, "xml");
             }
 
             foreach (var child in elementsXml.Elements())
@@ -75,15 +72,15 @@ namespace Microsoft.SharePoint.Client
             if (moduleXml == null) { throw new ArgumentNullException("module"); }
             if (moduleXml.Name != XName.Get("Module", SharePointNamespaceName))
             {
-                throw new ArgumentException("Expected element 'Module'.", "module");
+                throw new ArgumentException(CoreResources.ProvisioningExtensions_ProvisionModuleInternal_Expected_element__Module__, "module");
             }
 
             var name = moduleXml.Attribute("Name").Value;
             var moduleBaseUrl = moduleXml.Attribute("Url").Value;
             var modulePath = moduleXml.Attribute("Path").Value;
-            var moduleBaseFolder = System.IO.Path.Combine(baseFolder, modulePath);
+            var moduleBaseFolder = Path.Combine(baseFolder, modulePath);
 
-            LoggingUtility.Internal.TraceVerbose("Provisioning module '{0}'", name);
+            Log.Debug(Constants.LOGGING_SOURCE, "Provisioning module '{0}'", name);
 
             foreach (var child in moduleXml.Elements())
             {
@@ -96,7 +93,7 @@ namespace Microsoft.SharePoint.Client
                     }
                     catch (Exception ex)
                     {
-                        LoggingUtility.Internal.TraceError((int)EventId.ProvisionModuleFileError, ex, CoreResources.ProvisioningExtensions_ErrorProvisioningModule0File1, name, filePath);
+                        Log.Error(Constants.LOGGING_SOURCE, CoreResources.ProvisioningExtensions_ErrorProvisioningModule0File1, name, filePath, ex.Message);
                     }
                 }
                 else
@@ -112,10 +109,10 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         static File ProvisionFileInternal(this Web web, string baseUrl, string baseFolder, XElement fileXml, bool useWebDav = true)
         {
-            if (fileXml == null) { throw new ArgumentNullException("file"); }
+            if (fileXml == null) { throw new ArgumentNullException("fileXml"); }
             if (fileXml.Name != XName.Get("File", SharePointNamespaceName))
             {
-                throw new ArgumentException("Expected element 'File'.", "file");
+                throw new ArgumentException(CoreResources.ProvisioningExtensions_ProvisionFileInternal_Expected_element__File__, "file");
             }
 
             var fileUrl = fileXml.Attribute("Url").Value;
@@ -129,7 +126,7 @@ namespace Microsoft.SharePoint.Client
             }
 
             var webRelativeUrl = baseUrl + (baseUrl.EndsWith("/") ? "" : "/") + fileUrl;
-            var path = System.IO.Path.Combine(baseFolder, filePath);
+            var path = Path.Combine(baseFolder, filePath);
 
             var propertyDictionary = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             var skipProperties = new List<string>() { "ContentType", "FileDirRef", "FileLeafRef", "_ModerationStatus", "FSObjType" };
@@ -140,7 +137,7 @@ namespace Microsoft.SharePoint.Client
                     var propertyName = child.Attribute("Name").Value;
                     if (skipProperties.Contains(propertyName, StringComparer.OrdinalIgnoreCase))
                     {
-                        LoggingUtility.Internal.TraceVerbose("Skipping property known to cause issues '{0}'", propertyName);
+                        Log.Debug(Constants.LOGGING_SOURCE, "Skipping property known to cause issues '{0}'", propertyName);
                         //Console.WriteLine("Skipping property '{0}'", propertyName);
                     }
                     else
@@ -151,12 +148,33 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
-            string fileName = System.IO.Path.GetFileName(webRelativeUrl);
+            string fileName = Path.GetFileName(webRelativeUrl);
             var folderWebRelativeUrl = webRelativeUrl.Substring(0, webRelativeUrl.Length - fileName.Length);
             Folder folder = web.EnsureFolderPath(folderWebRelativeUrl);
 
-            var checkHashBeforeUpload = true;
-            return folder.UploadFile(fileName, path, propertyDictionary, replaceContent, checkHashBeforeUpload, level, useWebDav);
+            // perform all operations that used to be done in UploadFile
+            // Check to see that the file doesn't already exist.
+            var file = folder.GetFile(fileName);
+            var uploadRequired = true;
+
+            // If file exists, verify the files aren't the same.
+            if (file != null)
+                uploadRequired = file.VerifyIfUploadRequired(path);
+            
+            // Upload the file, if required, using the specified process for upload.
+            if (uploadRequired) {
+                if (useWebDav)
+                    file = folder.UploadFileWebDav(fileName, path, replaceContent);
+                else
+                    file = folder.UploadFile(fileName, path, replaceContent);
+            }
+            // Set file properties after upload
+            file.SetFileProperties(propertyDictionary);
+
+            // Publish the file
+            file.PublishFileToLevel(level);
+
+            return file;
         }
 
     }

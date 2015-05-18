@@ -2,10 +2,12 @@
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Management.Automation;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOWeb")]
+    [CmdletHelp("Returns the current web object", Category = "Webs")]
     public class GetWeb : SPOCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position=0)]
@@ -15,13 +17,13 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity == null)
             {
-                ClientContext.Load(ClientContext.Web);
-                ClientContext.ExecuteQuery();
-                WriteObject(this.ClientContext.Web);
+                ClientContext.Load(ClientContext.Web, w => w.Id, w => w.Url, w => w.Title);
+                ClientContext.ExecuteQueryRetry();
+                WriteObject(ClientContext.Web);
             }
             else
             {
-                if (Identity.Id != null && Identity.Id != Guid.Empty)
+                if (Identity.Id != Guid.Empty)
                 {
                     WriteObject(ClientContext.Web.GetWebById(Identity.Id));
                 }

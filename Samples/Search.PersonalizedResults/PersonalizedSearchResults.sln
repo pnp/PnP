@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.PersonalizedResults", "PersonalizedSearchResults\Search.PersonalizedResults.csproj", "{06ACECE2-801B-465A-9274-3B6481C9CA6C}"
 EndProject

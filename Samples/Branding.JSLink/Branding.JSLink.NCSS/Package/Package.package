@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="2c2953ec-61b9-4f22-b631-a64ff61085cf" solutionId="2c2953ec-61b9-4f22-b631-a64ff61085cf" resetWebServer="false" sharePointProductVersion="15.0" name="Branding.JSLink" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="db8dcb15-53af-4250-a730-f9dd4a4595cf" />
+    <featureReference itemId="703b9bc4-71d3-4d35-937d-9b7ee473e487" />
+    <featureReference itemId="09a2fad9-050d-44ee-b35e-09defb2f7ea7" />
+  </features>
+</package>

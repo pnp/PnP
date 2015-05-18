@@ -1,17 +1,12 @@
 ﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
     public sealed class GroupPipeBind
     {
-        private int _id = -1;
-        private Group _group;
-        private string _name;
+        private readonly int _id = -1;
+        private readonly Group _group;
+        private readonly string _name;
         public int Id
         {
             get
@@ -32,19 +27,23 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             get { return _name; }
         }
 
+        internal GroupPipeBind()
+        {
+        }
+
         public GroupPipeBind(int id)
         {
-            this._id = id;
+            _id = id;
         }
 
         public GroupPipeBind(Group group)
         {
-            this._group = group;
+            _group = group;
         }
 
         public GroupPipeBind(string name)
         {
-            this._name = name;
+            _name = name;
         }
 
     }

@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{643AF97E-AC5C-4AA5-81AD-834679868D96}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Branding.JSLink</RootNamespace>
+    <AssemblyName>Branding.JSLink</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="AddJQueryToPages\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{74337a53-3385-4c3d-8c7d-ad2227982a17}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\AddJQuery\AddJQuery.feature">
+      <FeatureId>{09a2fad9-050d-44ee-b35e-09defb2f7ea7}</FeatureId>
+    </None>
+    <None Include="Features\Lists\Lists.feature">
+      <FeatureId>{703b9bc4-71d3-4d35-937d-9b7ee473e487}</FeatureId>
+    </None>
+    <None Include="Features\StyleLibraryFiles\StyleLibraryFiles.feature">
+      <FeatureId>{db8dcb15-53af-4250-a730-f9dd4a4595cf}</FeatureId>
+    </None>
+    <None Include="Lists\Countries\CountriesInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{78b54039-ca4e-4676-9321-33383a59dba0}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\Countries\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5d39e60c-6bee-4b93-b55b-a6c802d16b6b}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\FavouriteColours\FavouriteColoursInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3dd4ff53-a4dd-4335-b4d1-6a591616f071}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\FavouriteColours\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a609e921-9c5a-4b1e-8d3d-0d2818d454cf}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\GoogleMaps\GoogleMapsInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{eb10b185-d38a-4538-a5ba-612f1c573b32}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\GoogleMaps\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{55e8e870-bb29-4864-a5b7-2434462851c6}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\ProjectLocations\ProjectLocationsInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7c084e24-f989-49dc-ad16-5aaed160cbf9}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\ProjectLocations\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5a35336f-c560-4053-baec-2ef1bab7c042}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\Regions\RegionsInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f685a345-1c1b-4c05-b911-e6c6873594e9}</SharePointProjectItemId>
+    </None>
+    <None Include="Lists\Regions\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{02245aa5-eda7-4f86-b628-dbe91115b4ee}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{2c2953ec-61b9-4f22-b631-a64ff61085cf}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="Style Library\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9ed40b4a-e9ee-4337-88ce-8ad91fc29c52}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AddJQueryToPages\Elements.xml" />
+    <Content Include="Features\AddJQuery\AddJQuery.Template.xml">
+      <DependentUpon>AddJQuery.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\Lists\Lists.Template.xml">
+      <DependentUpon>Lists.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\StyleLibraryFiles\StyleLibraryFiles.Template.xml">
+      <DependentUpon>StyleLibraryFiles.feature</DependentUpon>
+    </Content>
+    <Content Include="Lists\Countries\CountriesInstance\Elements.xml" />
+    <Content Include="Lists\Countries\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lists\Countries\Schema.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lists\FavouriteColours\Elements.xml" />
+    <Content Include="Lists\FavouriteColours\FavouriteColoursInstance\Elements.xml" />
+    <Content Include="Lists\FavouriteColours\Schema.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lists\GoogleMaps\Elements.xml" />
+    <Content Include="Lists\GoogleMaps\GoogleMapsInstance\Elements.xml" />
+    <Content Include="Lists\GoogleMaps\Schema.xml" />
+    <Content Include="Lists\ProjectLocations\Elements.xml" />
+    <Content Include="Lists\ProjectLocations\ProjectLocationsInstance\Elements.xml" />
+    <Content Include="Lists\ProjectLocations\Schema.xml" />
+    <Content Include="Lists\Regions\Elements.xml" />
+    <Content Include="Lists\Regions\RegionsInstance\Elements.xml" />
+    <Content Include="Lists\Regions\Schema.xml" />
+    <Content Include="Style Library\Elements.xml" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\Colours.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GenericTemplates.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GoogleMaps.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\Lookups.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\ManagedMetadata.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\jquery-1.10.2.min.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\dot.png" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\DrawMap.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\DrawMapSpacial.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\GoogleMapPointDialog.aspx" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\GoogleMapSpacialDialog.aspx" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\jquery.ui.map.min.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\json2.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementView.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\FavouriteColours.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\GoogleMapOverrides.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\ProjectLocations.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\TaxonomyOverrides.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

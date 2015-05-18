@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Entities;
+using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace ECM.AutoTaggingWeb
 {
@@ -55,12 +57,30 @@ namespace ECM.AutoTaggingWeb
             //Check the fields
             if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
             {
-                ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID,
-                                            FLD_CLASSIFICATION_INTERNAL_NAME,
-                                            FLD_CLASSIFICATION_DISPLAY_NAME,
-                                            FIELDS_GROUP_NAME,
-                                            TAXONOMY_GROUP,
-                                            TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+                TermStore termStore = GetDefaultTermStore(ctx.Web);
+
+                if (termStore == null)
+                {
+                    throw new NullReferenceException("The default term store is not available.");
+                }
+
+                // get the term group and term set
+                TermGroup termGroup = termStore.Groups.GetByName(TAXONOMY_GROUP);
+                TermSet termSet = termGroup.TermSets.GetByName(TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+                ctx.Load(termStore);
+                ctx.Load(termSet);
+                ctx.ExecuteQuery();
+
+                TaxonomyFieldCreationInformation fldCreate = new TaxonomyFieldCreationInformation()
+                {
+                    Id = FLD_CLASSIFICATION_ID,
+                    InternalName = FLD_CLASSIFICATION_INTERNAL_NAME,
+                    DisplayName = FLD_CLASSIFICATION_DISPLAY_NAME,
+                    Group = FIELDS_GROUP_NAME,
+                    TaxonomyItem = termSet,                    
+                };
+                ctx.Web.CreateTaxonomyField(fldCreate);
+
             }
 
             //check the content type
@@ -93,11 +113,20 @@ namespace ECM.AutoTaggingWeb
             //Check the fields
             if (!ctx.Web.FieldExistsById(FLD_BUSINESS_UNIT_ID))
             {
-                ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID,
-                                    FLD_BUSINESS_UNIT_INTERNAL_NAME,
-                                    FieldType.Text,
-                                    FLD_BUSINESS_UNIT_DISPLAY_NAME,
-                                    FIELDS_GROUP_NAME);
+                //ctx.Web.CreateField(FLD_BUSINESS_UNIT_ID,
+                //                    FLD_BUSINESS_UNIT_INTERNAL_NAME,
+                //                    FieldType.Text,
+                //                    FLD_BUSINESS_UNIT_DISPLAY_NAME,
+                //                    FIELDS_GROUP_NAME);
+                FieldCreationInformation fldCreate = new FieldCreationInformation(FieldType.Text)
+                {
+                    Id = FLD_BUSINESS_UNIT_ID,
+                    InternalName = FLD_BUSINESS_UNIT_INTERNAL_NAME,
+                    DisplayName = FLD_BUSINESS_UNIT_DISPLAY_NAME,
+                    Group = FIELDS_GROUP_NAME
+                };
+                ctx.Web.CreateField(fldCreate);
+
             }
             //check the content type
             if (!ctx.Web.ContentTypeExistsById(ITDOCUMENT_CT_ID))
@@ -136,7 +165,7 @@ namespace ECM.AutoTaggingWeb
         {
             if (!ctx.Web.ListExists(library.Title))
             {
-                ctx.Web.AddList(ListTemplateType.DocumentLibrary, library.Title, false);
+                ctx.Web.CreateList(ListTemplateType.DocumentLibrary, library.Title, false);
                 List _list = ctx.Web.GetListByTitle(library.Title);
                 if (!string.IsNullOrEmpty(library.Description))
                 {
@@ -161,6 +190,27 @@ namespace ECM.AutoTaggingWeb
             {
                 throw new Exception("A list, survey, discussion board, or document library with the specified title already exists in this Web site.  Please choose another title.");
             }
+        }
+
+        private TermStore GetDefaultTermStore(Web web)
+        {
+            TermStore termStore = null;
+            TaxonomySession taxonomySession = TaxonomySession.GetTaxonomySession(web.Context);
+            web.Context.Load(taxonomySession,
+                ts => ts.TermStores.Include(
+                    store => store.Name,
+                    store => store.Groups.Include(
+                        group => group.Name
+                        )
+                    )
+                );
+            web.Context.ExecuteQueryRetry();
+            if (taxonomySession != null)
+            {
+                termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
+            }
+
+            return termStore;
         }
     }
 

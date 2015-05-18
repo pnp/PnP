@@ -4,10 +4,12 @@ using System;
 using System.Linq;
 using System.Management.Automation;
 using System.Collections.Generic;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOView")]
+    [CmdletHelp("Returns one or all views from a list", Category = "Lists")]
     public class GetView : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Url of the list.")]
@@ -21,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                var list = this.SelectedWeb.GetList(List);
+                var list = SelectedWeb.GetList(List);
                 if (list != null)
                 {
                     View view = null;
@@ -41,7 +43,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     else
                     {
                         views = ClientContext.LoadQuery(list.Views.IncludeWithDefaultProperties(v => v.ViewFields));
-                        ClientContext.ExecuteQuery();
+                        ClientContext.ExecuteQueryRetry();
                         
                     }
                     if (views != null && views.Any())

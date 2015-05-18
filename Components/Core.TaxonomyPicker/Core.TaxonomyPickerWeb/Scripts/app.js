@@ -32,7 +32,7 @@ $(document).ready(function () {
                         function () {
                             $.getScript(layoutsRoot + 'sp.taxonomy.js',
                                 function () {
-                                    //binf the taxonomy picker to the default keywords termset
+                                    //bind the taxonomy picker to the default keywords termset
                                     $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
                                 });
                         });

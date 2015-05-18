@@ -1,70 +1,69 @@
-﻿// Register script for MDS if possible
-RegisterModuleInit("scenario2.js", RemoteManager_Inject); //MDS registration
-RemoteManager_Inject(); //non MDS run
-
-if (typeof (Sys) != "undefined" && Boolean(Sys) && Boolean(Sys.Application)) {
-    Sys.Application.notifyScriptLoaded();
-}
-
-if (typeof (NotifyScriptLoadedAndExecuteWaitingJobs) == "function") {
-    NotifyScriptLoadedAndExecuteWaitingJobs("scenario2.js");
+﻿if ("undefined" != typeof g_MinimalDownload && g_MinimalDownload && (window.location.pathname.toLowerCase()).endsWith("/_layouts/15/start.aspx") && "undefined" != typeof asyncDeltaManager) {
+    // Register script for MDS if possible
+    RegisterModuleInit("scenario2.js", RemoteManager_Inject); //MDS registration
+    RemoteManager_Inject(); //non MDS run
+} else {
+    RemoteManager_Inject();
 }
 
 function RemoteManager_Inject() {
 
     var jQuery = "https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.2.min.js";
-
-    // load jQuery and if complete load the js resource file
+    
     loadScript(jQuery, function () {
+        SP.SOD.executeOrDelayUntilScriptLoaded(function () { TranslateQuickLaunch(); }, 'sp.js');
+    });
+}
 
-        var scriptUrl = "";
-        var scriptRevision = "";
-        // iterate the loaded scripts to find the scenario2 script. We use the script URL to dynamically build the url for the resource file to be loaded.
-        $('script').each(function (i, el) {
-            if (el.src.toLowerCase().indexOf('scenario2.js') > -1) {
-                scriptUrl = el.src;
-                scriptRevision = scriptUrl.substring(scriptUrl.indexOf('.js') + 3);
-                scriptUrl = scriptUrl.substring(0, scriptUrl.indexOf('.js'));
+function TranslateQuickLaunch() {
+    // load jQuery and if complete load the js resource file
+    var scriptUrl = "";
+    var scriptRevision = "";
+    // iterate the loaded scripts to find the scenario2 script. We use the script URL to dynamically build the url for the resource file to be loaded.
+    $('script').each(function (i, el) {
+        if (el.src.toLowerCase().indexOf('scenario2.js') > -1) {
+            scriptUrl = el.src;
+            scriptRevision = scriptUrl.substring(scriptUrl.indexOf('.js') + 3);
+            scriptUrl = scriptUrl.substring(0, scriptUrl.indexOf('.js'));
+        }
+    })
+
+    var resourcesFile = scriptUrl + "." + _spPageContextInfo.currentUICultureName.toLowerCase() + ".js" + scriptRevision;
+    // load the JS resource file based on the user's language
+    loadScript(resourcesFile, function () {
+
+        // General changes that apply to all loaded pages come here
+        // ----------------------------------------------------------
+
+        // Update the quick launch labels
+        // Note that you can use the jQuery each function to iterate all elements that match your jQuery selector.
+        $("span.ms-navedit-flyoutArrow").each(function () {
+            if (this.innerText.toLowerCase().indexOf('my quicklaunch entry') > -1) {
+                //update the label
+                $(this).find('.menu-item-text').text(quickLauch_Scenario2);
+                //update the tooltip
+                $(this).parent().attr("title", quickLauch_Scenario2);
             }
-        })
-
-        var resourcesFile = scriptUrl + "." + _spPageContextInfo.currentUICultureName.toLowerCase() + ".js" + scriptRevision;
-        // load the JS resource file based on the user's language
-        loadScript(resourcesFile, function () {
-
-            // General changes that apply to all loaded pages come here
-            // ----------------------------------------------------------
-
-            // Update the quick launch labels
-            // Note that you can use the jQuery each function to iterate all elements that match your jQuery selector.
-            $("span.ms-navedit-flyoutArrow").each(function () {
-                if (this.innerText.toLowerCase().indexOf('my quicklaunch entry') > -1) {
-                    //update the label
-                    $(this).find('.menu-item-text').text(quickLauch_Scenario2);
-                    //update the tooltip
-                    $(this).parent().attr("title", quickLauch_Scenario2);
-                } 
-            });
-
-            // Page specific changes are conditioned via an IsOnPage call
-            // ----------------------------------------------------------
-
-            // Change the title of the "Hello SharePoint" page
-            if (IsOnPage("Hello%20SharePoint.aspx")) {
-                $("#DeltaPlaceHolderPageTitleInTitleArea").find("A").each(function () {
-                    if ($(this).text().toLowerCase().indexOf("hello sharepoint") > -1) {
-                        //update the label
-                        $(this).text(pageTitle_HelloSharePoint);
-                        //update the tooltip
-                        $(this).attr("title", pageTitle_HelloSharePoint);
-                    }
-                });
-            }
-
         });
+
+        // Page specific changes are conditioned via an IsOnPage call
+        // ----------------------------------------------------------
+
+        // Change the title of the "Hello SharePoint" page
+        if (IsOnPage("Hello%20SharePoint.aspx")) {
+            $("#DeltaPlaceHolderPageTitleInTitleArea").find("A").each(function () {
+                if ($(this).text().toLowerCase().indexOf("hello sharepoint") > -1) {
+                    //update the label
+                    $(this).text(pageTitle_HelloSharePoint);
+                    //update the tooltip
+                    $(this).attr("title", pageTitle_HelloSharePoint);
+                }
+            });
+        }
 
     });
 }
+
 
 function IsOnPage(pageName) {
     if (window.location.href.toLowerCase().indexOf(pageName.toLowerCase()) > -1) {

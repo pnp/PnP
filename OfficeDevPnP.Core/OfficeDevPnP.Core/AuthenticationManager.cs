@@ -1,14 +1,10 @@
-﻿using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
-using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Security;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core
 {
@@ -33,13 +29,26 @@ namespace OfficeDevPnP.Core
         /// <returns>ClientContext to be used by CSOM code</returns>
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.AuthenticationContext, CoreResources.AuthenticationManager_GetContext, siteUrl);
-            LoggingUtility.Internal.TraceVerbose(CoreResources.AuthenticationManager_TenantUser, tenantUser);
+            var spoPassword = EncryptionUtility.ToSecureString(tenantUserPassword);
+           
+            return GetSharePointOnlineAuthenticatedContextTenant(siteUrl, tenantUser, spoPassword);
+        }
+
+        /// <summary>
+        /// Returns a SharePointOnline ClientContext object 
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="tenantUser">User to be used to instantiate the ClientContext object</param>
+        /// <param name="tenantUserPassword">Password (SecureString) of the user used to instantiate the ClientContext object</param>
+        /// <returns>ClientContext to be used by CSOM code</returns>
+        public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, SecureString tenantUserPassword)
+        {
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.AuthenticationManager_GetContext, siteUrl);
+            Log.Debug(Constants.LOGGING_SOURCE, CoreResources.AuthenticationManager_TenantUser, tenantUser);
 
             if (sharepointOnlineCredentials == null)
             {
-                var spoPassword = tenantUserPassword.ToSecureString();
-                sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, spoPassword);
+                sharepointOnlineCredentials = new SharePointOnlineCredentials(tenantUser, tenantUserPassword);
             }
 
             var ctx = new ClientContext(siteUrl);
@@ -59,7 +68,7 @@ namespace OfficeDevPnP.Core
         public ClientContext GetAppOnlyAuthenticatedContext(string siteUrl, string realm, string appId, string appSecret)
         {
             EnsureToken(siteUrl, realm, appId, appSecret);
-            ClientContext clientContext = TokenHelper.GetClientContextWithAccessToken(siteUrl, this.appOnlyAccessToken);
+            ClientContext clientContext = TokenHelper.GetClientContextWithAccessToken(siteUrl, appOnlyAccessToken);
             return clientContext;
         }
 
@@ -74,7 +83,22 @@ namespace OfficeDevPnP.Core
         public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, string password, string domain)
         {
             ClientContext clientContext = new ClientContext(siteUrl);
-            clientContext.Credentials = new System.Net.NetworkCredential(user, password, domain);
+            clientContext.Credentials = new NetworkCredential(user, password, domain);
+            return clientContext;
+        }
+
+        /// <summary>
+        /// Returns a SharePoint on-premises / SharePoint Online Dedicated ClientContext object
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="user">User to be used to instantiate the ClientContext object</param>
+        /// <param name="password">Password (SecureString) of the user used to instantiate the ClientContext object</param>
+        /// <param name="domain">Domain of the user used to instantiate the ClientContext object</param>
+        /// <returns>ClientContext to be used by CSOM code</returns>
+        public ClientContext GetNetworkCredentialAuthenticatedContext(string siteUrl, string user, SecureString password, string domain)
+        {
+            ClientContext clientContext = new ClientContext(siteUrl);
+            clientContext.Credentials = new NetworkCredential(user, password, domain);
             return clientContext;
         }
 
@@ -144,12 +168,12 @@ namespace OfficeDevPnP.Core
         /// <param name="appSecret">Application secret of the Application which is requesting the ClientContext object</param>
         private void EnsureToken(string siteUrl, string realm, string appId, string appSecret)
         {
-            if (this.appOnlyAccessToken == null)
+            if (appOnlyAccessToken == null)
             {
                 lock (tokenLock)
                 {
-                    LoggingUtility.Internal.TraceVerbose("AuthenticationManager:EnsureToken(siteUrl:{0},realm:{1},appId:{2},appSecret:PRIVATE)", siteUrl, realm, appId);
-                    if (this.appOnlyAccessToken == null)
+                    Log.Debug(Constants.LOGGING_SOURCE, "AuthenticationManager:EnsureToken(siteUrl:{0},realm:{1},appId:{2},appSecret:PRIVATE)", siteUrl, realm, appId);
+                    if (appOnlyAccessToken == null)
                     {
                         TokenHelper.Realm = realm;
                         TokenHelper.ServiceNamespace = realm;
@@ -161,22 +185,22 @@ namespace OfficeDevPnP.Core
                         {
                             try
                             {
-                                LoggingUtility.Internal.TraceVerbose("Lease expiration date: {0}", response.ExpiresOn);
+                                Log.Debug(Constants.LOGGING_SOURCE, "Lease expiration date: {0}", response.ExpiresOn);
                                 var lease = response.ExpiresOn - DateTime.Now;
                                 lease =
                                     TimeSpan.FromSeconds(
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
                                                  TimeSpan.FromHours(1).TotalSeconds));
                                 Thread.Sleep(lease);
-                                this.appOnlyAccessToken = null;
+                                appOnlyAccessToken = null;
                             }
                             catch (Exception ex)
                             {
-                                LoggingUtility.Internal.TraceWarning((int)EventId.ProblemDeterminingTokenLease, ex, CoreResources.AuthenticationManger_ProblemDeterminingTokenLease);
-                                this.appOnlyAccessToken = null;
+                                Log.Warning(Constants.LOGGING_SOURCE, CoreResources.AuthenticationManger_ProblemDeterminingTokenLease, ex);
+                                appOnlyAccessToken = null;
                             }
                         });
-                        this.appOnlyAccessToken = token;
+                        appOnlyAccessToken = token;
                     }
                 }
             }

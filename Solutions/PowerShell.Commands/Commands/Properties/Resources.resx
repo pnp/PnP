@@ -174,8 +174,8 @@
   <data name="RemoveEventReceiver" xml:space="preserve">
     <value>Remove event receiver?</value>
   </data>
-  <data name="RemoveJavaScript" xml:space="preserve">
-    <value>Remove JavaScript?</value>
+  <data name="RemoveJavaScript0" xml:space="preserve">
+    <value>Remove JavaScript ('{0}')?</value>
   </data>
   <data name="RemoveKeyAndValueFromPropertyBag" xml:space="preserve">
     <value>Remove key and value from property bag?</value>
@@ -203,5 +203,11 @@
   </data>
   <data name="Web0CreatedAt1" xml:space="preserve">
     <value>Web '{0}' created at {1}</value>
+  </data>
+  <data name="GetTenantSite_ExecuteCmdlet_This_request_can_take_a_long_time_to_execute__Continue_" xml:space="preserve">
+    <value>This request can take a long time to execute. Continue?</value>
+  </data>
+  <data name="RemoveNavigationNode0" xml:space="preserve">
+    <value>Remove Navigation Node '{0}'</value>
   </data>
 </root>
