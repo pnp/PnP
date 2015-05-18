@@ -44,13 +44,14 @@
             siteRequest.SharePointOnPremises = $scope.siteConfiguration.spOnPrem;
             siteRequest.Template = $scope.siteConfiguration.template.title;
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
-            
-       
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
     
+            //property bag entries will enumerate all properties defined in siteConfiguration.properties
             var props = {};
-            props["region"] = $scope.siteConfiguration.details.region;
-            props["division"] = $scope.siteConfiguration.details.division;
+            angular.forEach($scope.siteConfiguration.properties, function (value, key) {
+                props["_site_props_" + key] = value;
+            });
+            //set the properties object
             siteRequest.Properties = props;
             
             saveSiteRequest(siteRequest);
