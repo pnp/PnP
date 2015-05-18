@@ -43,7 +43,7 @@ namespace Provisioning.Framework
             using (var ctx = new ClientContext(templateSiteUrl))
             {
                 //Provide count and pwd for connecting to the source
-                ctx.Credentials = GetCredentials(loginId, pwd);
+                ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
 
                 // Get template from existing site
                 template = ctx.Web.GetProvisioningTemplate();
@@ -68,7 +68,7 @@ namespace Provisioning.Framework
             using (var ctx = new ClientContext(targetSiteUrl))
             {
                 //Provide count and pwd for connecting to the source               
-                ctx.Credentials = GetCredentials(loginId, pwd);
+                ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
 
                 // Apply template to existing site
                 ctx.Web.ApplyProvisioningTemplate(template);
@@ -115,12 +115,12 @@ namespace Provisioning.Framework
             return strPwd;
         }
 
-        private static ICredentials GetCredentials(string loginId, string pwd)
+        private static ICredentials GetCredentials(string siteUrl, string loginId, string pwd)
         {
             var passWord = new SecureString();
             foreach (char c in pwd.ToCharArray()) passWord.AppendChar(c);
 
-            if (loginId.Contains("@"))
+            if (siteUrl.ToLower().Contains("sharepoint.com"))
             {
                 return new SharePointOnlineCredentials(loginId, passWord);
             }
