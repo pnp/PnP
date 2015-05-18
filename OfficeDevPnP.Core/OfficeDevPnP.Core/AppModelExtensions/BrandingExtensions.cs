@@ -1303,34 +1303,5 @@ namespace Microsoft.SharePoint.Client
             folder.Update();
             web.Context.ExecuteQueryRetry();
         }
-
-        /// <summary>
-        /// Sets the web home page by Server Relative Path. The page should be in the same web
-        /// </summary>
-        /// <param name="web">The Web to process</param>
-        /// <param name="serverRelativePath">The server relative path , e.g. /sites/teamsite/SitePages/Home.aspx</param>
-        public static void SetHomePageByServerRelativePath(this Web web, string serverRelativePath)
-        {
-            Folder folder = web.RootFolder;
-            
-            if (!web.IsPropertyAvailable("ServerRelativeUrl"))
-            {
-                web.Context.Load(web, w => w.ServerRelativeUrl);
-                web.Context.ExecuteQueryRetry();
-            }
-
-            var webUrl = HttpUtility.UrlKeyValueDecode(web.ServerRelativeUrl);
-            serverRelativePath = HttpUtility.UrlKeyValueDecode(serverRelativePath);
-
-            var webRelativeUrl = serverRelativePath.Remove(0, webUrl.Length);
-            if (webRelativeUrl.FirstOrDefault() == '/')
-            {
-                webRelativeUrl = webRelativeUrl.Remove(0, 1);
-            }
-
-            folder.WelcomePage = HttpUtility.UrlKeyValueEncode(webRelativeUrl);
-            folder.Update();
-            web.Context.ExecuteQueryRetry();
-        }
     }
 }
