@@ -520,7 +520,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Framework\Provisioning\BaseTemplates\v16\BLOG0Template.xml" />
+    <Content Include="Framework\Provisioning\BaseTemplates\v16\COMMUNITY0Template.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
   </ItemGroup>
