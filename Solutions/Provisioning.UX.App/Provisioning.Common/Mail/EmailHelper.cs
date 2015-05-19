@@ -47,9 +47,6 @@ namespace Provisioning.Common.Mail
                             emailMessage.CC.Add(cc);
                         }
                         AlternateView htmlView = AlternateView.CreateAlternateViewFromString(_emailConfig.GetNewSiteEmailTemplateContent(message), null, "text/html");
-                        LinkedResource imageResource = new LinkedResource(_emailConfig.SuccessEmailTemplateImage);
-                        imageResource.ContentId = EmailConfig.TOKEN_TEMPLATEIMAGE;
-                        htmlView.LinkedResources.Add(imageResource);
                         emailMessage.AlternateViews.Add(htmlView);
                         client.Send(emailMessage);
                     }

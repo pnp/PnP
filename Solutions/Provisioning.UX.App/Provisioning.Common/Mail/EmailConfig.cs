@@ -19,9 +19,7 @@ namespace Provisioning.Common.Mail
         public Stream FailEmailTemplateImage { get; set; }
 
         private const string CONFIG_NEWSITETEMPLATE = "EmailNewSiteTemplate";
-        private const string CONFIG_NEWSITETEMPLATEIMAGE = "EmailNewSiteTemplateImage";
         private const string CONFIG_FAILEMAILTEMPLATE = "EmailFailureSiteTemplate";
-        public const string TOKEN_TEMPLATEIMAGE = "imageid";
         private const string TOKEN_SITEURL = "[SITEURL]";
         private const string TOKEN_SITEOWNER = "[SITEOWNER]";
         private const string TOKEN_SITEADMIN = "[SITEADMIN]";
@@ -46,16 +44,6 @@ namespace Provisioning.Common.Mail
             {
                 Log.Warning("Provisioning.Common.Mail.EmailConfig", "Your Email Template doesn't exist");
             }
-
-            string successEmailImage = ConfigurationManager.AppSettings[CONFIG_NEWSITETEMPLATEIMAGE];
-            if (File.Exists(successEmailImage))
-            {
-                this.SuccessEmailTemplateImage = File.OpenRead(successEmailImage);
-            }
-            else
-            {
-                Log.Warning("Provisioning.Common.Mail.EmailConfig", "Your Email Template Image doesn't exist");
-            }
             
             if(File.Exists(failEmail))
             {
@@ -77,13 +65,11 @@ namespace Provisioning.Common.Mail
         {
             string template = this.SuccessEmailTemplate;
 
-            template = template.Replace(TOKEN_TEMPLATEIMAGE, String.Format("cid:{0}", TOKEN_TEMPLATEIMAGE));
             template = template.Replace(TOKEN_SITEURL, message.SiteUrl);
             template = template.Replace(TOKEN_SITEOWNER, message.SiteOwner);
             template = template.Replace(TOKEN_SITEADMIN, message.SiteAdmin);
             //template = template.Replace(TOKEN_STORAGELIMIT,
             //    String.Format(new FileSizeFormatProvider(), "{0:fs}", message.StorageLimit));
-
             return template;
         }
 
@@ -91,7 +77,6 @@ namespace Provisioning.Common.Mail
         {
             string template = this.FailureEmailTemplate;
 
-            template = template.Replace(TOKEN_TEMPLATEIMAGE, String.Format("cid:{0}", TOKEN_TEMPLATEIMAGE));
             template = template.Replace(TOKEN_SITEURL, message.SiteUrl);
             template = template.Replace(TOKEN_SITEOWNER, message.SiteOwner);
             template = template.Replace(TOKEN_SITEADMIN, message.SiteAdmin);

@@ -48,6 +48,11 @@ namespace Provisioning.Common
         /// <returns></returns>
         Guid? GetSiteGuidByUrl(string url);
 
+        /// <summary>
+        /// Get Web by Url
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         Web GetWebByUrl(string url);
 
        

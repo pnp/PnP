@@ -55,8 +55,6 @@ namespace Provisioning.Common
             {
                 var _web = ctx.Web;
                 _web.ApplySitePolicy(policyName);
-                
-         
             });
         }
 
