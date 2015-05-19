@@ -2,6 +2,7 @@
 using OfficeDevPnP.Core.Utilities;
 using OfficeDevPnP.Core.WebAPI;
 using Provisioning.Common;
+using Provisioning.Common.Authentication;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Data;
 using Provisioning.Common.Data.SiteRequests;
@@ -53,6 +54,33 @@ namespace Provisioning.UX.AppWeb.Controllers
                 _st.HostPath = _t.HostPath;
                 _st.SharePointOnPremises = _t.SharePointOnPremises;
                 _returnResults.Add(_st);
+            }
+            return _returnResults;
+        }
+
+        /// <summary>
+        /// Returns a list of available site policies
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/provisioning/availableSitePolicies")]
+        [WebAPIContextFilter]
+        [HttpGet]
+        public List<SitePolicyResults> GetSitePolicies()
+        {
+            var _returnResults = new List<SitePolicyResults>();
+            ConfigManager _manager = new ConfigManager();
+
+            AbstractSiteProvisioningService _siteService = new Office365SiteProvisioningService();
+            var _auth = new AppOnlyAuthenticationTenant();
+            _auth.SiteUrl = _manager.GetAppSettingsKey("SPHost");
+
+            var _sitePolicies = _siteService.GetAvailablePolicies();
+            foreach(var _sitePolicyEntity in _sitePolicies)
+            {
+                var _policy = new SitePolicyResults();
+                _policy.Key = _sitePolicyEntity.Name;
+                _policy.Value = _sitePolicyEntity.Description;
+                _returnResults.Add(_policy);
             }
             return _returnResults;
         }

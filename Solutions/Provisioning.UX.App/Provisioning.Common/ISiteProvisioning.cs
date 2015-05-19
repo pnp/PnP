@@ -24,6 +24,24 @@ namespace Provisioning.Common
         void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
         /// <summary>
+        /// Returns aa collection of Site Policies
+        /// </summary>
+        /// <returns></returns>
+        List<SitePolicyEntity> GetAvailablePolicies();
+
+        /// <summary>
+        /// Sets the Site Policy
+        /// </summary>
+        /// <param name="policyName"></param>
+        void SetSitePolicy(string policyName);
+
+        /// <summary>
+        /// Gets the Site Policy Applied to the Site
+        /// </summary>
+        /// <returns></returns>
+        SitePolicyEntity GetAppliedSitePolicy();
+
+        /// <summary>
         /// Returns the Site Collection ID
         /// </summary>
         /// <param name="url"></param>

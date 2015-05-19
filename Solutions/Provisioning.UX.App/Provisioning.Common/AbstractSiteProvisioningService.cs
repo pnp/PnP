@@ -37,6 +37,40 @@ namespace Provisioning.Common
         #region ISiteProvisioning Members
         public abstract void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
+        public virtual SitePolicyEntity GetAppliedSitePolicy()
+        {
+            SitePolicyEntity _appliedSitePolicy = null;
+            UsingContext(ctx =>
+            {
+                var _web = ctx.Web;
+                _appliedSitePolicy = _web.GetAppliedSitePolicy();
+
+            });
+            return _appliedSitePolicy;
+        }
+
+        public virtual void SetSitePolicy(string policyName)
+        {
+            UsingContext(ctx =>
+            {
+                var _web = ctx.Web;
+                _web.ApplySitePolicy(policyName);
+                
+         
+            });
+        }
+
+        public virtual List<SitePolicyEntity> GetAvailablePolicies()
+        {
+            List<SitePolicyEntity> _results = new List<SitePolicyEntity>();
+            UsingContext(ctx =>
+            {
+                var _web = ctx.Web;
+                _results = _web.GetSitePolicies();
+            });
+            return _results;
+        }
+  
         public Web GetWebByUrl(string url)
         {
             Web _web = null;
@@ -107,6 +141,6 @@ namespace Provisioning.Common
             }
         }
         #endregion
-
+      
     }
 }

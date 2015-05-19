@@ -1,5 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
+using Provisioning.Common;
+using Provisioning.Common.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +74,18 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification
                 _web.SetPropertyBagValue(SITE_PROPERTY_FUNCTION, _function);
             }
 
+            var _sitePolicyName = Request.Form["BusinessImpact"].ToString();
+            var _updateSitePolicy = String.Compare(this.lblSitePolicy.Text, _sitePolicyName, StringComparison.InvariantCultureIgnoreCase) != 0;
+            if(_updateSitePolicy)
+            {
+                AbstractSiteProvisioningService _siteService = new Office365SiteProvisioningService();
+                var _auth = new AppOnlyAuthenticationSite();
+                _auth.SiteUrl = this.Url.Value;
+                _siteService.Authentication = _auth;
+                _siteService.SetSitePolicy(_sitePolicyName);
+
+            }
+
             Response.Redirect(this.Url.Value);
         }
 
@@ -92,18 +106,32 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification
             this.lblDivision.Text = _divisionProp;
             this.lblFunction.Text = _functionProp;
             this.lblRegion.Text = _regionProP;
-
-            this.SetAvailableSitePolicy();
+            this.SetUXAvailableSitePolicy();
         }
 
-        
-
-        private void SetAvailableSitePolicy()
+        private void SetUXAvailableSitePolicy()
         {
-            List<SitePolicyEntity> policies = _ctx.Web.GetSitePolicies();
-            foreach (var policy in policies)
+            AbstractSiteProvisioningService _siteService = new Office365SiteProvisioningService();
+            var _auth = new AppOnlyAuthenticationSite();
+            _auth.SiteUrl = this.Url.Value;
+            _siteService.Authentication = _auth;
+
+            var _sitePolicies = _siteService.GetAvailablePolicies();
+            foreach (var _sitePolicyEntity in _sitePolicies)
             {
-                this.BusinessImpact.Items.Add(policy.Name);
+                this.BusinessImpact.Items.Add(_sitePolicyEntity.Name);
+            }
+
+            var _appliedSitePolicy = _siteService.GetAppliedSitePolicy();
+            if(_appliedSitePolicy != null)
+            {
+                this.lblSitePolicy.Text = _appliedSitePolicy.Name;
+                this.lblExpirationDate.Text = String.Format("{0}", _ctx.Web.GetSiteExpirationDate());
+            }
+            else
+            {
+                this.lblSitePolicy.Text = string.Format("{0}", "None");
+                this.lblExpirationDate.Text = String.Format("{0}", "None");
             }
         }
         protected bool DoesUserHavePermission()

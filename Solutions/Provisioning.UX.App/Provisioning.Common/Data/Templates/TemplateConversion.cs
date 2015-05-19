@@ -36,6 +36,7 @@ namespace Provisioning.Common.Data.Templates
                provisioningTemplate.Security.AdditionalAdministrators.Add(_user);
            }
         }
+
         private void HandlePropertyBagEntries(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
             Dictionary<string, string> _props = JsonConvert.DeserializeObject<Dictionary<string, string>>(siteRequest.PropertiesJSON);

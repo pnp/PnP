@@ -79,5 +79,6 @@ namespace Provisioning.Common
                 Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);
             });
         }
+
     }
 }
