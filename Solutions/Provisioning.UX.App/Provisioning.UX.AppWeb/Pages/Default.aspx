@@ -28,7 +28,7 @@
     <!-- People Picker from PnP -->
     <script src="../scripts/peoplepickercontrol.js?rev=2" type="text/javascript"></script>   
     <!-- Chrome Loader -->
-    <script src="../Scripts/chromeloader.js?rev=1" type="text/javascript"></script>
+    <script src="../scripts/chromeloader.js?rev=1" type="text/javascript"></script>
 </head>
 <body>    
     <div id="divSPChrome"></div>            

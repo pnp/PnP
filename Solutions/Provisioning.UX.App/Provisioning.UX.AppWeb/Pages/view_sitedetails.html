@@ -35,52 +35,55 @@
     </div>
 
     <div class="row">
-
         <div class="col-sm-6">
-
             <div class="form-group">
                 <label class="control-label" for="detailsRegion">Region</label>
                 <select class="form-control" name="detailsRegion" id="detailsRegion" ng-model="siteConfiguration.properties.region" required>
                     <option ng-repeat="region in regions | orderBy: 'displayOrder'" value="{{region.value}}">{{region.key}}</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label class="control-label" for="detailsFunction">Function</label>
                 <select class="form-control" name="detailsFunction" id="detailsFunction" ng-model="siteConfiguration.properties.function" required>
                     <option ng-repeat="function in functions | orderBy: 'displayOrder'" value="{{function.value}}">{{function.key}}</option>
                 </select>
             </div>
-
         </div>
 
         <div class="col-sm-6">
-
             <div class="form-group">
                 <label class="control-label" for="detailsDivision">Division</label>
                 <select class="form-control" name="detailsDivision" id="detailsDivision" ng-model="siteConfiguration.properties.division" required>
                     <option ng-repeat="division in divisions | orderBy: 'displayOrder'" value="{{division.value}}">{{division.key}}</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label class="control-label" for="detailsLanguage">Language</label>
-                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.language" ng-options="l.value as l.key for l in languages" required>                    
-                </select>
+                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.language" ng-options="l.value as l.key for l in languages" required></select>
             </div>
-
         </div>
 
-        <div class="col-sm-6">            
-
+        <div class="col-sm-6">
             <div class="form-group has-feedback">
                 <label class="control-label" for="detailsTimezone">Time Zone</label>
-                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.timezone" ng-options="tz.value as tz.key for tz in timezones" required>                    
-                </select>
+                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.timezone" ng-options="tz.value as tz.key for tz in timezones" required></select>
             </div>
-
         </div>
-
     </div>
-
-</div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="has-feedback-externalSharing">
+                <label>Do you want to share externally?</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="externalSharingRadios" value="externalSharingTrue" ng-model="siteConfiguration.purpose.type">Yes
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="externalSharingRadios" value="externalSharingFalse" ng-model="siteConfiguration.purpose.type">No
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
