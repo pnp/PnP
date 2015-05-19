@@ -383,6 +383,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 lc => lc.IncludeWithDefaultProperties(
                     l => l.ContentTypes,
                     l => l.Views,
+                    l => l.OnQuickLaunch,
                     l => l.RootFolder.ServerRelativeUrl,
                     l => l.Fields.IncludeWithDefaultProperties(
                         f => f.Id,
@@ -421,6 +422,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
                         list.EnableAttachments = item.EnableAttachments;
+                        list.OnQuickLaunch = item.OnQuickLaunch;
                         list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
                         list.EnableMinorVersions = item.EnableMinorVersions;
                         list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
