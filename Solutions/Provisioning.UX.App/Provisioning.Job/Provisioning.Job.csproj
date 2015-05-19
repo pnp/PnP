@@ -148,9 +148,6 @@
     <Content Include="Resources\EmailContent\NewSiteEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\EmailContent\sharepoint.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
