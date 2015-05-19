@@ -124,6 +124,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
+    <None Include="Properties\webjob-publish-settings.json" />
     <None Include="Resources\SiteTemplates\ProvisioningTemplates\custom.spcolor">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
