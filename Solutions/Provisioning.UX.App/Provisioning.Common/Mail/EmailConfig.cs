@@ -1,4 +1,5 @@
-﻿using Provisioning.Common.Utilities;
+﻿using Provisioning.Common.Configuration;
+using Provisioning.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -30,9 +31,10 @@ namespace Provisioning.Common.Mail
         #region Constructor
         public EmailConfig()
         {
-            string successEmail = ConfigurationManager.AppSettings[CONFIG_NEWSITETEMPLATE];
-            string failEmail = ConfigurationManager.AppSettings[CONFIG_FAILEMAILTEMPLATE];
-
+            ConfigManager cf = new ConfigManager();
+            string successEmail = cf.GetAppSettingsKey(CONFIG_NEWSITETEMPLATE);
+            string failEmail = cf.GetAppSettingsKey(CONFIG_FAILEMAILTEMPLATE);
+      
             if (File.Exists(successEmail))
             {
                 using (StreamReader sr = new StreamReader(successEmail))

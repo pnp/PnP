@@ -131,6 +131,8 @@
     <Compile Include="SiteRequestStatus.cs" />
     <Compile Include="TokenHelper.cs" />
     <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\ReflectionHelper.cs" />
+    <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\XmlSerializerHelper.cs" />
   </ItemGroup>
   <ItemGroup>

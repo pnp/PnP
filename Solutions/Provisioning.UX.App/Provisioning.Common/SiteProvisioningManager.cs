@@ -78,27 +78,9 @@ namespace Provisioning.Common
         /// <returns></returns>
         private FileConnectorBase GetProvisioningConnector()
         {
-            var _configManager = new ConfigManager();
-            var _module = _configManager.GetModuleByName(ModuleKeys.PROVISIONINGCONNECTORS_KEY);
-            var _managerTypeString = _module.ModuleType;
-
-            try
-            {
-                var type = _managerTypeString.Split(',');
-                var typeName = type[0];
-                var assemblyName = type[1];
-                var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                instance.AddParameter(CONNECTIONSTRING_KEY, _module.ConnectionString);
-                instance.AddParameter(CONTAINERSTRING_KEY, _module.Container);
-                return instance;
-            }
-            catch (Exception _ex)
-            {
-                Log.Error("Provisioning.Common.SiteProvisioningManager", 
-                    "There was an error loading Provisioning Connector. Exception {0}", 
-                    _ex);
-              throw;
-            }
+            ReflectionHelper _helper = new ReflectionHelper();
+            FileConnectorBase _connectorInstance =  _helper.GetProvisioningConnector(ModuleKeys.PROVISIONINGCONNECTORS_KEY);
+            return _connectorInstance;
         }
     }
 }

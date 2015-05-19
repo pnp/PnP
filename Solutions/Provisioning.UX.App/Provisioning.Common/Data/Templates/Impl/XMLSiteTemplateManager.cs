@@ -56,9 +56,12 @@ namespace Provisioning.Common.Data.Templates.Impl
         public ProvisioningTemplate GetProvisioningTemplate(string name)
         {
             try
-            {   
-                XMLFileSystemTemplateProvider _xmlProvider = new XMLFileSystemTemplateProvider(this.ConnectionString, this.Container);
-                var _pt = _xmlProvider.GetTemplate(name);
+            {
+                ReflectionHelper _reflectionHelper = new ReflectionHelper();
+                var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.XMLTEMPLATEPROVIDER_KEY);
+              
+         //       XMLFileSystemTemplateProvider _xmlProvider = new XMLFileSystemTemplateProvider(this.ConnectionString, this.Container);
+                var _pt = _provider.GetTemplate(name);
                 return _pt;
             }
             catch(Exception _ex)
@@ -74,23 +77,35 @@ namespace Provisioning.Common.Data.Templates.Impl
         {
             try
             {
-                var _fullFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.ConnectionString, "Templates.config");
+                var _filePath = Path.Combine(this.ConnectionString.HandleEnvironmentToken(), "Templates.config");
+                bool _fileExists = System.IO.File.Exists(_filePath);
                
-                Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _fullFilePath);
-                bool _fileExist = System.IO.File.Exists(_fullFilePath);
+                Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
 
-                if (_fileExist)
+                if(_fileExists)
                 {
-                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Found Master Template file {0}", _fullFilePath);
-                    XDocument _doc = XDocument.Load(_fullFilePath);
+                    XDocument _doc = XDocument.Load(_filePath);
                     this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
-                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Loaded Configuration File {0} for templates", _fullFilePath);
+                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Loaded Configuration File {0} for templates", _filePath);
                 }
                 else
-                {  
-                   Log.Fatal("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Did not find Master Template file {0}", _fullFilePath);
-                   throw new Exception();
-                   
+                {
+                    _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.ConnectionString, "Templates.config");
+                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
+                    _fileExists = System.IO.File.Exists(_filePath);
+                    if(_fileExists)
+                    {
+                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Found Master Template file {0}", _filePath);
+                        XDocument _doc = XDocument.Load(_filePath);
+                        this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
+                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Loaded Configuration File {0} for templates", _filePath);
+                    }
+                    else
+                    {
+                        var _message = string.Format("Did not find Master Template file {0}", _filePath);
+                        Log.Fatal("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", _message);
+                        throw new Exception(_message);
+                    }
                 }
             }
             catch (Exception _ex)

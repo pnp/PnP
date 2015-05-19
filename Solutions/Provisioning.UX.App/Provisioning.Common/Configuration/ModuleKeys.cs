@@ -12,5 +12,6 @@ namespace Provisioning.Common.Configuration
         public static readonly string MASTERTEMPLATEPROVIDER_KEY = "MasterTemplateProvider";
         public static readonly string PROVISIONINGCONNECTORS_KEY = "ProvisioningConnectors";
         public static readonly string TEMPLATEPROVIDER_KEY = "TemplateProvider";
+        public static readonly string XMLTEMPLATEPROVIDER_KEY = "XMLTemplateProviders";
     }
 }
