@@ -4,6 +4,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 {
     public class XMLAzureStorageTemplateProvider : XMLTemplateProvider
     {
+        public XMLAzureStorageTemplateProvider() : base()
+        {
+
+        }
+
         public XMLAzureStorageTemplateProvider(string connectionString, string container) :
             base(new AzureStorageConnector(connectionString, container))
         {
