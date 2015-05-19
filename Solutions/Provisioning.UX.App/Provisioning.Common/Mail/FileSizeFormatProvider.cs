@@ -8,16 +8,17 @@ namespace Provisioning.Common.Mail
 {
     public class FileSizeFormatProvider : IFormatProvider, ICustomFormatter
     {
+        private const string fileSizeFormat = "fs";
+        private const Decimal OneKiloByte = 1024M;
+        private const Decimal OneMegaByte = OneKiloByte * 1024M;
+        private const Decimal OneGigaByte = OneMegaByte * 1024M;
+
         public object GetFormat(Type formatType)
         {
             if (formatType == typeof(ICustomFormatter)) return this;
             return null;
         }
-                private const string fileSizeFormat = "fs";
-        private const Decimal OneKiloByte = 1024M;
-        private const Decimal OneMegaByte = OneKiloByte * 1024M;
-        private const Decimal OneGigaByte = OneMegaByte * 1024M;
-
+        
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
             if (format == null || !format.StartsWith(fileSizeFormat))
