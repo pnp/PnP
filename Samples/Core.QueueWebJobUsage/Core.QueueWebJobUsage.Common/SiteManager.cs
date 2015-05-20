@@ -50,7 +50,7 @@ namespace Core.QueueWebJobUsage.Common
             Thread.Sleep(10000);
 
             // Perform simple operation by adding new document lib to host web
-            CreateDocLibrary(ctx, Guid.NewGuid().ToString().Replace("-", ""), string.Format("Requested by {0}", modifyRequest.RequestorName));
+            CreateDocLibrary(ctx, DateTime.Now.Ticks.ToString(), string.Format("Requested by {0}", modifyRequest.RequestorName));
         }
 
         public void CreateDocLibrary(ClientContext ctx, string libraryName, string description)
