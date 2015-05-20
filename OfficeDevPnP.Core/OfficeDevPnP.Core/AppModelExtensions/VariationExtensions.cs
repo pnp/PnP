@@ -139,7 +139,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
         /// <param name="variationLabels">Variation labels</param>
-        public static void ProviosionTargetVariationLabels(this ClientContext context, List<VariationLabelEntity> variationLabels)
+        public static void ProvisionTargetVariationLabels(this ClientContext context, List<VariationLabelEntity> variationLabels)
         {
             if (variationLabels == null)
             {
@@ -173,6 +173,57 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 // Wait for 60 seconds and then try again
                 System.Threading.Thread.Sleep(60000);
             }
+        }
+
+        /// <summary>
+        /// Retrieve all configured variation labels
+        /// </summary>
+        /// <param name="context">Context for SharePoint objects and operations</param>
+        /// <returns></returns>
+        public static IEnumerable<VariationLabelEntity> GetVariationLabels(this ClientContext context)
+        {
+            var variationLabels = new List<VariationLabelEntity>();
+            // Get current web
+            Web web = context.Web;
+            context.Load(web, w => w.ServerRelativeUrl);
+            context.ExecuteQueryRetry();
+
+            // Try to get _VarLabelsListId property from web property bag
+            string variationLabelsListId = web.GetPropertyBagValueString(VARIATIONLABELSLISTID, string.Empty);
+
+            if (!string.IsNullOrEmpty(variationLabelsListId))
+            {
+                // Load the lists
+                var lists = web.Lists;
+                context.Load(lists);
+                context.ExecuteQueryRetry();
+
+                // Get the "Variation Labels" List by id
+                Guid varRelationshipsListId = new Guid(variationLabelsListId);
+                var variationLabelsList = lists.GetById(varRelationshipsListId);
+
+                // Get the variationLabelsList list items
+                ListItemCollection collListItems = variationLabelsList.GetItems(CamlQuery.CreateAllItemsQuery());
+                context.Load(collListItems);
+                context.ExecuteQueryRetry();
+
+                if (variationLabelsList != null)
+                {
+                    foreach (var listItem in collListItems)
+                    {
+                        var label = new VariationLabelEntity((bool)listItem["Hierarchy_x0020_Is_x0020_Created"]);
+                        label.Title = (string)listItem["Title"];
+                        label.Description = (string)listItem["Description"];
+                        label.FlagControlDisplayName = (string)listItem["Flag_x0020_Control_x0020_Display"];
+                        label.Language = (string)listItem["Language"];
+                        label.Locale = (uint)listItem["Locale"];
+                        label.HierarchyCreationMode = (string)listItem["Hierarchy_x0020_Creation_x0020_M"];
+                        label.IsSource = (bool)listItem["Is_x0020_Source"];
+                        variationLabels.Add(label);
+                    }
+                }
+            }
+            return variationLabels;
         }
 
         #region Helper methods
