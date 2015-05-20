@@ -148,5 +148,14 @@ namespace Provisioning.Common
             Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", "Site Collection {0} created:", siteRequest.Url);
             this.HandleDefaultGroups(siteRequest);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsTenantExternalSharingEnabled(string tenantUrl)
+        {
+            return false;
+        }
     }
 }

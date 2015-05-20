@@ -74,17 +74,12 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group has-feedback" ng-hide="!siteConfiguration.externalSharingEnabled">
-                <label>Do you want to share externally?</label>
-                <div class="radio">
+                <div class="checkbox">
                     <label>
-                        <input type="radio" name="externalSharingRadios" value="externalSharingTrue" ng-model="siteConfiguration.purpose.type">Yes
+                        <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.externalSharing" /> Enable External Sharing
                     </label>
                 </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" name="externalSharingRadios" value="externalSharingFalse" ng-model="siteConfiguration.purpose.type">No
-                    </label>
-                </div>
+                
             </div>
         </div>
     </div>

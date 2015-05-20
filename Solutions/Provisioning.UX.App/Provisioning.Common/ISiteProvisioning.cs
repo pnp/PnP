@@ -24,6 +24,11 @@ namespace Provisioning.Common
         void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
         /// <summary>
+        /// Checks to see if External Sharing Is enabled
+        /// </summary>
+        /// <returns></returns>
+        bool IsTenantExternalSharingEnabled(string tenantUrl);
+        /// <summary>
         /// Returns aa collection of Site Policies
         /// </summary>
         /// <returns></returns>

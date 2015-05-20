@@ -126,10 +126,15 @@ namespace Provisioning.UX.AppWeb.Controllers
         {
             var _request = JsonConvert.DeserializeObject<ExternalSharingRequest>(value);
             _request.Success = true;
-            _request.ExternalSharingEnabled = false;
 
+            AppOnlyAuthenticationTenant _auth = new AppOnlyAuthenticationTenant();
+            _auth.TenantAdminUrl = _request.TenantAdminUrl;
+            var _service = new Office365SiteProvisioningService();
+            _service.Authentication = _auth;
+            _request.ExternalSharingEnabled = _service.IsTenantExternalSharingEnabled(_request.TenantAdminUrl);
             return _request;
         }
+
         #region Private Members
         /// <summary>
         /// Save the Site Request to the Data Repository

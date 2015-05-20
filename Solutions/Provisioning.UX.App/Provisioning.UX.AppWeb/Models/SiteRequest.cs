@@ -22,6 +22,9 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "url")]
         public string Url { get; set; }
 
+        [DataMember(Name = "enableExternalSharing")]
+        public bool EnableExternalSharing { get; set; }
+
         [DataMember(Name = "description")]
         public string Description { get; set; }
 

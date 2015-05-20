@@ -45,6 +45,7 @@
             siteRequest.Template = $scope.siteConfiguration.template.title;
             siteRequest.SitePolicy = $scope.siteConfiguration.privacy.classification;
             siteRequest.BusinessCase = $scope.siteConfiguration.purpose.description;
+            siteRequest.EnableExternalSharing = $scope.siteConfiguration.externalSharing
     
             //property bag entries will enumerate all properties defined in siteConfiguration.properties
             var props = {};

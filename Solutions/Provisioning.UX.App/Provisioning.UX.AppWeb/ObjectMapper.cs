@@ -41,6 +41,7 @@ namespace Provisioning.UX.AppWeb
             _newRequest.AdditionalAdministrators = _additionalAdmins;
             _newRequest.SharePointOnPremises = request.SharePointOnPremises;
             _newRequest.BusinessCase = request.BusinessCase;
+            _newRequest.EnableExternalSharing = request.EnableExternalSharing;
 
             if(request.Properties != null)
             {

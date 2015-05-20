@@ -37,6 +37,40 @@ namespace Provisioning.Common
         #region ISiteProvisioning Members
         public abstract void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
 
+        public virtual bool IsTenantExternalSharingEnabled(string tenantUrl)
+        {
+            var _returnResult = false;
+            UsingContext(ctx =>
+            {
+                Tenant _tenant = new Tenant(ctx);
+                ctx.Load(_tenant);
+                try
+                { 
+                    //IF calling SP ONPREM THIS WILL FAIL
+                    ctx.ExecuteQuery();
+                    var servicesEnabled = _tenant.ExternalServicesEnabled;
+                    if(servicesEnabled)
+                    {
+                        //check sharing capabilities
+                        if(_tenant.SharingCapability == SharingCapabilities.Disabled)
+                        {
+                            _returnResult = false;
+                        }
+                        else
+                        {
+                            _returnResult = true;
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+            });
+
+            return _returnResult;
+        }
+
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {
             SitePolicyEntity _appliedSitePolicy = null;
