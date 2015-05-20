@@ -35,6 +35,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
             web.Context.ExecuteQueryRetry();
+            var rootWeb = (web.Context as ClientContext).Site.RootWeb;
 
             foreach (var siteField in template.SiteFields)
             {
@@ -45,7 +46,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
                     var listIdentifier = fieldElement.Attribute("List").Value;
 
-                    var field = web.Fields.GetById(fieldId);
+                    var field = rootWeb.Fields.GetById(fieldId);
                     web.Context.Load(field, f => f.SchemaXml);
                     web.Context.ExecuteQueryRetry();
 
