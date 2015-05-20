@@ -211,7 +211,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 {
                     foreach (var listItem in collListItems)
                     {
-                        var label = new VariationLabelEntity((bool)listItem["Hierarchy_x0020_Is_x0020_Created"]);
+                        var label = new VariationLabelEntity();
                         label.Title = (string)listItem["Title"];
                         label.Description = (string)listItem["Description"];
                         label.FlagControlDisplayName = (string)listItem["Flag_x0020_Control_x0020_Display"];
@@ -219,6 +219,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                         label.Locale = (uint)listItem["Locale"];
                         label.HierarchyCreationMode = (string)listItem["Hierarchy_x0020_Creation_x0020_M"];
                         label.IsSource = (bool)listItem["Is_x0020_Source"];
+                        label.IsCreated = (bool)listItem["Hierarchy_x0020_Is_x0020_Created"];
                         variationLabels.Add(label);
                     }
                 }
