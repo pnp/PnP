@@ -23,7 +23,6 @@
                 return deferred;
             }
             this.saveRequest = function (request) {
-
                 var deferred = $q.defer();
                 var formData = JSON.stringify(request);
                 $http({
@@ -36,7 +35,24 @@
                     console.log(data);
                 }).error(function (data, status) {
                     deferred.reject(data);
-                    console.log("Request Failed");
+                    console.log("/api/provisioning/siterequest Request Failed " + data);
+                });
+                return deferred;
+            }
+            this.isExternalSharingEnabled = function (request) {
+                var deferred = $.Deferred();
+                var formData = JSON.stringify(request);
+                $http({
+                    method: 'POST',
+                    data: "=" + formData,
+                    url: '/api/provisioning/externalSharingEnabled',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                    console.log("Request Succssess to api/provisioning/externalSharingEnabled result is " + data);
+                }).error(function (data, status) {
+                    deferred.reject(data);
+                    console.log("Request Failed to api/provisioning/externalSharingEnabled " + data );
                 });
                 return deferred;
             }

@@ -23,6 +23,9 @@ namespace Provisioning.UX.AppWeb.Models
 
         [DataMember(Name = "sharePointOnPremises")]
         public bool SharePointOnPremises { get; set; }
+        
+        [DataMember(Name = "tenantAdminUrl")]
+        public string TenantAdminUrl { get; set; }
 
     }
 }

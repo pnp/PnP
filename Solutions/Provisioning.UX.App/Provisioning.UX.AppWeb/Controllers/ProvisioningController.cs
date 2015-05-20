@@ -53,6 +53,7 @@ namespace Provisioning.UX.AppWeb.Controllers
                 _st.ImageUrl = _t.ImageUrl;
                 _st.HostPath = _t.HostPath;
                 _st.SharePointOnPremises = _t.SharePointOnPremises;
+                _st.TenantAdminUrl = _t.TenantAdminUrl;
                 _returnResults.Add(_st);
             }
             return _returnResults;
@@ -118,6 +119,17 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
         #endregion
 
+        [Route("api/provisioning/externalSharingEnabled")]
+        [WebAPIContextFilter]
+        [HttpPost]
+        public ExternalSharingRequest IsExternalSharingEnabled([FromBody]string value)
+        {
+            var _request = JsonConvert.DeserializeObject<ExternalSharingRequest>(value);
+            _request.Success = true;
+            _request.ExternalSharingEnabled = false;
+
+            return _request;
+        }
         #region Private Members
         /// <summary>
         /// Save the Site Request to the Data Repository

@@ -69,6 +69,12 @@
             // Add the Path to the configuration object to store the url
             $scope.siteConfiguration.spNewSitePrefix = template.hostPath;
             $scope.siteConfiguration.spOnPrem = template.sharePointOnPremises;
+            $scope.siteConfiguration.tenantAdminUrl = template.tenantAdminUrl;
+
+            //ExternalShareing Request
+            var externalSharingRequest = new Object();
+            externalSharingRequest.tenantAdminUrl = template.tenantAdminUrl;
+            isExternalSharingEnabled(externalSharingRequest);
         }
 
         function activate() {
@@ -131,6 +137,20 @@
                     $scope.templates = jsonObject;
                 }
 
+            }).fail(function (err) {
+                console.info(JSON.stringify(err));
+            });
+        }
+        function isExternalSharingEnabled(request) {
+            //get if external sharing is enabled for the tenant
+            $.when($SharePointProvisioningService.isExternalSharingEnabled(request)).done(function (data) {
+                if (data != null) {
+                    if (data.success == true) {
+                        $scope.siteConfiguration.externalSharingEnabled = data.externalSharingEnabled;
+                    }
+                    else { $scope.siteConfiguration.externalSharingEnabled = false; }
+                }
+               
             }).fail(function (err) {
                 console.info(JSON.stringify(err));
             });
