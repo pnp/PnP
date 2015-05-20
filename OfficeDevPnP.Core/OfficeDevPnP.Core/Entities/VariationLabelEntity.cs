@@ -43,7 +43,7 @@
         /// <summary>
         /// Gets a value indicating whether the variation label has been created
         /// </summary>
-        public bool IsCreated { get; private set; }
+        public bool IsCreated { get; internal set; }
 
         public VariationLabelEntity()
             : this(false)

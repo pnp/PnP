@@ -328,7 +328,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 {
                     // Check hierarchy is created
                     ListItem varLabel = collListItems.FirstOrDefault(x => x["Language"].ToString() == variationLabel.Language);
-                    hierarchyIsCreated = (bool)varLabel["Hierarchy_x0020_Is_x0020_Created"];
+                    variationLabel.IsCreated = hierarchyIsCreated = (bool)varLabel["Hierarchy_x0020_Is_x0020_Created"];
                 }
             }
 
