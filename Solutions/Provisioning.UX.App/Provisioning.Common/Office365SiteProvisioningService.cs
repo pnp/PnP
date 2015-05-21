@@ -80,5 +80,43 @@ namespace Provisioning.Common
             });
         }
 
+        public override void SetExternalSharing(SiteRequestInformation siteInfo)
+        {
+            UsingContext(ctx =>
+            {
+                try
+                {
+                    Tenant _tenant = new Tenant(ctx);
+                    SiteProperties _siteProps = _tenant.GetSitePropertiesByUrl(siteInfo.Url, false);
+                    ctx.Load(_tenant);
+                    ctx.Load(_siteProps);
+                    ctx.ExecuteQuery();
+                    bool _shouldBeUpdated = false;
+
+                    var _tenantSharingCapability = _tenant.SharingCapability;
+                    var _siteSharingCapability = _siteProps.SharingCapability;
+                    var _targetSharingCapability = SharingCapabilities.Disabled;
+
+                    if(siteInfo.EnableExternalSharing && _tenantSharingCapability != SharingCapabilities.Disabled)
+                    {
+                        _targetSharingCapability = SharingCapabilities.ExternalUserSharingOnly;
+                        _shouldBeUpdated = true;
+                    }
+                    if (_siteSharingCapability != _targetSharingCapability && _shouldBeUpdated)
+                    {
+                        _siteProps.SharingCapability = _targetSharingCapability;
+                        _siteProps.Update();
+                        ctx.ExecuteQuery();
+                    }
+                   
+                }
+                catch(Exception _ex)
+                {
+                    //TODO LOG
+                }
+             
+            });
+        }
+
     }
 }

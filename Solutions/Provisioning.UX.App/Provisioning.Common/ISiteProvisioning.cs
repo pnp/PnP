@@ -28,6 +28,12 @@ namespace Provisioning.Common
         /// </summary>
         /// <returns></returns>
         bool IsTenantExternalSharingEnabled(string tenantUrl);
+
+        /// <summary>
+        /// Enables External Sharing on a site.
+        /// </summary>
+        void SetExternalSharing(SiteRequestInformation siteInfo);
+
         /// <summary>
         /// Returns aa collection of Site Policies
         /// </summary>

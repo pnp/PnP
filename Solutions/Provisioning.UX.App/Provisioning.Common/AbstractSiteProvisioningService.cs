@@ -48,28 +48,26 @@ namespace Provisioning.Common
                 { 
                     //IF calling SP ONPREM THIS WILL FAIL
                     ctx.ExecuteQuery();
-                    var servicesEnabled = _tenant.ExternalServicesEnabled;
-                    if(servicesEnabled)
+                    //check sharing capabilities
+                    if(_tenant.SharingCapability == SharingCapabilities.Disabled)
                     {
-                        //check sharing capabilities
-                        if(_tenant.SharingCapability == SharingCapabilities.Disabled)
-                        {
-                            _returnResult = false;
-                        }
-                        else
-                        {
-                            _returnResult = true;
-                        }
+                        _returnResult = false;
                     }
-                }
+                    else
+                    {
+                        _returnResult = true;
+                    }
+                                }
                 catch(Exception ex)
                 {
-
+                    //LOG
                 }
             });
 
             return _returnResult;
         }
+
+        public abstract void SetExternalSharing(SiteRequestInformation siteInfo);
 
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {
@@ -88,7 +86,9 @@ namespace Provisioning.Common
             UsingContext(ctx =>
             {
                 var _web = ctx.Web;
-                _web.ApplySitePolicy(policyName);
+                bool _policyApplied = _web.ApplySitePolicy(policyName);
+
+                //TODO LOGO MESSAGE
             });
         }
 

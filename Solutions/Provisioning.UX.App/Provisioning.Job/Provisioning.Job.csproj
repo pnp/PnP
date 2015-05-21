@@ -152,11 +152,9 @@
     </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\custombg.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\CustomInjectedJS.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\siteLogo.png">

@@ -12,6 +12,7 @@ namespace Provisioning.Common.Data.Templates
     {
         internal ProvisioningTemplate HandleProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
+            this.HandleExternalSharing(provisioningTemplate, siteRequest);
             this.HandleSitePolicy(provisioningTemplate, siteRequest);
             this.HandleSecurity(provisioningTemplate, siteRequest);
             this.HandlePropertyBagEntries(provisioningTemplate, siteRequest);
@@ -19,6 +20,22 @@ namespace Provisioning.Common.Data.Templates
             return provisioningTemplate;
         }
 
+        private void HandleExternalSharing(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        {
+            //EXTERNAL SHARING CUSTOM ACTION MUST BE DEFINED IN TEMPLATE. IF THE SITE REQUEST DOES NOT HAVE EXTERNAL SHARING ENABLE WE WILL REMOVE THE CUSTOM ACCTION
+            if(!siteRequest.EnableExternalSharing)
+            {
+                if(provisioningTemplate.CustomActions != null)
+                {
+                    //FIND THE CUSTOM ACTION CA_SITE_EXTERNALSHARING
+                    var _externalSharingCA = provisioningTemplate.CustomActions.SiteCustomActions.FirstOrDefault(t => t.Title == "CA_SITE_EXTERNALSHARING");
+                    if(_externalSharingCA != null)
+                    {
+                        provisioningTemplate.CustomActions.SiteCustomActions.Remove(_externalSharingCA);
+                    }
+                }
+            }
+        }
         private void HandleSitePolicy(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
             if(!string.IsNullOrWhiteSpace(siteRequest.SitePolicy))

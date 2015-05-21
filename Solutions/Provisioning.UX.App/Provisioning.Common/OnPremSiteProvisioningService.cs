@@ -157,5 +157,15 @@ namespace Provisioning.Common
         {
             return false;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        public override void SetExternalSharing(SiteRequestInformation siteInfo)
+        {
+            //TODO LOG 
+            return;
+        }
     }
 }

@@ -93,7 +93,7 @@ namespace Provisioning.Common.Data.Templates.Impl
                     _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.ConnectionString, "Templates.config");
                     Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
                     _fileExists = System.IO.File.Exists(_filePath);
-                    if(_fileExists)
+                    if (_fileExists)
                     {
                         Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", "Found Master Template file {0}", _filePath);
                         XDocument _doc = XDocument.Load(_filePath);

@@ -137,6 +137,7 @@
     <Content Include="Scripts\data\json\siteclassifications.json" />
     <Content Include="Scripts\data\json\templates.json" />
     <Content Include="Scripts\data\json\timezones.json" />
+    <Content Include="Scripts\externalSharing.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
@@ -166,6 +167,7 @@
     <Content Include="Pages\wizard.modal.html" />
     <Content Include="Scripts\data\data.module.js" />
     <Content Include="Scripts\data\templates.factory.js" />
+    <Content Include="Scripts\siteClassification.js" />
     <Content Include="Scripts\SubSiteOverride.js" />
     <Content Include="Scripts\vendor\jquery\jquery.tipsy.js" />
     <Content Include="Scripts\wizard\directives\restrict.js" />
