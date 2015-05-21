@@ -72,7 +72,7 @@
         <File Id="ClientSDKWorkflowServicesDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.WorkflowServices.dll" />
         <File Id="NewtonSoft" Source="$(var.OfficeDevPnP.Core.ProjectDir)bin\$(var.OfficeDevPnP.Core.Configuration)\Newtonsoft.Json.Dll" />
         <File Id="TenantDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
-        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
       </Component>
     </ComponentGroup>
   </Fragment>
