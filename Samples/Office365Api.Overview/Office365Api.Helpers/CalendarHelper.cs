@@ -25,9 +25,15 @@ namespace Office365Api.Helpers
                                       where i.End >= DateTimeOffset.UtcNow
                                       select i).Take(10).ExecuteAsync();
 
-            var events = eventsResults.CurrentPage.OrderBy(e => e.Start);
-
-            return events;
+            if (eventsResults != null)
+            {
+                var events = eventsResults.CurrentPage.OrderBy(e => e.Start);
+                return events;
+            }
+            else
+            {
+                return (null);
+            }
         }
     }
 }

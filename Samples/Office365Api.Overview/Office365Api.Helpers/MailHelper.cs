@@ -35,12 +35,15 @@ namespace Office365Api.Helpers
 
             var messageResults = await query.ExecuteAsync();
 
-            do
+            if (messageResults != null)
             {
-                mails.AddRange(messageResults.CurrentPage);
-                messageResults = await messageResults.GetNextPageAsync();
+                do
+                {
+                    mails.AddRange(messageResults.CurrentPage);
+                    messageResults = await messageResults.GetNextPageAsync();
+                }
+                while (messageResults != null && messageResults.MorePagesAvailable);
             }
-            while (messageResults.MorePagesAvailable);
 
             return mails;
         }
