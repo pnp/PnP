@@ -12,14 +12,17 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
         [Parameter(Mandatory = true, HelpMessage = "Path to the file which will be uploaded")]
         public string SourceFilePath = string.Empty;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage = "Title for the page layout")]
         public string Title = string.Empty;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage = "Description for the page layout")]
         public string Description = string.Empty;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, HelpMessage = "Associated content type ID")]
         public string AssociatedContentTypeID;
+
+        [Parameter(Mandatory = false, HelpMessage = "Folder hierarchy where the html page layouts will be deployed")]
+        public string DestinationFolderHierarchy;
 
         protected override void ExecuteCmdlet()
         {
@@ -27,7 +30,7 @@ namespace OfficeDevPnP.PowerShell.Commands.PageLayout
             {
                 SourceFilePath = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, SourceFilePath);
             }
-            SelectedWeb.DeployPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID);
+            SelectedWeb.DeployPageLayout(SourceFilePath, Title, Description, AssociatedContentTypeID, DestinationFolderHierarchy);
         }
     }
 }
