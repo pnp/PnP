@@ -1,5 +1,12 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-05-22**
+* Updated Add-SPOFile to create the target folder is not present
+* Updated Remove-SPOUserFromGroup to accept either a login name or an email address of a user.
+
+**2015-05-15**
+* Updated Set-SPOList to switching if ContentTypes are enabled on the list
+
 **2015-04-24**
 * Updated Get-SPOProvisioningTemplate and Apply-SPOProvisioningTemplate to show a progress bar
 * Updated GEt-SPOProvisioningTemplate with optional switches to export either Site Collection Term Group (if available) or all Term Groups in the default site collection termstore.
