@@ -29,8 +29,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (template.Lists.Any())
             {
-                //var parser = new TokenParser(web);
-
+                var rootWeb = (web.Context as ClientContext).Site.RootWeb;
                 if (!web.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -202,20 +201,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     if (listInfo.ListInstance.FieldRefs.Any())
                     {
+
                         foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
                         {
-                            var field = web.GetFieldById<Field>(fieldRef.Id);
-                            if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
+                            var field = rootWeb.GetFieldById<Field>(fieldRef.Id);
+                            if (field != null)
                             {
-                                var createdField = listInfo.CreatedList.Fields.Add(field);
-                                if (!string.IsNullOrEmpty(fieldRef.DisplayName))
+                                if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
                                 {
-                                    createdField.Title = fieldRef.DisplayName;
-                                }
-                                createdField.Hidden = fieldRef.Hidden;
-                                createdField.Required = fieldRef.Required;
+                                    var createdField = listInfo.CreatedList.Fields.Add(field);
+                                    if (!string.IsNullOrEmpty(fieldRef.DisplayName))
+                                    {
+                                        createdField.Title = fieldRef.DisplayName;
+                                    }
+                                    createdField.Hidden = fieldRef.Hidden;
+                                    createdField.Required = fieldRef.Required;
 
-                                createdField.Update();
+                                    createdField.Update();
+                                }
                             }
 
                         }
@@ -383,6 +386,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 lc => lc.IncludeWithDefaultProperties(
                     l => l.ContentTypes,
                     l => l.Views,
+                    l => l.OnQuickLaunch,
                     l => l.RootFolder.ServerRelativeUrl,
                     l => l.Fields.IncludeWithDefaultProperties(
                         f => f.Id,
@@ -421,6 +425,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
                         list.TemplateFeatureID = item.TemplateFeatureId;
                         list.EnableAttachments = item.EnableAttachments;
+                        list.OnQuickLaunch = item.OnQuickLaunch;
                         list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
                         list.EnableMinorVersions = item.EnableMinorVersions;
                         list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
