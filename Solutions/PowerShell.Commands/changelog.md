@@ -1,6 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+
 **2015-05-22**
+* Updated Add-SPOHtlPublishingPageLayout and Add-SPOPublishingPageLayout to support DestinationFolderHierarchy parameter
 * Updated Add-SPOFile to create the target folder is not present
 * Updated Remove-SPOUserFromGroup to accept either a login name or an email address of a user.
 
