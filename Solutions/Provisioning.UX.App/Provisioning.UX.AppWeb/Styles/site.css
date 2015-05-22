@@ -1,0 +1,604 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+    font-size: .85em;
+    font-family: "Segoe UI" ,Tahoma,sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #696969;
+    overflow: auto !important;
+}
+p
+{
+    margin: 4px 4px 0px 4px;
+    line-height: 1.6em;
+}
+ul
+{
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+header, footer, nav, section
+{
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6
+{
+    font-size: 1.5em;
+    color: #000;
+}
+h1
+{
+    font-size: 2em;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+h2
+{
+    padding: 0 0 10px 0;
+}
+h3
+{
+    font-size: 1.2em;
+}
+h4
+{
+    font-size: 1.1em;
+}
+h5, h6
+{
+    font-size: 1em;
+}
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+/* you can specify a greater or lesser percentage for the 
+page width. Or, you can specify an exact pixel width. */
+.page
+{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+header, #header
+{
+    position: relative;
+    margin-bottom: 0px;
+    color: #000;
+    padding: 0 0 0 5px;
+}
+header h1, #header h1
+{
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 0;
+    color: #fff;
+    border: none;
+    line-height: 2em;
+    font-size: 28px !important;
+    font-family: "Segoe UI Light" , "Segoe UI" ,Tahoma,sans-serif;
+    text-shadow: 1px 1px 2px #111;
+}
+#main
+{
+    padding: 0px 20px 0px 20px;
+    background-color: #fff;
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+footer, #footer
+{
+    background-color: #fff;
+    color: #999;
+    padding: 15px 0;
+    text-align: center;
+    line-height: normal;
+    margin: 0 0 30px 0;
+    font-size: .9em;
+    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+}
+
+/* TAB MENU   
+----------------------------------------------------------*/
+ul#menu
+{
+    border-bottom: 1px #5C87B2 solid;
+    padding: 0 0 2px;
+    position: relative;
+    margin: 0;
+    text-align: right;
+}
+ul#menu li
+{
+    display: inline;
+    list-style: none;
+}
+ul#menu li#greeting
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    color: #fff;
+}
+ul#menu li a
+{
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 2.8em;
+    background-color: #e8eef4;
+    color: #034af3;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+}
+ul#menu li a:hover
+{
+    background-color: #fff;
+    text-decoration: none;
+}
+ul#menu li a:active
+{
+    background-color: #a6e2a6;
+    text-decoration: none;
+}
+ul#menu li.selected a
+{
+    background-color: #fff;
+    color: #000;
+}
+
+/* FORM LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+fieldset
+{
+    border: 1px solid #ddd;
+    padding: 1.4em 1.4em 1.4em 1.4em;
+    margin: 0 0 0 0;
+}
+legend
+{
+    font-size: 1.4em;
+    font-family: "Segoe UI Light" , "Segoe UI" ,Tahoma,sans-serif;
+}
+textarea
+{
+    min-height: 75px;
+}
+input[type="text"], input[type="password"]
+{
+    width: 200px;
+}
+select
+{
+    border: 1px solid #ddd;
+    padding: 1px;
+    font-size: inherit;
+    background-color: rgba(255,255,255,0.85);
+}
+
+/* TABLE
+----------------------------------------------------------*/
+.TargetedAudienceTable
+{
+    border-top: 0px !important;
+}
+.TargetedAudienceTable td
+{
+    border-top: 0px !important;
+}
+.TargetedAudienceTable .editor-field
+{
+    padding-top: 0px !important;
+}
+.TargetedAudienceTable .editor-label
+{
+    padding-top: 0px !important;
+}
+table
+{
+    border-top: solid 0px #999;
+    border-collapse: collapse;
+}
+table td
+{
+    padding: 0;
+    border-top: solid 0px #999;
+}
+table th
+{
+    padding: 0;
+    text-align: left;
+    background-color: #e8eef4;
+    border-top: solid 0px #999;
+}
+
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+    clear: both;
+}
+.error
+{
+    color: Red;
+}
+nav, #menucontainer
+{
+    margin-top: 40px;
+}
+div#title
+{
+    display: block;
+    float: left;
+    text-align: left;
+}
+#logindisplay
+{
+    font-size: 1.1em;
+    display: block;
+    text-align: right;
+    margin: 10px;
+    color: White;
+}
+#logindisplay a:link
+{
+    color: white;
+    text-decoration: underline;
+}
+#logindisplay a:visited
+{
+    color: white;
+    text-decoration: underline;
+}
+#logindisplay a:hover
+{
+    color: white;
+    text-decoration: none;
+}
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+    margin-left: 20px;
+    white-space: nowrap;
+}
+.field-validation-valid
+{
+    display: none;
+}
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label, .editor-label
+{
+    margin: 0;
+    padding: 0px 0px 35px 25px;
+    width: 330px;
+}
+.display-field, .editor-field
+{
+    margin: 0;
+    padding: 20px 0px 35px 25px;
+    width: 440px;
+}
+.right-column
+{
+    width: 900px;
+}
+.text-box
+{
+    width: 30em;
+}
+.text-box.multi-line
+{
+    height: 6.5em;
+}
+.tri-state
+{
+    width: 6em;
+}
+.select-main
+{
+    border-width: 0 !important;
+}
+.select-main > tbody > tr > td
+{
+    border-width: 0 !important;
+    padding-left: 15px;
+}
+
+/* Styles for normal button
+-----------------------------------------------------------*/
+.normalbutton-style
+{
+    margin-top: 5px;
+    margin-left: 62px !important;
+}
+
+/* Styles for Site Tou
+-----------------------------------------------------------*/
+.ExpirationDateFilterClass
+{
+    margin-left: 10px;
+}
+
+/* Styles for Site Type
+-----------------------------------------------------------*/
+.sitetype_container_style
+{
+    margin-left: 4px;
+}
+
+/* Styles for UnSupported Services
+-----------------------------------------------------------*/
+.unsupport_items
+{
+    margin-top: 4px;
+}
+.unsupport_items_container
+{
+    margin-left: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Styles for Web UI
+-----------------------------------------------------------*/
+.O15_editor_label_head
+{
+    color: #0072c6;
+    font-family: "Segoe UI Semilight" , "Segoe UI" , "Segoe" ,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 1em;
+    font-weight: lighter;
+    margin: 0px;
+    text-align: left;
+}
+.O15_editor_label_body
+{
+    color: #777;
+    font-family: "Segoe UI" , "Segoe" ,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 0.85em;
+    font-weight: normal;
+}
+.O15_editor_field_head
+{
+    color: #444;
+    font-family: "Segoe UI" , "Segoe" ,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+}
+#Lcid
+{
+    margin-left: 20px;
+}
+.TOU_div_Style
+{
+    margin-left: 20px;
+    border: 1px solid #ababab;
+    background-color: rgba(255,255,255,0.85);
+    color: #444;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: normal;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    vertical-align: middle;
+}
+.ExternalSharing_table_Style 
+{
+    margin:20px;
+    text-align:center;
+    width:1000px;
+    table-layout:fixed;
+}
+.ExternalSharing_table_Style td
+{
+    border-bottom:1px solid #999;
+    padding:5px;
+    min-height:22px;
+}
+.ExternalSharing_table_Style th
+{
+    text-align:center;
+}
+.ExternalSharing_table_Style .ExternalSharing_URL 
+{
+    text-align:left;
+    padding-left:5px;
+    word-wrap:break-word;
+}
+.ExternalSharing_table_Style .ResultText 
+{
+    color:rgb(0, 114, 198);
+}
+
+#management input[type=radio]
+{
+    margin-left:22px;
+}
+
+#management input[type=submit]
+{
+    margin-left:630px;
+}
+
+input[type=password], input[type=text], textarea
+{
+    margin-left: 20px;
+}
+textarea
+{
+    overflow: auto;
+}
+
+/* Chrome Control Override
+-----------------------------------------------------------*/
+div#chromeControl_bottomheader
+{
+    height: 96px !important;
+}
+div#chromeControl_bottomheader_appicon
+{
+    padding: 24px 20px 24px 20px !important;
+}
+div#chromeControl_bottomheader_appicon img
+{
+    width: 180px !important;
+    max-height: 64px;
+}
+div#chromeControl_topheader_appicon img
+{
+    width: 45px !important;
+    max-height: 16px;
+}
+span#chromeControl_topheader_sitetitle
+{
+    color: #fff !important;
+}
+div.ms-welcome-root + div
+{
+    display: none !important;
+}
+div#MainContent
+{
+    height:550px;
+} 
+div#MicrosoftOnlineRequired
+{   
+    height:30px;
+    width:auto;
+    line-height:30px;
+    padding: 0px 10px;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    background-color:#eaecee;
+    color:#666;
+    font-family:SegoeUI-Regular-final,"Segoe UI",Segoe,Tahoma,Helvetica,Arial,Sans-Serif;
+    font-size:11px;
+    margin-top:15px;
+}
+div#MicrosoftOnlineRequired a
+{
+   text-decoration: none;
+   color:#666;
+   font-weight:normal;
+   line-height:normal;
+   white-space:nowrap;
+}
+/* Keep the site name validation message in the scope of fieldset */
+div#provision_form fieldset
+{
+    min-width: 1000px;
+}
+/* Keep all the text on the same line */
+label#Name_label
+{
+    vertical-align: top !important;
+}
+div#suiteBarLeft > div a
+{
+    display: inline !important;
+}
+
+/*******************************The style for dialog*********************************/
+.dialog_left_margin
+{
+    margin-left: -20px;
+}
+.dialog_button_left_margin
+{
+    margin-left: 0px !important;
+}
+/*business impact dialog*/
+.tooltip_table_style
+{
+    width: 360px;
+    border: 1px solid #DDDDDD;
+    border-spacing: 0px;
+}
+.tooltip_table_style td
+{
+    border: 1px solid #DDDDDD;
+    border-spacing: 0px;
+    text-align: center;
+}
+.tooltip_table_style tr > td:first-child
+{
+    text-align: left !important;
+}
+.tooltip_table_tr_style
+{
+    background-color: #DDDDDD;
+}
+.line-space
+{
+    margin-top: 15px !important;
+}
+/*Overwrite the button style of jquery-ui.min.css*/
+input[type=button], input[type=submit]
+{
+    border-radius: 0px;
+}
+.description_style
+{
+    color: Gray !important;
+}
+
+.result_oops_line
+{
+    width: 100%;
+    word-wrap: break-word;
+    word-break: normal;
+    padding-left: 13px;
+}
+
+.result_change_line
+{
+    width: 100%;
+    word-wrap: break-word;
+    word-break: normal;
+}
+
+.fix_width_column
+{
+    width: 500px;
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */    
+    white-space: -o-pre-wrap; /* Opera 7 */    
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+a:visited
+{
+  color: #0072c6;
+}
