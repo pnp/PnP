@@ -16,6 +16,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Json
     {
 
         #region Constructor
+        protected JsonTemplateProvider() : base()
+        {
+
+        }
+
         protected JsonTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
