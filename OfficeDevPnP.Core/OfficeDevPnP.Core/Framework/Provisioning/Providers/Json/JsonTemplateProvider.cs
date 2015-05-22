@@ -7,20 +7,21 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
+namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Json
 {
     /// <summary>
-    /// Provider for xml based configurations
+    /// Provider for JSON based configurations
     /// </summary>
-    public abstract class XMLTemplateProvider : TemplateProviderBase
+    public abstract class JsonTemplateProvider : TemplateProviderBase
     {
 
         #region Constructor
-        protected XMLTemplateProvider() : base()
+        protected JsonTemplateProvider() : base()
         {
 
         }
-        protected XMLTemplateProvider(FileConnectorBase connector)
+
+        protected JsonTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
         }
@@ -30,7 +31,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override List<ProvisioningTemplate> GetTemplates()
         {
-            var formatter = new XMLPnPSchemaFormatter();
+            var formatter = new JsonPnPFormatter();
             formatter.Initialize(this);
             return (this.GetTemplates(formatter));
         }
@@ -45,7 +46,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             // For each file
             foreach (var file in files)
             {
-                if (file.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
+                if (file.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Load it from a File Stream
                     Stream stream = this.Connector.GetFileStream(file);
@@ -63,14 +64,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override ProvisioningTemplate GetTemplate(string uri)
         {
-            var formatter = new XMLPnPSchemaFormatter();
+            var formatter = new JsonPnPFormatter();
             formatter.Initialize(this);
             return (this.GetTemplate(uri, null, formatter));
         }
 
         public override ProvisioningTemplate GetTemplate(string uri, string identifier)
         {
-            var formatter = new XMLPnPSchemaFormatter();
+            var formatter = new JsonPnPFormatter();
             formatter.Initialize(this);
             return (this.GetTemplate(uri, identifier, formatter));
         }
@@ -101,7 +102,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override void Save(ProvisioningTemplate template)
         {
-            var formatter = new XMLPnPSchemaFormatter();
+            var formatter = new JsonPnPFormatter();
             this.Save(template, formatter);
         }
 
@@ -117,7 +118,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
         public override void SaveAs(ProvisioningTemplate template, string uri)
         {
-            var formatter = new XMLPnPSchemaFormatter();
+            var formatter = new JsonPnPFormatter();
             this.SaveAs(template, uri, formatter);
         }
 
