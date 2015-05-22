@@ -45,14 +45,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // If a base template is specified then use that one to "cleanup" the generated template model
             if (creationInfo.BaseTemplate != null)
             {
-                template = CleanupEntities(template, creationInfo.BaseTemplate);
+                template = CleanupEntities(template, creationInfo);
+            }
+
+            foreach (PropertyBagEntry propbagEntry in template.PropertyBagEntries)
+            {
+                propbagEntry.Value = Tokenize(propbagEntry.Value, web.ServerRelativeUrl);
             }
 
             return template;
         }
 
-        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
+        private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
+            ProvisioningTemplate baseTemplate = creationInfo.BaseTemplate;
+
             foreach (var propertyBagEntry in baseTemplate.PropertyBagEntries)
             {
                 int index = template.PropertyBagEntries.FindIndex(f => f.Key.Equals(propertyBagEntry.Key));
@@ -80,6 +87,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 "_PnP_"
             });
+            systemPropertyBagEntriesInclusions.AddRange(creationInfo.PropertyBagPropertiesToPreserve);
 
             List<PropertyBagEntry> entriesToDelete = new List<PropertyBagEntry>();
 
