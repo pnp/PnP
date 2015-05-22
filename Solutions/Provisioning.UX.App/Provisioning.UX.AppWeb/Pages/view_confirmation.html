@@ -1,0 +1,57 @@
+﻿<div class="modal-right-heading">
+    <h1>Confirmation</h1>
+</div>
+
+<div class="modal-right-body">
+
+    <p>Please review your site request information for accuracy.</p>
+    <p>Click the back arrow to make changes. To proceed, click the check mark.</p>
+
+    <table class="table table-striped">
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Site URL</a></th>
+            <td>{{siteConfiguration.details.url}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(6)">Primary Owner</a></th>
+            <td>{{siteConfiguration.primaryOwner}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(6)">Secondary Owner</a></th>
+            <td>{{siteConfiguration.secondaryOwners}}</td>
+        </tr>        
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(4)">Site Template</a></th>
+            <td>{{siteConfiguration.template.title}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Region</a></th>
+            <td>{{siteConfiguration.properties.region}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Division</a></th>
+            <td>{{siteConfiguration.properties.division}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Function</a></th>
+            <td>{{siteConfiguration.properties.function}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Language</a></th>
+            <td>{{siteConfiguration.language}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(5)">Time Zone</a></th>
+            <td>{{siteConfiguration.timezone}}</td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(7)">Site Classification</a></th>
+            <td>{{siteConfiguration.privacy.classification}}</td>
+        </tr>
+    </table>
+
+    <p>What happens next?</p>
+    <ul>
+        <li>You will receive an email notification once we have created your site.</li>
+    </ul>
+</div>

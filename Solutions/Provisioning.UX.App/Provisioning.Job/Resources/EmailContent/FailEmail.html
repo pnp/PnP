@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Site Provisioning Failure Notification"></title>
+    <style type="text/css">
+        body {
+            font-size: 90%;
+            font-family: "Segoe UI";
+            font-weight: normal;
+        }
+
+        img {
+            height: 75%;
+            width: 100%;
+        }
+
+        #container {
+            position: relative;
+            width: 50%;
+            margin: auto;
+        }
+
+        h3 {
+            font-weight: 600;
+            font-weight: bolder;
+        }
+
+        a {
+            font-weight: 600;
+        }
+        td {
+              width: 200px;
+              height: 100%;
+        }
+        td a {
+          height:100%;
+          width:100%;
+        }
+        p.MsoNormal, li.MsoNormal, div.MsoNormal {
+            margin: 0in;
+            margin-bottom: .0001pt;
+            font-size: 11.0pt;
+            font-family: "Calibri",sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <header>
+        </header>
+        <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=1296 style='width:6.75in;border-collapse:collapse'> 
+            <tbody>
+                <tr style='height:78.75pt'>
+                    <td width=252 valign=top style='width:94.5pt;background:#008272;padding:0in 0in 0in 0in;height:78.75pt'>
+                        <p class=MsoNormal></p>
+                    </td>
+                    <td width=768 colspan=3 valign=top style='width:287.9pt;background:#E70C0C;padding:0in 7.9pt 0in 7.9pt;height:78.75pt'>
+                        <p class=MsoNormal>
+                            <span style='font-size:32.0pt;font-family:"Segoe UI Light",sans-serif;color:black'>Oops!</span>
+                        </p>
+                        <p class=MsoNormal><u5:p>&nbsp;</u5:p></p>
+                    </td>
+                    <td width=276 style='width:103.6pt;padding:0in 0in 0in 0in;height:78.75pt'>
+                        <p class=MsoNormal>&nbsp;<u5:p></u5:p></p>
+                    </td>
+                </tr>
+                <tr style='height:69.75pt'>
+                    <td width=252 valign=top style='width:94.5pt;padding:0in 0in 0in 0in;height:69.75pt'>
+                        <p class=MsoNormal><u5:p>&nbsp;</u5:p><o:p></o:p></p>
+                    </td>
+                    <td width=96 valign=top style='width:.5in;background:#E70C0C;padding:0in 7.9pt 0in 7.9pt;height:69.75pt'>
+                    <td width=300 valign=top style='width:94.5pt;padding:0in 0in 0in 0in;background:#E70C0C;height:69.75pt'>
+                        <p>
+                            <span style='font-size:32.0pt;font-family:"Segoe UI Light",sans-serif;color:black'>Something Happened</span>
+                        </p>
+                    </td>
+                    <td width=300 valign=top style='width:94.5pt;padding:0in 0in 0in 0in;background:#E70C0C;height:69.75pt'>
+                       
+                    </td>
+                    <td width=300 valign=top style='width:94.5pt;padding:0in 0in 0in 0in;background:#E70C0C;height:69.75pt'>
+                        <p class=MsoNormal><u5:p>&nbsp;</u5:p><o:p></o:p></p>
+                    </td>
+               </tbody>
+        </table>
+        <p></p>
+   
+        <b>Oops! Your SharePoint site is not ready:</b>
+        <a href="[SITEURL]">[SITEURL]</a>
+        <br />
+        <p></p>
+        Site Request details:
+        <ul>
+            <li>Site owner: [SITEOWNER]</li>
+            <li>Site administrator: [SITEADMIN]</li>
+        </ul>
+
+        There was an error processing your request.
+        <ul>
+            <li>[ERRORMESSAGE]</li>
+        </ul>
+        <p>I'm sorry,</p>
+        PNP Core Team
+        <p>
+            <a href="http://aka.ms/OfficeDevPnP">Office Develper Patterns and Practices</a>
+        </p>
+</div>
+
+</body>
+</html>

@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Json
 
         public Model.ProvisioningTemplate ToProvisioningTemplate(System.IO.Stream template, string identifier)
         {
-            StreamReader sr = new StreamReader(template);
+            StreamReader sr = new StreamReader(template, Encoding.Unicode);
             String jsonString = sr.ReadToEnd();
             Model.ProvisioningTemplate result = JsonConvert.DeserializeObject<Model.ProvisioningTemplate>(jsonString);
             return (result);
