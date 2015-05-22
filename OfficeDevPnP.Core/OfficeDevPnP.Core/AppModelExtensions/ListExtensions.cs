@@ -406,7 +406,7 @@ namespace Microsoft.SharePoint.Client
 
         private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
-            Log.Info(CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
 
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
