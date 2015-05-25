@@ -179,7 +179,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="PropertyBagEntry" type="pnp:StringDictionaryItem"
+            <xsd:element name="PropertyBagEntry" type="pnp:PropertyBagEntry"
                           minOccurs="1" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:complexType>
@@ -414,6 +414,19 @@
 
   </xsd:complexType>
 
+  <xsd:complexType name="PropertyBagEntry" >
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        A property bag entry
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="pnp:StringDictionaryItem">
+        <xsd:attribute name="Indexed" type="xsd:boolean" use="optional" default="false" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
   <xsd:complexType name="StringDictionaryItem">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -438,6 +451,8 @@
     </xsd:attribute>
 
   </xsd:complexType>
+  
+  
 
   <xsd:complexType name="UsersList">
     <xsd:annotation>
