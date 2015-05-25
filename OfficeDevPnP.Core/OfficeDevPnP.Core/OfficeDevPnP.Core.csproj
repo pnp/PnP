@@ -349,7 +349,7 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectRetrieveTemplateInfo.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPersistTemplateInfo.cs" />
-    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectLookupFields.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListPostProcessing.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPages.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPropertyBagEntry.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectCustomActions.cs" />
@@ -523,14 +523,18 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Framework\Provisioning\BaseTemplates\v16\BLOG0Template.xml" />
     <Content Include="Framework\Provisioning\BaseTemplates\v16\COMMUNITY0Template.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

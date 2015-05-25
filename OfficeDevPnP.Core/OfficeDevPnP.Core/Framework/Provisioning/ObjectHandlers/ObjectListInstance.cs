@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
-using System.Web.Configuration;
-using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
@@ -324,29 +320,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
-                #region DataRows
-
-                foreach (var listInfo in createdLists)
-                {
-                    var listInstance = listInfo.ListInstance;
-                    if (listInstance.DataRows != null && listInstance.DataRows.Any())
-                    {
-                        var list = listInfo.CreatedList;
-                        foreach (var dataRow in listInfo.ListInstance.DataRows)
-                        {
-                            ListItemCreationInformation listitemCI = new ListItemCreationInformation();
-                            var listitem = list.AddItem(listitemCI);
-                            foreach (var dataValue in dataRow.Values)
-                            {
-                                listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
-                            }
-                            listitem.Update();
-                            web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
-                        }
-                    }
-                }
-
-                #endregion
             }
         }
 
