@@ -111,9 +111,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 throw new ArgumentNullException("template");
             }
 
-            // Crate a copy of the source stream
+            // Create a copy of the source stream
             MemoryStream sourceStream = new MemoryStream();
-            template.CopyTo(sourceStream);
+            template.Position = 0;
+            template.CopyTo(sourceStream);            
             sourceStream.Position = 0;
             template = sourceStream;
 
