@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 var wpEntity = new WebPartEntity();
                                 wpEntity.WebPartTitle = webpart.Title;
-                                wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                                wpEntity.WebPartXml = webpart.Contents.ToParsedString().Trim(new[] { '\n', ' ' });
                                 wpEntity.WebPartZone = webpart.Zone;
                                 wpEntity.WebPartIndex = (int) webpart.Order;
 
