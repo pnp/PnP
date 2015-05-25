@@ -21,8 +21,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!web.PropertyBagContainsKey(propbagEntry.Key))
                 {
-                    web.SetPropertyBagValue(propbagEntry.Key,propbagEntry.Value);
-
+                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value);
+                    if (propbagEntry.Indexed)
+                    {
+                        web.AddIndexedPropertyBagKey(propbagEntry.Key);
+                    }
                 }
             }
         }
@@ -34,9 +37,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var entries = new List<PropertyBagEntry>();
 
+            var indexedProperties = web.GetIndexedPropertyBagKeys().ToList();
             foreach (var propbagEntry in web.AllProperties.FieldValues)
             {
-                entries.Add(new PropertyBagEntry() {Key = propbagEntry.Key, Value = propbagEntry.Value.ToString()});
+                var indexed = indexedProperties.Contains(propbagEntry.Key);
+                entries.Add(new PropertyBagEntry() { Key = propbagEntry.Key, Value = propbagEntry.Value.ToString(), Indexed = indexed });
             }
 
             template.PropertyBagEntries.Clear();
@@ -92,12 +97,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             List<PropertyBagEntry> entriesToDelete = new List<PropertyBagEntry>();
 
             // Prepare the list of property bag entries that will be dropped
-            foreach(string property in systemPropertyBagEntriesExclusions)
+            foreach (string property in systemPropertyBagEntriesExclusions)
             {
                 var results = from prop in template.PropertyBagEntries
                               where prop.Key.Contains(property)
                               select prop;
-                entriesToDelete.AddRange(results);                
+                entriesToDelete.AddRange(results);
             }
 
             // Remove the property bag entries that we want to forcifully keep
@@ -111,7 +116,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             // Delete the resulting list of property bag entries
-            foreach(var property in entriesToDelete)
+            foreach (var property in entriesToDelete)
             {
                 template.PropertyBagEntries.Remove(property);
             }

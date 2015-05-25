@@ -105,10 +105,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new V201505.StringDictionaryItem
+                     select new V201505.PropertyBagEntry()
                      {
                          Key = bag.Key,
                          Value = bag.Value,
+                         Indexed = bag.Indexed
                      }).ToArray();
             }
             else

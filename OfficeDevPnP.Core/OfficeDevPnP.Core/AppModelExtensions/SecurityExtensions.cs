@@ -898,7 +898,9 @@ namespace Microsoft.SharePoint.Client
             if (group != null)
             {
                 User user = group.Users.GetByLoginName(userLoginName);
-                if (user != null)
+                web.Context.Load(user);
+                web.Context.ExecuteQueryRetry();
+                if (!user.ServerObjectIsNull.Value)
                 {
                     web.RemoveUserFromGroup(group, user);
                 }
