@@ -66,8 +66,6 @@ This sample explains how is possible to create a split between Power Users and D
 - List ID (RegistrationId field "Browse" button allow to select List Id)
 - File Picker (Image Url and ScriptSrc "Browse" button allow to select file in SharePoint Site)
 
-During the creation of the app there are some learnings with an continual process improvement of features and code that i can compile in the following "leasons learn".
-
 ### Leasons Learn ###
 
 - Creation of good UI and UX is critical for better acceptance of an app.
