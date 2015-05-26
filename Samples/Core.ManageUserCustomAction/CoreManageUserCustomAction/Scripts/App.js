@@ -4,19 +4,7 @@
 	AppWebUrl: PnPCommon.getQueryStringParameter("SPAppWebUrl").replace("#", ""),
     waitForm: null,
     GetInit: function () {
-        PnPData.GetTokens();
-        PnPData.GetPermissions();
-        PnPData.GetListTemplates();
-        PnPData.GetListContentTypePicker(PnPApp.AppWebUrl, PnPApp.HostWebUrl, 'CT', PnPApp.GetListContentTypePickerSuccess);
-        PnPData.GetListContentTypePicker(PnPApp.AppWebUrl, PnPApp.HostWebUrl, 'Lists', PnPApp.GetListContentTypePickerSuccess);
-        PnPData.GetProgId();
-        PnPData.GetFileType();
-
-        PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionImageUrl", ".PnPTokensImageUrl");
-        PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionScriptBlock", ".PnPTokensScriptBlock");
-        PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionScriptSrc", ".PnPTokensScriptSrc");
-        PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionUrl", ".PnPTokensUrl");
-        PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionCommandUIExtension", ".PnPTokensUIExtension");
+        
         PnPCommon.CallDataOnFocus("#dlxCustomActionRights", "#PnPRights");
         
         PnPCommon.CleanForm();
@@ -231,4 +219,15 @@ window.PnPApp = window.Core.ManageUserCustomAction.OfficeApp.SP.App;
 
 $(document).ready(function () {
     PnPApp.GetInit();
+    PnPData.GetPermissions();
+    PnPData.GetListTemplates();
+    PnPData.GetListContentTypePicker(PnPApp.AppWebUrl, PnPApp.HostWebUrl, 'CT', PnPApp.GetListContentTypePickerSuccess);
+    PnPData.GetListContentTypePicker(PnPApp.AppWebUrl, PnPApp.HostWebUrl, 'Lists', PnPApp.GetListContentTypePickerSuccess);
+    PnPData.GetProgId();
+    PnPData.GetFileType();
+    PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionImageUrl", ".PnPTokensImageUrl");
+    PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionScriptBlock", ".PnPTokensScriptBlock");
+    PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionScriptSrc", ".PnPTokensScriptSrc");
+    PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionUrl", ".PnPTokensUrl");
+    PnPCommon.CallDataOnFocusAfterInsert("#dlxCustomActionCommandUIExtension", ".PnPTokensUIExtension");
 });
