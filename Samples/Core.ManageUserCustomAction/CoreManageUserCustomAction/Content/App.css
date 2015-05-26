@@ -1,0 +1,110 @@
+﻿/* Client Web Part styles */
+.clientwebpart-body
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+	.clientwebpart-body .clientwebpart-div
+	{
+		margin: 0;
+		padding: 5px;
+		border: 0;
+		position: relative;
+		width: 300px;
+		height: 200px;
+		background-color: #0072C6;
+		color: #FFFFFF;
+		font-size: 14pt;
+	}
+	
+	textarea {
+			width:400px;
+			height:150px;
+			font-size:x-small;
+		}
+		label {
+		  width:120px;
+		  display: inline-block;
+		}
+		.textbox { 
+		    background: #FFF url(../_layouts/images/fgosearchhover15.png) no-repeat 4px 4px; 
+		    border: 1px solid #999; 
+		    outline:0; 
+		    padding-left: 25px;
+		    height:25px; 
+		    width: 275px; 
+		 } 
+		 .dlxCustomActionFormCSS{
+			float: left; 
+			width: 700px;
+			}
+		.dlxCustomActionFormCSS div {
+		 	margin: 5px;
+		 }
+		 .dlxCustomActionFormCSS input {
+		 	width:400px;	
+		 }
+
+		 .dlxCustomActionFormCSS select {
+		 	width:400px;	
+		 }
+		 .dlxCustomActionFormCSS label{
+			 font-weight:bold;
+		 }
+		  #dlxFormMenu select{
+				width:200px;
+				height:400px;	
+
+		  }
+          #dlxCustomActionFormMenu input{
+				margin:5px;
+				width:80px
+			}
+          #ZoneScriptSrc, #ZoneScriptBlock {
+                display:none;
+            }
+li{list-style-type: none !important;}
+ #PnPContentTypePicker {
+padding-left: 10px !important;
+}
+
+
+#PnPContentTypePicker ul {
+    margin: 0px;
+    padding: 5px;
+   
+}
+
+#PnPContentTypePicker li {list-style: none;}
+
+
+.top-level{
+    border:1px solid #0072C6;display:none; padding-left:0px;
+}
+
+ul.top-level {background:#FFFFFF;}
+ul.top-level li {
+ 
+ border-width: 1px;
+ cursor:pointer;
+}
+.dropdown {
+    position: absolute;
+    border: 1px solid black;
+    display: none;
+    z-index: 1;
+    background: white;
+    width: 410px;
+    cursor:pointer;
+    overflow-y: scroll;overflow-x: hidden;
+    max-height: 400px;
+}
+.dropdown div{
+
+    width:100%;
+}
+.dropdown div:hover{
+    background-color:#D3D3D3;
+}
