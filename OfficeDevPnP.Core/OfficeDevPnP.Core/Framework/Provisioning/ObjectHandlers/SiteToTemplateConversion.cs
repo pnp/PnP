@@ -40,6 +40,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             List<ObjectHandlerBase> objectHandlers = new List<ObjectHandlerBase>();
 
+            objectHandlers.Add(new ObjectSitePolicy());
             objectHandlers.Add(new ObjectSiteSecurity());
             objectHandlers.Add(new ObjectTermGroups());
             objectHandlers.Add(new ObjectField());
@@ -87,6 +88,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             List<ObjectHandlerBase> objectHandlers = new List<ObjectHandlerBase>();
 
+            objectHandlers.Add(new ObjectSitePolicy());
             objectHandlers.Add(new ObjectSiteSecurity());
             objectHandlers.Add(new ObjectFeatures());
             objectHandlers.Add(new ObjectTermGroups());
