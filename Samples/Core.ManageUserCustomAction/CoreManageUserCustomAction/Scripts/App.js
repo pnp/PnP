@@ -84,7 +84,7 @@
 
         for (var i = 0; i < jsonObject.length; i++) {
             if (data[1] === 'Lists') {
-                $("#PnPLists").append('<li id="' + jsonObject[i].Id + '" onclick=\"document.getElementById(\'dlxCustomActionRegistrationId\').value=\'{\'+this.id+\'}\'\" ><img  src="' + jsonObject[i].ImageUrl + '" >' + jsonObject[i].Title + '</li>');
+                $("#PnPLists").append('<li id="' + jsonObject[i].Id + '" ><img  src="' + jsonObject[i].ImageUrl + '" >' + jsonObject[i].Title + '</li>');
             } else if (data[1] === 'CT') {
                 $("#PnPContentType").append('<li style="padding-bottom:5px;" id="' + jsonObject[i].Id.StringValue + '" onclick=\"document.getElementById(\'dlxCustomActionRegistrationId\').value=this.id\"><img src="../_layouts/15/images/pageLayoutHS.png" >' + jsonObject[i].Name + "(" + jsonObject[i].Group + ")" + '</li>');
             }
