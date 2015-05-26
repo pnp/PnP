@@ -47,7 +47,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var list in template.Lists)
                 {
-                    if (!existingLists.Contains(UrlUtility.Combine(serverRelativeUrl, list.Url)))
+                    if (existingLists.FindIndex(x => x.Equals(UrlUtility.Combine(serverRelativeUrl, list.Url), StringComparison.OrdinalIgnoreCase)) == -1)
                     {
                         var listCreate = new ListCreationInformation();
                         listCreate.Description = list.Description;
