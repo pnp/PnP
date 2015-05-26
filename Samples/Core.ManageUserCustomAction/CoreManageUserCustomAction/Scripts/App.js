@@ -89,7 +89,7 @@
                 $("#PnPContentType").append('<li style="padding-bottom:5px;" id="' + jsonObject[i].Id.StringValue + '" onclick=\"document.getElementById(\'dlxCustomActionRegistrationId\').value=this.id\"><img src="../_layouts/15/images/pageLayoutHS.png" >' + jsonObject[i].Name + "(" + jsonObject[i].Group + ")" + '</li>');
             }
             else {
-                $("#" + data[1]).append('<ul style="padding-left:20px;padding-bottom:5px;" id="' + jsonObject[i].Id.StringValue + '" onclick=\"document.getElementById(\'dlxCustomActionRegistrationId\').value=this.id\"><img src="../_layouts/15/images/pageLayoutHS.png" >' + jsonObject[i].Name + "(" + jsonObject[i].Group + ")" + '</li></ul>');
+                $("#" + data[1]).append('<ul class="PnPListCT" id="' + jsonObject[i].Id.StringValue + '" onclick=\"document.getElementById(\'dlxCustomActionRegistrationId\').value=this.id\"><img src="../_layouts/15/images/pageLayoutHS.png" >' + jsonObject[i].Name + "(" + jsonObject[i].Group + ")" + '</li></ul>');
             }
             if (data[1] == 'Lists') {
                 PnPData.GetListContentTypePicker(PnPApp.AppWebUrl, PnPApp.HostWebUrl, jsonObject[i].Id, PnPApp.GetListContentTypePickerSuccess);

@@ -79,17 +79,17 @@ padding-left: 10px !important;
 
 #PnPContentTypePicker li {list-style: none;}
 
+#PnPContentType li:hover {
+        background-color: #D3D3D3;
+    }
 
-.top-level{
-    border:1px solid #0072C6;display:none; padding-left:0px;
+.PnPListCT {
+{padding-left:20px;padding-bottom:5px;}:hover {background-color: #D3D3D3;}
+}
+.PnPListCT:hover {
+    background-color: #D3D3D3;
 }
 
-ul.top-level {background:#FFFFFF;}
-ul.top-level li {
- 
- border-width: 1px;
- cursor:pointer;
-}
 .dropdown {
     position: absolute;
     border: 1px solid black;

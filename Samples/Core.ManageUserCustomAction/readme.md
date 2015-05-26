@@ -40,6 +40,7 @@ The idea is to better integrate Power User "Business decision" and Developer wor
 This sample explains how is possible to create a split between Power Users and Developers.
 ### Developer ###
 - Creation of Html, JS or CSS files deployed in Assets Libraries to support custom solutions, that are included by the Power Users using UserCustomActions
+
 ### Power Users ###
 - Integration of the Developer work into SharePoint Site, using Scriptlinks or Custom Ribbons with actions.
 
