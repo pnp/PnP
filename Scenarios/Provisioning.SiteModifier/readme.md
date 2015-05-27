@@ -5,7 +5,7 @@ This scenario demonstrates a pattern that allows users to add functionality to t
 features or any other technical information.
 
 The idea behind the pattern is to provide users with an out of the box teamsite, and when in the future they need additional functionality
-they can go to the 'Modify Site' menu and add additional features to the site. The app will then add the required functionality. 
+they can go to the 'Modify Site' menu and add additional features to the site. The add-in will then add the required functionality. 
 That way sites can grow exactly to the level of functionality that the user requires without needed to use things like site definitions, 
 web templates or even the SharePoint feature framework.
 
@@ -16,7 +16,7 @@ web templates or even the SharePoint feature framework.
 
 ### Prerequisites ###
 A HTML5 compliant web browser
-In order to test the app without deploying the SiteModifierWeb project to a publicly available URL, Azure ServiceBus with ACS authentication is required. See http://msdn.microsoft.com/en-us/library/office/dn275975(v=office.15).aspx for more information.
+In order to test the add-in without deploying the SiteModifierWeb project to a publicly available URL, Azure ServiceBus with ACS authentication is required. See http://msdn.microsoft.com/en-us/library/office/dn275975(v=office.15).aspx for more information.
 
 
 ### Solution ###
@@ -36,16 +36,16 @@ Version  | Date | Comments
 ----------
 
 # Overview #
-This scenario demonstrates how an app can be used to provide a dialog box in which users can make selections of artefacts to be added to the site the moment they need it.
+This scenario demonstrates how an add-in can be used to provide a dialog box in which users can make selections of artefacts to be added to the site the moment they need it.
 
 This scenario demonstrates the following:
 
 - How to add a custom action to the site settings menu in the host web (see Services\AppEventReceiver.svc)
 - How to show a dialog in a custom action (see Services\AppEventReceiver.svc)
-- How to hide a dialog that hosts a page from a remote app web (see Pages\Modify.aspx)
+- How to hide a dialog that hosts a page from a remote add-in web (see Pages\Modify.aspx)
 - How to create artefacts like lists and set the theme of a web (see Pages\Modify.aspx)
 
-The app adds a menu option to the site settings pop up menu ("Modify Site"), which after clicking on it will show a dialogbox. In that dialogbox users can make selections to add certain artifacts to a site.
+The add-in adds a menu option to the site settings pop up menu ("Modify Site"), which after clicking on it will show a dialogbox. In that dialogbox users can make selections to add certain artifacts to a site.
 In this example 3 options are presented: a projects list (which is a generic/custom list), a contacts list, and the option to change the default theme.
 
 ## Permissions ##
@@ -58,7 +58,7 @@ To set the theme and create lists the scenario leverages OfficeDevPnP.Core. See 
 
 ## Custom Action added to host web ##
 We add a custom action to the site settings pop up menu in the host web. The custom action calls the LaunchApp javascript function that is provided by the server on the host web.
-Launching an app like this will show the page in a dialogbox and it will allow the dialog box to close itself if needed.
+Launching an add-in like this will show the page in a dialogbox and it will allow the dialog box to close itself if needed.
 
 ```C#
  UserCustomAction userCustomAction = web.UserCustomActions.Add();
@@ -92,9 +92,9 @@ In order to close a dialogbox from a page hosted outside of the SharePoint site,
 ScriptManager.RegisterStartupScript(this, typeof(Page), "UpdateMsg", "window.parent.postMessage('CloseCustomActionDialogRefresh', '*');", true);
 ```
 
-## Removing the app link from the recents menu ##
+## Removing the add-in link from the recents menu ##
 
-In order to only remove the app entry in the Recents menu, the following code is executed
+In order to only remove the add-in entry in the Recents menu, the following code is executed
 
 ```C#
  NavigationNodeCollection nodes = web.Navigation.QuickLaunch;
@@ -110,8 +110,8 @@ In order to only remove the app entry in the Recents menu, the following code is
 ```
 
 ## AppUninstalling event receiver ##
-When the app is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the app. This remove will trigger the app uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the app from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in app deployment when the app gets side loaded which is what Visual Studio does when you press F5.
+When the add-in is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the add-in. This remove will trigger the add-in uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the add-in from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in add-in deployment when the add-in gets side loaded which is what Visual Studio does when you press F5.
 
-When a user uninstalls a deployed app this moves the app to the site's recycle bin and will NOT trigger the appuninstalling event handler. The app needs to be removed from all recycle bins in order to trigger the appuninstalled event.
+When a user uninstalls a deployed add-in this moves the add-in to the site's recycle bin and will NOT trigger the appuninstalling event handler. The add-in needs to be removed from all recycle bins in order to trigger the appuninstalled event.
 
 
