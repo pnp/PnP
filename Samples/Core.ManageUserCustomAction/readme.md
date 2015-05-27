@@ -1,4 +1,4 @@
-# Manage UserCustomAction using SharePoint-Hosted App#
+# Manage UserCustomAction using SharePoint Add-In #
 
 ### Summary ###
 The Core.ManageUserCustomAction sample shows how to manage UserCustomActions Objects using a Form interface where is possible to include/edit/delete UserCustomActions. This sample app extends the Out of the Box SharePoint Object "UserCustomAction" with a basic user interface Form with pre-filled data needed to support the object that allows Power Users to manage custom actions like "Scriptlink", "Ribbons" and "Custom Actions" in the Hosted Site.
@@ -28,11 +28,11 @@ Version  | Date | Comments
 ----------
 
 # Instalation #
-The Solution is an SharePoint-Hosted App that can be deployed in the app catalog site of the Tenant and then install in the SharePoint Site using "Add an app" Option.
+The Solution is an SharePoint Add-In that can be deployed in the app catalog site of the Tenant and then install in the SharePoint Site using "Add an app" Option.
 
-## Manage UserCustomAction App ##
+## Manage UserCustomAction SharePoint Add-In ##
 
-The app manages SharePoint Site "SP.Web" UserCustomActions from and Custom Form created in a SharePoint-Hosted app.
+The app manages SharePoint Site "SP.Web" UserCustomActions from and Custom Form created in an SharePoint Add-In.
 
 ![](http://i.imgur.com/sfvGTuv.png)
 
@@ -46,7 +46,7 @@ This sample explains how is possible to create a split between Power Users and D
 
 ![](http://i.imgur.com/J6fzFru.png)
 
-## Manage UserCustomAction App functionalities ##
+## Manage UserCustomAction SharePoint Add-In functionalities ##
 
 ### Form Actions ###
 - Clean Form (cleanup of fields)
