@@ -33,7 +33,7 @@ The use case behind this sample is providing an easy way to pass along the calli
 Next chapters describe the steps taken to realize this. 
 
 ## Setup of your WebAPI service ##
-This solution contains a provider hosted SharePoint app (Core.Services.Authenticate.SharePoint and Core.Services.Authenticate.SharePointWeb) and a WebAPI project (Core.Services.Authenticate.WebAPI). In both these projects a WebAPI service has been added by creating a folder named **"Controller"**, right clicking it, choosing **Add** and selecting **"Controller..."**:
+This solution contains a provider hosted SharePoint add-in (Core.Services.Authenticate.SharePoint and Core.Services.Authenticate.SharePointWeb) and a WebAPI project (Core.Services.Authenticate.WebAPI). In both these projects a WebAPI service has been added by creating a folder named **"Controller"**, right clicking it, choosing **Add** and selecting **"Controller..."**:
 
 ![](http://i.imgur.com/M7oS3m8.png)
 
@@ -49,23 +49,23 @@ public void Register(WebAPIContext sharePointServiceContext)
 }
 ```
 
-This "register" method will be called once when the user launches the app:
+This "register" method will be called once when the user launches the add-in:
 
 ```C#
 protected void Page_Load(object sender, EventArgs e)
 {
     // regular Page_Load code...
 
-    //register the web API service in this SharePoint app
+    //register the web API service in this SharePoint add-in
     Page.RegisterWebAPIService("api/demo/register");
 }
 ```
 
 What will happen when the "register" service is called is the following:
 
-1. The cacheKey will be fetched. The cache key is an opaque string that is unique to the combination of user, user name issuer, app, and SharePoint farm or SharePoint Online tenant.
+1. The cacheKey will be fetched. The cache key is an opaque string that is unique to the combination of user, user name issuer, add-in, and SharePoint farm or SharePoint Online tenant.
 2. A cookie with name "servicesToken" and value = cacheKey will be added to the page response
-3. The context token, client ID, client Secret, host web url and app web url will be fetched and used as input to call the "register" Web API service
+3. The context token, client ID, client Secret, host web url and add-in web url will be fetched and used as input to call the "register" Web API service
 4. The "register" Web API service will call the AddToCache method which will request an access token for provided input. The provided input, the requested access token and the accompanying refresh token are cached.
 
 

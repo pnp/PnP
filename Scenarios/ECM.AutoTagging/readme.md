@@ -320,7 +320,7 @@ While your testing the two scenarios, you will noticed that the ItemAdding imple
 -  Microsoft.SharePoint.Client.Runtime
 -  Microsoft.SharePoint.Client.Taxonomy
 -  Microsoft.SharePoint.Client.UserProfiles
--  [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+-  [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
 

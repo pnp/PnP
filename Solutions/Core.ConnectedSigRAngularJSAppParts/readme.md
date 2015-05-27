@@ -1,12 +1,12 @@
-# Connected App Parts with SignalR and Angular #
+# Connected Add-In Parts with SignalR and Angular #
 
 ### Summary ###
 
 **Note**: This solution will soon be updated to use unique sessions for SignalR
 
-As Vesa Juvonen mentions in his blog on [Connected App Parts with SignalR](http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx), SharePoint app parts and their capability to connect between each other  is one of the classic questions and has been since the beginning of SharePoint. Vesa gives a very good overview of the architecture for the model.
+As Vesa Juvonen mentions in his blog on [Connected add-in Parts with SignalR](http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx), SharePoint add-in parts and their capability to connect between each other  is one of the classic questions and has been since the beginning of SharePoint. Vesa gives a very good overview of the architecture for the model.
 
-This solution takes the concept of master/detail app part communication and makes it real by using SignalR and AngularJS. The sample solution uses a Corporate Events, Sessions and Speakers scenario. Each are individual app parts and utilize associated SharePoint lists. The concept was to drop multiple app parts on a page and show a sense of communication. So for this sample, You drop the Corporate Events app part, then the Event Sessions app part, then the Speakers app part on a new page. The Corporate Events app part loads events, the user selects an event, and the Event Sessions app part renders all the sessions for the selected event. The user then selects a session, and the Speakers app part show the speaker(s) for the selected session. This solution also show some, but not all, CRUD operations.
+This solution takes the concept of master/detail add-in part communication and makes it real by using SignalR and AngularJS. The sample solution uses a Corporate Events, Sessions and Speakers scenario. Each are individual add-in parts and utilize associated SharePoint lists. The concept was to drop multiple add-in parts on a page and show a sense of communication. So for this sample, You drop the Corporate Events add-in part, then the Event Sessions add-in part, then the Speakers add-in part on a new page. The Corporate Events add-in part loads events, the user selects an event, and the Event Sessions add-in part renders all the sessions for the selected event. The user then selects a session, and the Speakers add-in part show the speaker(s) for the selected session. This solution also show some, but not all, CRUD operations.
 
 We'll get into how this works below.
 
@@ -15,7 +15,7 @@ For an overview of SignalR, you can read up on it [here](http://www.asp.net/sign
 
 The solution includes two projects:
 
-- **Core.ConnSigRAngJSApps** contains multiple client app parts
+- **Core.ConnSigRAngJSApps** contains multiple client add-in parts
 - **Core.ConnSigRAngJSAppsWeb** web project that contains the pages, angularjs scripts and SignalR code, as well as classes to setup all the necessities such as content types, site columns, lists and sample data that you can use.
 
 ### Applies to ###
@@ -40,7 +40,7 @@ Version  | Date | Comments
 This is a semi-complex solution with a number of moving parts. This section explains how to get it running fast, and what is created from the configuration process. The default page of web application will present you with instructions and "Configure" button as shown below which will set up the site columns, content types and lists. It will then inject sample data into the lists.
 ![](http://i.imgur.com/FWEOQQh.png)
 
-The configuration will create a Corporate Events list with data, an Event Sessions list with data, and a Speakers list with data. Once done, create a new page, add an html table to position app parts, then add the Corporate Events, Event Sessions and Speakers app parts to the page. When done, add the NewEventItems app part. Below is an example showing the app parts layout. You may have to adjust(increase) the height of the app parts to 350-400px.
+The configuration will create a Corporate Events list with data, an Event Sessions list with data, and a Speakers list with data. Once done, create a new page, add an html table to position add-in parts, then add the Corporate Events, Event Sessions and Speakers add-in parts to the page. When done, add the NewEventItems add-in part. Below is an example showing the add-in parts layout. You may have to adjust(increase) the height of the add-in parts to 350-400px.
 ![](http://i.imgur.com/2GukvTr.png)
 
 ## How it all works ##
@@ -85,7 +85,7 @@ The angular code uses callbacks and does not use $scope or $rootscope.
 
 ![](http://i.imgur.com/htNrj4J.png)
 
-1. App action invokes controller
+1. Add-in action invokes controller
 2. If data action, set promises, invoke data service
 3. Retrieve events from SharePoint events list
 4. Invoke SignalR proxy method to perform some broadcast
@@ -93,14 +93,14 @@ The angular code uses callbacks and does not use $scope or $rootscope.
 6. Hub sends communicated data back to all necessary registered clients
 7. SignalR sets callbacks, controllers act on returned data
 8. User selects event checkbox, controller invokes proxy, selected event is sent to Hub, Hub broadcasts selected event id.
-9. SignalR sets callbacks, controllers act on returned data. In this case, the sessions app part says “Hey, an event was selected, I need to get the sessions for it”.
+9. SignalR sets callbacks, controllers act on returned data. In this case, the sessions add-in part says “Hey, an event was selected, I need to get the sessions for it”.
 10. The sessions controller calls the data service and gets related sessions.
 11. User selects a session, controller invokes proxy, selected event is sent to Hub, Hub broadcasts selected session id.
-12. SignalR sets callbacks, controllers act on returned data. In this case, the speakers app part says “Hey, a session was selected, I need to get the speaker(s) for it”.
+12. SignalR sets callbacks, controllers act on returned data. In this case, the speakers add-in part says “Hey, a session was selected, I need to get the speaker(s) for it”.
 
-New Event Item is a form to create new events. Similar process here. Controller invoked, calls data service to insert the new item. Controller then invokes SignalR proxy to notify the hub a new event was added. Hub broadcasts to client(s) that a new event was added. Events app part picks up that notification and reloads the events to include the newly added event from the other app part.
+New Event Item is a form to create new events. Similar process here. Controller invoked, calls data service to insert the new item. Controller then invokes SignalR proxy to notify the hub a new event was added. Hub broadcasts to client(s) that a new event was added. Events add-in part picks up that notification and reloads the events to include the newly added event from the other add-in part.
 
-The Events app part also has the capability to delete events and it basically follows the same process as adding a new event as far as notifications, callbacks and and acting on callbacks.
+The Events add-in part also has the capability to delete events and it basically follows the same process as adding a new event as far as notifications, callbacks and and acting on callbacks.
 
 ### Final Notes ###
 Obviously not too much effort was put into jazzing up the UI, but can be done later.

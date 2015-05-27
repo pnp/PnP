@@ -51,8 +51,8 @@ In the target approver field, you can see an example of using the client-side Pe
 ### HANDLE CUSTOM TASK ###
 Within the workflow status page, wait for the custom approval task to be assigned to the target approver.
 Then you will be able to click on the custom task item, in order to access the custom task page.
-You can also access the workflow status page by clicking on the workflow status column named "Sample Approval Workflow" available in the default view of the document library in the home page of the sample SharePoint app.
+You can also access the workflow status page by clicking on the workflow status column named "Sample Approval Workflow" available in the default view of the document library in the home page of the sample SharePoint add-in.
 If you click on the custom task after you have already handled it, you will see a read-only display form, in order to avoid multiple task handlings.
 
 # HOW TO TEST THE SAMPLE #
-Using Visual Studio 2013, configure the target SharePoint Online site collection, and simply start (F5) the SharePoint App from within Visual Studio 2013
+Using Visual Studio 2013, configure the target SharePoint Online site collection, and simply start (F5) the SharePoint add-in from within Visual Studio 2013

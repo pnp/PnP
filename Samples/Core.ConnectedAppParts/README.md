@@ -1,7 +1,7 @@
-# Connected App Parts with SignalR #
+# Connected Add-In Parts with SignalR #
 
 ### Summary ###
-This sample shows how to inject custom CSS to the host web using SP App. For more information on this sample, please see Vesa Juvonen's thorough blog post on the concept: [http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx](http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx "Connected SharePoint app parts with SignalR")
+This sample shows how to inject custom CSS to the host web using SP Add-In. For more information on this sample, please see Vesa Juvonen's thorough blog post on the concept: [http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx](http://blogs.msdn.com/b/vesku/archive/2014/05/14/connected-sharepoint-app-parts-with-signalr.aspx "Connected SharePoint add-in parts with SignalR")
 
 ### Video Walkthrough ##
 A comprehensive video of the solution can be found at [http://www.youtube.com/watch?v=_Duwtgn9rhc](http://www.youtube.com/watch?v=_Duwtgn9rhc "http://www.youtube.com/watch?v=_Duwtgn9rhc")
@@ -27,13 +27,13 @@ Version  | Date | Comments
 
 ----------
 
-# Connected App Parts using Server Side Connections #
-One of the classic questions related on the SharePoint app parts is their capability to connect between each other. This has been classic scenario with web parts since the dawn of the SharePoint, so question is pretty understandable. Since app parts are essentially IFrames in steroids, they don't  natively support similar connectivity models as the classic web parts, but we can solve the requirement using alternative approach.
+# Connected Add-In Parts using Server Side Connections #
+One of the classic questions related on the SharePoint add-in parts is their capability to connect between each other. This has been classic scenario with web parts since the dawn of the SharePoint, so question is pretty understandable. Since add-in parts are essentially IFrames in steroids, they don't  natively support similar connectivity models as the classic web parts, but we can solve the requirement using alternative approach.
 
-We have basically two different options for the connectivity with the app parts:
+We have basically two different options for the connectivity with the add-in parts:
 - Client side approach
 - Server-side approach
 
-This sample leverages a server-side approach using ASP.NET SignalR. SignalR allows app parts to communicate to each through active socket connections with the server. Ultimately the web server serves the purpose of a communication "proxy" between app parts as depicted in the diagram below
+This sample leverages a server-side approach using ASP.NET SignalR. SignalR allows add-in parts to communicate to each through active socket connections with the server. Ultimately the web server serves the purpose of a communication "proxy" between add-in parts as depicted in the diagram below
 
-![Connected App Parts with SignalR](http://i.imgur.com/ueQjqPS.png) 
+![Connected Add-In Parts with SignalR](http://i.imgur.com/ueQjqPS.png) 

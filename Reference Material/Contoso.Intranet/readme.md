@@ -1,5 +1,5 @@
 # Contoso Intranet #
-Real life full trust solution mock-up for FTC to app model transition testing and verification. Based on the guidance from MCM/MCSM related on the FTC implementation. Mimics typical set of functionalities.
+Real life full trust solution mock-up for FTC to add-in model transition testing and verification. Based on the guidance from MCM/MCSM related on the FTC implementation. Mimics typical set of functionalities.
 
 - Content Types and site column
 - Web templates (team site and publishing site)

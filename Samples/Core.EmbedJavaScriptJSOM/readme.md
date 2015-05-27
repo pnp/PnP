@@ -1,7 +1,7 @@
 # Core.EmbedJavaScriptJSOM #
 
 ### Summary ###
-This application sample demonstrates how to perform JavaScript embedding to update SharePoint sites, using the JavaScript Object Model and a SharePoint Hosted App. 
+This application sample demonstrates how to perform JavaScript embedding to update SharePoint sites, using the JavaScript Object Model and a SharePoint Hosted Add-In. 
 This approach is preferred over customizing the Master Page.
 
 ### Applies to ###
