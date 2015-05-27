@@ -819,9 +819,9 @@ namespace Microsoft.SharePoint.Client
                 folder.Context.ExecuteQueryRetry();
                 return file;
             }
-            catch (Exception ex)
+            catch (ServerException sex)
             {
-                if (ex.Message == "File Not Found.")
+                if (sex.ServerErrorTypeName == "System.IO.FileNotFoundException")
                 {
                     return null;
                 }
