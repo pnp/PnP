@@ -30,6 +30,11 @@ namespace Microsoft.SharePoint.Client
         const string NavigationSortAscending = "__NavigationSortAscending";
         const string NavigationShowSiblings = "__NavigationShowSiblings";
 
+        /// <summary>
+        /// Returns the navigation settings for the selected web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
         public static AreaNavigationEntity GetNavigationSettings(this Web web)
         {
             AreaNavigationEntity nav = new AreaNavigationEntity();
@@ -151,6 +156,11 @@ namespace Microsoft.SharePoint.Client
             return nav;
         }
 
+        /// <summary>
+        /// Updates navigation settings for the current web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="navigationSettings"></param>
         public static void UpdateNavigationSettings(this Web web, AreaNavigationEntity navigationSettings)
         {
             //Read all the properties of the web
@@ -513,7 +523,7 @@ namespace Microsoft.SharePoint.Client
         ///    Rights = new BasePermissions(),
         /// };
         /// editAction.Rights.Set(PermissionKind.ManageWeb);
-        /// AddCustomAction(editAction, new Uri(site.Properties.Url));
+        /// web.AddCustomAction(editAction);
         /// </example>
         /// <returns>True if action was successfull</returns>
         public static bool AddCustomAction(this Web web, CustomActionEntity customAction)
@@ -521,6 +531,13 @@ namespace Microsoft.SharePoint.Client
             return AddCustomActionImplementation(web, customAction);
         }
 
+        /// <summary>
+        /// Adds custom action to a site collection. If the CustomAction exists the item will be updated.
+        /// Setting CustomActionEntity.Remove == true will delete the CustomAction.
+        /// </summary>
+        /// <param name="site">Site collection to be processed</param>
+        /// <param name="customAction">Information about the custom action be added or deleted</param>
+        /// <returns>True if action was successfull</returns>
         public static bool AddCustomAction(this Site site, CustomActionEntity customAction)
         {
             return AddCustomActionImplementation(site, customAction);

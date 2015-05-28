@@ -578,8 +578,8 @@ namespace Microsoft.SharePoint.Client
 #if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// </summary>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
@@ -626,7 +626,7 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         ///     list.SetLocalizationForSiteLabels("fi-fi", "Name of the site in Finnish", "Description in Finnish");
         /// </example>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="list">List to be processed </param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>

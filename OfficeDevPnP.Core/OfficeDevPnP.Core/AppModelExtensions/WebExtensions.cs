@@ -993,7 +993,7 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         ///     web.SetLocalizationForSiteLabels("fi-fi", "Name of the site in Finnish", "Description in Finnish");
         /// </example>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
@@ -1018,6 +1018,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web"></param>
         /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
+        /// <param name="applyingInformation">Specified additional settings and or properties</param>
         public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation = null)
         {
             // Call actual handler
@@ -1045,6 +1046,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to get template from</param>
         /// <param name="connector">Connector that will be used to persist the files retrieved from the template "get"</param>
+        /// <param name="creationInfo">Specifies additional settings and/or properties</param>
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
         public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
