@@ -28,7 +28,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (template.SitePolicy != null)
             {
-                web.ApplySitePolicy(template.SitePolicy);
+                if (web.GetSitePolicyByName(template.SitePolicy) != null) // Site Policy Available?
+                {
+                    web.ApplySitePolicy(template.SitePolicy);
+                }
             }
         }
 
