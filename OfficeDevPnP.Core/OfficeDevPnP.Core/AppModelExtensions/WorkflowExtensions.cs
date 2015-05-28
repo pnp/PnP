@@ -209,6 +209,10 @@ namespace Microsoft.SharePoint.Client
             return definition;
         }
 
+        /// <summary>
+        /// Deletes a workflow definition
+        /// </summary>
+        /// <param name="definition"></param>
         public static void Delete(this WorkflowDefinition definition)
         {
             var clientContext = definition.Context as ClientContext;

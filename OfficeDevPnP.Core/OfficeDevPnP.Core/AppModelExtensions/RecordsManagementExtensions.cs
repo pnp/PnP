@@ -10,13 +10,37 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class RecordsManagementExtensions
     {
+        /// <summary>
+        /// Defines the ID of the Inplace Records Management Feature
+        /// </summary>
         public const string INPLACE_RECORDS_MANAGEMENT_FEATURE_ID = "da2e115b-07e4-49d9-bb2c-35e93bb9fca9";
+        /// <summary>
+        /// Defines the name of the ECM Site Record Declaration Default propertybag value
+        /// </summary>
         public const string ECM_SITE_RECORD_DECLARATION_DEFAULT = "ecm_siterecorddeclarationdefault";
+        /// <summary>
+        /// Defines the name of the ECM Site Record Restrictions propertybag value
+        /// </summary>
         public const string ECM_SITE_RECORD_RESTRICTIONS = "ecm_siterecordrestrictions";
+        /// <summary>
+        /// Defines the name of the ECM Site Record Declaration by propertybag value
+        /// </summary>
         public const string ECM_SITE_RECORD_DECLARATION_BY = "ecm_siterecorddeclarationby";
+        /// <summary>
+        /// Defines the name of the ECM Site Record Undeclaration by propertybag value
+        /// </summary>
         public const string ECM_SITE_RECORD_UNDECLARATION_BY = "ecm_siterecordundeclarationby";
+        /// <summary>
+        /// Defines the name of the ECM Allow Manual Declaration propertybag value
+        /// </summary>
         public const string ECM_ALLOW_MANUAL_DECLARATION = "ecm_AllowManualDeclaration";
+        /// <summary>
+        /// Defines the name of the ECM IPR List use List Specific propertybag value
+        /// </summary>
         public const string ECM_IPR_LIST_USE_LIST_SPECIFIC = "ecm_IPRListUseListSpecific";
+        /// <summary>
+        /// Defines the name of the ECM auto declare records propertybag value
+        /// </summary>
         public const string ECM_AUTO_DECLARE_RECORDS = "ecm_AutoDeclareRecords";
 
 

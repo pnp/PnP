@@ -1049,6 +1049,11 @@ namespace Microsoft.SharePoint.Client
         }
         #endregion
 
+        /// <summary>
+        /// Returns the authentication realm for the current web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
         public static Guid GetAuthenticationRealm(this Web web)
         {
 
