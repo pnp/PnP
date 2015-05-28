@@ -1,5 +1,5 @@
 #Add-SPOUserToGroup
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-05-27*
 
 Adds a user to a group
 ##Syntax

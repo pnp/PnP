@@ -9,8 +9,8 @@ Get-Help Connect-SPOnline -Detailed
 Cmdlet|Description
 :-----|:----------
 **[Uninstall&#8209;SPOAppInstance](UninstallSPOAppInstance.md)** |Removes an app from a site
-**[Get&#8209;SPOAppInstance](GetSPOAppInstance.md)** |Returns a SharePoint App Instance
-**[Import&#8209;SPOAppPackage](ImportSPOAppPackage.md)** |Adds a SharePoint App to a site
+**[Get&#8209;SPOAppInstance](GetSPOAppInstance.md)** |Returns a SharePoint AddIn Instance
+**[Import&#8209;SPOAppPackage](ImportSPOAppPackage.md)** |Adds a SharePoint Addin to a site
 ##Base Cmdlets
 Cmdlet|Description
 :-----|:----------
@@ -71,6 +71,11 @@ Cmdlet|Description
 **[Add&#8209;SPOField](AddSPOField.md)** |Adds a field to a list or as a site column
 **[Add&#8209;SPOFieldFromXml](AddSPOFieldFromXml.md)** |Adds a field to a list or as a site column based upon a CAML/XML field definition
 **[Add&#8209;SPOTaxonomyField](AddSPOTaxonomyField.md)** |Adds a taxonomy field to a list or as a site column.
+##Information Management
+Cmdlet|Description
+:-----|:----------
+**[Get&#8209;SPOSitePolicy](GetSPOSitePolicy.md)** |Retrieves all or a specific site policy
+**[Set&#8209;SPOSitePolicy](SetSPOSitePolicy.md)** |Sets a site policy
 ##Lists
 Cmdlet|Description
 :-----|:----------
@@ -79,6 +84,7 @@ Cmdlet|Description
 **[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Get&#8209;SPOList](GetSPOList.md)** |Returns a List object
 **[New&#8209;SPOList](NewSPOList.md)** |Creates a new list
+**[Add&#8209;SPOListItem](AddSPOListItem.md)** |Adds an item to a list
 **[Get&#8209;SPOListItem](GetSPOListItem.md)** |Retrieves list items
 **[Set&#8209;SPOListPermission](SetSPOListPermission.md)** |Sets list permissions
 **[Add&#8209;SPOView](AddSPOView.md)** |Adds a view to a list
