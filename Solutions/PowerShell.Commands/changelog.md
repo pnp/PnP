@@ -99,7 +99,7 @@
 * Marked SPOSite and SPOTaxonomy as obsolete. Use OfficeDevPnP.Core extensions instead
 
 **2014-08-23**
-* Simplified connection code, added functionality to connect with App Id and App Secret. 
+* Simplified connection code, added functionality to connect with add-in Id and add-in Secret. 
 * Added connection samples in samples folder. 
 * Added Get-SPORealm command.
 

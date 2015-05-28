@@ -28,13 +28,13 @@ Version  | Date | Comments
 ----------
 
 # INTRODUCTION #
-This reference implementation shows how one can use the cloud app model to provision site collections in SharePoint Online and in SharePoint on-premises. The same code base is used for both options: depending on the choice the user makes in the provisioning form the solution will either create the site collection in SharePoint Online or in SharePoint on-premises. The SharePoint provisioning app in this sample is designed to run in Azure cloud services which will result in cloud driven solution. In order to provision sites collections on-premises the app running on Windows Azure cloud services uses Windows Azure service bus to make the connection to an on-premises component. Below schema shows the above flows in action:
+This reference implementation shows how one can use the add-in model to provision site collections in SharePoint Online and in SharePoint on-premises. The same code base is used for both options: depending on the choice the user makes in the provisioning form the solution will either create the site collection in SharePoint Online or in SharePoint on-premises. The SharePoint provisioning add-in in this sample is designed to run in Azure cloud services which will result in cloud driven solution. In order to provision sites collections on-premises the add-in running on Windows Azure cloud services uses Windows Azure service bus to make the connection to an on-premises component. Below schema shows the above flows in action:
 
 ![](http://i.imgur.com/7IK5mio.png)
 
 ## REFERENCES TO OTHER OFFICE AMS SAMPLES ##
 This sample must be seen a reference implementation that makes use of some of the other Office AMS samples. Therefore we would like to refer to the documentation of these samples for the following elements:
--  **Core.CloudServices:** this sample explains how to setup a Visual Studio 2013 project that uses Azure Cloud services and SharePoint apps. It also elaborates on how to use an app only OAUTH token for the provisioning part and how to handle encryption and decryption of configuration data when running on Windows Azure cloud services
+-  **Core.CloudServices:** this sample explains how to setup a Visual Studio 2013 project that uses Azure Cloud services and SharePoint apps. It also elaborates on how to use an add-in only OAUTH token for the provisioning part and how to handle encryption and decryption of configuration data when running on Windows Azure cloud services
 -  **Core.PeoplePicker:** this sample provides you with a detailed explanation on how to use the people picker component for provider hosted apps
 -  **Provisioning.Pages:** explanation on how to create wiki pages, how to add and remove web parts or html snippets from these pages is shown in this sample
 -  **Provisioning.SubSiteCreationApp:** this sample shows how to hookup sub site provisioning and how to apply branding by uploading and applying a custom theme 
@@ -48,9 +48,9 @@ The solution contains 10 projects:
 Below you can find a short description of each of the projects:
 -  **Provisioning.Hybrid:** this is the Azure cloud services project that holds the configuration data for three cloud services: one web role (Provisioning.Hybrid.Web) and one worker role named Provisioning.Hybrid.Worker
 -  **Provisioning.Hybrid.Web:** this is ASP.Net web project that will be part of the SharePoint application and that will be hosted as a web role on Azure Cloud services
--  **Provisioning.Hybrid.Web.SharePoint:** this is the SharePoint app project. Together with the previous project these 2 projects together are the SharePoint app. Since this a provider hosted app this project only contains the app manifest and a dummy module to trigger the creation of an appweb (required for the people picker control)
+-  **Provisioning.Hybrid.Web.SharePoint:** this is the SharePoint add-in project. Together with the previous project these 2 projects together are the SharePoint add-in. Since this a provider hosted add-in this project only contains the add-in manifest and a dummy module to trigger the creation of an appweb (required for the people picker control)
 -  **Provisioning.Hybrid.Worker:** this is the Azure Cloud services worker role project. This project will, by making use of the Provisioning.Hybrid.Core and the Office AMS Core library projects, do the actual site collection creation work
--  **Provisioning.Hybrid.Contract:** this project holds the data contract classes which are used to pass information from the SharePoint app to the service endpoint.
+-  **Provisioning.Hybrid.Contract:** this project holds the data contract classes which are used to pass information from the SharePoint add-in to the service endpoint.
 -  **Provisioning.Hybrid.Core:** this project contains the core provisioning classes and all their supporting artefacts such as themes and mail template files
 -  **Provisioning.Hybrid.Console:** this project is a console project that uses Windows Azure Service Bus to listen for requests coming from the SharePoint Provisioning solution. This typically is the part that you would run on-premises
 -  **Provisioning.Hybrid.Test.Console:** this is a test console application that you can use to push a message via service bus to the “Provisioning.Hybrid.Console” process that will be running on-premises
@@ -89,15 +89,15 @@ Off course these steps can be expanded with other steps such as there are:
 -  Sub site creation. See sample **Provisioning.SubSiteCreationApp**
 
 # SECURITY CONCEPTS #
-From a security perspective this sample application actually consists out of 2 apps: there the SharePoint App that contains the UI (default.aspx) and there’s the SharePoint app that’s being used for the site collection creation in the Azure worker role. The SharePoint app for the UI is regular SharePoint app with basic permissions as you can see in the below screenshot of the app manifest:
+From a security perspective this sample application actually consists out of 2 apps: there the SharePoint add-in that contains the UI (default.aspx) and there’s the SharePoint add-in that’s being used for the site collection creation in the Azure worker role. The SharePoint add-in for the UI is regular SharePoint add-in with basic permissions as you can see in the below screenshot of the add-in manifest:
 
 ![](http://i.imgur.com/SfQEPmS.png)
 
-The SharePoint app for the site collection creation however is different: there’s no appmanifest.xml file for this app, so the creation of the app always need to happen via the appregnew.aspx page. Once the app is created via the appregnew.aspx page you can provide it the app with the needed permissions via the appinv.aspx page. Below screenshots show these two pages. First screenshot shows the appregnew.aspx page where you can generate a client ID (aka app ID) and a client secret (aka app Secret), provide a title and domain. Note that the domain you specify here does not have to be a real existing domain, just a string that’s formatted as a domain name is good enough:
+The SharePoint add-in for the site collection creation however is different: there’s no appmanifest.xml file for this add-in, so the creation of the add-in always need to happen via the appregnew.aspx page. Once the add-in is created via the appregnew.aspx page you can provide it the add-in with the needed permissions via the appinv.aspx page. Below screenshots show these two pages. First screenshot shows the appregnew.aspx page where you can generate a client ID (aka add-in ID) and a client secret (aka add-in Secret), provide a title and domain. Note that the domain you specify here does not have to be a real existing domain, just a string that’s formatted as a domain name is good enough:
 
 ![](http://i.imgur.com/X9AMdcS.png)
 
-Use the Appinv.aspx page to lookup the app created in the previous step and then specify the permission XML. Given that this app will be used in a worker role it’s important that you don’t forget to set the AllowAppOnlyPolicy to true:
+Use the Appinv.aspx page to lookup the add-in created in the previous step and then specify the permission XML. Given that this add-in will be used in a worker role it’s important that you don’t forget to set the AllowAppOnlyPolicy to true:
 
 ![](http://i.imgur.com/OTjI9Cq.png)
 
@@ -118,7 +118,7 @@ Click on connection information and copy the default issuer (owner = default), t
 ![](http://i.imgur.com/CHOI6WD.png)
 
 ### CERTIFICATE ###
-Ensure you either have a self-signed certificate for your cloud app name (bjansen-provisioning.cloudapp.net in the sample) or that you have public trusted certificate linked to your own DNS (e.g. *.set1.bertonline.info certificate linked to bertonline.info domain name). The latter option is the preferred one and will be used in the remainder of the deployment steps.
+Ensure you either have a self-signed certificate for your cloud add-in name (bjansen-provisioning.cloudapp.net in the sample) or that you have public trusted certificate linked to your own DNS (e.g. *.set1.bertonline.info certificate linked to bertonline.info domain name). The latter option is the preferred one and will be used in the remainder of the deployment steps.
 
 ### DNS ###
 If you’re using a non cloudapp.net certificate then you’ll need to setup DNS so that there’s a CNAME of your custom domain (e.g. prov.set1.bertonline.info pointing) pointing to your Azure cloud service (e.g. bjansen-provisioning.cloudapp.net). If you don’t have DNS you can do this also by putting the IP address of bjansen-spprovisioning.cloudapp.net in the hosts file on the machines that need it. Minimally these are your test box and the Azure Cloud Service web client (only possible after deployment).
@@ -130,13 +130,13 @@ Use the Upload button in the Certificates section of the Azure cloud service you
 
 ## PREPARATION OF THE SHAREPOINT ONLINE TENANT ##
 
-### REGISTER THE PROVISIONING SCREEN APP IN SHAREPOINT USING APPREGNEW.ASPX ###
-Your app domain will be the tied to the certificate as it needs to match. In this case the app domain is prov.set1.bertonline.info which matches the *.set1.bertonline.info certificate. If you use a self-signed cert for bjansen-provisioning.cloudapp.net then that’s your app domain.
+### REGISTER THE PROVISIONING SCREEN ADD-IN IN SHAREPOINT USING APPREGNEW.ASPX ###
+Your add-in domain will be the tied to the certificate as it needs to match. In this case the add-in domain is prov.set1.bertonline.info which matches the *.set1.bertonline.info certificate. If you use a self-signed cert for bjansen-provisioning.cloudapp.net then that’s your add-in domain.
 
 ![](http://i.imgur.com/KweDAHf.png)
 
-### REGISTER THE “ACTUAL” PROVISIONING APP IN SHAREPOINT USING APPREGNEW.ASPX AND APPINV.ASPX ###
-Do the same as in previous step, but in this case when entering appregnew.aspx a dummy appdomain (www.contoso.com) will be ok. Redirect URL can be left empty. Copy the ClientID and ClientSecret. Once that’s done use the appinv.aspx page to perform look of the created app and grant it tenant level permissions by pasting the following permission XML and press create to confirm:
+### REGISTER THE “ACTUAL” PROVISIONING ADD-IN IN SHAREPOINT USING APPREGNEW.ASPX AND APPINV.ASPX ###
+Do the same as in previous step, but in this case when entering appregnew.aspx a dummy appdomain (www.contoso.com) will be ok. Redirect URL can be left empty. Copy the ClientID and ClientSecret. Once that’s done use the appinv.aspx page to perform look of the created add-in and grant it tenant level permissions by pasting the following permission XML and press create to confirm:
 
 ```XML
 <AppPermissionRequests AllowAppOnlyPolicy="true">
@@ -145,10 +145,10 @@ Do the same as in previous step, but in this case when entering appregnew.aspx a
 ```
 
 ### CREATE A SITE DIRECTORY SITE COLLECTION ###
-Create a site collection that will hold the site directory and in which the app will need to be installed. In the remaining documentation the site collection used is https://bertonline.sharepoint.com/sites/spc.
+Create a site collection that will hold the site directory and in which the add-in will need to be installed. In the remaining documentation the site collection used is https://bertonline.sharepoint.com/sites/spc.
 
 ### CREATE A SITE DIRECTORY ###
-The site directory is not (yet) created automatically as part of the app as the app. Quick solution is to import the sitedirectorytemplate.stp list template and create a list of it with as name Site overview.
+The site directory is not (yet) created automatically as part of the add-in as the add-in. Quick solution is to import the sitedirectorytemplate.stp list template and create a list of it with as name Site overview.
 
 ## PREPARATION OF THE SHAREPOINT ON-PREMISES SOLUTION ##
 
@@ -161,7 +161,7 @@ This solution package can be obtained from Office Dev PnP sample “Provisioning
 Before the solution can be deployed a number of settings have to be set correctly.
 
 ### WEB.CONFIG OF PROVISIONING.HYBRID.WEB ###
-Ensure the right **provisioning screen app** clientID and clientSecret are set. Also comment HostedAppHostNameOverride before you deploy.
+Ensure the right **provisioning screen add-in** clientID and clientSecret are set. Also comment HostedAppHostNameOverride before you deploy.
 
 ![](http://i.imgur.com/7NqQc3h.png)
 
@@ -201,8 +201,8 @@ Go to certificates and ensure that the entry SSL points to the thumbprint of the
 
 #### PROVISIONING.HYBRID.WORKER ####
 This is identical to the previous chapter with additional of following “All Configurations” settings:
--  AppId: clientID of your “actual” provisioning app
--  AppSecret: encrypted client secret of your “actual” provisioning app
+-  AppId: clientID of your “actual” provisioning add-in
+-  AppSecret: encrypted client secret of your “actual” provisioning add-in
 -  Realm: realm of your tenant (use MSOL PowerShell (Get-MsolCompanyInformation).ObjectID to get this for your tenant)
 -  General.SBServiceNameSpace: you’re service bus namespace (e.g. bjansen2)
 -  General.SBIssuerName: the service bus issuer name (owner)
@@ -213,21 +213,21 @@ The settings in this config file are pretty identical to the once set for the Az
 -  General.OnPremUserName: name of an account that can create site collections
 -  General.OnPremUserPassword: encrypted password of that account
 -  General.OnPremUserDomain: domain of that account
--  General.OnPremWebApplication: url of the web app that will host the on-premises site collections (e.g. https://sp2013.set1.bertonline.info)
+-  General.OnPremWebApplication: url of the web add-in that will host the on-premises site collections (e.g. https://sp2013.set1.bertonline.info)
 
-## PUBLISH THE SHAREPOINT APP ##
+## PUBLISH THE SHAREPOINT ADD-IN ##
 
-### CREATE THE APP PACKAGE ###
-Ensure you’ve a correct publishing profile: best to make a new one with your provisioning screen app client ID and client secret. Right click the Provisioning.Hybrid.Web.SharePoint project and choose “Publish”. Use the “Package the app” option to create an app package. When you create the app package use the same domain name as used in your ssl certificate (e.g. prov.set1.bertonline.info).
+### CREATE THE ADD-IN PACKAGE ###
+Ensure you’ve a correct publishing profile: best to make a new one with your provisioning screen add-in client ID and client secret. Right click the Provisioning.Hybrid.Web.SharePoint project and choose “Publish”. Use the “Package the app” option to create an add-in package. When you create the add-in package use the same domain name as used in your ssl certificate (e.g. prov.set1.bertonline.info).
 
-### UPLOAD THE APP PACKAGE TO YOUR APP CATALOG ###
-Upload the created .app file to the app catalog of your tenant. If you don’t know how to find the app catalog then use tenant administration to find out.
+### UPLOAD THE ADD-IN PACKAGE TO YOUR ADD-IN CATALOG ###
+Upload the created .app file to the add-in catalog of your tenant. If you don’t know how to find the add-in catalog then use tenant administration to find out.
 
 ## PUBLISH TO AZURE CLOUD SERVICES ##
 Right click the “Provisioning.Hybrid” project and choose “Publish”. Create a target profile that matches your Azure tenant and select the cloud service you’ve created before. Press Publish to have Visual Studio do the deployment. This will take around 15 minutes the first time. Subsequent runs are faster.
 
-## INSTALLATION OF THE SHAREPOINT APP AND TESTING ##
-Go the site collection created earlier on (https://bertonline.sharepoint.com/sites/spc) and install the provisioning app you’ve added to the app catalog. After installation clicking on the app should give this:
+## INSTALLATION OF THE SHAREPOINT ADD-IN AND TESTING ##
+Go the site collection created earlier on (https://bertonline.sharepoint.com/sites/spc) and install the provisioning add-in you’ve added to the add-in catalog. After installation clicking on the add-in should give this:
 
 ![](http://i.imgur.com/Od0aTEq.png)
 
@@ -237,4 +237,4 @@ For testing purposes the on-premises farm should also have VS2013 installed. In 
 **Note:**
 Ensure that the certificate used to encrypt sensitive data is deployed on the machine hosting the on-premises component. Deployment via PFX file as we need to the private key.
 
-Press F5 to run. The Provisioning.Hybrid.Console project will now connect to Service Bus and wait for a “HBI” site creation from the SharePoint Online provisioning app.
+Press F5 to run. The Provisioning.Hybrid.Console project will now connect to Service Bus and wait for a “HBI” site creation from the SharePoint Online provisioning add-in.

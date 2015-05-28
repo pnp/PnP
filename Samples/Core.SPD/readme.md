@@ -104,7 +104,7 @@ try
 ```
 
 # SCENARIO 2: HIDE “DESIGNER SETTINGS” #
-In the old days, we would use Full Trust code and the HideCustomAction element to remove the “SharePoint Designer Settings” on the setting page. In present times, how can you hide the element using the Cloud App Model? We use the JavaScript injection pattern to hide the item. Just like using the HideCustomAction approach, a user with the appropriate permissions can still navigate to the page and change the settings.
+In the old days, we would use Full Trust code and the HideCustomAction element to remove the “SharePoint Designer Settings” on the setting page. In present times, how can you hide the element using the Add-In Model? We use the JavaScript injection pattern to hide the item. Just like using the HideCustomAction approach, a user with the appropriate permissions can still navigate to the page and change the settings.
 
 **NOTE**: See AMS Sample, Core.JavaScriptInjection for additional information. 
 

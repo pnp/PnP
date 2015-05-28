@@ -2,7 +2,7 @@
 
 ### Summary ###
 This sample will create a sharepoint list called Events on the host web. It also contains
-an app part that renders a minicalendar that can be styled to your needs using the attached css files.
+an add-in part that renders a minicalendar that can be styled to your needs using the attached css files.
 
 
 ### Applies to ###
@@ -36,9 +36,9 @@ Documentation about this sample can be found [here]( http://www.luisevalencia.co
 
 ### Installation Steps ###
 -  For Development purposes you can press F5 for testing.
--  To install in a production environment, Publish the App, submit to the App Catalog, and then you can install it on any site.
+-  To install in a production environment, Publish the add-in, submit to the add-in Catalog, and then you can install it on any site.
 
 ### To be done for future releases ###
-- Make the Events list name customizable via App Part Properties.
-- Make the colors rendered by CSS customizable via App Part Properties.
+- Make the Events list name customizable via add-in Part Properties.
+- Make the colors rendered by CSS customizable via add-in Part Properties.
 

@@ -1,7 +1,7 @@
 # EMBEDDED EDITING #
 
 ### Summary ###
-This sample shows how manage app part properties using embedded edit controls instead of the controls provided by the OOTB app part editor.
+This sample shows how manage add-in part properties using embedded edit controls instead of the controls provided by the OOTB add-in part editor.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -25,49 +25,49 @@ Version  | Date | Comments
 
 ----------
 
-# SCENARIO 1: HOW TO MANAGE APP PART PROPERTIES USING EMBEDDED CONTROLS #
+# SCENARIO 1: HOW TO MANAGE ADD-IN PART PROPERTIES USING EMBEDDED CONTROLS #
 
 ## PROBLEM ##
 
-The out of the box (OOTB) app part editor controls may not offer all the flexibility you need for your project.  For instance, when developing advanced apps, you may have properties that are dynamic or have custom validation.  The OOTB properties are restricted to only allow the following basic types: string, int, enum, boolean.
+The out of the box (OOTB) add-in part editor controls may not offer all the flexibility you need for your project.  For instance, when developing advanced apps, you may have properties that are dynamic or have custom validation.  The OOTB properties are restricted to only allow the following basic types: string, int, enum, boolean.
 
 ## BACKGROUND ##
 
 When researching how to solve this problem there are two main questions we must answer:
 
-- How can the app part know if it is being edited?
-- How can we store properties specific to this instance of the app part?
+- How can the add-in part know if it is being edited?
+- How can we store properties specific to this instance of the add-in part?
 	
-Fortunately, SharePoint provides two properties to the app part via the url querystring when loading the iFrame into the page. Those two properties are **editMode** and **wpId**.
+Fortunately, SharePoint provides two properties to the add-in part via the url querystring when loading the iFrame into the page. Those two properties are **editMode** and **wpId**.
 These properties are self-explanatory.
 
-**editMode**: Indicates if the app part is being edited with a value of 1 for edit and 0 for non-edit.
-**wpId**: Is the ID of the app part / web part which is a GUID generated when the a new instance of the app is added to a page.
+**editMode**: Indicates if the add-in part is being edited with a value of 1 for edit and 0 for non-edit.
+**wpId**: Is the ID of the add-in part / web part which is a GUID generated when the a new instance of the add-in is added to a page.
 
 
 ## REFERENCES ##
-- [Use the SharePoint hidden list to store configuration data for an app part instance](http://blogs.msdn.com/b/officeapps/archive/2013/09/19/use-the-sharepoint-hidden-list-to-store-configuration-data-for-an-app-part-instance.aspx)
-- [Adding Custom Properties to an App Part](http://msdn.microsoft.com/en-us/library/office/fp179921.aspx)
+- [Use the SharePoint hidden list to store configuration data for an add-in part instance](http://blogs.msdn.com/b/officeapps/archive/2013/09/19/use-the-sharepoint-hidden-list-to-store-configuration-data-for-an-app-part-instance.aspx)
+- [Adding Custom Properties to an add-in Part](http://msdn.microsoft.com/en-us/library/office/fp179921.aspx)
 
 ## SOLUTION ##
-Now that we know about these extra properties available to app parts we can easily provide a solution to the problem and the two questions listed in the background section above:
+Now that we know about these extra properties available to add-in parts we can easily provide a solution to the problem and the two questions listed in the background section above:
 
-1.	How can the app part know if it is being edited?
-a.	When the app part is loaded check the status of the editMode property, if edit mode is enabled, expose the controls to edit the app part, otherwise behave normally.
+1.	How can the add-in part know if it is being edited?
+a.	When the add-in part is loaded check the status of the editMode property, if edit mode is enabled, expose the controls to edit the add-in part, otherwise behave normally.
 
-2.	How can we store properties specific to this instance of the app part?
-a.	When the user saves the edit form, save the property names and values along with the web part id (wpId value) into a local list (list located on the app web) so that we can retrieve them later.
+2.	How can we store properties specific to this instance of the add-in part?
+a.	When the user saves the edit form, save the property names and values along with the web part id (wpId value) into a local list (list located on the add-in web) so that we can retrieve them later.
 i.	We must have logic to know when to create new items in the list for properties that do not have values yet, or to update list items with new property values.
 
-***Note:*** The downside of this approach is that there is no way to know if an app part is removed from a page in order to remove/clean-up its information from the configuration list. For more information review the first link in the references section.
+***Note:*** The downside of this approach is that there is no way to know if an add-in part is removed from a page in order to remove/clean-up its information from the configuration list. For more information review the first link in the references section.
 
 ## SCENARIOS TO HANDLE ##
 Case  | Action 
 ---------| -----
-Configuration List Not Found |Use app property defaults for this instance.
- No entries found for this app part in config list.	| Use defaults from app, save to config list, display results in form.
-Partial Entries found for this app part in config list.	|Fill in missing data with defaults, save to config list, display results in form.
-More Entries than expected for this app part in config list.|Last parsed item overwrites previous value, display results in form. * Don't delete duplicates since we're not sure why they occurred and we don't really know which entry is correct.
+Configuration List Not Found |Use add-in property defaults for this instance.
+ No entries found for this add-in part in config list.	| Use defaults from add-in, save to config list, display results in form.
+Partial Entries found for this add-in part in config list.	|Fill in missing data with defaults, save to config list, display results in form.
+More Entries than expected for this add-in part in config list.|Last parsed item overwrites previous value, display results in form. * Don't delete duplicates since we're not sure why they occurred and we don't really know which entry is correct.
 
 
 ## OBJECTIVES ##
@@ -75,7 +75,7 @@ More Entries than expected for this app part in config list.|Last parsed item ov
 - Extend with advanced functionality such as host list selection.
 
 ## DESCRIPTION ##
-We will assume a real world scenario of a basic app which displays data from a list on the host web which needs the following properties:
+We will assume a real world scenario of a basic add-in which displays data from a list on the host web which needs the following properties:
 
 - **Title**: Internal Title. This would be to allow styling other than what chrome control provides. (Basic Property Objective)
 - **RowLimit**: Maximum number of items to request from the host web list. (Basic Property Objective)

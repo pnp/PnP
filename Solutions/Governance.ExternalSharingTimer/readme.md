@@ -47,7 +47,7 @@ This solution has two components that interface with SharePoint Online:
 1. A Console Application meant to execute as a daily "[timer job](http://blogs.msdn.com/b/richard_dizeregas_blog/archive/2014/04/07/sharepoint-timer-jobs-running-as-windows-azure-web-jobs.aspx)" to look for new external sharing and process warnings/expirations.
 2. An MVC Web Application for end-users to view details of expiration warnings and act on them by extending or revoking the share.
 
-The solution also uses an application database for tracking share extensions and app-only tenant permissions to perform site collection management. Both of these components require up-front configuration explained in the next section.
+The solution also uses an application database for tracking share extensions and add-in only tenant permissions to perform site collection management. Both of these components require up-front configuration explained in the next section.
 
 # Setup and Execution #
 This is a complex solution with a number of moving parts. This section outlines the primary configuration steps required to run the sample, including assembly dependencies, permission configuration, database deployment, and application settings.
@@ -60,7 +60,7 @@ Code is having reference to following CSOM assemblies.
 - Microsoft.Online.SharePoint.Client.Tenant.dll
 
 ## Permission Configuration ##
-This solution uses a provider-hosted approach, but does not have a tradition SharePoint entry point and will execute outside the context of a user (ie - App-Only). Because of these two constraints, you must register the app in /_layouts/15/appregnew.aspx and then manually configure permissions for the app in /_layouts/15/appinv.aspx:
+This solution uses a provider-hosted approach, but does not have a tradition SharePoint entry point and will execute outside the context of a user (ie - Add-In Only). Because of these two constraints, you must register the add-in in /_layouts/15/appregnew.aspx and then manually configure permissions for the add-in in /_layouts/15/appinv.aspx:
 
 Permission Request XML:
 
@@ -87,11 +87,11 @@ For the purpose of debugging, the solution can leverage Local DB, which is inclu
 Both the configuration files (console app and MVC app) are pre-configured to use this connection information.
 
 ## Application Settings ##
-Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web app project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
+Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web add-in project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
 
 ```XML
 <appSettings>
-  <!-- The client id and client secret of the app as provided in /_layouts/15/appregnew.aspx -->
+  <!-- The client id and client secret of the add-in as provided in /_layouts/15/appregnew.aspx -->
   <add key="ClientID" value="YOUR_CLIENT_ID_FROM_APPREGNEW.ASPX" />
   <add key="ClientSecret" value="YOUR_CLIENT_SECRET_FROM_APPREGNEW.ASPX" />
   

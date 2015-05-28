@@ -28,7 +28,7 @@ Version  | Date | Comments
 ----------
 
 # Overview #
-This sample scenario shows how one can implement Document Library templates using a provider hosted application instead of the feature framework or sandbox solutions.  This sample demonstrates creating Site columns, Site Content Types, Creation of Taxonomy fields, the removal of the Default Document Content Type from the created library, and versioning settings of the library. To make this application available to all site collections, you can deploy the app a tenant scope application, which would make this application available in all site collections.
+This sample scenario shows how one can implement Document Library templates using a provider hosted application instead of the feature framework or sandbox solutions.  This sample demonstrates creating Site columns, Site Content Types, Creation of Taxonomy fields, the removal of the Default Document Content Type from the created library, and versioning settings of the library. To make this application available to all site collections, you can deploy the add-in a tenant scope application, which would make this application available in all site collections.
 
 ![](http://i.imgur.com/F5TTvik.png)  
 
@@ -189,7 +189,7 @@ using (var ctx = spContext.CreateUserClientContextForSPHost())
 - 	Microsoft.SharePoint.Client
 -   Microsoft.SharePoint.Client.Runtime
 -   Microsoft.SharePoint.Client.Taxonomy
--   [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+-   [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
 

@@ -1,7 +1,7 @@
 # SharePoint List Manager #
 
 ### Summary ###
-This sample shows how to access list information in a SharePoint website from your app by using the cross domain library in SharePoint 2013.
+This sample shows how to access list information in a SharePoint website from your add-in by using the cross domain library in SharePoint 2013.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -28,7 +28,7 @@ Version  | Date | Comments
 ----------
 
 # SCENARIO 1: View the lists on the SharePoint web and view every property #
-This scenario shows how to review the properties of the lists in a SharePoint website. The app retrieves the information of the host web by using the cross domain library and the REST API. 
+This scenario shows how to review the properties of the lists in a SharePoint website. The add-in retrieves the information of the host web by using the cross domain library and the REST API. 
 
 It is very easy to review and learn the actual values of the available properties on the lists.
 
@@ -61,7 +61,7 @@ initSuccessHandler: function ($result) {
 }
 ```
 
-# SCENARIO 2: Create a new list in the SharePoint web via the app #
+# SCENARIO 2: Create a new list in the SharePoint web via the add-in #
 This scenario further extends scenario 1 by creating a new list in the host web by using the cross domain library. In this case we are providing a custom form that is 100% under our control that will create a new list based on the input of the user.
 
 ![Create new list](http://i.imgur.com/092By5r.png)
@@ -92,7 +92,7 @@ SPListmanager.NewList = {
 
             console.info('btnCreateList action with params ' + newListName + "|" + description + "|" + listTemplateType);
 
-            // get the context from the hostweb where the app is installed
+            // get the context from the hostweb where the add-in is installed
             var hostwebContext = new SP.AppContextSite(SPListmanager.context, SPListmanager.hostweburl);
             var web = hostwebContext.get_web();
 
