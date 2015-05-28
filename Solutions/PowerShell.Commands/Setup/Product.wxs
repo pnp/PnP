@@ -67,6 +67,7 @@
         <File Id="PSD1File" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1" />
         <File Id="ClientSDKDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.dll" />
         <File Id="ClientSDKRuntimeDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Runtime.dll" />
+        <File Id="ClientSDKPolicyDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.Policy.dll" />
         <File Id="ClientSDKTaxonomyDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Taxonomy.dll" />
         <File Id="ClientSDKUserProfilesDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.UserProfiles.dll" />
         <File Id="ClientSDKWorkflowServicesDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.WorkflowServices.dll" />
