@@ -72,19 +72,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Add TermSetIds
             TaxonomySession session = TaxonomySession.GetTaxonomySession(web.Context);
             var termStore = session.GetDefaultSiteCollectionTermStore();
-            web.Context.Load(termStore.Groups,
-                g => g.Include(
-                    tg => tg.Name,
-                    tg => tg.TermSets.Include(
-                        ts => ts.Name,
-                        ts => ts.Id)
-                ));
+            web.Context.Load(termStore);
             web.Context.ExecuteQueryRetry();
-            foreach (var termGroup in termStore.Groups)
+            if (!termStore.ServerObjectIsNull.Value)
             {
-                foreach (var termSet in termGroup.TermSets)
+                web.Context.Load(termStore.Groups,
+                    g => g.Include(
+                        tg => tg.Name,
+                        tg => tg.TermSets.Include(
+                            ts => ts.Name,
+                            ts => ts.Id)
+                    ));
+                web.Context.ExecuteQueryRetry();
+                foreach (var termGroup in termStore.Groups)
                 {
-                    _tokens.Add(new TermSetIdToken(web, termGroup.Name, termSet.Name, termSet.Id));
+                    foreach (var termSet in termGroup.TermSets)
+                    {
+                        _tokens.Add(new TermSetIdToken(web, termGroup.Name, termSet.Name, termSet.Id));
+                    }
                 }
             }
 
