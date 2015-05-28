@@ -1,5 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-05-28**
+* Added Set-SPOSitePolicy and Get-SPOSitePolicy cmdlets
 
 **2015-05-22**
 * Updated Add-SPOHtlPublishingPageLayout and Add-SPOPublishingPageLayout to support DestinationFolderHierarchy parameter

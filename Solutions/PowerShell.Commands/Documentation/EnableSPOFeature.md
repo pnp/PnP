@@ -1,5 +1,5 @@
 #Enable-SPOFeature
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-05-27*
 
 Enables a feature
 ##Syntax

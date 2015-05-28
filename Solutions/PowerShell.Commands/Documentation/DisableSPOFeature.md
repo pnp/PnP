@@ -1,5 +1,5 @@
 #Disable-SPOFeature
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-05-28*
 
 Disables a feature
 ##Syntax
@@ -16,14 +16,14 @@ Scope|FeatureScope|False|
 ##Examples
 
 ###Example 1
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
 
 ###Example 2
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
 ###Example 3
-    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
+    PS:> Disable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
 
-<!-- Ref: B9AED0F99404EB9F5F27F5A7300A2EE1 -->
+<!-- Ref: FE9A95E9E00B9BEB67ABFFB4D961910D -->
