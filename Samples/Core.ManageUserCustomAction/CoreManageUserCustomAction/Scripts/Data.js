@@ -75,7 +75,7 @@
 	    }
 	    newUserCustomAction.set_registrationType(parseInt($('#dlxCustomActionRegistrationType').find(':selected').val()));
 	    newUserCustomAction.set_registrationId($.trim($('#dlxCustomActionRegistrationId').val()));
-	    if ($.trim($('#dlxCustomActionLocation').find(':selected').val()).toLowerCase() === "scriptlink") {
+	    if ($.trim($('#dlxCustomActionLocation').find(':selected').text()).toLowerCase() === "scriptlink") {
 	        if ($.trim($('#dlxCustomActionScriptSrc').val()).toLowerCase().indexOf('~site', 0) == 0) {
 	            newUserCustomAction.set_scriptSrc($.trim($('#dlxCustomActionScriptSrc').val()));
 	        } else {
@@ -137,7 +137,7 @@
                         oUserCustomAction.set_registrationType(parseInt($('#dlxCustomActionRegistrationType').find(':selected').val()));
                         oUserCustomAction.set_registrationId($.trim($('#dlxCustomActionRegistrationId').val()));
 
-                        if ($.trim($('#dlxCustomActionLocation').find(':selected').val()).toLowerCase() === "scriptlink") {
+                        if ($.trim($('#dlxCustomActionLocation').find(':selected').text()).toLowerCase() === "scriptlink") {
                             if ($.trim($('#dlxCustomActionScriptSrc').val()).toLowerCase().indexOf('~site', 0) == 0) {
                                 oUserCustomAction.set_scriptSrc($.trim($('#dlxCustomActionScriptSrc').val()));
                             } else {
