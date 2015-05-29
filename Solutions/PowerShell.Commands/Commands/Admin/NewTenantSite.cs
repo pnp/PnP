@@ -1,5 +1,6 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base;
 
@@ -56,15 +57,32 @@ available quota.
         [Parameter(Mandatory = false)]
         public long StorageQuotaWarningLevel = 100;
 
+#if !CLIENTSDKV15
         [Parameter(Mandatory = false)]
         public SwitchParameter RemoveDeletedSite;
-
+#endif
         [Parameter(Mandatory = false)]
         public SwitchParameter Wait;
 
         protected override void ExecuteCmdlet()
         {
+#if CLIENTSDKV15
+            var entity = new SiteEntity();
+            entity.Url = Url;
+            entity.Title = Title;
+            entity.SiteOwnerLogin = Owner;
+            entity.Template = Template;
+            entity.StorageMaximumLevel = StorageQuota;
+            entity.StorageWarningLevel = StorageQuotaWarningLevel;
+            entity.TimeZoneId = TimeZone;
+            entity.UserCodeMaximumLevel = ResourceQuota;
+            entity.UserCodeWarningLevel = ResourceQuotaWarningLevel;
+            entity.Lcid = Lcid;
+
+            Tenant.CreateSiteCollection(entity);
+#else
             Tenant.CreateSiteCollection(Url, Title, Owner, Template, (int)StorageQuota, (int)StorageQuotaWarningLevel, TimeZone, (int)ResourceQuota, (int)ResourceQuotaWarningLevel, Lcid, RemoveDeletedSite, Wait);
+#endif
         }
 
     }
