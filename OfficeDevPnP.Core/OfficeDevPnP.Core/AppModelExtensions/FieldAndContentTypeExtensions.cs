@@ -93,7 +93,11 @@ namespace Microsoft.SharePoint.Client
 
             return field;
         }
-
+        /// <summary>
+        /// Removes a field by specifying its internal name
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="internalName"></param>
         public static void RemoveFieldByInternalName(this Web web, string internalName)
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.InternalName == internalName));
@@ -375,6 +379,11 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
+        /// <summary>
+        /// Formats a fieldcreationinformation object into Field CAML xml.
+        /// </summary>
+        /// <param name="fieldCreationInformation"></param>
+        /// <returns></returns>
         public static string FormatFieldXml(FieldCreationInformation fieldCreationInformation)
         {
             List<string> additionalAttributesList = new List<string>();

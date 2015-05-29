@@ -1,7 +1,7 @@
 #New-SPOTenantSite
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-05-29*
 
-Office365 only: Creates a new site collection for the current tenant
+Creates a new site collection for the current tenant
 ##Syntax
 ```powershell
 New-SPOTenantSite -Title <String> -Url <String> [-Description <String>] [-Owner <String>] [-Lcid <UInt32>] [-Template <String>] -TimeZone <Int32> [-ResourceQuota <Double>] [-ResourceQuotaWarningLevel <Double>] [-StorageQuota <Int64>] [-StorageQuotaWarningLevel <Int64>] [-RemoveDeletedSite [<SwitchParameter>]] [-Wait [<SwitchParameter>]]```
@@ -10,7 +10,7 @@ New-SPOTenantSite -Title <String> -Url <String> [-Description <String>] [-Owner 
 ##Detailed Description
 
 The New-SPOTenantSite cmdlet creates a new site collection for the current company. However, creating a new SharePoint
-Online site collection fails if a deleted site with the same URL exists in the Recycle Bin.
+Online site collection fails if a deleted site with the same URL exists in the Recycle Bin. If you want to use this command for an on-premises farm, please refer to http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx 
 
 ##Parameters
 Parameter|Type|Required|Description
@@ -40,4 +40,4 @@ Url|String|True|Specifies the full URL of the new site collection. It must be in
 For example, for company contoso, valid managed paths are https://contoso.sharepoint.com/sites and
 https://contoso.sharepoint.com/teams.
 Wait|SwitchParameter|False|
-<!-- Ref: 8C640D03D33A93E71242897F087112DB -->
+<!-- Ref: 4B7BBE3E73F1BEB1C366A90538362BC8 -->

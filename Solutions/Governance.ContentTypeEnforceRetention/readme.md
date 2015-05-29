@@ -7,7 +7,7 @@ At the time of writing this, the Client Side Object Model does not have methods 
 
 - Recursive 'crawling' of webs
 - Running queries for each document library in a web, where items are filtered by ContentTypeId and Last Modified Date
-- Authentication with App-Only tokens and execution across many site collections
+- Authentication with add-in only tokens and execution across many site collections
 - The use of Throttling of the requests
 
 This solution is a console application designed to run periodically as a scheduled task or Azure WebJob. It will crawl all items in given site collections and find old items by last modified date.
@@ -16,13 +16,13 @@ One important part is the use of Core.Throttling - this is crucial for any scena
 
 The logic is configurable by Content Type, you can specify the ContentTypeId and days of validity. The tool will scan each library for a content type match, where the last modified date is greater than the validity specified in the configuration. All found items can be processed (deleted, workflow started, whatever is needed).
 
-The demonstration shows how you can run a console program periodically, without any user interaction. In a similiar way the console applicaiton could be replaced with a windows service to perform unattended operations to your tenant data. The code logic makes use of the app-only policy to perform calls "without any user". In my example I have used the Tenant permission scope with FullControl rights.  
+The demonstration shows how you can run a console program periodically, without any user interaction. In a similiar way the console applicaiton could be replaced with a windows service to perform unattended operations to your tenant data. The code logic makes use of the add-in only policy to perform calls "without any user". In my example I have used the Tenant permission scope with FullControl rights.  
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-The complete solution requires app registration with tenant permissions
+The complete solution requires add-in registration with tenant permissions
 
 ### Solution ###
 Solution | Author(s)
@@ -42,10 +42,10 @@ Version  | Date | Comments
 # Overview #
 The solution has one Visual Studio project - Governance.ContentTypeEnforceRetention, which is a console application. It is intended that this application is to be ran as a scheduled task or a Azure WebJob, however it could be easily replaced with a windows service if you prefer that design.
 
-One interesting aspect of the demonstration is that there is no "SharePoint App" project, no app package file. It uses the app registration pages to acquire a ClientId and ClientSecret, but there is no deployment to the tenant.
+One interesting aspect of the demonstration is that there is no "SharePoint add-in" project, no add-in package file. It uses the add-in registration pages to acquire a ClientId and ClientSecret, but there is no deployment to the tenant.
 
 # Setup and Execution #
-This solution is kept as simple as possible to illustrate the key elements. There is no app package, you just need to register a ClientId and ClientSecret and provide appropriate permissions.
+This solution is kept as simple as possible to illustrate the key elements. There is no add-in package, you just need to register a ClientId and ClientSecret and provide appropriate permissions.
 
 ## Dependencies ##
 The project has references to the following assemblies:
@@ -55,7 +55,7 @@ The project has references to the following assemblies:
 - System.Configuration (part of the framework, used to read appSettings in the app.config file)
 
 ## Permission Configuration ##
-This solution uses a provider-hosted approach, but does not have a tradition SharePoint app entry point and will execute periodically with no user interaction (ie - App-Only). Because of these two constraints, you must register the app in /_layouts/15/appregnew.aspx and then manually configure permissions for the app in /_layouts/15/appinv.aspx:
+This solution uses a provider-hosted approach, but does not have a tradition SharePoint add-in entry point and will execute periodically with no user interaction (ie - Add-In Only). Because of these two constraints, you must register the add-in in /_layouts/15/appregnew.aspx and then manually configure permissions for the add-in in /_layouts/15/appinv.aspx:
 
 Permission Request XML:
 
@@ -66,7 +66,7 @@ Permission Request XML:
 ```
 Start by getting and registering a ClientId and ClientSecret through /_layouts/15/AppRegNew.aspx
 ![](http://i.imgur.com/pEoS3qJ.png)
-Make sure you copy the ClientId and ClientSecret and plug them in the app.config. Notice how the App Domain and Redirect URI are not required in this case beacuse we have no URL interaction
+Make sure you copy the ClientId and ClientSecret and plug them in the app.config. Notice how the add-in Domain and Redirect URI are not required in this case beacuse we have no URL interaction
 
 When done you will get a confirmation message:
 ![](http://i.imgur.com/pDVzYQk.png)
@@ -74,7 +74,7 @@ When done you will get a confirmation message:
 Continue by giving it permissions through /_layouts/15/AppInv.aspx
 ![](http://i.imgur.com/2GyqHtH.png)
 
-You will then be asked to confirm the trust and assign the app permissions:
+You will then be asked to confirm the trust and assign the add-in permissions:
 ![](http://i.imgur.com/ZvgCKXl.png)
 
 
@@ -87,7 +87,7 @@ The follow code sample outlines the appSettings that need to be configured with 
 
 ```XML
 <appSettings>
-    <!-- The client id and client secret of the app as provided in /_layouts/15/appregnew.aspx -->
+    <!-- The client id and client secret of the add-in as provided in /_layouts/15/appregnew.aspx -->
     <add key="ClientID" value="enter id" />
     <add key="ClientSecret" value="enter secret" />
   </appSettings>

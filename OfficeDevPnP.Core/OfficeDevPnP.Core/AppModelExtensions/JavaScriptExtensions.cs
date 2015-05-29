@@ -11,6 +11,9 @@ namespace Microsoft.SharePoint.Client
     /// </summary>
     public static partial class JavaScriptExtensions
     {
+        /// <summary>
+        /// Default Script Location value
+        /// </summary>
         public const string SCRIPT_LOCATION = "ScriptLink";
 
         /// <summary>

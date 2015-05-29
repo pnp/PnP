@@ -15,6 +15,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to be processed - can be root web or sub web</param>
         /// <param name="featureID">ID of the feature to activate</param>
+        /// <param name="sandboxed">Set to true if the feature is defined in a sandboxed solution</param>
         public static void ActivateFeature(this Web web, Guid featureID, bool sandboxed = false)
         {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
@@ -26,6 +27,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="site">Site to be processed</param>
         /// <param name="featureID">ID of the feature to activate</param>
+        /// <param name="sandboxed">Set to true if the feature is defined in a sandboxed solution</param>
         public static void ActivateFeature(this Site site, Guid featureID, bool sandboxed = false)
         {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FeatureExtensions_ActivateWebFeature, featureID);
@@ -107,6 +109,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="site">Site to be processed</param>
         /// <param name="featureID">ID of the feature to activate/deactivate</param>
         /// <param name="activate">True to activate, false to deactivate the feature</param>
+        /// <param name="sandboxed">Set to true if the feature is defined in a sandboxed solution</param>
         private static void ProcessFeature(this Site site, Guid featureID, bool activate, bool sandboxed)
         {
             ProcessFeatureInternal(site.Features, featureID, activate, sandboxed ? FeatureDefinitionScope.Site : FeatureDefinitionScope.Farm);
@@ -118,6 +121,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="web">Web to be processed - can be root web or sub web</param>
         /// <param name="featureID">ID of the feature to activate/deactivate</param>
         /// <param name="activate">True to activate, false to deactivate the feature</param>
+        /// <param name="sandboxed">True to specify that the feature is defined in a sandboxed solution</param>
         private static void ProcessFeature(this Web web, Guid featureID, bool activate, bool sandboxed)
         {
             ProcessFeatureInternal(web.Features, featureID, activate, sandboxed ? FeatureDefinitionScope.Site : FeatureDefinitionScope.Farm);
@@ -129,6 +133,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="features">Feature Collection which contains the feature</param>
         /// <param name="featureID">ID of the feature to activate/deactivate</param>
         /// <param name="activate">True to activate, false to deactivate the feature</param>
+        /// <param name="scope">Scope of the feature definition</param>
         private static void ProcessFeatureInternal(FeatureCollection features, Guid featureID, bool activate, FeatureDefinitionScope scope)
         {
             features.Context.Load(features);

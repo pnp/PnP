@@ -73,12 +73,12 @@ Here's individual projects what are included in the solution and the needed conf
 ![](http://i.imgur.com/6HgFECj.png)
 
 ### Helper.ApplyCustomTemplate ###
-Helper project to test the configuration apply logic. You will need to update the App ID information in app.config to make this work properly. 
+Helper project to test the configuration apply logic. You will need to update the add-in ID information in app.config to make this work properly. 
 
 ### Helper.CreateSiteCollection ###
-Helper project to test create site collection functionality. You can use this project to ensure that you are using right App ID and configuration which has permissions to create new site collections.
+Helper project to test create site collection functionality. You can use this project to ensure that you are using right add-in ID and configuration which has permissions to create new site collections.
 
-You will need to update App ID information from the app.config to make this one work properly.
+You will need to update add-in ID information from the app.config to make this one work properly.
 
 ### Helper.SendQueueMessage ###
 Helper project which can be used to verify that the Azure storage account is correct.
@@ -86,7 +86,7 @@ Helper project which can be used to verify that the Azure storage account is cor
 You will need to configure the Azure storage account accordingly.
 
 ### Provisioning.Framework.Cloud.Async ###
-Actual app project, which introduces the provider hosted app for the SharePoint.
+Actual add-in project, which introduces the provider hosted add-in for the SharePoint.
 
 ### Provisioning.Framework.Cloud.Async.Common ###
 Business logic component which actually has all the needed code. 
@@ -94,7 +94,7 @@ Business logic component which actually has all the needed code.
 ### Provisioning.Framework.Cloud.Async.Job ###
 WebJob project which will be deployed to the Azure. Will be responsible of the actual site collection creation and the logic on how to apply configuration/customization on newly created site.
 
-You will need to update Azure storage queue and App Id information accordingly in the app.config or directly in the Azure admin UIs.
+You will need to update Azure storage queue and add-in Id information accordingly in the app.config or directly in the Azure admin UIs.
 
 ### Provisioning.Framework.Cloud.AsyncWeb ###
 This is the actual web UI for self-service site collection creation. Notice again that this is just a one way of exposing options for end user. You could just as well ask additional metadata or implement the UI using asp.net MVC project.

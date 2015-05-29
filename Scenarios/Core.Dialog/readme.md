@@ -1,7 +1,7 @@
 # Show Apps in a dialog #
 
 ### Summary ###
-This scenario shows how you can show an app inside a dialog.
+This scenario shows how you can show an add-in inside a dialog.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -28,16 +28,16 @@ Version  | Date | Comments
 ----------
 
 # General comments #
-This sample scenario uses the OfficeDevPnP core library to inject links for opening a SharePoint app inside a dialog. We’ll show how to open the app inside a dialog from a custom action and how to do the same from a link on a SharePoint wiki page. The app that will be shown in a dialog is the same app that you’ll use to setup the demo, meaning that you’ll be able to experience how one and the same app can be used in a full page immersive experience (using the chromecontrol) and in a modal dialog experience. Some special attention has been given to the button click handling: the same OK and Cancel buttons behave differently when the app is shown in a dialog or as a full page immersive experience. Finally the app shows how you can use JSOM to obtain data from the host web regardless of the whether the app is shown in a dialog (=uses iframe) or not. Next chapters provide more details on this.
+This sample scenario uses the OfficeDevPnP core library to inject links for opening a SharePoint add-in inside a dialog. We’ll show how to open the add-in inside a dialog from a custom action and how to do the same from a link on a SharePoint wiki page. The add-in that will be shown in a dialog is the same add-in that you’ll use to setup the demo, meaning that you’ll be able to experience how one and the same add-in can be used in a full page immersive experience (using the chromecontrol) and in a modal dialog experience. Some special attention has been given to the button click handling: the same OK and Cancel buttons behave differently when the add-in is shown in a dialog or as a full page immersive experience. Finally the add-in shows how you can use JSOM to obtain data from the host web regardless of the whether the add-in is shown in a dialog (=uses iframe) or not. Next chapters provide more details on this.
 
 ## ISDLG URL PARAMETER ##
-To specify whether the app is shown in a dialog or not we’ve foreseen an additional URL parameter named IsDlg. If this one has a value of 1 then this is an indication that the app is shown in a dialog, value 0 indicates the default full page experience. This IsDlg parameter is added as additional query string:
+To specify whether the add-in is shown in a dialog or not we’ve foreseen an additional URL parameter named IsDlg. If this one has a value of 1 then this is an indication that the add-in is shown in a dialog, value 0 indicates the default full page experience. This IsDlg parameter is added as additional query string:
 
 ![](http://i.imgur.com/GFWpp7m.png)
 
-# SCENARIO 1: INSERT A CUSTOM ACTION TO OPEN THE APP IN A DIALOG FROM THE SITE SETTINGS MENU #
+# SCENARIO 1: INSERT A CUSTOM ACTION TO OPEN THE ADD-IN IN A DIALOG FROM THE SITE SETTINGS MENU #
 
-This scenario uses the OfficeDevPnP core method “AddCustomAction” to insert a custom action to the site actions menu of the hosting web. In order to open the app in a dialog it uses JavaScript instead of a static url for the url value of the custom action. In the JavaScript we make use of the SharePoint SP.UI.ModalDialog.showModalDialog class to show a modal dialog.
+This scenario uses the OfficeDevPnP core method “AddCustomAction” to insert a custom action to the site actions menu of the hosting web. In order to open the add-in in a dialog it uses JavaScript instead of a static url for the url value of the custom action. In the JavaScript we make use of the SharePoint SP.UI.ModalDialog.showModalDialog class to show a modal dialog.
 
 ```C#
 StringBuilder modelDialogScript = new StringBuilder(10);
@@ -49,7 +49,7 @@ modelDialogScript.Append("', dialogReturnValueCallback:function(res, val) {} });
 CustomActionEntity customAction = new CustomActionEntity()
 {
   Title = "Office AMS Dialog sample",                
-  Description = "Shows how to launch an app inside a dialog",
+  Description = "Shows how to launch an add-in inside a dialog",
   Location = "Microsoft.SharePoint.StandardMenu",
   Group = "SiteActions",
   Sequence = 10000,
@@ -59,7 +59,7 @@ CustomActionEntity customAction = new CustomActionEntity()
 //Add the custom action to the site
 cc.Web.AddCustomAction(customAction);
 
-//SetIsDlg method constructs the app URL with the IsDlg parameter set
+//SetIsDlg method constructs the add-in URL with the IsDlg parameter set
 private string SetIsDlg(string isDlgValue)
 {
     var urlParams = HttpUtility.ParseQueryString(Request.QueryString.ToString());
@@ -70,7 +70,7 @@ private string SetIsDlg(string isDlgValue)
 
 See [here](http://msdn.microsoft.com/en-us/library/office/bb802730(v=office.15).aspx) for more information on the custom action settings.
 
-# SCENARIO 2: INSERT A SCRIPT EDITOR WEB PART TO OPEN THE APP IN A DIALOG FROM A SITE WIKI PAGE #
+# SCENARIO 2: INSERT A SCRIPT EDITOR WEB PART TO OPEN THE ADD-IN IN A DIALOG FROM A SITE WIKI PAGE #
 Here we use the OfficeDevPnP Core page and web part manipulation methods to create a new page and add a configured script editor web part to it.
 
 ```C#
@@ -84,7 +84,7 @@ scriptEditorWp.WebPartTitle = "Script editor test";
 cc.Web.AddWebPartToWikiPage("SitePages", scriptEditorWp, scenario1Page, 1, 1, false);
 ```
 
-In above sample the WebPartXml of the script editor is generated via the ScriptEditorWebPart method which is shown below. Pay attention to the **Content** web part property as that's the one that contains the actual JavaScript that launches the app in a dialog.
+In above sample the WebPartXml of the script editor is generated via the ScriptEditorWebPart method which is shown below. Pay attention to the **Content** web part property as that's the one that contains the actual JavaScript that launches the add-in in a dialog.
 
 ```C#
 private string ScriptEditorWebPart()
@@ -130,8 +130,8 @@ private string ScriptEditorWebPart()
 }
 ```
 
-# ENSURING THAT YOUR JSOM CODE WORKS, EVEN WHEN THE APP IS SHOWN IN A DIALOG #
-When an app is running inside another app domain and it needs data from the host then we’re dealing with a cross domain call. To realize this one needs to use the ProxyWebRequestExecutorFactory class as shown below. This technique allows the app to make the cross domain call, regardless of whether the app is loaded as a dialog or not.
+# ENSURING THAT YOUR JSOM CODE WORKS, EVEN WHEN THE ADD-IN IS SHOWN IN A DIALOG #
+When an add-in is running inside another add-in domain and it needs data from the host then we’re dealing with a cross domain call. To realize this one needs to use the ProxyWebRequestExecutorFactory class as shown below. This technique allows the add-in to make the cross domain call, regardless of whether the add-in is loaded as a dialog or not.
 
 ```C#
 context = new SP.ClientContext(appWebUrl);

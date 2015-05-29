@@ -34,7 +34,7 @@ This example demonstrates several techniques for working with table bindings in 
 
 To get started, run the solution as described above. Once running, specify a number of rows and click the Create Sample Table button. This will create a sample table with random data containing five columns: Number of Widgets, Order Needed By, Month, Color and Customer. The color column is a hex value and the font color of the cell is set to the value.
 
-- Once the table has been inserted, the additional buttons on the app become available for use. Clicking Add Rows adds the specified number of rows of random data to the table.
+- Once the table has been inserted, the additional buttons on the add-in become available for use. Clicking Add Rows adds the specified number of rows of random data to the table.
 
 ![](http://i.imgur.com/2n4kNew.png)
 
@@ -61,7 +61,7 @@ The code samples demonstrate a valuable technique for applying cell formatting t
 
 The key source code files in this project are the following
 
-- `Excel.TableBindingFormattingWeb\App\Home\Home.html` - contains the html controls and formatting for the UI of the app. 
+- `Excel.TableBindingFormattingWeb\App\Home\Home.html` - contains the html controls and formatting for the UI of the add-in. 
 - `Excel.TableBindingFormattingWeb\App\Home\Home.js` - contains the application logic for creating and manipulating the table 
 
 ## More Information ##

@@ -16,6 +16,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
 
         #region Constructor
+        protected XMLTemplateProvider() : base()
+        {
+
+        }
         protected XMLTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
