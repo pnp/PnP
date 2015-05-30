@@ -1,0 +1,33 @@
+﻿/* Place custom styles below */
+.split {
+    width: 500px;
+    float: left;
+    margin-right: 20px;
+}
+
+    .split p {
+        min-height: 80px;
+    }
+
+.wrapper::after {
+    content: " ";
+    clear: both;
+    width: 100%;
+}
+
+.msgBox {
+    white-space: pre;
+    padding: 20px;
+    line-height: 1.5em;
+    overflow: auto;
+    border: 1px whitesmoke solid;
+    margin: 10px;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
