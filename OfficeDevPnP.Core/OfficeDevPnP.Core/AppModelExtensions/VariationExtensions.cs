@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
         /// Retrieve all configured variation labels
         /// </summary>
         /// <param name="context">Context for SharePoint objects and operations</param>
-        /// <returns></returns>
+        /// <returns>Collection of VariationLabelEntity objects</returns>
         public static IEnumerable<VariationLabelEntity> GetVariationLabels(this ClientContext context)
         {
             var variationLabels = new List<VariationLabelEntity>();
