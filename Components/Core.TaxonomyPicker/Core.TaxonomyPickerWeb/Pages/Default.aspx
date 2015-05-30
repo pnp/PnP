@@ -24,7 +24,13 @@
                         </div>
                     </td>
                 </tr>
-
+                <tr>
+                    <td colspan="2">
+                        <b>Important:</b>
+                        <br />
+                        To make the Continent, Country and Region work using a hierarchical termset you first need to create the termset as described in Appendix A. Then obtain the termset ID and update app.js
+                    </td>
+                </tr>
                 <tr>
                     <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Continent:</h3></td>
                     <td class="ms-formbody" valign="top">
