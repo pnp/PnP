@@ -93,15 +93,14 @@ for(var i = 0; i < scripts.length; i++) {
                 {
                     if (!string.IsNullOrEmpty(link))
                     {
-                        scripts.AppendFormat(@"
-if (scriptsSrc.indexOf('{0}') === -1) {
+                        scripts.Append(@"
+if (scriptsSrc.indexOf('{0}') === -1)  {  
     var newScript = document.createElement('script');
     newScript.type = 'text/javascript';
     newScript.src = '{0}';
     headID.appendChild(newScript);
     scriptsSrc.push('{0}');
-}
-", link);
+}".Replace("{0}", link));
                     }
 
                 }
