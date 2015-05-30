@@ -32,5 +32,10 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.2.0515.0")]
-[assembly: AssemblyFileVersion("1.2.0515.0")]
+// Convention:
+// Major version = current version 1
+// Minor version = Sequence...version 0 was with March release...so 1=April, 2=May, 3=June, 4=July, 5=August, 6=September, 7=October, 8=November, 9=December
+// Third part = version indenpendant showing the release month in MMYY
+// Fourth part = 0
+[assembly: AssemblyVersion("1.3.0615.0")]
+[assembly: AssemblyFileVersion("1.3.0615.0")]

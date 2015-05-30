@@ -920,6 +920,11 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
+            if (theme == null)
+            {
+                return theme;
+            }
+
             String designPreviewThemedCssFolderUrl = web.GetPropertyBagValueString("DesignPreviewThemedCssFolderUrl", null);
 
             // If name still is "Current" and there isn't a PreviewThemedCssFolderUrl 
@@ -991,6 +996,9 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentNullException("pageLayoutName");
             }
+
+            // The pagelayout needs to specified without aspx extension...strip the extension to be sure
+            pageLayoutName = System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
