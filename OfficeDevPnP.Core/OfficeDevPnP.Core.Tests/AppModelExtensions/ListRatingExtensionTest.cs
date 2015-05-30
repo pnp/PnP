@@ -10,11 +10,14 @@ namespace Microsoft.SharePoint.Client.Tests
     [TestClass()]
     public class ListRatingExtensionTest
     {
+        // Publishing infra active
+        private static bool publishingActive = false;
+
         //SharePoint Server Publishing Infrastructure - Site
         private const string PublishingSiteFeature = "f6924d36-2fa8-4f0b-b16d-06b7250180fa";
         //SharePoint Server Publishing - Web
         private const string PublishingWebFeature = "94c94ca6-b32f-4da9-a9e3-1f3d343d7ecb";
-        
+
         private const string Averagerating = "AverageRating";
         private const string Ratedby = "RatedBy";
         private const string Ratingcount = "RatingCount";
@@ -27,7 +30,51 @@ namespace Microsoft.SharePoint.Client.Tests
         private List _list;
 
         #region Test initialize and cleanup
-        
+        [ClassInitialize()]
+        public static void ClassInit(TestContext context)
+        {
+            using (ClientContext cc = TestCommon.CreateClientContext())
+            {
+                publishingActive = cc.Web.IsPublishingWeb();
+
+                // Activate publishing
+                if (!publishingActive)
+                {
+                    if (!cc.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
+                    {
+                        cc.Site.ActivateFeature(new Guid(PublishingSiteFeature));
+                    }
+
+                    if (!cc.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
+                    {
+                        cc.Web.ActivateFeature(new Guid(PublishingWebFeature));
+                    }
+                }
+            }
+
+        }
+
+        [ClassCleanup()]
+        public static void ClassCleanup()
+        {
+            using (ClientContext cc = TestCommon.CreateClientContext())
+            {
+                // deactivate publishing if it was not active before the test run
+                if (!publishingActive)
+                {
+                    if (cc.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
+                    {
+                        cc.Web.DeactivateFeature(new Guid(PublishingWebFeature));
+                    }
+
+                    if (cc.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
+                    {
+                        cc.Site.DeactivateFeature(new Guid(PublishingSiteFeature));
+                    }
+                }
+            }
+        }
+
         [TestInitialize()]
         public void Initialize()
         {
@@ -51,20 +98,12 @@ namespace Microsoft.SharePoint.Client.Tests
         #endregion
 
         #region Rating's Test Scenarios
-        
         [TestMethod()]
-        [ExpectedException(typeof(NotPublishingWebException))]
-        public void Enable_Rating_On_Non_Publishing_Web_Expect_Exception()
-        {
-             _list.SetRating(VotingExperience.Ratings);
-        }
-
-        [TestMethod()]
-        public void Enable_Rating_Experience()
+        public void EnableRatingExperienceTest()
         {
             // Enable Publishing Feature on Site and Web 
 
-            if(!_clientContext.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
+            if (!_clientContext.Site.IsFeatureActive(new Guid(PublishingSiteFeature)))
                 _clientContext.Site.ActivateFeature(new Guid(PublishingSiteFeature));
 
             if (!_clientContext.Web.IsFeatureActive(new Guid(PublishingWebFeature)))
@@ -81,7 +120,7 @@ namespace Microsoft.SharePoint.Client.Tests
         }
 
         [TestMethod()]
-        public void Enable_Likes_Experience()
+        public void EnableLikesExperienceTest()
         {
             // Enable Publishing Feature on Site and Web 
 
@@ -162,14 +201,14 @@ namespace Microsoft.SharePoint.Client.Tests
                 object exp;
                 if (_list.RootFolder.Properties.FieldValues.TryGetValue(RatingsVotingexperience, out exp))
                 {
-                    return string.Compare(exp.ToString(),experience.ToString(),StringComparison.InvariantCultureIgnoreCase) == 0;    
+                    return string.Compare(exp.ToString(), experience.ToString(), StringComparison.InvariantCultureIgnoreCase) == 0;
                 }
             }
 
             return false;
         }
 
-        
+
 
     }
 }

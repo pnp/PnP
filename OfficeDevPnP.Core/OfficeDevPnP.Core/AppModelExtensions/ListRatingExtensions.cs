@@ -45,7 +45,7 @@ namespace Microsoft.SharePoint.Client
             //  only process publishing web
             if (!list.ParentWeb.IsPublishingWeb())
             {
-                throw new NotPublishingWebException("Not publishing web");
+                throw new Exception("Not publishing web");
                 ////_logger.WriteWarning("Is publishing site : No");
             }
 
@@ -156,9 +156,4 @@ namespace Microsoft.SharePoint.Client
         
     }
 
-    [Serializable]
-    public class NotPublishingWebException : Exception
-    {
-        public NotPublishingWebException(string message) : base(message) { }
-    }
 }
