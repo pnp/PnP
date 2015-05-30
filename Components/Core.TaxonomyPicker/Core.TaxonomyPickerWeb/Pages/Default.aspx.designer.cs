@@ -40,6 +40,33 @@ namespace Contoso.Core.TaxonomyPickerWeb {
         protected global::System.Web.UI.WebControls.HiddenField taxPickerKeywords;
         
         /// <summary>
+        /// taxPickerContinent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField taxPickerContinent;
+        
+        /// <summary>
+        /// taxPickerCountry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField taxPickerCountry;
+        
+        /// <summary>
+        /// taxPickerRegion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField taxPickerRegion;
+        
+        /// <summary>
         /// SelectedValues control.
         /// </summary>
         /// <remarks>
