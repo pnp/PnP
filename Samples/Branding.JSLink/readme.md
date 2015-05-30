@@ -35,6 +35,7 @@ Branding.JSLink | Martin Hatch *(@martinhatch)*
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | May 30th 2015 | Added accordion view by Robrecht Van Caenegem
 1.0  | April 22nd 2015 | Initial release
 
 ### Disclaimer ###
