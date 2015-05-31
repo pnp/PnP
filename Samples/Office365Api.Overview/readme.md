@@ -19,7 +19,7 @@ Version  | Date | Comments
 ---------| -----| --------
 4.0  | January 22nd 2015 | Updated to ADAL 2.14, refactored, added ASP.NET MVC sample with multi-tenancy (Paolo Pialorsi)
 3.0  | January 7th 2015 | Updated to Office 365 API RTM and ADAL 2.13 (Paolo Pialorsi)
-2.0  | August 12th 2014 | Switched to WPF app and added documentation (Bert Jansen)
+2.0  | August 12th 2014 | Switched to WPF add-in and added documentation (Bert Jansen)
 1.0  | July 29th 2014 | Initial release (Bert Jansen)
 
 ### Disclaimer ###

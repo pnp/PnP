@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,26 +24,48 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         /// </summary>
         [TestMethod]
         [Ignore]
-        public void DumpBaseTemplate_STS0()
+        public void DumpBaseTemplates()
         {
             using (ClientContext ctx = TestCommon.CreateClientContext())
             {
-                using(ClientContext cc = ctx.Clone("https://bertonline.sharepoint.com/sites/templateSTS0"))
-                {
-                    // Specify null as base template since we do want "everything" in this case
-                    ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
-                    creationInfo.BaseTemplate = null;
+                DumpTemplate(ctx, "STS0");
+                DumpTemplate(ctx, "BLOG0");
+                DumpTemplate(ctx, "BDR0");
+                DumpTemplate(ctx, "DEV0");
+                DumpTemplate(ctx, "OFFILE1");
+                DumpTemplate(ctx, "EHS1");
+                DumpTemplate(ctx, "BICenterSite0");
+                DumpTemplate(ctx, "SRCHCEN0");
+                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0");
+                DumpTemplate(ctx, "ENTERWIKI0");
+                DumpTemplate(ctx, "PROJECTSITE0");
+                DumpTemplate(ctx, "COMMUNITY0");
+                DumpTemplate(ctx, "COMMUNITYPORTAL0");
+                DumpTemplate(ctx, "SRCHCENTERLITE0");
+                DumpTemplate(ctx, "visprus0");
+            }
+        }
 
-                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
-                    p.Id = "STS0template";
+        private void DumpTemplate(ClientContext ctx, string template)
+        {
+            Uri devSiteUrl = new Uri(ConfigurationManager.AppSettings["SPODevSiteUrl"]);
+            string baseUrl = String.Format("{0}://{1}", devSiteUrl.Scheme, devSiteUrl.DnsSafeHost);
 
-                    // Cleanup before saving
-                    p.Security.AdditionalAdministrators.Clear();
+            using (ClientContext cc = ctx.Clone(String.Format("{1}/sites/template{0}", template, baseUrl)))
+            {
+                // Specify null as base template since we do want "everything" in this case
+                ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
+                creationInfo.BaseTemplate = null;
+
+                ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
+                p.Id = String.Format("{0}template", template);
+
+                // Cleanup before saving
+                p.Security.AdditionalAdministrators.Clear();
 
 
-                    XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(".", "");
-                    provider.SaveAs(p, "STS0Template.xml");                    
-                }
+                XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(".", "");
+                provider.SaveAs(p, String.Format("{0}Template.xml", template));
             }
         }
 

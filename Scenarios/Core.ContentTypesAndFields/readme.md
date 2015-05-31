@@ -35,7 +35,7 @@ This sample focuses on the following scenarios:
 -  **Scenario 4:** Create content types and fields in particular languages
 
 # SCENARIO 1: CREATE NEW CONTENT TYPE #
-This scenario demonstrates how we can create content types from the app web within the host web. This example uses the FieldAndContentTypeExtensions class in the OfficeDevPnP Core. When creating the content type, there is a check to determine if the content type already exists:
+This scenario demonstrates how we can create content types from the add-in web within the host web. This example uses the FieldAndContentTypeExtensions class in the OfficeDevPnP Core. When creating the content type, there is a check to determine if the content type already exists:
 
 ```C#
 ctx.Web.ContentTypeExistsByName(txtContentTypeName.Text)

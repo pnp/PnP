@@ -1,4 +1,4 @@
-# Branding OneDrive for Business with an App for SharePoint #
+# Branding OneDrive for Business with an add-in for SharePoint #
 
 ### Summary ###
 This scenario shows the pattern on how to access end user’s own OneDrive for Business and to apply custom branding to it automatically. Getting access to the personal my site will happen using Social CSOM which provides read access to user profile properties and also access to the Site object of the personal OneDrive for Business.
@@ -6,7 +6,7 @@ Actual branding is applied by uploading custom theme to the Site by using file u
 
 In general it’s recommended to perform my site branding using themes and to avoid custom master page usage. If you’d start using custom master pages, you would have to ensure that any new changes on the oob master pages are reflected on custom master pages as well. On top of the themes, you can also inject custom CSS to the site to modify layout slightly without the need of changing actual master page. These would be preferred options with the branding.
 
-Actual branding is applied from app part, which can be placed anywhere in the tenant, since it operates cross the site collections as needed. End user will only see gif animation indicating operations when app part is accessing the personal OneDrive for Business site. Typical locations for this customizer would be following locations.
+Actual branding is applied from add-in part, which can be placed anywhere in the tenant, since it operates cross the site collections as needed. End user will only see gif animation indicating operations when add-in part is accessing the personal OneDrive for Business site. Typical locations for this customizer would be following locations.
 - Intranet front page – When users arrive to Intranet, branding in OneDrive for Business is checked and applied if needed
 - Public side of the my site – for example on the news feed page
 Code also stores the version of the used branding, so that changes are only applied as needed, which will avoid performance issues with constantly deploying files without clear advantages.

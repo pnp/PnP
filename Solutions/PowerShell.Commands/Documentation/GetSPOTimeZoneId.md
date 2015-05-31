@@ -1,5 +1,5 @@
 #Get-SPOTimeZoneId
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-05-15*
 
 Returns a time zone ID
 ##Syntax

@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Json;
 
 namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
 {
@@ -22,6 +23,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
         private string _provisioningTemplatePath5NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
         private string _provisioningTemplatePath6 = string.Empty;
         private string _provisioningTemplatePath6NamespaceURI = XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_05;
+        private string _provisioningTemplatePath7 = string.Empty;
+
         private const string TEST_CATEGORY = "Framework Provisioning Domain Model";
 
         [TestInitialize()]
@@ -31,6 +34,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
             this._provisioningTemplatePath2 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningTemplate-2015-03-Sample-02.xml");
             this._provisioningTemplatePath5 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-FullSample-01.xml");
             this._provisioningTemplatePath6 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-ReferenceSample-01.xml");
+            this._provisioningTemplatePath7 = string.Format(@"{0}\..\..\Resources\Templates\{1}", AppDomain.CurrentDomain.BaseDirectory, "ProvisioningSchema-2015-05-ReferenceSample-01.json");
         }
 
         #region Formatter Tests
@@ -380,6 +384,60 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
                 var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
 
                 Assert.IsTrue(formatter.IsValid(_formattedTemplateBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanSerializeDomainObjectWithJsonFormatter()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath5, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(this._provisioningTemplatePath5NamespaceURI);
+
+                XMLTemplateProvider xmlProvider =
+                    new XMLFileSystemTemplateProvider(
+                        String.Format(@"{0}\..\..\Resources",
+                        AppDomain.CurrentDomain.BaseDirectory),
+                        "Templates");
+
+                formatter.Initialize(xmlProvider);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "WORKFLOWSITE");
+
+                JsonTemplateProvider jsonProvider =
+                    new JsonFileSystemTemplateProvider(
+                        String.Format(@"{0}\..\..\Resources",
+                        AppDomain.CurrentDomain.BaseDirectory),
+                        "Templates");
+
+                jsonProvider.SaveAs(_pt, "ProvisioningSchema-2015-05-ReferenceSample-01.json");
+
+                var _ptBack = jsonProvider.GetTemplate("ProvisioningSchema-2015-05-ReferenceSample-01.json");
+
+                Assert.IsTrue(_pt.Equals(_ptBack));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void CanHandleDomainObjectWithJsonFormatter()
+        {
+            using (Stream _formattedTemplate = new FileStream(this._provisioningTemplatePath7, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                ITemplateFormatter formatter = new JsonPnPFormatter();
+
+                JsonTemplateProvider provider =
+                    new JsonFileSystemTemplateProvider(
+                        String.Format(@"{0}\..\..\Resources",
+                        AppDomain.CurrentDomain.BaseDirectory),
+                        "Templates");
+
+                formatter.Initialize(provider);
+                var _pt = formatter.ToProvisioningTemplate(_formattedTemplate, "WORKFLOWSITE");
+
+                var _formattedTemplateBack = formatter.ToFormattedTemplate(_pt);
+
+                Assert.IsNotNull(_formattedTemplateBack);
             }
         }
 

@@ -32,7 +32,7 @@ This provider-hosted sample application for SharePoint demonstrates how to creat
 
 In this code sample, we use the *DataController* controller. It contains a method called Post which is used to handle the workflow’s http post request. 
 
-The *Post* method updates the *Suppliers* column in the *Part Suppliers* SharePoint list in the app-web.
+The *Post* method updates the *Suppliers* column in the *Part Suppliers* SharePoint list in the add-in web.
 
 ```C#
 public class DataController : ApiController
@@ -56,14 +56,14 @@ public class DataController : ApiController
 ```
 
 In the above method, 2 values are required:
-1. App web URL.
+1. Add-in web URL.
 2. Access token.
 
-The workflow calls this Web API method via a Web Proxy. The Web Proxy adds the *access token* to the http headers. So we only have to send *app web URL* to the Web API form workflow.
+The workflow calls this Web API method via a Web Proxy. The Web Proxy adds the *access token* to the http headers. So we only have to send *add-in web URL* to the Web API form workflow.
 
 ## WORKFLOW ##
 ### WORKFLOW ARGUMENTS ###
-The workflow needs to send the *app web URL* to the web API.  When the workflow starts the *app web URL* is passed to it. The *Web API’s URL* is also passed to the workflow.  Two arguments are created in the workflow to receive these values. 
+The workflow needs to send the *add-in web URL* to the web API.  When the workflow starts the *add-in web URL* is passed to it. The *Web API’s URL* is also passed to the workflow.  Two arguments are created in the workflow to receive these values. 
 
 ![](http://i.imgur.com/c1j2UsL.png)
 
@@ -171,7 +171,7 @@ Its value looks like this:
                         type: "SP.KeyValue" 
                     },     
                     Key: "SPAppWebUrl",               
-                    Value: /* app web url */,    
+                    Value: /* add-in web url */,    
                     ValueType: "Edm.String"                      
                 },                
                 {           
@@ -215,7 +215,7 @@ Then set **RequestHeaders** as below.
 ![](http://i.imgur.com/Twn7LdO.png)
 
 ### START THE WORKFLOW ###
-In the *PartSuppliersController*, the app web URL and web service URL are set to a variable named payload. 
+In the *PartSuppliersController*, the add-in web URL and web service URL are set to a variable named payload. 
 
 ```C#
 // PartSuppliersController
@@ -292,7 +292,7 @@ Click the name of the web site.
 
 ![](http://i.imgur.com/LDfyOnM.png)
  
-Click **DOWNLOAD THE PUBLISH PROFILE** under the **PUBLISH YOUR APP**.
+Click **DOWNLOAD THE PUBLISH PROFILE** under the **PUBLISH YOUR ADD-IN**.
 
 ![](http://i.imgur.com/u9MLFbK.png)
 
@@ -300,7 +300,7 @@ Save the file.
 
 ![](http://i.imgur.com/SySE5bP.png)
 
-### PUBLISH APP WEB SITE ###
+### PUBLISH ADD-IN WEB SITE ###
 Open the *Workflow.CallServiceUpdateSPViaProxy.sln* file with Visual Studio 2013. In Solution Explorer, right click the *Workflow.CallServiceUpdateSPViaProxy* project.
 
 ![](http://i.imgur.com/3eOSe1E.png)
@@ -335,7 +335,7 @@ Click **Publish**.
 
 In a few minutes, the site will be published to Microsoft Azure. 
 
-## DEPLOY THE APP ##
+## DEPLOY THE ADD-IN ##
 ### ADD REMOTE ENDPOINT ###
 
 ![](http://i.imgur.com/chqi6uO.png)
@@ -349,8 +349,8 @@ Make sure the URL starts with **‘https’**. Then click **Add.**
 
 ![](http://i.imgur.com/AY5Vlwn.png)
 
-### PACKAGE THE APP ###
-Click **Package the app**.
+### PACKAGE THE ADD-IN ###
+Click **Package the add-in**.
 
 ![](http://i.imgur.com/gXtk1FI.png)
 
@@ -361,8 +361,8 @@ Click **Finish**. A Windows Explorer window will pop up and display the .app fil
 
 ![](http://i.imgur.com/qKQNJAG.png)
 
-### REGISTER THE APP ###
-Login to the O365 site where you want to install the app.
+### REGISTER THE ADD-IN ###
+Login to the O365 site where you want to install the add-in.
 Change the Url to:
 https://tenancy.sharepoint.com/sites/site/_layouts/15/appregnew.aspx
 Replace the **tenancy** placeholder in the URL with your tenancy name.
@@ -382,15 +382,15 @@ Then, click **Create**.
 
 ![](http://i.imgur.com/iRkck9z.png)
 
-### CREATE AN APP CATALOG SITE ###
-If you don’t have an App Catalog site in your SharePoint Online tenant, you should create one. If there’s already an App Catalog in your tenant, please skip this step.
+### CREATE AN ADD-IN CATALOG SITE ###
+If you don’t have an add-in catalog site in your SharePoint Online tenant, you should create one. If there’s already an add-in catalog in your tenant, please skip this step.
 
 Sign in to the Office 365 admin center with your SharePoint Online admin user name and password.
 Click **apps**.
 
 ![](http://i.imgur.com/3DbIvth.png)
 
-Click **App Catalog**.
+Click **Add-In Catalog**.
 
 ![](http://i.imgur.com/vbHieZc.png)
 
@@ -402,11 +402,11 @@ Input the required fields. Click **OK**.
 
 ![](http://i.imgur.com/nzcc5An.png)
 
-A few minutes later, the App Catalog site will be ready.
+A few minutes later, the add-in catalog site will be ready.
 
-### UPLOAD THE APP TO APP CATALOG ###
-Login to the App Catalog site.
-Click **Apps for SharePoint**.
+### UPLOAD THE ADD-IN TO ADD-IN CATALOG ###
+Login to the add-in catalog site.
+Click **Add-Ins for SharePoint**.
 
 ![](http://i.imgur.com/2BBp4FS.png)
 
@@ -422,9 +422,9 @@ Click **Save**.
 
 ![](http://i.imgur.com/kfHqtzh.png)
 
-### INSTALL THE APP ###
-Login to the O365 site where you want to install the app.
-Click at the wheel at the top right, then click **Add an app**.
+### INSTALL THE ADD-IN ###
+Login to the O365 site where you want to install the add-in.
+Click at the wheel at the top right, then click **Add an add-in**.
 
 ![](http://i.imgur.com/VMKt9Ab.png)
 
@@ -436,11 +436,11 @@ Click **Trust It**.
 
 ![](http://i.imgur.com/Iptta5s.png)
 
-The app will be installed in a few minutes.
+The add-in will be installed in a few minutes.
 
 ![](http://i.imgur.com/S5u464d.png)
 
-Once the app is installed, click the app to load it and follow the instructions in the app to run the sample.
+Once the add-in is installed, click the add-in to load it and follow the instructions in the add-in to run the sample.
 
 ![](http://i.imgur.com/SII5XvH.png)
 

@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\OfficeDevPnP.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\OfficeDevPnP.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug15|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +43,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug15\OfficeDevPnP.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release15|AnyCPU'">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +52,7 @@
     <DefineConstants>TRACE;CLIENTSDKV15</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release15\OfficeDevPnP.Core.XML</DocumentationFile>
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
@@ -169,25 +173,25 @@
   <ItemGroup>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\Microsoft.Data.Edm.5.6.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.OData, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\Microsoft.Data.OData.5.6.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Services.Client, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\Microsoft.Data.Services.Client.5.6.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.IdentityModel.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=69c3241e6f0468ca, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\Microsoft.WindowsAzure.ConfigurationManager.1.8.0.0\lib\net35-full\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -208,7 +212,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Spatial, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
+      <HintPath>..\..\Solutions\Provisioning.UX.App\packages\System.Spatial.5.6.2\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -248,6 +252,7 @@
     <Compile Include="AppModelExtensions\FileFolderExtensions.cs" />
     <Compile Include="AppModelExtensions\InformationManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\ListExtensions.cs" />
+    <Compile Include="AppModelExtensions\ListRatingExtensions.cs" />
     <Compile Include="AppModelExtensions\ProvisioningExtensions.cs" />
     <Compile Include="AppModelExtensions\RecordsManagementExtensions.cs" />
     <Compile Include="AppModelExtensions\SearchExtensions.cs" />
@@ -259,10 +264,12 @@
     <Compile Include="AppModelExtensions\BrandingExtensions.cs" />
     <Compile Include="BuiltInContentTypeId.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Entities\AreaNavigationEntity.cs" />
     <Compile Include="Entities\CustomActionEntity.cs" />
     <Compile Include="Entities\DefaultColumnTermPathValue.cs" />
     <Compile Include="Entities\DefaultColumnTermValue.cs" />
     <Compile Include="Entities\ExternalUserEntity.cs" />
+    <Compile Include="Entities\StructuralNavigationEntity.cs" />
     <Compile Include="Entities\TaxonomyFieldCreationInformation.cs" />
     <Compile Include="Entities\FieldCreationInformation.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
@@ -282,8 +289,11 @@
     <Compile Include="Enums\EcmSiteRecordRestrictions.cs" />
     <Compile Include="Enums\NavigationType.cs" />
     <Compile Include="Enums\SharePointPlatform.cs" />
+    <Compile Include="Enums\StructuralNavigationSortBy.cs" />
+    <Compile Include="Enums\StructuralNavigationSorting.cs" />
     <Compile Include="Enums\TenantEnums.cs" />
     <Compile Include="Enums\TimeZone.cs" />
+    <Compile Include="Enums\VotingExperience.cs" />
     <Compile Include="Enums\WikiPageLayout.cs" />
     <Compile Include="Extensions\EnumerationExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
@@ -342,6 +352,7 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectSitePolicy.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectRetrieveTemplateInfo.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectPersistTemplateInfo.cs" />
@@ -373,6 +384,11 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenDefinitions\SiteToken.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\TokenParser.cs" />
     <Compile Include="Framework\Provisioning\Providers\ITemplateFormatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonAzureStorageTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonFileSystemTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonPnPFormatter.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonSharePointTemplateProvider.cs" />
+    <Compile Include="Framework\Provisioning\Providers\Json\JsonTemplateProvider.cs" />
     <Compile Include="Framework\Provisioning\Providers\TemplateProviderBase.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\IXMLSchemaFormatter.cs" />
     <Compile Include="Framework\Provisioning\Providers\Xml\ProvisioningSchema-2015-03.cs">
@@ -516,9 +532,26 @@
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\STS0Template.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BLOG0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\COMMUNITY0Template.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS0Template.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BDR0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BICenterSite0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BLANKINTERNETCONTAINER0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\COMMUNITYPORTAL0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\DEV0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\EHS1Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\ENTERWIKI0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\OFFILE1Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\PROJECTSITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\SRCHCEN0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\SRCHCENTERLITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\VISPRUS0Template.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

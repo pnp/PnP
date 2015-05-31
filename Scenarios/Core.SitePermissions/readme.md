@@ -56,22 +56,22 @@ UserEntity adminToRemove = new UserEntity() { LoginName = "i:0#.f|membership|use
 cc.Web.RemoveAdministrator(adminToRemove);
 ```
 
-If you to set the site collection administrators for site collections where you’re not already a site collection administrator then this is possible by creating a clientcontext object using a registered app with tenant level permissions as explained below.
+If you to set the site collection administrators for site collections where you’re not already a site collection administrator then this is possible by creating a clientcontext object using a registered add-in with tenant level permissions as explained below.
 
 ## CLIENTCONTEXT BASED ON AN OAUTH TOKEN WITH TENANT LEVEL PERMISSIONS ##
 
 ```C#
 // Use (Get-MsolCompanyInformation).ObjectID to obtain Target/Tenant realm: <guid>
 //
-// Manually register an app via the appregnew.aspx page and generate an App ID and 
-// App Secret. The App title and App domain can be a simple string like "MyApp"
+// Manually register an add-in via the appregnew.aspx page and generate an add-in ID and 
+// add-in Secret. The add-in title and add-in domain can be a simple string like "MyApp"
 //
 // Update the AppID in your worker role settings
 //
 // Add the AppSecret in your worker role settings 
 //
-// Manually set the permission XML for you app via the appinv.aspx page:
-// 1/ Lookup your app via its AppID
+// Manually set the permission XML for you add-in via the appinv.aspx page:
+// 1/ Lookup your add-in via its AppID
 // 2/ Paste the permission XML and click on create
 //
 // Sample permission XML:
@@ -79,11 +79,11 @@ If you to set the site collection administrators for site collections where you�
 //   <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
 // </AppPermissionRequests>
 //
-// As you're granting tenant wide full control to an app the appsecret is as important
+// As you're granting tenant wide full control to an add-in the appsecret is as important
 // as the password from your SharePoint administration account!
 ```
 
-Once you’ve done that you can use below code to obtain a clientcontext object for this app:
+Once you’ve done that you can use below code to obtain a clientcontext object for this add-in:
 
 ```C#
 ClientContext cc = new AuthenticationManager().GetAppOnlyAuthenticatedContext(

@@ -1,7 +1,7 @@
 # Tracing and error logging for provider hosted apps #
 
 ### Summary ###
-This sample shows how to use tracing and error logging in Sharepoint provider hosted apps. Tracing can give you additional information about errors that occur on a production environment (where debugging usually is not a option). This sample also shows how you can log a error to sharepoint, that shows up at the app detail page.
+This sample shows how to use tracing and error logging in Sharepoint provider hosted apps. Tracing can give you additional information about errors that occur on a production environment (where debugging usually is not a option). This sample also shows how you can log a error to sharepoint, that shows up at the add-in detail page.
 
 ### Solution ###
 Solution | Author(s)
@@ -20,10 +20,10 @@ Version  | Date | Comments
 ----------
 
 # How to setup error logging #
-The errorlogger class is included in the solution and can be used to log a errormessage or exception to the Sharepoint app details page.
+The errorlogger class is included in the solution and can be used to log a errormessage or exception to the Sharepoint add-in details page.
 
 ## STEP 1: setup productid for errorlogger ##
-The errorlogger needs to pass the productid of the app to sharepoint. You can configure this in the web.config file. Just add the ErrorLoggerAppProductId appsetting to the appsettings section. The value of this parameter has to be the productid of your app. You can find the productId in the appmanifest.xml file (open this in xml view).
+The errorlogger needs to pass the productid of the add-in to sharepoint. You can configure this in the web.config file. Just add the ErrorLoggerAppProductId appsetting to the appsettings section. The value of this parameter has to be the productid of your add-in. You can find the productId in the appmanifest.xml file (open this in xml view).
 
 ```XML
 <appSettings>
@@ -67,11 +67,11 @@ protected void Application_Error(object sender, EventArgs e)
 ``` 
 
 ## STEP 3: where can I find the error ##
-The error is logged in the app details page. You can get there by the following steps:
+The error is logged in the add-in details page. You can get there by the following steps:
 
 ![](http://i.imgur.com/SnMcwfw.png)
 
-Go to site contents. Click on the ... next to your app. Click details
+Go to site contents. Click on the ... next to your add-in. Click details
 
 ![](http://i.imgur.com/n6lshti.png)
 
@@ -79,7 +79,7 @@ Here you can see the number of runtime errors. Click on the link to see the erro
 
 ![](http://i.imgur.com/vFrJiYx.png)
 
-The error will also show up in the app tracing. More info about how to get to this tracing is in the next section.
+The error will also show up in the add-in tracing. More info about how to get to this tracing is in the next section.
 
 ![](http://i.imgur.com/x80isGy.png)
 

@@ -366,8 +366,7 @@ namespace Microsoft.SharePoint.Client
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
             if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
-            // TODO: Check for any other illegal characters in SharePoint
-            if (fileName.Contains('/') || fileName.Contains('\\'))
+            if (fileName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_, "fileName");
             }
@@ -491,6 +490,16 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Deploys a new masterpage
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="sourceFilePath">The path to the source file</param>
+        /// <param name="title">The title of the masterpage</param>
+        /// <param name="description">The description of the masterpage</param>
+        /// <param name="uiVersion"></param>
+        /// <param name="defaultCSSFile"></param>
+        /// <param name="folderPath"></param>
         public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "", string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
@@ -658,6 +667,12 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Returns the relative URL for a masterpage
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="masterPageName">The name of the masterpage, e.g. 'default' or 'seattle'</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
@@ -920,6 +935,11 @@ namespace Microsoft.SharePoint.Client
                 }
             }
 
+            if (theme == null)
+            {
+                return theme;
+            }
+
             String designPreviewThemedCssFolderUrl = web.GetPropertyBagValueString("DesignPreviewThemedCssFolderUrl", null);
 
             // If name still is "Current" and there isn't a PreviewThemedCssFolderUrl 
@@ -991,6 +1011,9 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentNullException("pageLayoutName");
             }
+
+            // The pagelayout needs to specified without aspx extension...strip the extension to be sure
+            pageLayoutName = System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
@@ -1202,6 +1225,12 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(AvailablePageLayouts, string.Empty);
         }
 
+        /// <summary>
+        /// Sets the available page layouts
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="rootWeb">The rootweb</param>
+        /// <param name="pageLayouts">The page layouts to make available</param>
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
             XmlDocument xd = new XmlDocument();

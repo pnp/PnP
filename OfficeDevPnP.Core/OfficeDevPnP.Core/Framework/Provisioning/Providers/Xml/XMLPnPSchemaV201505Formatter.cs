@@ -105,10 +105,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new V201505.StringDictionaryItem
+                     select new V201505.PropertyBagEntry()
                      {
                          Key = bag.Key,
                          Value = bag.Value,
+                         Indexed = bag.Indexed
                      }).ToArray();
             }
             else
@@ -1024,7 +1025,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 termSet.LanguageSpecified ? (int?)termSet.Language : null,
                                 termSet.IsAvailableForTagging,
                                 termSet.IsOpenForTermCreation,
-                                termSet.Terms.FromSchemaTermsToModelTerms(),
+                                termSet.Terms != null ? termSet.Terms.FromSchemaTermsToModelTerms() : null,
                                 termSet.CustomProperties != null ? termSet.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null)
                             {
                                 Description = termSet.Description,
@@ -1065,7 +1066,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             result.Providers.Add(
                                 new Model.Provider
                                 {
-                                    Assembly = handlerType.AssemblyQualifiedName,
+                                    Assembly = handlerType.Assembly.FullName,
                                     Type = handlerType.FullName,
                                     Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
                                     Enabled = provider.Enabled,

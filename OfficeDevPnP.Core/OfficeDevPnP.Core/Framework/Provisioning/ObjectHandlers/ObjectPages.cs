@@ -79,7 +79,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         {
                             WebPartEntity wpEntity = new WebPartEntity();
                             wpEntity.WebPartTitle = webpart.Title;
-                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                            wpEntity.WebPartXml = webpart.Contents.ToParsedString().Trim(new[] {'\n', ' '});
                             web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
                         }
                     }

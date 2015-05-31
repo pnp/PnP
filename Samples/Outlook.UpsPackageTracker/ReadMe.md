@@ -1,7 +1,7 @@
 # UPS Package Tracker for Outlook 2013 #
 
 ### Summary ###
-This sample demonstrates how to create an App for Outlook which extracts data from a mail message, retrieves data from an external service and formats the data for display.
+This sample demonstrates how to create an add-in for Outlook which extracts data from a mail message, retrieves data from an external service and formats the data for display.
 
 ### Applies to ###
 -  Outlook 2013
@@ -28,16 +28,16 @@ Version  | Date | Comments
 ----------
 
 # Tracking UPS Package Delivery in Outlook #
-This code sample demonstrates the use of an App for Outlook for tracking package shipments from UPS.
+This code sample demonstrates the use of an add-in for Outlook for tracking package shipments from UPS.
 
 ![](http://i.imgur.com/BXXM3sF.png)
 
 ## 1. Building the Solution ##
-The UPS Tracking App for Outlook consists of 4 primary components:
+The UPS Tracking add-in for Outlook consists of 4 primary components:
 
 1. The UPS Tracking Service - provided by UPS for retrieving tracking data.
 2. Server-side API - custom JSON API which wraps the UPS service and caches the result in Azure Table Storage.
-3. App for Office Manifest - defines how our app is activated within Outlook
+3. Add-in for Office Manifest - defines how our add-in is activated within Outlook
 4. Front-end code - HTML markup and Javascript for interacting with the server-side API
 
 ### 1.1. The UPS Tracking Service ###
@@ -63,9 +63,9 @@ The server-side API calls the UPS tracking service for a single tracking number,
 
 The address for calling the API will be in the format `/api/UPSTracking/1ZE680080304005492`  
 
-### 1.3. App for Office Manifest ###
+### 1.3. Add-in for Office Manifest ###
 
-The UPSPackageTrackerManifest defines the connection between the Outlook and the app web pages hosted within Outlook. The key configuration is the Read Form Activation rule which indicates that the message body must contain text matching the regular expression `(1Z\w{16})`, which is a simplified pattern for a UPS Ground tracking number.
+The UPSPackageTrackerManifest defines the connection between the Outlook and the add-in web pages hosted within Outlook. The key configuration is the Read Form Activation rule which indicates that the message body must contain text matching the regular expression `(1Z\w{16})`, which is a simplified pattern for a UPS Ground tracking number.
 
 > Note: a more complicated regular expression is likely needed to match all of the different types of UPS tracking numbers. 
 
@@ -74,7 +74,7 @@ The completed Read Form manifest page:
 
 ### 1.4. Front end code ###
 
-The manifest file specifies a source location which will be loaded when the app loads within Outlook. In our case this is `UPSPackageTrackerWeb/AppRead/Home/Home.html`. The `Home.html` is a simple HTML file containing all the user interface elements needed to render the app.
+The manifest file specifies a source location which will be loaded when the add-in loads within Outlook. In our case this is `UPSPackageTrackerWeb/AppRead/Home/Home.html`. The `Home.html` is a simple HTML file containing all the user interface elements needed to render the add-in.
 
 The heavy lifting is performed by `Home.js` file located in the same directory. Key elements in the JavaScript file include:
 

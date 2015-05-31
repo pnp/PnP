@@ -30,15 +30,15 @@ Version  | Date | Comments
 # General comments #
 This example shows how you can modify lists when they’re created in the host web. Whenever a user creates a new list in the host web a ListAdded remote event receiver gets fired and in this remote event receiver you can modify the list to your needs. Typical changes would be enabling versioning or adding a content type to the list, but in reality anything that can be done via CSOM can be used.
 
-As we’re hooking up the list to the host web we’ll need to programmatically hookup the event receiver. In the sample we’ve opted to do this as part of an app: when the app is installed an AppInstalled event will fire and we’ll use this event to hookup the ListAdded event.
+As we’re hooking up the list to the host web we’ll need to programmatically hookup the event receiver. In the sample we’ve opted to do this as part of an add-in: when the add-in is installed an AppInstalled event will fire and we’ll use this event to hookup the ListAdded event.
 
 ## ENSURING APPINSTALLED AND APPUNINSTALLING EVENTS FIRE ##
-The app events are set as properties of the SharePoint project:
+The add-in events are set as properties of the SharePoint project:
 
 ![](http://i.imgur.com/QKqjPQt.png)
 
 ## HOOKING UP THE LISTADDED EVENT ##
-The remote event receiver that gets executed on app install will dynamically add the ListAdded event receiver. Below code snippet shows how this is done:
+The remote event receiver that gets executed on add-in install will dynamically add the ListAdded event receiver. Below code snippet shows how this is done:
 
 ```C#
 bool rerExists = false;
@@ -98,9 +98,9 @@ private void HandleListAdded(SPRemoteEventProperties properties)
 ```
 
 ## DEALING WITH UNINSTALL ##
-When the app is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the app. This remove will trigger the app uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the app from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in app deployment when the app gets side loaded which is what Visual Studio does when you press F5.
+When the add-in is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the add-in. This remove will trigger the add-in uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the add-in from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in add-in deployment when the add-in gets side loaded which is what Visual Studio does when you press F5.
 
-When a user uninstalls a deployed app this moves the app to the site's recycle bin and will NOT trigger the appuninstalling event handler. The app needs to be removed from all recycle bins in order to trigger the appuninstalled event.
+When a user uninstalls a deployed add-in this moves the add-in to the site's recycle bin and will NOT trigger the appuninstalling event handler. The add-in needs to be removed from all recycle bins in order to trigger the appuninstalled event.
 
 
 ### Note: ###

@@ -61,6 +61,7 @@
         <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
           <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
@@ -78,10 +79,15 @@
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Office.Client.Policy.dll</HintPath>
         </Reference>
       </ItemGroup>
     </When>
@@ -89,29 +95,36 @@
       <ItemGroup>
         <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
           <HintPath>..\..\..\Assemblies\15\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.Office.Client.Policy.dll</HintPath>
         </Reference>
       </ItemGroup>
     </Otherwise>
@@ -192,6 +205,9 @@
     <Compile Include="Fields\RemoveField.cs" />
     <Compile Include="Fields\GetField.cs" />
     <Compile Include="Fields\AddField.cs" />
+    <Compile Include="InformationManagement\GetSitePolicy.cs" />
+    <Compile Include="InformationManagement\SetSitePolicy.cs" />
+    <Compile Include="Lists\AddListItem.cs" />
     <Compile Include="Lists\AddView.cs" />
     <Compile Include="Lists\GetListItem.cs" />
     <Compile Include="Lists\SetDefaultColumnValues.cs" />
