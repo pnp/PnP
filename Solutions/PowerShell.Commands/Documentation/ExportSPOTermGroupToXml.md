@@ -1,5 +1,5 @@
 #Export-SPOTermGroupToXml
-*Topic automatically generated on: 2015-05-25*
+*Topic automatically generated on: 2015-06-01*
 
 Exports a taxonomy TermGroup to either the output or to an XML file.
 ##Syntax

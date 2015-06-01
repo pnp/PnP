@@ -1,10 +1,14 @@
 #Add-SPOField
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-01*
 
 Adds a field to a list or as a site column
 ##Syntax
 ```powershell
 Add-SPOField [-List <ListPipeBind>] -DisplayName <String> -InternalName <String> -Type <FieldType> [-Id <GuidPipeBind>] [-AddToDefaultView [<SwitchParameter>]] [-Required [<SwitchParameter>]] [-Group <String>] [-Web <WebPipeBind>]```
+&nbsp;
+
+```powershell
+Add-SPOField -List <ListPipeBind> -Field <FieldPipeBind> [-Web <WebPipeBind>]```
 &nbsp;
 
 ```powershell
@@ -20,6 +24,7 @@ Parameter|Type|Required|Description
 ---------|----|--------|-----------
 AddToDefaultView|SwitchParameter|False|
 DisplayName|String|True|
+Field|FieldPipeBind|True|
 Group|String|False|
 Id|GuidPipeBind|False|
 InternalName|String|True|
@@ -32,4 +37,4 @@ Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to us
 ###Example 1
     PS:> Add-SPOField -List "Demo list" -DisplayName "Location" -InternalName "SPSLocation" -Type Choice -Group "Demo Group" -AddToDefaultView -Choices "Stockholm","Helsinki","Oslo"
 This will add field of type Choice to a the list "Demo List".
-<!-- Ref: 164D3B62B2979B528331EAF9038B993E -->
+<!-- Ref: A127A2F08F8BCB4436CC5118AEA2A134 -->
