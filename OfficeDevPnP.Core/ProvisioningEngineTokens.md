@@ -14,7 +14,7 @@ Below all the supported tokens are listed:
 |{listurl:&lt;name&gt;}|{listurl:Demo List}|lists/demolist|Will return the url of the list specified by the parameter, which is the title of the list.|
 |{masterpagecatalog}|{masterpagecatalog}|/sites/demo/_catalogs/masterpage|Will return the server relative url of the masterpage catalog for the current site.|
 |{parameter:&lt;name&gt;}|{parameter:DefaultGroup}|string value|Will return the value of the parameter as specified in the template.|
-|{sitecollectiontermstoreid}|{sitecollectiontermstoreid}|FDF19D89-A82F-4AB9-9BB5-B49E6CA5212E|Will return the ID/Guid of the site collection term store with enclosing { }. If you want a ID with { } around the value, use the token as follows: {{sitecollectiontermstoreid}}.|
+|{sitecollectiontermstoreid}|{sitecollectiontermstoreid}|FDF19D89-A82F-4AB9-9BB5-B49E6CA5212E|Will return the ID/Guid of the site collection term store without enclosing { }. If you want a ID with { } around the value, use the token as follows: {{sitecollectiontermstoreid}}.|
 |{sitecollection}|{sitecollection}|/sites/demo|Will return the server relative URL of the current site collection rootweb|
 |{site}|{site}|/sites/demo/test|Will returm the server relative URL of the current web.|
 |{termsetid:&lt;Group&gt;:&lt;Set&gt;}|{termsetid:TestGroup:TestSet}|FDF19D89-A82F-4AB9-9BB5-B49E6CA5212|Will return the the ID of the termset that is residing under the specified group. If you want a ID with { } around the value, use the token as follows: {{termsetid:TestGroup:TestSet}}.|
