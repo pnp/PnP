@@ -14,7 +14,7 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.ManageUserCustomAction| André Lage
+Core.ManageUserCustomAction| **André Lage**
 
 ### Version history ###
 Version  | Date | Comments
