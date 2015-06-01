@@ -125,6 +125,7 @@
     </None>
     <None Include="appSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="MailSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
