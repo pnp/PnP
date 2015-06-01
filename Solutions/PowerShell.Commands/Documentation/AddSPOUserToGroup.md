@@ -17,13 +17,13 @@ Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to us
 
 ###Example 1
     
-    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
-    
-Add the specified user to the group with Id 5
-
-###Example 2
-    
     PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'
     
 
-<!-- Ref: 5545DB6B7208C7E9F6953BD2DCD2A2D7 -->
+
+###Example 2
+    
+    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
+    
+Add the specified user to the group with Id 5
+<!-- Ref: FBBC1944C0B6C140114D39CD01FA5DC8 -->
