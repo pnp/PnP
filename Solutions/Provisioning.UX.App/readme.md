@@ -2,20 +2,20 @@
 
 ### Summary ###
 
-Even with good governance, SharePoint sites can proliferate and grow out of control. Sites are created as they are needed, but sites are rarely deleted. Many organization have search crawl burdened by unused site collections, difficulty with outdated and irrelevant results. This Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine.
+Even with good governance, your sites can proliferate and grow out of control. Sites are created as they are needed, but sites are rarely deleted. Many organization have search crawl burdened by unused site collections, difficulty with outdated and irrelevant results. This Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine, implements additional scenarios and samples to bring together a cohesive governance solution that can be used in your enterprise.
 
-This solution shows following capabilities
+### Features ###
 - User Interface to request site collections
 - Capability to store Site Requests in either a SharePoint list or Azure Document DB 
 - Request are processed asynchronously using the remote timer job pattern
 - New site collection creation to Office 365 MT.
 - New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
-- Apply a configuration template to existing site using the PnP Provisioning framework
+- Apply a configuration template to newly created sites using the PnP Provisioning framework
 - Enable External sharing for sites that are hosted in SharePoint Online MT
 - Visual indicator if a Site is externally shared
 - Site Classification.
 - Site Policies and a visual indicator of the site policy that is applied
-- Applying Composed Looks including, Alternate CSS, Logo, Background image, and font
+- Applying Composed Looks including, Alternate CSS, Logo, Background image, and fonts
 
 
 **NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
@@ -102,17 +102,17 @@ Once user is done with the views in the wizard, they will be presented with a co
 #### Site Policies ####
 We need to define the site policies that will be available in all your sites collections. We are going to define the Site Policies in the content type hub and publish. In this example we are using SharePoint Online MT, but this same approach is available in SharePoint Online Dedicated as well as SharePoint on-premises. If your environment is hosted in SharePoint Online MT, your content type hub would be located at the following URL. https://[tenanatname]/sites/contentTypeHub. Navigate to Settings, then Site Policies under Site Collection Administration, and then finally create. 
 
-See **Overview of site policies in SharePoint 2013** at http://technet.microsoft.com/en-US/library/jj219569(v=office.15).aspx for an overview of Site Policies.
+See **Overview of site policies in SharePoint 2013** at http://technet.microsoft.com/en-US/library/jj219569(v=office.15).aspx for more information.
 
-We are going to create three site policies, HBI, MBI and then LBI.  Create an HBI Policy that mimics the below screen.
+Create three site policies, HBI, MBI and then LBI.  Create an HBI Policy that mimics the below screen.
 
 ![](http://i.imgur.com/sKI5csC.png)
 
-Repeat the above setup 2 more times for MBI and LBI. You should end up with the below:
+Repeat the above setup two more times for MBI and LBI. You should end up with the below:
 
 ![](http://i.imgur.com/lrw7nQD.png)
 
-Once we have the policies we are going to publish the Site Policies. 
+Once we have the policies we are going to publish the Site Policies so they will be available to our sites.
 
 #### Configuration Files ####
 
