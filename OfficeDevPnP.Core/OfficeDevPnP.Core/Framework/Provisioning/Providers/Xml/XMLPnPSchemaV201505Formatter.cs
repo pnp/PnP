@@ -242,6 +242,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          EnableVersioning = list.EnableVersioning,
                          EnableMinorVersions = list.EnableMinorVersions,
                          EnableModeration = list.EnableModeration,
+                         DraftVersionVisibility = list.DraftVersionVisibility,
                          Hidden = list.Hidden,
                          MinorVersionLimit = list.MinorVersionLimit,
                          MinorVersionLimitSpecified = true,
@@ -841,6 +842,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
                         EnableMinorVersions = list.EnableMinorVersions,
+                        DraftVersionVisibility = list.DraftVersionVisibility,
                         EnableModeration = list.EnableModeration,
                         Hidden = list.Hidden,
                         MinorVersionLimit = list.MinorVersionLimitSpecified ? list.MinorVersionLimit : 0,
@@ -1002,7 +1004,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Row = (uint)wp.Row,
                                  Contents = wp.Contents
 
-                             }).ToList() : null)));
+                             }).ToList() : null), page.WelcomePage));
 
                 }
             }

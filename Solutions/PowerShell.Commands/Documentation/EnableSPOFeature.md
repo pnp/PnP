@@ -1,5 +1,5 @@
 #Enable-SPOFeature
-*Topic automatically generated on: 2015-05-27*
+*Topic automatically generated on: 2015-06-01*
 
 Enables a feature
 ##Syntax
@@ -17,14 +17,14 @@ Scope|FeatureScope|False|
 ##Examples
 
 ###Example 1
-    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
-
-
-###Example 2
     PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
-###Example 3
+###Example 2
     PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
 
-<!-- Ref: 873A48DD2C42F4022339AF0C798A6C5E -->
+
+###Example 3
+    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
+
+<!-- Ref: 6035DEC5BC5D3A509F117F1BF8827FF6 -->
