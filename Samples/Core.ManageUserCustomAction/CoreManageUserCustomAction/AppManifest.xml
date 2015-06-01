@@ -1,0 +1,13 @@
+﻿<!--Created:cbbc9d22-5cf7-4e4c-8ee9-42a772aae58a-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest" ProductID="{7346b5c9-cd8c-41f5-9145-41a916bee834}" Version="1.0.0.0" SharePointMinVersion="15.0.0.0" Name="CoreManageUserCustomAction">
+  <Properties>
+    <Title>Core.ManageUserCustomAction</Title>
+    <StartPage>~appWebUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
+  </Properties>
+  <AppPrincipal>
+    <Internal />
+  </AppPrincipal>
+  <AppPermissionRequests>
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+  </AppPermissionRequests>
+</App>
