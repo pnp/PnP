@@ -7,6 +7,7 @@
     <pnp:File Src="siteLogo.png" Folder="SiteAssets" Overwrite="true"/>
     <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
     <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
+    <pnp:File Src="custom.spfont" Folder="~themecatalog/15" Overwrite="true" />
   </pnp:Files>
   <pnp:CustomActions>
     <pnp:SiteCustomActions>
@@ -16,10 +17,13 @@
                Title="CA_SITE_CLASSIFICATION"
                ScriptSrc=""
                ScriptBlock="
+                    var lbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/LBI.png';
+                    var mbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/MBI.png';
+                    var hbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/HBI.png';
                     var headID = document.getElementsByTagName('head')[0]; 
                     var siteClassifciationTag = document.createElement('script');
                     siteClassifciationTag.type = 'text/javascript';
-                    siteClassifciationTag.src = 'https://spsiteprov.azurewebsites.net/scripts/siteClassification.js';
+                    siteClassifciationTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/siteClassification.js';
                     headID.appendChild(siteClassifciationTag);"/>
       <pnp:CustomAction Name="CA_SITE_EXTERNALSHARING"
                 Description="External Sharing Banner"
@@ -30,7 +34,7 @@
                     var headID = document.getElementsByTagName('head')[0]; 
                     var externalSharingTag = document.createElement('script');
                     externalSharingTag.type = 'text/javascript';
-                    externalSharingTag.src = 'https://spsiteprov.azurewebsites.net/scripts/externalSharing.js';
+                    externalSharingTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/externalSharing.js';
                     headID.appendChild(externalSharingTag);"/>
       <pnp:CustomAction Name="CA_SITE_SUBSITE_OVERRIDE"
                 Description="Override new sub-site link"
@@ -38,11 +42,11 @@
                 Title="CA_SITE_SUBSITE_OVERRIDE"
                 ScriptSrc=""
                 ScriptBlock="
-                    var SubSiteSettings_Web_Url = 'https://spsiteprov.azurewebsites.net/pages/subsite/newsbweb.aspx?SPHostUrl=';
+                    var SubSiteSettings_Web_Url = 'https://pnpsiteprov.azurewebsites.net/pages/subsite/newsbweb.aspx?SPHostUrl=';
                     var headID = document.getElementsByTagName('head')[0]; 
                     var subsiteScriptTag = document.createElement('script');
                     subsiteScriptTag.type = 'text/javascript';
-                    subsiteScriptTag.src = 'https://spsiteprov.azurewebsites.net/scripts/SubSiteOverride.js';
+                    subsiteScriptTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/SubSiteOverride.js';
                     headID.appendChild(subsiteScriptTag);"/> 
     </pnp:SiteCustomActions>
     <pnp:WebCustomActions>
@@ -52,7 +56,7 @@
                 Location="Microsoft.SharePoint.SiteSettings"
                 Title="Site Classification"
                 Sequence="1000"
-                Url="https://spsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
+                Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
                 Rights="31"/>
       <pnp:CustomAction Name="CA_SITE_STDMENU_SITECLASSIFICATION"
                 Description="Site Classification Module"
@@ -60,13 +64,13 @@
                 Location="Microsoft.SharePoint.StandardMenu"
                 Title="Site Classification"
                 Sequence="1000"
-                Url="https://spsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
+                Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
                 Rights="31"/>
     </pnp:WebCustomActions>
   </pnp:CustomActions>
   <pnp:ComposedLook Name="Contoso" Version="1"
                 ColorFile="~themecatalog/15/custom.spcolor"
-                FontFile=""
+                FontFile="~themecatalog/15/custom.spfont"
                 BackgroundFile="~themecatalog/15/custombg.jpg"
                 MasterPage="~masterpagecatalog/seattle.master"
                 AlternateCSS=""

@@ -132,8 +132,12 @@
     <None Include="packages.config" />
     <None Include="provisioningSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Resources\SiteTemplates\ProvisioningTemplates\custom.spcolor">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\SiteTemplates\ProvisioningTemplates\custom.spfont">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\SiteTemplates\Templates.config">
