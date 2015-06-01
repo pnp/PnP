@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Common", "Provisioning.Common\Provisioning.Common.csproj", "{77447711-3AB3-4390-A22C-75BB5A97BB95}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{50690CA6-C907-400B-B02B-969C3839C5B3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProvisioningTests", "ProvisioningTests\ProvisioningTests.csproj", "{2E11E27F-300D-4E44-86F8-072267FDAF87}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Job", "Provisioning.Job\Provisioning.Job.csproj", "{7752C5E7-4D76-4956-B616-6DAE0CE0021D}"
