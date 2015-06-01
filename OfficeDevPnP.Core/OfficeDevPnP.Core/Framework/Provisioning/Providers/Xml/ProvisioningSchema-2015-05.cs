@@ -420,8 +420,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.indexedField = value;
-            }
         }
+    }
     }
     
     /// <remarks/>
@@ -1677,6 +1677,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private bool maxVersionLimitFieldSpecified;
         
+        private int draftVersionVisibilityField;
+        
+        private bool draftVersionVisibilityFieldSpecified;
+        
         private bool removeExistingContentTypesField;
         
         private string templateFeatureIDField;
@@ -1899,6 +1903,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.maxVersionLimitFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public int DraftVersionVisibility {
+            get {
+                return this.draftVersionVisibilityField;
+            }
+            set {
+                this.draftVersionVisibilityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool DraftVersionVisibilitySpecified {
+            get {
+                return this.draftVersionVisibilityFieldSpecified;
+            }
+            set {
+                this.draftVersionVisibilityFieldSpecified = value;
             }
         }
         
@@ -2585,8 +2611,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private WikiPageLayout layoutField;
         
+        private bool welcomePageField;
+        
         public Page() {
             this.overwriteField = false;
+            this.welcomePageField = false;
         }
         
         /// <remarks/>
@@ -2631,6 +2660,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
             }
             set {
                 this.layoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool WelcomePage {
+            get {
+                return this.welcomePageField;
+            }
+            set {
+                this.welcomePageField = value;
             }
         }
     }
