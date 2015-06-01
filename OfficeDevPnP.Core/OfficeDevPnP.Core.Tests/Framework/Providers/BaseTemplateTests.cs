@@ -33,8 +33,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 DumpTemplate(ctx, "BDR0");
                 DumpTemplate(ctx, "DEV0");
                 DumpTemplate(ctx, "OFFILE1");
+#if !CLIENTSDKV15
                 DumpTemplate(ctx, "EHS1");
-                DumpTemplate(ctx, "BICenterSite0");
+#else
+                DumpTemplate(ctx, "STS1");
+                DumpTemplate(ctx, "BLANKINTERNET0");                
+#endif
+                DumpTemplate(ctx, "BICENTERSITE0");
                 DumpTemplate(ctx, "SRCHCEN0");
                 DumpTemplate(ctx, "BLANKINTERNETCONTAINER0");
                 DumpTemplate(ctx, "ENTERWIKI0");
@@ -42,7 +47,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 DumpTemplate(ctx, "COMMUNITY0");
                 DumpTemplate(ctx, "COMMUNITYPORTAL0");
                 DumpTemplate(ctx, "SRCHCENTERLITE0");
-                DumpTemplate(ctx, "visprus0");
+                DumpTemplate(ctx, "VISPRUS0");
             }
         }
 
