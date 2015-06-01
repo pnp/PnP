@@ -37,7 +37,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 DumpTemplate(ctx, "EHS1");
 #else
                 DumpTemplate(ctx, "STS1");
-                DumpTemplate(ctx, "BLANKINTERNET0");                
+                DumpTemplate(ctx, "BLANKINTERNET0");
 #endif
                 DumpTemplate(ctx, "BICENTERSITE0");
                 DumpTemplate(ctx, "SRCHCEN0");
