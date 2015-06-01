@@ -570,6 +570,9 @@
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\STS1Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\VISPRUS0Template.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\CMSPUBLISHING0Template.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <TFSBaseBuildYear>2014</TFSBaseBuildYear>

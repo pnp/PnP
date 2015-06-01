@@ -42,6 +42,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 DumpTemplate(ctx, "BICENTERSITE0");
                 DumpTemplate(ctx, "SRCHCEN0");
                 DumpTemplate(ctx, "BLANKINTERNETCONTAINER0");
+                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0", "CMSPUBLISHING0");
                 DumpTemplate(ctx, "ENTERWIKI0");
                 DumpTemplate(ctx, "PROJECTSITE0");
                 DumpTemplate(ctx, "COMMUNITY0");
@@ -51,26 +52,50 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
             }
         }
 
-        private void DumpTemplate(ClientContext ctx, string template)
+        private void DumpTemplate(ClientContext ctx, string template, string subSiteTemplate = "")
         {
             Uri devSiteUrl = new Uri(ConfigurationManager.AppSettings["SPODevSiteUrl"]);
             string baseUrl = String.Format("{0}://{1}", devSiteUrl.Scheme, devSiteUrl.DnsSafeHost);
 
-            using (ClientContext cc = ctx.Clone(String.Format("{1}/sites/template{0}", template, baseUrl)))
+            string siteUrl = "";
+            if (subSiteTemplate.Length > 0)
+            {
+                siteUrl = (String.Format("{1}/sites/template{0}/template{2}", template, baseUrl, subSiteTemplate));
+            }
+            else
+            {
+                siteUrl = (String.Format("{1}/sites/template{0}", template, baseUrl));
+            }
+
+            using (ClientContext cc = ctx.Clone(siteUrl))
             {
                 // Specify null as base template since we do want "everything" in this case
                 ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
                 creationInfo.BaseTemplate = null;
 
                 ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
-                p.Id = String.Format("{0}template", template);
+                if (subSiteTemplate.Length > 0)
+                {
+                    p.Id = String.Format("{0}template", subSiteTemplate);
+                }
+                else
+                {
+                    p.Id = String.Format("{0}template", template);
+                }
 
                 // Cleanup before saving
                 p.Security.AdditionalAdministrators.Clear();
 
 
                 XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(".", "");
-                provider.SaveAs(p, String.Format("{0}Template.xml", template));
+                if (subSiteTemplate.Length > 0)
+                {
+                    provider.SaveAs(p, String.Format("{0}Template.xml", subSiteTemplate));
+                }
+                else
+                {
+                    provider.SaveAs(p, String.Format("{0}Template.xml", template));
+                }
             }
         }
 
