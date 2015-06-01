@@ -1,15 +1,21 @@
 # PnP Provisioning - Self service site collection provisioning reference implementation#
 
 ### Summary ###
-Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine.
+
+Even with good governance, SharePoint sites can proliferate and grow out of control. Sites are created as they are needed, but sites are rarely deleted. Many organization have search crawl burdened by unused site collections, difficulty with outdated and irrelevant results. This Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine.
 
 This solution shows following capabilities
 - User Interface to request site collections
-- Site Requests stored in a SharePoint List
+- Capability to store Site Requests in either a SharePoint list or Azure Document DB 
 - Request are processed asynchronously using the remote timer job pattern
-- New site collection creation to Office 365
-- New site collection creation in SharePoint on-premises builds
-- Apply a configuration template to existing site using xml based definitions
+- New site collection creation to Office 365 MT.
+- New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
+- Apply a configuration template to existing site using the PnP Provisioning framework
+- Enable External sharing for sites that are hosted in SharePoint Online MT
+- Visual indicator if a Site is externally shared
+- Site Classification.
+- Site Policies and a visual indicator of the site policy that is applied
+- Applying Composed Looks including, Alternate CSS, Logo, Background image, and font
 
 
 **NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
@@ -41,21 +47,20 @@ Version  | Date | Comments
 DOCUMENTATION IN PROGRESS
 
 # Solution description #
-Projects what are included in the solution and the needed configuration for them. 
+Projects what are included in the solution . 
 
 ### Provisioning.UX.App###
-SharePoint Add-In 
+SharePoint Add-In that is deployed to a Site Collection that will host the Application.
 
 ### Provisioning.Common ###
-Reusable component for that implements the site provisioning logic
+Reusable component that implements reusable logic for the Site Provisioning UX and Timer Job projects.
 
 ### Provisioning.Job ###
-Remote Timer job project which maybe deployed to Azure.  Will be responsible of the actual site collection creation and the logic on how to apply configuration/customization on newly created site.
+Remote Timer job project which maybe deployed to Azure or on-premises.  Will be responsible of the actual site collection creation and the logic on how to apply configuration/customization to newly created site.
 
-You will need to update App ID/Secret in the app.config
 
 ### Provisioning.UX.AppWeb ###
-This is the user interface (UX) for self service site collection creation. This interface was built using primarily AngularJS and HTML. The intent was to create a modern interface that was easy to edit, and extend.
+This is the user interface (UX) for self service site collection creation application. This interface was built using primarily AngularJS and HTML. The intent was to create a modern interface that was easy to edit, and extend.
 
 The interface is launched from default.aspx and the wizard itself is modal based and loads HTML views. These views make a wizard provisioning approach that collects data from the user and submits that data to the back-end provisioning engine. 
 
@@ -90,9 +95,30 @@ The site details view contains a field where the user specifies the url of their
 #### Confirmation ####
 Once user is done with the views in the wizard, they will be presented with a confirmation view and the chance to change their inputs. Once they click the checkmark icon, the site request object data will be submitted to the engine. 
 
+----------
+
+# Getting Started #
+
+#### Site Policies ####
+We need to define the site policies that will be available in all your sites collections. We are going to define the Site Policies in the content type hub and publish. In this example we are using SharePoint Online MT, but this same approach is available in SharePoint Online Dedicated as well as SharePoint on-premises. If your environment is hosted in SharePoint Online MT, your content type hub would be located at the following URL. https://[tenanatname]/sites/contentTypeHub. Navigate to Settings, then Site Policies under Site Collection Administration, and then finally create. 
+
+See **Overview of site policies in SharePoint 2013** at http://technet.microsoft.com/en-US/library/jj219569(v=office.15).aspx for an overview of Site Policies.
+
+We are going to create three site policies, HBI, MBI and then LBI.  Create an HBI Policy that mimics the below screen.
+
+![](http://i.imgur.com/sKI5csC.png)
+
+Repeat the above setup 2 more times for MBI and LBI. You should end up with the below:
+
+![](http://i.imgur.com/lrw7nQD.png)
+
+Once we have the policies we are going to publish the Site Policies. 
+
+#### Configuration Files ####
+
+----------
+
 #### Coming Updates ####
 We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
 
-
-You will need to update App ID/Secret information in the web.config
 
