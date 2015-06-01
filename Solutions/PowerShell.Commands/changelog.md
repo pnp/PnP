@@ -1,6 +1,7 @@
 # OfficeDevPnP.PowerShell Changelog #
 
 **2015-05-28**
+* Updated Add-SPOField to allow for -Field parameter to add a site column to a list.
 * Added Set-SPOSitePolicy and Get-SPOSitePolicy cmdlets
 
 **2015-05-22**
