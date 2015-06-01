@@ -88,28 +88,5 @@ namespace Provisioning.UX.AppWeb.Controllers
             return _returnResponse;   
 
         }
-
-        #region Private Members
-        /// <summary>
-        /// Save the Site Request to the Data Repository
-        /// </summary>
-        /// <param name="siteRequest"></param>
-        private void SaveSiteRequestToRepository(SiteRequest siteRequest)
-        {
-            try
-            {
-                var _newRequest = ObjectMapper.ToSiteRequestInformation(siteRequest);
-                ///Save the Site Request
-                ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
-                var _manager = _srf.GetSiteRequestManager();
-                _manager.CreateNewSiteRequest(_newRequest);
-            }
-            catch (Exception _ex)
-            {
-                throw;
-            }
-
-        }
-        #endregion
     }
 }
