@@ -11,7 +11,7 @@ It aims to show a working solution that:
 
 Key points are that it uses the new API for updating **User Profiles with CSOM** (not the web services) and the use of the new **Graph API 2.0** recently announced here: [http://blogs.msdn.com/b/aadgraphteam/archive/2014/12/12/announcing-azure-ad-graph-api-client-library-2-0.aspx](http://blogs.msdn.com/b/aadgraphteam/archive/2014/12/12/announcing-azure-ad-graph-api-client-library-2-0.aspx)
 
-One of the interesting demonstration elements is giving access to a SharePoint App to read (or write) in the Azure AD instance behind an Office 365 tenant.
+One of the interesting demonstration elements is giving access to a SharePoint add-in to read (or write) in the Azure AD instance behind an Office 365 tenant.
 
 Many of the concepts are described in other samples and blog posts:
 
@@ -20,7 +20,7 @@ Many of the concepts are described in other samples and blog posts:
 - **SharePoint user profile properties now writable with CSOM** ([http://blogs.msdn.com/b/vesku/archive/2014/11/07/sharepoint-user-profile-properties-now-writable-with-csom.aspx](http://blogs.msdn.com/b/vesku/archive/2014/11/07/sharepoint-user-profile-properties-now-writable-with-csom.aspx)) by Vesa Juvonen
 - **AzureAD.GroupMembership** ([https://github.com/OfficeDev/PnP/tree/master/Samples/AzureAD.GroupMembership](https://github.com/OfficeDev/PnP/tree/master/Samples/AzureAD.GroupMembership)) (note: this sample uses the older Graph API at the time of writing of v1 of this sample)
 
-Note that there is no SharePoint App, just a console application, which you can run as a scheduled task or Azure WebJob.
+Note that there is no SharePoint add-in, just a console application, which you can run as a scheduled task or Azure WebJob.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -54,11 +54,11 @@ Start by getting and registering a ClientId and ClientSecret through /_layouts/1
 
 1. Generate your ClientId & ClientSecret and save them
 2. Use a title of your choice
-3. App Domain: because this is a console app it doesn't really matter, this will not be used because there is no end user interaction
+3. Add-in Domain: because this is a console app it doesn't really matter, this will not be used because there is no end user interaction
 4. Redirect URI: same as above, I just use localhost, there will be no on-the-fly permissions
 
 ## Give your ClientId access to read Azure AD ##
-If you have done the above, you have actually registered your app (your ClientId) with the Azure AD instance behind Office 365. Although it is registered, it still doesn't have permissions to read the directory. 
+If you have done the above, you have actually registered your add-in (your ClientId) with the Azure AD instance behind Office 365. Although it is registered, it still doesn't have permissions to read the directory. 
 
 Using the Azure AD PowerShell module (get it from [http://msdn.microsoft.com/en-us/library/azure/jj151815.aspx](http://msdn.microsoft.com/en-us/library/azure/jj151815.aspx)) run this script after you plug in your ClientId:
 
@@ -66,23 +66,23 @@ Using the Azure AD PowerShell module (get it from [http://msdn.microsoft.com/en-
 ## Connect to the Microsoft Online tenant
 Connect-MsolService
 
-## Set the app Client Id, aka AppPrincipalId, in a variable
+## Set the add-in Client Id, aka AppPrincipalId, in a variable
 $appId = "9a329aa2-01de-4248-8dc4-3187ed7e1c6c"
 
-## get the App Service Principal
+## get the add-in Service Principal
 $appPrincipal = Get-MsolServicePrincipal -AppPrincipalId $appId 
 
 ## Get the Directory Readers Role
 $directoryReaderRole = Get-MsolRole -RoleName "Directory Readers" ##get the role you want to set
 
-##Give the app the Directory Reader role
+##Give the add-in the Directory Reader role
 Add-MsolRoleMember -RoleMemberType ServicePrincipal -RoleObjectId $directoryReaderRole.ObjectId -RoleMemberObjectId $appPrincipal.ObjectId
 
-##Confirm that the role has our app
+##Confirm that the role has our add-in
 Get-MsolRoleMember -RoleObjectId $directoryReaderRole.ObjectId
 ```
 
-This PowerShell script gets the Service Principal of the app, then gives it the "Directory Readers" permission. This is enough to get the users and their data.
+This PowerShell script gets the Service Principal of the add-in, then gives it the "Directory Readers" permission. This is enough to get the users and their data.
 
 ## Configure the fields to synchronize ##
 You will find PropertyConfiguration.xml in the project. This is a simple XML file that maps the Azure AD profile property schema name and the User Profiles property name. It also specifies the WriteIfBlank behaviour, and if the field is multi-value.
@@ -100,7 +100,7 @@ Some key settings are required in the app.config file.
 
 This solution still makes use of SharePointOnlineCredentials, so think about how to protect the password (encrypt it, etc).
 
-Note: I didn't manage to get this working with an App-Only Policy context... the PeopleManager doesn't seem to work without a user context.
+Note: I didn't manage to get this working with an Add-in Only Policy context... the PeopleManager doesn't seem to work without a user context.
 ```XML
   <appSettings>
     <!--Used in SharePoint and in Azure AD-->

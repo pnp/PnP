@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,25 +24,77 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         /// </summary>
         [TestMethod]
         [Ignore]
-        public void DumpBaseTemplate_STS0()
+        public void DumpBaseTemplates()
         {
             using (ClientContext ctx = TestCommon.CreateClientContext())
             {
-                using(ClientContext cc = ctx.Clone("https://bertonline.sharepoint.com/sites/templateSTS0"))
+                DumpTemplate(ctx, "STS0");
+                DumpTemplate(ctx, "BLOG0");
+                DumpTemplate(ctx, "BDR0");
+                DumpTemplate(ctx, "DEV0");
+                DumpTemplate(ctx, "OFFILE1");
+#if !CLIENTSDKV15
+                DumpTemplate(ctx, "EHS1");
+#else
+                DumpTemplate(ctx, "STS1");
+                DumpTemplate(ctx, "BLANKINTERNET0");
+#endif
+                DumpTemplate(ctx, "BICENTERSITE0");
+                DumpTemplate(ctx, "SRCHCEN0");
+                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0");
+                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0", "CMSPUBLISHING0");
+                DumpTemplate(ctx, "ENTERWIKI0");
+                DumpTemplate(ctx, "PROJECTSITE0");
+                DumpTemplate(ctx, "COMMUNITY0");
+                DumpTemplate(ctx, "COMMUNITYPORTAL0");
+                DumpTemplate(ctx, "SRCHCENTERLITE0");
+                DumpTemplate(ctx, "VISPRUS0");
+            }
+        }
+
+        private void DumpTemplate(ClientContext ctx, string template, string subSiteTemplate = "")
+        {
+            Uri devSiteUrl = new Uri(ConfigurationManager.AppSettings["SPODevSiteUrl"]);
+            string baseUrl = String.Format("{0}://{1}", devSiteUrl.Scheme, devSiteUrl.DnsSafeHost);
+
+            string siteUrl = "";
+            if (subSiteTemplate.Length > 0)
+            {
+                siteUrl = (String.Format("{1}/sites/template{0}/template{2}", template, baseUrl, subSiteTemplate));
+            }
+            else
+            {
+                siteUrl = (String.Format("{1}/sites/template{0}", template, baseUrl));
+            }
+
+            using (ClientContext cc = ctx.Clone(siteUrl))
+            {
+                // Specify null as base template since we do want "everything" in this case
+                ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
+                creationInfo.BaseTemplate = null;
+
+                ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
+                if (subSiteTemplate.Length > 0)
                 {
-                    // Specify null as base template since we do want "everything" in this case
-                    ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
-                    creationInfo.BaseTemplate = null;
+                    p.Id = String.Format("{0}template", subSiteTemplate);
+                }
+                else
+                {
+                    p.Id = String.Format("{0}template", template);
+                }
 
-                    ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
-                    p.Id = "STS0template";
-
-                    // Cleanup before saving
-                    p.Security.AdditionalAdministrators.Clear();
+                // Cleanup before saving
+                p.Security.AdditionalAdministrators.Clear();
 
 
-                    XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(".", "");
-                    provider.SaveAs(p, "STS0Template.xml");                    
+                XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(".", "");
+                if (subSiteTemplate.Length > 0)
+                {
+                    provider.SaveAs(p, String.Format("{0}Template.xml", subSiteTemplate));
+                }
+                else
+                {
+                    provider.SaveAs(p, String.Format("{0}Template.xml", template));
                 }
             }
         }

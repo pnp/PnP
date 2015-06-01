@@ -69,6 +69,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.AddWikiPageByUrl(url);
                     web.AddLayoutToWikiPage(page.Layout, url);
                 }
+
+                if (page.WelcomePage)
+                {
+                    if (!web.IsPropertyAvailable("RootFolder"))
+                    {
+                        web.Context.Load(web.RootFolder);
+                        web.Context.ExecuteQueryRetry();
+                    }
+
+                    var rootFolderRelativeUrl = url.Substring(web.RootFolder.ServerRelativeUrl.Length);
+                    web.SetHomePage(rootFolderRelativeUrl);
+                }
+
                 if (page.WebParts != null & page.WebParts.Any())
                 {
                     var existingWebParts = web.GetWebParts(url);
@@ -79,7 +92,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         {
                             WebPartEntity wpEntity = new WebPartEntity();
                             wpEntity.WebPartTitle = webpart.Title;
-                            wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                            wpEntity.WebPartXml = webpart.Contents.ToParsedString().Trim(new[] {'\n', ' '});
                             web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
                         }
                     }

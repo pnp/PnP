@@ -4,7 +4,7 @@
 This control is used to browse documents that are stored in document libaries in SharePoint. It can show multiple document libraries in 1 tree structure. If you click on one of the selected documents, it will open. It is possible to configure filters on document extensions and specify the number of selected files. There is support for a custom datasource that you can implement yourself to get data from sources that the control itself does not support.
 
 ### Prerequisites ###
-It's important that the provider hosted app that's running the document picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+It's important that the provider hosted add-in that's running the document picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
@@ -31,11 +31,11 @@ One you click on the *document* icon right to the control a dialog opens in whic
 
 ![](http://i.imgur.com/gvVLyJj.png)
 
-# HOW TO USE THE DOCUMENT PICKER IN YOUR PROVIDER HOSTED SP APP? #
+# HOW TO USE THE DOCUMENT PICKER IN YOUR PROVIDER HOSTED SP ADD-IN? #
 Below you can find the steps needed to get the control working
 
-## ENSURE YOU TRIGGER THE CREATION OF AN APP WEB ##
-When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. Since the document picker control uses the CSOM object model from JavaScript it’s required to have an app web. To ensure you have an app web you can just add a empty element to your SharePoint app as shown below:
+## ENSURE YOU TRIGGER THE CREATION OF AN ADD-In WEB ##
+When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the document picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a empty element to your SharePoint add-in as shown below:
 
 ![](http://i.imgur.com/DYnXn5E.png)
 
@@ -59,7 +59,7 @@ We also need to add html on the page where we want the control to render. The co
 ```
 
 ## CREATE THE CLIENTCONTEXT OBJECT ##
-Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted app via a dialog in SharePoint. The appContextSite is used to communicate to the hostweb (if your lists are located there). You need to add this code to your app.js file.
+Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted add-in via a dialog in SharePoint. The appContextSite is used to communicate to the hostweb (if your lists are located there). You need to add this code to your app.js file.
 
 ```JavaScript
 $(document).ready(function () {
@@ -77,7 +77,7 @@ $(document).ready(function () {
         function () {
             $.getScript(layoutsRoot + 'SP.js',
                 function () {
-                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    //Load the SP.UI.Controls.js file to render the add-in Chrome
                     $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
 
                     //load scripts for cross site calls (needed to use the document picker control in an IFrame)
@@ -97,7 +97,7 @@ $(document).ready(function () {
 The final step is to transform the HTML inserted in the previous step into a document picker control. This is done by creating an instance of the documentpicker JavaScript class and providing it a reference to the HTML elements. The control gets data using a datasource. With the default datasource you can get data using a array of list titles or list id's.
 
 ```JavaScript
-//param1: context of the site to get lists (host or app web)
+//param1: context of the site to get lists (host or add-in web)
 //param2: array of library titles or ID's, to use in the control
 //param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
 var basicDocumentPickerDatasource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib"],"TITLE"); //pass list titles to find lists
@@ -134,7 +134,7 @@ The control is able to show multiple document libraries in the same treeview. Ju
 
 ```JavaScript
 
-//param1: context of the site to get lists (host or app web)
+//param1: context of the site to get lists (host or add-in web)
 //param2: array of library titles or ID's, to use in the control
 //param3: type of identifier passed in the above parameter (possible choises= 'TITLE' or 'ID')
 var documentPickerWithOptionsDataSource = new CAMControl.DocumentPickerDataSource(context, ["DocumentPickerDocLib", "DocumentPickerDocLibExtra"], "TITLE"); //pass id's instead of titles

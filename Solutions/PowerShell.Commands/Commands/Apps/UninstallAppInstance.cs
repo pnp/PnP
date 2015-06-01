@@ -13,7 +13,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         Code = @"PS:> Uninstall-SPOAppInstance -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe")]
     public class UninstallAppInstance : SPOWebCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true, HelpMessage = "Appinstance or Id of the app to remove.")]
+        [Parameter(Mandatory = true, ValueFromPipeline = true, HelpMessage = "Appinstance or Id of the addin to remove.")]
         public AppPipeBind Identity;
 
         [Parameter(Mandatory = false)]

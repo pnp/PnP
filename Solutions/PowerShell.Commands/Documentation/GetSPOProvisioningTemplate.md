@@ -1,5 +1,5 @@
 #Get-SPOProvisioningTemplate
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-06-01*
 
 Generates a provisioning template from a web
 ##Syntax
@@ -22,9 +22,9 @@ Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to us
 
 ###Example 1
     
-    PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeAllTermGroups
+    PS:> Get-SPOProvisioningTemplate -Out template.xml
 
-Extracts a provisioning template in XML format from the current web and includes all term groups, term sets and terms from the Managed Metadata Service Taxonomy.
+Extracts a provisioning template in XML format from the current web.
 
 ###Example 2
     
@@ -34,19 +34,19 @@ Extracts a provisioning template in XML format from the current web and saves th
 
 ###Example 3
     
-    PS:> Get-SPOProvisioningTemplate -Out template.xml
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -Schema V201503
 
-Extracts a provisioning template in XML format from the current web.
+Extracts a provisioning template in XML format from the current web and saves it in the V201503 version of the schema.
 
 ###Example 4
+    
+    PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeAllTermGroups
+
+Extracts a provisioning template in XML format from the current web and includes all term groups, term sets and terms from the Managed Metadata Service Taxonomy.
+
+###Example 5
     
     PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeSiteCollectionTermGroup
 
 Extracts a provisioning template in XML format from the current web and includes the term group currently (if set) assigned to the site collection.
-
-###Example 5
-    
-    PS:> Get-SPOProvisioningTemplate -Out template.xml -Schema V201503
-
-Extracts a provisioning template in XML format from the current web and saves it in the V201503 version of the schema.
-<!-- Ref: 0C78868B66D14D536E6AA495BF5BA1AE -->
+<!-- Ref: B2DF795D522B4BBCFC6FC7099A77CDD6 -->

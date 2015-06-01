@@ -28,7 +28,7 @@ Version  | Date | Comments
 ----------
 
 # General #
-This solution contains two different projects which do the same thing using two different SharePoint App Model approaches. The goal is to demonstrate a couple of things:
+This solution contains two different projects which do the same thing using two different SharePoint add-in Model approaches. The goal is to demonstrate a couple of things:
 - Deploying sites, site columns, content types, lists and list items using JavaScript alone.
 - Controlling the sequencing of the provisioning, catching errors when they happen and having the opportunity to log and/or react to them.
 
@@ -36,13 +36,13 @@ The samples currently use values hardcoded into the page; it pulls them out of t
 
 Provisioning.Jsom.Ncss – This solution uses a no-code sandboxed solution to deploy a page and a JavaScript file to the Site Pages library of a default site. This simulates a trusted scenario where the provisioning logic is deployed directly to a SharePoint host web.
 
-Provisioning.Jsom.App – This is a straight immersive SharePoint hosted app. In this case, the page and JavaScript is loaded into an app web and utilizes the cross domain scripting library to submit JSOM calls to the host web.
+Provisioning.Jsom.App – This is a straight immersive SharePoint hosted add-in. In this case, the page and JavaScript is loaded into an add-in web and utilizes the cross domain scripting library to submit JSOM calls to the host web.
 
 In both cases, the JavaScript demonstrates using jQuery Promises to sequence asynchronous calls and handle successes and failures.
 
 
 # Scenario: JSOM Provisioning #
-The JavaScript Object Model offers powerful capabilities for interacting with SharePoint and can provide a useful alternative to CSOM when a provider-hosted app isn’t a suitable option. This solution contains two projects that complete the same tasks via slightly different mechanisms. Before discussing the differences, first we’ll look at the similarities.
+The JavaScript Object Model offers powerful capabilities for interacting with SharePoint and can provide a useful alternative to CSOM when a provider-hosted add-in isn’t a suitable option. This solution contains two projects that complete the same tasks via slightly different mechanisms. Before discussing the differences, first we’ll look at the similarities.
 
 ## Promises via the jQuery Deferred Functionality ##
 
@@ -91,7 +91,7 @@ The pattern for each provisioning operation is basically the same.
 ## Cross Domain Provisioning ##
 The NCSS approach is relatively straightforward. The code is loaded from the host web directly, so there are no cross domain issues to worry about. The JavaScript can just directly call into the host web and provision.
 
-The immersive app approach adds the wrinkle that the app is running in an app web underneath the host web in a separate domain. The browser’s single origin policy prevents JavaScript loaded from the app web to target the host web. In this case the cross domain library is used to transfer the call over so that it actually occurs in the host web.
+The immersive add-in approach adds the wrinkle that the add-in is running in an add-in web underneath the host web in a separate domain. The browser’s single origin policy prevents JavaScript loaded from the add-in web to target the host web. In this case the cross domain library is used to transfer the call over so that it actually occurs in the host web.
 
 ```JavaScript
 var dfd = $.Deferred();
@@ -122,5 +122,5 @@ return dfd.promise();
 ## Usage ##
 **Provisioning.Jsom.Ncss** – This solution builds to a WSP that can be added to the Solutions Gallery of a site collection. Once the solution is activated and the features that the solution adds to the site is also activated, the provisioning.aspx page is provisioned into the Site Pages library of the site.
 
-**Provisioning.Jsom.App** – This can be built to a .App file and deployed like any other SharePoint hosted app.
+**Provisioning.Jsom.App** – This can be built to a .App file and deployed like any other SharePoint hosted add-in.
 

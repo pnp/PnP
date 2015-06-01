@@ -2,7 +2,7 @@
 
 ### Summary ###
 Asynchronous provisioning of site collections in on-premises using CSOM. Process and video available from following blog post
-- [Async site collection provisioning with app model for on-prem and Office 365 Dedicated](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx "Async site collection provisioning with app model for on-prem and Office 365 Dedicated")
+- [Async site collection provisioning with add-in model for on-prem and Office 365 Dedicated](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx "Async site collection provisioning with app model for on-prem and Office 365 Dedicated")
 
 ### Applies to ###
 
@@ -11,7 +11,7 @@ Asynchronous provisioning of site collections in on-premises using CSOM. Process
 
 ### Prerequisites ###
 Check the needed prerequisites from following blog post
-- [Provisioning site collections using SP App model in on-premises with just CSOM](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx "Provisioning site collections using SP App model in on-premises with just CSOM")
+- [Provisioning site collections using SP add-in model in on-premises with just CSOM](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx "Provisioning site collections using SP App model in on-premises with just CSOM")
 
 ### Solution ###
 Solution | Author(s)
@@ -45,4 +45,4 @@ Since provisioning of site collections can take a quite a long time, you really 
 # Structure #
 This sample contains two solutions. One for web UI, which is optional, but does ask the needed permissions which we can then also use for the actual "remote timer job" process.
 
-Second solution is the actual "remote timer job", which can be scheduled for example using windows scheduler and could be running in the on-premises provider hosted app environment servers.
+Second solution is the actual "remote timer job", which can be scheduled for example using windows scheduler and could be running in the on-premises provider hosted add-in environment servers.

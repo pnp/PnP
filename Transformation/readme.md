@@ -1,4 +1,4 @@
-This folder contains tools and scripts that are used to help with **transforming** deployed FTC elements to it's app model counterparts. 
+This folder contains tools and scripts that are used to help with **transforming** deployed FTC elements to it's add-in model counterparts. 
 
 We'll have **discovery tools and scripts** that will help you get a view on where which FTC reference exists (e.g. you do want to know which sites use that custom master page that was deployed as FTC solution). 
 

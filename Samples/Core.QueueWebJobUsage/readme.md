@@ -4,8 +4,8 @@
 This sample shows how to perform operations on-demand with Azure WebJobs as continuously running operation, which will handle incoming requests from message queue. This can be really easily achieved with only few lines of code and is extremely powerful technique for providing asynchronous operations started by end user. Comparing this to classic server side timer jobs, this equals to the model where you use SPOneTImeSchedule class for your timer job scheduling based on end user input. 
 
 Typical use cases for long lasting asynchronous operations would be for example following. 
-- Complex configurations installed from the app to the given host web  
-- Complex app Installed operations due 30 sec time out
+- Complex configurations installed from the add-in to the given host web  
+- Complex add-in Installed operations due 30 sec time out
 - Self service operations for the end users, like site collection provisioning for cloud or for on-premises with service bus usage
 - Route entries or information from Office 365 to on-premises systems
 - Start perform complex usage calculations or other long lasting business logic cross tenant
@@ -19,7 +19,7 @@ See exact details on the model from blog post from Vesa Juvonen
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-You will need to have or create Azure storage account for the communications between provider hosted app and the WebJob, which is executed dynamically based on messages added to the storage queue. 
+You will need to have or create Azure storage account for the communications between provider hosted add-in and the WebJob, which is executed dynamically based on messages added to the storage queue. 
 
 ### Solution ###
 Solution | Author(s)
@@ -42,16 +42,16 @@ Following picture explains the logical architecture for this pattern.
 
 ![](http://i.imgur.com/EGLm9Tw.png)
 
-1. User operates in the SharePoint and starts provider hosted app UI one way or another (full page, pop up, app part etc.)
-1. Actual operations are performed in the provider hosted app side which is collecting needed parameters and other settings for the processing
+1. User operates in the SharePoint and starts provider hosted add-in UI one way or another (full page, pop up, add-in part etc.)
+1. Actual operations are performed in the provider hosted add-in side which is collecting needed parameters and other settings for the processing
 1. Operation request is stored to Azure storage queue or Service bus for processing
 1. Task is picked up automatically by continuously running WebJob with needed details and requested operation is applied
 
 Notice that operation could be also targeted not only to Office 365, but also to any other system. You can for example use this same pattern to feed LOB system from on-premises with service bus connection. 
 
 Typical use cases for long lasting asynchronous operations would be for example following. 
-- Complex configurations installed from the app to host web 
-- Complex app Installed operations due 30 sec time out
+- Complex configurations installed from the add-in to host web 
+- Complex add-in Installed operations due 30 sec time out
 - Self service operations for the end users, like site collection provisioning for cloud or for on-premises with service bus usage
 - Route entries or information from Office 365 to on-premises systems
 - Start perform complex usage calculations or other long lasting business logic cross tenant
@@ -74,9 +74,9 @@ app.config file contains StorageConnetionString key, which should be updated acc
 
 
 ## Core.QueueWebJobUsage ##
-This is the actual SharePoint app project, which is used to introduce the app for SharePoint and contains also the requested permission, which are needed for the actual provider hosted app. In this case we are requesting following permissions, which are needed for the synchronous operation demonstration in the reference provider hosted code side. Technically these are not needed for the WebJob based implementation, since you could request or register needed permission directly by using appinv.aspx page explained for example in this[ great blog post from Kirk Evans](http://blogs.msdn.com/b/kaevans/archive/2014/03/02/building-a-sharepoint-app-as-a-timer-job.aspx) related on the remote timer jobs.
+This is the actual SharePoint add-in project, which is used to introduce the add-in for SharePoint and contains also the requested permission, which are needed for the actual provider hosted add-in. In this case we are requesting following permissions, which are needed for the synchronous operation demonstration in the reference provider hosted code side. Technically these are not needed for the WebJob based implementation, since you could request or register needed permission directly by using appinv.aspx page explained for example in this[ great blog post from Kirk Evans](http://blogs.msdn.com/b/kaevans/archive/2014/03/02/building-a-sharepoint-app-as-a-timer-job.aspx) related on the remote timer jobs.
 
-- Allow the app to make app-only calls to SharePoint
+- Allow the add-in to make add-in-only calls to SharePoint
 - FullControl permission to Web 
 
 
@@ -86,14 +86,14 @@ This is business logic and entity project, so that we can use needed code from n
 Notice that business logic (Core.QueueWebJobUsage.Common.SiteManager::PerformSiteModification()) has intentional 20 second sleep for the thread to demonstrate long lasting operation. 
 
 ## Core.QueueWebJobUsage.Job ##
-This is the actual Azure WebJob created using WebJob template which was introduced by the [Azure SDK for .NET 2.5](https://msdn.microsoft.com/en-us/library/azure/dn873976.aspx). All the actual business logic is located in the Common component, but the logic to hook up the queues and initial creation of app only client context is located in this project. 
+This is the actual Azure WebJob created using WebJob template which was introduced by the [Azure SDK for .NET 2.5](https://msdn.microsoft.com/en-us/library/azure/dn873976.aspx). All the actual business logic is located in the Common component, but the logic to hook up the queues and initial creation of add-in only client context is located in this project. 
 
-You will need to update right App Id and App secret to the app.config for this one like follows.
+You will need to update right add-in Id and add-in secret to the app.config for this one like follows.
 
 ```XML
   <appSettings>
-    <add key="ClientId" value="[your app id]" />
-    <add key="ClientSecret" value="[your app secret]" />
+    <add key="ClientId" value="[your add-in id]" />
+    <add key="ClientSecret" value="[your add-in secret]" />
   </appSettings>
 ```
 
@@ -109,7 +109,7 @@ You will also need to update connection strings to match your storage connection
 ```
 
 ## Core.QueueWebJobUsageWeb ##
-This is the user interface for the provider hosted app. Only thing you need to configure is the storage configuration string based on your environment. App ID and Secret information is managed automatically by Visual Studio when you deploy the solution for debugging with F5, but obviously those would need to be properly configured for actual deployment. 
+This is the user interface for the provider hosted add-in. Only thing you need to configure is the storage configuration string based on your environment. add-in ID and Secret information is managed automatically by Visual Studio when you deploy the solution for debugging with F5, but obviously those would need to be properly configured for actual deployment. 
 
 Notice also that you need to update the storage account information accordingly, so that UI can add requests to queue.
 
@@ -125,7 +125,7 @@ This is typical Office 365 Developer Patterns and Practices sample, which is con
 
 ![](http://i.imgur.com/Bx2oFGA.png)
 
-This app has two different buttons, one for synchronous and one for asynchronous operation. Both buttons will create new document library to the host web, but asynchronous operation will take advantage of the Azure WebJob based execution. Here’s example of the library created by using this code. Notice that the description for the library is also dynamic and the requestor name is added there for demonstration purposes. This was just done to show how to provide complex data types cross storage queues. 
+This add-in has two different buttons, one for synchronous and one for asynchronous operation. Both buttons will create new document library to the host web, but asynchronous operation will take advantage of the Azure WebJob based execution. Here’s example of the library created by using this code. Notice that the description for the library is also dynamic and the requestor name is added there for demonstration purposes. This was just done to show how to provide complex data types cross storage queues. 
 
 ![](http://i.imgur.com/CAnZ5Ac.png)
 

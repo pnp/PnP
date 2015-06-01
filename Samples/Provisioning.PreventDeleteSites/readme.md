@@ -19,7 +19,7 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 
 ## Overview ##
-This sample shows how to create a sandbox solution for preventing site deletion and using an app to deploy the solution with an application. This solution combines a solution which is still partial-trust code (by using a sandbox solution) with a new provider-hosted application. One of the challenges of current remote event receivers is that they do not support a synchronous event processing. This means that when the SiteDeleting, WebDeleting, or ListDeleting events would not be preventable the event would not be able to cancel the site from being deleted before it is deleted.
+This sample shows how to create a sandbox solution for preventing site deletion and using an add-in to deploy the solution with an application. This solution combines a solution which is still partial-trust code (by using a sandbox solution) with a new provider-hosted application. One of the challenges of current remote event receivers is that they do not support a synchronous event processing. This means that when the SiteDeleting, WebDeleting, or ListDeleting events would not be preventable the event would not be able to cancel the site from being deleted before it is deleted.
 This samples demonstrates:
 
 - Development of a simple sandboxed solution using an SPSiteEventReceiver to prevent site deletion.
@@ -85,7 +85,7 @@ Solution activation is done using the DesignPackage objects to determine the wsp
 - 	Microsoft.SharePoint.Client.dll
 -   Microsoft.SharePoint.Client.Runtime.dll 
 -   Microsoft.SharePoint.Client.Publishing.dll
--   [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+-   [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
 

@@ -39,6 +39,10 @@
         /// Set as source variation
         /// </summary>
         public bool IsSource { get; set; }
-    }
 
+        /// <summary>
+        /// Gets a value indicating whether the variation label has been created
+        /// </summary>
+        public bool IsCreated { get; internal set; }
+    }
 }

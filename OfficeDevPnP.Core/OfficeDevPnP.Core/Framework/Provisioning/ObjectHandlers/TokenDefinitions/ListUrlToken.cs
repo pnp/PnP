@@ -7,7 +7,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions
     {
         private string _listUrl = null;
         public ListUrlToken(Web web, string name, string url)
-            : base(web, string.Format("{{listurl:{0}}}", url))
+            : base(web, string.Format("{{listurl:{0}}}", name))
         {
             _listUrl = url;
         }

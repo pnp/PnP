@@ -105,10 +105,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new V201505.StringDictionaryItem
+                     select new V201505.PropertyBagEntry()
                      {
                          Key = bag.Key,
                          Value = bag.Value,
+                         Indexed = bag.Indexed
                      }).ToArray();
             }
             else
@@ -241,6 +242,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          EnableVersioning = list.EnableVersioning,
                          EnableMinorVersions = list.EnableMinorVersions,
                          EnableModeration = list.EnableModeration,
+                         DraftVersionVisibility = list.DraftVersionVisibility,
                          Hidden = list.Hidden,
                          MinorVersionLimit = list.MinorVersionLimit,
                          MinorVersionLimitSpecified = true,
@@ -702,6 +704,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     {
                         Key = bag.Key,
                         Value = bag.Value,
+                        Indexed = bag.Indexed
                     });
             }
             #endregion
@@ -840,6 +843,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
                         EnableMinorVersions = list.EnableMinorVersions,
+                        DraftVersionVisibility = list.DraftVersionVisibility,
                         EnableModeration = list.EnableModeration,
                         Hidden = list.Hidden,
                         MinorVersionLimit = list.MinorVersionLimitSpecified ? list.MinorVersionLimit : 0,
@@ -1001,7 +1005,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Row = (uint)wp.Row,
                                  Contents = wp.Contents
 
-                             }).ToList() : null)));
+                             }).ToList() : null), page.WelcomePage));
 
                 }
             }
@@ -1024,7 +1028,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 termSet.LanguageSpecified ? (int?)termSet.Language : null,
                                 termSet.IsAvailableForTagging,
                                 termSet.IsOpenForTermCreation,
-                                termSet.Terms.FromSchemaTermsToModelTerms(),
+                                termSet.Terms != null ? termSet.Terms.FromSchemaTermsToModelTerms() : null,
                                 termSet.CustomProperties != null ? termSet.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null)
                             {
                                 Description = termSet.Description,
@@ -1065,7 +1069,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             result.Providers.Add(
                                 new Model.Provider
                                 {
-                                    Assembly = handlerType.AssemblyQualifiedName,
+                                    Assembly = handlerType.Assembly.FullName,
                                     Type = handlerType.FullName,
                                     Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
                                     Enabled = provider.Enabled,

@@ -1,5 +1,5 @@
 #Remove-SPOUserFromGroup
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-05-22*
 
 Removes a user from a group
 ##Syntax
@@ -11,7 +11,7 @@ Remove-SPOUserFromGroup -LoginName <String> -GroupName <String> [-Web <WebPipeBi
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
 GroupName|String|True|A valid group name
-LoginName|String|True|A valid logon name of a user
+LoginName|String|True|A valid login name of a user
 Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
@@ -20,4 +20,4 @@ Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to us
 PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'
 
 
-<!-- Ref: 5434246C8AD89404BA4C761D45C5689C -->
+<!-- Ref: 53C66729BBAFC5480C05EEF21AB41A68 -->

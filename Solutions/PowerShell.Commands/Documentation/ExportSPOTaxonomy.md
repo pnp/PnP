@@ -1,5 +1,5 @@
 #Export-SPOTaxonomy
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-01*
 
 Exports a taxonomy to either the output or to a file.
 ##Syntax
