@@ -704,6 +704,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     {
                         Key = bag.Key,
                         Value = bag.Value,
+                        Indexed = bag.Indexed
                     });
             }
             #endregion
