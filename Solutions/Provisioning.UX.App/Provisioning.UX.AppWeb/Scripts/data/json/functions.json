@@ -1,0 +1,29 @@
+﻿{    
+    "functions": [
+        {
+            "key": "Information Technology",
+            "value": "Information Technology",
+            "displayOrder": 1
+        },
+        {
+            "key": "Human Resources",
+            "value": "Human Resources",
+            "displayOrder": 2
+        },
+        {
+            "key": "Legal",
+            "value": "Legal",
+            "displayOrder": 3
+        },
+        {
+            "key": "Accounting",
+            "value": "Accounting",
+            "displayOrder": 4
+        },
+        {
+            "key": "Administrative",
+            "value": "Administrative",
+            "displayOrder": 5
+        }
+    ]
+}
