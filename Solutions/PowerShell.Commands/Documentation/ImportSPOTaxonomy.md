@@ -24,11 +24,11 @@ TermStoreName|String|False|
 
 ###Example 1
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
-Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
+Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
 
 ###Example 2
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
-Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
-<!-- Ref: 451EF1CC0ADD8742309128E95C1762DC -->
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
+Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
+<!-- Ref: 5E7BCF2938E4977F2EB4CA1BADB2AA3B -->
