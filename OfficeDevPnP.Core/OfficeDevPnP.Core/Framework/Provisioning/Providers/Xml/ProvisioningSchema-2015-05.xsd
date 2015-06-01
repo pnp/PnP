@@ -655,6 +655,17 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="DraftVersionVisibility" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The DraftVersionVisibility for the List Instance, optional attribute. The property will be cast to enum DraftVersionVisibility
+          0 - Reader - 	Any user who can read items,
+          1 - Author - Only users who can edit items,
+          2 - Approver - Only users who can approve items (and the author of the item)
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="RemoveExistingContentTypes" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -1205,6 +1216,15 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+
+    <xsd:attribute name="WelcomePage" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines whether the page should be set as Welcomepage of the web rootfolder
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
   </xsd:complexType>
 
   <xsd:complexType name="WikiPageWebPart">

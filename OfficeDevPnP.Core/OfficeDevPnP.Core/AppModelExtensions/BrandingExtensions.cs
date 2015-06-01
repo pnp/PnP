@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.SharePoint.Client.Utilities;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
+using Utility = OfficeDevPnP.Core.Utilities.Utility;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -1327,7 +1329,5 @@ namespace Microsoft.SharePoint.Client
             folder.Update();
             web.Context.ExecuteQueryRetry();
         }
-
-
     }
 }
