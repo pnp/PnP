@@ -8,7 +8,7 @@ These tokens can be used to make the template site collection independent for in
 Below all the supported tokens are listed:
 
 |Token|Example|Output example|Description
-|-----|-------|-----------
+|-----|-------|-----------|-----
 |{keywordtermstoreid}|{keywordtermstoreid}|FDF19D89-A82F-4AB9-9BB5-B49E6CA5212E|Will return the ID/Guid of the keyword term store, without { }. If you want a ID with { } around the value, use the token as follows: {{keywordtermstoreid}}|
 |{listid:&lt;name&gt;}|{listid:Demo List}|FDF19D89-A82F-4AB9-9BB5-B49E6CA5212E|Will return the ID of the list specified by the parameter, which is the title of the list. If you want a ID with { } around the value, use the token as follows: {{listid:Demo List}}|
 |{listurl:&lt;name&gt;}|{listurl:Demo List}|lists/demolist|Will return the url of the list specified by the parameter, which is the title of the list.|
