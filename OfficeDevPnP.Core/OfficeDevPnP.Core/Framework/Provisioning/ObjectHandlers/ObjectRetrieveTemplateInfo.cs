@@ -84,7 +84,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!_willExtract.HasValue)
             {
-                _willExtract = false;
+                _willExtract = true;
             }
             return _willExtract.Value;
 
