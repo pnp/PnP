@@ -10,7 +10,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Request are processed asynchronously using the remote timer job pattern
 - New site collection creation to Office 365 MT.
 - New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
-- Apply a configuration template to newly created sites using the PnP Provisioning framework
+- Apply a configuration template to newly created sites using the PnP Provisioning Framework
 - Enable External sharing for sites that are hosted in SharePoint Online MT
 - Visual indicator if a Site is externally shared
 - Site Classification.
@@ -35,7 +35,7 @@ Provisioning.UX.App | Frank Marasco, Brian Michely and Steven Follis
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-.1  | April 22nd 2015 | Initial version
+.1  | June 1, 2015 | Initial version
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -116,8 +116,13 @@ Once we have the policies created we are going to publish the Site Policies from
 
 #### App Registration and Permissions ####
 
-You should use AppRegNew.aspx to register your add-in for SharePoint. This solution uses app only permissions so you will have to navigate to http://[Tenant]/_layouts/15/appinv.aspx and grant the application the following permissions.
+You should use AppRegNew.aspx to register your add-in for SharePoint. 
+
+![](http://i.imgur.com/e6kIBzD.png)
 	
+This solution uses app only permissions so you will have to navigate to http://[Tenant]/_layouts/15/appinv.aspx and grant the application the following permissions.Use the Appinv.aspx page to lookup the add-in created in the previous step and then specify the permission XML. 
+
+
 	<AppPermissionRequests AllowAppOnlyPolicy="true">
 		    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
 		    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
@@ -129,7 +134,7 @@ You should use AppRegNew.aspx to register your add-in for SharePoint. This solut
 ----------
 #### Configuration Files ####
 
-The Provisioning.UX.AppWeb and Provisioning.Job each has its own configruation settings.
+The Provisioning.UX.AppWeb and Provisioning.Job each has its own configuration settings.
 
 Configuration File | Description
 -------------------|----------
@@ -166,7 +171,57 @@ HostedAppHostNameOverride | The DNS name where the Web is hosted
 ##### provisioningSettings.config #####
 
 
+Setting | Description
+-------------------|----------
+name | The name of the module to invoke. 
+type | The class and assembly of the implementation
+connectionString | The connection information that is used to connect to the source. 
+container | The container where the artifacts are stored
+
+
+Module Name | Description
+RepositoryManager | Used to change the implementation class of the site request repository
+MasterTemplateProvider | Used to display the available site templates and provides a mapping to PnP Provisioning Template. PnP provisioning XML uses community standardize schema available from own [repository](https://github.com/OfficeDev/PnP-Provisioning-Schema) under Office Dev in GitHub
+ProvisioningProviders | PnP Core Provisioning Providers that contain the implementation on how to work with various source files.
+ProvisioningConnectors | PnP Core Provisioning Connectors that contain the implementation on how to connect to custom PnP Providers. 
+
+The out of box configuration is configured to use a SharePoint List as the site request repository.
+
+	<modulesSection>
+	  <Modules>
+	    <Module name="RepositoryManager" type="Provisioning.Common.Data.SiteRequests.Impl.SPSiteRequestManager, Provisioning.Common"
+	            connectionString=""
+	            container="" />
+	    <!--IF RUNNING IN AZURE ADD [WEBROOT_PATH]/Resources/SiteTemplates/" TO CONNECTIONSTRING-->
+	    <Module name="MasterTemplateProvider"
+	            type="Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager, Provisioning.Common"
+	            connectionString="Resources/SiteTemplates/"
+	            container="" />
+	    <!--USED TO RETURN THE XML PROVIDERS-->
+	    <!--PROVISIONING & PROVIDERS-->
+	    <Module name="ProvisioningProviders"
+	            type="OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLFileSystemTemplateProvider, OfficeDevPnP.Core"
+	            connectionString="Resources/SiteTemplates/ProvisioningTemplates"
+	            container="" />
+	    <Module name="ProvisioningConnectors"
+	            type="OfficeDevPnP.Core.Framework.Provisioning.Connectors.FileSystemConnector, OfficeDevPnP.Core"
+	            connectionString="Resources/SiteTemplates/ProvisioningTemplates"
+	            container="" />
+	    <!--AZURE CONNECTOR USED FOR STORING ASSESTS IN A BLOB-->
+	    <!--<Module name="ProvisioningConnectors"
+	              type="OfficeDevPnP.Core.Framework.Provisioning.Connectors.AzureStorageConnector, OfficeDevPnP.Core"
+	              connectionString=""
+	              container="assests\Resources\SiteTemplates\ProvisioningTemplates"/>
+	        <Module name="XMLTemplateProviders"
+	            type="OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLAzureStorageTemplateProvider, OfficeDevPnP.Core"
+	            connectionString=""
+	            container="assests\Resources\SiteTemplates\ProvisioningTemplates"/>-->
+	  </Modules>
+	</modulesSection>
+
+
+
 #### Coming Updates ####
-We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in JSON and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
 
 
