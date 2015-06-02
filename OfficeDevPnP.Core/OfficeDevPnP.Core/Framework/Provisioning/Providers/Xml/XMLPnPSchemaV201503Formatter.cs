@@ -231,7 +231,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          MinorVersionLimit = list.MinorVersionLimit,
                          MaxVersionLimit = list.MaxVersionLimit,
                          OnQuickLaunch = list.OnQuickLaunch,
-                         RemoveDefaultContentType = list.RemoveDefaultContentType,
+                         RemoveDefaultContentType = list.RemoveExistingContentTypes,
                          TemplateType = list.TemplateType,
                          Title = list.Title,
                          Url = list.Url,
