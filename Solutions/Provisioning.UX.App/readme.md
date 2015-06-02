@@ -104,7 +104,7 @@ We need to define the site policies that will be available in all your sites col
 
 See **Overview of site policies in SharePoint 2013** at http://technet.microsoft.com/en-US/library/jj219569(v=office.15).aspx for more information.
 
-Create three site policies, HBI, MBI and then LBI.  Create an HBI Policy that mimics the below screen.
+Create three site policies, HBI, MBI and then LBI.  Create an HBI Policy based on your requirements.
 
 ![](http://i.imgur.com/sKI5csC.png)
 
@@ -112,11 +112,29 @@ Repeat the above setup two more times for MBI and LBI. You should end up with th
 
 ![](http://i.imgur.com/lrw7nQD.png)
 
-Once we have the policies we are going to publish the Site Policies so they will be available to our sites.
+Once we have the policies created we are going to publish the Site Policies from the content type hub so they will be available to all the sites.
 
+#### App Registration and Permissions ####
+
+You should use AppRegNew.aspx to register your add-in for SharePoint. This solution uses app only permissions so you will have to navigate to http://[Tenant]/_layouts/15/appinv.aspx and grant the application the following permissions.
+	
+	<AppPermissionRequests AllowAppOnlyPolicy="true">
+		    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+		    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+		    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
+		    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+		    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+	</AppPermissionRequests>
+	
+----------
 #### Configuration Files ####
 
-----------
+The Provisioning.UX.AppWeb and Provisioning.Job each has its own configruation settings.
+
+Configuration File | Description
+-------------------|----------
+appSettings.config | An alternate file to store application settings
+provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
 
 #### Coming Updates ####
 We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
