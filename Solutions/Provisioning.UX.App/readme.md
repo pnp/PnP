@@ -16,6 +16,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Site Classification.
 - Site Policies and a visual indicator of the site policy that is applied
 - Applying Composed Looks including, Alternate CSS, Logo, Background image, and fonts
+- Provision site artifacts for example Site Columns, Content Types, List Definitions and Instances, Pages (either WebPart Pages or Wiki Pages)
 
 
 **NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
@@ -185,8 +186,6 @@ MasterTemplateProvider | Used to display the available site templates and provid
 ProvisioningProviders | PnP Core Provisioning Providers that contain the implementation on how to work with various source files.
 ProvisioningConnectors | PnP Core Provisioning Connectors that contain the implementation on how to connect to custom PnP Providers. 
 
-The out of box configuration is configured to use a SharePoint List as the site request repository.
-
 	<modulesSection>
 	  <Modules>
 	    <Module name="RepositoryManager" type="Provisioning.Common.Data.SiteRequests.Impl.SPSiteRequestManager, Provisioning.Common"
@@ -219,9 +218,61 @@ The out of box configuration is configured to use a SharePoint List as the site 
 	  </Modules>
 	</modulesSection>
 
+Note. The out of box configuration is configured to use a SharePoint List as the site request repository.The Site Request List is created at run time the first time a user tries to save a site request in the UX.
+
+![](http://i.imgur.com/KQ4JvAb.png)
+
+
+The following example configuration file shows how you can use the Azure Document DB to store the Site Requests. This gives us the capability to customer our Site Request Domain Model in a schema-free with native JSON support. 
+
+	<modulesSection>
+	    <Modules>
+	      <Module name="RepositoryManager" type="Provisioning.Common.Data.SiteRequests.Impl.AzureDocDbRequestManager, Provisioning.Common"
+	               connectionString="AccountEndpoint=https://yourazure.documents.azure.com:443/;AccountKey=frankwashere==;"
+	               container="SiteRequests" />
+	      <!--IF RUNNING IN AZURE ADD [WEBROOT_PATH]/Resources/SiteTemplates/" TO CONNECTIONSTRING-->
+	      <Module name="MasterTemplateProvider" 
+	              type="Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager, Provisioning.Common" 
+	              connectionString="Resources/SiteTemplates/" 
+	              container="" />
+	      <!--USED TO RETURN THE XML PROVIDERS-->
+	      <!--PROVISIONING & PROVIDER FOR RUNNING IN ONPREM-->
+	      <Module name="ProvisioningProviders" 
+	              type="OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLFileSystemTemplateProvider, OfficeDevPnP.Core" 
+	              connectionString="Resources/SiteTemplates/ProvisioningTemplates" 
+	              container="" />
+	      <Module name="ProvisioningConnectors" 
+	              type="OfficeDevPnP.Core.Framework.Provisioning.Connectors.FileSystemConnector, OfficeDevPnP.Core" 
+	              connectionString="Resources/SiteTemplates/ProvisioningTemplates" 
+	              container="" />
+	      <!--AZURE CONNECTOR USED FOR STORING ASSESTS IN A BLOB-->
+	      <!--<Module name="ProvisioningConnectors"
+	              type="OfficeDevPnP.Core.Framework.Provisioning.Connectors.AzureStorageConnector, OfficeDevPnP.Core"
+	              connectionString=""
+	              container="assests\Resources\SiteTemplates\ProvisioningTemplates"/>
+	        <Module name="XMLTemplateProviders"
+	            type="OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.XMLAzureStorageTemplateProvider, OfficeDevPnP.Core"
+	            connectionString=""
+	            container="assests\Resources\SiteTemplates\ProvisioningTemplates"/>-->
+	    </Modules>
+	</modulesSection>
+
+
+Notice  container for the RepositoryManager. This is the Azure Document Database. The implementation creates the database and collection at run time. 
+
+![](http://i.imgur.com/U402PK5.png)
+
+In order to use Azure Document DB you must first create a new DocumentDB Account in the [Microsoft Azure Preview Portal](https://portal.azure.com/).
+
+![](http://i.imgur.com/SLb3KAm.png)
+
+Copy the Primary or Secondary Connection string and update the connectionString in your RepositoryManager connectionString
+
+![](http://i.imgur.com/uhStvV6.png)
 
 
 #### Coming Updates ####
 We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in JSON and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+
 
 
