@@ -16,7 +16,7 @@ using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectListInstance : ObjectHandlerBase
+    internal class ObjectListInstance : ObjectHandlerBase
     {
 
         public override string Name
@@ -95,7 +95,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 if (list.EnableMinorVersions)
                                 {
                                     createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit; // Set only if enabled, otherwise you'll get exception due setting value to zero.
-                                    
+
                                     // DraftVisibilityType.Approver is available only when the EnableModeration option of the list is true
                                     if (DraftVisibilityType.Approver ==
                                         (DraftVisibilityType)list.DraftVersionVisibility)
@@ -428,7 +428,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (creationInfo.BaseTemplate != null)
                     {
                         // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves performance
-                        index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length+1)) &&
+                        index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length + 1)) &&
                                                                   f.TemplateType.Equals(item.BaseTemplate));
                     }
 
@@ -569,6 +569,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Lists.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                ListCollection collList = web.Lists;
+                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden));
+
+                web.Context.ExecuteQuery();
+
+                _willExtract = lists.Any();
+            }
+            return _willExtract.Value;
+
         }
     }
 }

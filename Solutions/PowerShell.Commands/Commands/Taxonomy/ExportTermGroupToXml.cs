@@ -42,12 +42,12 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var template = new ProvisioningTemplate();
+           // var template = new ProvisioningTemplate();
 
             var templateCi = new ProvisioningTemplateCreationInformation(ClientContext.Web) { IncludeAllTermGroups = true };
 
-            template = new ObjectTermGroups().CreateEntities(ClientContext.Web, template, templateCi);
-
+            var template = ClientContext.Web.GetProvisioningTemplate(templateCi);
+           
             template.Security = null;
             template.Features = null;
             template.CustomActions = null;

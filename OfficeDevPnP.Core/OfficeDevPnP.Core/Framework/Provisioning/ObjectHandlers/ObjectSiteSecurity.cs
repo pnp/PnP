@@ -8,7 +8,7 @@ using User = OfficeDevPnP.Core.Framework.Provisioning.Model.User;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectSiteSecurity : ObjectHandlerBase
+    internal class ObjectSiteSecurity : ObjectHandlerBase
     {
         public override string Name
         {
@@ -197,6 +197,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Security.AdditionalAdministrators.Any() || template.Security.AdditionalMembers.Any() || template.Security.AdditionalOwners.Any() || template.Security.AdditionalVisitors.Any();    
+            }
+            return _willProvision.Value;
+
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
         }
     }
 }
