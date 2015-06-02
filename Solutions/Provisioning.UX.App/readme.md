@@ -136,6 +136,36 @@ Configuration File | Description
 appSettings.config | An alternate file to store application settings
 provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
 
+##### appSettings.config #####
+
+	<appSettings>
+		<!--USED TO SET THE SITE REQUEST TO Approve or New, IF A CUSTOM WORKFLOW IS USED SET TO false WILL SET THE SITE REQUEST STATUS as New-->
+		<add key="AutoApproveSites" value="true" />
+		<add key="ClientId" value="Insert Your Client ID" />
+		<add key="ClientSecret" value="Insert Your Client Secret" />
+		<!--THE SITE THAT HOSTS THE SITE PROVISIONING APPLICATION-->
+		<add key="SPHost" value="The SharePoint Site that hosts the SharePoint Add-in />
+		<add key="SupportTeamNotificationEmail" value="Your Support Email" />
+		<!--THE TENANT ADMIN SITE FOR YOUR ENVIRONMENT-->
+		<add key="TenantAdminUrl" value="Your Tenant Admin Url where the App-in is hosted" />
+		<!--OVERRIDE FOR HOST NAME-->
+		<add key="HostedAppHostNameOverride" value="Your Hosting FQDN of the Web" />
+	</appSettings>
+
+
+Setting | Description
+-------------------|----------
+AutoApproveSites | Used to set the site request to a Approved or New Status to support custom workflows to approve site requests. Set either to true or false
+ClientId | Your Client ID 
+ClientSecret | Your Client Secret
+SPHost | The Site Url that hosts your SharePoint Add-in
+SupportTeamNotificationEmail | Used to send notifications if there is an exception. This is reserved for future use in the Web Project
+TenantAdminUrl | The Tenant Admin Site Url where the add-in is hosted
+HostedAppHostNameOverride | The DNS name where the Web is hosted
+
+##### provisioningSettings.config #####
+
+
 #### Coming Updates ####
 We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in json and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
 
