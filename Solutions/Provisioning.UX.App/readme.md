@@ -21,19 +21,20 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Provision site artifacts for example Site Columns, Content Types, List Definitions and Instances, Pages (either WebPart Pages or Wiki Pages)
 
 
-**NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
 
 
 ### Applies to ###
 -  Office 365 Multi-tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises (This capability was introduced to on-premises builds in the April 2014 Cumulative Update for the SharePoint 2013)
+-  SharePoint 2013 on-premises 
 
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
 Provisioning.UX.App | Frank Marasco, Brian Michely and Steven Follis
+
+*PnP remote provisioning Core Engine work done by Erwin van Hunen (Knowit AB), Paolo Pialorsi (PiaSys.com), Bert Jansen (Microsoft), Frank Marasco (Microsoft), Vesa Juvonen (Microsoft)*
 
 ### Version history ###
 Version  | Date | Comments
@@ -42,6 +43,14 @@ Version  | Date | Comments
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+
+**NOTICE THIS SOLUTION IS UNDER ACTIVE DEVELOPMENT**
+
+### Prerequisites ###
+- Azure subscription and existing DocumentDB Account which can be configured for to store your site requests (Optional) 
+- April 2014 Cumulative Update or higher for the SharePoint 2013 on-premises
+- For SharePoint On-premises see Vesa's to [blog](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx) to configure Provisioning of site collection for on-premises.
 
 
 ----------
