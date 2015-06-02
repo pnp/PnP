@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -39,3 +40,5 @@ using System.Runtime.InteropServices;
 // Fourth part = 0
 [assembly: AssemblyVersion("1.3.0615.0")]
 [assembly: AssemblyFileVersion("1.3.0615.0")]
+
+[assembly: InternalsVisibleTo("OfficeDevPnP.Core.Tests")]
