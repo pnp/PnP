@@ -94,16 +94,15 @@ namespace ProvisioningTests._3_Data
         {
             var _owner = new SiteUser()
             {
-                Name = "frank@marascohome.com"
+                Name = "frank@contoso.com"
             };
             //Add addtional Users
             List<SiteUser> _additionalAdmins = new List<SiteUser>();
             SiteUser _admin1 = new SiteUser();
-            //   _admin1.Email = "franktest@MicrosoftACS.onmicrosoft.com";
-            _admin1.Name = "frank@marascohome.com";
+            _admin1.Name = "user1@contoso.com";
             SiteUser _admin2 = new SiteUser();
             //  _admin2.Email = "frank@microsoftacs.onmicrosoft.com";
-            _admin2.Name = "brianmic@marascohome.com";
+            _admin2.Name = "user2@contoso.com";
             _additionalAdmins.Add(_admin1);
             _additionalAdmins.Add(_admin2);
 
@@ -112,7 +111,7 @@ namespace ProvisioningTests._3_Data
                 Title = "Test Title",
                 Description = "Test Description",
                 Template = "CT2",
-                Url = "https://spsites.marascohome.com/sites/B3",
+                Url = "https://spsites.contoso.com/sites/B3",
                 SitePolicy = "HBI",
                 SiteOwner = _owner,
                 AdditionalAdministrators = _additionalAdmins,
