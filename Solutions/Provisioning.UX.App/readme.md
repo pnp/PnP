@@ -10,6 +10,8 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Request are processed asynchronously using the remote timer job pattern
 - New site collection creation to Office 365 MT.
 - New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
+- Multiple host header site collection provisioning for on-premises builds
+- Hybrid support for provisioning sites in SharePoint Online and SharePoint On-premises in one common solution
 - Apply a configuration template to newly created sites using the PnP Provisioning Framework
 - Enable External sharing for sites that are hosted in SharePoint Online MT
 - Visual indicator if a Site is externally shared
@@ -25,7 +27,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 ### Applies to ###
 -  Office 365 Multi-tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
+-  SharePoint 2013 on-premises (This capability was introduced to on-premises builds in the April 2014 Cumulative Update for the SharePoint 2013)
 
 
 ### Solution ###
@@ -61,7 +63,7 @@ Remote Timer job project which maybe deployed to Azure or on-premises.  Will be 
 
 
 ### Provisioning.UX.AppWeb ###
-This is the user interface (UX) for self service site collection creation application. This interface was built using primarily AngularJS and HTML. The intent was to create a modern interface that was easy to edit, and extend.
+This is the user interface (UX) for self service site collection creation application. This interface was built using primarily AngularJS and HTML. The intent was to create a modern interface that was easy to edit, and extend. Also provides Web Api interfaces to the UX.
 
 The interface is launched from default.aspx and the wizard itself is modal based and loads HTML views. These views make a wizard provisioning approach that collects data from the user and submits that data to the back-end provisioning engine. 
 
@@ -135,12 +137,13 @@ This solution uses app only permissions so you will have to navigate to http://[
 ----------
 #### Configuration Files ####
 
-The Provisioning.UX.AppWeb and Provisioning.Job each has its own configuration settings.
+The Provisioning.UX.AppWeb and Provisioning.Job each has its own configuration settings and you have to ensure that the settings are applied in both projects.
 
 Configuration File | Description
 -------------------|----------
 appSettings.config | An alternate file to store application settings
 provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
+Templates.config   | Used to display the available site templates to the Provisioning.UX.AppWeb and provides a mapping to PnP Provisioning Template in the Provisioning.Job
 
 ##### appSettings.config #####
 
@@ -271,8 +274,188 @@ Copy the Primary or Secondary Connection string and update the connectionString 
 ![](http://i.imgur.com/uhStvV6.png)
 
 
+##### Templates.config #####
+The Templates.config file resides in both the Provisioning.UX.AppWeb and Provisioning.Job projects under the /Resources/SiteTemplates. In the Provisioning.UX.AppWeb project it is used to display the available site templates and in the Provisioning provides mapping to PnP Provisioning Template. You will have to update this files in both projects to match your environment. 
+
+Setting | Description
+-------------------|----------
+Title | The Title to display in the User Interface 
+Description | The Description to display in the user interface
+ImageUrl | The Image Url to display. 
+HostPath | The Host path and managed path where to provision the site. Currently only Sites and Team managed paths are supported in SharePoint Online.
+TenantAdminUrl | The Tenant Admin URL of the path. A tenant Admin Site must reside in each Web Application or Host Name Site Collection in SharePoint on-premises builds.
+SharePointOnPremises | If the site is being provisioning is hosted on SharePoint on-premises builds or in SharePoint Online Dedicated Service.
+RootTemplate | The base template to create. 
+RootWebOnly | Reserved for future use that will be used to display available site templates in the Sub-Site Provisioning Page.
+StorageMaximumLevel | The storage quota of the new site.(only applicable for site collections and SharePoint MT). 
+StorageWarningLevel | The amount of storage usage on the new site that triggers a warning. (only applicable for site collections and SharePoint MT). 
+UserCodeMaximumLevel | The maximum amount of machine resources that can be used by user code on the new site (only applicable for site collections and SharePoint MT). 
+UserCodeWarningLevel | The amount of machine resources used by user code that triggers a warning.(only applicable for site collections and SharePoint MT). 
+ProvisioningTemplateContainer | Not Used
+ProvisioningTemplate | The Name of the PnP Provisioning Template to apply to the newly created site.
+Enabled | Controls if the Template is available in the user interface.
+
+
+	TemplateConfiguration Version='1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	  <Templates>
+	    <!--  StorageMaximumLevel Minimum 110 
+	          For on-prem & SPO-D Storage and UserCode are not used and will default to the Quota Templates configured in your farm
+	    -->
+	    <Template Title="SPO Team Site"
+	              Description="Team sites should be used for team collaboration and offer basic document and project management features."
+	              ImageUrl ="../images/template-icon.png"
+	              HostPath="https://contoso.sharepoint.com/sites/"
+	              TenantAdminUrl="https://contoso-admin.sharepoint.com"
+	              SharePointOnPremises ="false"
+	              RootTemplate="STS#0"
+	              RootWebOnly="false"
+	              StorageMaximumLevel="110"
+	              StorageWarningLevel="0"
+	              UserCodeMaximumLevel="100"
+	              UserCodeWarningLevel="0"
+	              ProvisioningTemplateContainer="Resources/SiteTemplates/ProvisioningTemplate/"
+	              ProvisioningTemplate="TeamSiteTemplate.xml"
+	              Enabled="true"/>
+	    <Template Title="SharePoint On-Premises Site"
+	              Description="I still have a SharePoint On-premises."
+	              ImageUrl ="../images/template-icon.png"
+	              HostPath="https://spsites.contoso.com/sites/"
+	              TenantAdminUrl="https://spsites.contoso.com/sites/msotenantcontext"
+	              SharePointOnPremises ="true"
+	              RootTemplate="STS#0"
+	              RootWebOnly="true"
+	              StorageMaximumLevel="110"
+	              StorageWarningLevel="0"
+	              UserCodeMaximumLevel="110"
+	              UserCodeWarningLevel="0"
+	              ProvisioningTemplateContainer="Resources/SiteTemplates/ProvisioningTemplate/"
+	              ProvisioningTemplate="TeamSiteTemplate.xml"
+	              Enabled="true"/>
+		<Template Title="SharePoint DONT SHOW ME
+	              Description="Team sites should be used for team collaboration and offer basic document and project management features."
+	              ImageUrl ="../images/template-icon.png"
+	              HostPath="https://spsites.contoso.com/sites/"
+	              TenantAdminUrl="https://spsites.contoso.com/sites/msotenantcontext"
+	              SharePointOnPremises ="true"
+	              RootTemplate="STS#0"
+	              RootWebOnly="true"
+	              StorageMaximumLevel="110"
+	              StorageWarningLevel="0"
+	              UserCodeMaximumLevel="110"
+	              UserCodeWarningLevel="0"
+	              ProvisioningTemplateContainer="Resources/SiteTemplates/ProvisioningTemplate/"
+	              ProvisioningTemplate="TeamSiteTemplate.xml"
+	              Enabled="false"/>
+
+	  </Templates>
+	</TemplateConfiguration>
+
+The below images display the template selection that is available to the user.
+
+![](http://i.imgur.com/Tq63tq9.png)
+
+
+##### TeamSiteTemplate.xml #####
+
+Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTemplate/ folder is our PNP Provision Template. Within the Provisioning.UX.AppWeb project the base configuration provides a site classification user interface, banners for external sharing, and subsite override. Ensure that the urls are updated to match your environment. If you do not require this functionality all if you have to do is remove the custom actions in the template file. 
+
+	<?xml version="1.0" encoding="utf-8" ?>
+	<pnp:SharePointProvisioningTemplate ID="TEMPLATE1" Version="1.0"
+	  xmlns:pnp="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema"
+	  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	  <pnp:Files>
+	    <pnp:File Src="siteLogo.png" Folder="SiteAssets" Overwrite="true"/>
+	    <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
+	    <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
+	    <pnp:File Src="custom.spfont" Folder="~themecatalog/15" Overwrite="true" />
+	  </pnp:Files>
+	  <pnp:CustomActions>
+	    <pnp:SiteCustomActions>
+	      <pnp:CustomAction Name="CA_SITE_CLASSIFICATION"
+	               Description="Site Classification Indicator"
+	               Location="ScriptLink"
+	               Title="CA_SITE_CLASSIFICATION"
+	               ScriptSrc=""
+	               ScriptBlock="
+	                    var lbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/LBI.png';
+	                    var mbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/MBI.png';
+	                    var hbiImageSource ='https://pnpsiteprov.azurewebsites.net/images/HBI.png';
+	                    var headID = document.getElementsByTagName('head')[0]; 
+	                    var siteClassifciationTag = document.createElement('script');
+	                    siteClassifciationTag.type = 'text/javascript';
+	                    siteClassifciationTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/siteClassification.js';
+	                    headID.appendChild(siteClassifciationTag);"/>
+	      <pnp:CustomAction Name="CA_SITE_EXTERNALSHARING"
+	                Description="External Sharing Banner"
+	                Location="ScriptLink"
+	                Title="CA_SITE_EXTERNALSHARING"
+	                ScriptSrc=""
+	                ScriptBlock="
+	                    var headID = document.getElementsByTagName('head')[0]; 
+	                    var externalSharingTag = document.createElement('script');
+	                    externalSharingTag.type = 'text/javascript';
+	                    externalSharingTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/externalSharing.js';
+	                    headID.appendChild(externalSharingTag);"/>
+	      <pnp:CustomAction Name="CA_SITE_SUBSITE_OVERRIDE"
+	                Description="Override new sub-site link"
+	                Location="ScriptLink"
+	                Title="CA_SITE_SUBSITE_OVERRIDE"
+	                ScriptSrc=""
+	                ScriptBlock="
+	                    var SubSiteSettings_Web_Url = 'https://pnpsiteprov.azurewebsites.net/pages/subsite/newsbweb.aspx?SPHostUrl=';
+	                    var headID = document.getElementsByTagName('head')[0]; 
+	                    var subsiteScriptTag = document.createElement('script');
+	                    subsiteScriptTag.type = 'text/javascript';
+	                    subsiteScriptTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/SubSiteOverride.js';
+	                    headID.appendChild(subsiteScriptTag);"/> 
+	    </pnp:SiteCustomActions>
+	    <pnp:WebCustomActions>
+	      <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION"
+	                Description="Site Classification Application"
+	                Group="SiteTasks"
+	                Location="Microsoft.SharePoint.SiteSettings"
+	                Title="Site Classification"
+	                Sequence="1000"
+	                Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
+	                Rights="31"/>
+	      <pnp:CustomAction Name="CA_SITE_STDMENU_SITECLASSIFICATION"
+	                Description="Site Classification Module"
+	                Group="SiteActions"
+	                Location="Microsoft.SharePoint.StandardMenu"
+	                Title="Site Classification"
+	                Sequence="1000"
+	                Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
+	                Rights="31"/>
+	    </pnp:WebCustomActions>
+	  </pnp:CustomActions>
+	  <pnp:ComposedLook Name="Contoso" Version="1"
+	                ColorFile="~themecatalog/15/custom.spcolor"
+	                FontFile="~themecatalog/15/custom.spfont"
+	                BackgroundFile="~themecatalog/15/custombg.jpg"
+	                MasterPage="~masterpagecatalog/seattle.master"
+	                AlternateCSS=""
+	                SiteLogo="~site/SiteAssets/siteLogo.png" />
+	</pnp:SharePointProvisioningTemplate>
+
+##### External Sharing Notification Banner #####
+
+![](http://i.imgur.com/Kd65FNs.png)
+
+##### Site Classification Custom Action  #####
+
+![](http://i.imgur.com/INzEnv5.png)
+
+##### Site Classification Edit Screen  #####
+
+![](http://i.imgur.com/OPwyx9H.png)
+
+
 #### Coming Updates ####
-We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in JSON and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+- We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in JSON and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+- Template.config file will have the option to be centrally located.
+- Video walk-through and demo of the solution.
+
 
 
 
