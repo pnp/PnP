@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectComposedLook : ObjectHandlerBase
+    internal class ObjectComposedLook : ObjectHandlerBase
     {
 
         public override string Name
@@ -17,17 +17,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             get { return "Composed Looks"; }
         }
 
-
+       
 
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
 
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ComposedLooks);
-            if (template.ComposedLook != null && 
+            if (template.ComposedLook != null &&
                 !template.ComposedLook.Equals(ComposedLook.Empty))
             {
                 bool executeQueryNeeded = false;
-                
+
                 // Apply alternate CSS
                 if (!string.IsNullOrEmpty(template.ComposedLook.AlternateCSS))
                 {
@@ -36,7 +36,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Update();
                     executeQueryNeeded = true;
                 }
-                
+
                 // Apply Site logo
                 if (!string.IsNullOrEmpty(template.ComposedLook.SiteLogo))
                 {
@@ -89,7 +89,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
-        {            
+        {
             // Load object if not there
             bool executeQueryNeeded = false;
             if (!web.IsPropertyAvailable("Url"))
@@ -161,7 +161,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         else
                         {
                             spConnectorRoot = spConnector;
-                        }                        
+                        }
 
                         // Download the theme/branding specific files
                         DownLoadFile(spConnector, spConnectorRoot, creationInfo.FileConnector, web.Url, web.AlternateCssUrl);
@@ -291,6 +291,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = (template.ComposedLook != null && !template.ComposedLook.Equals(ComposedLook.Empty));
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                var theme = web.GetCurrentComposedLook();
+                if (theme.IsCustomComposedLook)
+                {
+                    _willExtract = true;
+                }
+                else
+                {
+                    _willExtract = false;
+                }
+            }
+            return _willExtract.Value;
         }
     }
 }
