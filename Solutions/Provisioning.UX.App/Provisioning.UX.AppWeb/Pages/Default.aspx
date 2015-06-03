@@ -10,7 +10,10 @@
     <title></title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css"/>
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css"/>--%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="../styles/font-awesome.min.css" />
     <link rel="stylesheet" href="../styles/app.css" /> 
     <link rel="stylesheet" href="../styles/peoplepickercontrol.css" />    
     
@@ -29,6 +32,21 @@
     <script src="../scripts/peoplepickercontrol.js?rev=2" type="text/javascript"></script>   
     <!-- Chrome Loader -->
     <script src="../scripts/chromeloader.js?rev=1" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).on('click', '.panel-heading span.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            }
+        })
+    </script>
 </head>
 <body>    
     <div id="divSPChrome"></div>            

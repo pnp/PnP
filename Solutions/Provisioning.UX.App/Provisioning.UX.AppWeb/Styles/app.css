@@ -1,7 +1,7 @@
 ﻿/* CSS for the PnP User Interface Prototype */
 .container {
     margin-left: 25px;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 /*#region Bootstrap Overrides */
 .modal {
@@ -292,9 +292,10 @@
     font-size: 10px;
 }
 
-.btn btn-primary {
-    background:rgb(230,120,30); /* #DC3C00 */
+.btn btn-default {
+    background:#DC3C00; 
     color:white;
+    float: right;
 }
 
 .table table-striped {
@@ -308,4 +309,28 @@ a {
 .leftnav {
     font-size: 14px;
 }
+
+.panel-default > .panel-heading-custom {
+    background: #DC3C00; 
+    color: #fff;
+}
+
+.row{
+    margin-top: 0px;
+    padding: 0 10px;
+}
+
+.clickable{
+    cursor: pointer;   
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
+
+/*div.col-sm-6.col {
+    margin-left: 0px;
+    float: left;
+}*/
 /*endregion Other bootstrap overrides*/

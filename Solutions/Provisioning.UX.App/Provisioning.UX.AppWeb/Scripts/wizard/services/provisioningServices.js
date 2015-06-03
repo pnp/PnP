@@ -48,10 +48,10 @@
                     url: '/api/provisioning/siteRequests/getOwnerRequests',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }).success(function (data, status, headers, config) {
-                    console.log("Request Success /api/provisioning/externalSharingEnabled " + data);
+                    console.log("Request Success /api/provisioning/getOwnerRequests " + data);
                     deferred.resolve(data);
                 }).error(function (data, status) {
-                    console.log("Request Failed /api/provisioning/externalSharingEnabled " + data);
+                    console.log("Request Failed /api/provisioning/getOwnerRequests " + data);
                     deferred.reject(data);
                 });
                 return deferred;
