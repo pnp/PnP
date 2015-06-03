@@ -49,8 +49,9 @@ Version  | Date | Comments
 
 ### Prerequisites ###
 - Azure subscription and existing DocumentDB Account which can be configured for to store your site requests (Optional) 
-- April 2014 Cumulative Update or higher for the SharePoint 2013 on-premises
-- For SharePoint On-premises see Vesa's to [blog](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx) to configure Provisioning of site collection for on-premises.
+- April 2014 Cumulative Update or higher for the SharePoint 2013 on-premises builds
+- For SharePoint on-premises see Vesa's to [blog](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx) to configure Provisioning of site collection for on-premises.
+- If your are provisioning sites in a hybrid approach (on-premises and Office 365) it is required that your SharePoint on-premises farm is configured for Apps and must have a trust established to your Azure Active Directory
 
 
 ----------
@@ -130,19 +131,18 @@ Once we have the policies created we are going to publish the Site Policies from
 
 #### App Registration and Permissions ####
 
-You should use AppRegNew.aspx to register your add-in for SharePoint. 
+You should use AppRegNew.aspx to register the SharePoint Add-in. 
 
 ![](http://i.imgur.com/e6kIBzD.png)
 	
 This solution uses app only permissions so you will have to navigate to http://[Tenant]/_layouts/15/appinv.aspx and grant the application the following permissions.Use the Appinv.aspx page to lookup the add-in created in the previous step and then specify the permission XML. 
 
-
 	<AppPermissionRequests AllowAppOnlyPolicy="true">
-		    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
-		    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
-		    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
-		    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
-		    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+	    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+	    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+	    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
+	    <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
+	    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
 	</AppPermissionRequests>
 	
 ----------
