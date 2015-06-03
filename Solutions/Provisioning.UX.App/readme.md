@@ -77,15 +77,15 @@ Remote Timer job project which maybe deployed to Azure or on-premises.  Will be 
 ### Provisioning.UX.AppWeb ###
 This is the user interface (UX) for self service site collection creation application. This interface was built using primarily AngularJS and HTML. The intent was to create a modern interface that was easy to edit, and extend. Also provides Web Api interfaces to the UX.
 
-The interface is launched from default.aspx and the wizard itself is modal based and loads HTML views. These views make a wizard provisioning approach that collects data from the user and submits that data to the back-end provisioning engine. 
+The interface is launched from default.aspx and the wizard itself is modal based and loads HTML views. These views make a wizard provisioning approach that collects data from the user and submits that data to the back-end provisioning engine. The landing page also displays the status of your site request submission.
 
 Landing Page:
 
-![](http://i.imgur.com/TYiBokL.png)
+![](http://i.imgur.com/31bshhW.png)
 
-Clicking the "Get Started" button above launches the Wizard:
+Clicking the "Get a site" button above launches the Wizard:
 
-![](http://i.imgur.com/Jcy7tEF.png)
+![](http://i.imgur.com/zEGbZ6K.png)
 
 #### Navigation ####
 The wizard can be navigated either via left side navigation or arrow based navigation on the bottom right. The navigation and views are defined in the wizard.modal.html file. Note - next release will most likely load this from a configuration source, but for now, it's a simple modification to the html file to edit your navigation.
@@ -93,16 +93,28 @@ The wizard can be navigated either via left side navigation or arrow based navig
 ![](http://i.imgur.com/uYwJ0ac.png)
 
 #### Services ####
-There are some services exposed that can be used to get template and other data from the back-end, and a service for submitting that data. For PnP sample purposes, the the reference data for the sample meta-data fields gets loaded from .json files. There is a **BusinessMetadata factory** that loads the data from the json files and is invoked from the **wizard.modal.controller** script and the HTML fields bind to the model and the data is loaded via a repeater in most cases. This is only for sample purposes and for a real implementation this data may be list driven or from some other source and can be retrieved via other appropriate methods
+There are some services exposed that can be used to get template and other data from the back-end, and a service for submitting that data. For PnP sample purposes, the the reference data for the sample meta-data fields gets loaded from .json files. There is a **BusinessMetadata factory** that loads the data from the JSON files and is invoked from the **wizard.modal.controller** script and the HTML fields bind to the model and the data is loaded via a repeater in most cases. This is only for sample purposes and for a real implementation this data may be list driven or from some other source and can be retrieved via other appropriate methods
 
 ![](http://i.imgur.com/9hkCeFf.png)
 
 These services use the CSOM controller **provisioning.controller.cs** which uses **OfficeDevPnP.Core.WebAPI**.
 
+#### The Details ####
+The details page provides a way to capture additional meta-data for the site request. Which are then added to the property bag of the site. 
+
+![](http://i.imgur.com/Rd7lh5y.png)
+
+The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below.
+
+![](http://i.imgur.com/Bs6NaVh.png)
+
+Ensure that if you are running the solution in on-premises builds that you have the appropriate language packs installed in your farm.
+
+
 #### People Picker ####
 This solution also leverages the PnP JSOM version of the PeoplePicker. 
 
-![](http://i.imgur.com/lmbNL2K.png)
+![](http://i.imgur.com/drQDLsP.png)
 
 #### Site Availability Checking ####
 The site details view contains a field where the user specifies the url of their new site. The solution implements an angular directive that fires off and calls the sitequeryservice.js script which does the site availability check. If the site is available, the solution will set the field to validated, and if the site is not available, there will be a message displayed stating this.
