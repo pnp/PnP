@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Provisioning.Common;
+using Provisioning.Common.Utilities;
 
 namespace Provisioning.Common.Authentication
 {
@@ -135,12 +136,21 @@ namespace Provisioning.Common.Authentication
         {
             if(string.IsNullOrWhiteSpace(AccessToken))
             {
-                var _oAuthResponse = TokenHelper.GetAppOnlyAccessToken(
+                bool _isValidURi = Uri.IsWellFormedUriString(this.SiteUrl, UriKind.Absolute);
+                if(_isValidURi)
+                {
+                    var _oAuthResponse = TokenHelper.GetAppOnlyAccessToken(
                     TokenHelper.SharePointPrincipal,
                     new Uri(this.SiteUrl).Authority,
                     this.Realm);
-
-                this.AccessToken = _oAuthResponse.AccessToken;
+                    this.AccessToken = _oAuthResponse.AccessToken;
+                }
+                else
+                {
+                    string _message = string.Format("Site is not a valid Uri. The Uri must be in the format of https://site.com");
+                    Log.Fatal("AppOnlyAuthenticationSite.EnsureToken", _message);
+                    throw new UriFormatException(_message);
+                }
             }
         }
 
