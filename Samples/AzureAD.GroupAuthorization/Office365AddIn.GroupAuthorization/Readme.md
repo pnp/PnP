@@ -36,3 +36,5 @@ However what blogs don’t tell you is that even if you have groups in Azure AAD
 Read entire documentation here:
 [Luis Valencia Blog Post Office 365 Add-In With Groups Authorization](http://www.luisevalencia.com/2015/06/02/using-azure-aad-graph-office-365-add-in-with-groups-authorization/)
 
+
+[Video](https://youtu.be/sUC4kJ73Pns)
