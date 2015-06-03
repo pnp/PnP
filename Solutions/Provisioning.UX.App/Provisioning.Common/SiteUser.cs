@@ -13,14 +13,10 @@ namespace Provisioning.Common
     /// </summary>
     [DataContract]
     public class SiteUser
-    {
-        //[DataMember]
-        //[JsonProperty(PropertyName = "loginName")]
-        //public string LoginName
-        //{
-        //    get;
-        //    set;
-        //}
+    {   
+        /// <summary>
+        /// Gets or sets the name. Can be an email address or group name 
+        /// </summary>
         [DataMember]
         [JsonProperty(PropertyName = "name")]
         public string Name
@@ -28,12 +24,5 @@ namespace Provisioning.Common
             get;
             set;
         }
-        //[DataMember]
-        //[JsonProperty(PropertyName = "email")]
-        //public string Email
-        //{
-        //    get;
-        //    set;
-        //}
     }
 }
