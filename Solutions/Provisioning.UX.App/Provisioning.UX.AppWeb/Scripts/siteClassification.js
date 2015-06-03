@@ -31,17 +31,17 @@ function setClassifier() {
     clientContext.executeQueryAsync(Function.createDelegate(this, function (sender, args) {
         var policy = props.get_item('PolicyName');
         if (policy == 'HBI') {
-            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 28px; height: 30px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + hbiImageSource + "'></span>");
+            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 32px; height: 32px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + hbiImageSource + "'></span>");
             $('#ctl00_site_share_button').before(img);
             classified = true;
         }
         else if (policy == 'MBI') {
-            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 28px; height: 30px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + mbiImageSource + "'></span>");
+            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 32px; height: 32px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + mbiImageSource + "'></span>");
             $('#ctl00_site_share_button').before(img);
             classified = true;
         }
         else if (policy == 'LBI') {
-            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 28px; height: 30px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + lbiImageSource + "'></span>");
+            var img = $("<a id='ctl_pnp_classifier' class='ms-promotedActionButton' style='display: inline-block;' href='#'><span class='s4-clust ms-promotedActionButton-icon' style='width: 32px; height: 32px; overflow: hidden; display: inline-block; position: relative;'><img alt='Share' src='" + lbiImageSource + "'></span>");
             $('#ctl00_site_share_button').before(img);
             classified = true;
         }
