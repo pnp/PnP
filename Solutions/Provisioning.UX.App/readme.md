@@ -8,8 +8,8 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - User Interface to request site collections
 - Capability to store Site Requests in either a SharePoint list or Azure Document DB 
 - Request are processed asynchronously using the remote timer job pattern
-- New site collection creation to Office 365 MT.
-- New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
+- New site collection creation for Office 365 MT.
+- New site collection creation for SharePoint on-premises builds including Office 365 Dedicated.
 - Multiple host header site collection provisioning for on-premises builds
 - Hybrid support for provisioning sites in SharePoint Online and SharePoint On-premises in one common solution
 - Apply a configuration template to newly created sites using the PnP Provisioning Framework
