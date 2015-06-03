@@ -28,9 +28,18 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public SwitchParameter EnableContentTypes;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter OnQuickLaunch;
+
         protected override void ExecuteCmdlet()
         {
-            SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
+            var list = SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
+            if (OnQuickLaunch)
+            {
+                list.OnQuickLaunch = true;
+                list.Update();
+                ClientContext.ExecuteQueryRetry();
+            }
         }
     }
 
