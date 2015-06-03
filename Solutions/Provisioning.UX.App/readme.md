@@ -56,7 +56,9 @@ Version  | Date | Comments
 ----------
 
 # Conceptual design #
-DOCUMENTATION IN PROGRESS
+
+![](http://i.imgur.com/sQQ6JUX.png)
+
 
 # Solution description #
 Projects what are included in the solution . 
@@ -461,7 +463,7 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 
 #### Coming Updates ####
-- We are currently working an update to this interface which uses an angular schema form approach and will allow you to define a schema in JSON and the fields you wish to use. You can then use one line of html to load your form/view which will then be schema driven and defined there and not in your views.
+- We are currently working on a update to the provisioning interface which will be a single page app instead of a dialog.
 - Template.config file will have the option to be centrally located.
 - Video walk-through and demo of the solution.
 
