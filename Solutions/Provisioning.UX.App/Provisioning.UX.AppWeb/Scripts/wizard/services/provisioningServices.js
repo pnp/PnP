@@ -27,14 +27,14 @@
                 var formData = JSON.stringify(request);
                 $http({
                     method: 'POST',
-                    url: '/api/provisioning/siteRequests/saveSiteRequest',
+                    url: '/api/provisioning/siteRequests/newSiteRequest',
                     data: "=" + formData,
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 }).success(function (data, status, headers, config) {
-                    console.debug("Request Success /api/provisioning/siteRequests/saveSiteRequest ", data);
+                    console.debug("Request Success /api/provisioning/siteRequests/newSiteRequest ", data);
                     deferred.resolve(data);
                 }).error(function (data, status) {
-                    console.log("Request Failed /api/provisioning/siterequest Request " + data);
+                    console.log("Request Failed /api/provisioning/newSiteRequest Request " + data);
                     deferred.reject(data);
                 });
                 return deferred;

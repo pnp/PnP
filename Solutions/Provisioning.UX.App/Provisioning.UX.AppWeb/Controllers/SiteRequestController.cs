@@ -22,15 +22,15 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Saves a site request to the Data Repository
+        /// Creates new a site request in the data repository
         /// POST api/<controller>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Route("api/provisioning/siteRequests/saveSiteRequest")]
+        [Route("api/provisioning/siteRequests/newSiteRequest")]
         [WebAPIContextFilter]
         [HttpPost]
-        public SiteRequest SaveSiteRequest([FromBody]string value)
+        public SiteRequest NewSiteRequest([FromBody]string value)
         {
             var _response = new SiteRequest();
            _response.Success = false;
@@ -48,7 +48,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("SiteRequestController.SaveSiteRequest",
+                Log.Error("SiteRequestController.NewSiteRequest",
                     "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
                     ex.Message,
                     ex);

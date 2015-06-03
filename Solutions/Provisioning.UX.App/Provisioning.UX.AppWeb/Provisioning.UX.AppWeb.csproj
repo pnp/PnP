@@ -193,6 +193,8 @@
     <Content Include="Scripts\wizard\controllers\wizard.controller.js" />
     <Content Include="Scripts\wizard\modules\wizard.module.js" />
     <Content Include="Styles\app.css" />
+    <Content Include="Styles\font-awesome.css" />
+    <Content Include="Styles\font-awesome.min.css" />
     <Content Include="Styles\peoplepickercontrol.css" />
     <Content Include="Styles\site.css" />
     <Content Include="Web.config">
