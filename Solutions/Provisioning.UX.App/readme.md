@@ -104,7 +104,7 @@ The details page provides a way to capture additional meta-data for the site req
 
 ![](http://i.imgur.com/Rd7lh5y.png)
 
-The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below.
+The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below. Notice the External Sharing option, this is only available in Office 365 MT and if you have External Sharing enabled in the tenant.
 
 ![](http://i.imgur.com/Bs6NaVh.png)
 
