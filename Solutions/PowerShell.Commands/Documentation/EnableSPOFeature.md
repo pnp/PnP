@@ -17,14 +17,14 @@ Scope|FeatureScope|False|
 ##Examples
 
 ###Example 1
-    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
-
-
-###Example 2
     PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
 
 
-###Example 3
+###Example 2
     PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
-<!-- Ref: 6035DEC5BC5D3A509F117F1BF8827FF6 -->
+
+###Example 3
+    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+
+<!-- Ref: E82E20D56D8E6512A40334499A5ABC77 -->

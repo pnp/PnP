@@ -80,8 +80,10 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                _request.ErrorMessage = _ex.Message;
-                Log.Error("ProvisioningController", "There was an error processing the request. Exception: {0}", _ex);
-                return _request;
+               Log.Error("ProvisioningController.IsExternalSharingEnabled", 
+                   "There was an error processing the request. Exception: {0}", 
+                   _ex);
+               return _request;
             }
     
         }

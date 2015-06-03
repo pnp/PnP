@@ -37,16 +37,16 @@ TermStoreName|String|False|Term store to import into; if not specified the defau
 
 ###Example 1
     
-PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'
-Creates (or updates) the term set specified in the import file, setting the IsOpen, Contact, and Owner properties as specified.
+PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchronizeDeletions
+Creates (or updates) the term set specified in the import file, in the group specified, removing any existing terms not in the file.
 
 ###Example 2
     
-PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchronizeDeletions
-Creates (or updates) the term set specified in the import file, in the group specified, removing any existing terms not in the file.
+PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'
+Creates (or updates) the term set specified in the import file, setting the IsOpen, Contact, and Owner properties as specified.
 
 ###Example 3
     
 PS:> Import-SPOTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' 
 Creates (or updates) the term set specified in the import file, in the term store and group specified, using the specified ID.
-<!-- Ref: 31D43733F3DC384D728837A73A395470 -->
+<!-- Ref: B446E9C86210555A1139DD329D3278F0 -->

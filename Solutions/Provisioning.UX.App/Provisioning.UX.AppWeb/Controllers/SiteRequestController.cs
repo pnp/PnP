@@ -48,7 +48,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("Provisioning.UX.AppWeb.Controllers.SiteRequestController",
+                Log.Error("SiteRequestController.SaveSiteRequest",
                     "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
                     ex.Message,
                     ex);
@@ -83,6 +83,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                 _returnResponse.ErrorMessage = _ex.Message;
+                Log.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
             }
 
             return _returnResponse;   

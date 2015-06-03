@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.Core.WebAPI;
 using Provisioning.Common.Data.SiteRequests;
 using Provisioning.Common.Data.Templates;
+using Provisioning.Common.Utilities;
 using Provisioning.UX.AppWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,10 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch (Exception _ex)
             {
                 _returnResponse.ErrorMessage = _ex.Message;
+                Log.Error("TemplateController.GetSiteTemplates",
+                   "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
+                   _ex.Message,
+                   _ex);
             }
 
             return _returnResponse;
