@@ -7,12 +7,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet(VerbsCommon.Add, "SPOUserToGroup")]
     [CmdletHelp("Adds a user to a group", Category = "User and group management")]
-    [CmdletExample(Code = @"
-    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'
-    ")]
-    [CmdletExample(Code = @"
-    PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5
-    ", Remarks = "Add the specified user to the group with Id 5")]
+    [CmdletExample(
+        Code = @"PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'",
+        SortOrder =  1)]
+    [CmdletExample(
+        Code = @"PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5", 
+        Remarks = "Add the specified user to the group with Id 5",
+        SortOrder = 2)]
     public class AddUserToGroup : SPOWebCmdlet
     {
 

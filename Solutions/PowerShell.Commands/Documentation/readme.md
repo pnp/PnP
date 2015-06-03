@@ -181,7 +181,7 @@ Cmdlet|Description
 ##Workflows
 Cmdlet|Description
 :-----|:----------
-**[Add&#8209;SPOWorkflowDefinition](AddSPOWorkflowDefinition.md)** |Returns a workflow definition
+**[Add&#8209;SPOWorkflowDefinition](AddSPOWorkflowDefinition.md)** |Adds a workflow definition
 **[Remove&#8209;SPOWorkflowDefinition](RemoveSPOWorkflowDefinition.md)** |Removes a workflow definition
 **[Get&#8209;SPOWorkflowDefinition](GetSPOWorkflowDefinition.md)** |Returns a workflow definition
 **[Resume&#8209;SPOWorkflowInstance](ResumeSPOWorkflowInstance.md)** |Resumes a previously stopped workflow instance

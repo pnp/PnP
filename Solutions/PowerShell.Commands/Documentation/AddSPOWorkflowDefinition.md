@@ -1,16 +1,22 @@
 #Add-SPOWorkflowDefinition
-*Topic automatically generated on: 2015-06-01*
+*Topic automatically generated on: 2015-06-03*
 
-Returns a workflow definition
+Adds a workflow definition
 ##Syntax
 ```powershell
-Add-SPOWorkflowDefinition -Definition <WorkflowDefinition> [-DoNotPublish [<SwitchParameter>]] [-Web <WebPipeBind>]```
-&nbsp;
+Add-SPOWorkflowDefinition -Definition <WorkflowDefinition> [-DoNotPublish [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Definition|WorkflowDefinition|True|
-DoNotPublish|SwitchParameter|False|
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
-<!-- Ref: 4496B49D7C18942CD561687E9A6F991D -->
+|Definition|WorkflowDefinition|True|The workflow definition to add.|
+|DoNotPublish|SwitchParameter|False|By default workflow definitions will be publish, specify this switch to override that.|
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+##Examples
+
+###Example 1
+    Add-SPOWorkflowDefinition -Definition $wfdef
+Adds an existing workflow definition, retrieved by Get-SPOWorkflowDefinition, to a site.
+<!-- Ref: 829C93535F592E7303A24B62662CA574 -->

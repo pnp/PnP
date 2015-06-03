@@ -1,16 +1,17 @@
 #Get-SPOWebPart
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Returns a webpart definition object
 ##Syntax
 ```powershell
-Get-SPOWebPart -PageUrl <String> [-Identity <WebPartPipeBind>] [-Web <WebPipeBind>]```
-&nbsp;
+Get-SPOWebPart -PageUrl <String> [-Identity <WebPartPipeBind>] [-Web <WebPipeBind>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|WebPartPipeBind|False|
-PageUrl|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
-<!-- Ref: 3604A1A6459980A9D30336A2E40D2241 -->
+|Identity|WebPartPipeBind|False||
+|PageUrl|String|True||
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: 5D8B3C75F83F785CF64F8C986F620499 -->

@@ -7,8 +7,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPOFile", SupportsShouldProcess = true)]
     [CmdletHelp("Removes a file.", Category="Webs")]
-    [CmdletExample(Code = @"
-PS:>Remove-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor", SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:>Remove-SPOFile -ServerRelativeUrl /sites/project/_catalogs/themes/15/company.spcolor", 
+        SortOrder = 1)]
   
     public class RemoveFile : SPOWebCmdlet
     {
