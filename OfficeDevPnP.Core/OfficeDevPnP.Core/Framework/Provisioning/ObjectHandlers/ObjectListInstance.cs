@@ -119,7 +119,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         }
 
                         createdList.OnQuickLaunch = list.OnQuickLaunch;
-                        createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        if (createdList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
+                        {
+                            createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        }
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 
