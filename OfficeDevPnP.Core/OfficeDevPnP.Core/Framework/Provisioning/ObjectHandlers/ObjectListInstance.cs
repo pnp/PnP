@@ -250,7 +250,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
 
                 #endregion
-            
+
 
                 #region Views
 
@@ -586,7 +586,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (!_willExtract.HasValue)
             {
                 ListCollection collList = web.Lists;
-                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden));
+                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
 
                 web.Context.ExecuteQuery();
 
