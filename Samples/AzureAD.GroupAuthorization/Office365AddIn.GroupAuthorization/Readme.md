@@ -1,18 +1,17 @@
-﻿# Office 365 Add-In With Groups Authorization #
+# Office 365 Add-In With Groups Authorization #
 
 ### Summary ###
 This sample shows how to use windows Azure Active directory and the groups to authorize
-actions in your asp.net MVC app or Offce 365 Add-In
+actions in your asp.net MVC app or Office 365 Add-In
 
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Office365AddIn.GroupAuthorization | Luis Valencia (Capatech)
+Office365AddIn.GroupAuthorization | Luis Valencia (**Capatech**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -31,7 +30,7 @@ Creating Office 365 Apps or Add-Ins in ASP.NET MVC is pretty straightforward, yo
 
 Over the years authorization in ASP.NET Web forms or MVC has been done through the Authorize Attribute, this allows the developer to assign a user or role to a method or controller in a declarative way.
 
-However what blogs don’t tell you is that even if you have groups in Azure AAD, this wont just work out of the box, you have to implement it. If you use the Authorize Attribute on an Office 365 Add-In it will try to use the ASP.NET User.IsInRole under the hood, which depends on how you have your app configurated for authentication.  If you have ASP.NET Forms authentication with a sql database it will work without any problem.
+However what blogs don’t tell you is that even if you have groups in Azure AAD, this wont just work out of the box, you have to implement it. If you use the Authorize Attribute on an Office 365 Add-In it will try to use the ASP.NET User.IsInRole under the hood, which depends on how you have your app configured for authentication.  If you have ASP.NET Forms authentication with a sql database it will work without any problem.
 
 Read entire documentation here:
 [Luis Valencia Blog Post Office 365 Add-In With Groups Authorization](http://www.luisevalencia.com/2015/06/02/using-azure-aad-graph-office-365-add-in-with-groups-authorization/)
