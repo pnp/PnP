@@ -156,19 +156,7 @@
             });
         }
 
-        function getRequestsByOwner(request) {
-            $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
-                if (data != null) {
-                    if (data.success == true) {
-                        $scope.siteConfiguration.externalSharingEnabled = data.externalSharingEnabled;
-                    }
-                    else { $scope.siteConfiguration.externalSharingEnabled = false; }
-                }
-
-            }).fail(function (err) {
-                console.info(JSON.stringify(err));
-            });
-        }
+        
 
         function getBusinessMetadata() {
 

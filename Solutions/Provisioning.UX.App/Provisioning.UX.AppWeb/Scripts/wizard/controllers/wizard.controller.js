@@ -5,13 +5,37 @@
         .module('app.wizard')
         .controller('WizardController', WizardController);
 
-    WizardController.$inject = ['$scope', '$log', '$modal', 'AppSettings', 'utilservice'];
+    WizardController.$inject = ['$scope', '$log', '$modal', 'AppSettings', 'utilservice', '$SharePointProvisioningService'];
 
-    function WizardController($scope, $log, $modal, AppSettings, $utilservice) {
+    function WizardController($scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardController';
+
+        var vm = this;
+        vm.existingRequests = [];
         
         $scope.spHostWebUrl = $utilservice.spHostUrl();
-        $scope.spAppWebUrl = $utilservice.spAppWebUrl();       
+        $scope.spAppWebUrl = $utilservice.spAppWebUrl();
+              
+        // web_url/_layouts/15/resource
+        var scriptbase = hostweburl + "/_layouts/15/";
+        // Load the js files and continue to the successHandler
+        $.getScript(scriptbase + "SP.Runtime.js",
+            function () {
+                $.getScript(scriptbase + "SP.js",
+                    function () {
+                        $.getScript(scriptbase + "SP.RequestExecutor.js",
+                             function () {
+                                 $scope.getCurrentUser();
+                                 $log.info('Current user data retrieved');
+
+
+
+                             }
+                        );
+                    }
+                );
+            }
+        );
 
         activate();
 
@@ -19,6 +43,8 @@
 
             $log.info($scope.title + ' Activated');         
             $scope.appSettings = {};
+
+           
 
             getAppSettings();
             initModal();
@@ -62,6 +88,52 @@
 
         }
 
+        function getRequestsByOwner(request) {
+            $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
+                if (data != null) {
+                    if (data.success == true) {
+                        vm.existingRequests = data.requests;
+                        $log.info('Site Requests Retrieved');
+                    }
+                    else {
+                        $scope.existingRequests[0] = 'No existing site requests exist';
+                        $log.info('No existing site requests');
+                    }
+                }
 
+            }).fail(function (err) {
+                console.info(JSON.stringify(err));
+            });
+        }
+
+        $scope.getCurrentUser = function () {
+            var executor = new SP.RequestExecutor($utilservice.spAppWebUrl());
+            executor.executeAsync(
+                   {
+                       url: $utilservice.spAppWebUrl() + "/_api/web/currentuser",
+                       method: "GET",
+                       headers:
+                       {
+                           "Accept": "application/json;odata=nometadata"
+
+                       },
+                       success: function (data) {
+                           var jsonResults = JSON.parse(data.body);
+                           $scope.currentUserEmail = jsonResults.Email;
+                           $log.info('Current user email: ' + jsonResults.Email);
+
+                           var user = new Object();
+                           user.name = $scope.currentUserEmail;
+
+                           getRequestsByOwner(user);
+
+                       },
+                       error: function () { alert("We are having problems retrieving specific information from the server. Please try again later") }
+                   }
+               );
+        }
+
+        
+        
     }
 })();
