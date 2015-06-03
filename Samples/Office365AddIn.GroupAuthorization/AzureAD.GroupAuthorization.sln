@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365AddIn.GroupAuthorization", "Office365AddIn.GroupAuthorization\Office365AddIn.GroupAuthorization.csproj", "{4CAF886A-C356-4323-ABA1-D27CE2A3CD5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureAD.GroupAuthorization", "Office365AddIn.GroupAuthorization\AzureAD.GroupAuthorization.csproj", "{4CAF886A-C356-4323-ABA1-D27CE2A3CD5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
