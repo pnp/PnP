@@ -4,12 +4,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="app">
 <head>
-    <style>
-        html
-        {
-            overflow: scroll;
-        }
-    </style>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -56,7 +50,7 @@
 </head>
 <body>    
     <div id="divSPChrome"></div>            
-        
+
     <!-- Include the Wizard View -->
     <div data-ng-include="'wizard.html'"></div>
     <!-- App JS -->
