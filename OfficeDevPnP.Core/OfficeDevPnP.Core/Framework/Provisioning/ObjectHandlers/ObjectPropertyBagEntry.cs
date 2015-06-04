@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!web.PropertyBagContainsKey(propbagEntry.Key))
                 {
-                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value);
+                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value.ToParsedString());
                     if (propbagEntry.Indexed)
                     {
                         web.AddIndexedPropertyBagKey(propbagEntry.Key);
