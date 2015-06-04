@@ -1,15 +1,20 @@
 ﻿(function () {
     'use strict';
+    var controllerId = 'wizard';
 
     angular
         .module('app.wizard')
         .controller('WizardModalInstanceController', WizardModalInstanceController);
         //.value('urlparams', null);
 
-    WizardModalInstanceController.$inject = ['$scope', '$log', '$modalInstance', 'Templates', 'BusinessMetadata', 'utilservice', '$SharePointProvisioningService'];
+    WizardModalInstanceController.$inject = ['$rootScope', 'common', 'config', '$scope', '$log', '$modalInstance', 'Templates', 'BusinessMetadata', 'utilservice', '$SharePointProvisioningService'];
 
-    function WizardModalInstanceController($scope, $log, $modalInstance, Templates, BusinessMetadata, $utilservice, $SharePointProvisioningService) {
+    function WizardModalInstanceController($rootScope, common, config, $scope, $log, $modalInstance, Templates, BusinessMetadata, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardModalInstanceController';
+
+        var logSuccess = common.logger.getLogFn(controllerId, 'success');
+        var getLogFn = common.logger.getLogFn;
+        var log = getLogFn(controllerId);
         
         var spHostWebUrl = $scope.spHostWebUrl;
         var spAppWebUrl = $scope.spAppWebUrl;       
@@ -55,6 +60,8 @@
             siteRequest.properties = props;
             
             saveSiteRequest(siteRequest);
+            logSuccess('Sweet! Your request has been submitted');
+
             $modalInstance.close($scope.siteConfiguration);
         };
 
@@ -86,6 +93,12 @@
             initModal();
             getTemplates();
             getBusinessMetadata();
+
+            var promises = [];
+            common.activateController(promises, controllerId)
+                               .then(function () {
+                                   logSuccess('Wizard Activated');
+                               });
 
         }
 
