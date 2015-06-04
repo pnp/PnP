@@ -40,8 +40,13 @@ namespace Provisioning.UX.AppWeb
                 //Response.Write(clientContext.Web.Title);
             }
 
-            //Register provisioning service
-            Page.RegisterWebAPIService("api/provisioning");
+            if (this.Request.Cookies[WebAPIHelper.SERVICES_TOKEN] == null)
+            {
+                //Register provisioning service
+                Page.RegisterWebAPIService("api/provisioning");
+            }
+
+            
         }
     }
 }

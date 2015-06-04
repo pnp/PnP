@@ -12,7 +12,8 @@
 
         // Custom Modules
         'app.data',
-        'app.wizard'       
+        'app.wizard',
+        'common'
 
     ]);
 

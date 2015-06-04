@@ -1,41 +1,38 @@
 ﻿(function () {
     'use strict';
+    var controllerId = 'dashboard';
 
     angular
         .module('app.wizard')
         .controller('WizardController', WizardController);
 
-    WizardController.$inject = ['$scope', '$log', '$modal', 'AppSettings', 'utilservice', '$SharePointProvisioningService'];
+    WizardController.$inject = ['$rootScope', 'common', 'config', '$scope', '$log', '$modal', 'AppSettings', 'utilservice', '$SharePointProvisioningService'];
 
-    function WizardController($scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
+    function WizardController($rootScope, common, config, $scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardController';
-
         var vm = this;
+        var logSuccess = common.logger.getLogFn(controllerId, 'success');
+        var events = config.events;
+        var getLogFn = common.logger.getLogFn;
+        var log = getLogFn(controllerId);
+
+        vm.busyMessage = 'Please wait ...';
+        vm.isBusy = true;
+        vm.spinnerOptions = {
+            radius: 40,
+            lines: 7,
+            length: 0,
+            width: 30,
+            speed: 1.7,
+            corners: 1.0,
+            trail: 100,
+            color: '#DC3C00'
+        };
+        
         vm.existingRequests = [];
         
-        $scope.spHostWebUrl = $utilservice.spHostUrl();
-        $scope.spAppWebUrl = $utilservice.spAppWebUrl();
-              
-        // web_url/_layouts/15/resource
-        var scriptbase = hostweburl + "/_layouts/15/";
-        // Load the js files and continue to the successHandler
-        $.getScript(scriptbase + "SP.Runtime.js",
-            function () {
-                $.getScript(scriptbase + "SP.js",
-                    function () {
-                        $.getScript(scriptbase + "SP.RequestExecutor.js",
-                             function () {
-                                 $scope.getCurrentUser();
-                                 $log.info('Current user data retrieved');
-
-
-
-                             }
-                        );
-                    }
-                );
-            }
-        );
+                     
+        
 
         activate();
 
@@ -44,12 +41,44 @@
             $log.info($scope.title + ' Activated');         
             $scope.appSettings = {};
 
-           
+            // web_url/_layouts/15/resource
+            var scriptbase = hostweburl + "/_layouts/15/";
+            // Load the js files and continue to the successHandler
+            $.getScript(scriptbase + "SP.Runtime.js",
+                function () {
+                    $.getScript(scriptbase + "SP.js",
+                        function () {
+                            $.getScript(scriptbase + "SP.RequestExecutor.js",
+                                 function () {
+                                     $scope.spHostWebUrl = $utilservice.spHostUrl();
+                                     $scope.spAppWebUrl = $utilservice.spAppWebUrl();
+
+                                     $scope.getCurrentUser();
+                                     //$log.info('Current user data retrieved');
+
+                                 }
+                            );
+                        }
+                    );
+                }
+            );
+
+            //toggleSpinner(true);
 
             getAppSettings();
             initModal();
+
+            logSuccess('Provisioning solution loaded!', null, true);
+
+            var promises = [];
+            common.activateController(promises, controllerId)
+                               .then(function () {
+                                   log('Activated Dashboard View');
+                                   log('Retrieving request history from source');
+                               });
         }
 
+        function toggleSpinner(on) { vm.isBusy = on; }
         
         function initModal() {
 
@@ -75,6 +104,65 @@
             };
 
         }
+               
+
+        $rootScope.$on(events.controllerActivateSuccess,
+            function (data) { toggleSpinner(false); }
+        );
+
+        $rootScope.$on(events.requestsLoadedSuccess,
+            function (data) { toggleSpinner(false); }
+        );
+
+        $rootScope.$on(events.spinnerToggle,
+            function (data) { toggleSpinner(data.show); }
+        );
+
+        $scope.getCurrentUser = function () {
+            var executor = new SP.RequestExecutor($scope.spAppWebUrl);
+            executor.executeAsync(
+                   {
+                       url: $scope.spAppWebUrl + "/_api/web/currentuser",
+                       method: "GET",
+                       headers:
+                       {
+                           "Accept": "application/json;odata=nometadata"
+
+                       },
+                       success: function (data) {
+                           var jsonResults = JSON.parse(data.body);
+                           
+                           $log.info('Current user email: ' + jsonResults.Email);
+
+                           var user = new Object();
+                           user.name = jsonResults.Email;
+                           getRequestsByOwner(user);                          
+
+                       },
+                       error: function () { alert("We are having problems retrieving specific information from the server. Please try again later"); }
+                   }
+               );
+        }
+
+        function getRequestsByOwner(request) {
+            $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
+                if (data != null) {
+                    if (data.success == true) {
+                        vm.existingRequests = data.requests;
+                        logSuccess('Retrieved user request history');
+                    }
+                    else {
+                        $scope.existingRequests[0] = 'No existing site requests exist';
+                        log('No existing site requests');
+                    }
+                }
+                
+                
+
+            }).fail(function (err) {
+                console.info(JSON.stringify(err));
+            });
+        }
 
         function getAppSettings() {
 
@@ -86,54 +174,7 @@
 
             });
 
-        }
-
-        function getRequestsByOwner(request) {
-            $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
-                if (data != null) {
-                    if (data.success == true) {
-                        vm.existingRequests = data.requests;
-                        $log.info('Site Requests Retrieved');
-                    }
-                    else {
-                        $scope.existingRequests[0] = 'No existing site requests exist';
-                        $log.info('No existing site requests');
-                    }
-                }
-
-            }).fail(function (err) {
-                console.info(JSON.stringify(err));
-            });
-        }
-
-        $scope.getCurrentUser = function () {
-            var executor = new SP.RequestExecutor($utilservice.spAppWebUrl());
-            executor.executeAsync(
-                   {
-                       url: $utilservice.spAppWebUrl() + "/_api/web/currentuser",
-                       method: "GET",
-                       headers:
-                       {
-                           "Accept": "application/json;odata=nometadata"
-
-                       },
-                       success: function (data) {
-                           var jsonResults = JSON.parse(data.body);
-                           $scope.currentUserEmail = jsonResults.Email;
-                           $log.info('Current user email: ' + jsonResults.Email);
-
-                           var user = new Object();
-                           user.name = $scope.currentUserEmail;
-
-                           getRequestsByOwner(user);
-
-                       },
-                       error: function () { alert("We are having problems retrieving specific information from the server. Please try again later") }
-                   }
-               );
-        }
-
-        
+        }        
         
     }
 })();
