@@ -133,8 +133,8 @@ namespace Provisioning.Common
             }
             catch(Exception ex)
             {
-                Log.Error("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", 
-                    PCResources.SiteRequest_List_Creation_Error, 
+                Log.Error("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection",
+                    PCResources.SiteCreation_Creation_Failure, 
                     siteRequest.Url, 
                     ex,
                     ex.InnerException);

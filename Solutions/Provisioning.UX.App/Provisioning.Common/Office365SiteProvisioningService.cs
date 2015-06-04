@@ -74,7 +74,7 @@ namespace Provisioning.Common
                 catch (Exception ex)
                 {
                     Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
-                        PCResources.SiteRequest_List_Creation_Error, 
+                        PCResources.SiteCreation_Creation_Failure, 
                         siteRequest.Url, ex.Message, ex);
                     throw;
                 }
