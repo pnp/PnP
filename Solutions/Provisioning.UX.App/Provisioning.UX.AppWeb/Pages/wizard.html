@@ -1,5 +1,10 @@
 ﻿<div ng-controller="WizardController as vm">
     
+    <div data-ng-show="vm.isBusy" class="page-splash dissolve-animation">
+        <div data-cc-spinner="vm.spinnerOptions"></div>
+        <div class="page-splash-message page-splash-message-subtle">{{vm.busyMessage}}</div>
+    </div>
+
     <!-- Layout Here is purely for deveopment purposes -->
     <div class="container">       
 
@@ -36,7 +41,7 @@
                 <div class="form-group">
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Successful Requests</h3>
+                            <h3 class="panel-title">My Completed Requests</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
@@ -54,14 +59,14 @@
                     </div>
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Approvals Pending</h3>
+                            <h3 class="panel-title">My New Requests</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
                             <table class="table table-bordered table-striped">
 
                                 <tbody>
-                                    <tr ng-repeat="request in vm.existingRequests | filter:'Not Started'">
+                                    <tr ng-repeat="request in vm.existingRequests | filter:'New'">
                                         <td>{{ request.title }}</td>
                                         <td>{{ request.url }}</td>
                                         <td>{{ request.requestStatus }}</td>
@@ -78,7 +83,7 @@
             <div class="col-sm-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">My In-Progress Requests</h3>
+                        <h3 class="panel-title">My Approved Requests</h3>
                         <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                     </div>
                     <div class="panel-body" ng-model="vm.existingRequests">

@@ -100,6 +100,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\bootstrap.dialog.js" />
+    <Content Include="Styles\toastr.css" />
+    <Content Include="Styles\toastr.min.css" />
     <Content Include="images\HBI.png" />
     <Content Include="images\LBI.png" />
     <Content Include="images\MBI.png" />
@@ -130,6 +133,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\commonapp.js" />
+    <Content Include="Scripts\config.exceptionHandler.js" />
+    <Content Include="Scripts\config.js" />
     <Content Include="Scripts\data\appsettings.factory.js" />
     <Content Include="Scripts\data\json\divisions.json" />
     <Content Include="Scripts\data\json\functions.json" />
@@ -146,6 +151,8 @@
     <Content Include="provisioningSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Styles\toastr.scss" />
+    <Content Include="Styles\toastr.less" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -173,7 +180,11 @@
     <Content Include="Scripts\data\data.module.js" />
     <Content Include="Scripts\data\templates.factory.js" />
     <Content Include="Scripts\siteClassification.js" />
+    <Content Include="Scripts\spin.js" />
+    <Content Include="Scripts\spin.min.js" />
     <Content Include="Scripts\SubSiteOverride.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\vendor\jquery\jquery.tipsy.js" />
     <Content Include="Scripts\wizard\directives\restrict.js" />
     <None Include="Scripts\_references.js" />
@@ -186,6 +197,9 @@
     <Content Include="Scripts\wizard\directives\formDirectives.js" />
     <Content Include="Scripts\wizard\modal\siteowners.peoplepicker.controller.js" />
     <Content Include="Scripts\wizard\modal\wizard.modal.controller.js" />
+    <Content Include="Scripts\wizard\modules\common.js" />
+    <Content Include="Scripts\wizard\modules\logger.js" />
+    <Content Include="Scripts\wizard\modules\spinner.js" />
     <Content Include="Scripts\wizard\services\peoplepickerfactory.js" />
     <Content Include="Scripts\wizard\services\provisioningServices.js" />
     <Content Include="Scripts\wizard\services\siteQueryService.js" />

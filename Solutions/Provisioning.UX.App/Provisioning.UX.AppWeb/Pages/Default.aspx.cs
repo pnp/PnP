@@ -5,15 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using OfficeDevPnP.Core.WebAPI;
-using Microsoft.SharePoint.Client;
-using Provisioning.Common.Utilities;
 
 namespace Provisioning.UX.AppWeb
 {
     public partial class Default : System.Web.UI.Page
     {
-        private ClientContext ctx;
-
         protected void Page_PreInit(object sender, EventArgs e)
         {
             Uri redirectUrl;
@@ -33,9 +29,24 @@ namespace Provisioning.UX.AppWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // The following code gets the client context and Title property by using TokenHelper.
+            // To access other properties, the app may need to request permissions on the host web.
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
 
-            //Register provisioning service
-            Page.RegisterWebAPIService("api/provisioning");
+            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            {
+                clientContext.Load(clientContext.Web, web => web.Title);
+                clientContext.ExecuteQuery();
+                //Response.Write(clientContext.Web.Title);
+            }
+
+            if (this.Request.Cookies[WebAPIHelper.SERVICES_TOKEN] == null)
+            {
+                //Register provisioning service
+                Page.RegisterWebAPIService("api/provisioning");
+            }
+
+            
         }
     }
 }
