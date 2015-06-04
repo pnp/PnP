@@ -22,7 +22,7 @@
                 });
                 return deferred;
             }
-            this.saveRequest = function (request) {
+            this.saveNewSiteRequest = function (request) {
                 var deferred = $q.defer();
                 var formData = JSON.stringify(request);
                 $http({
@@ -70,6 +70,23 @@
                 }).error(function (data, status) {
                     deferred.reject(data);
                     console.log("Request Failed to api/provisioning/externalSharingEnabled " + data );
+                });
+                return deferred;
+            }
+            this.doesSiteRequestExist = function (request) {
+                var deferred = $.Deferred();
+                var formData = JSON.stringify(request);
+                $http({
+                    method: 'POST',
+                    data: "=" + formData,
+                    url: '/api/provisioning/siteRequests/validateNewSiteRequestUrl',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                    console.log("Request Succssess to api/provisioning/validateNewSiteRequestUrl result is " + data);
+                }).error(function (data, status) {
+                    deferred.reject(data);
+                    console.log("Request Failed to api/provisioning/validateNewSiteRequestUrl " + data);
                 });
                 return deferred;
             }

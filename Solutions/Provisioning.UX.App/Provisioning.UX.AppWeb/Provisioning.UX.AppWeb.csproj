@@ -225,6 +225,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ExternalSharingRequest.cs" />
+    <Compile Include="Models\SiteCheckResponse.cs" />
     <Compile Include="Models\SitePolicyResults.cs" />
     <Compile Include="Models\SiteRequest.cs" />
     <Compile Include="Models\SiteRequestReponse.cs" />

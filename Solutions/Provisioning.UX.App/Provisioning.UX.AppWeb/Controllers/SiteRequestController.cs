@@ -22,6 +22,44 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
 
         /// <summary>
+        /// Checks if a site request exists in the data repository
+        /// POST api/<controller>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [Route("api/provisioning/siteRequests/validateNewSiteRequestUrl")]
+        [WebAPIContextFilter]
+        [HttpPost]
+        public SiteCheckResponse ValidateNewSiteRequestUrl([FromBody]string value)
+        {
+            var _response = new SiteCheckResponse();
+            _response.Success = false;
+
+            try
+            {
+                var data = JsonConvert.DeserializeObject<SiteRequest>(value);
+                var _requestToCheck = ObjectMapper.ToSiteRequestInformation(data);
+
+                ///Save the Site Request
+                ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
+                var _manager = _srf.GetSiteRequestManager();
+                bool _value = _manager.DoesSiteRequestExist(_requestToCheck.Url);
+                _response.DoesExist = _value;
+                _response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                    "There was an error processing your request. Error Message {0} Error Stack {1}",
+                    ex.Message,
+                    ex);
+                _response.ErrorMessage = ex.Message;
+            }
+            return _response;
+
+        }
+
+        /// <summary>
         /// Creates new a site request in the data repository
         /// POST api/<controller>
         /// </summary>
@@ -49,7 +87,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch (Exception ex)
             {
                 Log.Error("SiteRequestController.NewSiteRequest",
-                    "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
+                    "There was an error saving the new site request. Error Message {0} Error Stack {1}",
                     ex.Message,
                     ex);
                 _response.ErrorMessage = ex.Message;

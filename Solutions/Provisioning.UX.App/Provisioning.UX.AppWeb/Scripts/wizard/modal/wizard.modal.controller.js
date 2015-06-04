@@ -13,6 +13,7 @@
         $scope.title = 'WizardModalInstanceController';
 
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
+        var logError = common.logger.getLogFn(controllerId, 'error');
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
         
@@ -27,9 +28,7 @@
         
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
-        //remove hard coded path now we get from template object when selected
-        //$scope.siteConfiguration.spNewSitePrefix = "Https://" + $utilservice.spRootHostName(spHostWebUrl) + "/sites/"; // still need to replace hardcoded /sites/        
-
+      
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
@@ -58,11 +57,11 @@
             });
             //set the properties object
             siteRequest.properties = props;
-            
-            saveSiteRequest(siteRequest);
-            logSuccess('Sweet! Your request has been submitted');
 
-            $modalInstance.close($scope.siteConfiguration);
+            processNewSiteRequest(siteRequest);
+            
+          //  $modalInstance.close($scope.siteConfiguration);
+          
         };
 
         $scope.interacted = function (field) {
@@ -169,8 +168,6 @@
             });
         }
 
-        
-
         function getBusinessMetadata() {
 
             // Use the metadata factory to retrieve a list of regions
@@ -216,12 +213,32 @@
             });
         }
 
-        function saveSiteRequest(request) {
-            $.when($SharePointProvisioningService.saveRequest(request)).done(function (data) {
+        function saveNewSiteRequest(request) {
+            $.when($SharePointProvisioningService.saveNewSiteRequest(request)).done(function (data) {
                 if (data != null) {
-                    if(data.success != true)
-                    {
-                        //There was an issue posting to the service
+                    if(data.success != true) {
+                        logSuccess("Sweet!, Site Request has been submitted");
+                        $modalInstance.close($scope.siteConfiguration);
+                    }
+                    else {
+                        logError("Oops, something bad has occured.")
+                    }
+
+                }
+            }).fail(function (err) {
+                console.log(err);
+            });
+            console.log(request);
+        }
+
+        function processNewSiteRequest(request) {
+            $.when($SharePointProvisioningService.doesSiteRequestExist(request)).done(function (data) {
+                if (data != null) {
+                    if (data.doesExist != true) {
+                        saveNewSiteRequest(request);
+                    }
+                    else {
+                        logError("There is an existing site request with this url. Please choose a new url for your site.");
                     }
                 }
             }).fail(function (err) {
