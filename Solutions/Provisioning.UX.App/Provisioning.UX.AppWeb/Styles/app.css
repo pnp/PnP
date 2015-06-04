@@ -1,4 +1,7 @@
 ﻿/* CSS for the PnP User Interface Prototype */
+body {
+    overflow: visible;
+}
 .container {
     margin-left: 25px;
     margin-top: 10px;

@@ -1,5 +1,8 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-06-03**
+* Added OnQuickLaunch parameter to New-SPOList cmdlet
+
 **2015-06-01**
 * Added Add-SPOWorkflowDefinition cmdlet
 * Updated Add-SPOField to allow for -Field parameter to add a site column to a list.

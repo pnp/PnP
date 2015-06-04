@@ -1,18 +1,19 @@
 #Get-SPOFeature
-*Topic automatically generated on: 2015-05-27*
+*Topic automatically generated on: 2015-06-03*
 
 Returns all activated or a specific activated feature
 ##Syntax
 ```powershell
-Get-SPOFeature [-Scope <FeatureScope>] [-Web <WebPipeBind>] [-Identity <FeaturePipeBind>]```
-&nbsp;
+Get-SPOFeature [-Scope <FeatureScope>] [-Web <WebPipeBind>] [-Identity <FeaturePipeBind>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|FeaturePipeBind|False|
-Scope|FeatureScope|False|The scope of the feature. Defaults to Web.
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
+|Identity|FeaturePipeBind|False||
+|Scope|FeatureScope|False|The scope of the feature. Defaults to Web.|
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
 ##Examples
 
 ###Example 1
@@ -30,4 +31,4 @@ This will return a specific activated web scoped feature
 ###Example 4
     PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site
 This will return a specific activated site scoped feature
-<!-- Ref: 21ED412C16D0579162B8DB0E52674503 -->
+<!-- Ref: EE5CA7ABA20044B0B40B83CA50460F5D -->

@@ -8,8 +8,8 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - User Interface to request site collections
 - Capability to store Site Requests in either a SharePoint list or Azure Document DB 
 - Request are processed asynchronously using the remote timer job pattern
-- New site collection creation to Office 365 MT.
-- New site collection creation in SharePoint on-premises builds including Office 365 Dedicated.
+- New site collection creation for Office 365 MT.
+- New site collection creation for SharePoint on-premises builds including Office 365 Dedicated.
 - Multiple host header site collection provisioning for on-premises builds
 - Hybrid support for provisioning sites in SharePoint Online and SharePoint On-premises in one common solution
 - Apply a configuration template to newly created sites using the PnP Provisioning Framework
@@ -104,7 +104,7 @@ The details page provides a way to capture additional meta-data for the site req
 
 ![](http://i.imgur.com/Rd7lh5y.png)
 
-The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below.
+The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below. Notice the External Sharing option, this is only available in Office 365 MT and if you have External Sharing enabled in the tenant.
 
 ![](http://i.imgur.com/Bs6NaVh.png)
 

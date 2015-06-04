@@ -328,7 +328,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             var docBuilder = new StringBuilder();
                             docBuilder.AppendFormat("{0}{1}", cmdletInfo.Description, Environment.NewLine);
                             docBuilder.AppendFormat("##Syntax{0}", Environment.NewLine);
-                            foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                            foreach (var cmdletSyntax in cmdletInfo.Syntaxes.OrderBy(s => s.ParameterSetName))
                             {
                                 var syntaxText = new StringBuilder();
                                 syntaxText.AppendFormat("```powershell\r\n{0}", cmdletInfo.FullCommand);
@@ -354,34 +354,30 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 }
                                 // Add All ParameterSet ones
                                 docBuilder.Append(syntaxText);
-                                docBuilder.AppendFormat("```{0}", Environment.NewLine);
-                                docBuilder.AppendFormat("&nbsp;{0}", Environment.NewLine);
-                                docBuilder.Append(Environment.NewLine);
+                                docBuilder.AppendFormat("\n```\n\n\n");
                             }
 
                             if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
                             {
-                                docBuilder.AppendFormat("##Detailed Description{0}", Environment.NewLine);
-
-                                docBuilder.AppendFormat("{0}{1}", cmdletInfo.DetailedDescription, Environment.NewLine);
-                                docBuilder.Append(Environment.NewLine);
+                                docBuilder.Append("##Detailed Description\n");
+                                docBuilder.AppendFormat("{0}\n\n", cmdletInfo.DetailedDescription);
                             }
-                            docBuilder.AppendFormat("##Parameters{0}", Environment.NewLine);
-                            docBuilder.AppendFormat("Parameter|Type|Required|Description{0}", Environment.NewLine);
-                            docBuilder.AppendFormat("---------|----|--------|-----------{0}", Environment.NewLine);
+                            docBuilder.Append("##Parameters\n");
+                            docBuilder.Append("Parameter|Type|Required|Description\n");
+                            docBuilder.Append("---------|----|--------|-----------\n");
                             foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
                             {
-                                docBuilder.AppendFormat("{0}|{1}|{2}|{3}{4}", par.Name, par.Type, par.Required ? "True" : "False", par.Description, Environment.NewLine);
+                                docBuilder.AppendFormat("|{0}|{1}|{2}|{3}|\n", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
                             }
                             if (examples.Any())
-                                docBuilder.AppendFormat("##Examples{0}", Environment.NewLine);
+                                docBuilder.Append("##Examples\n");
                             var examplesCount = 1;
                             foreach (var example in examples.OrderBy(e => e.SortOrder))
                             {
-                                docBuilder.AppendFormat("{0}{1}", example.Introduction, Environment.NewLine);
-                                docBuilder.AppendFormat("###Example {0}{1}", examplesCount, Environment.NewLine);
-                                docBuilder.AppendFormat("    {0}{1}", example.Code, Environment.NewLine);
-                                docBuilder.AppendFormat("{0}{1}", example.Remarks, Environment.NewLine);
+                                docBuilder.AppendFormat("{0}\n", example.Introduction);
+                                docBuilder.AppendFormat("###Example {0}\n", examplesCount);
+                                docBuilder.AppendFormat("    {0}\n", example.Code);
+                                docBuilder.AppendFormat("{0}\n", example.Remarks);
                                 examplesCount++;
                             }
 

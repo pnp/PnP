@@ -1,14 +1,15 @@
 #Get-SPOConfiguration
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 To be deprecated
 ##Syntax
 ```powershell
-Get-SPOConfiguration [-Key <String>]```
-&nbsp;
+Get-SPOConfiguration [-Key <String>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Key|String|False|
-<!-- Ref: 9826C33E74F0C0E4182C481065578BAD -->
+|Key|String|False||
+<!-- Ref: 6A1B49E466F42D2AA1D6AB6585A016A6 -->

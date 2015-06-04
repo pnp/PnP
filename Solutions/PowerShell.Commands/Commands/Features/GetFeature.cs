@@ -22,7 +22,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
      Remarks = @"This will return a specific activated web scoped feature", SortOrder = 3)]
     [CmdletExample(
      Code = @"PS:> Get-SPOFeature -Identity fb689d0e-eb99-4f13-beb3-86692fd39f22 -Scope Site",
-     Remarks = @"This will return a specific activated site scoped feature", SortOrder = 3)]
+     Remarks = @"This will return a specific activated site scoped feature", SortOrder = 4)]
     public class GetFeature : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position = 0, ValueFromPipeline = true)]

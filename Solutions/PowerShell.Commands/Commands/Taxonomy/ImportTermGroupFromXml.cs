@@ -19,8 +19,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOTermGroupFromXml", SupportsShouldProcess = true)]
     [CmdletHelp("Imports a taxonomy TermGroup from either the input or from an XML file.", Category = "Taxonomy")]
-    [CmdletExample(Code = @"PS:> Import-SPOTermGroupFromXml -Xml $xml", Remarks = "Imports the XML based termgroup information located in the $xml variable")]
-    [CmdletExample(Code = @"PS:> Import-SPOTermGroupFromXml -Path input.xml", Remarks = "Imports the XML file specified by the path.")]
+    [CmdletExample(
+        Code = @"PS:> Import-SPOTermGroupFromXml -Xml $xml", 
+        Remarks = "Imports the XML based termgroup information located in the $xml variable",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> Import-SPOTermGroupFromXml -Path input.xml", 
+        Remarks = "Imports the XML file specified by the path.",
+        SortOrder = 2)]
     public class ImportTermGroupFromXml : SPOCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The XML to process", Position = 0, ValueFromPipeline = true, ParameterSetName = "XML")]
