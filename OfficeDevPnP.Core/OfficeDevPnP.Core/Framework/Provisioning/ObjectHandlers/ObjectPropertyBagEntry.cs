@@ -32,7 +32,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
-            web.Context.Load(web, w => w.AllProperties);
+            web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 
             var entries = new List<PropertyBagEntry>();

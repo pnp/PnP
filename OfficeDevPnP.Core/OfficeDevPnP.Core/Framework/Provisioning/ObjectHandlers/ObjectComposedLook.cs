@@ -133,8 +133,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (theme != null)
             {
-                // Don't exclude the DesignPreviewThemedCssFolderUrl property bag, if any
-                creationInfo.PropertyBagPropertiesToPreserve.Add("DesignPreviewThemedCssFolderUrl");
+                if (creationInfo != null)
+                {
+                    // Don't exclude the DesignPreviewThemedCssFolderUrl property bag, if any
+                    creationInfo.PropertyBagPropertiesToPreserve.Add("DesignPreviewThemedCssFolderUrl");
+                }
 
                 template.ComposedLook.Name = theme.Name;
 
