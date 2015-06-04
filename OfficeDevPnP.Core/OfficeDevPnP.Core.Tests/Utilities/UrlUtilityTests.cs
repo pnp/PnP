@@ -44,11 +44,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
 #if !CLIENTSDKV15
             var invalidString = "a#%*\\:<>?/+|b";
+            Assert.AreEqual("a---------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
 #else
             var invalidString = "a#~%&*{}\\:<>?/+|b";
+            Assert.AreEqual("a---------------------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
 #endif
-
-            Assert.AreEqual("a------------------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
         }
     }
 }
