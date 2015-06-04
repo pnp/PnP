@@ -1,11 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 
 namespace OfficeDevPnP.Core.Tests {
@@ -21,6 +17,19 @@ namespace OfficeDevPnP.Core.Tests {
             if (string.IsNullOrEmpty(TenantUrl) || string.IsNullOrEmpty(DevSiteUrl))
             {
                 throw new ConfigurationErrorsException("Tenant credentials in App.config are not set up.");
+            }
+
+            DevSiteTemplateParentUrl = ConfigurationManager.AppSettings["SPODevParentUrl"];
+            DevSiteTemplateSubtUrl = ConfigurationManager.AppSettings["SPODevSubsiteUrl"];
+
+            if (string.IsNullOrEmpty(DevSiteTemplateParentUrl) && DevSiteUrl.EndsWith("/dev"))
+            {
+                DevSiteTemplateParentUrl = DevSiteUrl.Replace("/dev", "/temp2");
+            }
+
+            if (string.IsNullOrEmpty(DevSiteTemplateSubtUrl) && DevSiteUrl.EndsWith("/dev"))
+            {
+                DevSiteTemplateSubtUrl = DevSiteTemplateParentUrl + "/s1";
             }
 
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]))
@@ -64,6 +73,8 @@ namespace OfficeDevPnP.Core.Tests {
         #region Properties
         public static string TenantUrl { get; set; }
         public static string DevSiteUrl { get; set; }
+        public static string DevSiteTemplateParentUrl { get; set; }
+        public static string DevSiteTemplateSubtUrl { get; set; }
         static string UserName { get; set; }
         static SecureString Password { get; set; }
         static ICredentials Credentials { get; set; }

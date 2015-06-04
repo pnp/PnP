@@ -5,13 +5,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.XPath;
 
 namespace OfficeDevPnP.Core.Tests.Framework.Providers
 {
@@ -121,7 +115,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         {
             using (ClientContext cc = TestCommon.CreateClientContext())
             {
-                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                //using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                using (ClientContext ctx = cc.Clone(TestCommon.DevSiteTemplateSubtUrl))
                 {
 
                     ProvisioningTemplate p = ctx.Web.GetProvisioningTemplate();
@@ -143,7 +138,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         {
             using (ClientContext cc = TestCommon.CreateClientContext())
             {
-                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2"))
+                //using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2"))
+                using (ClientContext ctx = cc.Clone(TestCommon.DevSiteTemplateParentUrl))
                 {
                     ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web);
                     creationInfo.FileConnector = new FileSystemConnector(@"c:\temp\template\garage", "");
@@ -152,7 +148,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                     ProvisioningTemplate p = ctx.Web.GetProvisioningTemplate(creationInfo);
                     Assert.IsNotNull(p);
 
-                    using (ClientContext cc2 = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                    //using (ClientContext cc2 = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                    using (ClientContext cc2 = cc.Clone(TestCommon.DevSiteTemplateSubtUrl))
                     {
                         p.Connector = new FileSystemConnector("./resources", "");
                         cc2.Web.ApplyProvisioningTemplate(p);
@@ -168,7 +165,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
             {
                 Assert.IsFalse(cc.Web.IsSubSite());
 
-                using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                //using (ClientContext ctx = cc.Clone("https://bertonline.sharepoint.com/sites/temp2/s1"))
+                using (ClientContext ctx = cc.Clone(TestCommon.DevSiteTemplateSubtUrl))
                 {
                     Assert.IsTrue(ctx.Web.IsSubSite());
                 }
