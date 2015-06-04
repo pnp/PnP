@@ -1,24 +1,26 @@
 #Add-SPOWebPartToWikiPage
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Adds a webpart to a wiki page in a specified table row and column
 ##Syntax
 ```powershell
-Add-SPOWebPartToWikiPage -Xml <String> -PageUrl <String> -Row <Int32> -Column <Int32> [-AddSpace [<SwitchParameter>]] [-Web <WebPipeBind>]```
-&nbsp;
+Add-SPOWebPartToWikiPage -Path <String> -PageUrl <String> -Row <Int32> -Column <Int32> [-AddSpace [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
+
 
 ```powershell
-Add-SPOWebPartToWikiPage -Path <String> -PageUrl <String> -Row <Int32> -Column <Int32> [-AddSpace [<SwitchParameter>]] [-Web <WebPipeBind>]```
-&nbsp;
+Add-SPOWebPartToWikiPage -Xml <String> -PageUrl <String> -Row <Int32> -Column <Int32> [-AddSpace [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-AddSpace|SwitchParameter|False|
-Column|Int32|True|
-PageUrl|String|True|
-Path|String|True|
-Row|Int32|True|
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
-Xml|String|True|
-<!-- Ref: C1629DA9DDF4B2974601ECF43A21039E -->
+|AddSpace|SwitchParameter|False||
+|Column|Int32|True||
+|PageUrl|String|True||
+|Path|String|True||
+|Row|Int32|True||
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+|Xml|String|True||
+<!-- Ref: 708507A6170796ACB8BF8043AB27C6FB -->

@@ -1,14 +1,15 @@
 #Get-SPOTaxonomySession
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Returns a taxonomy session
 ##Syntax
 ```powershell
-Get-SPOTaxonomySession [-Web <WebPipeBind>]```
-&nbsp;
+Get-SPOTaxonomySession [-Web <WebPipeBind>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
-<!-- Ref: B711DCF16667019C7B7A595F14CE13EC -->
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: B824B21FF036DB705C3C4CD32DC99AD2 -->

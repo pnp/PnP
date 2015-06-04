@@ -22,7 +22,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
      Code = @"
     PS:> Apply-SPOProvisioningTemplate -Path template.xml
 ",
-     Remarks = "Applies a provisioning template in XML format to the current web.")]
+     Remarks = "Applies a provisioning template in XML format to the current web.",
+     SortOrder = 1)]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]

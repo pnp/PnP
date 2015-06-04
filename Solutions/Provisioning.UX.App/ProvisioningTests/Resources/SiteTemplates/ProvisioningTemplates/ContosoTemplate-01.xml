@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pnp:SharePointProvisioningTemplate ID="TEMPLATE1" Version="1.0" 
+  xmlns:pnp="http://schemas.dev.office.com/PnP/2015/03/ProvisioningSchema" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <pnp:Files>
+    <pnp:File Src="PnP.png" Folder="SiteAssets" Overwrite="true" />
+    <pnp:File Src="CustomInjectedJS.js" Folder="SiteAssets" Overwrite="true" />
+    <pnp:File Src="custombg.jpg" Folder="~themecatalog/15" Overwrite="true" />
+    <pnp:File Src="custom.spcolor" Folder="~themecatalog/15" Overwrite="true" />
+  </pnp:Files>
+  <pnp:SiteFields>
+    <Field ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Type="Text" Name="ProjectID" DisplayName="Project ID" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Type="Text" Name="ProjectName" DisplayName="Project Name" Group="My Columns" MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Type="Text" Name="ProjectManager" DisplayName="Project Manager" Group="My Columns"  MaxLength="255" AllowDeletion="TRUE" />
+    <Field ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Type="Text" Name="DocumentDescription" DisplayName="Document Description" Group="My Columns " MaxLength="255" AllowDeletion="TRUE" />
+  </pnp:SiteFields>
+  <pnp:ContentTypes>
+    <ContentType ID="0x0101005D4F34E4BE7F4B6892AEBE088EDD215E"
+                 Name="General Project Document"
+                 Group="Base Foundation Content Types"
+                 Description="General Project Document Content Type"
+                 Inherits="true"
+                 Version="0">
+      <FieldRefs>
+        <FieldRef ID="{23203E97-3BFE-40CB-AFB4-07AA2B86BF45}" Name="ProjectID" DisplayName="Project ID" />
+        <FieldRef ID="{B01B3DBC-4630-4ED1-B5BA-321BC7841E3D}" Name="ProjectName" DisplayName="Project Name" />
+        <FieldRef ID="{A5DE9600-B7A6-42DD-A05E-10D4F1500208}" Name="ProjectManager" DisplayName="Project Manager" />
+        <FieldRef ID="{F1A1715E-6C52-40DE-8403-E9AAFD0470D0}" Name="DocumentDescription" DisplayName="Document Description" />
+      </FieldRefs>
+    </ContentType>
+  </pnp:ContentTypes>
+  <pnp:Lists>
+    <pnp:ListInstance Title = "Project Documents"
+                  Description = "Project Documents are stored here"
+                  DocumentTemplate = ""
+                  TemplateType = "101"
+                  Url = "Lists/ProjectDocuments"
+                  EnableVersioning ="true"
+                  MinorVersionLimit="0"
+                  MaxVersionLimit="10"
+                  Hidden="false"
+                  RemoveDefaultContentType ="true">
+      <pnp:Views>
+        <View DisplayName="My View">
+          <ViewFields>
+            <FieldRef Name="ID" />
+            <FieldRef Name="Title" />
+            <FieldRef Name="ProjectID" />
+            <FieldRef Name="ProjectName" />
+            <FieldRef Name="ProjectManager" />
+            <FieldRef Name="DocumentDescription" />
+          </ViewFields>
+          <Query>
+            <Where>
+              <Eq>
+                <FieldRef Name="ProjectManager"/>
+                <Value Type="Text">[Me]</Value>
+              </Eq>
+            </Where>
+          </Query>
+        </View>
+      </pnp:Views>
+      <pnp:ContentTypeBindings>
+        <pnp:ContentTypeBinding ContentTypeID="0x0101005D4F34E4BE7F4B6892AEBE088EDD215E" Default="true"/>
+      </pnp:ContentTypeBindings>
+    </pnp:ListInstance>
+  </pnp:Lists>
+  <pnp:CustomActions>
+    <pnp:SiteCustomActions>
+      <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION"
+                    Description="Site Classification Application"
+                    Group="SiteTasks"
+                    Location="Microsoft.SharePoint.SiteSettings"
+                    Title="Site Classification"
+                    Sequence="1000"
+                    Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}"
+                    Rights="31"/>
+      <pnp:CustomAction Name="CA_SUBSITE_OVERRIDE"
+                    Description="Override new sub-site link"
+                    Location="ScriptLink"
+                    Title="SubSiteOveride"
+                    ScriptSrc="~site/PnP_Provisioning_JS/PnP_EmbeddedJS.js"/>
+    </pnp:SiteCustomActions>
+    <pnp:WebCustomActions>
+      <pnp:CustomAction Name="CA_WEB_DOCLIB_MENU_SAMPLE"
+                    Description="Document Library Custom Menu"
+                    Group="ActionsMenu"
+                    Location="Microsoft.SharePoint.StandardMenu"
+                    Title="DocLib Custom Menu"
+                    Sequence="100"
+                    Url="/_layouts/CustomActionsHello.aspx?ActionsMenu" />
+    </pnp:WebCustomActions>
+  </pnp:CustomActions>
+  <pnp:ComposedLook Name="Contoso" Version="1"
+                ColorFile="~themecatalog/15/custom.spcolor"
+                FontFile=""
+                BackgroundFile="~themecatalog/15/custombg.jpg"
+                MasterPage="~masterpagecatalog/seattle.master"
+                AlternateCSS=""
+                SiteLogo="~site/SiteAssets/PnP.png" />
+</pnp:SharePointProvisioningTemplate>
