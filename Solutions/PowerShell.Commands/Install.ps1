@@ -8,7 +8,7 @@ $ModuleHome = "$PnPRoot\PowerShell\Modules\OfficeDevPnP.PowerShell.Commands"
 
 New-Item -Path $ModuleHome -ItemType Directory -Force
 
-Write-Host "Copying files from $source to $ModuleHome"
+Write-Host "Copying files from $source to $ModuleHome" 
 Copy-Item "$source\*.dll" -Destination "$ModuleHome"
 Copy-Item "$source\*help.xml" -Destination "$ModuleHome"
 Copy-Item "$source\*.psd1" -Destination "$ModuleHome"
