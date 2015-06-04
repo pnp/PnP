@@ -35,13 +35,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 DumpTemplate(ctx, "OFFILE1");
 #if !CLIENTSDKV15
                 DumpTemplate(ctx, "EHS1");
+                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0", "", "BLANKINTERNET0");
 #else
                 DumpTemplate(ctx, "STS1");
                 DumpTemplate(ctx, "BLANKINTERNET0");
 #endif
                 DumpTemplate(ctx, "BICENTERSITE0");
                 DumpTemplate(ctx, "SRCHCEN0");
-                DumpTemplate(ctx, "BLANKINTERNETCONTAINER0");
                 DumpTemplate(ctx, "BLANKINTERNETCONTAINER0", "CMSPUBLISHING0");
                 DumpTemplate(ctx, "ENTERWIKI0");
                 DumpTemplate(ctx, "PROJECTSITE0");
@@ -52,7 +52,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
             }
         }
 
-        private void DumpTemplate(ClientContext ctx, string template, string subSiteTemplate = "")
+        private void DumpTemplate(ClientContext ctx, string template, string subSiteTemplate = "", string saveAsTemplate = "")
         {
             Uri devSiteUrl = new Uri(ConfigurationManager.AppSettings["SPODevSiteUrl"]);
             string baseUrl = String.Format("{0}://{1}", devSiteUrl.Scheme, devSiteUrl.DnsSafeHost);
@@ -72,6 +72,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                 // Specify null as base template since we do want "everything" in this case
                 ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(cc.Web);
                 creationInfo.BaseTemplate = null;
+
+                // Override the save name. Case is online site collection provisioned using blankinternetcontainer#0 which returns
+                // blankinternet#0 as web template using CSOM/SSOM API
+                if (saveAsTemplate.Length > 0)
+                {
+                    template = saveAsTemplate;
+                }
 
                 ProvisioningTemplate p = cc.Web.GetProvisioningTemplate(creationInfo);
                 if (subSiteTemplate.Length > 0)

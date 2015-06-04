@@ -545,8 +545,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BDR0Template.xml" />
-    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BICenterSite0Template.xml" />
-    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BLANKINTERNETCONTAINER0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BICENTERSITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\BLANKINTERNET0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\COMMUNITYPORTAL0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\DEV0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16\EHS1Template.xml" />
@@ -561,7 +561,6 @@
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\BDR0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\BICENTERSITE0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\BLANKINTERNET0Template.xml" />
-    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\BLANKINTERNETCONTAINER0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\BLOG0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\COMMUNITY0Template.xml" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v15\COMMUNITYPORTAL0Template.xml" />
