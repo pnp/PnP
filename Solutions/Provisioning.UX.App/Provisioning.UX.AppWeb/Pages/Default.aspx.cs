@@ -33,9 +33,12 @@ namespace Provisioning.UX.AppWeb
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if(this.Request.Cookies[WebAPIHelper.SERVICES_TOKEN] == null)
+            {
+                //Register provisioning service
+                Page.RegisterWebAPIService("api/provisioning");
+            }
 
-            //Register provisioning service
-            Page.RegisterWebAPIService("api/provisioning");
         }
     }
 }
