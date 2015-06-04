@@ -475,7 +475,7 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 
 #### Coming Updates ####
-- We are currently working on a update to the provisioning interface which will be a single page app instead of a dialog.
+- We are currently working on a update to the provisioning interface which will be a single page app instead of a dialog with many additional enhancements.
 - Template.config file will have the option to be centrally located.
 - Video walk-through and demo of the solution.
 

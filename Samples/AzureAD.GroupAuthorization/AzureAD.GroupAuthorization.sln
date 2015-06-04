@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureAD.GroupAuthorization"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F904E952-F7FC-4803-87F3-F32A936AC0BF}"
 	ProjectSection(SolutionItems) = preProject
-		AzureAD.GroupAuthorization\Readme.md = AzureAD.GroupAuthorization\Readme.md
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Global
