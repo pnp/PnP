@@ -28,7 +28,7 @@
     <div id="divSPChrome"></div>            
         
     <!-- Include the Wizard View -->
-    <div data-ng-include="'wizard.html'"></div>
+    <div data-ng-include="'shell.html'"></div>
 
     <!-- Vendor JS -->
     <script src="../scripts/vendor/jquery/jquery-2.1.3.min.js"></script>
@@ -58,6 +58,7 @@
 
     <!-- App JS -->
     <script src="../scripts/app.module.js"></script>    
+    <script src="../scripts/wizard/controllers/shell.js"></script>
     <script src="../scripts/config.js"></script>
     <script src="../scripts/config.exceptionHandler.js"></script>
     <script src="../scripts/wizard/modules/wizard.module.js"></script>    

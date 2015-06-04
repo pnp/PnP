@@ -10,29 +10,13 @@
 
     function WizardController($rootScope, common, config, $scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardController';
-        var vm = this;
+        var vm = this;        
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
-        var events = config.events;
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
 
-        vm.busyMessage = 'Please wait ...';
-        vm.isBusy = true;
-        vm.spinnerOptions = {
-            radius: 40,
-            lines: 7,
-            length: 0,
-            width: 30,
-            speed: 1.7,
-            corners: 1.0,
-            trail: 100,
-            color: '#DC3C00'
-        };
-        
         vm.existingRequests = [];
-        
-                     
-        
+               
 
         activate();
 
@@ -68,17 +52,14 @@
             getAppSettings();
             initModal();
 
-            logSuccess('Provisioning solution loaded!', null, true);
-
+            
             var promises = [];
             common.activateController(promises, controllerId)
                                .then(function () {
                                    log('Activated Dashboard View');
                                    log('Retrieving request history from source');
                                });
-        }
-
-        function toggleSpinner(on) { vm.isBusy = on; }
+        }       
         
         function initModal() {
 
@@ -105,18 +86,7 @@
 
         }
                
-
-        $rootScope.$on(events.controllerActivateSuccess,
-            function (data) { toggleSpinner(false); }
-        );
-
-        $rootScope.$on(events.requestsLoadedSuccess,
-            function (data) { toggleSpinner(false); }
-        );
-
-        $rootScope.$on(events.spinnerToggle,
-            function (data) { toggleSpinner(data.show); }
-        );
+               
 
         $scope.getCurrentUser = function () {
             var executor = new SP.RequestExecutor($scope.spAppWebUrl);
@@ -145,23 +115,27 @@
         }
 
         function getRequestsByOwner(request) {
-            $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
-                if (data != null) {
-                    if (data.success == true) {
-                        vm.existingRequests = data.requests;
-                        logSuccess('Retrieved user request history');
+            if (request.name == 'undefined' || request.name == "") {
+                log('Attempting to retrieve user data...');
+                $scope.getCurrentUser();
+            }
+            else {
+                $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
+                    if (data != null) {
+                        if (data.success == true) {
+                            vm.existingRequests = data.requests;
+                            logSuccess('Retrieved user request history');
+                        }
+                        else {
+                            $scope.existingRequests[0] = 'No existing site requests exist';
+                            log('No existing site requests');
+                        }
                     }
-                    else {
-                        $scope.existingRequests[0] = 'No existing site requests exist';
-                        log('No existing site requests');
-                    }
-                }
-                
-                
 
-            }).fail(function (err) {
-                console.info(JSON.stringify(err));
-            });
+                }).fail(function (err) {
+                    console.info(JSON.stringify(err));
+                });
+            }
         }
 
         function getAppSettings() {
