@@ -119,7 +119,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         }
 
                         createdList.OnQuickLaunch = list.OnQuickLaunch;
-                        createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        if (createdList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
+                        {
+                            createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        }
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 
@@ -180,6 +183,41 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
+                #region FieldRefs
+
+                foreach (var listInfo in createdLists)
+                {
+
+                    if (listInfo.ListInstance.FieldRefs.Any())
+                    {
+
+                        foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
+                        {
+                            var field = rootWeb.GetFieldById<Field>(fieldRef.Id);
+                            if (field != null)
+                            {
+                                if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
+                                {
+                                    var createdField = listInfo.CreatedList.Fields.Add(field);
+                                    if (!string.IsNullOrEmpty(fieldRef.DisplayName))
+                                    {
+                                        createdField.Title = fieldRef.DisplayName;
+                                    }
+                                    createdField.Hidden = fieldRef.Hidden;
+                                    createdField.Required = fieldRef.Required;
+
+                                    createdField.Update();
+                                }
+                            }
+
+                        }
+                        listInfo.CreatedList.Update();
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+
+                #endregion
+
                 #region Fields
 
                 foreach (var listInfo in createdLists)
@@ -216,40 +254,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
-                #region FieldRefs
-
-                foreach (var listInfo in createdLists)
-                {
-
-                    if (listInfo.ListInstance.FieldRefs.Any())
-                    {
-
-                        foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
-                        {
-                            var field = rootWeb.GetFieldById<Field>(fieldRef.Id);
-                            if (field != null)
-                            {
-                                if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
-                                {
-                                    var createdField = listInfo.CreatedList.Fields.Add(field);
-                                    if (!string.IsNullOrEmpty(fieldRef.DisplayName))
-                                    {
-                                        createdField.Title = fieldRef.DisplayName;
-                                    }
-                                    createdField.Hidden = fieldRef.Hidden;
-                                    createdField.Required = fieldRef.Required;
-
-                                    createdField.Update();
-                                }
-                            }
-
-                        }
-                        listInfo.CreatedList.Update();
-                        web.Context.ExecuteQueryRetry();
-                    }
-                }
-
-                #endregion
 
                 #region Views
 
@@ -585,7 +589,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (!_willExtract.HasValue)
             {
                 ListCollection collList = web.Lists;
-                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden));
+                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
 
                 web.Context.ExecuteQuery();
 

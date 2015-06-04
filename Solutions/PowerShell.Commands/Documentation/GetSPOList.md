@@ -1,11 +1,12 @@
 #Get-SPOList
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Returns a List object
 ##Syntax
 ```powershell
-Get-SPOList [-Web <WebPipeBind>] [-Identity <ListPipeBind>]```
-&nbsp;
+Get-SPOList [-Web <WebPipeBind>] [-Identity <ListPipeBind>]
+```
+
 
 ##Detailed Description
 Returns a list object.
@@ -13,8 +14,8 @@ Returns a list object.
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|ListPipeBind|False|The ID or Url of the list.
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
+|Identity|ListPipeBind|False|The ID or Url of the list.|
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
 ##Examples
 
 ###Example 1
@@ -28,4 +29,4 @@ Returns a list with the given id.
 ###Example 3
     PS:> Get-SPOList -Identity /Lists/Announcements
 Returns a list with the given url.
-<!-- Ref: 65D1B657B4A8B57E8EE713F9C5DD00D4 -->
+<!-- Ref: C705FE92BB372ABCF5C54CC60A860E15 -->

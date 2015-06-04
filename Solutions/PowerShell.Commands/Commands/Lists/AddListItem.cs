@@ -9,8 +9,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOListItem")]
     [CmdletHelp("Adds an item to a list", Category = "Lists")]
-    [CmdletExample(Code = @"Add-SPOListItem -List ""Demo List"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", Remarks = @"Adds a new list item to the ""Demo List"", and sets both the Title and Category fields with the specified values.")]
-    [CmdletExample(Code = @"Add-SPOListItem -List ""Demo List"" -ContentType ""Company"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", Remarks = @"Adds a new list item to the ""Demo List"", sets the content type to ""Company"" and sets both the Title and Category fields with the specified values.")]
+    [CmdletExample(
+        Code = @"Add-SPOListItem -List ""Demo List"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", 
+        Remarks = @"Adds a new list item to the ""Demo List"", and sets both the Title and Category fields with the specified values.",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"Add-SPOListItem -List ""Demo List"" -ContentType ""Company"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", 
+        Remarks = @"Adds a new list item to the ""Demo List"", sets the content type to ""Company"" and sets both the Title and Category fields with the specified values.",
+        SortOrder = 2)]
     public class AddListItem : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID, Title or Url of the list.")]

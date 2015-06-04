@@ -14,11 +14,11 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -LoadOnly",
         Remarks = @"This will load the addin in the demo.app package, but will not install it to the site.
- ")]
+ ", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -Force",
         Remarks = @"This load first activate the addin sideloading feature, upload and install the addin, and deactivate the addin sideloading feature.
-    ")]
+    ", SortOrder = 2)]
     public class ImportAppPackage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "Path pointing to the .app file")]

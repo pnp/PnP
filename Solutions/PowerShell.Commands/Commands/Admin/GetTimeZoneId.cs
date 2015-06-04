@@ -11,11 +11,11 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletExample(
         Code = @"PS:> Get-SPOTimeZoneId",
         Remarks = @"This will return all time zone IDs in use by Office 365.
- ")]
+ ", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Get-SPOTimeZoneId -Match Stockholm",
         Remarks = @"This will return the time zone IDs for Stockholm
-    ")]
+    ", SortOrder = 2)]
     public class GetTimeZoneId : PSCmdlet
     {
         [Parameter(Mandatory = false, Position=0)]

@@ -306,15 +306,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!_willExtract.HasValue)
             {
-                var theme = web.GetCurrentComposedLook();
-                if (theme.IsCustomComposedLook)
-                {
-                    _willExtract = true;
-                }
-                else
-                {
-                    _willExtract = false;
-                }
+                _willExtract = true;
             }
             return _willExtract.Value;
         }
