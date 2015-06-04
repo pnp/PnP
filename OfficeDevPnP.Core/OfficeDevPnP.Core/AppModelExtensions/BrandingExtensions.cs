@@ -1015,7 +1015,13 @@ namespace Microsoft.SharePoint.Client
             }
 
             // The pagelayout needs to specified without aspx extension...strip the extension to be sure
-            pageLayoutName = System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
+            string path = "";
+            if (pageLayoutName.LastIndexOf("/") > -1)
+            {
+                path = pageLayoutName.Substring(0, pageLayoutName.LastIndexOf("/") + 1);
+            }
+
+            pageLayoutName = path + System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
