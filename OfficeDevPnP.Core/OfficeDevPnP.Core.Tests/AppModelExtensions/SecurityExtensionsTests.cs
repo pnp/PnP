@@ -37,7 +37,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 using (var clientContext = TestCommon.CreateClientContext())
                 {
                     List<UserEntity> admins = clientContext.Web.GetAdministrators();
-                    _userLogin = admins[0].LoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries)[2];
+                    _userLogin = admins[0].LoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries)[1];
                 }
             }
 #endif
