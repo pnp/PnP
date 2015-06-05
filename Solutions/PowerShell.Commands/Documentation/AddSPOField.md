@@ -1,5 +1,5 @@
 #Add-SPOField
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-05*
 
 Adds a field to a list or as a site column
 ##Syntax
@@ -32,7 +32,7 @@ Parameter|Type|Required|Description
 |Group|String|False||
 |Id|GuidPipeBind|False||
 |InternalName|String|True||
-|List|ListPipeBind|False||
+|List|ListPipeBind|True||
 |Required|SwitchParameter|False||
 |Type|FieldType|True||
 |Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
@@ -41,4 +41,4 @@ Parameter|Type|Required|Description
 ###Example 1
     PS:> Add-SPOField -List "Demo list" -DisplayName "Location" -InternalName "SPSLocation" -Type Choice -Group "Demo Group" -AddToDefaultView -Choices "Stockholm","Helsinki","Oslo"
 This will add field of type Choice to a the list "Demo List".
-<!-- Ref: DE49C2A57E501F0C731E82FDF652E37D -->
+<!-- Ref: 3592812E58ABC741B594A4CD1010B30E -->
