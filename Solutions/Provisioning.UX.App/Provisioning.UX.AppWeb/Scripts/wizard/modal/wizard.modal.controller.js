@@ -214,36 +214,30 @@
         }
 
         function saveNewSiteRequest(request) {
-            $.when($SharePointProvisioningService.saveNewSiteRequest(request)).done(function (data) {
+            $.when($SharePointProvisioningService.saveNewSiteRequest(request)).done(function (data, status) {
                 if (data != null) {
-                    if(data.success != true) {
-                        logSuccess("Sweet!, Site Request has been submitted");
-                        $modalInstance.close($scope.siteConfiguration);
-                    }
-                    else {
-                        logError("Oops, something bad has occured.")
-                    }
-
+                    logSuccess("Sweet!, Site Request has been submitted");
+                    $modalInstance.close($scope.siteConfiguration);
                 }
-            }).fail(function (err) {
+            }).fail(function (data, status) {
                 console.log(err);
             });
             console.log(request);
         }
 
         function processNewSiteRequest(request) {
-            $.when($SharePointProvisioningService.doesSiteRequestExist(request)).done(function (data) {
+            $.when($SharePointProvisioningService.getSiteRequestByUrl(request)).done(function (data, status) {
                 if (data != null) {
-                    if (data.doesExist != true) {
-                        saveNewSiteRequest(request);
-                    }
-                    else {
+                    if (status == 200) {
+                        //there is results dont save  the new site request
                         logError("There is an existing site request with this url. Please choose a new url for your site.");
                     }
+                    else if (status == 404) {
+                        saveNewSiteRequest(request);
+                    }
                 }
-            }).fail(function (err) {
-                console.log(err);
             });
+
             console.log(request);
         }
 

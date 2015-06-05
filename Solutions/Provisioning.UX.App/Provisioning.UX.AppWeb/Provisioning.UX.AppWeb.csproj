@@ -155,6 +155,7 @@
     </Content>
     <Content Include="Styles\toastr.scss" />
     <Content Include="Styles\toastr.less" />
+    <None Include="Properties\PublishProfiles\pnpsiteprov.pubxml" />
     <None Include="Properties\PublishProfiles\spsiteprov.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
