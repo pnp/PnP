@@ -85,13 +85,13 @@ namespace Core.AppScriptPartWeb
                     // Just random group name to differentiate it from the rest
                     if (item["FileLeafRef"].ToString().ToLowerInvariant() == "userprofileinformation.webpart")
                     {
-                        item["Group"] = "App Script Part";
+                        item["Group"] = "Add-in Script Part";
                         item.Update();
                         clientContext.ExecuteQuery();
                     }
                 }
 
-                lblStatus.Text = string.Format("App script part has been added to web part gallery. You can find 'User Profile Information' script part under 'App Script Part' group in the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
+                lblStatus.Text = string.Format("Add-in script part has been added to web part gallery. You can find 'User Profile Information' script part under 'Add-in Script Part' group in the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
     }
