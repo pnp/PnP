@@ -58,7 +58,7 @@ namespace Core.AppScriptPartWeb
             var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
-                var folder = clientContext.Web.Lists.GetByTitle("Web Part Gallery").RootFolder;
+                var folder = clientContext.Site.RootWeb.Lists.GetByTitle("Web Part Gallery").RootFolder;
                 clientContext.Load(folder);
                 clientContext.ExecuteQuery();
 
@@ -75,7 +75,7 @@ namespace Core.AppScriptPartWeb
                 }
 
                 // Let's update the group for just uploaded web part
-                var list = clientContext.Web.Lists.GetByTitle("Web Part Gallery");
+                var list = clientContext.Site.RootWeb.Lists.GetByTitle("Web Part Gallery");
                 CamlQuery camlQuery = CamlQuery.CreateAllItemsQuery(100);
                 Microsoft.SharePoint.Client.ListItemCollection items = list.GetItems(camlQuery);
                 clientContext.Load(items);
