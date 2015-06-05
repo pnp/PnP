@@ -6,19 +6,44 @@
             "displayOrder": 1
         },
         {
-            "key": "LATAM",
-            "value": "LATAM",
+            "key": "South America",
+            "value": "South America",
             "displayOrder": 2
         },
         {
-            "key": "APAC",
-            "value": "APAC",
+            "key": "Western Europe",
+            "value": "Western Europe",
             "displayOrder": 3
         },
         {
-            "key": "EMEA",
-            "value": "EMEA",
+            "key": "Eastern Europe",
+            "value": "Eastern Europe",
             "displayOrder": 4
+        },
+        {
+            "key": "Central Asia",
+            "value": "Central Asia",
+            "displayOrder": 5
+        },
+        {
+            "key": "South Asia",
+            "value": "South Asia",
+            "displayOrder": 6
+        },
+        {
+            "key": "East Asia",
+            "value": "East Asia",
+            "displayOrder": 7
+        },
+        {
+            "key": "Africa",
+            "value": "Africa",
+            "displayOrder": 8
+        },
+        {
+            "key": "Australia",
+            "value": "Australia",
+            "displayOrder": 9
         }
     ]
 }

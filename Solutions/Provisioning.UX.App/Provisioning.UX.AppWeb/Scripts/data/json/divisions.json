@@ -1,19 +1,84 @@
 ﻿{    
     "divisions": [
         {
-            "key": "Corporate",
-            "value": "Corporate",
+            "key": "Commercial",
+            "value": "Commercial",
             "displayOrder": 1
         },
         {
-            "key": "IPSUM",
-            "value": "IPSUM",
+            "key": "Corporate",
+            "value": "Corporate",
             "displayOrder": 2
         },
         {
-            "key": "DOLOR",
-            "value": "DOLOR",
+            "key": "Customer Service",
+            "value": "Customer Service",
             "displayOrder": 3
+        },
+        {
+            "key": "Finance",
+            "value": "Finance",
+            "displayOrder": 4
+        },
+        {
+            "key": "Information Technology",
+            "value": "Information Technology",
+            "displayOrder": 5
+        },
+        {
+            "key": "Innovation",
+            "value": "Innovation",
+            "displayOrder": 6
+        },
+        {
+            "key": "Legal",
+            "value": "Legal",
+            "displayOrder": 7
+        },
+        {
+            "key": "Logistics",
+            "value": "Logistics",
+            "displayOrder": 8
+        },
+        {
+            "key": "Manufacturing",
+            "value": "Manufacturing",
+            "displayOrder": 9
+        },
+        {
+            "key": "Marketing",
+            "value": "Marketing",
+            "displayOrder": 10
+        },
+        {
+            "key": "P&O",
+            "value": "P&O",
+            "displayOrder": 11
+        },
+        {
+            "key": "Sales",
+            "value": "Sales",
+            "displayOrder": 12
+        },
+        {
+            "key": "Supply",
+            "value": "Supply",
+            "displayOrder": 13
+        },
+        {
+            "key": "Treasury",
+            "value": "Treasury",
+            "displayOrder": 14
+        },
+        {
+            "key": "R&D",
+            "value": "R&D",
+            "displayOrder": 15
+        },
+        {
+            "key": "Talent and Learning",
+            "value": "Talent and Learning",
+            "displayOrder": 16
         }
     ]
 }
