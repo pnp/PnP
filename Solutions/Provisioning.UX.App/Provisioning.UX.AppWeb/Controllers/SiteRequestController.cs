@@ -22,7 +22,7 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Checks if a site request exists in the data repository
+        /// Gets a site request in the date repository
         /// POST api/<controller>
         /// </summary>
         /// <param name="value"></param>
@@ -128,7 +128,7 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Saves a site request to the Data Repository
+        /// Gets sets requests by users email
         /// POST api/<controller>
         /// </summary>
         /// <param name="value"></param>

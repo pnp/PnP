@@ -214,7 +214,7 @@
         }
 
         function saveNewSiteRequest(request) {
-            $.when($SharePointProvisioningService.saveNewSiteRequest(request)).done(function (data, status) {
+            $.when($SharePointProvisioningService.createNewSiteRequest(request)).done(function (data, status) {
                 if (data != null) {
                     logSuccess("Sweet!, Site Request has been submitted");
                     $modalInstance.close($scope.siteConfiguration);

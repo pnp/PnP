@@ -22,7 +22,7 @@
                 });
                 return deferred;
             }
-            this.saveNewSiteRequest = function (request) {
+            this.createNewSiteRequest = function (request) {
                 var deferred = $q.defer();
     
                 var formData = JSON.stringify(request);
@@ -36,9 +36,9 @@
                     deferred.resolve(data, status);
                 }).error(function (data, status) {
                     console.log("/api/provisioning/createSiteRequest " + data);
-                    deferred.reject(data);
+                    deferred.reject(data, status);
                 });
-                return deferred.promise;
+                return deferred;
             }
             this.getSiteRequestsByOwners = function (request) {
                 var deferred = $.Deferred();
