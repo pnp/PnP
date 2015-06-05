@@ -143,10 +143,10 @@
 
         function getTemplates() {
             //get the site templates
-            $.when($SharePointProvisioningService.getSiteTemplates($scope)).done(function (jsonObject) {
-                if (jsonObject != null) {
+            $.when($SharePointProvisioningService.getSiteTemplates($scope)).done(function (data, status) {
+                if (data != null) {
                     // Store returned templates 
-                    $scope.templates = jsonObject;
+                    $scope.templates = data;
                 }
 
             }).fail(function (err) {

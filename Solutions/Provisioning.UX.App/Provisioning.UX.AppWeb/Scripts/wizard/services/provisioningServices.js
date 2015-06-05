@@ -16,9 +16,9 @@
                     }
                 }).success(function (data, status, headers, config) {
                     console.debug("/api/provisioning/templates/getAvailableTemplates", data);
-                    deferred.resolve(data.templates)
+                    deferred.resolve(data, status)
                 }).error(function (data, status) {
-                    deferred.reject(data);
+                    deferred.reject(data, status);
                 });
                 return deferred;
             }
