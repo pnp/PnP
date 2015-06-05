@@ -1,15 +1,16 @@
 #Set-SPOConfiguration
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 To be deprecated
 ##Syntax
 ```powershell
-Set-SPOConfiguration -Key <String> [-Value <String>]```
-&nbsp;
+Set-SPOConfiguration -Key <String> [-Value <String>]
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Key|String|True|
-Value|String|False|
-<!-- Ref: 6A4104DFB064FEBBF03AEC3BE2862F12 -->
+|Key|String|True||
+|Value|String|False||
+<!-- Ref: 8F21EFF285575EF1A4740E9618B3007A -->

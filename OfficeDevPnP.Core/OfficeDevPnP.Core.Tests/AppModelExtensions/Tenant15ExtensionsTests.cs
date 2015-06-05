@@ -95,6 +95,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         private string CreateTestSiteCollection(Tenant tenant, string sitecollectionName)
         {
             string devSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
+
+            string siteOwnerLogin = string.Format("{0}\\{1}", ConfigurationManager.AppSettings["OnPremDomain"], ConfigurationManager.AppSettings["OnPremUserName"]);
+            if (TestCommon.AppOnlyTesting())
+            {
+                using (var clientContext = TestCommon.CreateClientContext())
+                {
+                    List<UserEntity> admins = clientContext.Web.GetAdministrators();
+                    siteOwnerLogin = admins[0].LoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                }
+            }
+
             string siteToCreateUrl = GetTestSiteCollectionName(devSiteUrl, sitecollectionName);
             SiteEntity siteToCreate = new SiteEntity()
             {
@@ -102,7 +113,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Template = "STS#0",
                 Title = "Test",
                 Description = "Test site collection",
-                SiteOwnerLogin = string.Format("{0}\\{1}", ConfigurationManager.AppSettings["OnPremDomain"], ConfigurationManager.AppSettings["OnPremUserName"]),
+                SiteOwnerLogin = siteOwnerLogin,
             };
 
             tenant.CreateSiteCollection(siteToCreate);

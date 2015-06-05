@@ -1,9 +1,9 @@
 #Get-SPOSite
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Returns the current site collection from the context.
 ##Syntax
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-<!-- Ref: 4DE8F2ECBFBF4292E0D1C2EA8415B508 -->
+<!-- Ref: 0AD28DC12C9F0CC582E69C716FAEF15A -->

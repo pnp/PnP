@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="44d11253-98d3-4307-b5f4-c811011556d7" 
+        solutionId="44d11253-98d3-4307-b5f4-c811011556d7" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="CoreManageUserCustomAction"
+        sharePointProductVersion="15.0">
+  <features>
+        <featureReference itemId="41d695c9-cad9-428c-9f9d-0638480e9227" />
+  </features>
+</package>

@@ -5,7 +5,7 @@ This sample shows how to provision site collections in on-premises or in Office 
 
 **Notice** that after SP2013 April CU (2014), this capability is natively supported in on-premises. This example however does show how to also expose other relevant APIs from the server, which might not be exposed by using oob methods. Check following blog article for latest guidance.
 
-- [Async site collection provisioning with app model for on-prem and Office 365 Dedicated](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx)
+- [Async site collection provisioning with add-in model for on-prem and Office 365 Dedicated](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx)
 
 ### Applies to ###
 -  Office 365 Dedicated (D)

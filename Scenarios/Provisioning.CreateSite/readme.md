@@ -44,7 +44,7 @@ newWeb.SetComposedLookByUrl("Characters");
 ```
 
 ## SITE COLLECTION CREATION ##
-To be able to create site collections, you’ll need to associate to the admin site of the Office365 tenant and in this example we are also using the app only token so that end user does not have to have high permission to the tenant. In following lines we resolve the access token and then create site collection using extension methods.
+To be able to create site collections, you’ll need to associate to the admin site of the Office365 tenant and in this example we are also using the add-in only token so that end user does not have to have high permission to the tenant. In following lines we resolve the access token and then create site collection using extension methods.
 
 ```C#
 User currUser = ResolveCurrentUser();
@@ -57,7 +57,7 @@ tenantStr = tenantStr.Substring(0, tenantStr.IndexOf("."));
 var webUrl = String.Format("https://{0}.sharepoint.com/{1}/{2}", tenantStr, "sites", txtUrl.Text);
 var tenantAdminUri = new Uri(String.Format("https://{0}-admin.sharepoint.com", tenantStr));
 
-// Creating new app only context for the operation
+// Creating new add-in only context for the operation
 string accessToken = TokenHelper.GetAppOnlyAccessToken(
     TokenHelper.SharePointPrincipal,
     tenantAdminUri.Authority,

@@ -24,8 +24,14 @@ namespace Office365Api.Helpers
             var contactsResults = await (from i in client.Me.Contacts
                                          orderby i.DisplayName
                                          select i).ExecuteAsync();
-            
-            return contactsResults.CurrentPage;
+            if (contactsResults != null)
+            {
+                return contactsResults.CurrentPage;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

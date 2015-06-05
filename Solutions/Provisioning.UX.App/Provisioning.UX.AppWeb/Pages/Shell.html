@@ -1,0 +1,11 @@
+﻿<div data-ng-controller="shell as vm">    
+    <section id="content" class="content">
+        <div data-ng-show="vm.isBusy" class="page-splash dissolve-animation">
+            <div data-cc-spinner="vm.spinnerOptions"></div>
+            <div class="page-splash-message page-splash-message-subtle">{{vm.busyMessage}}</div>
+        </div>
+
+        <div data-ng-include="'wizard.html'"></div>
+        
+    </section>
+</div>

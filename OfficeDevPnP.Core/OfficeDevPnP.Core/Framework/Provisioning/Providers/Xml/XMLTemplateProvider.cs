@@ -16,6 +16,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
 
         #region Constructor
+        protected XMLTemplateProvider() : base()
+        {
+
+        }
         protected XMLTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
@@ -46,11 +50,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     // Load it from a File Stream
                     Stream stream = this.Connector.GetFileStream(file);
 
-                    // And convert it into a ProvisioningTemplate
-                    ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+                    ProvisioningTemplate provisioningTemplate;
+                    try
+                    {
+                        // And convert it into a ProvisioningTemplate
+                        provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+                    }
+                    catch(ApplicationException)
+                    {
+                        Log.Warning(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_Providers_XML_InvalidFileFormat, file);
+                        continue;
+                    }
 
-                    // Add the template to the result
-                    result.Add(provisioningTemplate);
+                    if (provisioningTemplate != null)
+                    {
+                        // Add the template to the result
+                        result.Add(provisioningTemplate);
+                    }
                 }
             }
 

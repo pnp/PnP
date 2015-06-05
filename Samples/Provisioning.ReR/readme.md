@@ -33,10 +33,10 @@ The APIs for creating site collections, subsites, and OneDrive for Business site
 
 This samples demonstrates
 
-- Association of remote event receiver with custom list on the host web during the app install event
-- Removal of the remote event receiver with the app is uninstalled
+- Association of remote event receiver with custom list on the host web during the add-in install event
+- Removal of the remote event receiver with the add-in is uninstalled
 - Creation of a Site Request List on the host web
-- Remote site collection provisioning in a remote event receiver using the app-only policy.
+- Remote site collection provisioning in a remote event receiver using the add-in-only policy.
 
 This sample assumes that you have a workflow deployed to the Host web.
 This code only works on an Office 365 Multi-Tenant (MT) SharePoint site.  With slight modifications this sample will work in an on-premises installation of SharePoint or the current version of SharePoint Online Dedicated.  See Vesa’s Blog for additional information. 
@@ -105,7 +105,7 @@ var tenantStr = hostWebUrl.ToLower().Replace("-my", "").Substring(8);
 ![](http://i.imgur.com/fnh9LY9.png)
 
 Provisioning.SiteCollectionReRWeb– SharePoint Provider Hosted Application 
-Because the app needs the ability to create site collections anywhere in the tenancy, it will need FullControl permission on the entire tenancy.  The app will also need to make app-only calls to SharePoint, so it can work with tenant objects or sites outside the context.  Both these settings can be configured in the Permissions tab of the AppManifest.xml.
+Because the add-in needs the ability to create site collections anywhere in the tenancy, it will need FullControl permission on the entire tenancy.  The add-in will also need to make add-in only calls to SharePoint, so it can work with tenant objects or sites outside the context.  Both these settings can be configured in the Permissions tab of the AppManifest.xml.
 
 **NOTE:** *You should typically avoid requesting tenancy permissions in your apps…especially with FullControl.  It is a best practice for apps to request the minimum permissions they need to function.  The “tenancy” permission scope is in place specifically for scenarios like provisioning.*
 
@@ -163,15 +163,15 @@ After the site is provisioned the site request will have its status updated to �
 
 
 ## AppUninstalling event receiver ##
-When the app is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the app. This remove will trigger the app uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the app from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in app deployment when the app gets side loaded which is what Visual Studio does when you press F5.
+When the add-in is uninstalled we’re also removing the event receiver. In order to make this work during debugging you’ll need to ensure that you navigate to the “Apps in testing” library and use the remove option on the add-in. This remove will trigger the add-in uninstalling event with the proper permissions to remove the created remote event handler. If you just close the browser or uninstall the add-in from the “site contents” then either the event receiver never fires or the event receivers runs with unsufficient permissions to remove the list added event receiver. The reason for this behavior is differences in add-in deployment when the add-in gets side loaded which is what Visual Studio does when you press F5.
 
-When a user uninstalls a deployed app this moves the app to the site's recycle bin and will NOT trigger the appuninstalling event handler. The app needs to be removed from all recycle bins in order to trigger the appuninstalled event.
+When a user uninstalls a deployed add-in this moves the add-in to the site's recycle bin and will NOT trigger the appuninstalling event handler. The add-in needs to be removed from all recycle bins in order to trigger the appuninstalled event.
 
 # SHAREPOINT ONLINE SETUP #
 
-The first step to create the application principal. The app principal is an actual principal in SharePoint 2013 for the app that can be granted permissions.  To register the app principal, we will use the “_layouts/AppRegNew.aspx”. 
+The first step to create the application principal. The add-in principal is an actual principal in SharePoint 2013 for the add-in that can be granted permissions.  To register the add-in principal, we will use the “_layouts/AppRegNew.aspx”. 
 
-Now we need to grant permissions to the app principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
+Now we need to grant permissions to the add-in principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
 
 ```XML
 <AppPermissionRequests AllowAppOnlyPolicy="true">
@@ -184,4 +184,4 @@ Now we need to grant permissions to the app principal.  You will have to navigat
 - Microsoft.Online.SharePoint.Client.Tenant
 - Microsoft.SharePoint.Client.dll
 - Microsoft.SharePoint.Client.Runtime.dll
-- [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+- [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)

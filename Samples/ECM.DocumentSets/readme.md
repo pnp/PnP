@@ -33,7 +33,7 @@ Version  | Date | Comments
 ![](http://i.imgur.com/cjKhxDh.png)
 
 ## Retrieving information about the default DocumentSet ##
-When the MVC app loads it fetches information about the "Document Set" content type and shows it: 
+When the MVC add-in loads it fetches information about the "Document Set" content type and shows it: 
 ```C#
 Web web = clientContext.Web;
 

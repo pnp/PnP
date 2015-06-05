@@ -678,4 +678,10 @@
   <data name="Provisioning_ObjectHandlers_TermGroups" xml:space="preserve">
     <value>Term Groups</value>
   </data>
+  <data name="Provisioning_ObjectHandlers_SitePolicy" xml:space="preserve">
+    <value>Site Policy</value>
+  </data>
+  <data name="Provisioning_Providers_XML_InvalidFileFormat" xml:space="preserve">
+    <value>Cannot process XML file {0}.</value>
+  </data>
 </root>

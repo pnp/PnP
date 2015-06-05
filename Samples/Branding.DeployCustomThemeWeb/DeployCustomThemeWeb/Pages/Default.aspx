@@ -8,7 +8,7 @@
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="../Scripts/app.js"></script>
 </head>
-<body>
+<body style="display: none; overflow: auto;">
     <form id="form1" runat="server">
  <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="True" />
     <div id="divSPChrome"></div>
