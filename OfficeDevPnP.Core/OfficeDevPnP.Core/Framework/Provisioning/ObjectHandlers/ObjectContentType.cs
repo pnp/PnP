@@ -58,76 +58,97 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     else
                     {
-                        var isDirty = false;
-                        if (existingCT.Hidden != ct.Hidden)
-                        {
-                            existingCT.Hidden = ct.Hidden;
-                            isDirty = true;
-                        }
-                        if (existingCT.ReadOnly != ct.ReadOnly)
-                        {
-                            existingCT.ReadOnly = ct.ReadOnly;
-                            isDirty = true;
-                        }
-                        if (existingCT.Sealed != ct.Sealed)
-                        {
-                            existingCT.Sealed = ct.Sealed;
-                            isDirty = true;
-                        }
-                        if (ct.Description != null && existingCT.Description != ct.Description)
-                        {
-                            existingCT.Description = ct.Description;
-                            isDirty = true;
-                        }
-                        if (ct.DocumentTemplate != null && existingCT.DocumentTemplate != ct.DocumentTemplate)
-                        {
-                            existingCT.DocumentTemplate = ct.DocumentTemplate;
-                            isDirty = true;
-                        }
-                        if (existingCT.Name != ct.Name)
-                        {
-                            existingCT.Name = ct.Name;
-                            isDirty = true;
-                        }
-                        if (ct.Group != null && existingCT.Group != ct.Group)
-                        {
-                            existingCT.Group = ct.Group;
-                            isDirty = true;
-                        }
-                        if (isDirty)
-                        {
-                            existingCT.Update(true);
-                            web.Context.ExecuteQueryRetry();
-                        }
-                        // Delta handling
-                        List<Guid> targetIds = existingCT.FieldLinks.Select(c1 => c1.Id).ToList();
-                        List<Guid> sourceIds = ct.FieldRefs.Select(c1 => c1.Id).ToList();
-
-                        var fieldsNotPresentInTarget = sourceIds.Except(targetIds);
-
-                        if (fieldsNotPresentInTarget.Any())
-                        {
-                            foreach (var fieldId in fieldsNotPresentInTarget)
-                            {
-                                var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
-                                var field = web.Fields.GetById(fieldId);
-                                web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
-                            }
-                        }
-                        foreach (var fieldToRemove in ct.FieldRefs.Where(fr => fr.Remove))
-                        {
-                            var fieldLink = existingCT.FieldLinks.FirstOrDefault(fl => fl.Id == fieldToRemove.Id);
-                            if (fieldLink != null)
-                            {
-                                fieldLink.DeleteObject();
-                            }
-                            existingCT.Update(true);
-                            web.Context.ExecuteQueryRetry();
-                        }
+                        UpdateContentType(web, existingCT, ct);
                     }
                 }
             }
 
+        }
+
+        private static void UpdateContentType(Web web, Microsoft.SharePoint.Client.ContentType existingCT, ContentType ct)
+        {
+            var isDirty = false;
+            if (existingCT.Hidden != ct.Hidden)
+            {
+                existingCT.Hidden = ct.Hidden;
+                isDirty = true;
+            }
+            if (existingCT.ReadOnly != ct.ReadOnly)
+            {
+                existingCT.ReadOnly = ct.ReadOnly;
+                isDirty = true;
+            }
+            if (existingCT.Sealed != ct.Sealed)
+            {
+                existingCT.Sealed = ct.Sealed;
+                isDirty = true;
+            }
+            if (ct.Description != null && existingCT.Description != ct.Description)
+            {
+                existingCT.Description = ct.Description;
+                isDirty = true;
+            }
+            if (ct.DocumentTemplate != null && existingCT.DocumentTemplate != ct.DocumentTemplate)
+            {
+                existingCT.DocumentTemplate = ct.DocumentTemplate;
+                isDirty = true;
+            }
+            if (existingCT.Name != ct.Name)
+            {
+                existingCT.Name = ct.Name;
+                isDirty = true;
+            }
+            if (ct.Group != null && existingCT.Group != ct.Group)
+            {
+                existingCT.Group = ct.Group;
+                isDirty = true;
+            }
+            if (isDirty)
+            {
+                existingCT.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
+            // Delta handling
+            List<Guid> targetIds = existingCT.FieldLinks.Select(c1 => c1.Id).ToList();
+            List<Guid> sourceIds = ct.FieldRefs.Select(c1 => c1.Id).ToList();
+
+            var fieldsNotPresentInTarget = sourceIds.Except(targetIds).ToArray();
+            
+            if (fieldsNotPresentInTarget.Any())
+            {
+                foreach (var fieldId in fieldsNotPresentInTarget)
+                {
+                    var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
+                    var field = web.Fields.GetById(fieldId);
+                    web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
+                }
+            }
+
+            isDirty = false;
+            foreach (var fieldId in targetIds.Intersect(sourceIds))
+            {
+                var fieldLink = existingCT.FieldLinks.FirstOrDefault(fl => fl.Id == fieldId);
+                var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
+                if (fieldRef != null)
+                {
+                 
+                    if (fieldLink.Required != fieldRef.Required)
+                    {
+                        fieldLink.Required = fieldRef.Required;
+                        isDirty = true;
+                    }
+                    if (fieldLink.Hidden != fieldRef.Hidden)
+                    {
+                        fieldLink.Hidden = fieldRef.Hidden;
+                        isDirty = true;
+                    }
+                }
+            }
+            if (isDirty)
+            {
+                existingCT.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
         }
 
         private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType ct)

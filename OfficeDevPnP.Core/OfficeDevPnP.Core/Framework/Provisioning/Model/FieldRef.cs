@@ -43,10 +43,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// </summary>
         public bool Hidden { get; set; }
 
-        /// <summary>
-        /// Gets or sets if the field should be removed if the content type exists and the field is present in the content type
-        /// </summary>
-        public bool Remove { get; set; }
         #endregion
 
         #region Constructors
