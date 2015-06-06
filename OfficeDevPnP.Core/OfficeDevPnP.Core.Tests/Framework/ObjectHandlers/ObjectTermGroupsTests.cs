@@ -22,30 +22,40 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         [TestInitialize]
         public void Initialize()
         {
-            _termSetGuid = Guid.NewGuid();
-            _termGroupGuid = Guid.NewGuid();
+            if (!TestCommon.AppOnlyTesting())
+            {
+                _termSetGuid = Guid.NewGuid();
+                _termGroupGuid = Guid.NewGuid();
+            }
+            else
+            {
+                Assert.Inconclusive("Taxonomy tests are not supported when testing using app-only");
+            }
         }
 
         [TestCleanup]
         public void CleanUp()
         {
-            using (var ctx = TestCommon.CreateClientContext())
+            if (!TestCommon.AppOnlyTesting())
             {
-                try
+                using (var ctx = TestCommon.CreateClientContext())
                 {
-                    TaxonomySession session = TaxonomySession.GetTaxonomySession(ctx);
+                    try
+                    {
+                        TaxonomySession session = TaxonomySession.GetTaxonomySession(ctx);
 
-                    var store = session.GetDefaultSiteCollectionTermStore();
-                    var termSet = store.GetTermSet(_termSetGuid);
-                    termSet.DeleteObject();
+                        var store = session.GetDefaultSiteCollectionTermStore();
+                        var termSet = store.GetTermSet(_termSetGuid);
+                        termSet.DeleteObject();
 
-                    var termGroup = store.GetGroup(_termGroupGuid);
-                    termGroup.DeleteObject();
-                    store.CommitAll();
-                    ctx.ExecuteQueryRetry();
-                }
-                catch
-                {
+                        var termGroup = store.GetGroup(_termGroupGuid);
+                        termGroup.DeleteObject();
+                        store.CommitAll();
+                        ctx.ExecuteQueryRetry();
+                    }
+                    catch
+                    {
+                    }
                 }
             }
         }

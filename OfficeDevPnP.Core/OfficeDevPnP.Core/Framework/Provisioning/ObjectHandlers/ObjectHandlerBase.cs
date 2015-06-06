@@ -5,15 +5,25 @@ using System;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public abstract class ObjectHandlerBase
+    internal delegate bool ShouldProvisionTest(Web web, ProvisioningTemplate template);
+
+    internal abstract class ObjectHandlerBase
     {
+        internal bool? _willExtract;
+        internal bool? _willProvision;
+
         private bool _reportProgress = true;
         public abstract string Name { get; }
+
         public bool ReportProgress
         {
             get { return _reportProgress; }
             set { _reportProgress = value; }
         }
+
+        public abstract bool WillProvision(Web web, ProvisioningTemplate template);
+
+        public abstract bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
 
         public abstract void ProvisionObjects(Web web, ProvisioningTemplate template);
 

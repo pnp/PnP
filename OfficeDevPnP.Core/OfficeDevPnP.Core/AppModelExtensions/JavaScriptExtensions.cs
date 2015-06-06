@@ -53,7 +53,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if action was ok</returns>
         public static bool AddJsLink(this Web web, string key, IEnumerable<string> scriptLinks, int sequence = 0)
         {
-            return AddJsLinkImplementation(web,key,scriptLinks, sequence);
+            return AddJsLinkImplementation(web, key, scriptLinks, sequence);
         }
 
         /// <summary>
@@ -81,16 +81,26 @@ namespace Microsoft.SharePoint.Client
                 }
 
                 var scripts = new StringBuilder(@" var headID = document.getElementsByTagName('head')[0]; 
-var");
+var scripts = document.getElementsByTagName('script');
+var scriptsSrc = [];
+for(var i = 0; i < scripts.length; i++) {
+    if(scripts[i].type === 'text/javascript'){
+        scriptsSrc.push(scripts[i].src);
+    }
+}
+");
                 foreach (var link in scriptLinksEnumerable)
                 {
                     if (!string.IsNullOrEmpty(link))
                     {
-                        scripts.AppendFormat(@"
-newScript = document.createElement('script');
-newScript.type = 'text/javascript';
-newScript.src = '{0}';
-headID.appendChild(newScript);", link);
+                        scripts.Append(@"
+if (scriptsSrc.indexOf('{0}') === -1)  {  
+    var newScript = document.createElement('script');
+    newScript.type = 'text/javascript';
+    newScript.src = '{0}';
+    headID.appendChild(newScript);
+    scriptsSrc.push('{0}');
+}".Replace("{0}", link));
                     }
 
                 }
@@ -142,11 +152,11 @@ headID.appendChild(newScript);", link);
                 };
                 if (clientObject is Web)
                 {
-                    ret = ((Web) clientObject).AddCustomAction(jsAction);
+                    ret = ((Web)clientObject).AddCustomAction(jsAction);
                 }
                 else
                 {
-                    ret = ((Site) clientObject).AddCustomAction(jsAction);
+                    ret = ((Site)clientObject).AddCustomAction(jsAction);
                 }
 
             }
@@ -168,7 +178,7 @@ headID.appendChild(newScript);", link);
         public static bool AddJsBlock(this Web web, string key, string scriptBlock, int sequence = 0)
         {
             return AddJsBlockImplementation(web, key, scriptBlock, sequence);
-            
+
         }
 
         /// <summary>
@@ -198,11 +208,11 @@ headID.appendChild(newScript);", link);
                 };
                 if (clientObject is Web)
                 {
-                    ret = ((Web) clientObject).AddCustomAction(jsAction);
+                    ret = ((Web)clientObject).AddCustomAction(jsAction);
                 }
                 else
                 {
-                    ret = ((Site) clientObject).AddCustomAction(jsAction);
+                    ret = ((Site)clientObject).AddCustomAction(jsAction);
                 }
             }
             else

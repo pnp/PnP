@@ -12,10 +12,10 @@ namespace OfficeDevPnP.PowerShell.Commands
      Remarks = @"Retrieves the current applied site policy.", SortOrder = 1)]
     [CmdletExample(
      Code = @"PS:> Get-SPOSitePolicy -AllAvailable",
-     Remarks = @"Retrieves all available site policies.", SortOrder = 1)]
+     Remarks = @"Retrieves all available site policies.", SortOrder = 2)]
     [CmdletExample(
       Code = @"PS:> Get-SPOSitePolicy -Name ""Contoso HBI""",
-      Remarks = @"Retrieves an available site policy with the name ""Contoso HBI"".", SortOrder = 2)]
+      Remarks = @"Retrieves an available site policy with the name ""Contoso HBI"".", SortOrder = 3)]
 
     public class GetSitePolicy : SPOWebCmdlet
     {

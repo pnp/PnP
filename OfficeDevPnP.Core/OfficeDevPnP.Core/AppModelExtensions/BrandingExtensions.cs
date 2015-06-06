@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.SharePoint.Client.Utilities;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
+using Utility = OfficeDevPnP.Core.Utilities.Utility;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -366,8 +368,7 @@ namespace Microsoft.SharePoint.Client
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
             if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
-            // TODO: Check for any other illegal characters in SharePoint
-            if (fileName.Contains('/') || fileName.Contains('\\'))
+            if (fileName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_, "fileName");
             }
@@ -1014,7 +1015,13 @@ namespace Microsoft.SharePoint.Client
             }
 
             // The pagelayout needs to specified without aspx extension...strip the extension to be sure
-            pageLayoutName = System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
+            string path = "";
+            if (pageLayoutName.LastIndexOf("/") > -1)
+            {
+                path = pageLayoutName.Substring(0, pageLayoutName.LastIndexOf("/") + 1);
+            }
+
+            pageLayoutName = path + System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
@@ -1328,7 +1335,5 @@ namespace Microsoft.SharePoint.Client
             folder.Update();
             web.Context.ExecuteQueryRetry();
         }
-
-
     }
 }

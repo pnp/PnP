@@ -95,6 +95,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool EnableMinorVersions { get; set; }
 
         /// <summary>
+        /// Gets or sets the DraftVersionVisibility for the list
+        /// </summary>
+        public int DraftVersionVisibility { get; set; }
+
+        /// <summary>
         /// Gets or sets whether moderation/content approval is enabled on the list
         /// </summary>
         public bool EnableModeration { get; set; }

@@ -1,5 +1,5 @@
 #Get-SPOHealthScore
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Retrieves the current health score value of the server
 ##Syntax
@@ -11,4 +11,4 @@ Parameter|Type|Required|Description
 ###Example 1
     PS:> Get-SPOHealthScore
 
-<!-- Ref: D8A59FE57FFDA8E273850F4EB7A98E74 -->
+<!-- Ref: F98A85C85EA87FC264E3C159EF2AFAFF -->

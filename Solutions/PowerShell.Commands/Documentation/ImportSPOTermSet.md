@@ -1,11 +1,12 @@
 #Import-SPOTermSet
-*Topic automatically generated on: 2015-05-28*
+*Topic automatically generated on: 2015-06-04*
 
 Imports a taxonomy term set from a file in the standard format.
 ##Syntax
 ```powershell
-Import-SPOTermSet -GroupName <String> -Path <String> [-TermSetId <Guid>] [-SynchronizeDeletions [<SwitchParameter>]] [-IsOpen <Nullable`1>] [-Contact <String>] [-Owner <String>] [-TermStoreName <String>]```
-&nbsp;
+Import-SPOTermSet -GroupName <String> -Path <String> [-TermSetId <Guid>] [-SynchronizeDeletions [<SwitchParameter>]] [-IsOpen <Nullable`1>] [-Contact <String>] [-Owner <String>] [-TermStoreName <String>]
+```
+
 
 ##Detailed Description
 The format of the file is the same as that used by the import function in the web interface. A sample file can be obtained from the web interface.
@@ -25,28 +26,25 @@ The import file also supports an expanded syntax for the Term Set Name and term 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Contact|String|False|Contact for the term set; if not specified, the existing setting is retained.
-GroupName|String|True|Group to import the term set to; an error is returned if the group does not exist.
-IsOpen|Nullable`1|False|Whether the term set should be marked open; if not specified, then the existing setting is not changed.
-Owner|String|False|Owner for the term set; if not specified, the existing setting is retained.
-Path|String|True|Local path to the file containing the term set to import, in the standard format (as the 'sample import file' available in the Term Store Administration).
-SynchronizeDeletions|SwitchParameter|False|If specified, the import will remove any terms (and children) previously in the term set but not in the import file; default is to leave them.
-TermSetId|Guid|False|GUID to use for the term set; if not specified, or the empty GUID, a random GUID is generated and used.
-TermStoreName|String|False|Term store to import into; if not specified the default term store is used.
+|Contact|String|False|Contact for the term set; if not specified, the existing setting is retained.|
+|GroupName|String|True|Group to import the term set to; an error is returned if the group does not exist.|
+|IsOpen|Nullable`1|False|Whether the term set should be marked open; if not specified, then the existing setting is not changed.|
+|Owner|String|False|Owner for the term set; if not specified, the existing setting is retained.|
+|Path|String|True|Local path to the file containing the term set to import, in the standard format (as the 'sample import file' available in the Term Store Administration).|
+|SynchronizeDeletions|SwitchParameter|False|If specified, the import will remove any terms (and children) previously in the term set but not in the import file; default is to leave them.|
+|TermSetId|Guid|False|GUID to use for the term set; if not specified, or the empty GUID, a random GUID is generated and used.|
+|TermStoreName|String|False|Term store to import into; if not specified the default term store is used.|
 ##Examples
 
 ###Example 1
-    
-PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchronizeDeletions
+    PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -SynchronizeDeletions
 Creates (or updates) the term set specified in the import file, in the group specified, removing any existing terms not in the file.
 
 ###Example 2
-    
-PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'
-Creates (or updates) the term set specified in the import file, setting the IsOpen, Contact, and Owner properties as specified.
+    PS:> Import-SPOTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' 
+Creates (or updates) the term set specified in the import file, in the term store and group specified, using the specified ID.
 
 ###Example 3
-    
-PS:> Import-SPOTermSet -TermStoreName 'My Term Store' -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -TermSetId '{15A98DB6-D8E2-43E6-8771-066C1EC2B8D8}' 
-Creates (or updates) the term set specified in the import file, in the term store and group specified, using the specified ID.
-<!-- Ref: B446E9C86210555A1139DD329D3278F0 -->
+    PS:> Import-SPOTermSet -GroupName 'Standard Terms' -Path 'C:\\Temp\\ImportTermSet.csv' -IsOpen $true -Contact 'user@example.org' -Owner 'user@example.org'
+Creates (or updates) the term set specified in the import file, setting the IsOpen, Contact, and Owner properties as specified.
+<!-- Ref: 57CC42C7BB4DD9879233A8088C9423F5 -->

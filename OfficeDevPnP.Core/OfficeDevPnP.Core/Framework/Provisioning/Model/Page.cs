@@ -15,6 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public WikiPageLayout Layout { get; set; }
 
         public bool Overwrite { get; set; }
+        public bool WelcomePage { get; set; }
 
         public List<WebPart> WebParts
         {
@@ -27,11 +28,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         #region Constructors
         public Page() { }
 
-        public Page(string url, bool overwrite, WikiPageLayout layout, IEnumerable<WebPart> webParts)
+        public Page(string url, bool overwrite, WikiPageLayout layout, IEnumerable<WebPart> webParts, bool welcomePage = false)
         {
             this.Url = url;
             this.Overwrite = overwrite;
             this.Layout = layout;
+            this.WelcomePage = welcomePage;
 
             if (webParts != null)
             {

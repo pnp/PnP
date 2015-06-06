@@ -1,9 +1,9 @@
 #Get-SPOContext
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Returns a Client Side Object Model context
 ##Syntax
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-<!-- Ref: A0C2C2A53C5FFDD994795D6D78979507 -->
+<!-- Ref: 82C367CC261324B21D2789AAB4E05250 -->

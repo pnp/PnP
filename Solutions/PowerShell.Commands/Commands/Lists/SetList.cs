@@ -7,7 +7,10 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
     [Cmdlet(VerbsCommon.Set, "SPOList")]
     [CmdletHelp("Updates list settings", Category = "Lists")]
-    [CmdletExample(Code = @"Set-SPOList -Identity ""Demo List"" -EnableContentTypes $true", Remarks = "Switches the Enable Content Type switch on the list")]
+    [CmdletExample(
+        Code = @"Set-SPOList -Identity ""Demo List"" -EnableContentTypes $true", 
+        Remarks = "Switches the Enable Content Type switch on the list",
+        SortOrder = 1)]
     public class SetList : SPOWebCmdlet
     {
         [Parameter(Mandatory=true)]

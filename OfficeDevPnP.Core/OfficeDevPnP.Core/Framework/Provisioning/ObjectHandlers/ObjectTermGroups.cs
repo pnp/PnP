@@ -14,7 +14,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectTermGroups : ObjectHandlerBase
+    internal class ObjectTermGroups : ObjectHandlerBase
     {
 
         public override string Name
@@ -432,5 +432,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return termsToReturn;
         }
 
+
+        public override bool WillProvision(Web web, Model.ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.TermGroups.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, Model.ProvisioningTemplate template,  ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = creationInfo.IncludeSiteCollectionTermGroup || creationInfo.IncludeAllTermGroups;
+            }
+            return _willExtract.Value;
+        }
     }
 }

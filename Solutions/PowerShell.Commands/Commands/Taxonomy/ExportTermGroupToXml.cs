@@ -19,9 +19,18 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Export, "SPOTermGroupToXml", SupportsShouldProcess = true)]
     [CmdletHelp("Exports a taxonomy TermGroup to either the output or to an XML file.", Category = "Taxonomy")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml", Remarks = "Exports all term groups in the default site collection term store to the standard output")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml -Out output.xml", Remarks = "Exports all term groups in the default site collection term store to the file 'output.xml' in the current folder")]
-    [CmdletExample(Code = @"PS:> Export-SPOTermGroupToXml -Out c:\output.xml -TermGroup ""Test Group""", Remarks = "Exports the term group with the specified name to the file 'output.xml' located in the root folder of the C: drive.")]
+    [CmdletExample(
+        Code = @"PS:> Export-SPOTermGroupToXml", 
+        Remarks = "Exports all term groups in the default site collection term store to the standard output",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> Export-SPOTermGroupToXml -Out output.xml", 
+        Remarks = "Exports all term groups in the default site collection term store to the file 'output.xml' in the current folder",
+        SortOrder = 2)]
+    [CmdletExample(
+        Code = @"PS:> Export-SPOTermGroupToXml -Out c:\output.xml -TermGroup ""Test Group""", 
+        Remarks = "Exports the term group with the specified name to the file 'output.xml' located in the root folder of the C: drive.",
+        SortOrder = 3)]
     public class ExportTermGroup : SPOCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The ID or name of the termgroup")]
@@ -42,12 +51,12 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            var template = new ProvisioningTemplate();
+           // var template = new ProvisioningTemplate();
 
             var templateCi = new ProvisioningTemplateCreationInformation(ClientContext.Web) { IncludeAllTermGroups = true };
 
-            template = new ObjectTermGroups().CreateEntities(ClientContext.Web, template, templateCi);
-
+            var template = ClientContext.Web.GetProvisioningTemplate(templateCi);
+           
             template.Security = null;
             template.Features = null;
             template.CustomActions = null;

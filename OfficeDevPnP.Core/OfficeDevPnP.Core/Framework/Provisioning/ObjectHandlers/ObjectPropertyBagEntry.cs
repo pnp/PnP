@@ -7,7 +7,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectPropertyBagEntry : ObjectHandlerBase
+    internal class ObjectPropertyBagEntry : ObjectHandlerBase
     {
         public override string Name
         {
@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!web.PropertyBagContainsKey(propbagEntry.Key))
                 {
-                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value);
+                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value.ToParsedString());
                     if (propbagEntry.Indexed)
                     {
                         web.AddIndexedPropertyBagKey(propbagEntry.Key);
@@ -32,7 +32,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
-            web.Context.Load(web, w => w.AllProperties);
+            web.Context.Load(web, w => w.AllProperties, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 
             var entries = new List<PropertyBagEntry>();
@@ -131,5 +131,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return hashSet.Select(x => x);
         }
 
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.PropertyBagEntries.Any();;
+            }
+            return _willProvision.Value;
+           
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
+        }
     }
 }

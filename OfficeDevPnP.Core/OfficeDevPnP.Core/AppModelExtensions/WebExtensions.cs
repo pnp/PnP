@@ -54,8 +54,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritNavigation">Specifies whether the site inherits navigation.</param>
         public static Web CreateWeb(this Web parentWeb, string title, string leafUrl, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -88,8 +87,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the web was deleted; otherwise false if nothing was done</returns>
         public static bool DeleteWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -165,8 +163,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Web GetWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -190,8 +187,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the Web (site) exists; otherwise false</returns>
         public static bool WebExists(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -273,6 +269,13 @@ namespace Microsoft.SharePoint.Client
             {
                 return true;
             }
+        }
+
+        public static bool IsPublishingWeb(this Web web)
+        {
+            var featureActivated = GetPropertyBagValueInternal(web, "__PublishingFeatureActivated");
+
+            return featureActivated != null && bool.Parse(featureActivated.ToString());
         }
 
 
@@ -745,6 +748,7 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+        
 
         /// <summary>
         /// Checks if the given property bag entry exists
