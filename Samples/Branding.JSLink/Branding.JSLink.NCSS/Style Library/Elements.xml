@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Style Library">
+    <!-- Frameworks -->
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\jquery-1.10.2.min.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/jquery-1.10.2.min.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+
+    <!-- Generic Library -->
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\AnnouncementAccordion.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/AnnouncementAccordion.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\Colours.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/Colours.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GenericTemplates.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/GenericTemplates.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GoogleMaps.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/GoogleMaps.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\Lookups.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/Lookups.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Generics\ManagedMetadata.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Generics/ManagedMetadata.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+
+    <!-- Pages -->
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\dot.png" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/dot.png" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\DrawMap.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/DrawMap.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\DrawMapSpacial.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/DrawMapSpacial.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\GoogleMapPointDialog.aspx" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/GoogleMapPointDialog.aspx" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\GoogleMapSpacialDialog.aspx" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/GoogleMapSpacialDialog.aspx" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\jquery.ui.map.min.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/jquery.ui.map.min.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Pages\json2.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/Pages/json2.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+
+    <!-- Styles -->
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Styles\accordion_sprite.png" Url="Style Library/OfficeDevPnP/Branding.JSLink/Styles/accordion_sprite.png" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\Styles\accordion.css" Url="Style Library/OfficeDevPnP/Branding.JSLink/Styles/accordion.css" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    
+    <!-- Template Overrides -->
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementView.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/AnnouncementView.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementAccordionView.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/AnnouncementAccordionView.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published"/>
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\FavouriteColours.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/FavouriteColours.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\GoogleMapOverrides.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/GoogleMapOverrides.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\TaxonomyOverrides.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/TaxonomyOverrides.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\ProjectLocations.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/ProjectLocations.js" IgnoreIfAlreadyExists="TRUE" ReplaceContent="TRUE" Level="Published" />
+    <File Path="Style Library\OfficeDevPnP\Branding.JSLink\jquery-1.10.2.min.js" Url="Style Library/OfficeDevPnP/Branding.JSLink/jquery-1.10.2.min.js" />
+  </Module>
+</Elements>

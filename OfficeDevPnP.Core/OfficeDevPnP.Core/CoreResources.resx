@@ -630,4 +630,58 @@
   <data name="TaxonomyExtensions_ImportTermSetImplementation_Invalid_CSV_format__was_expecting_a_comma_in_the_first__header__line_" xml:space="preserve">
     <value>Invalid CSV format; was expecting a comma in the first (header) line.</value>
   </data>
+  <data name="Provisioning_ObjectHandlers_ComposedLooks" xml:space="preserve">
+    <value>Composed Looks</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_ContentTypes" xml:space="preserve">
+    <value>Content Types</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_CustomActions" xml:space="preserve">
+    <value>Custom Actions</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_ExtensibilityProviders" xml:space="preserve">
+    <value>Extensibility Providers</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_Features" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_Fields" xml:space="preserve">
+    <value>Fields</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_Files" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_FinishExtraction" xml:space="preserve">
+    <value>FINISH - Template Extraction</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_FinishProvisioning" xml:space="preserve">
+    <value>FINISH - Provisioning</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_ListInstances" xml:space="preserve">
+    <value>Lists</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_Pages" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_PropertyBagEntries" xml:space="preserve">
+    <value>Property Bag</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_SiteSecurity" xml:space="preserve">
+    <value>Site Security</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_StartExtraction" xml:space="preserve">
+    <value>START - Template Extraction</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_StartProvisioning" xml:space="preserve">
+    <value>START - Provisioning</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_TermGroups" xml:space="preserve">
+    <value>Term Groups</value>
+  </data>
+  <data name="Provisioning_ObjectHandlers_SitePolicy" xml:space="preserve">
+    <value>Site Policy</value>
+  </data>
+  <data name="Provisioning_Providers_XML_InvalidFileFormat" xml:space="preserve">
+    <value>Cannot process XML file {0}.</value>
+  </data>
 </root>

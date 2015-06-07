@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Extensibility;
@@ -14,9 +15,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
     {
         ExtensibilityManager _extManager = new ExtensibilityManager();
 
+        public override string Name
+        {
+            get { return "Extensibility Providers"; }
+
+        }
+
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Extensibility Providers");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ExtensibilityProviders);
 
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)
@@ -47,6 +54,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Providers.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = false;
+            }
+            return _willExtract.Value;
         }
     }
 }

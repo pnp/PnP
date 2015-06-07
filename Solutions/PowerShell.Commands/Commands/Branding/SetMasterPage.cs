@@ -9,7 +9,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletExample(
         Code = @"
     PS:> Set-SPOMasterPage -MasterPageUrl /sites/projects/_catalogs/masterpage/oslo.master
-")]
+", SortOrder = 1)]
     public class SetMasterPage : SPOWebCmdlet
     {
         [Parameter(Mandatory = false)]

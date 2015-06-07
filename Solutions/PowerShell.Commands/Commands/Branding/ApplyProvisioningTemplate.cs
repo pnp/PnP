@@ -12,19 +12,31 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using System.Xml.Linq;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace OfficeDevPnP.PowerShell.Commands.Branding
 {
     [Cmdlet("Apply", "SPOProvisioningTemplate")]
     [CmdletHelp("Applies a provisioning template to a web", Category = "Branding")]
+    [CmdletExample(
+     Code = @"
+    PS:> Apply-SPOProvisioningTemplate -Path template.xml
+",
+     Remarks = "Applies a provisioning template in XML format to the current web.",
+     SortOrder = 1)]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]
         public string Path;
 
-        
+
         protected override void ExecuteCmdlet()
         {
+            if (!SelectedWeb.IsPropertyAvailable("Url"))
+            {
+                ClientContext.Load(SelectedWeb, w => w.Url);
+                ClientContext.ExecuteQueryRetry();
+            }
             if (!System.IO.Path.IsPathRooted(Path))
             {
                 Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
@@ -39,10 +51,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
             if (provisioningTemplate != null)
             {
-                var fileinfo = new FileInfo(Path);
-                var fileSystemConnector = new FileSystemConnector(fileinfo.DirectoryName, "");
+                var fileSystemConnector = new FileSystemConnector(fileInfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
-                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate);
+
+                var applyingInformation = new ProvisioningTemplateApplyingInformation();
+                applyingInformation.ProgressDelegate = (message, step, total) =>
+                {
+                    WriteProgress(new ProgressRecord(0, string.Format("Applying template to {0}", SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
+                };
+
+                SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);
             }
         }
     }

@@ -23,6 +23,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             set { this._id = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the name of the field link. This will not change the internal name of the field.
+        /// </summary>
+        public string Name { get; private set; }
+        
+        /// <summary>
+        /// Gets or sets the Display Name of the field. Only applicable to fields associated with lists.
+        /// </summary>
         public string DisplayName { get; set; }
 
         /// <summary>
@@ -34,6 +42,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets if the field is Hidden
         /// </summary>
         public bool Hidden { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public FieldRef()
+        {
+        }
+
+        public FieldRef(string fieldRefName)
+        {
+            this.Name = fieldRefName;
+        }
+
         #endregion
 
         #region Comparison code

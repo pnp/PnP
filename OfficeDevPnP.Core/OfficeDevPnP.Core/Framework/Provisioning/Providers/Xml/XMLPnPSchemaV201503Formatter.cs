@@ -45,7 +45,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             XDocument xml = XDocument.Load(template);
 
             // Load the XSD embedded resource
-            Stream stream = typeof(XMLPnPSchemaV201504Formatter)
+            Stream stream = typeof(XMLPnPSchemaV201503Formatter)
                 .Assembly
                 .GetManifestResourceStream("OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.ProvisioningSchema-2015-03.xsd");
 
@@ -231,7 +231,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          MinorVersionLimit = list.MinorVersionLimit,
                          MaxVersionLimit = list.MaxVersionLimit,
                          OnQuickLaunch = list.OnQuickLaunch,
-                         RemoveDefaultContentType = list.RemoveDefaultContentType,
+                         RemoveDefaultContentType = list.RemoveExistingContentTypes,
                          TemplateType = list.TemplateType,
                          Title = list.Title,
                          Url = list.Url,
@@ -575,13 +575,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     result.ContentTypes.Add(ct);
 
                 }
-
-                //result.ContentTypes.AddRange(
-                //    from contentType in source.ContentTypes.Any
-                //    select new ContentType
-                //    {
-                //        SchemaXml = contentType.OuterXml,
-                //    });
             }
 
             // Translate Lists Instances, if any
@@ -626,7 +619,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         MinorVersionLimit = list.MinorVersionLimit,
                         MaxVersionLimit = list.MaxVersionLimit,
                         OnQuickLaunch = list.OnQuickLaunch,
-                        RemoveDefaultContentType = list.RemoveDefaultContentType,
+                        RemoveExistingContentTypes = list.RemoveDefaultContentType,
                         TemplateType = list.TemplateType,
                         Title = list.Title,
                         Url = list.Url,

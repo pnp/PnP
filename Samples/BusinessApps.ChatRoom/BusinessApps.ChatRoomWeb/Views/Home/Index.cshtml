@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="chat-room">
+    <div id="message-window">
+    </div>
+
+    <div id="message-box">
+        <textarea onkeyup="KeyUp(event)"></textarea>
+        <input type="button" onclick="SendMessage()" value="Send" />
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/ChatRoom.js"></script>
+}

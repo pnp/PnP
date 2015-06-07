@@ -11,15 +11,19 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
+using SPField = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectField : ObjectHandlerBase
+    internal class ObjectField : ObjectHandlerBase
     {
-
+        public override string Name
+        {
+            get { return "Fields"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
-            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, "Fields");
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Fields);
 
             // if this is a sub site then we're not provisioning fields. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
@@ -31,8 +35,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
             web.Context.ExecuteQueryRetry();
-            var existingFieldIds = existingFields.Select(l => l.Id).ToList();
-
+            var existingFieldIds = existingFields.AsEnumerable<SPField>().Select(l => l.Id).ToList();
             var fields = template.SiteFields;
 
             foreach (var field in fields)
@@ -95,7 +98,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             fieldXml = element.ToString();
                         }
                     }
-                  
+
                     // Check if we have version attribute. Remove if exists 
                     if (element.Attribute("Version") != null)
                     {
@@ -133,6 +136,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.SiteFields.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
         }
     }
 }

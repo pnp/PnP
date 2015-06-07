@@ -138,9 +138,16 @@ namespace Microsoft.SharePoint.Client
             return clientContext.Clone(site.Url);
         }
 
+        /// <summary>
+        /// Defines a Maximum Retry Attemped Exception
+        /// </summary>
         [Serializable]
         public class MaximumRetryAttemptedException : Exception
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="message"></param>
             public MaximumRetryAttemptedException(string message)
                 : base(message)
             {

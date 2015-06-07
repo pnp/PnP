@@ -113,6 +113,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void UploadFileWebDavTest()
         {
+            if (TestCommon.AppOnlyTesting())
+            {
+                Assert.Inconclusive("Tests involving webdav are not supported when testing using app-only");
+            }
+
             var fileNameExpected = "TestFile1.png";
             var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
 

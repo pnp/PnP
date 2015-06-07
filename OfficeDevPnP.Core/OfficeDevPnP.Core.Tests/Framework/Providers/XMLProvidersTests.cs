@@ -99,11 +99,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
             var result = provider.GetTemplates();
 
-            Assert.IsTrue(result.Count == 4);
-            Assert.IsTrue(result[0].Files.Count == 1);
+            Assert.IsTrue(result.Count == 6);
+            Assert.IsTrue(result[0].Files.Count == 5);
             Assert.IsTrue(result[1].Files.Count == 5);
             Assert.IsTrue(result[2].Files.Count == 1);
             Assert.IsTrue(result[3].Files.Count == 5);
+            Assert.IsTrue(result[4].Files.Count == 1);
+            Assert.IsTrue(result[5].Files.Count == 5);
         }
 
         [TestMethod]
@@ -158,6 +160,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         [TestCategory(TEST_CATEGORY)]
         public void XMLAzureStorageGetTemplatesTest()
         {
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            }
+            
             XMLTemplateProvider provider = 
                 new XMLAzureStorageTemplateProvider(
                     TestCommon.AzureStorageKey, testContainer);
@@ -173,6 +180,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         [TestCategory(TEST_CATEGORY)]
         public void XMLAzureStorageGetTemplate1Test()
         {
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            } 
+            
             var _expectedID = "SPECIALTEAM";
             var _expectedVersion = 1.0;
 
@@ -196,6 +208,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
             var _expectedID = "SPECIALTEAM";
             var _expectedVersion = 1.0;
 
+            if (String.IsNullOrEmpty(TestCommon.AzureStorageKey))
+            {
+                Assert.Inconclusive("No Azure Storage Key defined in App.Config, so can't test");
+            }
+
             XMLTemplateProvider provider =
                 new XMLAzureStorageTemplateProvider(
                     TestCommon.AzureStorageKey, testContainerSecure);
@@ -211,7 +228,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
-        public void XMLFileSystemConvertTemplatesFromV201503toV201504()
+        public void XMLFileSystemConvertTemplatesFromV201503toV201505()
         {
             XMLTemplateProvider provider =
                 new XMLFileSystemTemplateProvider(
@@ -220,10 +237,10 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                     "Templates");
 
             var _source1 = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-01.xml");
-            provider.SaveAs(_source1, "ProvisioningTemplate-2015-04-Sample-01.xml", XMLPnPSchemaFormatter.LatestFormatter);
+            provider.SaveAs(_source1, "ProvisioningTemplate-2015-05-Sample-01.xml", XMLPnPSchemaFormatter.LatestFormatter);
 
             var _source2 = provider.GetTemplate("ProvisioningTemplate-2015-03-Sample-02.xml");
-            provider.SaveAs(_source2, "ProvisioningTemplate-2015-04-Sample-02.xml", XMLPnPSchemaFormatter.LatestFormatter);
+            provider.SaveAs(_source2, "ProvisioningTemplate-2015-05-Sample-02.xml", XMLPnPSchemaFormatter.LatestFormatter);
         }
 
         [TestMethod]
@@ -250,7 +267,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
 
         [TestMethod]
         [TestCategory(TEST_CATEGORY)]
-        public void ResolveSchemaFormatV201504()
+        public void ResolveSchemaFormatV201505()
         {
             var _expectedID = "SPECIALTEAM";
             var _expectedVersion = 1.0;
@@ -261,7 +278,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
                     AppDomain.CurrentDomain.BaseDirectory),
                     "Templates");
 
-            var result = provider.GetTemplate("ProvisioningTemplate-2015-04-Sample-02.xml");
+            var result = provider.GetTemplate("ProvisioningSchema-2015-05-ReferenceSample-01.xml");
 
             Assert.AreEqual(_expectedID, result.Id);
             Assert.AreEqual(_expectedVersion, result.Version);

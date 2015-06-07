@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SharePoint.Client.Social;
 using Microsoft.SharePoint.Client.WorkflowServices;
 
 namespace Microsoft.SharePoint.Client
@@ -203,12 +204,50 @@ namespace Microsoft.SharePoint.Client
         {
             var servicesManager = new WorkflowServicesManager(web.Context, web);
             var deploymentService = servicesManager.GetWorkflowDeploymentService();
+            
             var definition = deploymentService.GetDefinition(id);
             web.Context.Load(definition);
             web.Context.ExecuteQueryRetry();
             return definition;
         }
 
+        public static Guid AddWorkflowDefinition(this Web web, WorkflowDefinition definition, bool publish = true)
+        {
+            var servicesManager = new WorkflowServicesManager(web.Context, web);
+            var deploymentService = servicesManager.GetWorkflowDeploymentService();
+            
+            WorkflowDefinition def = new WorkflowDefinition(web.Context);
+            def.AssociationUrl = definition.AssociationUrl;
+            def.Description = definition.Description;
+            def.DisplayName = definition.DisplayName;
+            def.DraftVersion = definition.DraftVersion;
+            def.FormField = definition.FormField;
+            def.Id = definition.Id != Guid.Empty ? definition.Id : Guid.NewGuid();
+            foreach (var prop in definition.Properties)
+            {
+                def.SetProperty(prop.Key,prop.Value);
+            }
+            def.RequiresAssociationForm = definition.RequiresAssociationForm;
+            def.RequiresInitiationForm = definition.RequiresInitiationForm;
+            def.RestrictToScope = definition.RestrictToScope;
+            def.RestrictToType = definition.RestrictToType;
+            def.Xaml = definition.Xaml;
+
+            var result = deploymentService.SaveDefinition(def);
+
+            web.Context.ExecuteQuery();
+
+            if (publish)
+            {
+                deploymentService.PublishDefinition(result.Value);
+                web.Context.ExecuteQuery();
+            }
+            return result.Value;
+        }
+        /// <summary>
+        /// Deletes a workflow definition
+        /// </summary>
+        /// <param name="definition"></param>
         public static void Delete(this WorkflowDefinition definition)
         {
             var clientContext = definition.Context as ClientContext;

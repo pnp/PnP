@@ -7,8 +7,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOFolder")]
     [CmdletHelp("Creates a folder within a parent folder", Category = "Webs")]
-    [CmdletExample(Code = @"
-PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder")]
+    [CmdletExample(
+        Code = @"PS:> Add-SPOFolder -Name NewFolder -Folder _catalogs/masterpage/newfolder",
+        SortOrder = 1)]
     public class AddFolder : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "The folder name")]

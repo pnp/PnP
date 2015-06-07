@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using System.IO;
+using System.Configuration;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
@@ -331,7 +332,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
         #endregion
 
-
         #region Composed Look tests
         [TestMethod()]
         public void DeployThemeAndCreateComposedLookTest()
@@ -582,6 +582,22 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 string hex = BitConverter.ToString(hash);
                 //Check against last known hash 
                 Assert.AreEqual(knownHashOfSeattle, hex);
+            }
+        }
+        #endregion
+
+        #region Miscellanious tests
+        [TestMethod]
+        public void IsSubsiteTest()
+        {
+            using (ClientContext cc = TestCommon.CreateClientContext())
+            {
+                Assert.IsFalse(cc.Web.IsSubSite());
+
+                using (ClientContext ctx = cc.Clone(string.Format("{0}/{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], testWebName)))
+                {
+                    Assert.IsTrue(ctx.Web.IsSubSite());
+                }
             }
         }
         #endregion

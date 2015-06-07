@@ -28,13 +28,25 @@
       <xsd:element name="Preferences" type="pnp:Preferences" minOccurs="1" maxOccurs="1">
         <xsd:annotation>
           <xsd:documentation>
-            The mandatory section of preferences for the current provisioning definition
+            The mandatory section of preferences for the current provisioning definition.
           </xsd:documentation>
         </xsd:annotation>
       </xsd:element>
       <xsd:sequence minOccurs="1" maxOccurs="unbounded">
-        <xsd:element name="Templates" type="pnp:Templates" minOccurs="0"/>
-        <xsd:element name="Sequence" type="pnp:Sequence" minOccurs="0"/>
+        <xsd:element name="Templates" type="pnp:Templates" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              An optional section made of provisioning templates.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="Sequence" type="pnp:Sequence" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              An optional section made of provisioning sequences, which can include Sites, Site Collections, Taxonomies, Provisioning Templates, etc.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
         <xsd:element name="ImportSequence" type="pnp:ImportSequence" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -48,18 +60,25 @@
 
   <xsd:complexType name="Preferences" >
     <xsd:annotation>
-      <xsd:documentation>General settins of this Provisioning file</xsd:documentation>
+      <xsd:documentation>
+        General settings for a Provisioning file.
+      </xsd:documentation>
     </xsd:annotation>
     <xsd:sequence>
       <xsd:element name="Parameters" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation>
-            Definition of parameters
+            Definition of parameters that can be used as replacement within templates and provisioning objects.
           </xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="Parameter" maxOccurs="unbounded">
+              <xsd:annotation>
+                <xsd:documentation>
+                  A Parameter that can be used as a replacement within templates and provisioning objects.
+                </xsd:documentation>
+              </xsd:annotation>
               <xsd:complexType mixed="true">
                 <xsd:attribute name="Key" use="required" type="xsd:string">
                   <xsd:annotation>
@@ -160,7 +179,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="PropertyBagEntry" type="pnp:StringDictionaryItem"
+            <xsd:element name="PropertyBagEntry" type="pnp:PropertyBagEntry"
                           minOccurs="1" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:complexType>
@@ -395,6 +414,19 @@
 
   </xsd:complexType>
 
+  <xsd:complexType name="PropertyBagEntry" >
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        A property bag entry
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="pnp:StringDictionaryItem">
+        <xsd:attribute name="Indexed" type="xsd:boolean" use="optional" default="false" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
   <xsd:complexType name="StringDictionaryItem">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -419,6 +451,8 @@
     </xsd:attribute>
 
   </xsd:complexType>
+  
+  
 
   <xsd:complexType name="UsersList">
     <xsd:annotation>
@@ -512,7 +546,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="FieldRef" type="FieldRef"
+            <xsd:element name="FieldRef" type="pnp:ListInstanceFieldRef"
                          minOccurs="1" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:complexType>
@@ -589,6 +623,22 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="EnableMinorVersions" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableMinorVersions flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+    <xsd:attribute name="EnableModeration" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The EnableModeration flag for the List Instance, optional attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="MinorVersionLimit" type="xsd:int" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -605,6 +655,17 @@
       </xsd:annotation>
     </xsd:attribute>
 
+    <xsd:attribute name="DraftVersionVisibility" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The DraftVersionVisibility for the List Instance, optional attribute. The property will be cast to enum DraftVersionVisibility
+          0 - Reader - 	Any user who can read items,
+          1 - Author - Only users who can edit items,
+          2 - Approver - Only users who can approve items (and the author of the item)
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
     <xsd:attribute name="RemoveExistingContentTypes" type="xsd:boolean" use="optional" default="false">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -613,7 +674,7 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="TemplateFeatureID" type="GUID" use="optional">
+    <xsd:attribute name="TemplateFeatureID" type="pnp:GUID" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The TemplateFeatureID for the feature on which the List Instance is based, optional attribute
@@ -684,7 +745,7 @@
         </xsd:annotation>
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="FieldRef" type="pnp:FieldRef"
+            <xsd:element name="FieldRef" type="pnp:ContentTypeFieldRef"
                          minOccurs="1" maxOccurs="unbounded" />
           </xsd:sequence>
         </xsd:complexType>
@@ -708,7 +769,7 @@
       </xsd:element>
     </xsd:all>
 
-    <xsd:attribute name="ID" type="ContentTypeId" use="required">
+    <xsd:attribute name="ID" type="pnp:ContentTypeId" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The value of the content type ID, required attribute
@@ -848,10 +909,14 @@
 
   </xsd:complexType>
 
-  <xsd:complexType name="FieldRef">
+  <xsd:complexType name="FieldRefBase">
+    <xsd:attributeGroup ref="pnp:FieldRefAttributes" />
+  </xsd:complexType>
+
+  <xsd:attributeGroup name="FieldRefAttributes">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
-        Defines the binding between a ListInstance and a Field
+        Common set of attributes for any FieldRef element
       </xsd:documentation>
     </xsd:annotation>
 
@@ -863,10 +928,10 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="DisplayName" type="xsd:string" use="optional">
+    <xsd:attribute name="Name" type="xsd:string" use="optional">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
-          The display name of the field to bind, only applicable to fields that will be added to lists, optional attribute
+          The name of the field used in the field reference. This is for reference/readibility only.
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -887,8 +952,36 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:anyAttribute processContents="skip"/>
+  </xsd:attributeGroup>
 
+  <xsd:complexType name="ListInstanceFieldRef">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines the binding between a ListInstance and a Field
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="FieldRefBase">
+        <xsd:attribute name="DisplayName" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The display name of the field to bind, only applicable to fields that will be added to lists, optional attribute
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="ContentTypeFieldRef">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines the binding between a ContentType and a Field
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="FieldRefBase" />
+    </xsd:complexContent>
   </xsd:complexType>
 
   <xsd:complexType name="CustomActionsList">
@@ -1010,6 +1103,18 @@
 
   </xsd:complexType>
 
+  <xsd:complexType name="FileProperties">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        A collection of File Properties
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Property" type="pnp:StringDictionaryItem"
+                    minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
   <xsd:complexType name="File">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
@@ -1018,6 +1123,13 @@
     </xsd:annotation>
 
     <xsd:all>
+      <xsd:element name="Properties" type="pnp:FileProperties" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The File Properties, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
       <xsd:element name="WebParts" minOccurs="0">
         <xsd:annotation>
           <xsd:documentation xml:lang="en">
@@ -1053,14 +1165,6 @@
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           The Overwrite flag for the File, optional attribute
-        </xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
-
-    <xsd:attribute name="Create" type="xsd:boolean" use="optional" default="true">
-      <xsd:annotation>
-        <xsd:documentation xml:lang="en">
-          Optional: if set to false the file will not be created. Use to add WebParts to existing WebPart Pages.
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -1105,13 +1209,22 @@
       </xsd:annotation>
     </xsd:attribute>
 
-    <xsd:attribute name="Layout" type="pnp:WIKIPAGELAYOUT" use="required">
+    <xsd:attribute name="Layout" type="pnp:WikiPageLayout" use="required">
       <xsd:annotation>
         <xsd:documentation xml:lang="en">
           Required: Defines the layout of the wikipage
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+
+    <xsd:attribute name="WelcomePage" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines whether the page should be set as Welcomepage of the web rootfolder
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    
   </xsd:complexType>
 
   <xsd:complexType name="WikiPageWebPart">
@@ -1667,7 +1780,8 @@
             </xsd:annotation>
           </xsd:element>
         </xsd:all>
-        <xsd:attribute name="CustomSortOrder" type="xsd:string" use="optional"/>
+        <xsd:attribute name="Language" type="xsd:int" use="optional"/>
+        <xsd:attribute name="CustomSortOrder" type="xsd:int" use="optional" default="0"/>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -1695,7 +1809,7 @@
         <xsd:complexType>
           <xsd:attribute name="Language" type="xsd:int" use="required" />
           <xsd:attribute name="Value" type="xsd:string" use="required" />
-          <xsd:attribute name="IsDefaultForLanguage" type="xsd:boolean" use="optional" />
+          <xsd:attribute name="IsDefaultForLanguage" type="xsd:boolean" use="optional" default="false" />
         </xsd:complexType>
       </xsd:element>
     </xsd:sequence>
@@ -1795,7 +1909,7 @@
     </xsd:restriction>
   </xsd:simpleType>
 
-  <xsd:simpleType name="WIKIPAGELAYOUT">
+  <xsd:simpleType name="WikiPageLayout">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         The column layout of a wiki page
