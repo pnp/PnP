@@ -26,27 +26,32 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
        Code = @"
     PS:> Get-SPOProvisioningTemplate -Out template.xml
 ",
-       Remarks = "Extracts a provisioning template in XML format from the current web.")]
+       Remarks = "Extracts a provisioning template in XML format from the current web.",
+       SortOrder = 1)]
     [CmdletExample(
 Code = @"
     PS:> Get-SPOProvisioningTemplate -Out template.xml -Schema V201503
 ",
-Remarks = "Extracts a provisioning template in XML format from the current web and saves it in the V201503 version of the schema.")]
+Remarks = "Extracts a provisioning template in XML format from the current web and saves it in the V201503 version of the schema.",
+SortOrder = 2)]
     [CmdletExample(
    Code = @"
     PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeAllTermGroups
 ",
-   Remarks = "Extracts a provisioning template in XML format from the current web and includes all term groups, term sets and terms from the Managed Metadata Service Taxonomy.")]
+   Remarks = "Extracts a provisioning template in XML format from the current web and includes all term groups, term sets and terms from the Managed Metadata Service Taxonomy.",
+   SortOrder = 3)]
     [CmdletExample(
   Code = @"
     PS:> Get-SPOProvisioningTemplate -Out template.xml -IncludeSiteCollectionTermGroup
 ",
-  Remarks = "Extracts a provisioning template in XML format from the current web and includes the term group currently (if set) assigned to the site collection.")]
+  Remarks = "Extracts a provisioning template in XML format from the current web and includes the term group currently (if set) assigned to the site collection.",
+  SortOrder = 4)]
     [CmdletExample(
 Code = @"
     PS:> Get-SPOProvisioningTemplate -Out template.xml -PersistComposedLookFiles
 ",
-Remarks = "Extracts a provisioning template in XML format from the current web and saves the files that make up the composed look to the same folder as where the template is saved.")]
+Remarks = "Extracts a provisioning template in XML format from the current web and saves the files that make up the composed look to the same folder as where the template is saved.",
+SortOrder = 5)]
     public class GetProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position = 0, HelpMessage = "Filename to write to, optionally including full path")]

@@ -9,7 +9,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectFeatures : ObjectHandlerBase
+    internal class ObjectFeatures : ObjectHandlerBase
     {
         public override string Name
         {
@@ -184,5 +184,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return template;
         }
 
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Features.SiteFeatures.Any() || template.Features.WebFeatures.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
+        }
     }
 }

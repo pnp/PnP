@@ -16,7 +16,7 @@ using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectListInstance : ObjectHandlerBase
+    internal class ObjectListInstance : ObjectHandlerBase
     {
 
         public override string Name
@@ -89,15 +89,40 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 // Only supported on Document Libraries
                                 createdList.EnableMinorVersions = list.EnableMinorVersions;
+                                createdList.DraftVersionVisibility = (DraftVisibilityType)list.DraftVersionVisibility;
+
+                                // TODO: User should be notified that MinorVersionLimit and DraftVersionVisibility will not be applied
                                 if (list.EnableMinorVersions)
                                 {
                                     createdList.MajorWithMinorVersionsLimit = list.MinorVersionLimit; // Set only if enabled, otherwise you'll get exception due setting value to zero.
+
+                                    // DraftVisibilityType.Approver is available only when the EnableModeration option of the list is true
+                                    if (DraftVisibilityType.Approver ==
+                                        (DraftVisibilityType)list.DraftVersionVisibility)
+                                    {
+                                        if (list.EnableModeration)
+                                        {
+                                            createdList.DraftVersionVisibility =
+                                                (DraftVisibilityType)list.DraftVersionVisibility;
+                                        }
+                                        else
+                                        {
+                                            // TODO: User should be notified that DraftVersionVisibility is not applied because .EnableModeration is false
+                                        }
+                                    }
+                                    else
+                                    {
+                                        createdList.DraftVersionVisibility = (DraftVisibilityType)list.DraftVersionVisibility;
+                                    }
                                 }
                             }
                         }
 
                         createdList.OnQuickLaunch = list.OnQuickLaunch;
-                        createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        if (createdList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
+                        {
+                            createdList.EnableFolderCreation = list.EnableFolderCreation;
+                        }
                         createdList.Hidden = list.Hidden;
                         createdList.ContentTypesEnabled = list.ContentTypesEnabled;
 
@@ -158,6 +183,41 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
+                #region FieldRefs
+
+                foreach (var listInfo in createdLists)
+                {
+
+                    if (listInfo.ListInstance.FieldRefs.Any())
+                    {
+
+                        foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
+                        {
+                            var field = rootWeb.GetFieldById<Field>(fieldRef.Id);
+                            if (field != null)
+                            {
+                                if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
+                                {
+                                    var createdField = listInfo.CreatedList.Fields.Add(field);
+                                    if (!string.IsNullOrEmpty(fieldRef.DisplayName))
+                                    {
+                                        createdField.Title = fieldRef.DisplayName;
+                                    }
+                                    createdField.Hidden = fieldRef.Hidden;
+                                    createdField.Required = fieldRef.Required;
+
+                                    createdField.Update();
+                                }
+                            }
+
+                        }
+                        listInfo.CreatedList.Update();
+                        web.Context.ExecuteQueryRetry();
+                    }
+                }
+
+                #endregion
+
                 #region Fields
 
                 foreach (var listInfo in createdLists)
@@ -194,40 +254,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
-                #region FieldRefs
-
-                foreach (var listInfo in createdLists)
-                {
-
-                    if (listInfo.ListInstance.FieldRefs.Any())
-                    {
-
-                        foreach (var fieldRef in listInfo.ListInstance.FieldRefs)
-                        {
-                            var field = rootWeb.GetFieldById<Field>(fieldRef.Id);
-                            if (field != null)
-                            {
-                                if (!listInfo.CreatedList.FieldExistsById(fieldRef.Id))
-                                {
-                                    var createdField = listInfo.CreatedList.Fields.Add(field);
-                                    if (!string.IsNullOrEmpty(fieldRef.DisplayName))
-                                    {
-                                        createdField.Title = fieldRef.DisplayName;
-                                    }
-                                    createdField.Hidden = fieldRef.Hidden;
-                                    createdField.Required = fieldRef.Required;
-
-                                    createdField.Update();
-                                }
-                            }
-
-                        }
-                        listInfo.CreatedList.Update();
-                        web.Context.ExecuteQueryRetry();
-                    }
-                }
-
-                #endregion
 
                 #region Views
 
@@ -405,8 +431,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     int index = -1;
                     if (creationInfo.BaseTemplate != null)
                     {
-                        // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves perf
-                        index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length)) &&
+                        // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves performance
+                        index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length + 1)) &&
                                                                   f.TemplateType.Equals(item.BaseTemplate));
                     }
 
@@ -547,6 +573,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Lists.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                ListCollection collList = web.Lists;
+                var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
+
+                web.Context.ExecuteQuery();
+
+                _willExtract = lists.Any();
+            }
+            return _willExtract.Value;
+
         }
     }
 }

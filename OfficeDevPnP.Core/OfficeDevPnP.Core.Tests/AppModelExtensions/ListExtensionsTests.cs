@@ -29,98 +29,103 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestInitialize()]
         public void Initialize()
         {
-            /*** Make sure that the user defined in the App.config has permissions to Manage Terms ***/
-
-            // Create some taxonomy groups and terms
-            using (var clientContext = TestCommon.CreateClientContext())
+            if (!TestCommon.AppOnlyTesting())
             {
-                _termGroupName = "Test_Group_" + DateTime.Now.ToFileTime();
-                _termSetName = "Test_Termset_" + DateTime.Now.ToFileTime();
-                _termName = "Test_Term_" + DateTime.Now.ToFileTime();
-                _textFieldName = "Test_Text_Field_" + DateTime.Now.ToFileTime();
-
-                _termGroupId = Guid.NewGuid();
-                _termSetId = Guid.NewGuid();
-                _termId = Guid.NewGuid();
-
-                // Termgroup
-                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
-                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
-                var termGroup = termStore.CreateGroup(_termGroupName,_termGroupId);
-                clientContext.Load(termGroup);
-                clientContext.ExecuteQueryRetry();
-
-                // Termset
-                var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
-                clientContext.Load(termSet);
-                clientContext.ExecuteQueryRetry();
-
-                // Term
-                termSet.CreateTerm(_termName, 1033, _termId);
-                clientContext.ExecuteQueryRetry();
-
-                // List
-
-                _textFieldId = Guid.NewGuid();
-
-                var fieldCI = new FieldCreationInformation(FieldType.Text)
+                /*** Make sure that the user defined in the App.config has permissions to Manage Terms ***/
+                // Create some taxonomy groups and terms
+                using (var clientContext = TestCommon.CreateClientContext())
                 {
-                    Id = _textFieldId,
-                    InternalName = _textFieldName,
-                    DisplayName = "Test Text Field",
-                    Group = "Test Group"
-                };
+                    _termGroupName = "Test_Group_" + DateTime.Now.ToFileTime();
+                    _termSetName = "Test_Termset_" + DateTime.Now.ToFileTime();
+                    _termName = "Test_Term_" + DateTime.Now.ToFileTime();
+                    _textFieldName = "Test_Text_Field_" + DateTime.Now.ToFileTime();
 
-                var textfield = clientContext.Web.CreateField(fieldCI);
+                    _termGroupId = Guid.NewGuid();
+                    _termSetId = Guid.NewGuid();
+                    _termId = Guid.NewGuid();
 
-                var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
+                    // Termgroup
+                    var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                    var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                    var termGroup = termStore.CreateGroup(_termGroupName, _termGroupId);
+                    clientContext.Load(termGroup);
+                    clientContext.ExecuteQueryRetry();
 
-                var field = clientContext.Web.Fields.GetByInternalNameOrTitle("TaxKeyword"); // Enterprise Metadata
+                    // Termset
+                    var termSet = termGroup.CreateTermSet(_termSetName, _termSetId, 1033);
+                    clientContext.Load(termSet);
+                    clientContext.ExecuteQueryRetry();
 
-                list.Fields.Add(field);
-                list.Fields.Add(textfield);
+                    // Term
+                    termSet.CreateTerm(_termName, 1033, _termId);
+                    clientContext.ExecuteQueryRetry();
 
-                list.Update();
-                clientContext.Load(list);
-                clientContext.ExecuteQueryRetry();
+                    // List
 
-                _listId = list.Id;
+                    _textFieldId = Guid.NewGuid();
+
+                    var fieldCI = new FieldCreationInformation(FieldType.Text)
+                    {
+                        Id = _textFieldId,
+                        InternalName = _textFieldName,
+                        DisplayName = "Test Text Field",
+                        Group = "Test Group"
+                    };
+
+                    var textfield = clientContext.Web.CreateField(fieldCI);
+
+                    var list = clientContext.Web.CreateList(ListTemplateType.DocumentLibrary, "Test_list_" + DateTime.Now.ToFileTime(), false);
+
+                    var field = clientContext.Web.Fields.GetByInternalNameOrTitle("TaxKeyword"); // Enterprise Metadata
+
+                    list.Fields.Add(field);
+                    list.Fields.Add(textfield);
+
+                    list.Update();
+                    clientContext.Load(list);
+                    clientContext.ExecuteQueryRetry();
+
+                    _listId = list.Id;
+                }
             }
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            using (var clientContext = TestCommon.CreateClientContext())
+            if (!TestCommon.AppOnlyTesting())
             {
-                // Clean up Taxonomy
-                var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
-                var termStore = taxSession.GetDefaultSiteCollectionTermStore();
-                var termGroup = termStore.GetGroup(_termGroupId);
-                var termSets = termGroup.TermSets;
-                clientContext.Load(termSets);
-                clientContext.ExecuteQueryRetry();
-                foreach (var termSet in termSets)
+                using (var clientContext = TestCommon.CreateClientContext())
                 {
-                    termSet.DeleteObject();
-                }
-                termGroup.DeleteObject(); // Will delete underlying termset
-                clientContext.ExecuteQueryRetry();
+                    // Clean up Taxonomy
+                    var taxSession = TaxonomySession.GetTaxonomySession(clientContext);
+                    var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+                    var termGroup = termStore.GetGroup(_termGroupId);
+                    var termSets = termGroup.TermSets;
+                    clientContext.Load(termSets);
+                    clientContext.ExecuteQueryRetry();
+                    foreach (var termSet in termSets)
+                    {
+                        termSet.DeleteObject();
+                    }
+                    termGroup.DeleteObject(); // Will delete underlying termset
+                    clientContext.ExecuteQueryRetry();
 
-                // Clean up list
-                var list = clientContext.Web.Lists.GetById(_listId);
-                list.DeleteObject();
-                clientContext.ExecuteQueryRetry();
+                    // Clean up list
+                    var list = clientContext.Web.Lists.GetById(_listId);
+                    list.DeleteObject();
+                    clientContext.ExecuteQueryRetry();
 
-                // Clean up fields
-                var fields = clientContext.LoadQuery(clientContext.Web.Fields);
-                clientContext.ExecuteQueryRetry();
-                var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
-                foreach (var field in testFields)
-                {
-                    field.DeleteObject();
+                    // Clean up fields
+                    var fields = clientContext.LoadQuery(clientContext.Web.Fields);
+                    clientContext.ExecuteQueryRetry();
+                    var testFields = fields.Where(f => f.InternalName.StartsWith("Test_", StringComparison.OrdinalIgnoreCase));
+                    foreach (var field in testFields)
+                    {
+                        field.DeleteObject();
+                    }
+                    clientContext.ExecuteQueryRetry();
                 }
-                clientContext.ExecuteQueryRetry();
             }
         }
         #endregion
@@ -154,6 +159,11 @@ namespace Microsoft.SharePoint.Client.Tests
         [TestMethod()]
         public void SetDefaultColumnValuesTest()
         {
+            if (TestCommon.AppOnlyTesting())
+            {
+                Assert.Inconclusive("Taxonomy tests are not supported when testing using app-only");
+            }
+
             using (var clientContext = TestCommon.CreateClientContext())
             {
                 TaxonomySession taxSession = TaxonomySession.GetTaxonomySession(clientContext);

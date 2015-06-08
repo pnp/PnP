@@ -8,9 +8,9 @@ Get-Help Connect-SPOnline -Detailed
 ##Apps
 Cmdlet|Description
 :-----|:----------
-**[Uninstall&#8209;SPOAppInstance](UninstallSPOAppInstance.md)** |Removes an add-in from a site
-**[Get&#8209;SPOAppInstance](GetSPOAppInstance.md)** |Returns a SharePoint add-in Instance
-**[Import&#8209;SPOAppPackage](ImportSPOAppPackage.md)** |Adds a SharePoint add-in to a site
+**[Uninstall&#8209;SPOAppInstance](UninstallSPOAppInstance.md)** |Removes an app from a site
+**[Get&#8209;SPOAppInstance](GetSPOAppInstance.md)** |Returns a SharePoint AddIn Instance
+**[Import&#8209;SPOAppPackage](ImportSPOAppPackage.md)** |Adds a SharePoint Addin to a site
 ##Base Cmdlets
 Cmdlet|Description
 :-----|:----------
@@ -71,6 +71,11 @@ Cmdlet|Description
 **[Add&#8209;SPOField](AddSPOField.md)** |Adds a field to a list or as a site column
 **[Add&#8209;SPOFieldFromXml](AddSPOFieldFromXml.md)** |Adds a field to a list or as a site column based upon a CAML/XML field definition
 **[Add&#8209;SPOTaxonomyField](AddSPOTaxonomyField.md)** |Adds a taxonomy field to a list or as a site column.
+##Information Management
+Cmdlet|Description
+:-----|:----------
+**[Get&#8209;SPOSitePolicy](GetSPOSitePolicy.md)** |Retrieves all or a specific site policy
+**[Set&#8209;SPOSitePolicy](SetSPOSitePolicy.md)** |Sets a site policy
 ##Lists
 Cmdlet|Description
 :-----|:----------
@@ -79,6 +84,7 @@ Cmdlet|Description
 **[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Get&#8209;SPOList](GetSPOList.md)** |Returns a List object
 **[New&#8209;SPOList](NewSPOList.md)** |Creates a new list
+**[Add&#8209;SPOListItem](AddSPOListItem.md)** |Adds an item to a list
 **[Get&#8209;SPOListItem](GetSPOListItem.md)** |Retrieves list items
 **[Set&#8209;SPOListPermission](SetSPOListPermission.md)** |Sets list permissions
 **[Add&#8209;SPOView](AddSPOView.md)** |Adds a view to a list
@@ -97,7 +103,7 @@ Cmdlet|Description
 ##Sites
 Cmdlet|Description
 :-----|:----------
-**[Set&#8209;SPOAppSideLoading](SetSPOAppSideLoading.md)** |Enables the add-in Side Loading Feature on a site
+**[Set&#8209;SPOAppSideLoading](SetSPOAppSideLoading.md)** |Enables the App Side Loading Feature on a site
 **[Get&#8209;SPOSite](GetSPOSite.md)** |Returns the current site collection from the context.
 **[Uninstall&#8209;SPOSolution](UninstallSPOSolution.md)** |Uninstalls a sandboxed solution from a site collection
 **[Install&#8209;SPOSolution](InstallSPOSolution.md)** |Installs a sandboxed solution to a site collection
@@ -120,7 +126,7 @@ Cmdlet|Description
 **[Set&#8209;SPOTenantSite](SetSPOTenantSite.md)** |Office365 only: Uses the tenant API to set site information.
 **[Get&#8209;SPOTenantSite](GetSPOTenantSite.md)** |Office365 only: Uses the tenant API to retrieve site information. 
 **[Remove&#8209;SPOTenantSite](RemoveSPOTenantSite.md)** |Office365 only: Removes a site collection from the current tenant
-**[New&#8209;SPOTenantSite](NewSPOTenantSite.md)** |Office365 only: Creates a new site collection for the current tenant
+**[New&#8209;SPOTenantSite](NewSPOTenantSite.md)** |Creates a new site collection for the current tenant
 **[Get&#8209;SPOTimeZoneId](GetSPOTimeZoneId.md)** |Returns a time zone ID
 **[Get&#8209;SPOWebTemplates](GetSPOWebTemplates.md)** |Office365 only: Returns the available web templates.
 ##User and group management
@@ -175,6 +181,7 @@ Cmdlet|Description
 ##Workflows
 Cmdlet|Description
 :-----|:----------
+**[Add&#8209;SPOWorkflowDefinition](AddSPOWorkflowDefinition.md)** |Adds a workflow definition
 **[Remove&#8209;SPOWorkflowDefinition](RemoveSPOWorkflowDefinition.md)** |Removes a workflow definition
 **[Get&#8209;SPOWorkflowDefinition](GetSPOWorkflowDefinition.md)** |Returns a workflow definition
 **[Resume&#8209;SPOWorkflowInstance](ResumeSPOWorkflowInstance.md)** |Resumes a previously stopped workflow instance

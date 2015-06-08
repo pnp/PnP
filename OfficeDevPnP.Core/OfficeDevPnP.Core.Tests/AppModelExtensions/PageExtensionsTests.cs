@@ -131,7 +131,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         {
             var web = Setup("CMSPUBLISHING#0", true);
             web.Context.Load(web);
-            web.AddPublishingPage("Happy?is&good", publishingPageTemplate);
+            web.AddPublishingPage("Happy?is:good", publishingPageTemplate);
             web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.ExecuteQueryRetry();
 

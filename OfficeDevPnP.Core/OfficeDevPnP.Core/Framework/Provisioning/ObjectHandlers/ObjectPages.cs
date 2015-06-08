@@ -8,7 +8,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectPages : ObjectHandlerBase
+    internal class ObjectPages : ObjectHandlerBase
     {
         public override string Name
         {
@@ -69,6 +69,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.AddWikiPageByUrl(url);
                     web.AddLayoutToWikiPage(page.Layout, url);
                 }
+
+                if (page.WelcomePage)
+                {
+                    if (!web.IsPropertyAvailable("RootFolder"))
+                    {
+                        web.Context.Load(web.RootFolder);
+                        web.Context.ExecuteQueryRetry();
+                    }
+
+                    var rootFolderRelativeUrl = url.Substring(web.RootFolder.ServerRelativeUrl.Length);
+                    web.SetHomePage(rootFolderRelativeUrl);
+                }
+
                 if (page.WebParts != null & page.WebParts.Any())
                 {
                     var existingWebParts = web.GetWebParts(url);
@@ -105,6 +118,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
 
             return template;
+        }
+
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Pages.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = false;
+            }
+            return _willExtract.Value;
         }
     }
 }

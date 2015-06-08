@@ -410,9 +410,9 @@ namespace OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates
                         AppDomain.CurrentDomain.BaseDirectory),
                         "Templates");
 
-                jsonProvider.SaveAs(_pt, "ProvisioningSchema-2015-05-ReferenceSample-01.json");
+                jsonProvider.SaveAs(_pt, @"c:\temp\ProvisioningSchema-2015-05-ReferenceSample-01.json");
 
-                var _ptBack = jsonProvider.GetTemplate("ProvisioningSchema-2015-05-ReferenceSample-01.json");
+                var _ptBack = jsonProvider.GetTemplate(@"c:\temp\ProvisioningSchema-2015-05-ReferenceSample-01.json");
 
                 Assert.IsTrue(_pt.Equals(_ptBack));
             }

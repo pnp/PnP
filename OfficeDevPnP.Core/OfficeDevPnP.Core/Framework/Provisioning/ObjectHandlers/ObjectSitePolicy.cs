@@ -16,7 +16,7 @@ using SPField = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectSitePolicy : ObjectHandlerBase
+    internal class ObjectSitePolicy : ObjectHandlerBase
     {
         public override string Name
         {
@@ -28,7 +28,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             if (template.SitePolicy != null)
             {
-                web.ApplySitePolicy(template.SitePolicy);
+                if (web.GetSitePolicyByName(template.SitePolicy) != null) // Site Policy Available?
+                {
+                    web.ApplySitePolicy(template.SitePolicy);
+                }
             }
         }
 
@@ -44,6 +47,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return template;
         }
 
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.SitePolicy != null;
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                var sitePolicyEntity = web.GetAppliedSitePolicy();
+
+                _willExtract = sitePolicyEntity != null;
+            }
+            return _willExtract.Value;
+        }
     }
 }
 

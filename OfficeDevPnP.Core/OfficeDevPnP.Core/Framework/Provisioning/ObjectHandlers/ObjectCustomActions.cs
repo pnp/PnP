@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
@@ -7,7 +8,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectCustomActions : ObjectHandlerBase
+    internal class ObjectCustomActions : ObjectHandlerBase
     {
         public override string Name
         {
@@ -175,6 +176,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             customAction.CommandUIExtension = userCustomAction.CommandUIExtension;
 
             return customAction;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.CustomActions.SiteCustomActions.Any() || template.CustomActions.WebCustomActions.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                var context = web.Context as ClientContext;
+                var webCustomActions = web.GetCustomActions();
+                var siteCustomActions = context.Site.GetCustomActions();
+
+                _willExtract = webCustomActions.Any() || siteCustomActions.Any();
+            }
+            return _willExtract.Value;
         }
     }
 }
