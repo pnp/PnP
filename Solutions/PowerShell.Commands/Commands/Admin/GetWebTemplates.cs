@@ -24,7 +24,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
         protected override void ProcessRecord()
         {
-            WriteObject(Tenant.GetWebTemplates(Lcid, CompatibilityLevel));
+            WriteObject(Tenant.GetWebTemplates(Lcid, CompatibilityLevel),true);
         }
     }
 }
