@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.SubSiteCreatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{0E9072FC-286A-4A9A-9654-5AC8187C6D89}"
 	ProjectSection(SolutionItems) = preProject
-		SubSiteCreation.docx = SubSiteCreation.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
