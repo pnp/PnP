@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.Services.Discovery;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
@@ -31,6 +32,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
+
             var existingFields = web.Fields;
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
@@ -40,25 +42,92 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var field in fields)
             {
-                XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
-                var fieldId = fieldElement.Attribute("ID").Value;
-
+                XElement templateFieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                var fieldId = templateFieldElement.Attribute("ID").Value;
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
+                    CreateField(web, templateFieldElement);
+                }
+                else
+                {
+                    UpdateField(web, fieldId, templateFieldElement);
+                }
+            }
+        }
+
+        private void UpdateField(Web web, string fieldId, XElement templateFieldElement)
+        {
+            var existingField = web.Fields.GetById(Guid.Parse(fieldId));
+            web.Context.Load(existingField, f => f.SchemaXml);
+            web.Context.ExecuteQueryRetry();
+
+            XElement existingFieldElement = XElement.Parse(existingField.SchemaXml);
+
+            XNodeEqualityComparer equalityComparer = new XNodeEqualityComparer();
+
+            if (equalityComparer.GetHashCode(existingFieldElement) != equalityComparer.GetHashCode(templateFieldElement)) // Is field different in template?
+            {
+                if (existingFieldElement.Attribute("Type").Value == templateFieldElement.Attribute("Type").Value) // Is existing field of the same type?
+                {
+                    var listIdentifier = templateFieldElement.Attribute("List") != null ? templateFieldElement.Attribute("List").Value : null;
 
                     if (listIdentifier != null)
                     {
                         // Temporary remove list attribute from list
-                        fieldElement.Attribute("List").Remove();
+                        templateFieldElement.Attribute("List").Remove();
                     }
 
-                    var fieldXml = fieldElement.ToString();
+                    foreach (var attribute in templateFieldElement.Attributes())
+                    {
+                        if (existingFieldElement.Attribute(attribute.Name) != null)
+                        {
+                            existingFieldElement.Attribute(attribute.Name).Value = attribute.Value;
+                        }
+                        else
+                        {
+                            existingFieldElement.Add(attribute);
+                        }
+                    }
+                    foreach (var element in templateFieldElement.Elements())
+                    {
+                        if (existingFieldElement.HasAttributes && existingFieldElement.Attribute(element.Name) != null)
+                        {
+                            existingFieldElement.Attribute(element.Name).Remove();
+                        }
+                        existingFieldElement.Add(element);
+                    }
 
-                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                    if (existingFieldElement.Attribute("Version") != null)
+                    {
+                        existingFieldElement.Attributes("Version").Remove();
+                    }
+                    existingField.SchemaXml = existingFieldElement.ToString();
+                    existingField.UpdateAndPushChanges(true);
+                    web.Context.ExecuteQueryRetry();
+                }
+                else
+                {
+                    var fieldName = existingFieldElement.Attribute("Name") != null ? existingFieldElement.Attribute("Name").Value : existingFieldElement.Attribute("StaticName").Value;
+                    WriteWarning(string.Format("Field {0} ({1}) exists but is of different type. Skipping field.", fieldName, fieldId), ProvisioningMessageType.Warning);
                 }
             }
+        }
+
+        private static void CreateField(Web web, XElement templateFieldElement)
+        {
+            var listIdentifier = templateFieldElement.Attribute("List") != null ? templateFieldElement.Attribute("List").Value : null;
+
+            if (listIdentifier != null)
+            {
+                // Temporary remove list attribute from list
+                templateFieldElement.Attribute("List").Remove();
+            }
+
+            var fieldXml = templateFieldElement.ToString();
+
+            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+            web.Context.ExecuteQueryRetry();
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
