@@ -74,7 +74,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     customActionEntity.RegistrationType = customAction.RegistrationType;
                     customActionEntity.Remove = customAction.Remove;
                     customActionEntity.Rights = customAction.Rights;
-                    customActionEntity.ScriptBlock = customAction.ScriptBlock;
+                    customActionEntity.ScriptBlock = customAction.ScriptBlock.ToParsedString();
                     customActionEntity.ScriptSrc = customAction.ScriptSrc.ToParsedString();
                     customActionEntity.Sequence = customAction.Sequence;
                     customActionEntity.Title = customAction.Title;
