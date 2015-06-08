@@ -54,12 +54,21 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                 var fileSystemConnector = new FileSystemConnector(fileInfo.DirectoryName, "");
                 provisioningTemplate.Connector = fileSystemConnector;
 
+
                 var applyingInformation = new ProvisioningTemplateApplyingInformation();
+
                 applyingInformation.ProgressDelegate = (message, step, total) =>
                 {
                     WriteProgress(new ProgressRecord(0, string.Format("Applying template to {0}", SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
                 };
 
+                applyingInformation.MessageDelegate = (message, type) =>
+                {
+                    if (type == ProvisioningMessageType.Warning)
+                    {
+                        WriteWarning(message);
+                    }
+                };
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);
             }
         }
