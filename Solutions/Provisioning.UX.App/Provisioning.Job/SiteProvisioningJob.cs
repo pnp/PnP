@@ -74,7 +74,7 @@ namespace Provisioning.Job
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
                     Log.Info("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
                     _siteProvisioningManager.CreateSiteCollection(siteRequest, _template);
-                    _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
+                    _siteProvisioningManager.ApplyProvisioningTemplate(_provisioningTemplate, siteRequest);
                     this.SendSuccessEmail(siteRequest);
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }

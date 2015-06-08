@@ -58,7 +58,7 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
-        public void ApplyProvisioningTemplates(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
             try
             {
