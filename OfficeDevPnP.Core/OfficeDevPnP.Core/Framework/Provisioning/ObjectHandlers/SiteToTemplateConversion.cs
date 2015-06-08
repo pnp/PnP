@@ -25,10 +25,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_StartExtraction);
             
             ProvisioningProgressDelegate progressDelegate = null;
-            
+            ProvisioningMessagesDelegate messagesDelegate = null;
             if (creationInfo != null)
             {
                 progressDelegate = creationInfo.ProgressDelegate;
+                messagesDelegate = creationInfo.MessagesDelegate;
             }
 
             // Create empty object
@@ -61,6 +62,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (handler.WillExtract(web, template, creationInfo))
                 {
+                    if (messagesDelegate != null)
+                    {
+                        handler.MessagesDelegate = messagesDelegate;
+                    }
                     if (handler.ReportProgress && progressDelegate != null)
                     {
                         progressDelegate(handler.Name, step, count);
@@ -77,14 +82,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         /// Actual implementation of the apply templates
         /// </summary>
         /// <param name="web"></param>
+        /// <param name="template"></param>
         /// <param name="provisioningInfo"></param>
         internal void ApplyRemoteTemplate(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation provisioningInfo)
         {
             ProvisioningProgressDelegate progressDelegate = null;
+            ProvisioningMessagesDelegate messagesDelegate = null;
             if (provisioningInfo != null)
             {
                 progressDelegate = provisioningInfo.ProgressDelegate;
+                messagesDelegate = provisioningInfo.MessageDelegate;
             }
+            
 
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_StartProvisioning);
 
@@ -116,6 +125,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (handler.WillProvision(web, template))
                 {
+                    if (messagesDelegate != null)
+                    {
+                        handler.MessagesDelegate = messagesDelegate;
+                    }
                     if (handler.ReportProgress && progressDelegate != null)
                     {
                         progressDelegate(handler.Name, step, count);
