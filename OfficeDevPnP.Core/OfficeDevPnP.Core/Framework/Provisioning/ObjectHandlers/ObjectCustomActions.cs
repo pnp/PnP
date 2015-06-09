@@ -47,52 +47,43 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             else
             {
                 web = parent as Web;
+
+                // Switch parser context
+                TokenParser.Rebase(web);
             }
             foreach (var customAction in customActions)
             {
-                var caExists = false;
+                var caExists = site?.CustomActionExists(customAction.Name) ?? web.CustomActionExists(customAction.Name);
+                if (caExists) continue;
+
+                var customActionEntity = new CustomActionEntity
+                {
+                    CommandUIExtension = customAction.CommandUIExtension.ToParsedString(),
+                    Description = customAction.Description,
+                    Group = customAction.Group,
+                    ImageUrl = customAction.ImageUrl.ToParsedString(),
+                    Location = customAction.Location,
+                    Name = customAction.Name,
+                    RegistrationId = customAction.RegistrationId,
+                    RegistrationType = customAction.RegistrationType,
+                    Remove = customAction.Remove,
+                    Rights = customAction.Rights,
+                    ScriptBlock = customAction.ScriptBlock.ToParsedString(),
+                    ScriptSrc = customAction.ScriptSrc.ToParsedString(),
+                    Sequence = customAction.Sequence,
+                    Title = customAction.Title,
+                    Url = customAction.Url.ToParsedString()
+                };
+
                 if (site != null)
                 {
-                    caExists = site.CustomActionExists(customAction.Name);
+                    site.AddCustomAction(customActionEntity);
                 }
                 else
                 {
-                    caExists = web.CustomActionExists(customAction.Name);
-                }
-                if (!caExists)
-                {
-                    var customActionEntity = new CustomActionEntity();
-                    customActionEntity.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
-                    
-                    
-                    customActionEntity.Description = customAction.Description;
-                    customActionEntity.Group = customAction.Group;
-                    customActionEntity.ImageUrl = customAction.ImageUrl.ToParsedString();
-                    customActionEntity.Location = customAction.Location;
-                    customActionEntity.Name = customAction.Name;
-                    customActionEntity.RegistrationId = customAction.RegistrationId;
-                    customActionEntity.RegistrationType = customAction.RegistrationType;
-                    customActionEntity.Remove = customAction.Remove;
-                    customActionEntity.Rights = customAction.Rights;
-                    customActionEntity.ScriptBlock = customAction.ScriptBlock;
-                    customActionEntity.ScriptSrc = customAction.ScriptSrc.ToParsedString();
-                    customActionEntity.Sequence = customAction.Sequence;
-                    customActionEntity.Title = customAction.Title;
-                    customActionEntity.Url = customAction.Url.ToParsedString();
-
-                    if (site != null)
-                    {
-                        site.AddCustomAction(customActionEntity);
-                    }
-                    else
-                    {
-                        web.AddCustomAction(customActionEntity);
-                    }
+                    web.AddCustomAction(customActionEntity);
                 }
             }
-
-            // Rebase parser context to current web
-            TokenParser.Rebase(web);
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
