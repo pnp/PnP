@@ -403,6 +403,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.Title = templateList.Title;
                     isDirty = true;
                 }
+                if (!string.IsNullOrEmpty(templateList.DocumentTemplate))
+                {
+                    if (existingList.DocumentTemplateUrl != templateList.DocumentTemplate.ToParsedString())
+                    {
+                        existingList.DocumentTemplateUrl = templateList.DocumentTemplate.ToParsedString();
+                    }
+                }
                 if (templateList.Description != existingList.Description)
                 {
                     existingList.Description = templateList.Description;
