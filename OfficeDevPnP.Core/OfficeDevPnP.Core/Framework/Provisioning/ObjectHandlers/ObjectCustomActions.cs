@@ -95,6 +95,79 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.AddCustomAction(customActionEntity);
                     }
                 }
+                else
+                {
+                    UserCustomAction existingCustomAction = null;
+                    if (site != null)
+                    {
+                        existingCustomAction = site.GetCustomActions().FirstOrDefault(c => c.Name == customAction.Name);
+                    }
+                    else
+                    {
+                        existingCustomAction = web.GetCustomActions().FirstOrDefault(c => c.Name == customAction.Name);
+                    }
+                    if (existingCustomAction != null)
+                    {
+                        var isDirty = false;
+                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToParsedString())
+                        {
+                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Description != customAction.Description)
+                        {
+                            existingCustomAction.Description = customAction.Description;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Group != customAction.Group)
+                        {
+                            existingCustomAction.Group = customAction.Group;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ImageUrl != customAction.ImageUrl.ToParsedString())
+                        {
+                            existingCustomAction.ImageUrl = customAction.ImageUrl.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Location != customAction.Location)
+                        {
+                            existingCustomAction.Location = customAction.Location;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.RegistrationId != customAction.RegistrationId)
+                        {
+                            existingCustomAction.RegistrationId = customAction.RegistrationId;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.RegistrationType != customAction.RegistrationType)
+                        {
+                            existingCustomAction.RegistrationType = customAction.RegistrationType;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ScriptBlock != customAction.ScriptBlock.ToParsedString())
+                        {
+                            existingCustomAction.ScriptBlock = customAction.ScriptBlock.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString())
+                        {
+                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Title != customAction.Title.ToParsedString())
+                        {
+                            existingCustomAction.Title = customAction.Title.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Url != customAction.Url.ToParsedString())
+                        {
+                            existingCustomAction.Url = customAction.Url.ToParsedString();
+                            isDirty = true;
+                        }
+                        existingCustomAction.Update();
+                        existingCustomAction.Context.ExecuteQueryRetry();
+                    }
+                }
             }
         }
 

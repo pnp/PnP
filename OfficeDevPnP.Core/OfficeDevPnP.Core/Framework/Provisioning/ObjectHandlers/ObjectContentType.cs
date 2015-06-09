@@ -65,52 +65,52 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         }
 
-        private static void UpdateContentType(Web web, Microsoft.SharePoint.Client.ContentType existingCT, ContentType ct)
+        private static void UpdateContentType(Web web, Microsoft.SharePoint.Client.ContentType existingContentType, ContentType templateContentType)
         {
             var isDirty = false;
-            if (existingCT.Hidden != ct.Hidden)
+            if (existingContentType.Hidden != templateContentType.Hidden)
             {
-                existingCT.Hidden = ct.Hidden;
+                existingContentType.Hidden = templateContentType.Hidden;
                 isDirty = true;
             }
-            if (existingCT.ReadOnly != ct.ReadOnly)
+            if (existingContentType.ReadOnly != templateContentType.ReadOnly)
             {
-                existingCT.ReadOnly = ct.ReadOnly;
+                existingContentType.ReadOnly = templateContentType.ReadOnly;
                 isDirty = true;
             }
-            if (existingCT.Sealed != ct.Sealed)
+            if (existingContentType.Sealed != templateContentType.Sealed)
             {
-                existingCT.Sealed = ct.Sealed;
+                existingContentType.Sealed = templateContentType.Sealed;
                 isDirty = true;
             }
-            if (ct.Description != null && existingCT.Description != ct.Description)
+            if (templateContentType.Description != null && existingContentType.Description != templateContentType.Description.ToParsedString())
             {
-                existingCT.Description = ct.Description;
+                existingContentType.Description = templateContentType.Description.ToParsedString();
                 isDirty = true;
             }
-            if (ct.DocumentTemplate != null && existingCT.DocumentTemplate != ct.DocumentTemplate)
+            if (templateContentType.DocumentTemplate != null && existingContentType.DocumentTemplate != templateContentType.DocumentTemplate.ToParsedString())
             {
-                existingCT.DocumentTemplate = ct.DocumentTemplate;
+                existingContentType.DocumentTemplate = templateContentType.DocumentTemplate.ToParsedString();
                 isDirty = true;
             }
-            if (existingCT.Name != ct.Name)
+            if (existingContentType.Name != templateContentType.Name.ToParsedString())
             {
-                existingCT.Name = ct.Name;
+                existingContentType.Name = templateContentType.Name.ToParsedString();
                 isDirty = true;
             }
-            if (ct.Group != null && existingCT.Group != ct.Group)
+            if (templateContentType.Group != null && existingContentType.Group != templateContentType.Group.ToParsedString())
             {
-                existingCT.Group = ct.Group;
+                existingContentType.Group = templateContentType.Group.ToParsedString();
                 isDirty = true;
             }
             if (isDirty)
             {
-                existingCT.Update(true);
+                existingContentType.Update(true);
                 web.Context.ExecuteQueryRetry();
             }
             // Delta handling
-            List<Guid> targetIds = existingCT.FieldLinks.Select(c1 => c1.Id).ToList();
-            List<Guid> sourceIds = ct.FieldRefs.Select(c1 => c1.Id).ToList();
+            List<Guid> targetIds = existingContentType.FieldLinks.Select(c1 => c1.Id).ToList();
+            List<Guid> sourceIds = templateContentType.FieldRefs.Select(c1 => c1.Id).ToList();
 
             var fieldsNotPresentInTarget = sourceIds.Except(targetIds).ToArray();
             
@@ -118,17 +118,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var fieldId in fieldsNotPresentInTarget)
                 {
-                    var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
+                    var fieldRef = templateContentType.FieldRefs.Find(fr => fr.Id == fieldId);
                     var field = web.Fields.GetById(fieldId);
-                    web.AddFieldToContentType(existingCT, field, fieldRef.Required, fieldRef.Hidden);
+                    web.AddFieldToContentType(existingContentType, field, fieldRef.Required, fieldRef.Hidden);
                 }
             }
 
             isDirty = false;
             foreach (var fieldId in targetIds.Intersect(sourceIds))
             {
-                var fieldLink = existingCT.FieldLinks.FirstOrDefault(fl => fl.Id == fieldId);
-                var fieldRef = ct.FieldRefs.Find(fr => fr.Id == fieldId);
+                var fieldLink = existingContentType.FieldLinks.FirstOrDefault(fl => fl.Id == fieldId);
+                var fieldRef = templateContentType.FieldRefs.Find(fr => fr.Id == fieldId);
                 if (fieldRef != null)
                 {
                  
@@ -146,31 +146,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
             if (isDirty)
             {
-                existingCT.Update(true);
+                existingContentType.Update(true);
                 web.Context.ExecuteQueryRetry();
             }
         }
 
-        private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType ct)
+        private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType templateContentType)
         {
-            var name = ct.Name.ToParsedString();
-            var description = ct.Description.ToParsedString();
-            var id = ct.Id.ToParsedString();
-            var group = ct.Group.ToParsedString();
+            var name = templateContentType.Name.ToParsedString();
+            var description = templateContentType.Description.ToParsedString();
+            var id = templateContentType.Id.ToParsedString();
+            var group = templateContentType.Group.ToParsedString();
 
             var createdCT = web.CreateContentType(name, description, id, group);
-            foreach (var fieldRef in ct.FieldRefs)
+            foreach (var fieldRef in templateContentType.FieldRefs)
             {
                 var field = web.Fields.GetById(fieldRef.Id);
                 web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
-            createdCT.ReadOnly = ct.ReadOnly;
-            createdCT.Hidden = ct.Hidden;
-            createdCT.Sealed = ct.Sealed;
-            if (!string.IsNullOrEmpty(ct.DocumentTemplate))
+            createdCT.ReadOnly = templateContentType.ReadOnly;
+            createdCT.Hidden = templateContentType.Hidden;
+            createdCT.Sealed = templateContentType.Sealed;
+            if (!string.IsNullOrEmpty(templateContentType.DocumentTemplate.ToParsedString()))
             {
-                createdCT.DocumentTemplate = ct.DocumentTemplate;
+                createdCT.DocumentTemplate = templateContentType.DocumentTemplate.ToParsedString();
             }
 
             web.Context.Load(createdCT);
