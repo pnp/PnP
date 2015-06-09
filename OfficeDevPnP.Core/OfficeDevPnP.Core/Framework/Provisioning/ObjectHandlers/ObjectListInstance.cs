@@ -10,8 +10,12 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201503;
 using OfficeDevPnP.Core.Utilities;
+using ContentTypeBinding = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentTypeBinding;
 using Field = Microsoft.SharePoint.Client.Field;
+using FieldRef = OfficeDevPnP.Core.Framework.Provisioning.Model.FieldRef;
+using ListInstance = OfficeDevPnP.Core.Framework.Provisioning.Model.ListInstance;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -345,9 +349,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
                 }
-
-
-
                 #endregion
 
                 #region DataRows
@@ -355,20 +356,52 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 foreach (var listInfo in createdLists)
                 {
                     var listInstance = listInfo.ListInstance;
-                    if (listInstance.DataRows != null && listInstance.DataRows.Any())
+                    if (listInstance.DataRows == null || !listInstance.DataRows.Any()) continue;
+
+                    var list = listInfo.CreatedList;
+                    foreach (var dataRow in listInfo.ListInstance.DataRows)
                     {
-                        var list = listInfo.CreatedList;
-                        foreach (var dataRow in listInfo.ListInstance.DataRows)
+                        var listitemCI = new ListItemCreationInformation();
+                        var listitem = list.AddItem(listitemCI);
+                        foreach (var dataValue in dataRow.Values)
                         {
-                            ListItemCreationInformation listitemCI = new ListItemCreationInformation();
-                            var listitem = list.AddItem(listitemCI);
-                            foreach (var dataValue in dataRow.Values)
+                            //Value
+                            var value = dataValue.Value.ToParsedString();
+
+                            //Find the given field for his type
+                            var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
+
+                            //Get Provisionned field
+                            web.Context.Load(field);
+                            web.Context.ExecuteQueryRetry();
+
+                            //Special logic to create FieldUrlValue when field type is Url
+                            if (field != null && field.TypeAsString.Equals("URL"))
                             {
-                                listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
+                                //Default format of url (URL, Description)
+                                if (value.Contains(",")) //FieldUrl
+                                {
+                                    var urlArray = value.Split(',');
+                                    var link = new FieldUrlValue
+                                    {
+                                        Url = urlArray[0],
+                                        Description = urlArray[1]
+                                    };
+                                    listitem[dataValue.Key.ToParsedString()] = link;
+                                }
+                                else //No Description
+                                {
+                                    listitem[dataValue.Key.ToParsedString()] = value;
+                                }
                             }
-                            listitem.Update();
-                            web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
+                            else //Default Value
+                            {
+                                listitem[dataValue.Key.ToParsedString()] = value;
+                            }
+                                
                         }
+                        listitem.Update();
+                        web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                     }
                 }
 
