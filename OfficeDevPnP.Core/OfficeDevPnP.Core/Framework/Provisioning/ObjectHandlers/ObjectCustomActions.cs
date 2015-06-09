@@ -31,6 +31,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var webCustomActions = template.CustomActions.WebCustomActions;
             ProvisionCustomActionImplementation(web, webCustomActions);
+
+            // Switch parser context back to it's original context
+            TokenParser.Rebase(web);
         }
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
@@ -53,35 +56,44 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
             foreach (var customAction in customActions)
             {
-                var caExists = site?.CustomActionExists(customAction.Name) ?? web.CustomActionExists(customAction.Name);
-                if (caExists) continue;
-
-                var customActionEntity = new CustomActionEntity
-                {
-                    CommandUIExtension = customAction.CommandUIExtension.ToParsedString(),
-                    Description = customAction.Description,
-                    Group = customAction.Group,
-                    ImageUrl = customAction.ImageUrl.ToParsedString(),
-                    Location = customAction.Location,
-                    Name = customAction.Name,
-                    RegistrationId = customAction.RegistrationId,
-                    RegistrationType = customAction.RegistrationType,
-                    Remove = customAction.Remove,
-                    Rights = customAction.Rights,
-                    ScriptBlock = customAction.ScriptBlock.ToParsedString(),
-                    ScriptSrc = customAction.ScriptSrc.ToParsedString(),
-                    Sequence = customAction.Sequence,
-                    Title = customAction.Title,
-                    Url = customAction.Url.ToParsedString()
-                };
-
+                var caExists = false;
                 if (site != null)
                 {
-                    site.AddCustomAction(customActionEntity);
+                    caExists = site.CustomActionExists(customAction.Name);
                 }
                 else
                 {
-                    web.AddCustomAction(customActionEntity);
+                    caExists = web.CustomActionExists(customAction.Name);
+                }
+                if (!caExists)
+                {
+                    var customActionEntity = new CustomActionEntity
+                    {
+                        CommandUIExtension = customAction.CommandUIExtension.ToParsedString(),
+                        Description = customAction.Description,
+                        Group = customAction.Group,
+                        ImageUrl = customAction.ImageUrl.ToParsedString(),
+                        Location = customAction.Location,
+                        Name = customAction.Name,
+                        RegistrationId = customAction.RegistrationId,
+                        RegistrationType = customAction.RegistrationType,
+                        Remove = customAction.Remove,
+                        Rights = customAction.Rights,
+                        ScriptBlock = customAction.ScriptBlock.ToParsedString(),
+                        ScriptSrc = customAction.ScriptSrc.ToParsedString(),
+                        Sequence = customAction.Sequence,
+                        Title = customAction.Title,
+                        Url = customAction.Url.ToParsedString()
+                    };
+
+                    if (site != null)
+                    {
+                        site.AddCustomAction(customActionEntity);
+                    }
+                    else
+                    {
+                        web.AddCustomAction(customActionEntity);
+                    }
                 }
             }
         }
@@ -98,7 +110,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 customActions.WebCustomActions.Add(CopyUserCustomAction(customAction));
             }
-            
+
             // if this is a sub site then we're not creating entities for site collection scoped custom actions
             if (!isSubSite)
             {
@@ -143,7 +155,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     template.CustomActions.WebCustomActions.RemoveAt(index);
                 }
             }
-            
+
             return template;
         }
 
