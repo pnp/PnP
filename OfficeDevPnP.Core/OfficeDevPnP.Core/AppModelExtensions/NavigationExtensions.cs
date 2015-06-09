@@ -359,7 +359,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
         /// <param name="isExternal">true if the link is an external link</param>
    
-        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType, bool isExternal)
+        public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType, bool isExternal = false)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
             web.Context.ExecuteQueryRetry();
