@@ -12,21 +12,20 @@ namespace Provisioning.Common.Utilities
     /// </summary>
     public class Logger : ILog
     {
-  
         public void Information(string message)
         {
             Trace.TraceInformation(message);
         }
 
-        public void Information(string fmt, params object[] vars)
+        public void Information(string format, params object[] args)
         {
-            Trace.TraceInformation(fmt, vars);
+            Trace.TraceInformation(format, args);
         }
 
-        public void Information(Exception exception, string fmt, params object[] vars)
+        public void Information(Exception exception, string format, params object[] args)
         {
-            var msg = String.Format(fmt, vars);
-            Trace.TraceInformation(string.Format(fmt, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            var msg = String.Format(format, args);
+            Trace.TraceInformation(string.Format(format, args) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         public void Warning(string message)
@@ -34,15 +33,15 @@ namespace Provisioning.Common.Utilities
             Trace.TraceWarning(message);
         }
 
-        public void Warning(string fmt, params object[] vars)
+        public void Warning(string format, params object[] args)
         {
-            Trace.TraceWarning(fmt, vars);
+            Trace.TraceWarning(format, args);
         }
 
-        public void Warning(Exception exception, string fmt, params object[] vars)
+        public void Warning(Exception exception, string format, params object[] vars)
         {
-            var msg = String.Format(fmt, vars);
-            Trace.TraceWarning(string.Format(fmt, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            var msg = String.Format(format, vars);
+            Trace.TraceWarning(string.Format(format, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         public void Error(string message)
@@ -50,15 +49,15 @@ namespace Provisioning.Common.Utilities
             Trace.TraceError(message);
         }
 
-        public void Error(string fmt, params object[] vars)
+        public void Error(string format, params object[] vars)
         {
-            Trace.TraceError(fmt, vars);
+            Trace.TraceError(format, vars);
         }
 
-        public void Error(Exception exception, string fmt, params object[] vars)
+        public void Error(Exception exception, string format, params object[] vars)
         {
-            var msg = String.Format(fmt, vars);
-            Trace.TraceError(string.Format(fmt, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            var msg = String.Format(format, vars);
+            Trace.TraceError(string.Format(format, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         // 
