@@ -19,6 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private List<String> propertyBagPropertiesToPreserve;
 
         public ProvisioningProgressDelegate ProgressDelegate { get; set; }
+        public ProvisioningMessagesDelegate MessagesDelegate { get; set; }
 
         public ProvisioningTemplateCreationInformation(Web web)
         {

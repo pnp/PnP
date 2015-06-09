@@ -319,7 +319,7 @@ ProvisioningTemplate | The Name of the PnP Provisioning Template to apply to the
 Enabled | Controls if the Template is available in the user interface.
 
 
-	TemplateConfiguration Version='1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	<TemplateConfiguration Version='1.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
 	  <Templates>
 	    <!--  StorageMaximumLevel Minimum 110 
 	          For on-prem & SPO-D Storage and UserCode are not used and will default to the Quota Templates configured in your farm
