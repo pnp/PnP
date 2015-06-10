@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
-using System.Web.Configuration;
-using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
+using ContentType = Microsoft.SharePoint.Client.ContentType;
 using Field = Microsoft.SharePoint.Client.Field;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
@@ -56,17 +53,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         TokenParser.AddToken(new ListIdToken(web, templateList.Title, createdList.Id));
 
                         TokenParser.AddToken(new ListUrlToken(web, templateList.Title, createdList.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length + 1)));
-                    }
-                    else
-                    {
+                        }
+                                        else
+                                        {
                         var existingList = web.Lists[index];
                         var updatedList = UpdateList(web, existingList, templateList);
                         if (updatedList != null)
-                        {
+                                    {
                             processedLists.Add(new ListInfo { SiteList = updatedList, TemplateList = templateList });
-                        }
-                    }
-                }
+                                    }
+                                }
+                            }
 
                 #endregion
 
@@ -88,10 +85,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                     CreateFieldRef(listInfo, field, fieldRef);
                                 }
                                 else
-                                {
+                                    {
                                     UpdateFieldRef(listInfo, field, fieldRef);
+                                    }
                                 }
-                            }
 
                         }
                         listInfo.SiteList.Update();
@@ -116,9 +113,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             if (Guid.TryParse(id, out fieldGuid))
                             {
                                 if (!listInfo.SiteList.FieldExistsById(fieldGuid))
-                                {
+                                    {
                                     CreateField(fieldElement, listInfo);
-                                }
+                                    }
                                 else
                                 {
                                     UpdateField(web, listInfo, fieldGuid, fieldElement);
@@ -165,7 +162,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
 
                             if (existingView != null)
-                            {
+                        {
                                 existingView.DeleteObject();
                                 web.Context.ExecuteQueryRetry();
                             }
@@ -236,9 +233,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
                     }
                 }
-
-
-
                 #endregion
 
                 #region DataRows
@@ -251,17 +245,48 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         var list = listInfo.SiteList;
                         foreach (var dataRow in listInfo.TemplateList.DataRows)
                         {
-                            ListItemCreationInformation listitemCI = new ListItemCreationInformation();
+                        var listitemCI = new ListItemCreationInformation();
                             var listitem = list.AddItem(listitemCI);
                             foreach (var dataValue in dataRow.Values)
                             {
-                                listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
+                            //Value
+                            var fieldValue = dataValue.Value.ToParsedString();
+
+                            if (fieldValue.Contains(",")) //This can be a field of type URL
+                            {
+                                //Find the given field for his type
+                                var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
+
+                                //Get Provisionned field
+                                web.Context.Load(field);
+                                web.Context.ExecuteQueryRetry();
+
+                                //Special logic to create FieldUrlValue when field type is Url
+                                if (field != null && field.FieldTypeKind == FieldType.URL)
+                                {
+                                    //Default format of url (URL, Description)
+                                    var urlArray = fieldValue.Split(',');
+                                    var link = new FieldUrlValue
+                                    {
+                                        Url = urlArray[0],
+                                        Description = urlArray[1]
+                                    };
+                                    listitem[dataValue.Key.ToParsedString()] = link;
+                                }
+                                else //No Description
+                                {
+                                    listitem[dataValue.Key.ToParsedString()] = fieldValue;
+                                }
+                            }
+                            else //Default Value
+                            {
+                                listitem[dataValue.Key.ToParsedString()] = fieldValue;
                             }
                             listitem.Update();
+                        }
                             web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                         }
                     }
-                }
 
                 #endregion
             }
