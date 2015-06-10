@@ -720,146 +720,159 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 // Do not export system lists
                 if (!item.Hidden)
                 {
-
+                    ListInstance baseTemplateList = null;
                     int index = -1;
                     if (creationInfo.BaseTemplate != null)
                     {
                         // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves performance
                         index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length + 1)) &&
                                                                   f.TemplateType.Equals(item.BaseTemplate));
+                        if (index != -1)
+                        {
+                            baseTemplateList = creationInfo.BaseTemplate.Lists[index];
+                        }
                     }
 
-                    if (index == -1)
-                    {
-                        var contentTypeFields = new List<FieldRef>();
-                        ListInstance list = new ListInstance();
-                        list.Description = item.Description;
-                        list.EnableVersioning = item.EnableVersioning;
-                        list.TemplateType = item.BaseTemplate;
-                        list.Title = item.Title;
-                        list.Hidden = item.Hidden;
-                        list.EnableFolderCreation = item.EnableFolderCreation;
-                        list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
-                        list.ContentTypesEnabled = item.ContentTypesEnabled;
-                        list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
-                        list.TemplateFeatureID = item.TemplateFeatureId;
-                        list.EnableAttachments = item.EnableAttachments;
-                        list.OnQuickLaunch = item.OnQuickLaunch;
-                        list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
-                        list.EnableMinorVersions = item.EnableMinorVersions;
-                        list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
-                        int count = 0;
+                    //if (index == -1)
+                    //{
+                    var contentTypeFields = new List<FieldRef>();
+                    ListInstance list = new ListInstance();
+                    list.Description = item.Description;
+                    list.EnableVersioning = item.EnableVersioning;
+                    list.TemplateType = item.BaseTemplate;
+                    list.Title = item.Title;
+                    list.Hidden = item.Hidden;
+                    list.EnableFolderCreation = item.EnableFolderCreation;
+                    list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
+                    list.ContentTypesEnabled = item.ContentTypesEnabled;
+                    list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
+                    list.TemplateFeatureID = item.TemplateFeatureId;
+                    list.EnableAttachments = item.EnableAttachments;
+                    list.OnQuickLaunch = item.OnQuickLaunch;
+                    list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
+                    list.EnableMinorVersions = item.EnableMinorVersions;
+                    list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
+                    int count = 0;
 
-                        foreach (var ct in item.ContentTypes)
+                    foreach (var ct in item.ContentTypes)
+                    {
+                        web.Context.Load(ct, c => c.Parent);
+                        web.Context.ExecuteQuery();
+                        if (ct.Parent != null)
                         {
-                            web.Context.Load(ct, c => c.Parent);
-                            web.Context.ExecuteQuery();
-                            if (ct.Parent != null)
+                            // Add the parent to the list of content types
+                            if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
                             {
-                                // Add the parent to the list of content types
-                                if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
+                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.Parent.StringId, Default = count == 0 ? true : false });
+                            }
+                        }
+                        else
+                        {
+                            list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.StringId, Default = count == 0 });
+                        }
+
+                        web.Context.Load(ct.FieldLinks);
+                        web.Context.ExecuteQueryRetry();
+                        foreach (var fieldLink in ct.FieldLinks)
+                        {
+                            if (!fieldLink.Hidden)
+                            {
+                                contentTypeFields.Add(new FieldRef() { Id = fieldLink.Id });
+                            }
+                        }
+                        count++;
+                    }
+
+                    foreach (var view in item.Views)
+                    {
+                        if (!view.Hidden)
+                        {
+                            list.Views.Add(new View() { SchemaXml = view.ListViewXml });
+                        }
+                    }
+
+                    var siteColumns = web.Fields;
+                    web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
+                    web.Context.ExecuteQueryRetry();
+
+                    foreach (var field in item.Fields)
+                    {
+                        if (!field.Hidden)
+                        {
+                            if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
+                            {
+                                bool addField = true;
+                                if (item.ContentTypesEnabled && contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
                                 {
-                                    list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.Parent.StringId, Default = count == 0 ? true : false });
+                                    if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
+                                    {
+                                        addField = false;
+                                    }
+                                }
+
+                                XElement fieldElement = XElement.Parse(field.SchemaXml);
+                                var sourceId = fieldElement.Attribute("SourceID") != null ? fieldElement.Attribute("SourceID").Value : null;
+
+                                if (sourceId != null && sourceId == "http://schemas.microsoft.com/sharepoint/v3")
+                                {
+                                    if (field.InternalName == "Editor" ||
+                                        field.InternalName == "Author" ||
+                                        field.InternalName == "Title" ||
+                                        field.InternalName == "ID" ||
+                                        field.InternalName == "Created" ||
+                                        field.InternalName == "Modified" ||
+                                        field.InternalName == "Attachments" ||
+                                        field.InternalName == "_UIVersionString" ||
+                                        field.InternalName == "DocIcon" ||
+                                        field.InternalName == "LinkTitleNoMenu" ||
+                                        field.InternalName == "LinkTitle" ||
+                                        field.InternalName == "Edit" ||
+                                        field.InternalName == "AppAuthor" ||
+                                        field.InternalName == "AppEditor" ||
+                                        field.InternalName == "ContentType" ||
+                                        field.InternalName == "ItemChildCount" ||
+                                        field.InternalName == "FolderChildCount" ||
+                                        field.InternalName == "LinkFilenameNoMenu" ||
+                                        field.InternalName == "LinkFilename" ||
+                                        field.InternalName == "_CopySource" ||
+                                        field.InternalName == "ParentVersionString" ||
+                                        field.InternalName == "ParentLeafName" ||
+                                        field.InternalName == "_CheckinComment" ||
+                                        field.InternalName == "FileLeafRef" ||
+                                        field.InternalName == "FileSizeDisplay" ||
+                                        field.InternalName == "Preview" ||
+                                        field.InternalName == "ThumbnailOnForm")
+                                    {
+                                        addField = false;
+                                    }
+                                }
+                                if (addField)
+                                {
+
+                                    list.FieldRefs.Add(new FieldRef(field.InternalName)
+                                    {
+                                        Id = field.Id,
+                                        DisplayName = field.Title,
+                                        Required = field.Required,
+                                        Hidden = field.Hidden,
+                                    });
                                 }
                             }
                             else
                             {
-                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.StringId, Default = count == 0 });
+                                list.Fields.Add((new Model.Field() { SchemaXml = field.SchemaXml }));
                             }
-
-                            web.Context.Load(ct.FieldLinks);
-                            web.Context.ExecuteQueryRetry();
-                            foreach (var fieldLink in ct.FieldLinks)
-                            {
-                                if (!fieldLink.Hidden)
-                                {
-                                    contentTypeFields.Add(new FieldRef() { Id = fieldLink.Id });
-                                }
-                            }
-                            count++;
                         }
-
-                        foreach (var view in item.Views)
+                    }
+                    if (baseTemplateList != null)
+                    {
+                        if (!baseTemplateList.Equals(list))
                         {
-                            if (!view.Hidden)
-                            {
-                                list.Views.Add(new View() { SchemaXml = view.ListViewXml });
-                            }
+                            template.Lists.Add(list);
                         }
-
-                        var siteColumns = web.Fields;
-                        web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
-                        web.Context.ExecuteQueryRetry();
-
-                        foreach (var field in item.Fields)
-                        {
-                            if (!field.Hidden)
-                            {
-                                if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
-                                {
-                                    bool addField = true;
-                                    if (item.ContentTypesEnabled && contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
-                                    {
-                                        if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
-                                        {
-                                            addField = false;
-                                        }
-                                    }
-
-                                    XElement fieldElement = XElement.Parse(field.SchemaXml);
-                                    var sourceId = fieldElement.Attribute("SourceID") != null ? fieldElement.Attribute("SourceID").Value : null;
-
-                                    if (sourceId != null && sourceId == "http://schemas.microsoft.com/sharepoint/v3")
-                                    {
-                                        if (field.InternalName == "Editor" ||
-                                            field.InternalName == "Author" ||
-                                            field.InternalName == "Title" ||
-                                            field.InternalName == "ID" ||
-                                            field.InternalName == "Created" ||
-                                            field.InternalName == "Modified" ||
-                                            field.InternalName == "Attachments" ||
-                                            field.InternalName == "_UIVersionString" ||
-                                            field.InternalName == "DocIcon" ||
-                                            field.InternalName == "LinkTitleNoMenu" ||
-                                            field.InternalName == "LinkTitle" ||
-                                            field.InternalName == "Edit" ||
-                                            field.InternalName == "AppAuthor" ||
-                                            field.InternalName == "AppEditor" ||
-                                            field.InternalName == "ContentType" ||
-                                            field.InternalName == "ItemChildCount" ||
-                                            field.InternalName == "FolderChildCount" ||
-                                            field.InternalName == "LinkFilenameNoMenu" ||
-                                            field.InternalName == "LinkFilename" ||
-                                            field.InternalName == "_CopySource" ||
-                                            field.InternalName == "ParentVersionString" ||
-                                            field.InternalName == "ParentLeafName" ||
-                                            field.InternalName == "_CheckinComment" ||
-                                            field.InternalName == "FileLeafRef" ||
-                                            field.InternalName == "FileSizeDisplay" ||
-                                            field.InternalName == "Preview" ||
-                                            field.InternalName == "ThumbnailOnForm")
-                                        {
-                                            addField = false;
-                                        }
-                                    }
-                                    if (addField)
-                                    {
-
-                                        list.FieldRefs.Add(new FieldRef(field.InternalName)
-                                        {
-                                            Id = field.Id,
-                                            DisplayName = field.Title,
-                                            Required = field.Required,
-                                            Hidden = field.Hidden,
-                                        });
-                                    }
-                                }
-                                else
-                                {
-                                    list.Fields.Add((new Model.Field() { SchemaXml = field.SchemaXml }));
-                                }
-                            }
-                        }
+                    }
+                    else
+                    {
                         template.Lists.Add(list);
                     }
                 }
