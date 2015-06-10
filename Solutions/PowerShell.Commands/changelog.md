@@ -1,5 +1,9 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-06-10**
+* Changed installers from 64 bit to 32 bit.
+* Added ResourceFolder parameter to Apply-SPOProvisioningTemplate cmdlet
+
 **2015-06-03**
 * Added OnQuickLaunch parameter to New-SPOList cmdlet
 
