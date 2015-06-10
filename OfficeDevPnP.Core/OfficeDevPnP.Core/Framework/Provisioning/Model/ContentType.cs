@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+using OfficeDevPnP.Core.Extensions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -81,7 +83,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}",
                 this.Id,
                 this.Name,
                 this.Description,
@@ -90,7 +92,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.ReadOnly,
                 this.Overwrite,
                 this.Sealed,
-                this.DocumentTemplate
+                this.DocumentTemplate,
+                this.FieldRefs.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                ).GetHashCode());
         }
 
@@ -115,7 +118,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                     this.ReadOnly == other.ReadOnly &&
                     this.Overwrite == other.Overwrite &&
                     this.Sealed == other.Sealed &&
-                    this.DocumentTemplate == other.DocumentTemplate
+                    this.DocumentTemplate == other.DocumentTemplate &&
+                    this.FieldRefs == other.FieldRefs
                 );
 
         }
