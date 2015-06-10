@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
-using System.Web.Configuration;
-using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201503;
 using OfficeDevPnP.Core.Utilities;
-using ContentTypeBinding = OfficeDevPnP.Core.Framework.Provisioning.Model.ContentTypeBinding;
+using ContentType = Microsoft.SharePoint.Client.ContentType;
 using Field = Microsoft.SharePoint.Client.Field;
-using FieldRef = OfficeDevPnP.Core.Framework.Provisioning.Model.FieldRef;
-using ListInstance = OfficeDevPnP.Core.Framework.Provisioning.Model.ListInstance;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -139,8 +132,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.Context.ExecuteQueryRetry();
 
                         // Remove existing content types only if there are custom content type bindings
-                        List<Microsoft.SharePoint.Client.ContentType> contentTypesToRemove =
-                            new List<Microsoft.SharePoint.Client.ContentType>();
+                        List<ContentType> contentTypesToRemove =
+                            new List<ContentType>();
                         if (list.RemoveExistingContentTypes && list.ContentTypeBindings.Count > 0)
                         {
                             foreach (var ct in createdList.ContentTypes)
@@ -368,19 +361,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             //Value
                             var value = dataValue.Value.ToParsedString();
 
-                            //Find the given field for his type
-                            var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
-
-                            //Get Provisionned field
-                            web.Context.Load(field);
-                            web.Context.ExecuteQueryRetry();
-
-                            //Special logic to create FieldUrlValue when field type is Url
-                            if (field != null && field.TypeAsString.Equals("URL"))
+                            if (value.Contains(",")) //This can be a field of type URL
                             {
-                                //Default format of url (URL, Description)
-                                if (value.Contains(",")) //FieldUrl
+                                //Find the given field for his type
+                                var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
+
+                                //Get Provisionned field
+                                web.Context.Load(field);
+                                web.Context.ExecuteQueryRetry();
+
+                                //Special logic to create FieldUrlValue when field type is Url
+                                if (field != null && field.FieldTypeKind == FieldType.URL)
                                 {
+                                    //Default format of url (URL, Description)
                                     var urlArray = value.Split(',');
                                     var link = new FieldUrlValue
                                     {
