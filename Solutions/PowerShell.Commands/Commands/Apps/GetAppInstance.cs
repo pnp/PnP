@@ -6,14 +6,14 @@ using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOAppInstance")]
-    [CmdletHelp("Returns a SharePoint App Instance")]
+    [CmdletHelp("Returns a SharePoint AddIn Instance", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Get-SPOAppInstance",
-        Remarks = @"This will return all app instances in the site.
+        Remarks = @"This will return all addin instances in the site.
  ", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Get-SPOnlineAppInstance -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe",
-        Remarks = @"This will return an app instance with the specified id.
+        Remarks = @"This will return an addin instance with the specified id.
     ", SortOrder = 2)]
     public class GetAppInstance : SPOWebCmdlet
     {

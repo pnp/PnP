@@ -1,13 +1,15 @@
 #Get-SPOHomePage
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
-
+Returns the URL to the home page
 ##Syntax
-    Get-SPOHomePage [-Web [<WebPipeBind>]]
+```powershell
+Get-SPOHomePage [-Web <WebPipeBind>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: 745BD3F529E252B55C3043C4E11A954A -->

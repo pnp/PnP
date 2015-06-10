@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.SharePoint.Client.Utilities;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using LanguageTemplateHash = System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>;
+using Utility = OfficeDevPnP.Core.Utilities.Utility;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -174,6 +176,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="backgroundServerRelativeUrl">Override background image file URL to use</param>
         /// <param name="masterServerRelativeUrl">Override master page file URL to use</param>
         /// <param name="resetSubsitesToInherit">false (default) to apply to currently inheriting subsites only; true to force all subsites to inherit</param>
+        /// <param name="updateRootOnly">false to apply to subsites; true (default) to only apply to specified site</param>
         public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false, bool updateRootOnly = true)
         {
             var paletteUrl = default(string);
@@ -243,6 +246,9 @@ namespace Microsoft.SharePoint.Client
             web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
             web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
             web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit, updateRootOnly);
+
+            // Update/create the "Current" reference in the composed looks gallery
+            web.CreateComposedLookByUrl(CurrentLookName, paletteUrl, fontUrl, backgroundUrl, masterUrl, displayOrder:0);            
         }
 
         /// <summary>
@@ -317,7 +323,7 @@ namespace Microsoft.SharePoint.Client
         public static File UploadThemeFile(this Web web, string localFilePath, string themeFolderVersion = "15")
         {
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
-            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Source_file_path_is_required_, "localFilePath"); }
 
             var fileName = Path.GetFileName(localFilePath);
             using (var localStream = new FileStream(localFilePath, FileMode.Open))
@@ -338,9 +344,9 @@ namespace Microsoft.SharePoint.Client
         public static File UploadThemeFile(this Web web, string fileName, string localFilePath, string themeFolderVersion = "15")
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
             if (localFilePath == null) { throw new ArgumentNullException("localFilePath"); }
-            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException("Source file path is required.", "localFilePath"); }
+            if (string.IsNullOrWhiteSpace(localFilePath)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Source_file_path_is_required_, "localFilePath"); }
 
             using (var localStream = new FileStream(localFilePath, FileMode.Open))
             {
@@ -361,11 +367,10 @@ namespace Microsoft.SharePoint.Client
         {
             if (fileName == null) { throw new ArgumentNullException("fileName"); }
             if (localStream == null) { throw new ArgumentNullException("localStream"); }
-            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException("Destination file name is required.", "fileName"); }
-            // TODO: Check for any other illegal characters in SharePoint
-            if (fileName.Contains('/') || fileName.Contains('\\'))
+            if (string.IsNullOrWhiteSpace(fileName)) { throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_Destination_file_name_is_required_, "fileName"); }
+            if (fileName.ContainsInvalidUrlChars())
             {
-                throw new ArgumentException("The argument must be a single file name and cannot contain path characters.", "fileName");
+                throw new ArgumentException(CoreResources.BrandingExtensions_UploadThemeFile_The_argument_must_be_a_single_file_name_and_cannot_contain_path_characters_, "fileName");
             }
 
             // Theme catalog only exists at site collection root
@@ -487,6 +492,16 @@ namespace Microsoft.SharePoint.Client
 
         }
 
+        /// <summary>
+        /// Deploys a new masterpage
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="sourceFilePath">The path to the source file</param>
+        /// <param name="title">The title of the masterpage</param>
+        /// <param name="description">The description of the masterpage</param>
+        /// <param name="uiVersion"></param>
+        /// <param name="defaultCSSFile"></param>
+        /// <param name="folderPath"></param>
         public static void DeployMasterPage(this Web web, string sourceFilePath, string title, string description, string uiVersion = "15", string defaultCSSFile = "", string folderPath = "")
         {
             if (string.IsNullOrEmpty(sourceFilePath))
@@ -654,6 +669,12 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Returns the relative URL for a masterpage
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="masterPageName">The name of the masterpage, e.g. 'default' or 'seattle'</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Globalization", "CA1308:NormalizeStringsToUppercase",
             Justification = "URLs are commonly standardised to lower case.")]
         public static string GetRelativeUrlForMasterByName(this Web web, string masterPageName)
@@ -695,18 +716,25 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to check</param>
         /// <param name="composedLookName">Name of the composed look to retrieve</param>
-        /// <returns>Entity with the attributes of the composed look, or null if it does not exist</returns>
+        /// <returns>Entity with the attributes of the composed look, or null if the composed look does not exists or cannot be determined</returns>
         public static ThemeEntity GetComposedLook(this Web web, string composedLookName)
         {
+            // List of OOB composed looks
+            List<string> defaultComposedLooks = new List<string>(new string[] { "Orange", "Sea Monster", "Green", "Lime", "Nature", "Blossom", "Sketch", "City", "Orbit", "Grey", "Characters", "Office", "Breeze", "Immerse", "Red", "Purple", "Wood" });
+
+            // ThemeEntity object that will be 
             ThemeEntity theme = null;
 
             List designCatalog = web.GetCatalog((int)ListTemplateType.DesignCatalog);
             const string camlString = @"
             <View>  
                 <Query> 
-                    <Where><Eq><FieldRef Name='Name' /><Value Type='Text'>{0}</Value></Eq></Where> 
                 </Query> 
+                <OrderBy>
+                   <FieldRef Name='Modified' />
+                </OrderBy>
                 <ViewFields>
+                    <FieldRef Name='Name' />
                     <FieldRef Name='ImageUrl' />
                     <FieldRef Name='MasterPageUrl' />
                     <FieldRef Name='FontSchemeUrl' />
@@ -715,35 +743,263 @@ namespace Microsoft.SharePoint.Client
             </View>";
 
             CamlQuery camlQuery = new CamlQuery();
-            camlQuery.ViewXml = string.Format(camlString, composedLookName);
+            camlQuery.ViewXml = camlString;
 
             ListItemCollection themes = designCatalog.GetItems(camlQuery);
             web.Context.Load(themes);
+            web.Context.Load(web, w => w.Url);            
             web.Context.ExecuteQueryRetry();
+
+            string siteCollectionUrl = "";
+            string subSitePath = "";
+            using (ClientContext cc = web.Context.Clone(web.Url))
+            {
+                cc.Load(cc.Site, s => s.Url);
+                cc.ExecuteQueryRetry();
+                siteCollectionUrl = cc.Site.Url;
+                subSitePath = web.Url.Replace(siteCollectionUrl, "");
+            }
+
             if (themes.Count > 0)
             {
-                var themeItem = themes[0];
-                theme = new ThemeEntity();
-                if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                List<string> customComposedLooks = new List<string>();
+
+                // Iterate over the existing composed looks to figure out the current composed look
+                foreach (var themeItem in themes)
                 {
-                    theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                    string masterPageUrl = null;
+                    string themeUrl = null;
+                    string imageUrl = null;
+                    string fontUrl = null;
+                    string name = null;
+
+                    if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                    {
+                        masterPageUrl = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                    {
+                        imageUrl = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                    {
+                        fontUrl = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                    {
+                        themeUrl = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                    }
+                    if (themeItem["Name"] != null && themeItem["Name"].ToString().Length > 0)
+                    {
+                        name = themeItem["Name"] as String;
+                    }
+
+                    if (name != null)
+                    {
+                        if (!name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase) && 
+                            !defaultComposedLooks.Contains(name))
+                        {
+                            customComposedLooks.Add(name);
+                        }
+
+                        if (name.Equals(composedLookName, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            theme = new ThemeEntity();
+                            if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                            {
+                                theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                            }
+                            if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                            {
+                                theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                            }
+                            if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                            {
+                                theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                            }
+                            if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                            {
+                                theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                            }
+                        }
+                    }
                 }
-                if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+
+                // return here if we did not find the requested theme...it does not exist.
+                if (theme == null)
                 {
-                    theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                    return theme;
                 }
-                if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+
+                // For a brand new clean site everything is null. Once you apply another OOB composed look and then re-apply the default 
+                // Office composed look the theme information will be populated.
+                if (theme.BackgroundImage == null &&
+                    theme.Font == null &&
+                    theme.MasterPage == null &&
+                    theme.Theme == null &&
+                    web.IsUsingOfficeTheme())
                 {
-                    theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                    theme.Name = "Office";
+                    theme.MasterPage = String.Format("{0}/_catalogs/masterpage/seattle.master", subSitePath);
+                    theme.Theme = "/_catalogs/theme/15/palette001.spcolor";
+                    theme.IsCustomComposedLook = false;
                 }
-                if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                else
                 {
-                    theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                    // Loop over the defined composed look and get the one that matches the information gathered from the "current" composed look
+                    foreach (var themeItem in themes)
+                    {
+                        string masterPageUrl = null;
+                        string themeUrl = null;
+                        string imageUrl = null;
+                        string fontUrl = null;
+                        string name = "";
+
+                        if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                        {
+                            masterPageUrl = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                        {
+                            imageUrl = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                        {
+                            fontUrl = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                        {
+                            themeUrl = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                        }
+                        if (themeItem["Name"] != null && themeItem["Name"].ToString().Length > 0)
+                        {
+                            name = themeItem["Name"] as String;
+                        }
+
+                        // Note: do not take in account the ImageUrl field as this will point to a copied image in case of a sub site
+                        if ((masterPageUrl == null || theme.MasterPage == null || theme.MasterPage.Equals(masterPageUrl, StringComparison.InvariantCultureIgnoreCase)) &&
+                            (fontUrl == null || theme.Font == null || theme.Font.Equals(fontUrl, StringComparison.InvariantCultureIgnoreCase)) &&
+                            (themeUrl == null || theme.Theme == null || theme.Theme.Equals(themeUrl, StringComparison.InvariantCultureIgnoreCase)))
+                        {
+                            theme.Name = name;
+                            theme.IsCustomComposedLook = !defaultComposedLooks.Contains(theme.Name);
+
+                            // Restore the default composed look image url
+                            if (imageUrl != null)
+                            {
+                                theme.BackgroundImage = imageUrl;
+                            }
+
+                            // We're taking the first matching composed look
+                            break;
+                        }
+                    }
+
+                    // special case, theme files have been deployed via api and when applying the proper theme the "current" was not set
+                    if (theme.Name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (!web.IsUsingOfficeTheme())
+                        {
+                            // Assume the the last added custom theme is what the site is using
+                            for (int i = themes.Count; i-- > 0; )
+                            {
+                                var themeItem = themes[i];
+                                if (themeItem["Name"] != null && customComposedLooks.Contains(themeItem["Name"] as string))
+                                {
+                                    if (themeItem["ThemeUrl"] != null && themeItem["ThemeUrl"].ToString().Length > 0)
+                                    {
+                                        theme.Theme = (themeItem["ThemeUrl"] as FieldUrlValue).Url;
+                                    }
+                                    if (themeItem["MasterPageUrl"] != null && themeItem["MasterPageUrl"].ToString().Length > 0)
+                                    {
+                                        theme.MasterPage = (themeItem["MasterPageUrl"] as FieldUrlValue).Url;
+                                    }
+                                    if (themeItem["FontSchemeUrl"] != null && themeItem["FontSchemeUrl"].ToString().Length > 0)
+                                    {
+                                        theme.Font = (themeItem["FontSchemeUrl"] as FieldUrlValue).Url;
+                                    }
+                                    if (themeItem["ImageUrl"] != null && themeItem["ImageUrl"].ToString().Length > 0)
+                                    {
+                                        theme.BackgroundImage = (themeItem["ImageUrl"] as FieldUrlValue).Url;
+                                    }
+                                    if (themeItem["Name"] != null && themeItem["Name"].ToString().Length > 0)
+                                    {
+                                        theme.Name = themeItem["Name"] as String;
+                                    }
+
+                                    theme.IsCustomComposedLook = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
                 }
+            }
+
+            if (theme == null)
+            {
+                return theme;
+            }
+
+            String designPreviewThemedCssFolderUrl = web.GetPropertyBagValueString("DesignPreviewThemedCssFolderUrl", null);
+
+            // If name still is "Current" and there isn't a PreviewThemedCssFolderUrl 
+            // property in the property bag then we can't correctly determine the set 
+            // composed look...so return null
+            if (theme.Name.Equals(CurrentLookName, StringComparison.InvariantCultureIgnoreCase) 
+                && String.IsNullOrEmpty(designPreviewThemedCssFolderUrl))
+            {
+                return null;
+            }
+
+            // Clean up the fully qualified urls
+            if (theme.BackgroundImage != null && theme.BackgroundImage.IndexOf(siteCollectionUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                theme.BackgroundImage = theme.BackgroundImage.Replace(siteCollectionUrl, "");
+            }
+            if (theme.Theme != null && theme.Theme.IndexOf(siteCollectionUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                theme.Theme = theme.Theme.Replace(siteCollectionUrl, "");
+            }
+            if (theme.Font != null && theme.Font.IndexOf(siteCollectionUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                theme.Font = theme.Font.Replace(siteCollectionUrl, "");
+            }
+            if (theme.MasterPage != null && theme.MasterPage.IndexOf(siteCollectionUrl, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                theme.MasterPage = theme.MasterPage.Replace(siteCollectionUrl, "");
             }
 
             return theme;
         }
+
+        private static bool IsUsingOfficeTheme(this Web web)
+        {
+            ThemeInfo ti = web.ThemeInfo;
+            web.Context.Load(ti);
+            var accentText = ti.GetThemeShadeByName("AccentText");
+            var backgroundOverlay = ti.GetThemeShadeByName("BackgroundOverlay");
+            var bodyText = ti.GetThemeShadeByName("BodyText");
+            web.Context.ExecuteQueryRetry();
+
+            string accentTextRGB = accentText.Value.Substring(2);
+            string backgroundOverlayARGB = backgroundOverlay.Value.Substring(2);
+            string bodyTextRGB = bodyText.Value.Substring(2);
+
+            if (accentTextRGB.Equals("0072C6") &&
+                backgroundOverlayARGB.Equals("FFFFFF") &&
+                bodyTextRGB.Equals("444444") &&
+                ti.ThemeBackgroundImageUri == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// Gets a page layout from the master page catalog
@@ -757,6 +1013,15 @@ namespace Microsoft.SharePoint.Client
             {
                 throw new ArgumentNullException("pageLayoutName");
             }
+
+            // The pagelayout needs to specified without aspx extension...strip the extension to be sure
+            string path = "";
+            if (pageLayoutName.LastIndexOf("/") > -1)
+            {
+                path = pageLayoutName.Substring(0, pageLayoutName.LastIndexOf("/") + 1);
+            }
+
+            pageLayoutName = path + System.IO.Path.GetFileNameWithoutExtension(pageLayoutName);
 
             var masterPageGallery = web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
             web.Context.Load(masterPageGallery, x => x.RootFolder.ServerRelativeUrl);
@@ -968,6 +1233,12 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue(AvailablePageLayouts, string.Empty);
         }
 
+        /// <summary>
+        /// Sets the available page layouts
+        /// </summary>
+        /// <param name="web">The web to process</param>
+        /// <param name="rootWeb">The rootweb</param>
+        /// <param name="pageLayouts">The page layouts to make available</param>
         public static void SetAvailablePageLayouts(this Web web, Web rootWeb, IEnumerable<string> pageLayouts)
         {
             XmlDocument xd = new XmlDocument();
@@ -1049,7 +1320,7 @@ namespace Microsoft.SharePoint.Client
             {
                 languages[key] = new List<string>();
             }
-            (languages[key] as List<string>).Add(item.TemplateName);
+            languages[key].Add(item.TemplateName);
         }
 
         /// <summary>
@@ -1064,7 +1335,5 @@ namespace Microsoft.SharePoint.Client
             folder.Update();
             web.Context.ExecuteQueryRetry();
         }
-
-
     }
 }

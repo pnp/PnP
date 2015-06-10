@@ -7,9 +7,9 @@ using Resources = OfficeDevPnP.PowerShell.Commands.Properties.Resources;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Remove, "SPOContentType")]
-    [CmdletHelp("Removes a content type")]
+    [CmdletHelp("Removes a content type", Category = "Content Types")]
     [CmdletExample(
-     Code = @"PS:> Remove-SPOContentType -Identity ""Project Document""")]
+     Code = @"PS:> Remove-SPOContentType -Identity ""Project Document""", SortOrder = 1)]
     public class RemoveContentType : SPOWebCmdlet
     {
 

@@ -344,6 +344,34 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Checks if list exists on the particular site based on the list id property.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="id">The id of the list to be checked.</param>
+        /// <exception cref="System.ArgumentException">Thrown when listTitle is a zero-length string or contains only white space</exception>
+        /// <exception cref="System.ArgumentNullException">listTitle is null</exception>
+        /// <returns>True if the list exists</returns>
+        public static bool ListExists(this Web web, Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentException("id");
+            }
+
+            ListCollection lists = web.Lists;
+            IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Id == id));
+            web.Context.ExecuteQueryRetry();
+            List existingList = results.FirstOrDefault();
+
+            if (existingList != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Adds a default list to a site
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
@@ -378,7 +406,7 @@ namespace Microsoft.SharePoint.Client
 
         private static List CreateListInternal(this Web web, Guid? templateFeatureId, int templateType, string listName, bool enableVersioning, bool updateAndExecuteQuery = true, string urlPath = "", bool enableContentTypes = false)
         {
-            Log.Info(CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.ListExtensions_CreateList0Template12, listName, templateType, templateFeatureId.HasValue ? " (feature " + templateFeatureId.Value.ToString() + ")" : "");
 
             ListCollection listCol = web.Lists;
             ListCreationInformation lci = new ListCreationInformation();
@@ -547,11 +575,13 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+
+
 #if !CLIENTSDKV15
         /// <summary>
         /// Can be used to set translations for different cultures. 
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// </summary>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="listTitle">Title of the list</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
@@ -598,7 +628,7 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         ///     list.SetLocalizationForSiteLabels("fi-fi", "Name of the site in Finnish", "Description in Finnish");
         /// </example>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="list">List to be processed </param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
@@ -1081,7 +1111,11 @@ namespace Microsoft.SharePoint.Client
                         EventReceiverDefinitionCreationInformation eventCi = new EventReceiverDefinitionCreationInformation();
                         eventCi.Synchronization = EventReceiverSynchronization.DefaultSynchronization;
                         eventCi.EventType = EventReceiverType.ItemAdded;
+#if !CLIENTSDKV15
+                        eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+#else
                         eventCi.ReceiverAssembly = "Microsoft.Office.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c";
+#endif
                         eventCi.ReceiverClass = "Microsoft.Office.DocumentManagement.LocationBasedMetadataDefaultsReceiver";
                         eventCi.ReceiverName = "LocationBasedMetadataDefaultsReceiver ItemAdded";
                         eventCi.SequenceNumber = 1000;

@@ -3,10 +3,12 @@ using System.IO;
 using System.Management.Automation;
 using System.Linq;
 using System.Xml.Linq;
+using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet(VerbsCommon.Get, "SPOConfiguration")]
+    [CmdletHelp("To be deprecated", Category = "Base Cmdlets")]
     public class GetConfiguration : PSCmdlet
     {
         [Parameter(Mandatory = false)]
@@ -14,6 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
+            WriteWarning("This cmdlet will be deprecated in the August 2015 release");
             XDocument document;
 
             // check for existing configuration, if not existing, create it

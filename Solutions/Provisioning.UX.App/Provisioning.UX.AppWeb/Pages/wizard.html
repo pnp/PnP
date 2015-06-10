@@ -1,0 +1,133 @@
+﻿<section id="dashboard-view" data-ng-controller="WizardController as vm">
+    <section class="matter">
+        <!-- Layout Here is purely for deveopment purposes -->
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-9">
+                    <img src="../images/o365-pnp-logo2.png" class="img-responsive" alt="Office 365 Patterns and Practices Logo" />
+                    <br />
+                    <br />
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading panel-heading-custom">
+                            <h3 class="panel-title">Provisioning Sample</h3>
+
+                        </div>
+                        <div class="panel-body">
+                            <p>
+                                This Patterns and Practices solution sample prpvides end to end provisioning capabilities
+                                and leverages the Office PnP core library. This interface is launches an angularjs modal dialog
+                                wizard. It can be easily modified to suit your requirements or replaced with another interface.
+                            </p>
+                            <br />
+                            <button class="btn btn-default" data-ng-click="open()">Get a site</button>
+                        </div>
+                    </div>
+
+
+                    <br />
+                    <br />
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">My Completed Requests</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                            </div>
+                            <div class="panel-body" ng-model="vm.existingRequests">
+                                <table class="table table-bordered table-striped">
+
+                                    <tbody>
+                                        <tr ng-repeat="request in vm.existingRequests | filter:'Complete'">
+                                            <td>{{ request.title }}</td>
+                                            <td>{{ request.url }}</td>
+                                            <td>{{ request.requestStatus }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">My New Requests</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                            </div>
+                            <div class="panel-body" ng-model="vm.existingRequests">
+                                <table class="table table-bordered table-striped">
+
+                                    <tbody>
+                                        <tr ng-repeat="request in vm.existingRequests | filter:'New'">
+                                            <td>{{ request.title }}</td>
+                                            <td>{{ request.url }}</td>
+                                            <td>{{ request.requestStatus }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">My Approved Requests</h3>
+                            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                        </div>
+                        <div class="panel-body" ng-model="vm.existingRequests">
+                            <table class="table table-bordered table-striped">
+
+                                <tbody>
+                                    <tr ng-repeat="request in vm.existingRequests | filter:'Approved'">
+                                        <td>{{ request.title }}</td>
+                                        <td>{{ request.url }}</td>
+                                        <td>{{ request.requestStatus }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">My Failed Requests</h3>
+                            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                        </div>
+                        <div class="panel-body" ng-model="vm.existingRequests">
+                            <table class="table table-bordered table-striped">
+
+                                <tbody>
+                                    <tr ng-repeat="request in vm.existingRequests | filter:'Exception'">
+                                        <td>{{ request.title }}</td>
+                                        <td>{{ request.url }}</td>
+                                        <td>{{ request.requestStatus }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+
+                    <p>Once wizard completes, data is returned and shown here:</p>
+                    <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>
+
+                </div>
+            </div>
+
+
+        </div>
+    
+    </section>
+    
+</section>

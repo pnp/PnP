@@ -8,7 +8,11 @@ namespace System
     public static class UrlUtility
     {
         const char PATH_DELIMITER = '/';
+#if !CLIENTSDKV15
+        const string INVALID_CHARS_REGEX = @"[\\#%*/:<>?+|\""]";
+#else
         const string INVALID_CHARS_REGEX = @"[\\~#%&*{}/:<>?+|\""]";
+#endif
 
         #region [ Combine ]
         /// <summary>

@@ -3,15 +3,13 @@
 ### Summary ###
 Demonstrates how to control regional and language settings in SharePoint site level using CSOM.
 
-*Notice that there is a bug in the lanuguage controlling API with 2014 December CU. This will be fixed with future releases.*
-
 ### Applies to ###
--  Office 365 Multi Tenant (MT) - With upcoming CSOM package
--  Office 365 Dedicated (D) 
+-  Office 365 Multi Tenant (MT) 
+-  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-2014 December CU installed on the farm or new CSOM cloud re-distributable package (released around end of Jan 2015)
+2014 December CU installed on farm for on-premises or new re-distributable package for cloud CSOM (April 2015 release).
 
 ### Solution ###
 Solution | Author(s)
@@ -22,6 +20,7 @@ Core.Settings.LocaleAndLanguage | Vesa Juvonen
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | December 19th 2014 (to update) | Draft version
+1.1  | April 13th 2015 | Updated to use latest Office 365 CSOM
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -64,6 +63,8 @@ foreach (var item in clientContext.Web.SupportedUILanguageIds)
 ### Add new language ###
 
 ```C#
+// Site needs to be set in multi lingual, without you can't add additional languages
+clientContext.Web.IsMultilingual = true;
 clientContext.Web.AddSupportedUILanguage(1035);
 clientContext.Web.Update();
 clientContext.ExecuteQuery();

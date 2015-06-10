@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace OfficeDevPnP.Core.Entities
+﻿namespace OfficeDevPnP.Core.Entities
 {
     /// <summary>
     /// Class containing variation configuration information

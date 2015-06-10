@@ -7,9 +7,15 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOFile")]
-    [CmdletHelp("Uploads a file to Web")]
-    [CmdletExample(Code = @"
-PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
+    [CmdletHelp("Uploads a file to Web", Category = "Webs")]
+    [CmdletExample(
+        Code = @"PS:> Add-SPOFile -Path c:\temp\company.master -Folder ""_catalogs/masterpage", 
+        Remarks = "This will upload the file company.master to the masterpage catalog",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> Add-SPOFile -Path .\displaytemplate.html -Folder ""_catalogs/masterpage/display templates/test", 
+        Remarks = "This will upload the file displaytemplate.html to the test folder in the display templates folder. If the test folder not exists it will create it.",
+        SortOrder = 2)]
     public class AddFile : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "The local file path.")]
@@ -38,15 +44,21 @@ PS:> Add-SPOFile -Path c:\temp\company.master -Url /sites/")]
 
         protected override void ExecuteCmdlet()
         {
+            if (!System.IO.Path.IsPathRooted(Path))
+            {
+                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+            }
+
             if (!SelectedWeb.IsPropertyAvailable("ServerRelativeUrl"))
             {
                 ClientContext.Load(SelectedWeb, w => w.ServerRelativeUrl);
                 ClientContext.ExecuteQueryRetry();
             }
 
-            var folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
-            ClientContext.Load(folder, f => f.ServerRelativeUrl);
-            ClientContext.ExecuteQueryRetry();
+            var folder = SelectedWeb.EnsureFolder(SelectedWeb.RootFolder, Folder);
+            //var folder = SelectedWeb.GetFolderByServerRelativeUrl(UrlUtility.Combine(SelectedWeb.ServerRelativeUrl, Folder));
+            //ClientContext.Load(folder, f => f.ServerRelativeUrl);
+            //ClientContext.ExecuteQueryRetry();
 
             var fileUrl = UrlUtility.Combine(folder.ServerRelativeUrl, System.IO.Path.GetFileName(Path));
 

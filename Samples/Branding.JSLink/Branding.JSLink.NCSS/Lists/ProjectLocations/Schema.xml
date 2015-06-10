@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="Microsoft SharePoint" Title="ProjectLocations" FolderCreation="FALSE" Direction="$Resources:Direction;" Url="Lists/ProjectLocations" BaseType="0" xmlns="http://schemas.microsoft.com/sharepoint/">
+  <MetaData>
+    <ContentTypes>
+      <ContentType ID="0x01002e5d8afdac844f2f8347a6b33f449d60" Name="ListFieldsContentType">
+        <FieldRefs>
+          <FieldRef ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Name="Title"  />
+          <FieldRef ID="{1db47c5a-67f3-4e06-a7dd-f09f4f01ff1b}" Name="Region" />
+          <FieldRef ID="{86942e81-8e70-4e0b-81e6-5af1ce47942c}" Name="Country" />
+          <FieldRef ID="{dc8cc8f7-bf50-497b-bbed-6f0fb7b69933}" Name="AssociatedCountry" />
+        </FieldRefs>
+      </ContentType>
+      <ContentTypeRef ID="0x01">
+        <Folder TargetName="Item" />
+      </ContentTypeRef>
+      <ContentTypeRef ID="0x0120" />
+    </ContentTypes>
+    <Fields>
+      <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" DisplayName="$Resources:core,Title;" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Title" MaxLength="255" />
+      <Field ID="{1db47c5a-67f3-4e06-a7dd-f09f4f01ff1b}" Name="Region" DisplayName="Region" Type="Lookup" Required="FALSE" List="Lists/Regions" ShowField="Title"  UnlimitedLengthInDocumentLibrary="FALSE" JSLink="~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/Generics/Lookups.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/ProjectLocations.js"/>
+      <Field ID="{86942e81-8e70-4e0b-81e6-5af1ce47942c}" Name="Country" DisplayName="Country" Type="Lookup" Required="FALSE" List="Lists/Countries" ShowField="Title" UnlimitedLengthInDocumentLibrary="FALSE" JSLink="~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/Generics/Lookups.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/ProjectLocations.js"/>
+      <Field ID="{dc8cc8f7-bf50-497b-bbed-6f0fb7b69933}" Name="AssociatedCountries" DisplayName="Associated Countries" Type="LookupMulti" List="Lists/Countries" ShowField="Title" Mult="TRUE" UnlimitedLengthInDocumentLibrary="FALSE" JSLink="~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/Generics/Lookups.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/ProjectLocations.js"/>
+    </Fields>
+    <Views>
+      <View BaseViewID="0" Type="HTML" MobileView="TRUE" TabularView="FALSE">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+          <FieldRef Name="LinkTitleNoMenu"></FieldRef>
+        </ViewFields>
+        <Query>
+          <OrderBy>
+            <FieldRef Name="Modified" Ascending="FALSE"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="AddNewAnnouncement" Location="Resource(wss,addnewitem)" />
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_ONET_HOME)" />
+        </ParameterBindings>
+      </View>
+      <View BaseViewID="1" Type="HTML" WebPartZoneID="Main" DisplayName="$Resources:core,objectiv_schema_mwsidcamlidC24;" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" SetupPath="pages\viewpage.aspx" ImageUrl="/_layouts/15/images/generic.png?rev=23" Url="AllItems.aspx">
+        <Toolbar Type="Standard" />
+        <XslLink Default="TRUE">main.xsl</XslLink>
+        <JSLink>clienttemplates.js</JSLink>
+        <RowLimit Paged="TRUE">30</RowLimit>
+        <ViewFields>
+          <FieldRef Name="LinkTitle"></FieldRef>
+          <FieldRef Name="Region" />
+          <FieldRef Name="Country" />
+          <FieldRef Name="AssociatedCountries" />
+        </ViewFields>
+        <Query>
+          <OrderBy>
+            <FieldRef Name="ID"></FieldRef>
+          </OrderBy>
+        </Query>
+        <ParameterBindings>
+          <ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" />
+          <ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" />
+        </ParameterBindings>
+      </View>
+    </Views>
+    <Forms>
+      <Form Type="DisplayForm" Url="DispForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="EditForm" Url="EditForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+      <Form Type="NewForm" Url="NewForm.aspx" SetupPath="pages\form.aspx" WebPartZoneID="Main" />
+    </Forms>
+  </MetaData>
+</List>

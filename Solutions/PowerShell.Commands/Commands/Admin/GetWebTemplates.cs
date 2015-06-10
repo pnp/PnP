@@ -7,15 +7,12 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Get, "SPOWebTemplates")]
-    [CmdletHelp(@"Office365 only: Returns the available web templates
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-")]
+    [CmdletHelp(@"Office365 only: Returns the available web templates.", Category = "Tenant Administration")]
     [CmdletExample(
-        Code = @"PS:> Get-SPOWebTemplates")]
+        Code = @"PS:> Get-SPOWebTemplates", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Get-SPOWebTemplates -LCID 1033",
-        Remarks = @"Returns all webtemplates for the Locale with ID 1033 (English)")]
+        Remarks = @"Returns all webtemplates for the Locale with ID 1033 (English)", SortOrder = 2)]
 
     public class GetWebTemplates : SPOAdminCmdlet
     {

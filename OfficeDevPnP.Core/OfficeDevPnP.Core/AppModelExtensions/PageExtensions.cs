@@ -998,7 +998,14 @@ namespace Microsoft.SharePoint.Client
             ListItem pageItem = page.ListItem;
             pageItem["Title"] = title;
             pageItem.Update();
-            pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+
+            web.Context.Load(pageItem, p => p.File.CheckOutType);
+            web.Context.ExecuteQueryRetry();
+            if (pageItem.File.CheckOutType != CheckOutType.None)
+            {
+                pageItem.File.CheckIn(String.Empty, CheckinType.MajorCheckIn);
+            }
+
             if (publish)
             {
                 pageItem.File.Publish(String.Empty);

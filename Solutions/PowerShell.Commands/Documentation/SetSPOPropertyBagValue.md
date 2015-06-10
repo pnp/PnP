@@ -1,16 +1,18 @@
 #Set-SPOPropertyBagValue
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
-
+Sets a property bag value
 ##Syntax
-    Set-SPOPropertyBagValue -Key [<String>] -Value [<String>] [-Indexed [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```powershell
+Set-SPOPropertyBagValue -Key <String> -Value <String> [-Indexed [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Indexed|SwitchParameter|False|
-Key|String|True|
-Value|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+|Indexed|SwitchParameter|False||
+|Key|String|True||
+|Value|String|True||
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: C8EAB23B0C802D1DE64FB967547C970B -->

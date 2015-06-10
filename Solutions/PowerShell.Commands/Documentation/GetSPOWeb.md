@@ -1,13 +1,15 @@
 #Get-SPOWeb
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
-
+Returns the current web object
 ##Syntax
-    Get-SPOWeb [-Identity [<WebPipeBind>]]
+```powershell
+Get-SPOWeb [-Identity <WebPipeBind>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|WebPipeBind|False|
+|Identity|WebPipeBind|False||
+<!-- Ref: 9E65C7F9A055C0B8C7EC0E1B8128E6E2 -->

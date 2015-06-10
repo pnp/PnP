@@ -1,19 +1,21 @@
 #Get-SPOAuthenticationRealm
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
 Gets the authentication realm for the current web
 ##Syntax
-    Get-SPOAuthenticationRealm [-Url [<String>]]
+```powershell
+Get-SPOAuthenticationRealm [-Url <String>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Url|String|False|
+|Url|String|False||
 ##Examples
 
 ###Example 1
     
 PS:> Get-SPOAuthenticationRealm -Url https://contoso.sharepoint.com
 
+<!-- Ref: 712DE16D6AD9904B0EDA012A289F3477 -->

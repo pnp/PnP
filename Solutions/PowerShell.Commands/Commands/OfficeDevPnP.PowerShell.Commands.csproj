@@ -58,31 +58,64 @@
   <Choose>
     <When Condition=" '$(Configuration)' == 'debug' Or '$(Configuration)' == 'release' ">
       <ItemGroup>
-        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
-          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
-        </Reference>
         <Reference Include="Microsoft.SharePoint.Client, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Office.Client.Policy.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.TranslationServices, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Search.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+          <Private>True</Private>
         </Reference>
       </ItemGroup>
     </When>
@@ -90,29 +123,62 @@
       <ItemGroup>
         <Reference Include="Microsoft.Online.SharePoint.Client.Tenant">
           <HintPath>..\..\..\Assemblies\15\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.Taxonomy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Taxonomy.dll</HintPath>
-          <Private>False</Private>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.UserProfiles, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
+          <Private>True</Private>
         </Reference>
         <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
           <SpecificVersion>False</SpecificVersion>
           <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.Policy, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.Office.Client.Policy.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.Office.Client.TranslationServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.Office.Client.TranslationServices.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.DocumentManagement, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.DocumentManagement.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Publishing.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Search.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="Microsoft.SharePoint.Client.Search.Applications, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+          <SpecificVersion>False</SpecificVersion>
+          <HintPath>..\..\..\Assemblies\15\Microsoft.SharePoint.Client.Search.Applications.dll</HintPath>
+          <Private>True</Private>
         </Reference>
       </ItemGroup>
     </Otherwise>
@@ -137,9 +203,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
-    <Compile Include="Authentication\GetAuthenticationRealm.cs" />
+    <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
+    <Compile Include="Base\PipeBinds\TermGroupPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowDefinitionPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowSubscriptionPipeBind.cs" />
@@ -164,6 +231,10 @@
     <Compile Include="Base\SPOnlineConnectionHelper.cs" />
     <Compile Include="Base\ConnectSPOnline.cs" />
     <Compile Include="Admin\GetTenantSite.cs" />
+    <Compile Include="Branding\GetJavaScriptLink.cs" />
+    <Compile Include="Branding\ApplyProvisioningTemplate.cs" />
+    <Compile Include="Branding\GetProvisioningTemplate.cs" />
+    <Compile Include="ContentTypes\RemoveContentTypeFromList.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
@@ -188,6 +259,9 @@
     <Compile Include="Fields\RemoveField.cs" />
     <Compile Include="Fields\GetField.cs" />
     <Compile Include="Fields\AddField.cs" />
+    <Compile Include="InformationManagement\GetSitePolicy.cs" />
+    <Compile Include="InformationManagement\SetSitePolicy.cs" />
+    <Compile Include="Lists\AddListItem.cs" />
     <Compile Include="Lists\AddView.cs" />
     <Compile Include="Lists\GetListItem.cs" />
     <Compile Include="Lists\SetDefaultColumnValues.cs" />
@@ -198,12 +272,19 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="Taxonomy\ImportTermGroupFromXml.cs" />
+    <Compile Include="Taxonomy\ExportTermGroupToXml.cs" />
+    <Compile Include="Taxonomy\NewTermGroup.cs" />
+    <Compile Include="Taxonomy\GetTermGroup.cs" />
+    <Compile Include="Taxonomy\ImportTermSet.cs" />
     <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Branding\RemoveJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptBlock.cs" />
     <Compile Include="Web\AddFolder.cs" />
+    <Compile Include="Web\RemoveFile.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
+    <Compile Include="Workflows\AddWorkflowDefinition.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
     <Compile Include="Workflows\RemoveWorkflowDefinition.cs" />
@@ -217,9 +298,9 @@
     <None Include="Samples\Connections.ps1" />
     <None Include="Samples\GetContext.ps1" />
     <Compile Include="Principals\NewGroup.cs" />
-    <Compile Include="PublishingPage\AddPublishingPage.cs" />
-    <Compile Include="PageLayout\AddHtmlPublishingPageLayout.cs" />
-    <Compile Include="PageLayout\AddPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPage.cs" />
+    <Compile Include="Publishing\AddHtmlPublishingPageLayout.cs" />
+    <Compile Include="Publishing\AddPublishingPageLayout.cs" />
     <Compile Include="Site\UninstallSolution.cs" />
     <Compile Include="Site\InstallSolution.cs" />
     <Compile Include="Taxonomy\GetTaxonomyItem.cs" />
@@ -259,9 +340,9 @@
     <Compile Include="Web\GetWeb.cs" />
     <Compile Include="Web\GetSubwebs.cs" />
     <Compile Include="Web\FindFile.cs" />
-    <Compile Include="Web\RemoveCustomAction.cs" />
-    <Compile Include="Web\GetCustomAction.cs" />
-    <Compile Include="Web\AddCustomAction.cs" />
+    <Compile Include="Branding\RemoveCustomAction.cs" />
+    <Compile Include="Branding\GetCustomAction.cs" />
+    <Compile Include="Branding\AddCustomAction.cs" />
     <Compile Include="Web\GetPropertyBag.cs" />
     <Compile Include="Branding\RemoveNavigationNode.cs">
       <SubType>Code</SubType>
@@ -270,7 +351,7 @@
     <Compile Include="Web\RequestReIndexWeb.cs" />
     <Compile Include="Web\GetMasterPage.cs" />
     <Compile Include="Web\GetHomepage.cs" />
-    <Compile Include="Web\SetMDS.cs" />
+    <Compile Include="Branding\SetMDS.cs" />
     <Compile Include="Branding\SetHomepage.cs" />
     <Compile Include="Web\SetPropertyBagValue.cs" />
     <Compile Include="Web\SetIndexedProperties.cs" />
@@ -285,10 +366,10 @@
     <Compile Include="Branding\SetTheme.cs" />
     <Compile Include="Base\SPOWebCmdlet.cs" />
     <Compile Include="Web\SetWeb.cs" />
-    <Compile Include="WikiPage\RemoveWikiPage.cs" />
-    <Compile Include="WikiPage\AddWikiPage.cs" />
-    <Compile Include="WikiPage\GetWikiPageContent.cs" />
-    <Compile Include="WikiPage\SetWikiPageContent.cs" />
+    <Compile Include="Publishing\RemoveWikiPage.cs" />
+    <Compile Include="Publishing\AddWikiPage.cs" />
+    <Compile Include="Publishing\GetWikiPageContent.cs" />
+    <Compile Include="Publishing\SetWikiPageContent.cs" />
     <None Include="Samples\ProvisionSite.ps1" />
   </ItemGroup>
   <ItemGroup>
@@ -308,6 +389,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -318,9 +400,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml"
+    <PostBuildEvent>"$(SolutionDir)\CmdletHelpGenerator\bin\$(ConfigurationName)\OfficeDevPnP.PowerShell.CmdletHelpGenerator.exe"  "$(TargetPath)" "$(TargetDir)\$(TargetFileName)-help.xml" "$(SolutionDir)
 
-C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
+C:\windows\system32\windowspowershell\v1.0\powershell.exe -ExecutionPolicy bypass -NoLogo -NonInteractive -Command .'$(SolutionDir)\PostBuild.ps1' -ProjectDir:'$(ProjectDir)' -ConfigurationName:'$(ConfigurationName)' -TargetDir:'$(TargetDir)' -TargetFileName:'$(TargetFileName)' -TargetName:'$(TargetName)' -SolutionDir:'$(SolutionDir)'</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

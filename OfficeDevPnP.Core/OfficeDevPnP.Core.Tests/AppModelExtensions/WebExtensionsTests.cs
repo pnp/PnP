@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OfficeDevPnP.Core.Tests;
 using System.IO;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+
 namespace Microsoft.SharePoint.Client.Tests
 {
     [TestClass()]
@@ -286,6 +289,19 @@ namespace Microsoft.SharePoint.Client.Tests
             clientContext.ExecuteQueryRetry();
             // All keys should be gone
             Assert.IsFalse(props.FieldValues.ContainsKey(_key), "Key still present");
+        }
+        #endregion
+
+        #region Provisioning Tests
+
+        [TestMethod]
+        public void GetProvisioningTemplateTest()
+        {
+            using (var clientContext = TestCommon.CreateClientContext())
+            {
+                var template = clientContext.Web.GetProvisioningTemplate();
+                Assert.IsInstanceOfType(template, typeof (ProvisioningTemplate));
+            }
         }
         #endregion
 

@@ -1,0 +1,552 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Countries"
+                Description="List of all countries, with a lookup to the region"
+                OnQuickLaunch="TRUE" TemplateType="10008" 
+                Url="Lists/Countries">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="ID">1</Field>
+          <Field Name="Title">Afghanistan</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">2</Field>
+          <Field Name="Title">Albania</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">3</Field>
+          <Field Name="Title">Angola</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">4</Field>
+          <Field Name="Title">Argentina</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">5</Field>
+          <Field Name="Title">Armenia</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">6</Field>
+          <Field Name="Title">Australia</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">7</Field>
+          <Field Name="Title">Austria</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">8</Field>
+          <Field Name="Title">Azerbaijan</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">9</Field>
+          <Field Name="Title">Bangladesh</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">10</Field>
+          <Field Name="Title">Belgium</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">11</Field>
+          <Field Name="Title">Bhutan</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">12</Field>
+          <Field Name="Title">Bolivia, Plurinational State of</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">13</Field>
+          <Field Name="Title">Botswana</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">14</Field>
+          <Field Name="Title">Brazil</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">15</Field>
+          <Field Name="Title">Bulgaria</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">16</Field>
+          <Field Name="Title">Burkina Faso</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">17</Field>
+          <Field Name="Title">Cambodia</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">18</Field>
+          <Field Name="Title">Canada</Field>
+          <Field Name='Region'>5;#North America</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">19</Field>
+          <Field Name="Title">Chile</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">20</Field>
+          <Field Name="Title">China</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">21</Field>
+          <Field Name="Title">Colombia</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">22</Field>
+          <Field Name="Title">Congo</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">23</Field>
+          <Field Name="Title">Congo, the Democratic Republic of the</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">24</Field>
+          <Field Name="Title">Costa Rica</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">25</Field>
+          <Field Name="Title">Côte d'Ivoire</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">26</Field>
+          <Field Name="Title">Denmark</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">27</Field>
+          <Field Name="Title">Dominican Republic</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">28</Field>
+          <Field Name="Title">Ecuador</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">29</Field>
+          <Field Name="Title">Egypt</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">30</Field>
+          <Field Name="Title">El Salvador</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">31</Field>
+          <Field Name="Title">Estonia</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">32</Field>
+          <Field Name="Title">Ethiopia</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">33</Field>
+          <Field Name="Title">Fiji</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">34</Field>
+          <Field Name="Title">Finland</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">35</Field>
+          <Field Name="Title">Georgia</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">36</Field>
+          <Field Name="Title">Germany</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">37</Field>
+          <Field Name="Title">Ghana</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">38</Field>
+          <Field Name="Title">Greenland</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">39</Field>
+          <Field Name="Title">Guatemala</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">40</Field>
+          <Field Name="Title">Guinea</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">41</Field>
+          <Field Name="Title">Haiti</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">42</Field>
+          <Field Name="Title">Honduras</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">43</Field>
+          <Field Name="Title">Hong Kong</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">44</Field>
+          <Field Name="Title">Iceland</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">45</Field>
+          <Field Name="Title">India</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">46</Field>
+          <Field Name="Title">Indonesia</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">47</Field>
+          <Field Name="Title">Iraq</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">48</Field>
+          <Field Name="Title">Italy</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">49</Field>
+          <Field Name="Title">Japan</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">50</Field>
+          <Field Name="Title">Jordan</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">51</Field>
+          <Field Name="Title">Kenya</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">52</Field>
+          <Field Name="Title">Korea, Democratic People's Republic of</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">53</Field>
+          <Field Name="Title">Korea, Republic of</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">54</Field>
+          <Field Name="Title">Latvia</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">55</Field>
+          <Field Name="Title">Lebanon</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">56</Field>
+          <Field Name="Title">Liberia</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">57</Field>
+          <Field Name="Title">Libya</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">58</Field>
+          <Field Name="Title">Lithuania</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">59</Field>
+          <Field Name="Title">Mali</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">60</Field>
+          <Field Name="Title">Mauritania</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">61</Field>
+          <Field Name="Title">Mexico</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">62</Field>
+          <Field Name="Title">Moldova, Republic of</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">63</Field>
+          <Field Name="Title">Mongolia</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">64</Field>
+          <Field Name="Title">Morocco</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">65</Field>
+          <Field Name="Title">Mozambique</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">66</Field>
+          <Field Name="Title">Myanmar</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">67</Field>
+          <Field Name="Title">Nepal</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">68</Field>
+          <Field Name="Title">Netherlands</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">69</Field>
+          <Field Name="Title">New Zealand</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">70</Field>
+          <Field Name="Title">Nicaragua</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">71</Field>
+          <Field Name="Title">Niger</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">72</Field>
+          <Field Name="Title">Nigeria</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">73</Field>
+          <Field Name="Title">Norway</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">74</Field>
+          <Field Name="Title">Pakistan</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">75</Field>
+          <Field Name="Title">Palau</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">76</Field>
+          <Field Name="Title">Panama</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">77</Field>
+          <Field Name="Title">Papua New Guinea</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">78</Field>
+          <Field Name="Title">Paraguay</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">79</Field>
+          <Field Name="Title">Peru</Field>
+          <Field Name='Region'>3;#Latin America &amp; Caribbean </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">80</Field>
+          <Field Name="Title">Philippines</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">81</Field>
+          <Field Name="Title">Romania</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">82</Field>
+          <Field Name="Title">Russian Federation</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">83</Field>
+          <Field Name="Title">Rwanda</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">84</Field>
+          <Field Name="Title">Senegal</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">85</Field>
+          <Field Name="Title">Sierra Leone</Field>
+          <Field Name='Region'>10;#West &amp; Central Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">86</Field>
+          <Field Name="Title">Singapore</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">87</Field>
+          <Field Name="Title">Solomon Islands</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">88</Field>
+          <Field Name="Title">Somalia</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">89</Field>
+          <Field Name="Title">South Africa</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">90</Field>
+          <Field Name="Title">South Sudan</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">91</Field>
+          <Field Name="Title">Spain</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">92</Field>
+          <Field Name="Title">Sri Lanka</Field>
+          <Field Name='Region'>7;#South &amp; Central Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">93</Field>
+          <Field Name="Title">Sudan</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">94</Field>
+          <Field Name="Title">Swaziland</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">95</Field>
+          <Field Name="Title">Sweden</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">96</Field>
+          <Field Name="Title">Switzerland</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">97</Field>
+          <Field Name="Title">Tanzania, United Republic of</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">98</Field>
+          <Field Name="Title">Thailand</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">99</Field>
+          <Field Name="Title">Timor-Leste</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">100</Field>
+          <Field Name="Title">Uganda</Field>
+          <Field Name='Region'>1;#East Africa </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">101</Field>
+          <Field Name="Title">United Kingdom</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">102</Field>
+          <Field Name="Title">United States</Field>
+          <Field Name='Region'>5;#North America</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">103</Field>
+          <Field Name="Title">Vanuatu</Field>
+          <Field Name='Region'>6;#Oceania </Field>
+        </Row>
+        <Row>
+          <Field Name="ID">104</Field>
+          <Field Name="Title">Venezuela, Bolivarian Republic of</Field>
+          <Field Name='Region'>8;#South East &amp; East Asia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">105</Field>
+          <Field Name="Title">Yemen</Field>
+          <Field Name='Region'>4;#Middle East &amp; Eurasia</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">106</Field>
+          <Field Name="Title">Zambia</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">107</Field>
+          <Field Name="Title">Zimbabwe</Field>
+          <Field Name='Region'>9;#Southern Africa</Field>
+        </Row>
+        <Row>
+          <Field Name="ID">108</Field>
+          <Field Name="Title">France</Field>
+          <Field Name='Region'>2;#Europe</Field>
+        </Row>
+      </Rows>
+    </Data>
+  </ListInstance>
+</Elements>

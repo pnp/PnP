@@ -8,10 +8,7 @@ using OfficeDevPnP.PowerShell.Commands.Base;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOTenantSite")]
-    [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.")]
+    [CmdletHelp(@"Office365 only: Uses the tenant API to set site information.", Category = "Tenant Administration")]
     public class SetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position=0, ValueFromPipeline=true)]

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OfficeDevPnP.Core.Entities
+﻿namespace OfficeDevPnP.Core.Entities
 {
     /// <summary>
     /// Class represents variation label
@@ -45,6 +39,10 @@ namespace OfficeDevPnP.Core.Entities
         /// Set as source variation
         /// </summary>
         public bool IsSource { get; set; }
-    }
 
+        /// <summary>
+        /// Gets a value indicating whether the variation label has been created
+        /// </summary>
+        public bool IsCreated { get; internal set; }
+    }
 }

@@ -12,6 +12,7 @@ namespace Contoso.Branding.ApplyBranding
         static void Main(string[] args)
         {
             var isOnline = false;
+            SharePointOnlineCredentials credentials = null;
 
             //check to ensure there's at least one argument
             if (args.Length < 1 || args.Length > 2)
@@ -25,6 +26,10 @@ namespace Contoso.Branding.ApplyBranding
                 if (args[1] == "online")
                 {
                     isOnline = true;
+                    //only relevant if SharePoint Online
+                    var username = GetUserName();
+                    var password = GetPassword();
+                    credentials = new SharePointOnlineCredentials(username, password);
                 }
             }
             
@@ -41,10 +46,6 @@ namespace Contoso.Branding.ApplyBranding
                     {
                         if (isOnline)
                         {
-                            //only relevant if SharePoint Online
-                            var username = GetUserName();
-                            var password = GetPassword();
-                            var credentials = new SharePointOnlineCredentials(username, password);
                             clientContext.Credentials = credentials;
                         }
 

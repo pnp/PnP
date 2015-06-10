@@ -5,9 +5,14 @@ using System.Management.Automation;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.New, "SPOList")]
-    [CmdletHelp("Creates a new list")]
-    [CmdletExample(Code = "PS:> New-SPOList -Title Announcements -Template Announcements", SortOrder = 1)]
-    [CmdletExample(Code = @"PS:> New-SPOList -Title ""Demo List"" -Url ""DemoList"" -Template Announcements", SortOrder = 2, Remarks = "Create a list with a title that is different from the url")]
+    [CmdletHelp("Creates a new list", Category = "Lists")]
+    [CmdletExample(
+        Code = "PS:> New-SPOList -Title Announcements -Template Announcements", 
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> New-SPOList -Title ""Demo List"" -Url ""DemoList"" -Template Announcements", 
+        SortOrder = 2, 
+        Remarks = "Create a list with a title that is different from the url")]
     public class NewList : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -28,9 +33,18 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false)]
         public SwitchParameter EnableContentTypes;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter OnQuickLaunch;
+
         protected override void ExecuteCmdlet()
         {
-            SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
+            var list = SelectedWeb.CreateList(Template, Title, EnableVersioning, true, Url, EnableContentTypes);
+            if (OnQuickLaunch)
+            {
+                list.OnQuickLaunch = true;
+                list.Update();
+                ClientContext.ExecuteQueryRetry();
+            }
         }
     }
 

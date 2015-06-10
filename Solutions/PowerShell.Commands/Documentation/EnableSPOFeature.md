@@ -1,28 +1,31 @@
 #Enable-SPOFeature
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
 Enables a feature
 ##Syntax
-    Enable-SPOFeature [-Force [<SwitchParameter>]] [-Scope [<FeatureScope>]] -Identity [<GuidPipeBind>]
+```powershell
+Enable-SPOFeature [-Force [<SwitchParameter>]] [-Scope <FeatureScope>] [-Sandboxed [<SwitchParameter>]] -Identity <GuidPipeBind>
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Force|SwitchParameter|False|Forcibly enable the feature.
-Identity|GuidPipeBind|True|The id of the feature to enable.
-Scope|FeatureScope|False|
+|Force|SwitchParameter|False|Forcibly enable the feature.|
+|Identity|GuidPipeBind|True|The id of the feature to enable.|
+|Sandboxed|SwitchParameter|False|Specify this parameter if the feature you're trying to active is part of a sandboxed solution.|
+|Scope|FeatureScope|False||
 ##Examples
 
 ###Example 1
-    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
+    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe
 
 
 ###Example 2
-    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
+    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force
 
 
 ###Example 3
-    PS:> Enable-SPOnlineFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
+    PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web
 
+<!-- Ref: BD3F75B7861EEE7D0E230B2FBBF8710B -->

@@ -1,20 +1,21 @@
 #Get-SPOList
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
 Returns a List object
 ##Syntax
-    Get-SPOList [-Web [<WebPipeBind>]] [-Identity [<ListPipeBind>]]
+```powershell
+Get-SPOList [-Web <WebPipeBind>] [-Identity <ListPipeBind>]
+```
 
-&nbsp;
 
 ##Detailed Description
-Returns a list object. Due to limitation of the PowerShell environment the command does not return a full Client List object. In order to access the full client list, use the ContextObject property of the return lists.
+Returns a list object.
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|ListPipeBind|False|The ID or Url of the list.
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+|Identity|ListPipeBind|False|The ID or Url of the list.|
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
 ##Examples
 
 ###Example 1
@@ -28,3 +29,4 @@ Returns a list with the given id.
 ###Example 3
     PS:> Get-SPOList -Identity /Lists/Announcements
 Returns a list with the given url.
+<!-- Ref: C705FE92BB372ABCF5C54CC60A860E15 -->

@@ -8,19 +8,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     [Cmdlet("Connect", "SPOnline", SupportsShouldProcess = false)]
     [CmdletHelp("Connects to a SharePoint site and creates an in-memory context",
-       DetailedDescription = "If no credentials have been specified, and the CurrentCredentials parameter has not been specified, you will be prompted for credentials.")]
+       DetailedDescription = "If no credentials have been specified, and the CurrentCredentials parameter has not been specified, you will be prompted for credentials.", Category = "Base Cmdlets")]
     [CmdletExample(
         Code = @"PS:> Connect-SPOnline -Url https://yourtenant.sharepoint.com -Credentials (Get-Credential)",
         Remarks = @"This will prompt for username and password and creates a context for the other PowerShell commands to use.
- ")]
+ ", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -CurrentCredentials",
         Remarks = @"This will use the current user credentials and connects to the server specified by the Url parameter.
-    ")]
+    ", SortOrder = 2)]
     [CmdletExample(
        Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'",
        Remarks = @"This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
-    ")]
+    ", SortOrder = 3)]
     public class ConnectSPOnline : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]

@@ -1,4 +1,4 @@
-# Display template management using app model #
+# Display template management using add-in model #
 
 ### Summary ###
 The Display Templates sample demonstrates how to use Display Templates to render a hero image and content rotator in a Content By Search Web Part. Additionally, the Display Templates target mobile devices using Responsive Web Design (RWD) and Device Channels.
@@ -76,7 +76,7 @@ In order for the Display Templates sample to render correctly, you must first cr
 
 ![](http://i.imgur.com/KPVha7Z.png)
 
-6.After app installation, a new page will be displayed, click the Deploy button to create the site columns, content type, list, initialize the list with data, and upload the master pages, images, CSS files and Display Template JavaScript files. 
+6.After add-in installation, a new page will be displayed, click the Deploy button to create the site columns, content type, list, initialize the list with data, and upload the master pages, images, CSS files and Display Template JavaScript files. 
 
 ![](http://i.imgur.com/JqBDFRl.png)
 
@@ -121,7 +121,7 @@ To configure which Master Pages associated with each Device Channel, perform the
 4.Click OK
 
 # Viewing the Home Hero Slider #
-After you have successfully configured your SharePoint environment and deployed the artifacts via the app, you can view the Home Hero slider in different pages and Device Channels.
+After you have successfully configured your SharePoint environment and deployed the artifacts via the add-in, you can view the Home Hero slider in different pages and Device Channels.
 
 ## HOME HERO SLIDER LIST ##
 
@@ -133,13 +133,13 @@ After you have successfully configured your SharePoint environment and deployed 
 
 ![](http://i.imgur.com/bEdhrFJ.png)
 
-3.Four list items are displayed in the Home Hero slider control.  These list items were created by the app after it provisioned the Home Hero list.  You can edit these items or leave the default content.  We encourage you to at least view the properties of a list item to see all the different thngs you can configure such as text, images, colors, opacity, and URL.
+3.Four list items are displayed in the Home Hero slider control.  These list items were created by the add-in after it provisioned the Home Hero list.  You can edit these items or leave the default content.  We encourage you to at least view the properties of a list item to see all the different thngs you can configure such as text, images, colors, opacity, and URL.
 
 **Note:** If you edit the properties of a list item you must wait until the Search Service crawls the list again to see the changes appear in the Home Hero slider.
 
 ![](http://i.imgur.com/gYWj7gl.png)
 
-4.Navigate back to Site contents and select the Pages library. You will find 3 newly created pages.  These pages were created by the app.
+4.Navigate back to Site contents and select the Pages library. You will find 3 newly created pages.  These pages were created by the add-in.
 
 - desktop.aspx
 - rwd.aspx 

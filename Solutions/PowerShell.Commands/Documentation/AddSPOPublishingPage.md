@@ -1,17 +1,19 @@
 #Add-SPOPublishingPage
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-03*
 
-
+Adds a publishing page
 ##Syntax
-    Add-SPOPublishingPage [-Title [<String>]] -PageName [<String>] -PageTemplateName [<String>] [-Publish [<SwitchParameter>]] [-Web [<WebPipeBind>]]
+```powershell
+Add-SPOPublishingPage [-Title <String>] -PageName <String> -PageTemplateName <String> [-Publish [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-PageName|String|True|
-PageTemplateName|String|True|
-Publish|SwitchParameter|False|Publishes the page. Also Approves it if moderation is enabled on the Pages library.
-Title|String|False|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+|PageName|String|True||
+|PageTemplateName|String|True||
+|Publish|SwitchParameter|False|Publishes the page. Also Approves it if moderation is enabled on the Pages library.|
+|Title|String|False||
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: 14919601EE636E2D53A25661CF36C51D -->

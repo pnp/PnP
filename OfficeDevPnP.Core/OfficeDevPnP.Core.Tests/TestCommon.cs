@@ -9,8 +9,11 @@ using System.Threading.Tasks;
 using System.Net;
 
 namespace OfficeDevPnP.Core.Tests {
-    static class TestCommon {
-        static TestCommon() {
+    static class TestCommon
+    {
+        #region Constructor
+        static TestCommon() 
+        {
             // Read configuration data
             TenantUrl = ConfigurationManager.AppSettings["SPOTenantUrl"];
             DevSiteUrl = ConfigurationManager.AppSettings["SPODevSiteUrl"];
@@ -56,13 +59,54 @@ namespace OfficeDevPnP.Core.Tests {
                 }
             }
         }
+        #endregion
 
+        #region Properties
+        public static string TenantUrl { get; set; }
+        public static string DevSiteUrl { get; set; }
+        static string UserName { get; set; }
+        static SecureString Password { get; set; }
+        static ICredentials Credentials { get; set; }
+        static string Realm { get; set; }
+        static string AppId { get; set; }
+        static string AppSecret { get; set; }
+
+        public static String AzureStorageKey
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["AzureStorageKey"];
+            }
+        }
+        #endregion
+
+        #region Methods
         public static ClientContext CreateClientContext() {
             return CreateContext(DevSiteUrl, Credentials);
         }
 
         public static ClientContext CreateTenantClientContext() {
             return CreateContext(TenantUrl, Credentials);
+        }
+
+        public static bool AppOnlyTesting()
+        {
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["Realm"]) &&
+                !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppId"]) &&
+                !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppSecret"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOUserName"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOPassword"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremUserName"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremDomain"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremPassword"]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
@@ -92,15 +136,6 @@ namespace OfficeDevPnP.Core.Tests {
 
             return secureString;
         }
-
-
-        static string TenantUrl { get; set; }
-        static string DevSiteUrl { get; set; }
-        static string UserName { get; set; }
-        static SecureString Password { get; set; }
-        static ICredentials Credentials { get; set; }
-        static string Realm { get; set; }
-        static string AppId { get; set; }
-        static string AppSecret { get; set; }
+        #endregion
     }
 }

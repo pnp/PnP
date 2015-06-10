@@ -117,11 +117,19 @@ namespace Provisioning.Hybrid.Simple.WebJob
                 // Set the time out as high as possible
                 newWebContext.RequestTimeout = int.MaxValue;
 
+                // Get the rootpath for the resources. If you deploy this as a web job to Azure the root is the Azure web site root,
+                // If you simply run from VS (to debug/test) the rootpath is the current folder
+                String rootPath = Environment.GetEnvironmentVariable("WEBROOT_PATH");
+                if (rootPath == null)
+                {
+                    rootPath = ".";
+                }
+
                 // Let's first upload the custom theme to host web
                 DeployThemeToWeb(newWebContext.Web, "Garage",
-                                Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources/garagewhite.spcolor"),
+                                Path.Combine(rootPath, "Resources/garagewhite.spcolor"),
                                 string.Empty,
-                                Path.Combine(Environment.GetEnvironmentVariable("WEBROOT_PATH"), "Resources/garagebg.jpg"),
+                                Path.Combine(rootPath, "Resources/garagebg.jpg"),
                                 "seattle.master");
 
                 // Apply theme. We could upload a custom one as well or apply any other changes to newly created site
@@ -150,8 +158,14 @@ namespace Provisioning.Hybrid.Simple.WebJob
             List assetLibrary = web.Lists.GetByTitle("Site Assets");
             web.Context.Load(assetLibrary, l => l.RootFolder);
 
+            String rootPath = Environment.GetEnvironmentVariable("WEBROOT_PATH");
+            if (rootPath == null)
+            {
+                rootPath = ".";
+            }
+
             // Get the path to the file which we are about to deploy
-            string logoFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/garagelogo.png");
+            string logoFile = Path.Combine(rootPath, "Resources/garagelogo.png");
 
             // Use CSOM to uplaod the file in
             FileCreationInformation newFile = new FileCreationInformation();

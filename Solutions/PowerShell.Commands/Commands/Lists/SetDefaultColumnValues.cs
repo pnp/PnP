@@ -11,9 +11,17 @@ using System.Linq;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPODefaultColumnValues")]
-    [CmdletHelp("Sets default column values for a document library", DetailedDescription="Sets default column values for a document library, per folder, or for the root folder if the folder parameter has not been specified. Supports both text and taxonomy fields.")]
-    [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field TaxKeyword -Value \"Company|Locations|Stockholm\"", SortOrder = 1, Remarks = "Sets a default value for the enterprise keywords field on a library to a term called \"Stockholm\", located in the \"Locations\" term set, which is part of the \"Company\" term group")]
-    [CmdletExample(Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field MyTextField -Value \"DefaultValue\"", SortOrder = 2, Remarks = "Sets a default value for the MyTextField text field on a library to a value of \"DefaultValue\"")]
+    [CmdletHelp("Sets default column values for a document library", 
+        DetailedDescription="Sets default column values for a document library, per folder, or for the root folder if the folder parameter has not been specified. Supports both text and taxonomy fields.", 
+        Category = "Lists")]
+    [CmdletExample(
+        Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field TaxKeyword -Value \"Company|Locations|Stockholm\"", 
+        SortOrder = 1, 
+        Remarks = "Sets a default value for the enterprise keywords field on a library to a term called \"Stockholm\", located in the \"Locations\" term set, which is part of the \"Company\" term group")]
+    [CmdletExample(
+        Code = "PS:> Set-SPODefaultColumnValues -List Documents -Field MyTextField -Value \"DefaultValue\"", 
+        SortOrder = 2, 
+        Remarks = "Sets a default value for the MyTextField text field on a library to a value of \"DefaultValue\"")]
     public class SetDefaultColumnValues : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID, Name or Url of the list.")]

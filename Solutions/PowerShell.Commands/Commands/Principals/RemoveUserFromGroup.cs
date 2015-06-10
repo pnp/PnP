@@ -5,14 +5,14 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet(VerbsCommon.Remove, "SPOUserFromGroup")]
-    [CmdletHelp("Removes a user from a group")]
-    [CmdletExample(Code = @"
-PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'
-")]
+    [CmdletHelp("Removes a user from a group", Category = "User and group management")]
+    [CmdletExample(
+        Code = @"PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'",
+        SortOrder = 1)]
     public class RemoveUserFromGroup : SPOWebCmdlet
     {
 
-        [Parameter(Mandatory = true, HelpMessage = "A valid logon name of a user")]
+        [Parameter(Mandatory = true, HelpMessage = "A valid login name of a user")]
         [Alias("LogonName")]
         public string LoginName = string.Empty;
 
@@ -21,7 +21,24 @@ PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing S
 
         protected override void ExecuteCmdlet()
         {
-            SelectedWeb.RemoveUserFromGroup(GroupName, LoginName);
+            try
+            {
+                Group group = SelectedWeb.SiteGroups.GetByName(GroupName);
+                User user = SelectedWeb.SiteUsers.GetByEmail(LoginName);
+                ClientContext.Load(user);
+                ClientContext.Load(group);
+                ClientContext.ExecuteQueryRetry();
+                SelectedWeb.RemoveUserFromGroup(group, user);
+            }
+            catch
+            {
+                Group group = SelectedWeb.SiteGroups.GetByName(GroupName);
+                User user = SelectedWeb.SiteUsers.GetByLoginName(LoginName);
+                ClientContext.Load(user);
+                ClientContext.Load(group);
+                ClientContext.ExecuteQueryRetry();
+                SelectedWeb.RemoveUserFromGroup(group, user);
+            }
         }
     }
 }

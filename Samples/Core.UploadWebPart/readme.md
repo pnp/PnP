@@ -28,14 +28,14 @@ Version  | Date | Comments
 ----------
 
 # General Comments #
-The sample shows a technique for exporting pre-configured Content Editor Web Parts (w/ scripts for calling SharePoint APIs) and deploying them to the Web Part Gallery in the host web via apps. This provides a powerful alternative to App Parts, which are hosted in IFRAME elements and are more challenging to deliver a responsive UX.
+The sample shows a technique for exporting pre-configured Content Editor Web Parts (w/ scripts for calling SharePoint APIs) and deploying them to the Web Part Gallery in the host web via apps. This provides a powerful alternative to add-in Parts, which are hosted in IFRAME elements and are more challenging to deliver a responsive UX.
 
 # SCENARIO 1: Deploying pre-configured web parts to web part gallery #
 Deploying a pre-configured Content Editor Web Part requires the following steps that are details below:
 
 - Configured desired presentation/logic in Content Editor Web Part via HTML and scripts
 - Export the configured Content Editor Web Part with the page in edit mode
-- Add the web part file to an app project and deploy it to the Web Part Gallery via CSOM
+- Add the web part file to an add-in project and deploy it to the Web Part Gallery via CSOM
 
 We use the Content Editor instead of the Script Editor because the former has the option to be exported. You could just as easily use a Script Editor Web Part, but you would have to manually configure the XML instead of using the SharePoint UI to export.
 
@@ -50,7 +50,7 @@ Now that the Content Editor Web Part is configured, we can export it with the pa
 ![Export](http://i.imgur.com/qc89Gw7.png)
 
 ## Deploying the configured Content Editor via CSOM ##
-Next, we can add the exported Content Editor Web Part file to our app project and deploy it to the host web programmatically with CSOM. You cannot deploy the web part as a module to the host web. Notice we are using client context of the HOST web:
+Next, we can add the exported Content Editor Web Part file to our add-in project and deploy it to the host web programmatically with CSOM. You cannot deploy the web part as a module to the host web. Notice we are using client context of the HOST web:
 ```C#
 var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
 using (var clientContext = spContext.CreateUserClientContextForSPHost())

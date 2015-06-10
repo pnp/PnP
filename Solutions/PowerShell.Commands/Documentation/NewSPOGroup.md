@@ -1,26 +1,25 @@
 #New-SPOGroup
-*Topic automatically generated on: 2015-02-08*
+*Topic automatically generated on: 2015-06-04*
 
 Adds a user to the build-in Site User Info List and returns a user object
 ##Syntax
-    New-SPOGroup -Title [<String>] [-Description [<String>]] [-Owner [<String>]] [-AllowRequestToJoinLeave [<SwitchParameter>]] [-AutoAcceptRequestToJoinLeave [<SwitchParameter>]] [-SetAssociatedGroup [<AssociatedGroupType>]] [-Web [<WebPipeBind>]]
+```powershell
+New-SPOGroup -Title <String> [-Description <String>] [-Owner <String>] [-AllowRequestToJoinLeave [<SwitchParameter>]] [-AutoAcceptRequestToJoinLeave [<SwitchParameter>]] [-Web <WebPipeBind>]
+```
 
-&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-AllowRequestToJoinLeave|SwitchParameter|False|
-AutoAcceptRequestToJoinLeave|SwitchParameter|False|
-Description|String|False|
-Owner|String|False|
-SetAssociatedGroup|AssociatedGroupType|False|
-Title|String|True|
-Web|WebPipeBind|False|The web to apply the command to. Leave empty to use the current web.
+|AllowRequestToJoinLeave|SwitchParameter|False||
+|AutoAcceptRequestToJoinLeave|SwitchParameter|False||
+|Description|String|False||
+|Owner|String|False||
+|Title|String|True||
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
 ##Examples
 
 ###Example 1
-    
-PS:> New-SPOUser -LogonName user@company.com
+    PS:> New-SPOUser -LogonName user@company.com
 
-
+<!-- Ref: FFFFA1246201B3EA819C03275D418E9C -->
