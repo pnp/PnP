@@ -359,9 +359,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         foreach (var dataValue in dataRow.Values)
                         {
                             //Value
-                            var value = dataValue.Value.ToParsedString();
+                            var fieldValue = dataValue.Value.ToParsedString();
 
-                            if (value.Contains(",")) //This can be a field of type URL
+                            if (fieldValue.Contains(",")) //This can be a field of type URL
                             {
                                 //Find the given field for his type
                                 var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
@@ -374,7 +374,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 if (field != null && field.FieldTypeKind == FieldType.URL)
                                 {
                                     //Default format of url (URL, Description)
-                                    var urlArray = value.Split(',');
+                                    var urlArray = fieldValue.Split(',');
                                     var link = new FieldUrlValue
                                     {
                                         Url = urlArray[0],
@@ -384,16 +384,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 else //No Description
                                 {
-                                    listitem[dataValue.Key.ToParsedString()] = value;
+                                    listitem[dataValue.Key.ToParsedString()] = fieldValue;
                                 }
                             }
                             else //Default Value
                             {
-                                listitem[dataValue.Key.ToParsedString()] = value;
+                                listitem[dataValue.Key.ToParsedString()] = fieldValue;
                             }
-                                
+                            listitem.Update();
                         }
-                        listitem.Update();
                         web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                     }
                 }
