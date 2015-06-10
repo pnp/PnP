@@ -17,7 +17,7 @@
         In this scenario you'll learn how to set remote event receiver to the list in site and how to process those requests. Remote event receiver is added during the AppInstalled event.
         <ul style="list-style-type: square;">
             <li>Create remote event receiver to host web for handling remote events to provider hosted app</li>
-            <li>How to handle events in the remtoe service</li>
+            <li>How to handle events in the remote service</li>
             <li>How to uninstall events from the host web</li>
         </ul>
         <i>Notice that you could associate this example code also to site collection provisioning, which ensure that all new sites have automatically needed customizations.</i>
