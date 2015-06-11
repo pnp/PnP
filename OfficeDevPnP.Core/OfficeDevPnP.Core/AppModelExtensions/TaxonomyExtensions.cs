@@ -23,12 +23,15 @@ namespace Microsoft.SharePoint.Client
 
         private static readonly Regex InvalidNameRegex = new Regex("[;\"<>|&\\t]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        /// <summary>
+        /// The default Taxonomy Guid Label Delimiter
+        /// </summary>
         public const string TaxonomyGuidLabelDelimiter = "|";
 
         /// <summary>
         /// Creates a new term group, in the specified term store.
         /// </summary>
-        /// <param name="site">Site connected to the term store to use</param>
+        /// <param name="termStore">the term store to use</param>
         /// <param name="groupName">Name of the term group</param>
         /// <param name="groupId">(Optional) ID of the group; if not provided a random GUID is used</param>
         /// <param name="groupDescription">(Optional) Description of the term group</param>
@@ -312,6 +315,11 @@ namespace Microsoft.SharePoint.Client
             return termStore;
         }
 
+        /// <summary>
+        /// Returns a new taxonomy session for the current site
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public static TaxonomySession GetTaxonomySession(this Site site)
         {
             TaxonomySession tSession = TaxonomySession.GetTaxonomySession(site.Context);
@@ -320,6 +328,11 @@ namespace Microsoft.SharePoint.Client
             return tSession;
         }
 
+        /// <summary>
+        /// Returns the default keywords termstore for the current site
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public static TermStore GetDefaultKeywordsTermStore(this Site site)
         {
             TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
@@ -330,6 +343,11 @@ namespace Microsoft.SharePoint.Client
             return termStore;
         }
 
+        /// <summary>
+        /// Returns the default site collection termstore
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
         public static TermStore GetDefaultSiteCollectionTermStore(this Site site)
         {
             TaxonomySession session = TaxonomySession.GetTaxonomySession(site.Context);
@@ -341,6 +359,13 @@ namespace Microsoft.SharePoint.Client
         }
 
 
+        /// <summary>
+        /// Finds a termset by name
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="name">The name of the termset</param>
+        /// <param name="lcid">The locale ID for the termset to return, defaults to 1033</param>
+        /// <returns></returns>
         public static TermSetCollection GetTermSetsByName(this Site site, string name, int lcid = 1033)
         {
             if (string.IsNullOrEmpty(name))
@@ -355,6 +380,12 @@ namespace Microsoft.SharePoint.Client
         }
 
 
+        /// <summary>
+        /// Finds a termgroup by name
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="name">The name of the termgroup</param>
+        /// <returns></returns>
         public static TermGroup GetTermGroupByName(this Site site, string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -370,7 +401,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Gets the named term group, if it exists in the term store.
         /// </summary>
-        /// <param name="site">Site connected to the term store to use</param>
+        /// <param name="termStore">The term store to use</param>
         /// <param name="groupName">Name of the term group</param>
         /// <returns>The requested term group, or null if it does not exist</returns>
         public static TermGroup GetTermGroupByName(this TermStore termStore, string groupName)
@@ -388,6 +419,12 @@ namespace Microsoft.SharePoint.Client
             return termGroup;
         }
 
+        /// <summary>
+        /// Finds a termgroup by its ID
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="termGroupId">The ID of the termgroup</param>
+        /// <returns></returns>
         public static TermGroup GetTermGroupById(this Site site, Guid termGroupId)
         {
             if (termGroupId == null || termGroupId.Equals(Guid.Empty))
@@ -446,11 +483,26 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Adds a term to a given termset
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="termSetId">The ID of the termset</param>
+        /// <param name="term">The label of the new term to create</param>
+        /// <returns></returns>
         public static Term AddTermToTermset(this Site site, Guid termSetId, string term)
         {
             return AddTermToTermset(site, termSetId, term, Guid.NewGuid());
         }
 
+        /// <summary>
+        /// Adds a term to a given termset
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="termSetId">The ID of the termset</param>
+        /// <param name="term">The label of the new term to create</param>
+        /// <param name="termId">The ID of the term to create</param>
+        /// <returns></returns>
         public static Term AddTermToTermset(this Site site, Guid termSetId, string term, Guid termId)
         {
             if (string.IsNullOrEmpty(term))
@@ -1381,6 +1433,13 @@ namespace Microsoft.SharePoint.Client
                 return TrimSpacesRegex.Replace(name, " ").Replace('＆', '&').Replace('＂', '"');
         }
 
+        /// <summary>
+        /// Returns a taxonomy item by it's path, e.g. Group|Set|Term
+        /// </summary>
+        /// <param name="site">The current site</param>
+        /// <param name="path">The path of the item to return</param>
+        /// <param name="delimiter">The delimeter separating groups, sets and term in the path. Defaults to |</param>
+        /// <returns></returns>
         public static TaxonomyItem GetTaxonomyItemByPath(this Site site, string path, string delimiter = "|")
         {
             var context = site.Context;
@@ -1479,6 +1538,13 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Sets a value of a taxonomy field
+        /// </summary>
+        /// <param name="item">The item to process</param>
+        /// <param name="fieldId">The ID of the field to set</param>
+        /// <param name="label">The label of the term to set</param>
+        /// <param name="termGuid">The id of the term to set</param>
         public static void SetTaxonomyFieldValue(this ListItem item, Guid fieldId, string label, Guid termGuid)
         {
             ClientContext clientContext = item.Context as ClientContext;

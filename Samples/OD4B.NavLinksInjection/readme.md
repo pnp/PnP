@@ -19,7 +19,7 @@ OD4B.NavLinksInjection | Brian Michely (Microsoft), Vesa Juvonen (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | November 24th 2014 | Adjusted to work with any sites and styles updated to work with app hub
+1.0  | November 24th 2014 | Adjusted to work with any sites and styles updated to work with add-in hub
 1.0  | October 6th 2014 | Initial release
 
 ### Disclaimer ###

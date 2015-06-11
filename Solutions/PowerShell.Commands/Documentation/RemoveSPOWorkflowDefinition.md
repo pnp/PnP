@@ -1,15 +1,16 @@
 #Remove-SPOWorkflowDefinition
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Removes a workflow definition
 ##Syntax
 ```powershell
-Remove-SPOWorkflowDefinition [-Web <WebPipeBind>] -Identity <WorkflowDefinitionPipeBind>```
-&nbsp;
+Remove-SPOWorkflowDefinition [-Web <WebPipeBind>] -Identity <WorkflowDefinitionPipeBind>
+```
+
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-Identity|WorkflowDefinitionPipeBind|True|The subscription to remove
-Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
-<!-- Ref: BE247AD50FB57BE6AEA818A59C382298 -->
+|Identity|WorkflowDefinitionPipeBind|True|The subscription to remove|
+|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+<!-- Ref: 7197FD1A0732CB47360CF2FDC65BF3BC -->

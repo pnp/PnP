@@ -33,7 +33,7 @@ You may also visit [Vesa "vesku" Juvonen's](http://blogs.msdn.com/b/vesku/archiv
 __Note:__
 In general, Microsoft recommends branding OneDrive for Business sites using themes, and avoiding custom master pags. If you customize master pages, you'll have to ensure that any new changes on the out-of-the-box master pages are reflected on custom master pages as well. On top of the themes, you can also inject custom CSS to the site to modify layout slightly without needing to change the master page.
 
-Branding is applied from within app part in the solution. You can place the app part anywhere in the tenant since it operates across the site collections as needed. When the app part is accessing the OneDrive for Business site, the end-user will only see a GIF animation that indicates when app part is accessing the personal OneDrive for Business site. These locations are typical for this customizer:
+Branding is applied from within add-in part in the solution. You can place the add-in part anywhere in the tenant since it operates across the site collections as needed. When the add-in part is accessing the OneDrive for Business site, the end-user will only see a GIF animation that indicates when add-in part is accessing the personal OneDrive for Business site. These locations are typical for this customizer:
 
 -  Intranet front page - When users arrive to Intranet, branding in OneDrive is checked and applied if necessary
 -  Public side of the personal - for example on the news feed page
@@ -70,9 +70,9 @@ else
 ```
 
 ## SHAREPOINT ONLINE SETUP ##
-The first step to create the application principal. The app principal is an actual principal in SharePoint 2013 for the app that can be granted permissions.  To register the app principal, we will use the “_layouts/AppRegNew.aspx”. 
+The first step to create the application principal. The add-in principal is an actual principal in SharePoint 2013 for the add-in that can be granted permissions.  To register the add-in principal, we will use the “_layouts/AppRegNew.aspx”. 
 
-Now we need to grant permissions to the app principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
+Now we need to grant permissions to the add-in principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
 
 ```XML
 <AppPermissionRequests AllowAppOnlyPolicy="true">

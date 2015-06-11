@@ -1,5 +1,5 @@
 #Disconnect-SPOnline
-*Topic automatically generated on: 2015-04-29*
+*Topic automatically generated on: 2015-06-03*
 
 Disconnects the context
 ##Syntax
@@ -11,4 +11,4 @@ Parameter|Type|Required|Description
 ###Example 1
     PS:> Disconnect-SPOnline
 
-<!-- Ref: 6B6C9650F97CAC086891999B98E11CE5 -->
+<!-- Ref: F715BFBBE9E6CDA3E8A30FDA287C7850 -->

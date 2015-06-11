@@ -63,6 +63,8 @@ foreach (var item in clientContext.Web.SupportedUILanguageIds)
 ### Add new language ###
 
 ```C#
+// Site needs to be set in multi lingual, without you can't add additional languages
+clientContext.Web.IsMultilingual = true;
 clientContext.Web.AddSupportedUILanguage(1035);
 clientContext.Web.Update();
 clientContext.ExecuteQuery();

@@ -1,4 +1,4 @@
-# Use workflow to provision a SharePoint site (app web) #
+# Use workflow to provision a SharePoint site (add-in web) #
 
 ### Summary ###
 Learn how to use a workflow to provision a SharePoint site by using the remote provisioning pattern and CSOM
@@ -12,7 +12,7 @@ Learn how to use a workflow to provision a SharePoint site by using the remote p
 - Visual Studio 2012 or Visual Studio 2013
 - Microsoft Office Developer Tools for Visual Studio
 - A SharePoint 2013 development environment
-- Create on the host web an approval workflow and associated list identical to the ones deployed to the app web
+- Create on the host web an approval workflow and associated list identical to the ones deployed to the add-in web
 
 ### Solution ###
 Solution | Author(s)
@@ -31,11 +31,11 @@ Version  | Date | Comments
 ----------
 
 # Introduction #
-This sample demonstrates how to use a workflow to provision a SharePoint site by using the remote provisioning pattern and CSOM. The sample uses an app installed event to associate a remote event receiver with the custom list on the host web.
+This sample demonstrates how to use a workflow to provision a SharePoint site by using the remote provisioning pattern and CSOM. The sample uses an add-in installed event to associate a remote event receiver with the custom list on the host web.
 
 For a more detailed description of this sample, see Module 5 of the [SharePoint 2013 and SharePoint Online solution pack for branding and site provisioning](http://www.microsoft.com/downloads/details.aspx?FamilyID=2c8011b0-441a-4bab-bf19-6b1009c7d8dd).
 
 
 ## Configure the sample ##
-Check the **Handle App Installed** property in the project property of the app for SharePoint project.
+Check the **Handle Add-In Installed** property in the project property of the add-in for SharePoint project.
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.2.515.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-SPECIALTEAM">
     <pnp:ProvisioningTemplate ID="SPECIALTEAM" Version="1">
       <pnp:SitePolicy>HBI</pnp:SitePolicy>

@@ -11,7 +11,7 @@ using File = Microsoft.SharePoint.Client.File;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectFiles : ObjectHandlerBase
+    internal class ObjectFiles : ObjectHandlerBase
     {
         public override string Name
         {
@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             {
                                 var wpEntity = new WebPartEntity();
                                 wpEntity.WebPartTitle = webpart.Title;
-                                wpEntity.WebPartXml = webpart.Contents.ToParsedString();
+                                wpEntity.WebPartXml = webpart.Contents.ToParsedString().Trim(new[] { '\n', ' ' });
                                 wpEntity.WebPartZone = webpart.Zone;
                                 wpEntity.WebPartIndex = (int) webpart.Order;
 
@@ -158,6 +158,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Files.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = false;
+            }
+            return _willExtract.Value;
         }
     }
 }

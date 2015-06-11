@@ -130,6 +130,7 @@
     <Content Include="Lists\Regions\RegionsInstance\Elements.xml" />
     <Content Include="Lists\Regions\Schema.xml" />
     <Content Include="Style Library\Elements.xml" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\AnnouncementAccordion.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\Colours.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GenericTemplates.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Generics\GoogleMaps.js" />
@@ -143,6 +144,9 @@
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\GoogleMapSpacialDialog.aspx" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\jquery.ui.map.min.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Pages\json2.js" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Styles\accordion.css" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\Styles\accordion_sprite.png" />
+    <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementAccordionView.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\AnnouncementView.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\FavouriteColours.js" />
     <Content Include="Style Library\OfficeDevPnP\Branding.JSLink\TemplateOverrides\GoogleMapOverrides.js" />

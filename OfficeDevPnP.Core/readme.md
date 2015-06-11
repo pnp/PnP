@@ -72,7 +72,7 @@ To use this extension method you can do this:
 cc.Web.CreateContentType("My CT","0x0101009189AB5D3D2647B580F011DA2F356FB2", "My custom content types group");
 ```
 
-This is pretty typical example of the extension methods which are provided. In the provider hosted app side, we only need one line of code, which encapsulates all the other needed operations.
+This is pretty typical example of the extension methods which are provided. In the provider hosted add-in side, we only need one line of code, which encapsulates all the other needed operations.
 
 ## Entities ##
 Entities are simple classes used to provide and retrieve more complex objects from the extensions methods in AppModelExtensions. Currently following entities are defined:
@@ -96,7 +96,7 @@ Utility classes (helper classes) are created in this folder.
 
 
 ## AuthenticationManager.cs ##
-AuthenticationManager is the class that you can use to obtain a client context in case you’re not having one available as part of the SharePoint App (e.g. in console projects) or when you want to create a client context using different credentials or using an AppOnly app. Following methods are available 
+AuthenticationManager is the class that you can use to obtain a client context in case you’re not having one available as part of the SharePoint add-in (e.g. in console projects) or when you want to create a client context using different credentials or using an AppOnly add-in. Following methods are available 
 for this class:
 
 ```C#
@@ -140,10 +140,10 @@ The terms *Web* and *SiteCollection* are preferred.
 
 If the term Site is used, it should always refer to the Site Collection; never use Site to refer to a Web.
 
-## App Model Extensions ##
+## Add-In Model Extensions ##
 Classes derived from ClientObject have a Context property that can be used for operations, such as ExecuteQueryRetry.
 
-The App Model Extensions API should extend from the relevant entity object, e.g. creating a new List should extended from the Web where it should be created, adding an existing Content Type to a List should extend from a List.
+The Add-In Model Extensions API should extend from the relevant entity object, e.g. creating a new List should extended from the Web where it should be created, adding an existing Content Type to a List should extend from a List.
 
 Do not generally extend from collections, as they are less discoverable, e.g.do not extend from ContentTypeCollection.
 
@@ -179,7 +179,7 @@ Delete is used for destroying an object. In PowerShell Cmdlets use Remove- (the 
 
 Examples: Creating a new site collection, creating a new site content type (in the context of a Web), adding a new child Web, adding a new List, deleting a site column from a Web (contrast with removing a site column from a Content Type or List), deleting a child Web.
 
-Note that the last two (new child Web, new List) are still Create operations in the API, as primarily they still create new elements, even though in the UI the term add may be used (e.g. 'add an app').
+Note that the last two (new child Web, new List) are still Create operations in the API, as primarily they still create new elements, even though in the UI the term add may be used (e.g. 'add an add-in').
 
 Applies to:
 - SiteCollection

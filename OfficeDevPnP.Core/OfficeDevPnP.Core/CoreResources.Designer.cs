@@ -849,6 +849,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Site Policy.
+        /// </summary>
+        internal static string Provisioning_ObjectHandlers_SitePolicy {
+            get {
+                return ResourceManager.GetString("Provisioning_ObjectHandlers_SitePolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Site Security.
         /// </summary>
         internal static string Provisioning_ObjectHandlers_SiteSecurity {
@@ -881,6 +890,15 @@ namespace OfficeDevPnP.Core {
         internal static string Provisioning_ObjectHandlers_TermGroups {
             get {
                 return ResourceManager.GetString("Provisioning_ObjectHandlers_TermGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot process XML file {0}..
+        /// </summary>
+        internal static string Provisioning_Providers_XML_InvalidFileFormat {
+            get {
+                return ResourceManager.GetString("Provisioning_Providers_XML_InvalidFileFormat", resourceCulture);
             }
         }
         

@@ -222,7 +222,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool Equals(ProvisioningTemplate other)
         {
             return (
-                this.ComposedLook == other.ComposedLook &&
+                this.ComposedLook.Equals(other.ComposedLook) &&
                 this.ContentTypes.DeepEquals(other.ContentTypes) &&
                 this.CustomActions.SiteCustomActions.DeepEquals(other.CustomActions.SiteCustomActions) &&
                 this.CustomActions.WebCustomActions.DeepEquals(other.CustomActions.WebCustomActions) &&

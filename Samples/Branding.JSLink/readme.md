@@ -35,6 +35,7 @@ Branding.JSLink | Martin Hatch *(@martinhatch)*
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | May 30th 2015 | Added accordion view by Robrecht Van Caenegem
 1.0  | April 22nd 2015 | Initial release
 
 ### Disclaimer ###
@@ -93,6 +94,16 @@ This is a simple colour picker scenario with all of the HTML colours rendering i
 This also includes an example of a "Validator" where you can control validation of data entry through the SharePoint CSR techniques
 
 ![](readme-images/Fav_Colours_Validate.png)
+
+## Announcements Accordion ##
+This is a sample that will transform your announcements list into an accordion.
+
+![](readme-images/AnnouncementsAccordion.png)
+
+You can apply the jslink onto an existing announcements list by changing the jslink property of the listview webpart to:
+~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/jquery-1.10.2.min.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/Generics/AnnouncementAccordion.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/AnnouncementAccordionView.js
+
+Make sure that the list view includes the Body column.
 
 # Reusable Framework #
 Although this is a essentially a set of sample code, there are a number of reusable elements which you could use in your own solutions.
