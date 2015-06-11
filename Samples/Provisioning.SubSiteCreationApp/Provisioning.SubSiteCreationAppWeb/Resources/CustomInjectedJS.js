@@ -1,6 +1,10 @@
 ﻿// Register script for MDS if possible
 RegisterModuleInit("CustomInjectedJS.js", SubSiteOverride_Inject); //MDS registration
-SubSiteOverride_Inject(); //non MDS run
+
+// https://github.com/OfficeDev/PnP/issues/564 When publishing feature is enabled, subsite link override fails 
+document.addEventListener("DOMContentLoaded", function (event) {
+    SubSiteOverride_Inject(); //non MDS run
+});
 
 // Actual execution
 function SubSiteOverride_Inject() {
