@@ -139,6 +139,7 @@
     <Compile Include="Utilities\ILog.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\LoggerFactory.cs" />
     <Compile Include="Utilities\ReflectionHelper.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\XmlSerializerHelper.cs" />

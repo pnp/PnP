@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Provisioning.Common.Utilities;
 using Provisioning.Common.Data.SiteRequests;
+using System.Diagnostics;
 
 namespace Provisioning.Common.Data.SiteRequests.Impl
 {
@@ -29,6 +30,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         const string CAML_GETREQUEST_BY_URL = "<View><Query><Where><Eq><FieldRef Name='SP_Url'/><Value Type='Text'>{0}</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_APPROVEDREQUESTS = "<View><Query><Where><Eq><FieldRef Name='SP_ProvisioningStatus'/><Value Type='Text'>Approved</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_GETREQUESTSBYOWNER = "<View><Query><Where><Eq><FieldRef Name='SP_Owner' LookupId='True'/><Value Type='Int'>{0}</Value></Eq></Where></Query></View>";
+        ILog _logger = LoggerFactory.GetLogger();
         #endregion
 
         #region Constructor
@@ -357,21 +359,31 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         #region ISiteRequestManager Members
 
         public ICollection<SiteRequestInformation> GetOwnerRequests(string email)
-        {
+        {  
             ICollection<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
             UsingContext(ctx =>
             {
-                var _user = ctx.Web.EnsureUser(email);
-                ctx.Load(_user);
-                ctx.ExecuteQuery();
-
-                if(_user != null)
+                Stopwatch _timespan = Stopwatch.StartNew();
+                try
                 {
-                    var _userID = _user.Id;
-                    var camlString = string.Format(CAML_GETREQUESTSBYOWNER, _userID);
-                    _returnResults = this.GetSiteRequestsByCaml(camlString);
-                }
+                    var _user = ctx.Web.EnsureUser(email);
+                    ctx.Load(_user);
+                    ctx.ExecuteQuery();
 
+                    if (_user != null)
+                    {
+                        var _userID = _user.Id;
+                        var camlString = string.Format(CAML_GETREQUESTSBYOWNER, _userID);
+                        _returnResults = this.GetSiteRequestsByCaml(camlString);
+
+                        _timespan.Stop();
+                        this._logger.TraceApi("SiteRequestList", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
+                    }
+                }
+                catch (Exception _ex)
+                {
+                  
+                }
             });
             return _returnResults;
         }
@@ -380,6 +392,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         {
             UsingContext(ctx =>
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
                 var web = ctx.Web;
 
                 if(!web.ListExists(SiteRequestList.TITLE)) {
@@ -428,10 +441,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         _record[SiteRequestFields.ADD_ADMINS_NAME] = _additionalAdmins;
                     }
                 }
-            
                 _record.Update();
                 ctx.ExecuteQuery();
-                Log.Info("Provisioning.Common.Data.Impl.UpdateRequestStatus", PCResources.SiteRequestNew_Successfull, siteRequest.Url);
+
+                _timespan.Stop();
+                this._logger.TraceApi("SiteRequestList", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
+                Log.Info("SPSiteRequestManager.GetOwnerRequests", PCResources.SiteRequestNew_Successfull, siteRequest.Url);
             }
             );
         }

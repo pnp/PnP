@@ -8,10 +8,17 @@ using System.Threading.Tasks;
 namespace Provisioning.Common.Utilities
 {
     /// <summary>
-    /// Logging Implementation class
+    /// Logging Implementation class.
     /// </summary>
-    public class Logger : ILog
+    internal class Logger : ILog
     {
+        private static readonly Logger _instance = new Logger();
+
+        public static ILog Instance
+        {
+            get { return _instance; }
+        }
+
         public void Information(string message)
         {
             Trace.TraceInformation(message);
