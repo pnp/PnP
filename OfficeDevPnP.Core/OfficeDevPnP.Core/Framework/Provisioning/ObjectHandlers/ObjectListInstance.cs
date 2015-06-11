@@ -129,7 +129,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
-
                 #region Views
 
                 foreach (var listInfo in processedLists)
@@ -243,51 +242,84 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (listInstance.DataRows != null && listInstance.DataRows.Any())
                     {
                         var list = listInfo.SiteList;
+
+                        // Retrieve the fields' types from the list
+                        FieldCollection fields = listInfo.SiteList.Fields;
+                        web.Context.Load(fields);
+                        web.Context.ExecuteQueryRetry();
+
                         foreach (var dataRow in listInfo.TemplateList.DataRows)
                         {
-                        var listitemCI = new ListItemCreationInformation();
+                            var listitemCI = new ListItemCreationInformation();
                             var listitem = list.AddItem(listitemCI);
+
                             foreach (var dataValue in dataRow.Values)
                             {
-                            //Value
-                            var fieldValue = dataValue.Value.ToParsedString();
-
-                            if (fieldValue.Contains(",")) //This can be a field of type URL
-                            {
-                                //Find the given field for his type
-                                var field = list.Fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
-
-                                //Get Provisionned field
-                                web.Context.Load(field);
+                                // Consider doing performance improvements
+                                Field dataField = fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
+                                web.Context.Load(dataField);
                                 web.Context.ExecuteQueryRetry();
 
-                                //Special logic to create FieldUrlValue when field type is Url
-                                if (field != null && field.FieldTypeKind == FieldType.URL)
+                                if (dataField != null)
                                 {
-                                    //Default format of url (URL, Description)
-                                    var urlArray = fieldValue.Split(',');
-                                    var link = new FieldUrlValue
+                                    String fieldValue = dataValue.Value.ToParsedString();
+
+                                    switch (dataField.FieldTypeKind)
                                     {
-                                        Url = urlArray[0],
-                                        Description = urlArray[1]
-                                    };
-                                    listitem[dataValue.Key.ToParsedString()] = link;
+                                        case FieldType.Geolocation:
+                                            // FieldGeolocationValue - Expected format: Altitude,Latitude,Longitude,Measure
+                                            var geolocationArray = fieldValue.Split(',');
+                                            var geolocationValue = new FieldGeolocationValue
+                                            {
+                                                Altitude = Double.Parse(geolocationArray[0]),
+                                                Latitude = Double.Parse(geolocationArray[1]),
+                                                Longitude = Double.Parse(geolocationArray[2]),
+                                                Measure = Double.Parse(geolocationArray[3]),
+                                            };
+                                            listitem[dataValue.Key.ToParsedString()] = geolocationValue;
+                                            break;
+                                        case FieldType.Lookup:
+                                            // FieldLookupValue - Expected format: LookupID
+                                            var lookupValue = new FieldLookupValue
+                                            {
+                                                LookupId = Int32.Parse(fieldValue),
+                                            };
+                                            listitem[dataValue.Key.ToParsedString()] = lookupValue;
+                                            break;
+                                        case FieldType.URL:
+                                            // FieldUrlValue - Expected format: URL,Description
+                                            var urlArray = fieldValue.Split(',');
+                                            var linkValue = new FieldUrlValue
+                                            {
+                                                Url = urlArray[0],
+                                                Description = urlArray[1]
+                                            };
+                                            listitem[dataValue.Key.ToParsedString()] = linkValue;
+                                            break;
+                                        case FieldType.User:
+                                            // FieldUserValue - Expected format: loginName
+                                            var user = web.EnsureUser(fieldValue);
+                                            web.Context.Load(user);
+                                            web.Context.ExecuteQueryRetry();
+
+                                            var userValue = new FieldUserValue
+                                            {
+                                                LookupId = user.Id,
+                                            };
+                                            listitem[dataValue.Key.ToParsedString()] = userValue;
+                                            break;
+                                        default:
+                                            listitem[dataValue.Key.ToParsedString()] = fieldValue;
+                                            break;
+                                    }
                                 }
-                                else //No Description
-                                {
-                                    listitem[dataValue.Key.ToParsedString()] = fieldValue;
-                                }
+
+                                listitem.Update();
                             }
-                            else //Default Value
-                            {
-                                listitem[dataValue.Key.ToParsedString()] = fieldValue;
-                            }
-                            listitem.Update();
-                        }
                             web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
                         }
                     }
-
+                }
                 #endregion
             }
         }
