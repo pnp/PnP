@@ -11,6 +11,10 @@
     <AssemblyName>OfficeDevPnP.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>%24/PwC Tax Operations Manager/TOM2/Main/3rdParty/OfficeDevPnP/PnP/OfficeDevPnP.Core/OfficeDevPnP.Core</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs2013.agilethought.com/tfs/atclient2012</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

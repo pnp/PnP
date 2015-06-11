@@ -10,7 +10,7 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectListPostProcessing : ObjectHandlerBase
+    internal class ObjectListPostProcessing : ObjectHandlerBase
     {
         public override string Name
         {
@@ -183,6 +183,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
 
             }
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Lists.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = false;
+            }
+            return _willExtract.Value;
         }
     }
 }
