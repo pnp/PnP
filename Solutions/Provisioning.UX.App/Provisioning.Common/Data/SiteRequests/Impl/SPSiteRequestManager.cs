@@ -48,23 +48,30 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         {
             try
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
+
                 SiteRequestList.CreateSharePointRepositoryList(ctx.Web,
                     SiteRequestList.TITLE,
                     SiteRequestList.DESCRIPTION,
                     SiteRequestList.LISTURL);
-                
-                Log.Info("Provisioning.Common.Data.SiteRequests.Impl.SPSiteRequestManagerImpl.HandleSiteRequestList",
-                    PCResources.SiteRequest_List_Creation_SuccessFull, SiteRequestList.LISTURL, ctx.Url,
+
+                this._logger.Information("SPSiteRequestManager.HandleSiteRequestList",
+                    PCResources.SiteRequest_List_Creation_Successful, SiteRequestList.LISTURL, ctx.Url,
                     SiteRequestList.LISTURL,
                     ctx.Url);
+                
+                _timespan.Stop();
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.HandleSiteRequestList", _timespan.Elapsed);
             }
             catch (Exception _ex)
             {
-                Log.Fatal("Provisioning.Common.Data.SiteRequests.Impl.SPSiteRequestManagerImpl.HandleSiteRequestList",
+                var _message = String.Format(PCResources.SiteRequest_List_Creation_Error, SiteRequestList.LISTURL, ctx.Url, _ex.Message);
+                this._logger.Error("SPSiteRequestManager.HandleSiteRequestList",
                     PCResources.SiteRequest_List_Creation_Error,
                     SiteRequestList.LISTURL,
                     ctx.Url,
                     _ex);
+                throw new DataStoreException(_message, _ex);
             }
         }
         /// <summary>
@@ -98,9 +105,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             User _user = ctx.Web.EnsureUser(_fieldUser.LookupValue);
             ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.PrincipalType, u => u.Title);
             ctx.ExecuteQuery();
-
-       //     _owner.Email = _user.Email;
-       //     _owner.LoginName = _user.LoginName;
             _owner.Name = _user.Email;
             return _owner;
         }
@@ -189,6 +193,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             List<SiteRequestInformation> _siteRequests = new List<SiteRequestInformation>();
             UsingContext(ctx =>
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
+
                 var _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = camlQuery;
                 var web = ctx.Web;
@@ -197,9 +203,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     this.HandleSiteRequestList(ctx);
                 }
 
-                var list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
+                var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
 
-                var _listItemCollection = list.GetItems(_camlQuery);
+                var _listItemCollection = _list.GetItems(_camlQuery);
                 ctx.Load(_listItemCollection,
                      eachItem => eachItem.Include(
                      item => item,
@@ -243,6 +249,14 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     };
                     _siteRequests.Add(_site);
                 }
+              
+                _timespan.Stop();
+                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml", 
+                    "Queried SharePoint Request Repository {0}, Caml Query {1}",
+                     SiteRequestList.LISTURL,
+                      _camlQuery.ViewXml);
+
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
             });
             return _siteRequests;
         }
@@ -251,9 +265,11 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         {
             SiteRequestInformation _siteRequest = null;
             UsingContext(ctx =>
-            { 
-                CamlQuery _caml = new CamlQuery();
-                _caml.ViewXml = string.Format(camlQuery, filter);
+            {
+                Stopwatch _timespan = Stopwatch.StartNew();
+
+                CamlQuery _camlQuery = new CamlQuery();
+                _camlQuery.ViewXml = string.Format(camlQuery, filter);
                 var web = ctx.Web;
 
                 if (!web.ListExists(SiteRequestList.TITLE))
@@ -262,7 +278,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
 
                 var list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
-                var _listItemCollection = list.GetItems(_caml);
+                var _listItemCollection = list.GetItems(_camlQuery);
 
                 ctx.Load(_listItemCollection,
                     eachItem => eachItem.Include(
@@ -286,6 +302,14 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     item => item[SiteRequestFields.STATUSMESSAGE_NAME]));
                 ctx.ExecuteQuery();
 
+                _timespan.Stop();
+                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
+                 "Queried SharePoint Request Repository {0}, Caml Query {1}",
+                  SiteRequestList.LISTURL,
+                   _camlQuery.ViewXml);
+
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
+
                 if (_listItemCollection.Count > 0)
                 {
                     ListItem _item = _listItemCollection.First();
@@ -308,9 +332,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         PropertiesJSON = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
                         RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
                     };
-
-                   
                 }
+
             });
 
             return _siteRequest;
@@ -357,7 +380,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         #endregion
 
         #region ISiteRequestManager Members
-
         public ICollection<SiteRequestInformation> GetOwnerRequests(string email)
         {  
             ICollection<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
@@ -370,19 +392,23 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     ctx.Load(_user);
                     ctx.ExecuteQuery();
 
-                    if (_user != null)
+                    if (_user != null) 
                     {
                         var _userID = _user.Id;
                         var camlString = string.Format(CAML_GETREQUESTSBYOWNER, _userID);
                         _returnResults = this.GetSiteRequestsByCaml(camlString);
 
                         _timespan.Stop();
-                        this._logger.TraceApi("SiteRequestList", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
+                        this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
+                    }
+                    else
+                    {
+                        //TODO LOG 
                     }
                 }
-                catch (Exception _ex)
+                catch (Exception _ex) 
                 {
-                  
+                  //TODO LOG
                 }
             });
             return _returnResults;
@@ -414,11 +440,13 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 _record[SiteRequestFields.BC_NAME] = siteRequest.BusinessCase;
                 _record[SiteRequestFields.PROPS_NAME] = siteRequest.PropertiesJSON;
                 //If Settings are set to autoapprove then automatically approve the requests
-                if(_manager.GetAppSettings().AutoApprove) {
+                if(_manager.GetAppSettings().AutoApprove) 
+                {
                     _record[SiteRequestFields.PROVISIONING_STATUS_NAME] = SiteRequestStatus.Approved.ToString();
                     _record[SiteRequestFields.APPROVEDDATE_NAME] = DateTime.Now;
                 }
-                else {
+                else 
+                {
                     _record[SiteRequestFields.PROVISIONING_STATUS_NAME] = SiteRequestStatus.New.ToString();
                 }
                 
@@ -445,8 +473,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-                this._logger.TraceApi("SiteRequestList", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
-                Log.Info("SPSiteRequestManager.GetOwnerRequests", PCResources.SiteRequestNew_Successfull, siteRequest.Url);
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
+                Log.Info("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
             }
             );
         }
@@ -485,11 +513,10 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         {
             UsingContext(ctx =>
             {
-                Log.Info("Provisioning.Common.Data.Impl.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successfull, url, status.ToString());
+                Stopwatch _timespan = Stopwatch.StartNew();
                
                 var web = ctx.Web;
-                if (!web.ListExists(SiteRequestList.TITLE))
-                {
+                if (!web.ListExists(SiteRequestList.TITLE)) {
                     this.HandleSiteRequestList(ctx);
                 }
 
@@ -501,19 +528,20 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.Load(_itemCollection);
                 ctx.ExecuteQuery();
 
-                if (_itemCollection.Count != 0)
-                {
+                if (_itemCollection.Count != 0) {
                     ListItem _item = _itemCollection.FirstOrDefault();
                     _item[SiteRequestFields.PROVISIONING_STATUS_NAME] = status.ToString();
                
-                    if (!string.IsNullOrEmpty(statusMessage))
-                    {
+                    if (!string.IsNullOrEmpty(statusMessage)) {
                         _item[SiteRequestFields.STATUSMESSAGE_NAME] = statusMessage;
                     }
                     _item.Update();
                     ctx.ExecuteQuery();
-         
                 }
+
+                _timespan.Stop();
+                this._logger.Information("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, status.ToString());
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestStatus", _timespan.Elapsed);
             });
 
         }
