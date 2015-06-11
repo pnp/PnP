@@ -1049,16 +1049,17 @@ namespace Microsoft.SharePoint.Client
         /// will be compared with the default base template.
         /// </summary>
         /// <param name="web">Web to get template from</param>
-        /// <param name="connector">Connector that will be used to persist the files retrieved from the template "get"</param>
         /// <param name="creationInfo">Specifies additional settings and/or properties</param>
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
         public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
             return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
         }
+
         #endregion
 
         #region Output Cache
+
         /// <summary>
         /// Sets output cache on publishing web. The settings can be maintained from UI by visiting url /_layouts/15/sitecachesettings.aspx
         /// </summary>
@@ -1082,7 +1083,7 @@ namespace Microsoft.SharePoint.Client
             web.SetPropertyBagValue("AuthenticatedPageCacheProfileUrl", string.Format(cacheProfileUrl, authenticatedCacheProfileId));
             web.SetPropertyBagValue("EnableDebuggingOutput", debugCacheInformation.ToString());
         }
-        #endregion
 
+        #endregion
     }
 }
