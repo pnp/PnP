@@ -269,14 +269,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                         case FieldType.Geolocation:
                                             // FieldGeolocationValue - Expected format: Altitude,Latitude,Longitude,Measure
                                             var geolocationArray = fieldValue.Split(',');
-                                            var geolocationValue = new FieldGeolocationValue
+                                            if (geolocationArray.Length == 4)
                                             {
-                                                Altitude = Double.Parse(geolocationArray[0]),
-                                                Latitude = Double.Parse(geolocationArray[1]),
-                                                Longitude = Double.Parse(geolocationArray[2]),
-                                                Measure = Double.Parse(geolocationArray[3]),
-                                            };
-                                            listitem[dataValue.Key.ToParsedString()] = geolocationValue;
+                                                var geolocationValue = new FieldGeolocationValue
+                                                {
+                                                    Altitude = Double.Parse(geolocationArray[0]),
+                                                    Latitude = Double.Parse(geolocationArray[1]),
+                                                    Longitude = Double.Parse(geolocationArray[2]),
+                                                    Measure = Double.Parse(geolocationArray[3]),
+                                                };
+                                                listitem[dataValue.Key.ToParsedString()] = geolocationValue;
+                                            }
+                                            else
+                                            {
+                                                listitem[dataValue.Key.ToParsedString()] = fieldValue;
+                                            }
                                             break;
                                         case FieldType.Lookup:
                                             // FieldLookupValue - Expected format: LookupID
@@ -289,11 +296,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                         case FieldType.URL:
                                             // FieldUrlValue - Expected format: URL,Description
                                             var urlArray = fieldValue.Split(',');
-                                            var linkValue = new FieldUrlValue
+                                            var linkValue = new FieldUrlValue();
+                                            if (urlArray.Length == 2)
                                             {
-                                                Url = urlArray[0],
-                                                Description = urlArray[1]
-                                            };
+                                                linkValue.Url = urlArray[0];
+                                                linkValue.Description = urlArray[1];
+                                            }
+                                            else
+                                            {
+                                                linkValue.Url = urlArray[0];
+                                                linkValue.Description = urlArray[0];
+                                            }
                                             listitem[dataValue.Key.ToParsedString()] = linkValue;
                                             break;
                                         case FieldType.User:
@@ -302,18 +315,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                             web.Context.Load(user);
                                             web.Context.ExecuteQueryRetry();
 
-                                            var userValue = new FieldUserValue
+                                            if (user != null)
                                             {
-                                                LookupId = user.Id,
-                                            };
-                                            listitem[dataValue.Key.ToParsedString()] = userValue;
+                                                var userValue = new FieldUserValue
+                                                {
+                                                    LookupId = user.Id,
+                                                };
+                                                listitem[dataValue.Key.ToParsedString()] = userValue;
+                                            }
+                                            else
+                                            {
+                                                listitem[dataValue.Key.ToParsedString()] = fieldValue;
+                                            }
                                             break;
                                         default:
                                             listitem[dataValue.Key.ToParsedString()] = fieldValue;
                                             break;
                                     }
                                 }
-
                                 listitem.Update();
                             }
                             web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
