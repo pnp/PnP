@@ -164,8 +164,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingCustomAction.Url = customAction.Url.ToParsedString();
                             isDirty = true;
                         }
-                        existingCustomAction.Update();
-                        existingCustomAction.Context.ExecuteQueryRetry();
+                        if (isDirty)
+                        {
+                            existingCustomAction.Update();
+                            existingCustomAction.Context.ExecuteQueryRetry();
+                        }
                     }
                 }
             }
