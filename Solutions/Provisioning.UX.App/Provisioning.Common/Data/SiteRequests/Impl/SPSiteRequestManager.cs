@@ -75,7 +75,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             }
         }
         /// <summary>
-        /// Used to get a value from a list
+        /// Used to get a value from a list item
         /// </summary>
         /// <param name="item"></param>
         /// <param name="fieldName"></param>
@@ -85,6 +85,13 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return item[fieldName] == null ? String.Empty : item[fieldName].ToString();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
         private T BaseGet<T>(ListItem item, string fieldName)
         {
             var value = item[fieldName];
@@ -92,7 +99,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
     
         /// <summary>
-        /// 
+        /// Used to get a User Object from a list item
         /// </summary>
         /// <param name="ctx"></param>
         /// <param name="item"></param>
@@ -110,7 +117,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
 
         /// <summary>
-        /// Method to Help with Converting to Int
+        /// Used to get a value from a list item and convert to Int
         /// </summary>
         /// <param name="item"></param>
         /// <param name="fieldName"></param>
@@ -121,7 +128,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
 
         /// <summary>
-        /// Method to return a uint from a string field
+        /// Used to get a value from a list item and convert to UInt
         /// </summary>
         /// <param name="item"></param>
         /// <param name="fieldName"></param>
@@ -169,34 +176,26 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _users;
         }
        
-        /// <summary>
-        /// Helper to Get the web of a given site collection using Tenant API
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="ctx"></param>
-        /// <returns></returns>
-        private Web GetWeb(string url, ClientContext ctx)
-        {
-            Tenant tenant = new Tenant(ctx);
-            var site = tenant.GetSiteByUrl(url);
-            var web = site.RootWeb;
-            return web;
-        }
 
         /// <summary>
-        /// Helper Member to return SiteRequest from the SharePoint SiteRequest Repository
+        /// Member to return SiteRequest from the SharePoint SiteRequest Repository
         /// </summary>
-        /// <param name="camlQuery"></param>
+        /// <param name="camlQuery">Query Query to Execute</param>
         /// <returns></returns>
         private ICollection<SiteRequestInformation> GetSiteRequestsByCaml(string camlQuery)
-        {
+        {   
             List<SiteRequestInformation> _siteRequests = new List<SiteRequestInformation>();
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
-
                 var _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = camlQuery;
+
+                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
+                    "Querying SharePoint Request Repository {0}, Caml Query {1}",
+                    SiteRequestList.LISTURL,
+                    _camlQuery.ViewXml);
+
                 var web = ctx.Web;
                 if (!web.ListExists(SiteRequestList.TITLE))
                 {
@@ -204,7 +203,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
 
                 var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
-
                 var _listItemCollection = _list.GetItems(_camlQuery);
                 ctx.Load(_listItemCollection,
                      eachItem => eachItem.Include(
@@ -226,6 +224,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                      item => item[SiteRequestFields.PROPS_NAME],
                      item => item[SiteRequestFields.STATUSMESSAGE_NAME]));
                 ctx.ExecuteQuery();
+
+                _timespan.Stop();
+                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
 
                 foreach (ListItem _item in _listItemCollection)
                 {
@@ -249,14 +250,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     };
                     _siteRequests.Add(_site);
                 }
-              
-                _timespan.Stop();
-                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml", 
-                    "Queried SharePoint Request Repository {0}, Caml Query {1}",
-                     SiteRequestList.LISTURL,
-                      _camlQuery.ViewXml);
-
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
             });
             return _siteRequests;
         }
@@ -267,18 +260,24 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
-
                 CamlQuery _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = string.Format(camlQuery, filter);
-                var web = ctx.Web;
 
-                if (!web.ListExists(SiteRequestList.TITLE))
+                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
+                  "Querying SharePoint Request Repository: {0}, Caml Query: {1} Filter: {2}",
+                  SiteRequestList.LISTURL,
+                  _camlQuery.ViewXml,
+                  filter);
+
+                var _web = ctx.Web;
+
+                if (!_web.ListExists(SiteRequestList.TITLE))
                 {
                     this.HandleSiteRequestList(ctx);
                 }
 
-                var list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
-                var _listItemCollection = list.GetItems(_camlQuery);
+                var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
+                var _listItemCollection = _list.GetItems(_camlQuery);
 
                 ctx.Load(_listItemCollection,
                     eachItem => eachItem.Include(
@@ -303,11 +302,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
-                 "Queried SharePoint Request Repository {0}, Caml Query {1}",
-                  SiteRequestList.LISTURL,
-                   _camlQuery.ViewXml);
-
                 this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
 
                 if (_listItemCollection.Count > 0)
@@ -333,9 +327,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
                     };
                 }
-
             });
-
             return _siteRequest;
         }
         #endregion
