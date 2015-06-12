@@ -245,7 +245,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         // Retrieve the fields' types from the list
                         FieldCollection fields = listInfo.SiteList.Fields;
-                        web.Context.Load(fields);
+                        web.Context.Load(fields, fs => fs.Include(f => f.InternalName, f => f.FieldTypeKind));
                         web.Context.ExecuteQueryRetry();
 
                         foreach (var dataRow in listInfo.TemplateList.DataRows)
@@ -255,10 +255,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                             foreach (var dataValue in dataRow.Values)
                             {
-                                // Consider doing performance improvements
-                                Field dataField = fields.GetByInternalNameOrTitle(dataValue.Key.ToParsedString());
-                                web.Context.Load(dataField);
-                                web.Context.ExecuteQueryRetry();
+                                Field dataField = fields.FirstOrDefault(
+                                    f => f.InternalName == dataValue.Key.ToParsedString());
 
                                 if (dataField != null)
                                 {
