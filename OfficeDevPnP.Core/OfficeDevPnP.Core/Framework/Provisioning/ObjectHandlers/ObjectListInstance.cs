@@ -323,9 +323,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private void UpdateField(Web web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement)
         {
-            var existingField = web.Fields.GetById(fieldId);
-            web.Context.Load(existingField, f => f.SchemaXml);
-            web.Context.ExecuteQueryRetry();
+            Field existingField = null;
+
+            // list assoc field
+            try
+            {
+                existingField = listInfo.SiteList.Fields.GetById(fieldId);
+                web.Context.Load(existingField, f => f.SchemaXml);
+                web.Context.ExecuteQueryRetry();
+            }
+            catch (Exception)
+            {
+                // web assoc field
+                try
+                {
+                    existingField = web.Fields.GetById(fieldId);
+                    web.Context.Load(existingField, f => f.SchemaXml);
+                    web.Context.ExecuteQueryRetry();
+                }
+                catch (Exception)
+                {
+                    WriteWarning(string.Format("Field with Id {0} exists not in list {1} and also not in web {2}. Skipping field.", fieldId, listInfo.TemplateList.Title, web.Title), ProvisioningMessageType.Warning);
+                }
+            }
+
+            if (existingField == null) return;
 
             XElement existingFieldElement = XElement.Parse(existingField.SchemaXml);
 
