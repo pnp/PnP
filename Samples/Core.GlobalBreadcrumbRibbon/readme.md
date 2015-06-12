@@ -62,3 +62,11 @@ The Page has 2 buttons to support the provision.
 - Ribbons Custom Actions can be included in the Global Ribbon.
 
 ![](http://i.imgur.com/bEF5uHX.png)
+
+
+### Support Links for some actions: ###
+**SP Ribbon Objects**
+[https://paulbuzzblog.wordpress.com/2012/11/23/how-to-hide-the-sharepoint-ribbon/](https://paulbuzzblog.wordpress.com/2012/11/23/how-to-hide-the-sharepoint-ribbon/)
+
+**Provision Files AppWeb to HostWeb**
+[http://www.sharepointnutsandbolts.com/2013/05/sp2013-host-web-apps-provisioning-files.html](http://www.sharepointnutsandbolts.com/2013/05/sp2013-host-web-apps-provisioning-files.html)
