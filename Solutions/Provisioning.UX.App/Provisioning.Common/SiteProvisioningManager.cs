@@ -64,7 +64,6 @@ namespace Provisioning.Common
             {
                 this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
                 this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
-                this._siteprovisioningService.SetSitePolicy(siteRequest.SitePolicy);
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
                 provisioningTemplate.Connector = this.GetProvisioningConnector();
                 provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);

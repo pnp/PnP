@@ -330,7 +330,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             var dict = connectionProps
                  .Select(x => x.Split('='))
                  .ToDictionary(i => i[0], i => i[1]);
-
             return dict;
         }
 

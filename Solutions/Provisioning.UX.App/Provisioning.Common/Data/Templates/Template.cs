@@ -127,12 +127,12 @@ namespace Provisioning.Common.Data.Templates
         [JsonProperty(PropertyName = "enabled")]
         public bool Enabled { get; set; }
        
-        /// <summary>
-        /// Gets or Sets the Template Configuration
-        /// </summary>
-        [XmlAttribute]
-        [JsonProperty(PropertyName = "provisioningTemplateContainer")]
-        public string ProvisioningTemplateContainer { get; set; }
+        ///// <summary>
+        ///// Gets or Sets the Template Configuration
+        ///// </summary>
+        //[XmlAttribute]
+        //[JsonProperty(PropertyName = "provisioningTemplateContainer")]
+        //public string ProvisioningTemplateContainer { get; set; }
 
         [XmlAttribute]
         [JsonProperty(PropertyName = "provisioningTemplate")]

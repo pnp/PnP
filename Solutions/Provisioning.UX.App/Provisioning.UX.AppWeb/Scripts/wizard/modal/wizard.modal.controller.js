@@ -226,6 +226,7 @@
         }
 
         function processNewSiteRequest(request) {
+
             $.when($SharePointProvisioningService.getSiteRequestByUrl(request)).done(function (data, status) {
                 if (data != null) {
                     if (status == 200) {
@@ -233,11 +234,19 @@
                         logError("There is an existing site request with this url. Please choose a new url for your site.");
                     }
                     else if (status == 404) {
-                        saveNewSiteRequest(request);
+
+                        $.when($SharePointProvisioningService.createNewSiteRequest(request)).done(function (data, status) {
+                            if (data != null) {
+                                logSuccess("Sweet!, Site Request has been submitted");
+                                $modalInstance.close($scope.siteConfiguration);
+                            }
+                        }).fail(function (data, status) {
+                            console.log(err);
+                        });
+                        console.log(request);
                     }
                 }
             });
-
             console.log(request);
         }
 
