@@ -1,10 +1,20 @@
 ﻿CoreGlobalBreadcrumbRibbon = {
     GetInit: function () {
-        PnPGlobal.CreateBreadcrumb()
+        PnPGlobal.GetUrlChange();
+        PnPGlobal.CreateBreadcrumb();
         PnPGlobal.CreateStyle();
-
+        PnPGlobal.LoadSiteBreadcrumb();
         window.addEventListener("DOMContentLoaded", RibbonValidation, false);
     },
+    GetUrlChange: function () {
+        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+            var element = document.createElement('script');
+            var UrlChange = "window.onhashchange = locationHashChanged;function locationHashChanged(){GetUrlDocMDS();}";
+            element.innerHTML = UrlChange;
+            document.getElementsByTagName('body')[0].appendChild(element);
+        }, "sp.js");
+    },
+
     CreateStyle: function () {
         var headID = document.getElementsByTagName("head")[0];
         var cssNode = document.createElement('style');
@@ -33,8 +43,55 @@
             }, function () { });
 
         }, "sp.js");
-    }
+    },
+    LoadSiteBreadcrumb: function () {
+        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+            var clientcontext = SP.ClientContext.get_current();
+            var site = clientcontext.get_site();
+            var currentWeb = clientcontext.get_web();
+            clientcontext.load(currentWeb, 'ServerRelativeUrl', 'Title', 'ParentWeb', 'Url');
+            clientcontext.load(site, 'ServerRelativeUrl');
+            clientcontext.executeQueryAsync(
+            function () {
+                var element = document.createElement('div');
+                var breadcrumb = '<ol id="breadcrumbSite" class="breadcrumb">';
+                breadcrumb = breadcrumb + '</ol>';
+                element.innerHTML = breadcrumb;
+                var Custombreadcrumb = document.getElementById("s4-bodyContainer");
+                Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                var li = document.createElement('li');
+                li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
+                var Custombreadcrumb = document.getElementById("breadcrumbSite");
+                Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+                if (site.get_serverRelativeUrl() !== currentWeb.get_serverRelativeUrl()) {
+                    PnPGlobal.RecursiveWeb(currentWeb.get_parentWeb().get_serverRelativeUrl())
+                }
+            }, fail);
+        }, "sp.js");
+    },
+    RecursiveWeb: function (siteUrl) {
+        var clientcontext = new SP.ClientContext(siteUrl);
+        var site = clientcontext.get_site();
+        var currentWeb = clientcontext.get_web();
+        clientcontext.load(currentWeb, 'ServerRelativeUrl', 'Title', 'ParentWeb', 'Url');
+        clientcontext.load(site, 'ServerRelativeUrl');
+        clientcontext.executeQueryAsync(
+    function () {
+        if (site.get_serverRelativeUrl() !== currentWeb.get_serverRelativeUrl()) {
+            var li = document.createElement('li');
+            li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
+            var Custombreadcrumb = document.getElementById("breadcrumbSite");
+            Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+            PnPGlobal.RecursiveWeb(currentWeb.get_parentWeb().get_serverRelativeUrl())
+        } else {
+            var li = document.createElement('li');
+            li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
+            var Custombreadcrumb = document.getElementById("breadcrumbSite");
+            Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+        }
 
+    }, fail);
+    }
 }
 window.PnPGlobal = window.CoreGlobalBreadcrumbRibbon;
 
@@ -75,7 +132,7 @@ function RibbonValidation() {
     }, "sp.ribbon.js");
 }
 function CreateRibbon() {
-
+    GetUrlDoc();
     var Ribbonhtml = document.createElement('div');
     Ribbonhtml.setAttribute("id", "CustomRibbon");
     Ribbonhtml.innerHTML = "<div><a href='#' onclick=\"alert('Custom Ribbon')\" ><img src='../_layouts/images/NoteBoard_32x32.png' /></a><br/>Ribbon Example</div><div><a href='#' onclick=\"LoadApps()\" ><img src='../_layouts/images/NoteBoard_32x32.png' /></a><br/>SP Add-in\'s</div>";
@@ -98,7 +155,17 @@ function LoadApps() {
     clientcontext.load(appinstancesList);
     clientcontext.executeQueryAsync(Success, fail);
 }
-
+function DialogApps(stringHtml) {
+    var element = document.createElement('div');
+    element.innerHTML = stringHtml;
+    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', {
+        html: element,
+        title: "SharePoint Add-in",
+        allowMaximize: false,
+        showClose: true,
+        autoSize: true
+    });
+}
 function Success() {
     var stringHtml = '';
     var list = appinstancesList.getEnumerator();
@@ -112,16 +179,101 @@ function Success() {
 function fail(sender, args) {
     alert(args.get_message());
 }
+function getQueryStringParameter(param, serverRelativeUrl) {
+    if (document.URL.split("?").length>1){
+    var params = document.URL.split("?")[1].split("&");
+    for (var i = 0; i < params.length; i = i + 1) {
+        var singleParam = params[i].split("=");
+        if (singleParam[0] == param) 
+            return decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
+    }
+    return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+    } else {
+        return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+    }
+}
+function getQueryStringParameterMDS(param) {
+    if (document.URL.split("#").length > 1) {
+        if (document.URL.split("?").length > 1) {
+            var params = document.URL.split("?")[1].split("&");
+            for (var i = 0; i < params.length; i = i + 1) {
+                var singleParam = params[i].split("=");
+                if (singleParam[0] == param) {
+                    return decodeURIComponent(singleParam[1]);
+                } else if (i < params.length && singleParam[0] !== param) {
+                    return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
+                }
+            }
+        } else {
+            return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
+        }
+    } else {
+        return "";
+    }
 
-function DialogApps(stringHtml) {
-    var element = document.createElement('div');
-    element.innerHTML = stringHtml;
-    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', {
-        html: element,
-        title: "SharePoint Add-in",
-        allowMaximize: false,
-        showClose: true,
-        autoSize: true
-    });
-
+}
+function GetUrlDoc() {
+    var elements = document.getElementsByClassName("ListBreadcumb");
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+    clientcontext = SP.ClientContext.get_current()
+    var currentWeb = clientcontext.get_web();
+    clientcontext.load(currentWeb, 'ServerRelativeUrl');
+    clientcontext.executeQueryAsync(function () {
+        var path = getQueryStringParameter("RootFolder", currentWeb.get_serverRelativeUrl());
+        var CustomUrl;
+        var fullurl = currentWeb.get_serverRelativeUrl() + ((currentWeb.get_serverRelativeUrl().indexOf('/', currentWeb.get_serverRelativeUrl().length - 1) !== -1) ? '' : '/');
+        if (path.split("/").length > 1) {
+            var params = path.split("/");
+            for (var i = 0; i < params.length; i = i + 1) {
+                if (params[i].trim() !== "") {
+                    fullurl = fullurl + params[i] + '/';
+                    CustomUrl = document.createElement('li');
+                    CustomUrl.className = "ListBreadcumb";
+                    CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
+                    document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                }
+            }
+        } else {
+            fullurl = fullurl + path + '/';
+            CustomUrl = document.createElement('li');
+            CustomUrl.className = "ListBreadcumb";
+            CustomUrl.innerHTML = '<a href="' + fullurl + '">' + path + '</a>';
+            document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+        }
+    }, fail);
+}
+function GetUrlDocMDS() {
+    var elements = document.getElementsByClassName("ListBreadcumb");
+    while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+    clientcontext = SP.ClientContext.get_current()
+    var currentWeb = clientcontext.get_web();
+    clientcontext.load(currentWeb,'ServerRelativeUrl');
+    clientcontext.executeQueryAsync(function () {
+        var path = getQueryStringParameterMDS("RootFolder");
+        path = path.replace(currentWeb.get_serverRelativeUrl(), '');
+        var CustomUrl;
+        var fullurl = currentWeb.get_serverRelativeUrl()+((currentWeb.get_serverRelativeUrl().indexOf('/', currentWeb.get_serverRelativeUrl().length - 1) !== -1) ? '' : '/');
+        if (path.split("/").length > 1) {
+            var params = path.split("/");
+            for (var i = 0; i < params.length; i = i + 1) {
+                if (params[i].trim() !== "") {
+                    fullurl = fullurl + params[i] + '/';
+                    CustomUrl = document.createElement('li');
+                    CustomUrl.className = "ListBreadcumb";
+                    CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
+                    document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                }
+            }
+        } else {
+            fullurl = fullurl + path + '/';
+            CustomUrl = document.createElement('li');
+            CustomUrl.className = "ListBreadcumb";
+            CustomUrl.innerHTML = '<a href="' +  fullurl + '">' + path + '</a>';
+            document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+        }
+    }, fail);
 }
