@@ -125,7 +125,14 @@ SortOrder = 5)]
             creationInformation.BaseTemplate = this.SelectedWeb.GetBaseTemplate();
             creationInformation.ProgressDelegate = (message, step, total) =>
             {
-                WriteProgress(new ProgressRecord(0, string.Format("Extracting Template from {0}",SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
+                WriteProgress(new ProgressRecord(0, string.Format("Extracting Template from {0}", SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
+            };
+            creationInformation.MessagesDelegate = (message, type) =>
+            {
+                if (type == ProvisioningMessageType.Warning)
+                {
+                    WriteWarning(message);
+                }
             };
 
             if (IncludeAllTermGroups)

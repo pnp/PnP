@@ -139,7 +139,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!_willProvision.HasValue)
             {
-                _willProvision = template.SiteFields.Any();
+                _willProvision = true;
             }
             return _willProvision.Value;
         }

@@ -579,6 +579,10 @@ namespace Microsoft.SharePoint.Client
             keywordQuery.SelectProperties.Add("WebTemplate");
             keywordQuery.SortList.Add("SPSiteUrl", SortDirection.Ascending);
             SearchExecutor searchExec = new SearchExecutor(web.Context);
+
+            // Important to avoid trimming "similar" site collections
+            keywordQuery.TrimDuplicates = false;
+
             ClientResult<ResultTableCollection> results = searchExec.ExecuteQuery(keywordQuery);
             web.Context.ExecuteQueryRetry();
 

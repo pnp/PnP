@@ -27,7 +27,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            web.Context.Load(web.ContentTypes, ct => ct.Include(c => c.StringId));
+
+            web.Context.Load(web.ContentTypes, ct => ct.IncludeWithDefaultProperties(c => c.StringId, c => c.FieldLinks));
             web.Context.ExecuteQueryRetry();
             var existingCTs = web.ContentTypes.ToList();
 
@@ -55,31 +56,121 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingCTs.Add(newCT);
                         }
                     }
+                    else
+                    {
+                        UpdateContentType(web, existingCT, ct);
+                    }
                 }
             }
 
         }
 
-        private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType ct)
+        private static void UpdateContentType(Web web, Microsoft.SharePoint.Client.ContentType existingContentType, ContentType templateContentType)
         {
-            var name = ct.Name.ToParsedString();
-            var description = ct.Description.ToParsedString();
-            var id = ct.Id.ToParsedString();
-            var group = ct.Group.ToParsedString();
+            var isDirty = false;
+            if (existingContentType.Hidden != templateContentType.Hidden)
+            {
+                existingContentType.Hidden = templateContentType.Hidden;
+                isDirty = true;
+            }
+            if (existingContentType.ReadOnly != templateContentType.ReadOnly)
+            {
+                existingContentType.ReadOnly = templateContentType.ReadOnly;
+                isDirty = true;
+            }
+            if (existingContentType.Sealed != templateContentType.Sealed)
+            {
+                existingContentType.Sealed = templateContentType.Sealed;
+                isDirty = true;
+            }
+            if (templateContentType.Description != null && existingContentType.Description != templateContentType.Description.ToParsedString())
+            {
+                existingContentType.Description = templateContentType.Description.ToParsedString();
+                isDirty = true;
+            }
+            if (templateContentType.DocumentTemplate != null && existingContentType.DocumentTemplate != templateContentType.DocumentTemplate.ToParsedString())
+            {
+                existingContentType.DocumentTemplate = templateContentType.DocumentTemplate.ToParsedString();
+                isDirty = true;
+            }
+            if (existingContentType.Name != templateContentType.Name.ToParsedString())
+            {
+                existingContentType.Name = templateContentType.Name.ToParsedString();
+                isDirty = true;
+            }
+            if (templateContentType.Group != null && existingContentType.Group != templateContentType.Group.ToParsedString())
+            {
+                existingContentType.Group = templateContentType.Group.ToParsedString();
+                isDirty = true;
+            }
+            if (isDirty)
+            {
+                existingContentType.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
+            // Delta handling
+            List<Guid> targetIds = existingContentType.FieldLinks.Select(c1 => c1.Id).ToList();
+            List<Guid> sourceIds = templateContentType.FieldRefs.Select(c1 => c1.Id).ToList();
+
+            var fieldsNotPresentInTarget = sourceIds.Except(targetIds).ToArray();
+            
+            if (fieldsNotPresentInTarget.Any())
+            {
+                foreach (var fieldId in fieldsNotPresentInTarget)
+                {
+                    var fieldRef = templateContentType.FieldRefs.Find(fr => fr.Id == fieldId);
+                    var field = web.Fields.GetById(fieldId);
+                    web.AddFieldToContentType(existingContentType, field, fieldRef.Required, fieldRef.Hidden);
+                }
+            }
+
+            isDirty = false;
+            foreach (var fieldId in targetIds.Intersect(sourceIds))
+            {
+                var fieldLink = existingContentType.FieldLinks.FirstOrDefault(fl => fl.Id == fieldId);
+                var fieldRef = templateContentType.FieldRefs.Find(fr => fr.Id == fieldId);
+                if (fieldRef != null)
+                {
+                 
+                    if (fieldLink.Required != fieldRef.Required)
+                    {
+                        fieldLink.Required = fieldRef.Required;
+                        isDirty = true;
+                    }
+                    if (fieldLink.Hidden != fieldRef.Hidden)
+                    {
+                        fieldLink.Hidden = fieldRef.Hidden;
+                        isDirty = true;
+                    }
+                }
+            }
+            if (isDirty)
+            {
+                existingContentType.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
+        }
+
+        private static Microsoft.SharePoint.Client.ContentType CreateContentType(Web web, ContentType templateContentType)
+        {
+            var name = templateContentType.Name.ToParsedString();
+            var description = templateContentType.Description.ToParsedString();
+            var id = templateContentType.Id.ToParsedString();
+            var group = templateContentType.Group.ToParsedString();
 
             var createdCT = web.CreateContentType(name, description, id, group);
-            foreach (var fieldRef in ct.FieldRefs)
+            foreach (var fieldRef in templateContentType.FieldRefs)
             {
                 var field = web.Fields.GetById(fieldRef.Id);
                 web.AddFieldToContentType(createdCT, field, fieldRef.Required, fieldRef.Hidden);
             }
 
-            createdCT.ReadOnly = ct.ReadOnly;
-            createdCT.Hidden = ct.Hidden;
-            createdCT.Sealed = ct.Sealed;
-            if (!string.IsNullOrEmpty(ct.DocumentTemplate))
+            createdCT.ReadOnly = templateContentType.ReadOnly;
+            createdCT.Hidden = templateContentType.Hidden;
+            createdCT.Sealed = templateContentType.Sealed;
+            if (!string.IsNullOrEmpty(templateContentType.DocumentTemplate.ToParsedString()))
             {
-                createdCT.DocumentTemplate = ct.DocumentTemplate;
+                createdCT.DocumentTemplate = templateContentType.DocumentTemplate.ToParsedString();
             }
 
             web.Context.Load(createdCT);
@@ -96,16 +187,30 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return template;
             }
 
+            template.ContentTypes.AddRange(GetEntities(web));
+
+            // If a base template is specified then use that one to "cleanup" the generated template model
+            if (creationInfo.BaseTemplate != null)
+            {
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
+            }
+
+            return template;
+        }
+
+        private IEnumerable<ContentType> GetEntities(Web web)
+        {
             var cts = web.ContentTypes;
             web.Context.Load(cts, ctCollection => ctCollection.IncludeWithDefaultProperties(ct => ct.FieldLinks));
             web.Context.ExecuteQueryRetry();
+
+            List<ContentType> ctsToReturn = new List<ContentType>();
 
             foreach (var ct in cts)
             {
                 if (!BuiltInContentTypeId.Contains(ct.StringId))
                 {
-                    //   template.ContentTypes.Add(new ContentType() { SchemaXml = ct.SchemaXml });
-                    template.ContentTypes.Add(new ContentType
+                    ctsToReturn.Add(new ContentType
                         (ct.StringId,
                         ct.Name,
                         ct.Description,
@@ -125,14 +230,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         ));
                 }
             }
-
-            // If a base template is specified then use that one to "cleanup" the generated template model
-            if (creationInfo.BaseTemplate != null)
-            {
-                template = CleanupEntities(template, creationInfo.BaseTemplate);
-            }
-
-            return template;
+            return ctsToReturn;
         }
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)

@@ -32,8 +32,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}",
-                this.SchemaXml).GetHashCode()); 
+            XElement element = XElement.Parse(this.SchemaXml);
+            if (element.Attribute("SourceID") != null)
+            {
+                element.Attribute("SourceID").Remove();
+            }
+            //return (String.Format("{0}",
+                //this.SchemaXml).GetHashCode()); 
+            return element.ToString().GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -50,6 +56,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             XElement currentXml = XElement.Parse(this.SchemaXml);
             XElement otherXml = XElement.Parse(other.SchemaXml);
 
+            if (currentXml.Attribute("SourceID") != null)
+            {
+                currentXml.Attribute("SourceID").Remove();
+            }
+            if(otherXml.Attribute("SourceID") != null)
+            {
+                otherXml.Attribute("SourceID").Remove();
+            }
             return (XNode.DeepEquals(currentXml, otherXml));
         }
 

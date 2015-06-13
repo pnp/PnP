@@ -10,8 +10,8 @@
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      >
-  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.1.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
+  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.2.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate  EmbedCab="yes" />
@@ -37,7 +37,7 @@
   </Product>
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFiles64Folder">
+      <Directory Id="ProgramFilesFolder">
         <Directory Id="APPFOLDER" Name="OfficeDevPnP">
           <Directory Id="PowerShell" Name="PowerShell">
             <Directory Id="Modules" Name="Modules">
@@ -58,7 +58,7 @@
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="PowerShellCommands" Guid="{1F5CA574-E185-49D2-9A91-CD46A8548D3E}" Win64="yes">
+      <Component Id="PowerShellCommands" Guid="{1F5CA574-E185-49D2-9A91-CD46A8548D3E}">
         <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)" />
         <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
         <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>
