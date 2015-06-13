@@ -14,8 +14,9 @@ namespace Provisioning.Common.Utilities
     {
         const string CONNECTIONSTRING_KEY = "ConnectionString";
         const string CONTAINERSTRING_KEY = "Container";
-
+        ILog _logger = LoggerFactory.GetLogger();
         private ConfigManager _configManager = new ConfigManager();
+
         /// <summary>
         /// Returns Connectors
         /// </summary>
@@ -37,7 +38,7 @@ namespace Provisioning.Common.Utilities
             }
             catch (Exception _ex)
             {
-                Log.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
+                this._logger.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
                 throw;
             }
         }
@@ -67,7 +68,7 @@ namespace Provisioning.Common.Utilities
             }
             catch (Exception _ex)
             {
-                Log.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
+                this._logger.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
                 throw;
             }
         }

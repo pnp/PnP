@@ -466,7 +466,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
                 _timespan.Stop();
                 this._logger.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
-                Log.Info("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
+                this._logger.Information("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
             }
             );
         }

@@ -180,6 +180,7 @@
     <Compile Include="OnPremSiteProvisioningService.cs" />
     <Compile Include="ProvisioningTemplateException.cs" />
     <Compile Include="SharePointContext.cs" />
+    <Compile Include="SiteService.cs" />
     <Compile Include="SiteUser.cs" />
     <Compile Include="SiteRequestInformation.cs" />
     <Compile Include="SiteProvisioningManager.cs" />

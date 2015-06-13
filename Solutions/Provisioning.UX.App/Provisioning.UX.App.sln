@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProvisioningExtensiblity", "ProvisioningExtensiblity", "{DEEEEBCE-F741-493C-B21E-BD89FAF3DD91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Provider.Security", "Provisioning.Provider.Security\Provisioning.Provider.Security.csproj", "{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,8 +74,19 @@ Global
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release15|Any CPU.Build.0 = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release15|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222} = {DEEEEBCE-F741-493C-B21E-BD89FAF3DD91}
 	EndGlobalSection
 EndGlobal

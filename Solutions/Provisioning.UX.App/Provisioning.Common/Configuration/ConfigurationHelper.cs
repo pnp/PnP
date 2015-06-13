@@ -13,7 +13,7 @@ namespace Provisioning.Common.Configuration
     /// Helper class to read from the Config files
     /// </summary>
     internal static class ConfigurationHelper
-    {
+    {  
         #region Public Static Members
 
         /// <summary>
