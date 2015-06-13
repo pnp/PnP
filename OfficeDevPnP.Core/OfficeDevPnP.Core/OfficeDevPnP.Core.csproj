@@ -356,6 +356,7 @@
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectComposedLook.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectContentType.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectExtensibilityProviders.cs" />
+    <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectListInstanceDataRows.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectSitePolicy.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectField.cs" />
     <Compile Include="Framework\Provisioning\ObjectHandlers\ObjectRetrieveTemplateInfo.cs" />
