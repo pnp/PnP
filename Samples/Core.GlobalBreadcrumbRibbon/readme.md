@@ -1,7 +1,7 @@
 # Provisioning Global Breadcrumb & Ribbon SharePoint Add-In #
 
 ### Summary ###
-The Core.GlobalBreadcrumbRibbon solution provides a provision page to include Global Breadcrumb **(SharePoint or JSON Data)** & Ribbon in all sites and subsites associated to Site Collection. The **Custom Breadcrumb is able to Navigate betweeen all Site Collection Sites and sub folders where user is located**, the **Site Collection Navigation Breadcrumb if a custom Breadcrumb stored in RootWeb with JSON Data**. The Breadcrumb & Ribbon is available in all SharePoint Pages using an Scriptlink file stored in Site Collection, both features keep Minimal Download Strategy "MDS" enable.
+The Core.GlobalBreadcrumbRibbon solution provides a provision page to include Global Breadcrumb **(SharePoint or JSON Data)** & Ribbon in all sites and subsites associated to Site Collection. The **Custom Breadcrumb is able to Navigate betweeen all Site Collection Sites and sub folders where user is located**, the **Site Collection Navigation is an custom Breadcrumb stored in PropertyBag base in JSON Data**. The Breadcrumb & Ribbon is available in all SharePoint Pages using an Scriptlink file stored in Site Collection, both features keep Minimal Download Strategy "MDS" enable.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
