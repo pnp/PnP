@@ -109,20 +109,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
-                            XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
                             var id = fieldElement.Attribute("ID").Value;
 
-                            Guid fieldGuid = Guid.Empty;
-                            if (Guid.TryParse(id, out fieldGuid))
+                            Guid fieldGuid;
+                            if (!Guid.TryParse(id, out fieldGuid)) continue;
+
+                            var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
+                            if (null == fieldFromList)
                             {
-                                if (!listInfo.SiteList.FieldExistsById(fieldGuid))
-                                {
-                                    CreateField(fieldElement, listInfo);
-                                }
-                                else
-                                {
-                                    UpdateField(web, listInfo, fieldGuid, fieldElement);
-                                }
+                                CreateField(fieldElement, listInfo);
+                            }
+                            else
+                            {
+                                UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
                             }
                         }
                     }
@@ -321,9 +321,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
         }
 
-        private void UpdateField(Web web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement)
+        private void UpdateField(Web web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement, Field existingField)
         {
-            var existingField = web.Fields.GetById(fieldId);
             web.Context.Load(existingField, f => f.SchemaXml);
             web.Context.ExecuteQueryRetry();
 

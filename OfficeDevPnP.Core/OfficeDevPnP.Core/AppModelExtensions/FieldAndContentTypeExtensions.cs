@@ -209,6 +209,22 @@ namespace Microsoft.SharePoint.Client
         /// Returns the field if it exists. Null if it does not exist.
         /// </summary>
         /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="list">List to be processed. Columns assoc in lists are defined on web or rootweb.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldById<TField>(this List list, Guid fieldId) where TField : Field
+        {
+            var fields = list.Context.LoadQuery(list.Fields.Where(f => f.Id == fieldId));
+            list.Context.ExecuteQueryRetry();
+
+            var field = fields.FirstOrDefault();
+            return field == null ? null : list.Context.CastTo<TField>(field);
+        }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
         /// <param name="fields">FieldCollection to be processed.</param>
         /// <param name="internalName">Guid for the field ID</param>
         /// <returns>Field of type TField</returns>
