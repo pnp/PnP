@@ -187,9 +187,9 @@ function getQueryStringParameter(param, serverRelativeUrl) {
         if (singleParam[0] == param) 
             return decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
     }
-    return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+    return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
     } else {
-        return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+        return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
     }
 }
 function getQueryStringParameterMDS(param) {
@@ -221,9 +221,9 @@ function GetUrlDoc() {
     var currentWeb = clientcontext.get_web();
     clientcontext.load(currentWeb, 'ServerRelativeUrl');
     clientcontext.executeQueryAsync(function () {
-        var path = getQueryStringParameter("RootFolder", currentWeb.get_serverRelativeUrl());
-        var CustomUrl;
         var fullurl = currentWeb.get_serverRelativeUrl() + ((currentWeb.get_serverRelativeUrl().indexOf('/', currentWeb.get_serverRelativeUrl().length - 1) !== -1) ? '' : '/');
+        var path = getQueryStringParameter("RootFolder", fullurl);
+        var CustomUrl;
         if (path.split("/").length > 1) {
             var params = path.split("/");
             for (var i = 0; i < params.length; i = i + 1) {
