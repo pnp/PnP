@@ -43,7 +43,7 @@ The Page has 2 buttons to support the provision.
 
 ### Provision Sequence ###
 - PropertyBag **PnPGlobalBreadcrumbRibbon** is created in RootWeb of the SiteCollection, this item will have the following JSON data:
-#### {"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]} ####
+**{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}**
 - A file from the AppWeb **PnPGlobal.js** is copied to folder **"_catalogs/masterpage/Display Template"**, the JS file includes the code for the creation of the Global Breadcrumb **(SharePoint or JSON Data)** & Ribbon. 
 - A **ScriptLink** is created in **SiteCollection** with name **PnPGlobalBreadcrumbRibbon** and linked to JS file **PnPGlobal.js**.
 
