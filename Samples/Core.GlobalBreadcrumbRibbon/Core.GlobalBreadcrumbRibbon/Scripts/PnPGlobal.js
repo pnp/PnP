@@ -244,11 +244,15 @@ function GetUrlDoc() {
             var params = path.split("/");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
-                    fullurl = fullurl + params[i] + '/';
-                    CustomUrl = document.createElement('li');
-                    CustomUrl.className = "ListBreadcumb";
-                    CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                    document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                    if (i === 0 && params[i].trim() === "Lists") { }
+                    else {
+                        fullurl = fullurl + params[i] + '/';
+                        CustomUrl = document.createElement('li');
+                        CustomUrl.className = "ListBreadcumb";
+                        CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
+                        document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                    }
+
                 }
             }
         } else {
@@ -277,11 +281,14 @@ function GetUrlDocMDS() {
             var params = path.split("/");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
-                    fullurl = fullurl + params[i] + '/';
-                    CustomUrl = document.createElement('li');
-                    CustomUrl.className = "ListBreadcumb";
-                    CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                    document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                    if (i === 0 && params[i].trim() === "Lists") { }
+                    else {
+                        fullurl = fullurl + params[i] + '/';
+                        CustomUrl = document.createElement('li');
+                        CustomUrl.className = "ListBreadcumb";
+                        CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
+                        document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                    }
                 }
             }
         } else {
