@@ -194,7 +194,7 @@ function getQueryStringParameter(param, serverRelativeUrl) {
         }
     } else {
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return  _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0]+"/"+_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
         } else {
             return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
         }
@@ -218,7 +218,7 @@ function getQueryStringParameterMDS(param) {
             }
         } else {
             if (decodeURIComponent(document.URL.split("#")[1].split("/")[1]) === "Lists") {
-                return decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
+                return decodeURIComponent(document.URL.split("#")[1].split("/")[1])+"/"+decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
             } else {
                 return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
             }
@@ -244,9 +244,10 @@ function GetUrlDoc() {
             var params = path.split("/");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
-                    if (i === 0 && params[i].trim() === "Lists") { }
+                    fullurl = fullurl + params[i] + '/';
+                    if (i === 0 && params[i].trim() === "Lists") {
+                    }
                     else {
-                        fullurl = fullurl + params[i] + '/';
                         CustomUrl = document.createElement('li');
                         CustomUrl.className = "ListBreadcumb";
                         CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
@@ -281,9 +282,11 @@ function GetUrlDocMDS() {
             var params = path.split("/");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
-                    if (i === 0 && params[i].trim() === "Lists") { }
+                    fullurl = fullurl + params[i] + '/';
+                    if (i === 0 && params[i].trim() === "Lists") {
+                        
+                    }
                     else {
-                        fullurl = fullurl + params[i] + '/';
                         CustomUrl = document.createElement('li');
                         CustomUrl.className = "ListBreadcumb";
                         CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
