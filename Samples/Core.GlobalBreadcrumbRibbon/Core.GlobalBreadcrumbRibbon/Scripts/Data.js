@@ -114,7 +114,7 @@
         newUserCustomAction.set_title("PnPGlobalBreadcrumbRibbon");
         newUserCustomAction.set_description("Global Breadcrumb and Ribbon is accessible in SP");
         newUserCustomAction.set_location('ScriptLink');
-        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js');
+        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js?version='+(((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1));
         newUserCustomAction.set_sequence(58);
         newUserCustomAction.update();
         context.executeQueryAsync(
