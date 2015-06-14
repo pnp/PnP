@@ -1,20 +1,11 @@
 ﻿CoreGlobalBreadcrumbRibbon = {
     GetInit: function () {
-        PnPGlobal.GetUrlChange();
+
         PnPGlobal.CreateBreadcrumb();
         PnPGlobal.CreateStyle();
         PnPGlobal.LoadSiteBreadcrumb();
         window.addEventListener("DOMContentLoaded", RibbonValidation, false);
     },
-    GetUrlChange: function () {
-        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
-            var element = document.createElement('script');
-            var UrlChange = "window.onhashchange = locationHashChanged;function locationHashChanged(){GetUrlDocMDS();}";
-            element.innerHTML = UrlChange;
-            document.getElementsByTagName('body')[0].appendChild(element);
-        }, "sp.js");
-    },
-
     CreateStyle: function () {
         var headID = document.getElementsByTagName("head")[0];
         var cssNode = document.createElement('style');
@@ -180,7 +171,8 @@ function fail(sender, args) {
     alert(args.get_message());
 }
 function getQueryStringParameter(param, serverRelativeUrl) {
-    if (document.URL.split("?").length > 1) {
+    if (document.URL.indexOf("_layouts/15/start.aspx#") > -1) { return getQueryStringParameterMDS(param) }
+    else if (document.URL.split("?").length > 1) {
         var params = document.URL.split("?")[1].split("&");
         for (var i = 0; i < params.length; i = i + 1) {
             var singleParam = params[i].split("=");
@@ -209,19 +201,11 @@ function getQueryStringParameterMDS(param) {
                 if (singleParam[0] == param) {
                     return decodeURIComponent(singleParam[1]);
                 } else if (i < params.length && singleParam[0] !== param) {
-                    if (decodeURIComponent(document.URL.split("#")[1].split("/")[1]) === "Lists") {
-                        return decodeURIComponent(document.URL.split("#")[1].split("/")[1]) + "/" + decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
-                    } else {
-                        return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
-                    }
+                    return decodeURIComponent(document.URL.split("#")[1]);
                 }
             }
         } else {
-            if (decodeURIComponent(document.URL.split("#")[1].split("/")[1]) === "Lists") {
-                return decodeURIComponent(document.URL.split("#")[1].split("/")[1]) + "/" + decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
-            } else {
-                return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
-            }
+            return decodeURIComponent(document.URL.split("#")[1]);
         }
     } else {
         return "";
@@ -245,45 +229,7 @@ function GetUrlDoc() {
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
                     fullurl = fullurl + params[i] + '/';
-                    if (i === 0 && params[i].trim() === "Lists") {
-                    }
-                    else {
-                        CustomUrl = document.createElement('li');
-                        CustomUrl.className = "ListBreadcumb";
-                        CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                        document.getElementById("breadcrumbSite").appendChild(CustomUrl);
-                    }
-                }
-            }
-        } else {
-            fullurl = fullurl + path + '/';
-            CustomUrl = document.createElement('li');
-            CustomUrl.className = "ListBreadcumb";
-            CustomUrl.innerHTML = '<a href="' + fullurl + '">' + path + '</a>';
-            document.getElementById("breadcrumbSite").appendChild(CustomUrl);
-        }
-    }, fail);
-}
-function GetUrlDocMDS() {
-    var elements = document.getElementsByClassName("ListBreadcumb");
-    while (elements.length > 0) {
-        elements[0].parentNode.removeChild(elements[0]);
-    }
-    clientcontext = SP.ClientContext.get_current()
-    var currentWeb = clientcontext.get_web();
-    clientcontext.load(currentWeb, 'ServerRelativeUrl');
-    clientcontext.executeQueryAsync(function () {
-        var path = getQueryStringParameterMDS("RootFolder");
-        path = path.replace(currentWeb.get_serverRelativeUrl(), '');
-        var CustomUrl;
-        var fullurl = currentWeb.get_serverRelativeUrl() + ((currentWeb.get_serverRelativeUrl().indexOf('/', currentWeb.get_serverRelativeUrl().length - 1) !== -1) ? '' : '/');
-        if (path.split("/").length > 1) {
-            var params = path.split("/");
-            for (var i = 0; i < params.length; i = i + 1) {
-                if (params[i].trim() !== "") {
-                    fullurl = fullurl + params[i] + '/';
-                    if (i === 0 && params[i].trim() === "Lists") {
-
+                    if ((i === 1 || i === 0) && params[i].trim() === "Lists") {
                     }
                     else {
                         CustomUrl = document.createElement('li');
