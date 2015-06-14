@@ -49,6 +49,7 @@
     RemoveProvisionOfUserCustomAction: function () {
         PnPData.RemovePropertyBag();
         PnPData.RemoveHostSiteCollectionUserCustomAction();
+        PnPData.DeleteGetFileUrl();
         PnPApp.GetInit();
     }
 }

@@ -14,7 +14,7 @@
             PnPCommon.NotifyMessage("PropertyBag created");
         }, PnPCommon.NotifyErrorSPJSOM);
     },
-    RemovePropertyBag : function () {
+    RemovePropertyBag: function () {
         var context = PnPCommon.GetContext(PnPApp.AppWebUrl);
         var app = PnPCommon.GetAppContext(context, PnPApp.HostWebUrl);
         var site = app.get_site();
@@ -68,7 +68,7 @@
         var app = PnPCommon.GetAppContext(context, PnPCommon.getQueryStringParameter("SPHostUrl").replace("#", ""));
         var site = app.get_site();
         var web = site.get_rootWeb();
-        context.load(web, 'Url','ServerRelativeUrl');
+        context.load(web, 'Url', 'ServerRelativeUrl');
 
         context.executeQueryAsync(
              function () {
@@ -156,6 +156,21 @@
             error: PnPCommon.NotifyError
         });
     },
+    DeleteGetFileUrl: function () {
+        var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
+        executor.executeAsync({
+            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + _spPageContextInfo.siteServerRelativeUrl + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
+            method: "POST",
+            headers: {
+                "IF-MATCH": "*",
+                "X-HTTP-Method": "DELETE",
+                "Accept": "application/json; odata=verbose"
+            },
+            success: function () { PnPCommon.NotifyMessage("File \"PnPGlobal.js\" was deleted with sucess!"); PnPApp.GetInit(); },
+            error: PnPCommon.NotifyError
+        });
+    },
+
     GetPropertieBag: function (success) {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({

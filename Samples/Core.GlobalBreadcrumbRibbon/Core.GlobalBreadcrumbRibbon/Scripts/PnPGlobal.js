@@ -246,7 +246,7 @@ function GetUrlDoc() {
                                 CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
                                 document.getElementById("breadcrumbSite").appendChild(CustomUrl);
                             }
-                            
+
                         }
                     }
                 }
