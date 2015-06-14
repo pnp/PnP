@@ -188,13 +188,13 @@ function getQueryStringParameter(param, serverRelativeUrl) {
                 return decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
         }
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
         } else {
             return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
         }
     } else {
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return  _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0]+"/"+_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
         } else {
             return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
         }
@@ -210,7 +210,7 @@ function getQueryStringParameterMDS(param) {
                     return decodeURIComponent(singleParam[1]);
                 } else if (i < params.length && singleParam[0] !== param) {
                     if (decodeURIComponent(document.URL.split("#")[1].split("/")[1]) === "Lists") {
-                        return decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
+                        return decodeURIComponent(document.URL.split("#")[1].split("/")[1]) + "/" + decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
                     } else {
                         return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
                     }
@@ -218,7 +218,7 @@ function getQueryStringParameterMDS(param) {
             }
         } else {
             if (decodeURIComponent(document.URL.split("#")[1].split("/")[1]) === "Lists") {
-                return decodeURIComponent(document.URL.split("#")[1].split("/")[1])+"/"+decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
+                return decodeURIComponent(document.URL.split("#")[1].split("/")[1]) + "/" + decodeURIComponent(document.URL.split("#")[1].split("/")[2]);
             } else {
                 return decodeURIComponent(document.URL.split("#")[1].split("/")[1]);
             }
@@ -253,7 +253,6 @@ function GetUrlDoc() {
                         CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
                         document.getElementById("breadcrumbSite").appendChild(CustomUrl);
                     }
-
                 }
             }
         } else {
@@ -284,7 +283,7 @@ function GetUrlDocMDS() {
                 if (params[i].trim() !== "") {
                     fullurl = fullurl + params[i] + '/';
                     if (i === 0 && params[i].trim() === "Lists") {
-                        
+
                     }
                     else {
                         CustomUrl = document.createElement('li');
