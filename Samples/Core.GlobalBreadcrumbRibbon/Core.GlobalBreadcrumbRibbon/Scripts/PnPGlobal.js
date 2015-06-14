@@ -232,10 +232,12 @@ function GetUrlDoc() {
                     if ((i === 1 || i === 0) && params[i].trim() === "Lists") {
                     }
                     else {
-                        CustomUrl = document.createElement('li');
-                        CustomUrl.className = "ListBreadcumb";
-                        CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                        document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                        if (params[i].split('.').pop() !== 'aspx') {
+                            CustomUrl = document.createElement('li');
+                            CustomUrl.className = "ListBreadcumb";
+                            CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
+                            document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                        }
                     }
                 }
             }
