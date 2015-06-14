@@ -222,7 +222,7 @@ function GetUrlDoc() {
     clientcontext.load(currentWeb, 'ServerRelativeUrl');
     clientcontext.executeQueryAsync(function () {
         var fullurl = currentWeb.get_serverRelativeUrl() + ((currentWeb.get_serverRelativeUrl().indexOf('/', currentWeb.get_serverRelativeUrl().length - 1) !== -1) ? '' : '/');
-        var path = getQueryStringParameter("RootFolder", fullurl);
+        var path = getQueryStringParameter("RootFolder", fullurl).replace(decodeURIComponent(currentWeb.get_serverRelativeUrl()), "");
         var CustomUrl;
         if (path.split("/").length > 1) {
             var params = path.split("/");
