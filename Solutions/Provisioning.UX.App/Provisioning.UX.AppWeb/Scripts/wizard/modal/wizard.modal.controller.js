@@ -53,10 +53,23 @@
             //property bag entries will enumerate all properties defined in siteConfiguration.properties
             var props = {};
             angular.forEach($scope.siteConfiguration.properties, function (value, key) {
-                props["_site_props_" + key] = value;
-            });
-            //set the properties object
-            siteRequest.properties = props;
+                var data = value;
+                var propData = "";
+                if ($.isArray(data)) {
+                    angular.forEach(data, function (value, key) {
+                        if (propData == "") {
+                            propData = value;
+                        }
+                        else {
+                            propData = propData + "," + value;
+                        }
+                    });
+
+                    props["_site_props_" + key] = propData;
+                }
+                else {
+                    props["_site_props_" + key] = data;
+                }
 
             processNewSiteRequest(siteRequest);
             
