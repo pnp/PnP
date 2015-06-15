@@ -80,7 +80,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         Remove = customAction.Remove,
                         Rights = customAction.Rights,
                         ScriptBlock = customAction.ScriptBlock.ToParsedString(),
-                        ScriptSrc = customAction.ScriptSrc.ToParsedString(),
+                        ScriptSrc = customAction.ScriptSrc,
                         Sequence = customAction.Sequence,
                         Title = customAction.Title,
                         Url = customAction.Url.ToParsedString()
