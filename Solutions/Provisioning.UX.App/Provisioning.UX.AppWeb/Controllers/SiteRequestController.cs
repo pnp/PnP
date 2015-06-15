@@ -15,7 +15,7 @@ namespace Provisioning.UX.AppWeb.Controllers
 {
     public class SiteRequestController : ApiController
     {
-        ILog _logger = LoggerFactory.GetLogger();
+        
 
         [HttpPut]
         public void Register(WebAPIContext sharePointServiceContext)
@@ -60,7 +60,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(JsonException _ex)
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
-                this._logger.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
                      "There was an error processing the request. Error Message {0} Error Stack {1}",
                      _ex.Message,
                      _ex);
@@ -70,7 +70,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch (Exception _ex)
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
-                this._logger.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
                     "There was an error processing your request. Error Message {0} Error Stack {1}",
                     _ex.Message,
                     _ex);
@@ -107,7 +107,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
                
-                this._logger.Error("SiteRequestController.CreateSiteRequest",
+                Log.Error("SiteRequestController.CreateSiteRequest",
                      "There was an error creating the new site request. Error Message {0} Error Stack {1}",
                      _ex.Message,
                      _ex);
@@ -121,7 +121,7 @@ namespace Provisioning.UX.AppWeb.Controllers
                 var _message = string.Format("There was an error processing the request. Exeception {0}", _ex.Message);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
 
-                this._logger.Error("SiteRequestController.CreateSiteRequest",
+                Log.Error("SiteRequestController.CreateSiteRequest",
                     "There was an error creating the new site request. Error Message {0} Error Stack {1}",
                     _ex.Message,
                     _ex);
@@ -152,7 +152,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
 
-                this._logger.Error("SiteRequestController.GetOwnerRequestsByEmail",
+                Log.Error("SiteRequestController.GetOwnerRequestsByEmail",
                      "There was an error get site requests by email. Error Message {0} Error Stack {1}",
                      _ex.Message,
                      _ex);
@@ -163,7 +163,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                 var _message = string.Format("There was an error processing the request. {0}", _ex.Message);
-               this._logger.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
+               Log.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
                 throw new HttpResponseException(_response); 
             }

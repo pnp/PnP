@@ -30,7 +30,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         const string CAML_GETREQUEST_BY_URL = "<View><Query><Where><Eq><FieldRef Name='SP_Url'/><Value Type='Text'>{0}</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_APPROVEDREQUESTS = "<View><Query><Where><Eq><FieldRef Name='SP_ProvisioningStatus'/><Value Type='Text'>Approved</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_GETREQUESTSBYOWNER = "<View><Query><Where><Eq><FieldRef Name='SP_Owner' LookupId='True'/><Value Type='Int'>{0}</Value></Eq></Where></Query></View>";
-        ILog _logger = LoggerFactory.GetLogger();
+        
         #endregion
 
         #region Constructor
@@ -55,18 +55,18 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     SiteRequestList.DESCRIPTION,
                     SiteRequestList.LISTURL);
 
-                this._logger.Information("SPSiteRequestManager.HandleSiteRequestList",
+               Log.Info("SPSiteRequestManager.HandleSiteRequestList",
                     PCResources.SiteRequest_List_Creation_Successful, SiteRequestList.LISTURL, ctx.Url,
                     SiteRequestList.LISTURL,
                     ctx.Url);
                 
                 _timespan.Stop();
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.HandleSiteRequestList", _timespan.Elapsed);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.HandleSiteRequestList", _timespan.Elapsed);
             }
             catch (Exception _ex)
             {
                 var _message = String.Format(PCResources.SiteRequest_List_Creation_Error, SiteRequestList.LISTURL, ctx.Url, _ex.Message);
-                this._logger.Error("SPSiteRequestManager.HandleSiteRequestList",
+                Log.Error("SPSiteRequestManager.HandleSiteRequestList",
                     PCResources.SiteRequest_List_Creation_Error,
                     SiteRequestList.LISTURL,
                     ctx.Url,
@@ -191,7 +191,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 var _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = camlQuery;
 
-                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
+               Log.Info("SPSiteRequestManager.GetSiteRequestsByCaml",
                     "Querying SharePoint Request Repository {0}, Caml Query {1}",
                     SiteRequestList.LISTURL,
                     _camlQuery.ViewXml);
@@ -226,7 +226,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
+
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
 
                 foreach (ListItem _item in _listItemCollection)
                 {
@@ -263,7 +264,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 CamlQuery _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = string.Format(camlQuery, filter);
 
-                this._logger.Information("SPSiteRequestManager.GetSiteRequestsByCaml",
+               Log.Info("SPSiteRequestManager.GetSiteRequestsByCaml",
                   "Querying SharePoint Request Repository: {0}, Caml Query: {1} Filter: {2}",
                   SiteRequestList.LISTURL,
                   _camlQuery.ViewXml,
@@ -302,7 +303,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
 
                 if (_listItemCollection.Count > 0)
                 {
@@ -391,7 +392,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         _returnResults = this.GetSiteRequestsByCaml(camlString);
 
                         _timespan.Stop();
-                        this._logger.TraceApi("SharePoint", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
+                        Log.TraceApi("SharePoint", "SPSiteRequestManager.GetOwnerRequests", _timespan.Elapsed);
                     }
                     else
                     {
@@ -465,8 +466,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
-                this._logger.Information("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
+               Log.Info("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
             }
             );
         }
@@ -532,8 +533,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
 
                 _timespan.Stop();
-                this._logger.Information("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, status.ToString());
-                this._logger.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestStatus", _timespan.Elapsed);
+               Log.Info("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, status.ToString());
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestStatus", _timespan.Elapsed);
             });
 
         }

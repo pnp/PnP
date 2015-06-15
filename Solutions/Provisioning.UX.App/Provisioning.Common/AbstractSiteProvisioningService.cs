@@ -24,7 +24,7 @@ namespace Provisioning.Common
     public abstract class AbstractSiteProvisioningService : ISiteProvisioning, ISharePointClientService
     {
 
-        ILog _logger = LoggerFactory.GetLogger();
+        
 
 
         #region Properties
@@ -64,7 +64,7 @@ namespace Provisioning.Common
                                 }
                 catch(Exception ex)
                 {
-                    this._logger.Error("Provisioning.Common.AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", 
+                    Log.Error("Provisioning.Common.AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", 
                         PCResources.ExternalSharing_Enabled_Error_Message, 
                         tenantUrl, 
                         ex);

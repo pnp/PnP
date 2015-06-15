@@ -23,7 +23,7 @@ namespace Provisioning.Common
     public class OnPremSiteProvisioningService : AbstractSiteProvisioningService, ISharePointClientService
     {
         #region Private Instance Members
-        ILog _logger = LoggerFactory.GetLogger();
+        
         #endregion
 
         #region Constructor
@@ -81,7 +81,7 @@ namespace Provisioning.Common
 
                 web.AssociateDefaultGroups(_ownerGroup, _memberGroup, _visitorGroup);
                 ctx.ExecuteQuery();
-                this._logger.Information("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", PCResources.Site_Web_DefaultGroups_Created, properties.Url);
+               Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", PCResources.Site_Web_DefaultGroups_Created, properties.Url);
 
                 using (var newSiteCtx = ctx.Clone(properties.Url))
                 {
@@ -89,7 +89,7 @@ namespace Provisioning.Common
                     newSiteCtx.Web.AddPermissionLevelToGroup(_memberGroupDisplayName, RoleType.Editor);
                     newSiteCtx.Web.AddPermissionLevelToGroup(_vistorGroupDisplayName, RoleType.Reader);
                     newSiteCtx.ExecuteQuery();
-                    this._logger.Information("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", PCResources.Site_Web_Groups_Security_Permissions_Set, 
+                   Log.Info("Provisioning.Common.OnPremSiteProvisioningService.HandleDefaultGroups", PCResources.Site_Web_Groups_Security_Permissions_Set, 
                         _ownerGroupDisplayName, 
                         _memberGroupDisplayName, 
                         _vistorGroupDisplayName);
@@ -100,7 +100,7 @@ namespace Provisioning.Common
 
         public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
-            this._logger.Information("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+           Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             
             Web _web = null;
             try
@@ -137,14 +137,14 @@ namespace Provisioning.Common
             }
             catch(Exception ex)
             {
-                this._logger.Error("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection",
+                Log.Error("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection",
                     PCResources.SiteCreation_Creation_Failure, 
                     siteRequest.Url, 
                     ex,
                     ex.InnerException);
                 throw;
             }
-            this._logger.Information("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
+           Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
             this.HandleDefaultGroups(siteRequest);
         }
 
@@ -155,7 +155,7 @@ namespace Provisioning.Common
         /// <returns></returns>
         public override bool IsTenantExternalSharingEnabled(string tenantUrl)
         {
-            this._logger.Warning("Provisioning.Common.OnPremSiteProvisioningService.IsTenantExternalSharingEnabled", PCResources.ExternalSharing_NotSupported, tenantUrl);
+            Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.IsTenantExternalSharingEnabled", PCResources.ExternalSharing_NotSupported, tenantUrl);
             return false;
         }
 
@@ -166,7 +166,7 @@ namespace Provisioning.Common
         /// <param name="url"></param>
         public override void SetExternalSharing(SiteRequestInformation siteInfo)
         {
-            this._logger.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
+            Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
             return;
         }
     }

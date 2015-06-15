@@ -166,10 +166,6 @@
     <Content Include="Resources\EmailContent\NewSiteEmail.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteTemplate_old.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\custombg.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -17,7 +17,7 @@ namespace Provisioning.UX.AppWeb.Controllers
     /// </summary>
     public class TemplateController : ApiController
     {
-        ILog _logger = LoggerFactory.GetLogger();
+        
 
         #region Public Members
         [HttpPut]
@@ -45,7 +45,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch (Exception _ex)
             {
                 var _message = string.Format("There was an error processing the request. {0}", _ex.Message);
-                this._logger.Error("TemplateController.GetSiteTemplates", "There was an error processing the request. Exception: {0}", _ex);
+                Log.Error("TemplateController.GetSiteTemplates", "There was an error processing the request. Exception: {0}", _ex);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
                 throw new HttpResponseException(_response); 
             }

@@ -32,7 +32,7 @@ namespace Provisioning.Common.Utilities
         public void Information(Exception exception, string format, params object[] args)
         {
             var msg = String.Format(format, args);
-            Trace.TraceInformation(string.Format(format, args) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            Trace.TraceInformation(string.Format(format, args) + " Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         public void Warning(string message)
@@ -48,7 +48,7 @@ namespace Provisioning.Common.Utilities
         public void Warning(Exception exception, string format, params object[] vars)
         {
             var msg = String.Format(format, vars);
-            Trace.TraceWarning(string.Format(format, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            Trace.TraceWarning(string.Format(format, vars) + " Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         public void Error(string message)
@@ -64,7 +64,7 @@ namespace Provisioning.Common.Utilities
         public void Error(Exception exception, string format, params object[] vars)
         {
             var msg = String.Format(format, vars);
-            Trace.TraceError(string.Format(format, vars) + ";Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
+            Trace.TraceError(string.Format(format, vars) + " Exception Details={0}", ExceptionUtils.FormatException(exception, includeContext: true));
         }
 
         // 
@@ -81,11 +81,29 @@ namespace Provisioning.Common.Utilities
 
         public void TraceApi(string componentName, string method, TimeSpan timespan, string properties)
         {
-            string message = String.Concat("component:", componentName, 
-                    ";method:", method, 
-                    ";timespan:", timespan.ToString(), 
-                    ";properties:", properties);
+            string message = String.Concat("component:", 
+                    componentName, 
+                    " method:", method, 
+                    " timespan:", timespan.ToString(), 
+                    " properties:", properties);
             Trace.TraceInformation(message);
-        } 
+        }
+
+
+        private string GetLogEntry(string source, string message, params object[] args)
+        {
+            try
+            {
+                if (args == null || args.Length == 0)
+                    message = message.Replace("{", "{{").Replace("}", "}}");
+                string _msg = String.Format(System.Globalization.CultureInfo.CurrentCulture, message, args);
+                string _log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "[[{0}]] {1}", source, _msg);
+                return _log;
+            }
+            catch (Exception e)
+            {
+                return string.Format("Error while generating log information, {0}", e);
+            }
+        }
     }
 }
