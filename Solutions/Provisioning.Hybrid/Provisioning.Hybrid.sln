@@ -1,7 +1,15 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B369B9AE-54E7-421C-8A3C-2CB220A121FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D891F0D2-CBD4-409C-8CCF-FEF148116989}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+		sitedirectorytemplate.stp = sitedirectorytemplate.stp
+	EndProjectSection
+EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Provisioning.Hybrid", "Provisioning.Hybrid\Provisioning.Hybrid.ccproj", "{2A9C3E91-186C-4E7B-8612-3F57A9920FCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Web", "Provisioning.Hybrid.Web\Provisioning.Hybrid.Web.csproj", "{247394D6-125C-4CFB-9A42-36B5ABE106D6}"
@@ -17,14 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Test.Console", "Provisioning.Hybrid.Test.Console\Provisioning.Hybrid.Test.Console.csproj", "{26324B54-F51C-49BC-A99D-3AEAAFDEC992}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Encryptor", "Provisioning.Hybrid.Encryptor\Provisioning.Hybrid.Encryptor.csproj", "{90AD9A5D-616C-4FBD-B202-94F89111CF7D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B369B9AE-54E7-421C-8A3C-2CB220A121FA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D891F0D2-CBD4-409C-8CCF-FEF148116989}"
-	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
-		sitedirectorytemplate.stp = sitedirectorytemplate.stp
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Hybrid.Core", "Provisioning.Hybrid.Core\Provisioning.Hybrid.Core.csproj", "{5C707995-6C26-4924-8EDF-CE150A96CC67}"
 EndProject

@@ -19,6 +19,12 @@ namespace SharePoint.Deployment {
             }
         }
 
+        public string ServerRelativeUrl {
+            get {
+                return new Uri(this.FullUrl).PathAndQuery;
+            }
+        }
+
         public string FullUrl {
             get {
                 string returnValue;
@@ -61,20 +67,20 @@ namespace SharePoint.Deployment {
             this.Init(credentials, false);
         }
 
-        protected override void OnInit() { }
-
-        internal override void OnInvalidate() {
-            this.SpWeb = null;
-        }
-
         protected override bool GetDeployed() {
             var returnValue = false;
             this.SpWeb = this.Context.OpenWeb(this.SiteRelativeUrl);
             this.IsDeployed = returnValue = this.Context.TryExecuteSync(this.SpWeb);
-            if (!this.IsDeployed.Value) {
+            if (!returnValue) {
                 this.SpWeb = null;
             }
             return returnValue;
+        }
+
+        protected override void OnInit() { }
+
+        internal override void OnInvalidate() {
+            this.SpWeb = null;
         }
 
         internal override void OnCreate() {
@@ -87,17 +93,13 @@ namespace SharePoint.Deployment {
                 WebTemplate = this.WebTemplate
             };
             SP.Web parentSpWeb = this.GetParentSPWeb();
-            this.Context.ExecuteAsync(() => this.SpWeb = parentSpWeb.Webs.Add(creationInfo), () => { this.IsDeployed = this.GetDeployed(); });
+            this.Context.ExecuteAsync(() => this.SpWeb = parentSpWeb.Webs.Add(creationInfo), () => this.IsDeployed = this.GetDeployed(true));
         }
 
         internal override void OnDelete() {
             this.Webs.ForEach(i => i.OnDelete());
             if (this.SpWeb == null) this.GetDeployed();
-            this.Context.ExecuteAsync(() => { this.SpWeb.DeleteObject(); }, () => { this.IsDeployed = false; this.SpWeb = null; });
-        }
-
-        public void PostDeploy() {
-            throw new NotImplementedException();
+            this.Context.ExecuteAsync(() => { this.SpWeb.DeleteObject(); }, () => { this.SpWeb = null; });
         }
 
         public void LoadFromXml(Xml.XmlReader reader) {
@@ -108,6 +110,7 @@ namespace SharePoint.Deployment {
             if (this.Fields != null) this.Fields.ForEach(action);
             if (this.Lists != null) this.Lists.ForEach(action);
             if (this.Webs != null) this.Webs.ForEach(action);
+            if (this.Folders != null) this.Folders.ForEach(action);
         }
 
         #region Definition Info
@@ -123,11 +126,13 @@ namespace SharePoint.Deployment {
         public List<List> Lists { get; set; }
         public List<Guid> Features { get; set; }
         public List<SiteField> Fields { get; set; }
+        public List<Folder> Folders { get; set; }
         #endregion
 
         public void Dispose() {
             if (this.Context != null) this.Context.Dispose();
             if (this.Webs != null) this.Webs.ForEach(i => i.Dispose());
         }
+
     }
 }

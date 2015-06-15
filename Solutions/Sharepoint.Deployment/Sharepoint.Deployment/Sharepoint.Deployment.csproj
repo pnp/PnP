@@ -105,6 +105,8 @@
     <Compile Include="Extensions\XElement.cs" />
     <Compile Include="Extensions\XmlReader.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="File.cs" />
+    <Compile Include="Folder.cs" />
     <Compile Include="ISharePointContext.cs" />
     <Compile Include="ListField.cs" />
     <Compile Include="ListForm.cs" />

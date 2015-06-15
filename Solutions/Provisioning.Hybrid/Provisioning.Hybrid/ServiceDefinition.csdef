@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
+<ServiceDefinition name="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-06.2.4">
   <WebRole name="Provisioning.Hybrid.Web" vmsize="Small">
     <Sites>
       <Site name="Web">
@@ -25,7 +25,6 @@
       <Setting name="General.EncryptionThumbPrint" />
     </ConfigurationSettings>
     <Imports>
-      <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
     </Imports>
     <Certificates>
@@ -55,7 +54,6 @@
       <Setting name="General.OnPremWebApplication" />
     </ConfigurationSettings>
     <Imports>
-      <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>

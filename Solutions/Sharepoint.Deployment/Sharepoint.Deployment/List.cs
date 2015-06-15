@@ -81,7 +81,7 @@ namespace SharePoint.Deployment {
                 };
 
                 var web = this.GetParentSPWeb();
-                this.Context.ExecuteAsync(() => web.Lists.Add(info), () => { this.IsDeployed = this.GetDeployed(); });
+                this.Context.ExecuteAsync(() => web.Lists.Add(info), () => this.IsDeployed = this.GetDeployed(true));
             } else {
                 this.ForEachChild(i => i.OnCreate());
             }

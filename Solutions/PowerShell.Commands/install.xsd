@@ -1,0 +1,767 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           >
+
+  <xs:complexType name="Credential">
+    <xs:attribute name="Credentials" type="xs:string" use="optional" />
+    <xs:attribute name="UserName" type="xs:string" use="optional" />
+    <xs:attribute name="Password" type="xs:string" use="optional" />
+    <xs:attribute name="PasswordFile" type="xs:string" use="optional" />
+  </xs:complexType>
+  
+  <xs:complexType name="WebRequest">
+    <xs:sequence>
+      <xs:element name="Page" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SetVariables">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded" minOccurs="1">
+        <xs:element name="Variable">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute name="VariableName" type="xs:string" />
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Function">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Param">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="Name" type="xs:string" use="required" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Prompt">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="Param">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Title" type="xs:string" use="required" />
+            <xs:attribute name="Message" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Credential">
+          <xs:complexType>
+            <xs:attribute name="VariableName" type="xs:string" use="required" />
+            <xs:attribute name="UserName" type="xs:string" use="optional" />
+            <xs:attribute name="Password" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Environment">
+          <xs:complexType>
+            <xs:attribute name="VariableName" type="xs:string" use="required" />
+            <xs:attribute name="EnvironmentVariable" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="Overwrite" type="xs:boolean" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ApplicationPool">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Credentials" type="xs:string" use="optional" />
+    <xs:attribute name="UserName" type="xs:string" use="optional" />
+    <xs:attribute name="Password" type="xs:string" use="optional" />
+    <xs:attribute name="PasswordFile" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ManagedPath">
+    <xs:complexContent>
+      <xs:extension base="ManagedPathBase">
+        <xs:attribute name="WebApp" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ManagedPathBase">
+    <xs:attribute name="Path" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="WebApplication">
+    <xs:sequence>
+      <xs:element name="ApplicationPool" type="ApplicationPool" minOccurs="0" maxOccurs="1" />
+      <xs:element name="SiteCollection" type="SiteCollection" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="Settings" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="EnableSelfServiceSiteCreation" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+              <xs:element name="AddManagedPath" type="ManagedPathBase" />
+              <xs:element name="PeoplePickerDomain" type="PeoplePickerDomain" />
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="HostHeader" type="xs:string" use="optional" />
+    <xs:attribute name="Url" type="xs:string" use="optional" />
+    <xs:attribute name="Port" type="xs:unsignedByte" use="optional" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="optional" />
+    <xs:attribute name="AuthenticationMethod" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="ContentDatabase" type="xs:string" use="required" />
+    <xs:attribute name="WebAppExistsAction" type="ExistsAction" use="optional" default="continue" />
+  </xs:complexType>
+
+  <xs:complexType name="PeoplePickerDomain">
+    <xs:attribute name="WebAppUrl" type="xs:string" use="optional" />
+    <xs:attribute name="DomainName" type="xs:string" use="required" />
+    <xs:attribute name="ShortName" type="xs:string" use="required" />
+    <xs:attribute name="IsForest" type="xs:string" use="optional" />
+    <xs:attribute name="LdapFilter" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="SiteCollection">
+    <xs:sequence>
+      <xs:element name="RootWeb" type="Web" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Url" type="xs:string" use="required" />
+    <xs:attribute name="OwnerAlias" type="xs:string" use="optional" />
+    <xs:attribute name="SiteExistsAction" type="ExistsAction" use="optional" default="continue" />
+  </xs:complexType>
+
+  <xs:complexType name="Web">
+    <xs:sequence>
+      <xs:element name="Web" type="Web" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="Url" type="xs:string" use="required" />
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Desc" type="xs:string" use="required" />
+    <xs:attribute name="Template" type="xs:string" use="required" />
+    <xs:attribute name="ImportFile" type="xs:string" use="optional" />
+    <xs:attribute name="WebExistsAction" type="ExistsAction" use="optional" default="continue" />
+  </xs:complexType>
+
+  <xs:simpleType name="ExistsAction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="stop" />
+      <xs:enumeration value="overwrite" />
+      <xs:enumeration value="continue" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="Install">
+    <xs:attribute name="ConfigFile" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Solutions">
+    <xs:sequence>
+      <xs:element name="Solutions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Solution">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="WebApp" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:attribute name="WebAppUrl" type="xs:string" use="required" />
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="BaseName" type="xs:string" use="required" />
+                <xs:attribute name="Type" type="xs:string" use="required" />
+                <xs:attribute name="ReinstallSameVersion" type="xs:boolean" use="optional" default="false" />
+                <xs:attribute name="Url" type="xs:string" use="optional" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="StartSharePointServices" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+
+  <!--
+  <xs:complexType name="RemoveSolutions">
+    <xs:sequence>
+      <xs:element name="Solutions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Solution">
+              <xs:complexType>
+                <xs:attribute name="BaseName" type="xs:string" use="required" />
+                <xs:attribute name="Type" type="xs:string" use="required" />
+                <xs:attribute name="ReinstallSameVersion" type="xs:boolean" use="optional" default="false" />
+                <xs:attribute name="Url" type="xs:string" use="optional" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="StartSharePointServices" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+  -->
+
+  <xs:complexType name="FeatureToggle">
+    <xs:sequence>
+      <xs:element name="Features">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Feature">
+              <xs:complexType>
+                <xs:attribute name="Identity" type="xs:string" use="required" />
+                <xs:attribute name="Url" type="xs:anyURI" use="optional" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="WebApplication" type="xs:anyURI" use="optional" />
+    <xs:attribute name="UrlFilter" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ContentTypeRef">
+    <xs:attribute name="Name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="FieldDef">
+    <!-- TODO: this should come from the MS Schema -->
+    <xs:sequence minOccurs="0">
+      <xs:element name="Default" type="xs:string" />
+      <xs:element name="CHOICES">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="CHOICE" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Type" type="xs:string" use="required" />
+    <xs:attribute name="DisplayName" type="xs:string" use="required" />
+    <xs:attribute name="Required" type="xs:string" use="optional" />
+    <xs:attribute name="StaticName" type="xs:string" use="optional" />
+    <xs:attribute name="Name" type="xs:string" use="required" />
+    <xs:attribute name="Description" type="xs:string" use="optional" />
+    <xs:attribute name="List" type="xs:string" use="optional" />
+    <xs:attribute name="EnforceUniqueValues" type="xs:string" use="optional" />
+    <xs:attribute name="Indexed" type="xs:string" use="optional" />
+    <xs:attribute name="NumLines" type="xs:unsignedByte" use="optional" />
+    <xs:attribute name="RichText" type="xs:string" use="optional" />
+    <xs:attribute name="RichTextMode" type="xs:string" use="optional" />
+    <xs:attribute name="Sortable" type="xs:string" use="optional" />
+    <xs:attribute name="ShowField" type="xs:string" use="optional" />
+    <xs:attribute name="UnlimitedLengthInDocumentLibrary" type="xs:string" use="optional" />
+    <xs:attribute name="RelationshipDeleteBehavior" type="xs:string" use="optional" />
+    <xs:attribute name="RowOrdinal" type="xs:unsignedByte" use="optional" />
+  </xs:complexType>
+  
+  <xs:complexType name="ListField">
+    <xs:choice>
+      <xs:element name="Field" type="FieldDef" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Choice" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+    </xs:choice>
+    <xs:attribute name="DisplayName" type="xs:string" use="optional" />
+    <xs:attribute name="Type" type="xs:string" use="optional" />
+    <xs:attribute name="CompactName" type="xs:string" use="optional" />
+    <xs:attribute name="Required" type="xs:boolean" use="optional" />
+
+    <xs:attribute name="AddToDefaultContentType" type="xs:boolean" use="optional" />
+    <xs:attribute name="AddFieldToDefaultView" type="xs:boolean" use="optional" />
+    <xs:attribute name="AddToDefaultView" type="xs:boolean" use="optional" />
+    <xs:attribute name="AddToAllContentTypes" type="xs:boolean" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="List">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ContentTypes">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ContentType" type="ContentTypeRef" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Fields">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="Field" type="ListField">
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="ListItems" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="Title" type="xs:string" use="required" />
+    <xs:attribute name="Template" type="xs:string" use="required" />
+    <xs:attribute name="Description" type="xs:string" use="required" />
+    <xs:attribute name="OnQuickLaunch" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="AudienceTargeted" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="ListCollection">
+    <xs:sequence>
+      <xs:element name="List" type="List" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Web" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="FarmProperties">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Set">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="Value" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Remove">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ScopedProperties">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Set">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="Value" type="xs:string" use="required" />
+            <xs:attribute name="Url" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Remove">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="Url" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType mixed="true" name="CustomAction">
+    <xs:sequence>
+      <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="Name" type="xs:string" use="required" />
+          <xs:attribute name="Value" type="xs:string" use="optional" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ScriptPath" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="SetMasterPage">
+    <xs:attribute name="CustomMasterPage" type="xs:string" use="required" />
+    <xs:attribute name="MasterPage" type="xs:string" use="required" />
+    <xs:attribute name="Url" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreatePublishingPages">
+    <xs:sequence>
+      <xs:element name="Page">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="FileName" type="xs:string" use="required" />
+              <xs:attribute name="PageLayout" type="xs:string" use="required" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="WebUrl" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="AddWebParts">
+    <xs:sequence>
+      <xs:element name="WebPart">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="webParts">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="Index" type="xs:unsignedByte" use="required" />
+          <xs:attribute name="ZoneId" type="xs:string" use="optional" />
+          <xs:attribute name="ZoneID" type="xs:string" use="optional" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Web" type="xs:string" use="required" />
+    <xs:attribute name="Page" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="WebPartByType">
+    <xs:sequence>
+      <xs:element name="WebPart" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="Index" type="xs:string" use="required" />
+          <xs:attribute name="ZoneId" type="xs:string" use="required" />
+          <xs:attribute name="Title" type="xs:string" use="required" />
+          <xs:attribute name="Type" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Web" type="xs:string" use="required" />
+    <xs:attribute name="Page" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="SetAvailablePageLayouts">
+    <xs:choice>
+      <xs:element name="All" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Inherit" minOccurs="0" maxOccurs="1" />
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="Add" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Remove" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="Name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:choice>
+    <xs:attribute name="WebUrl" type="xs:anyURI" use="required" />
+    <xs:attribute name="Inclusive" type="xs:boolean" use="required" />
+    <xs:attribute name="ResetSubsites" type="xs:boolean" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ImportWeb">
+    <xs:attribute name="Path" type="xs:string" use="required" />
+    <xs:attribute name="Url" type="xs:anyURI" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateManagedMetadataServiceApplication">
+    <xs:sequence>
+      <xs:element name="Administrators" maxOccurs="1" minOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Administrator" type="Credential" maxOccurs="unbounded" minOccurs="1" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateStateServiceApplication">
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateUserProfileServiceApplication">
+    <xs:sequence>
+      <xs:element name="FarmAccount" type="Credential" maxOccurs="1" minOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="ProfileDB" type="xs:string" use="required" />
+    <xs:attribute name="SyncDB" type="xs:string" use="required" />
+    <xs:attribute name="SocialDB" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateSPUsageServiceApplication">
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateSecureStoreServiceApplication">
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+    <xs:attribute name="EncryptionKey" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateBCSServiceApplication">
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateWordServiceApplication">
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateExcelServiceApplication">
+    <xs:sequence>
+      <xs:element name="UnattendedAccount" type="Credential" maxOccurs="1" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateSearchServiceApplication">
+    <xs:sequence>
+      <xs:element name="SearchServiceAccount" type="Credential" maxOccurs="1" minOccurs="1" />
+      <xs:element name="CrawlAccount" type="Credential" maxOccurs="1" minOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+    <xs:attribute name="AdminApplicationPool" type="xs:string" use="required" />
+    <xs:attribute name="DataTempDirectory" type="xs:string" use="optional" />
+    <xs:attribute name="IndexDirectory" type="xs:string" use="optional" />
+    <xs:attribute name="IgnoreSSL" type="xs:boolean" use="optional" />
+    <xs:attribute name="CrawlerUserAgent" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="SetSearchServiceTopology">
+    <xs:sequence>
+      <xs:element name="InstallAccount" type="Credential" />
+      <xs:element name="Server" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="ServerName" type="xs:string" use="required" />
+          <xs:attribute name="Admin" type="xs:boolean" use="optional" />
+          <xs:attribute name="Analytics" type="xs:boolean" use="optional" />
+          <xs:attribute name="ContentProcessing" type="xs:boolean" use="optional" />
+          <xs:attribute name="Query" type="xs:boolean" use="optional" />
+          <xs:attribute name="Crawl" type="xs:boolean" use="optional" />
+          <xs:attribute name="Index" type="xs:boolean" use="optional" />
+          <xs:attribute name="IndexLocation" type="xs:string" use="optional" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CreateVisioServiceApplication">
+    <xs:sequence>
+      <xs:element name="UnattendedAccount" type="Credential" maxOccurs="1" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="ServiceName" type="xs:string" use="optional" />
+    <xs:attribute name="ProxyName" type="xs:string" use="optional" />
+    <xs:attribute name="DbServer" type="xs:string" use="optional" />
+    <xs:attribute name="DbName" type="xs:string" use="required" />
+    <xs:attribute name="ApplicationPool" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="InstallSharePointFarm">
+    <xs:sequence>
+      <xs:element name="FarmAccount" type="Credential" maxOccurs="1" minOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="ConnectToExisting" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="ConfigDB" type="xs:string" use="required" />
+    <xs:attribute name="AdminContentDb" type="xs:string" use="required" />
+    <xs:attribute name="DatabaseServer" type="xs:string" use="required" />
+    <xs:attribute name="Passphrase" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="JoinServers">
+    <xs:sequence>
+      <xs:element name="InstallCredentials" type="Credential" />
+      <xs:element name="Server" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ServiceInstance" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="ServiceType" type="ServiceInstanceType" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="ServerName" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ConfigDb" type="xs:string" use="required" />
+    <xs:attribute name="DbServer" type="xs:string" use="required" />
+    <xs:attribute name="Passphrase" type="xs:string" use="required" />
+  </xs:complexType>
+  
+  <xs:complexType name="CreateCentralAdministration">
+    <xs:sequence>
+      <xs:sequence>
+        <xs:element name="Servers" maxOccurs="1" minOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Server" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="Port" type="xs:integer" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="CreateManagedAccounts">
+    <xs:sequence>
+      <xs:element name="ManagedAccount" type="Credential" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CreateServiceApplicationPool">
+    <xs:sequence>
+      <xs:element name="ServiceAccount" type="Credential" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="SetServiceIdentity">
+    <xs:sequence>
+      <xs:element name="Service" minOccurs="1" maxOccurs="unbounded" >
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ManagedAccount" type="Credential" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attribute name="Type" type="ServiceInstanceType" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="ServiceInstanceType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Search Host Controller Service" />
+      <xs:enumeration value="App Management Service" />
+      <xs:enumeration value="Managed Metadata Web Service" />
+      <xs:enumeration value="Access Services" />
+      <xs:enumeration value="User Profile Synchronization Service" />
+      <xs:enumeration value="Business Data Connectivity Service" />
+      <xs:enumeration value="Request Management" />
+      <xs:enumeration value="Secure Store Service" />
+      <xs:enumeration value="Claims to Windows Token Service" />
+      <xs:enumeration value="Microsoft SharePoint Foundation Workflow Timer Service" />
+      <xs:enumeration value="PerformancePoint Service" />
+      <xs:enumeration value="Microsoft SharePoint Foundation Sandboxed Code Service" />
+      <xs:enumeration value="Visio Graphics Service" />
+      <xs:enumeration value="SharePoint Server Search" />
+      <xs:enumeration value="Document Conversions Launcher Service" />
+      <xs:enumeration value="Document Conversions Load Balancer Service" />
+      <xs:enumeration value="Search Query and Site Settings Service" />
+      <xs:enumeration value="Work Management Service" />
+      <xs:enumeration value="Microsoft SharePoint Foundation Web Application" />
+      <xs:enumeration value="Central Administration" />
+      <xs:enumeration value="Excel Calculation Services" />
+      <xs:enumeration value="Microsoft SharePoint Foundation Incoming E-Mail" />
+      <xs:enumeration value="User Profile Service" />
+      <xs:enumeration value="Access Database Service 2010" />
+      <xs:enumeration value="Microsoft SharePoint Foundation Subscription Settings Service" />
+      <xs:enumeration value="Lotus Notes Connector" />
+      <xs:enumeration value="Word Automation Services" />
+      <xs:enumeration value="PowerPoint Conversion Service" />
+      <xs:enumeration value="Machine Translation Service" />
+      <xs:enumeration value="Distributed Cache" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="Deployment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CollectUlsOnError">
+          <xs:complexType>
+            <xs:attribute name="Enabled" type="xs:boolean" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Logging">
+          <xs:complexType>
+            <xs:attribute name="Enabled" type="xs:boolean" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DeploymentSteps">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:choice maxOccurs="unbounded">
+                <xs:element name="WebRequest" type="WebRequest" />
+                <xs:element name="SetVariables" type="SetVariables" />
+
+                <xs:element name="Install" type="Install" />
+                <xs:element name="InstallSolutions" type="Solutions" />
+                <xs:element name="RemoveSolutions" type="Solutions" />
+
+                <xs:element name="ActivateFeatures" type="FeatureToggle" />
+                <xs:element name="DeactivateFeatures" type="FeatureToggle" />
+
+                <xs:element name="CreateWebApplication" type="WebApplication" />
+                <xs:element name="CreateSiteCollection" type="SiteCollection" />
+                <xs:element name="CreateWeb" type="Web" />
+                <xs:element name="CreateLists" type="ListCollection" />
+                <xs:element name="ImportWeb" type="ImportWeb" />
+                <xs:element name="PeoplePickerDomain" type="PeoplePickerDomain" />
+
+                <xs:element name="SetFarmProperties" type="FarmProperties" />
+                <xs:element name="SetWebApplicationProperties" type="ScopedProperties" />
+                <xs:element name="SetWebProperties" type="ScopedProperties" />
+
+                <xs:element name="AddWebParts" type="AddWebParts" />
+                <xs:element name="DeleteWebParts" type="WebPartByType" />
+                <xs:element name="CloseWebParts" type="WebPartByType" />
+                <xs:element name="MinimizeWebParts" type="WebPartByType" />
+
+                <xs:element name="SetAvailablePageLayouts" type="SetAvailablePageLayouts" />
+                <xs:element name="CustomAction" type="CustomAction" />
+                <xs:element name="SetMasterPage" type="SetMasterPage" />
+                <xs:element name="CreatePublishingPages" type="CreatePublishingPages" />
+
+                <xs:element name="CreateServiceApplicationPool" type="CreateServiceApplicationPool" />
+                <xs:element name="CreateManagedMetadataServiceApplication" type="CreateManagedMetadataServiceApplication" />
+                <xs:element name="CreateStateServiceApplication" type="CreateStateServiceApplication" />
+                <xs:element name="CreateUserProfileServiceApplication" type="CreateUserProfileServiceApplication" />
+                <xs:element name="CreateSPUsageServiceApplication" type="CreateSPUsageServiceApplication" />
+                <xs:element name="CreateSecureStoreServiceApplication" type="CreateSecureStoreServiceApplication" />
+                <xs:element name="CreateBCSServiceApplication" type="CreateBCSServiceApplication" />
+                <xs:element name="CreateWordServiceApplication" type="CreateWordServiceApplication" />
+                <xs:element name="CreateExcelServiceApplication" type="CreateExcelServiceApplication" />
+                <xs:element name="CreateVisioServiceApplication" type="CreateVisioServiceApplication" />
+                <xs:element name="CreateSearchServiceApplication" type="CreateSearchServiceApplication" />
+                <xs:element name="SetSearchServiceTopology" type="SetSearchServiceTopology" />
+
+                <xs:element name="InstallSharePointFarm" type="InstallSharePointFarm" />
+                <xs:element name="CreateCentralAdministration" type="CreateCentralAdministration" />
+                <xs:element name="CreateManagedAccounts" type="CreateManagedAccounts" />
+                <xs:element name="SetServiceIdentity" type="SetServiceIdentity" />
+                <xs:element name="JoinServers" type="JoinServers" />
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2013-10.2.2">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="3" osVersion="*" schemaVersion="2014-06.2.4">
   <Role name="Provisioning.Hybrid.Web">
     <Instances count="1" />
     <ConfigurationSettings>
@@ -12,7 +12,6 @@
       <Setting name="General.MailUserPassword" value="GPzpW6ooX52N52xOLVZ6cq5GcYDIjZdGR1OGOI3RwB9L8bvDvTmJk61CNuAbAoFL0DYlXd3k2Aey/lUgHjryX4YY6JfkzbEc9ZBH15fsx8CZUjzx9kMRrVOk3cej1JpyUP93bMMQJpMiR/+OilMg8SWUUz9P8vKLsDbZ1XQDh1M5lHvg4PUxQxeOtLQubqVljwXZxDx/h6aOhP459cd0JTmpUsk2OPtD6+4bCPr2+fTExzbxb0jK8N86t+20hPk1qUkYLh8ZDVEGJj0lvYQYsFPCVAtsrU+Gf3+JWmKcZrkB2BzziE6If0s5WZiTKBkXFY4+5V+sL2MKxGmtcUEfsQ==" />
       <Setting name="General.MailSiteRequested" value="&lt;html &gt; &lt;body&gt;     &lt;h1&gt;Your site &lt;b&gt;{0}&lt;/b&gt; will be created in an instant!&lt;/h1&gt;     &lt;br /&gt;     The site owners will be &lt;b&gt;{1} ({2})&lt;/b&gt;     &lt;br /&gt;     Once the site is created you'll receive a mail with the link to your new site     &lt;br/&gt; &lt;/body&gt; &lt;/html&gt;" />
       <Setting name="General.EncryptionThumbPrint" value="676E6C5A6D6DA88A0182B6B89EA0BA8ED8F628CA" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCED34c9q+wF2RSqenyQp6buowDQYJKoZIhvcNAQEBBQAEggEAdNCXg0Wd0PbLH/Q7rprvljI+yfaGBoOJN/WN/KmpLNAE4FMM/1Y7PIxpp0l7vi5KQJLzwBp0h5YuXaDSHKW3NPzletNqeiaBGbzVaM0HGdA4swIGCiP19Ku+XxWOh3Z9cSoA5NGv1nC5JprwoyMpf4Y/3gqr97Opwo7DZH5FQ0QnAKsG6UeAPHK7sR4lgSsEzchmdEErDADxVyey/p497gnqu/LRyBOB3kujQ/0Yp3juQKWY9pOp7YHfMr1m/hRLs9kg8nchkdF2mtXrtm3TOEJpYGj0NhqahX6GoHtZWj7DcxEBbxnh/Va/ju8XOSNBJ4x7nN6elrAs1suWkmcL0TAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECH8OfGDZiQ92gBDoxSlA2PEOE/xgqz2RAzIN" />
@@ -45,7 +44,6 @@
       <Setting name="General.SBIssuerSecret" value="umsUCcoHtxXDx3i9uXRJJMBI8Qrs7ysdyFw85/1F6uXb/EAliixxajDtdIuANiggBUe6hwMFABW+AG57Fi8Gck9X1G7HiSXzfC0zvC1H1CludDFcXluKDUJJgHeS70iuRiiplTtwj9+6/mFSEG5h8py/6HJJBESGYRS6x4VuhALzdO8YiIHthKiwAUKTxopn411Dmd1nYt7o0nqo8fXjm+NaMrtPDQmrlUA6Ct35ONWIODoqQoQAVlBAHWQRVSAhIw7K8HmkoOrpP+5t8SG2ieSVNnxL21r9No6q2qbr+qlv+9bAI8EajRE2VZKhjbk7mlZJaVyNU953IfmFy9UiBw==" />
       <Setting name="ContosoCollaboration.ThemeName" value="SPCTheme" />
       <Setting name="General.OnPremWebApplication" value="https://sp2013.set1.bertonline.info" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="admin" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCED34c9q+wF2RSqenyQp6buowDQYJKoZIhvcNAQEBBQAEggEAdNCXg0Wd0PbLH/Q7rprvljI+yfaGBoOJN/WN/KmpLNAE4FMM/1Y7PIxpp0l7vi5KQJLzwBp0h5YuXaDSHKW3NPzletNqeiaBGbzVaM0HGdA4swIGCiP19Ku+XxWOh3Z9cSoA5NGv1nC5JprwoyMpf4Y/3gqr97Opwo7DZH5FQ0QnAKsG6UeAPHK7sR4lgSsEzchmdEErDADxVyey/p497gnqu/LRyBOB3kujQ/0Yp3juQKWY9pOp7YHfMr1m/hRLs9kg8nchkdF2mtXrtm3TOEJpYGj0NhqahX6GoHtZWj7DcxEBbxnh/Va/ju8XOSNBJ4x7nN6elrAs1suWkmcL0TAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECH8OfGDZiQ92gBDoxSlA2PEOE/xgqz2RAzIN" />

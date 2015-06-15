@@ -39,7 +39,7 @@ namespace SharePoint.Deployment {
             }
 
             this.ForEachChild(i => { i.Parent = this;
-                                     i.Init(this.Context); });
+                                     i.Init(this.Context, force); });
         }
 
         protected virtual SP.Web GetParentSPWeb() {
@@ -62,9 +62,9 @@ namespace SharePoint.Deployment {
         public void Delete() {
             if (this.IsDeployed.Value) {
                 this.OnDelete();
-                this.IsDeployed = false;
                 this.Context.Flush();
                 this.Invalidate();
+                this.IsDeployed = false;
                 this.Context.Invalidate();
             }
         }

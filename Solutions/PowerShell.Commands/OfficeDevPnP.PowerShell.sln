@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Com
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{8F9FCAE4-5137-4C24-8B62-B30AA7CBAFBA}"
 	ProjectSection(SolutionItems) = preProject
+		Deploy.ps1 = Deploy.ps1
 		Install.ps1 = Install.ps1
 		PostBuild.ps1 = PostBuild.ps1
 	EndProjectSection

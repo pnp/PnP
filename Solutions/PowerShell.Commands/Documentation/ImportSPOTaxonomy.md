@@ -1,5 +1,5 @@
 #Import-SPOTaxonomy
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-06-10*
 
 Imports a taxonomy from either a string array or a file
 ##Syntax
@@ -24,11 +24,11 @@ TermStoreName|String|False|
 
 ###Example 1
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
-Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
+Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
 
 ###Example 2
     
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'
-Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'
-<!-- Ref: 5E7BCF2938E4977F2EB4CA1BADB2AA3B -->
+PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'
+Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'
+<!-- Ref: 451EF1CC0ADD8742309128E95C1762DC -->

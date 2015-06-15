@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using SharePoint.Deployment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +11,29 @@ namespace SharePoint.Deployment {
     class Program {
         static void Main(string[] args) {
             string siteUrl = "https://jornata.sharepoint.com";
-            string userName = "abc";
-            string password = "xyz";
+            string userName = "markc@bluemetal.com";
+            string password = "b@rr1cade1";
             Web xyz = new Web() {
                 Title = "xyz1",
                 UrlSegment = "xyz1",
                 Fields = {
-                    new SiteField(new Guid("94c46e17-25da-4a5a-80ff-eefb4ba07a40"), FieldType.Number, "sample1")
+                    new SiteField(new Guid("94c46e17-25da-4a5a-80ff-eefb4ba07a40"), SP.FieldType.Number, "sample1")
                     },
                 Lists = {
                     new List(SP.ListTemplateType.GenericList, "List1") {
                         UrlSegment = "Lists/List1",
                         Fields = {
                             ListField.FromSiteField(new Guid("94c46e17-25da-4a5a-80ff-eefb4ba07a40")),
-                            new ListField(FieldType.Text, "who does numbah 2 work foah") { Required = true, InternalName = "number2", Options = { {"StaticName","number2"} } }
+                            new ListField(SP.FieldType.Text, "who does numbah 2 work foah") { Required = true, InternalName = "number2", Options = { {"StaticName","number2"} } }
                             },
                         Views = {
                             new ListView("No", "Title", "number2")
                             }
-                        }
+                        },
+                    new List(SP.ListTemplateType.DocumentLibrary, "Project Docs")
+                    },
+                Folders = new List<Folder>() {
+                    Folder.FromFileSystem("./TestContent", "ProjectDocs/sample")
                     }
                 };
             using (Web web = new Web() {

@@ -27,6 +27,11 @@ namespace SharePoint.Deployment {
                 this.SpField = this.ParentWeb.SpWeb.Fields.GetByInternalNameOrTitle(this.InternalName);
             }
             this.IsDeployed = returnValue = this.Context.TryExecuteSync(this.SpField);
+
+            if (!returnValue) {
+                this.SpField = null;
+            }
+
             return returnValue;
         }
 
@@ -46,12 +51,11 @@ namespace SharePoint.Deployment {
         internal override void OnCreate() {
             if (this.IsSiteField) {
                 this.Context.ExecuteSync(() => { this.SpField = this.ParentList.SpList.Fields.Add(this.SiteField.SpField); } );
-                this.IsDeployed = true;
+                this.IsDeployed = this.GetDeployed(true);
             } else {
                 this.Context.ExecuteAsync(
                     () => this.SpField = this.ParentList.SpList.Fields.AddFieldAsXml(this.GetSchemaXml().ToString(), this.AddToDefaultView, this.FieldOptions),
-                    () => this.IsDeployed = this.GetDeployed()
-                    );
+                    () => this.IsDeployed = this.GetDeployed(true));
             }
         }
 

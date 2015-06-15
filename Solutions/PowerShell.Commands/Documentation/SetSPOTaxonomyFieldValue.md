@@ -1,5 +1,5 @@
 #Set-SPOTaxonomyFieldValue
-*Topic automatically generated on: 2015-05-04*
+*Topic automatically generated on: 2015-06-10*
 
 Sets a taxonomy term value in a listitem field
 ##Syntax
@@ -23,13 +23,13 @@ TermPath|String|True|A path in the form of GROUPLABEL|TERMSETLABEL|TERMLABEL
 
 ###Example 1
     
-PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -TermPath 'CORPORATE|DEPARTMENTS|HR'
+PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -Label 'HR'
     
 
 
 ###Example 2
     
-PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -Label 'HR'
+PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -TermPath 'CORPORATE|DEPARTMENTS|HR'
     
 
-<!-- Ref: 4D274EAFF1163317A8940AE9CBF42390 -->
+<!-- Ref: 1E69929A37144256796130C96FEA086E -->
