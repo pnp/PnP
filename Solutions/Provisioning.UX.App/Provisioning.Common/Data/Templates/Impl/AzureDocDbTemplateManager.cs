@@ -22,6 +22,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
         const string DB_COLLECTION_ID = "SiteTemplateCollection";
         const string ACCOUNTENDPOINT_KEY = "AccountEndpoint";
         const string ACCOUNT_KEY = "AccountKey";
+        ILog _logger = LoggerFactory.GetLogger();
 
         /// <summary>
         /// Internal Member that is used to get the Properties to Connect to Azure DocumentDB
@@ -82,12 +83,12 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    this._logger.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    this._logger.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResult;
@@ -118,12 +119,12 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    this._logger.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    this._logger.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResult;
@@ -146,7 +147,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
             catch (Exception _ex)
             {
                 var _message = string.Format(PCResources.TemplateProviderBase_Exception_Message, _ex.Message);
-                Log.Fatal("Provisioning.Common.Data.Templates.Impl.AzureDocDbTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
+                this._logger.Error("Provisioning.Common.Data.Templates.Impl.AzureDocDbTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
                 throw new DataStoreException(_message, _ex);
             }
         }
@@ -180,7 +181,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
             Database database = client.CreateDatabaseQuery().Where(db => db.Id == this.Container).ToArray().FirstOrDefault();
             if (database == null)
             {
-                Log.Info("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
+                this._logger.Information("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
                 database = await client.CreateDatabaseAsync(new Database { Id = this.Container });
             }
             return database;

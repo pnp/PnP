@@ -15,6 +15,8 @@ namespace Provisioning.UX.AppWeb.Controllers
 {
     public class SiteRequestController : ApiController
     {
+        ILog _logger = LoggerFactory.GetLogger();
+
         [HttpPut]
         public void Register(WebAPIContext sharePointServiceContext)
         {
@@ -22,41 +24,59 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
 
         /// <summary>
-        /// Checks if a site request exists in the data repository
+        /// Gets a site request in the date repository
         /// POST api/<controller>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Route("api/provisioning/siteRequests/validateNewSiteRequestUrl")]
+        [Route("api/provisioning/siteRequests/getSiteRequest/url")]
         [WebAPIContextFilter]
         [HttpPost]
-        public SiteCheckResponse ValidateNewSiteRequestUrl([FromBody]string value)
+        public HttpResponseMessage GetSiteRequest([FromBody]string value)
         {
-            var _response = new SiteCheckResponse();
-            _response.Success = false;
-
             try
             {
-                var data = JsonConvert.DeserializeObject<SiteRequest>(value);
-                var _requestToCheck = ObjectMapper.ToSiteRequestInformation(data);
+                var _data = JsonConvert.DeserializeObject<SiteRequest>(value);
+                var _requestToCheck = ObjectMapper.ToSiteRequestInformation(_data);
 
-                ///Save the Site Request
                 ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
                 var _manager = _srf.GetSiteRequestManager();
-                bool _value = _manager.DoesSiteRequestExist(_requestToCheck.Url);
-                _response.DoesExist = _value;
-                _response.Success = true;
+                var _siteRequest = _manager.GetSiteRequestByUrl(_data.Url);
+                if(_siteRequest == null) {
+                    var _message = string.Format("The site request url {0} does not exist", _requestToCheck.Url);
+                    HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.NotFound, _message);
+                    throw new HttpResponseException(_response);
+                
+                }
+                else{
+                    return Request.CreateResponse<SiteRequestInformation>(HttpStatusCode.OK, _siteRequest);
+                }
+               
             }
-            catch (Exception ex)
+            catch(HttpResponseException)
             {
-                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
-                    "There was an error processing your request. Error Message {0} Error Stack {1}",
-                    ex.Message,
-                    ex);
-                _response.ErrorMessage = ex.Message;
+                throw;
             }
-            return _response;
-
+            catch(JsonException _ex)
+            {
+                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                this._logger.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                     "There was an error processing the request. Error Message {0} Error Stack {1}",
+                     _ex.Message,
+                     _ex);
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.BadRequest, _message);
+                throw new HttpResponseException(_response); 
+            }
+            catch (Exception _ex)
+            {
+                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                this._logger.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                    "There was an error processing your request. Error Message {0} Error Stack {1}",
+                    _ex.Message,
+                    _ex);
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
+                throw new HttpResponseException(_response); 
+            }
         }
 
         /// <summary>
@@ -65,39 +85,52 @@ namespace Provisioning.UX.AppWeb.Controllers
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        [Route("api/provisioning/siteRequests/newSiteRequest")]
+        [Route("api/provisioning/siteRequests/create")]
         [WebAPIContextFilter]
         [HttpPost]
-        public SiteRequest NewSiteRequest([FromBody]string value)
+        public HttpResponseMessage CreateSiteRequest([FromBody]string value)
         {
-            var _response = new SiteRequest();
-           _response.Success = false;
-
+            SiteRequest _data = null;
             try
             {
-                var data = JsonConvert.DeserializeObject<SiteRequest>(value);
-                var _newRequest = ObjectMapper.ToSiteRequestInformation(data);
+                _data = JsonConvert.DeserializeObject<SiteRequest>(value);
+                var _newRequest = ObjectMapper.ToSiteRequestInformation(_data);
 
                 ///Save the Site Request
                 ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
                 var _manager = _srf.GetSiteRequestManager();
                 _manager.CreateNewSiteRequest(_newRequest);
-                _response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                Log.Error("SiteRequestController.NewSiteRequest",
-                    "There was an error saving the new site request. Error Message {0} Error Stack {1}",
-                    ex.Message,
-                    ex);
-                _response.ErrorMessage = ex.Message;
-            }
-            return _response;
+                 return Request.CreateResponse<SiteRequest>(HttpStatusCode.Created, _data);
 
+            }
+            catch (JsonSerializationException _ex)
+            {
+                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+               
+                this._logger.Error("SiteRequestController.CreateSiteRequest",
+                     "There was an error creating the new site request. Error Message {0} Error Stack {1}",
+                     _ex.Message,
+                     _ex);
+
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.BadRequest, _message);
+                throw new HttpResponseException(_response); 
+            }
+
+            catch (Exception _ex)
+            {
+                var _message = string.Format("There was an error processing the request. Exeception {0}", _ex.Message);
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
+
+                this._logger.Error("SiteRequestController.CreateSiteRequest",
+                    "There was an error creating the new site request. Error Message {0} Error Stack {1}",
+                    _ex.Message,
+                    _ex);
+                throw new HttpResponseException(_response); 
+            }
         }
 
         /// <summary>
-        /// Saves a site request to the Data Repository
+        /// Gets sets requests by users email
         /// POST api/<controller>
         /// </summary>
         /// <param name="value"></param>
@@ -105,27 +138,35 @@ namespace Provisioning.UX.AppWeb.Controllers
         [Route("api/provisioning/siteRequests/getOwnerRequests")]
         [WebAPIContextFilter]
         [HttpPost]
-        public SiteRequestsResponse GetOwnerRequestsByEmail([FromBody] string ownerEmailAddress)
+        public HttpResponseMessage GetOwnerRequestsByEmail([FromBody] string ownerEmailAddress)
         {
-            var _returnResponse = new SiteRequestsResponse();
-            _returnResponse.Success = false;
-            var _user = JsonConvert.DeserializeObject<SiteUser>(ownerEmailAddress);
             try
             {
-
+                var _user = JsonConvert.DeserializeObject<SiteUser>(ownerEmailAddress);
                 ISiteRequestFactory _requestFactory = SiteRequestFactory.GetInstance();
                 var _manager = _requestFactory.GetSiteRequestManager();
-                _returnResponse.SiteRequests = _manager.GetOwnerRequests(_user.Name); 
-                _returnResponse.Success = true;
+                var _siteRequests = _manager.GetOwnerRequests(_user.Name);
+                return Request.CreateResponse((HttpStatusCode)200, _siteRequests);
+            }
+            catch (JsonSerializationException _ex)
+            {
+                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+
+                this._logger.Error("SiteRequestController.GetOwnerRequestsByEmail",
+                     "There was an error get site requests by email. Error Message {0} Error Stack {1}",
+                     _ex.Message,
+                     _ex);
+
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.BadRequest, _message);
+                throw new HttpResponseException(_response); 
             }
             catch(Exception _ex)
             {
-                _returnResponse.ErrorMessage = _ex.Message;
-                Log.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
+                var _message = string.Format("There was an error processing the request. {0}", _ex.Message);
+               this._logger.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
+                throw new HttpResponseException(_response); 
             }
-
-            return _returnResponse;   
-
         }
     }
 }

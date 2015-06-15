@@ -23,6 +23,7 @@ namespace Provisioning.Job
         ISiteTemplateFactory _siteTemplateFactory;
         IAppSettingsManager _appManager;
         AppSettings _settings;
+        ILog _logger = LoggerFactory.GetLogger();
         #endregion
 
         #region Constructors
@@ -41,7 +42,7 @@ namespace Provisioning.Job
             var _srManager = _requestFactory.GetSiteRequestManager();
             var _requests = _srManager.GetApprovedRequests();
 
-            Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is {0} Site Request Messages pending in the queue.", _requests.Count);
+            this._logger.Information("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is {0} Site Request Messages pending in the queue.", _requests.Count);
             //TODO LOG HOW MANY ITEMS
             if(_requests.Count > 0)
             {
@@ -49,7 +50,7 @@ namespace Provisioning.Job
             }
             else
             {
-                Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is no Site Request pending in the queue");
+                this._logger.Information("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is no Site Request pending in the queue");
             }
         }
 
@@ -63,18 +64,21 @@ namespace Provisioning.Job
                 try 
                 {
                     var _template = _tm.GetTemplateByName(siteRequest.Template);
+
+                    //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
+                    if (_template == null)
+                    {
+                        this._logger.Error("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Template {0} was not found for Site Url {1}.", siteRequest.Template, siteRequest.Url);
+                    }
                     var _provisioningTemplate = _tm.GetProvisioningTemplate(_template.ProvisioningTemplate);
                   
-                    //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
-                    if (_template == null) {
-                        Log.Warning("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Template {0} was not found for Site Url {1}.", siteRequest.Template, siteRequest.Url);
-                    }
+                 
 
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Processing);
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
-                    Log.Info("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
+                    this._logger.Information("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
                     _siteProvisioningManager.CreateSiteCollection(siteRequest, _template);
-                    _siteProvisioningManager.ApplyProvisioningTemplates(_provisioningTemplate, siteRequest);
+                    _siteProvisioningManager.ApplyProvisioningTemplate(_provisioningTemplate, siteRequest);
                     this.SendSuccessEmail(siteRequest);
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }
@@ -118,7 +122,7 @@ namespace Provisioning.Job
             }
             catch(Exception ex)
             {
-                Log.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
+                this._logger.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
                     "There was an error sending email. The Error Message: {0}, Exception: {1}", 
                      ex.Message,
                      ex);
@@ -163,7 +167,7 @@ namespace Provisioning.Job
             }
             catch(Exception ex)
             {
-                Log.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
+                this._logger.Error("Provisioning.Job.SiteProvisioningJob.SendSuccessEmail",
                     "There was an error sending email. The Error Message: {0}, Exception: {1}",
                      ex.Message,
                      ex);

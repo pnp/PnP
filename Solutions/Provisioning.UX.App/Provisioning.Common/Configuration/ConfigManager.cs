@@ -13,6 +13,8 @@ namespace Provisioning.Common.Configuration
 {
     public class ConfigManager
     {
+        ILog _logger = LoggerFactory.GetLogger();
+
         public ModulesSection ModulesConfiguration
         {
             get { return (ModulesSection)ConfigurationManager.GetSection("modulesSection"); }
@@ -39,20 +41,19 @@ namespace Provisioning.Common.Configuration
      
             try
             {
-                //    Log.Debug(LOGGING_SOURCE, PCResources.AppSettings_GetKey, key);
                 if (ConfigurationManager.AppSettings.AllKeys.Contains(key))
                 {
                     _returnValue = ConfigurationManager.AppSettings.Get(key).HandleEnvironmentToken();
                 }
                 else
                 {
-                    Log.Warning("Provisioning.Common.Configuration.GetAppSettingsKey", PCResources.AppSettings_KeyNotFound, key);
+                    this._logger.Warning("Provisioning.Common.Configuration.GetAppSettingsKey", PCResources.AppSettings_KeyNotFound, key);
                 }
                 return _returnValue;
             }
             catch (ConfigurationErrorsException ex)
             {
-                Log.Fatal("Provisioning.Common.Configuration.GetAppSettingsKey", "Error Occured while reading the configuration file. The Error is {0}", ex);
+                this._logger.Error("Provisioning.Common.Configuration.GetAppSettingsKey", "Error Occured while reading the configuration file. The Error is {0}", ex);
                 throw;
             }
         } 

@@ -58,13 +58,12 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
-        public void ApplyProvisioningTemplates(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
             try
             {
                 this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
                 this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
-                this._siteprovisioningService.SetSitePolicy(siteRequest.SitePolicy);
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
                 provisioningTemplate.Connector = this.GetProvisioningConnector();
                 provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);

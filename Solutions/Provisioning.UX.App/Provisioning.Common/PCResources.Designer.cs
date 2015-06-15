@@ -153,9 +153,9 @@ namespace Provisioning.Common {
         /// <summary>
         ///   Looks up a localized string similar to Enabled External Sharing on Site Url {0}.
         /// </summary>
-        internal static string ExternalSharing_Successfull {
+        internal static string ExternalSharing_Successful {
             get {
-                return ResourceManager.GetString("ExternalSharing_Successfull", resourceCulture);
+                return ResourceManager.GetString("ExternalSharing_Successful", resourceCulture);
             }
         }
         
@@ -261,9 +261,9 @@ namespace Provisioning.Common {
         /// <summary>
         ///   Looks up a localized string similar to Site Collection {0} created:.
         /// </summary>
-        internal static string SiteCreation_Creation_Successfull {
+        internal static string SiteCreation_Creation_Successful {
             get {
-                return ResourceManager.GetString("SiteCreation_Creation_Successfull", resourceCulture);
+                return ResourceManager.GetString("SiteCreation_Creation_Successful", resourceCulture);
             }
         }
         
@@ -279,27 +279,27 @@ namespace Provisioning.Common {
         /// <summary>
         ///   Looks up a localized string similar to Created site request list {0} in Site Collection {1}.
         /// </summary>
-        internal static string SiteRequest_List_Creation_SuccessFull {
+        internal static string SiteRequest_List_Creation_Successful {
             get {
-                return ResourceManager.GetString("SiteRequest_List_Creation_SuccessFull", resourceCulture);
+                return ResourceManager.GetString("SiteRequest_List_Creation_Successful", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to New Site Request Submitted for URL {0} successfull.
         /// </summary>
-        internal static string SiteRequestNew_Successfull {
+        internal static string SiteRequestNew_Successful {
             get {
-                return ResourceManager.GetString("SiteRequestNew_Successfull", resourceCulture);
+                return ResourceManager.GetString("SiteRequestNew_Successful", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Updating Site Request Status for URL {0} to status {1}.
         /// </summary>
-        internal static string SiteRequestUpdate_Successfull {
+        internal static string SiteRequestUpdate_Successful {
             get {
-                return ResourceManager.GetString("SiteRequestUpdate_Successfull", resourceCulture);
+                return ResourceManager.GetString("SiteRequestUpdate_Successful", resourceCulture);
             }
         }
         
@@ -318,6 +318,15 @@ namespace Provisioning.Common {
         internal static string SiteTemplate_Factory_Created_Instance_Exception {
             get {
                 return ResourceManager.GetString("SiteTemplate_Factory_Created_Instance_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         
