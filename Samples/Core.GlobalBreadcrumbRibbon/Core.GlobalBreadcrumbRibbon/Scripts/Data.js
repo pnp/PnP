@@ -114,7 +114,7 @@
         newUserCustomAction.set_title("PnPGlobalBreadcrumbRibbon");
         newUserCustomAction.set_description("Global Breadcrumb and Ribbon is accessible in SP");
         newUserCustomAction.set_location('ScriptLink');
-        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js?version='+(((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1));
+        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js?version=' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1));
         newUserCustomAction.set_sequence(58);
         newUserCustomAction.update();
         context.executeQueryAsync(
@@ -159,7 +159,7 @@
     DeleteGetFileUrl: function () {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
-            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + _spPageContextInfo.siteServerRelativeUrl + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
+            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + PnPApp.ServerRelativeUrl + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
             method: "POST",
             headers: {
                 "IF-MATCH": "*",
@@ -170,7 +170,6 @@
             error: PnPCommon.NotifyError
         });
     },
-
     GetPropertieBag: function (success) {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
