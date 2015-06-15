@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Utilities;
@@ -282,6 +283,11 @@ namespace Microsoft.SharePoint.Client
             //    <span id="layoutsData" style="display&#58;none;">true,false,2</span>
             //  </div>
             //</div>
+
+            // Close all BR tags
+            Regex brRegex = new Regex("<br>",RegexOptions.IgnoreCase);
+
+            wikiField = brRegex.Replace(wikiField, "<br/>");
 
             XmlDocument xd = new XmlDocument();
             xd.PreserveWhitespace = true;
