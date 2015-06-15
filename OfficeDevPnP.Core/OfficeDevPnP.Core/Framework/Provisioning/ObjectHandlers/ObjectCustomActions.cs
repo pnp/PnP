@@ -80,7 +80,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         Remove = customAction.Remove,
                         Rights = customAction.Rights,
                         ScriptBlock = customAction.ScriptBlock.ToParsedString(),
-                        ScriptSrc = customAction.ScriptSrc.ToParsedString(),
+                        ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection"),
                         Sequence = customAction.Sequence,
                         Title = customAction.Title,
                         Url = customAction.Url.ToParsedString()
@@ -149,7 +149,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingCustomAction.ScriptBlock = customAction.ScriptBlock.ToParsedString();
                             isDirty = true;
                         }
-                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString())
+                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString("~site","~sitecollection"))
                         {
                             existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString();
                             isDirty = true;
