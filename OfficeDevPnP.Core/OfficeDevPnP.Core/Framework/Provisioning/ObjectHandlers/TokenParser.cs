@@ -127,9 +127,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         if (token.GetTokens().Except(tokensToSkip, StringComparer.InvariantCultureIgnoreCase).Any())
                         {
-                            foreach (var regex in token.GetRegex().Where(regex => regex.IsMatch(input)))
+                            foreach (var filteredToken in token.GetTokens().Except(tokensToSkip, StringComparer.InvariantCultureIgnoreCase))
                             {
-                                input = regex.Replace(input, token.GetReplaceValue());
+                                var regex = token.GetRegexForToken(filteredToken);
+                                if (regex.IsMatch(input))
+                                {
+                                    input = regex.Replace(input, token.GetReplaceValue());
+                                }
                             }
                         }
                     }
