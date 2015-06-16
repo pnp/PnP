@@ -151,7 +151,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         }
                         if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString("~site","~sitecollection"))
                         {
-                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString();
+                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection");
                             isDirty = true;
                         }
                         if (existingCustomAction.Title != customAction.Title.ToParsedString())

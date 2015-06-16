@@ -33,6 +33,11 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             return regexs;
         }
 
+        public Regex GetRegexForToken(string token)
+        {
+            return new Regex(token, RegexOptions.IgnoreCase);
+        }
+
         public int GetTokenLength()
         {
             return _tokens.Select(t => t.Length).Concat(new[] { 0 }).Max();
