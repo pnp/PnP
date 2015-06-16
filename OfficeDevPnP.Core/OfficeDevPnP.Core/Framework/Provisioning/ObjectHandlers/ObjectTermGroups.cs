@@ -203,7 +203,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     foreach (var label in modelTerm.Labels)
                     {
-                        var l = term.CreateLabel(label.Value.ToParsedString(), label.Language, label.IsDefaultForLanguage);
+                        if ((label.IsDefaultForLanguage && label.Language != termStore.DefaultLanguage) || label.IsDefaultForLanguage == false)
+                        {
+                            var l = term.CreateLabel(label.Value.ToParsedString(), label.Language, label.IsDefaultForLanguage);
+                        }
+                        else
+                        {
+                            WriteWarning(string.Format("Skipping label {0}, label is to set to default for language {1} while the default termstore language is also {1}", label.Value, label.Language), ProvisioningMessageType.Warning);
+                        }
                     }
                 }
 
@@ -372,31 +379,34 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 modelTerm.Name = term.Name;
                 modelTerm.IsAvailableForTagging = term.IsAvailableForTagging;
 
-                if (term.Labels.Count == 1)
-                {
-                    var label = term.Labels[0];
-                    if ((label.Language == defaultLanguage && label.Value != term.Name) || label.Language != defaultLanguage)
-                    {
-                        var modelLabel = new Model.TermLabel();
-                        modelLabel.IsDefaultForLanguage = label.IsDefaultForLanguage;
-                        modelLabel.Value = label.Value;
-                        modelLabel.Language = label.Language;
 
-                        modelTerm.Labels.Add(modelLabel);
-                    }
-                }
-                else
+                if (term.Labels.Any())
                 {
                     foreach (var label in term.Labels)
                     {
-                        var modelLabel = new Model.TermLabel();
-                        modelLabel.IsDefaultForLanguage = label.IsDefaultForLanguage;
-                        modelLabel.Value = label.Value;
-                        modelLabel.Language = label.Language;
+                        if ((label.Language == defaultLanguage && label.Value != term.Name) || label.Language != defaultLanguage)
+                        {
+                            var modelLabel = new Model.TermLabel();
+                            modelLabel.IsDefaultForLanguage = label.IsDefaultForLanguage;
+                            modelLabel.Value = label.Value;
+                            modelLabel.Language = label.Language;
 
-                        modelTerm.Labels.Add(modelLabel);
+                            modelTerm.Labels.Add(modelLabel);
+                        }
                     }
                 }
+                //else
+                //{
+                //    foreach (var label in term.Labels)
+                //    {
+                //        var modelLabel = new Model.TermLabel();
+                //        modelLabel.IsDefaultForLanguage = label.IsDefaultForLanguage;
+                //        modelLabel.Value = label.Value;
+                //        modelLabel.Language = label.Language;
+
+                //        modelTerm.Labels.Add(modelLabel);
+                //    }
+                //}
 
                 foreach (var localProperty in term.LocalCustomProperties)
                 {
@@ -442,7 +452,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return _willProvision.Value;
         }
 
-        public override bool WillExtract(Web web, Model.ProvisioningTemplate template,  ProvisioningTemplateCreationInformation creationInfo)
+        public override bool WillExtract(Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             if (!_willExtract.HasValue)
             {
