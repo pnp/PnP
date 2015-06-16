@@ -377,9 +377,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (existingList.DocumentTemplateUrl != templateList.DocumentTemplate.ToParsedString())
                     {
                         existingList.DocumentTemplateUrl = templateList.DocumentTemplate.ToParsedString();
+                        isDirty = true;
                     }
                 }
-                if (templateList.Description != existingList.Description)
+                if (!string.IsNullOrEmpty(templateList.Description) && templateList.Description != existingList.Description)
                 {
                     existingList.Description = templateList.Description;
                     isDirty = true;
