@@ -359,8 +359,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 l => l.EnableAttachments,
                 l => l.EnableFolderCreation,
                 l => l.EnableMinorVersions,
-                l => l.DraftVersionVisibility,
-                l => l.MajorWithMinorVersionsLimit
+                l => l.DraftVersionVisibility
+#if !CLIENTSDKV15
+                ,l => l.MajorWithMinorVersionsLimit
+#endif
                 );
             web.Context.ExecuteQueryRetry();
 
