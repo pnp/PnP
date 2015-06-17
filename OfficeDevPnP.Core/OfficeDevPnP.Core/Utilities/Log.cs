@@ -11,6 +11,7 @@ namespace OfficeDevPnP.Core.Utilities
     public static class Log
     {
         #region Public Members
+
         /// <summary>
         /// Increases the current IndentLevel by one.
         /// </summary>
@@ -88,26 +89,33 @@ namespace OfficeDevPnP.Core.Utilities
             var log = GetLogEntry(source, message, args);
             Trace.Fail(log);
         }
+
         #endregion
 
         #region Private Members
+
         /// <summary>
         /// Helper Method to format error messages
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="message"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="source">Source of the message</param>
+        /// <param name="message">Message to log</param>
+        /// <param name="args">Arguments to used for message completion</param>
+        /// <returns>Log entry</returns>
         private static string GetLogEntry(string source, string message, params object[] args)
         {
             try
             {
+                string msg = string.Empty;
+
                 if (args == null || args.Length == 0)
                 {
-                    message = message.Replace("{", "{{").Replace("}", "}}");
+                    msg = message.Replace("{", "{{").Replace("}", "}}");
+                }
+                else
+                {
+                    msg = String.Format(CultureInfo.CurrentCulture, message, args);
                 }
 
-                string msg = String.Format(CultureInfo.CurrentCulture, message, args);
                 string log = string.Format(CultureInfo.CurrentCulture, "{0} [[{1}]] {2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, msg);
                 return log;
             }
@@ -116,6 +124,7 @@ namespace OfficeDevPnP.Core.Utilities
                 return string.Format("Error while generating log information, {0}", e);
             }
         }
+
         #endregion
     }
 }

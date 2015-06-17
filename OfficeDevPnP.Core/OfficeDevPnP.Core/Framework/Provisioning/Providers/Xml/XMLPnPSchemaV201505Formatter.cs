@@ -360,6 +360,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from customAction in template.CustomActions.SiteCustomActions
                          select new V201505.CustomAction
                          {
+                             CommandUIExtension = new CustomActionCommandUIExtension {
+                                 Any = customAction.CommandUIExtension != null ?
+                                    (from x in customAction.CommandUIExtension.Elements() select x.ToXmlElement()).ToArray() : null,
+                             },
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
                              Group = customAction.Group,
@@ -387,6 +391,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from customAction in template.CustomActions.WebCustomActions
                          select new V201505.CustomAction
                          {
+                             CommandUIExtension = new CustomActionCommandUIExtension
+                             {
+                                 Any = customAction.CommandUIExtension != null ?
+                                    (from x in customAction.CommandUIExtension.Elements() select x.ToXmlElement()).ToArray() : null,
+                             },
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
                              Group = customAction.Group,
@@ -898,6 +907,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from customAction in source.CustomActions.SiteCustomActions
                         select new Model.CustomAction
                         {
+                            CommandUIExtension = (customAction.CommandUIExtension != null && customAction.CommandUIExtension.Any != null) ?
+                                (new XElement("CommandUIExtension", from x in customAction.CommandUIExtension.Any select x.ToXElement())) : null,
                             Description = customAction.Description,
                             Enabled = customAction.Enabled,
                             Group = customAction.Group,
@@ -918,6 +929,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from customAction in source.CustomActions.WebCustomActions
                         select new Model.CustomAction
                         {
+                            CommandUIExtension = (customAction.CommandUIExtension != null && customAction.CommandUIExtension.Any != null) ?
+                                (new XElement("CommandUIExtension", from x in customAction.CommandUIExtension.Any select x.ToXElement())) : null,
                             Description = customAction.Description,
                             Enabled = customAction.Enabled,
                             Group = customAction.Group,

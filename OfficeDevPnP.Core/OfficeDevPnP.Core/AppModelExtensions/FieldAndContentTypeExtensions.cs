@@ -38,19 +38,19 @@ namespace Microsoft.SharePoint.Client
         public static TField CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
         {
             if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
-        {
+            {
                 throw new ArgumentNullException("InternalName");
-        }
+            }
 
             if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
             {
                 throw new ArgumentNullException("DisplayName");
-        }
+            }
 
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQueryRetry();
-            
+
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
         }
@@ -202,7 +202,7 @@ namespace Microsoft.SharePoint.Client
             else
             {
                 return web.Context.CastTo<TField>(field);
-        }
+            }
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Microsoft.SharePoint.Client
             if (!fields.ServerObjectIsNull.HasValue ||
                 fields.ServerObjectIsNull.Value)
             {
-                    fields.Context.Load(fields);
+                fields.Context.Load(fields);
                 fields.Context.ExecuteQueryRetry();
             }
 
@@ -229,7 +229,7 @@ namespace Microsoft.SharePoint.Client
             else
             {
                 return fields.Context.CastTo<TField>(field);
-        }
+            }
         }
 
         /// <summary>
@@ -333,10 +333,10 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
             {
                 throw new ArgumentNullException("InternalName");
-        }
+            }
 
             if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
-        {
+            {
                 throw new ArgumentNullException("DisplayName");
             }
 
@@ -764,10 +764,10 @@ namespace Microsoft.SharePoint.Client
             FieldLink flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
             if (flink == null)
             {
-            FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
-            fldInfo.Field = field;
-            contentType.FieldLinks.Add(fldInfo);
-            contentType.Update(true);
+                FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
+                fldInfo.Field = field;
+                contentType.FieldLinks.Add(fldInfo);
+                contentType.Update(true);
                 web.Context.ExecuteQueryRetry();
 
                 flink = contentType.FieldLinks.GetById(field.Id);
@@ -1084,7 +1084,7 @@ namespace Microsoft.SharePoint.Client
                     var group = ct.Attribute("Group") != null ? ct.Attribute("Group").Value : string.Empty;
 
                     // Create CT
-                web.CreateContentType(name, description, ctid, group);
+                    web.CreateContentType(name, description, ctid, group);
 
                     // Add fields to content type 
                     var fieldRefs = from fr in ct.Descendants(ns + "FieldRefs").Elements(ns + "FieldRef") select fr;
@@ -1135,7 +1135,7 @@ namespace Microsoft.SharePoint.Client
 
             ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
 
-            
+
             // Set the properties for the content type
             newCt.Name = name;
             newCt.Id = id;
@@ -1294,7 +1294,7 @@ namespace Microsoft.SharePoint.Client
             // Get content type instance
             ContentType contentType = GetContentTypeByName(web, contentTypeName);
             // Remove content type from list
-           RemoveContentTypeFromList(web, list, contentType);
+            RemoveContentTypeFromList(web, list, contentType);
 
         }
 

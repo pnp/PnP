@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="d46038f1-74aa-4fc6-923f-747294d0090b" 
+        solutionId="d46038f1-74aa-4fc6-923f-747294d0090b" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Core.GlobalBreadcrumbRibbon"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="c67c26c6-2d7d-4d10-98bc-cf1a9b6fac78" />
+  </features>
+</package>

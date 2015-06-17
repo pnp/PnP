@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>OfficeDevPnPCore16</id>
-        <version>1.2.0515.0</version>
+        <version>1.3.0615.0</version>
         <title>OfficeDevPnP.Core</title>
         <authors>Office 365 Developer Patterns &amp; Practices</authors>
         <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
@@ -40,6 +40,6 @@
         </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="OfficeDevPnP.Core\bin\Release\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
+        <file src="lib\net45\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
     </files>
 </package>

@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
+using System.Xml.Linq;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -31,6 +32,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var webCustomActions = template.CustomActions.WebCustomActions;
             ProvisionCustomActionImplementation(web, webCustomActions);
+
+            // Switch parser context back to it's original context
+            TokenParser.Rebase(web);
         }
 
         private void ProvisionCustomActionImplementation(object parent, List<CustomAction> customActions)
@@ -47,6 +51,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             else
             {
                 web = parent as Web;
+
+                // Switch parser context
+                TokenParser.Rebase(web);
             }
             foreach (var customAction in customActions)
             {
@@ -61,24 +68,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 if (!caExists)
                 {
-                    var customActionEntity = new CustomActionEntity();
-                    customActionEntity.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
-                    
-                    
-                    customActionEntity.Description = customAction.Description;
-                    customActionEntity.Group = customAction.Group;
-                    customActionEntity.ImageUrl = customAction.ImageUrl.ToParsedString();
-                    customActionEntity.Location = customAction.Location;
-                    customActionEntity.Name = customAction.Name;
-                    customActionEntity.RegistrationId = customAction.RegistrationId;
-                    customActionEntity.RegistrationType = customAction.RegistrationType;
-                    customActionEntity.Remove = customAction.Remove;
-                    customActionEntity.Rights = customAction.Rights;
-                    customActionEntity.ScriptBlock = customAction.ScriptBlock;
-                    customActionEntity.ScriptSrc = customAction.ScriptSrc.ToParsedString();
-                    customActionEntity.Sequence = customAction.Sequence;
-                    customActionEntity.Title = customAction.Title;
-                    customActionEntity.Url = customAction.Url.ToParsedString();
+                    var customActionEntity = new CustomActionEntity
+                    {
+                        CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString(),
+                        Description = customAction.Description,
+                        Group = customAction.Group,
+                        ImageUrl = customAction.ImageUrl.ToParsedString(),
+                        Location = customAction.Location,
+                        Name = customAction.Name,
+                        RegistrationId = customAction.RegistrationId,
+                        RegistrationType = customAction.RegistrationType,
+                        Remove = customAction.Remove,
+                        Rights = customAction.Rights,
+                        ScriptBlock = customAction.ScriptBlock.ToParsedString(),
+                        ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection"),
+                        Sequence = customAction.Sequence,
+                        Title = customAction.Title,
+                        Url = customAction.Url.ToParsedString()
+                    };
 
                     if (site != null)
                     {
@@ -89,10 +96,83 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         web.AddCustomAction(customActionEntity);
                     }
                 }
+                else
+                {
+                    UserCustomAction existingCustomAction = null;
+                    if (site != null)
+                    {
+                        existingCustomAction = site.GetCustomActions().FirstOrDefault(c => c.Name == customAction.Name);
+                    }
+                    else
+                    {
+                        existingCustomAction = web.GetCustomActions().FirstOrDefault(c => c.Name == customAction.Name);
+                    }
+                    if (existingCustomAction != null)
+                    {
+                        var isDirty = false;
+                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToString().ToParsedString())
+                        {
+                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Description != customAction.Description)
+                        {
+                            existingCustomAction.Description = customAction.Description;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Group != customAction.Group)
+                        {
+                            existingCustomAction.Group = customAction.Group;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ImageUrl != customAction.ImageUrl.ToParsedString())
+                        {
+                            existingCustomAction.ImageUrl = customAction.ImageUrl.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Location != customAction.Location)
+                        {
+                            existingCustomAction.Location = customAction.Location;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.RegistrationId != customAction.RegistrationId)
+                        {
+                            existingCustomAction.RegistrationId = customAction.RegistrationId;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.RegistrationType != customAction.RegistrationType)
+                        {
+                            existingCustomAction.RegistrationType = customAction.RegistrationType;
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ScriptBlock != customAction.ScriptBlock.ToParsedString())
+                        {
+                            existingCustomAction.ScriptBlock = customAction.ScriptBlock.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString("~site","~sitecollection"))
+                        {
+                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection");
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Title != customAction.Title.ToParsedString())
+                        {
+                            existingCustomAction.Title = customAction.Title.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (existingCustomAction.Url != customAction.Url.ToParsedString())
+                        {
+                            existingCustomAction.Url = customAction.Url.ToParsedString();
+                            isDirty = true;
+                        }
+                        if (isDirty)
+                        {
+                            existingCustomAction.Update();
+                            existingCustomAction.Context.ExecuteQueryRetry();
+                        }
+                    }
+                }
             }
-
-            // Rebase parser context to current web
-            TokenParser.Rebase(web);
         }
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
@@ -107,7 +187,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 customActions.WebCustomActions.Add(CopyUserCustomAction(customAction));
             }
-            
+
             // if this is a sub site then we're not creating entities for site collection scoped custom actions
             if (!isSubSite)
             {
@@ -152,7 +232,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     template.CustomActions.WebCustomActions.RemoveAt(index);
                 }
             }
-            
+
             return template;
         }
 
@@ -173,7 +253,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             customAction.Url = userCustomAction.Url;
             customAction.RegistrationId = userCustomAction.RegistrationId;
             customAction.RegistrationType = userCustomAction.RegistrationType;
-            customAction.CommandUIExtension = userCustomAction.CommandUIExtension;
+            customAction.CommandUIExtension = !System.String.IsNullOrEmpty(userCustomAction.CommandUIExtension) ?
+                XElement.Parse(userCustomAction.CommandUIExtension) : null;
 
             return customAction;
         }
