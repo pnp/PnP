@@ -223,7 +223,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             return (
                 this.ComposedLook.Equals(other.ComposedLook) &&
-                this.ContentTypes.DeepEquals(other.ContentTypes) &&
+                //this.ContentTypes.DeepEquals(other.ContentTypes) &&
                 this.CustomActions.SiteCustomActions.DeepEquals(other.CustomActions.SiteCustomActions) &&
                 this.CustomActions.WebCustomActions.DeepEquals(other.CustomActions.WebCustomActions) &&
                 this.Features.SiteFeatures.DeepEquals(other.Features.SiteFeatures) &&
