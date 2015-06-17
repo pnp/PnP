@@ -42,7 +42,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 var folder = web.EnsureFolderPath(folderName);
 
-                Microsoft.SharePoint.Client.File targetFile = null;
+                File targetFile = null;
+
                 var checkedOut = false;
 
                 targetFile = folder.GetFile(file.Src);
@@ -55,7 +56,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                         using (var stream = template.Connector.GetFileStream(file.Src))
                         {
-                            targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                            targetFile = folder.UploadFile(template.Connector.GetFilenamePart(file.Src), stream, file.Overwrite);
                         }
                     }
                     else
@@ -67,7 +68,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     using (var stream = template.Connector.GetFileStream(file.Src))
                     {
-                        targetFile = folder.UploadFile(file.Src, stream, file.Overwrite);
+                        targetFile = folder.UploadFile(template.Connector.GetFilenamePart(file.Src), stream, file.Overwrite);
                     }
 
                     checkedOut = CheckOutIfNeeded(web, targetFile);
