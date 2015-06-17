@@ -236,6 +236,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\ProvisioningController.cs" />
     <Compile Include="Controllers\SiteRequestController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />

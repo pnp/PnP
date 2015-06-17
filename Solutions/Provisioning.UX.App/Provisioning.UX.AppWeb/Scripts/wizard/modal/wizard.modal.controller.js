@@ -70,6 +70,7 @@
                 else {
                     props["_site_props_" + key] = data;
                 }
+            });
 
             processNewSiteRequest(siteRequest);
             

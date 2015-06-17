@@ -15,8 +15,6 @@ namespace Provisioning.UX.AppWeb.Controllers
 {
     public class SiteRequestController : ApiController
     {
-        
-
         [HttpPut]
         public void Register(WebAPIContext sharePointServiceContext)
         {
