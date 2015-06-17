@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
+using System.Xml.Linq;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -69,7 +70,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     var customActionEntity = new CustomActionEntity
                     {
-                        CommandUIExtension = customAction.CommandUIExtension.ToParsedString(),
+                        CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString(),
                         Description = customAction.Description,
                         Group = customAction.Group,
                         ImageUrl = customAction.ImageUrl.ToParsedString(),
@@ -109,9 +110,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (existingCustomAction != null)
                     {
                         var isDirty = false;
-                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToParsedString())
+                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToString().ToParsedString())
                         {
-                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
+                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString();
                             isDirty = true;
                         }
                         if (existingCustomAction.Description != customAction.Description)
@@ -252,7 +253,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             customAction.Url = userCustomAction.Url;
             customAction.RegistrationId = userCustomAction.RegistrationId;
             customAction.RegistrationType = userCustomAction.RegistrationType;
-            customAction.CommandUIExtension = userCustomAction.CommandUIExtension;
+            customAction.CommandUIExtension = !System.String.IsNullOrEmpty(userCustomAction.CommandUIExtension) ?
+                XElement.Parse(userCustomAction.CommandUIExtension) : null;
 
             return customAction;
         }
