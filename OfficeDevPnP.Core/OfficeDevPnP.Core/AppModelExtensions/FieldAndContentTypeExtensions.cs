@@ -151,7 +151,6 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xDocument">Actual XML document</param>
         public static void CreateFieldsFromXML(this Web web, XDocument xDocument)
         {
-            if (xDocument.Root == null) return;
             var ns = xDocument.Root.Name.Namespace;
 
             var fields = from f in xDocument.Descendants(ns + "Field") select f;
@@ -198,7 +197,14 @@ namespace Microsoft.SharePoint.Client
             web.Context.ExecuteQueryRetry();
 
             var field = fields.FirstOrDefault();
-            return field == null ? null : web.Context.CastTo<TField>(field);
+            if (field == null)
+            {
+                return null;
+            }
+            else
+            {
+                return web.Context.CastTo<TField>(field);
+            }
         }
 
         /// <summary>
@@ -360,10 +366,10 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentException("id", "Field already exists");
             }
 
-            var newFieldCaml = FormatFieldXml(fieldCreationInformation);
+            var newFieldCAML = FormatFieldXml(fieldCreationInformation);
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
-            field = fields.AddFieldAsXml(newFieldCaml, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
+            field = fields.AddFieldAsXml(newFieldCAML, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
             fields.Context.Load(field);
 
             if (executeQuery)
@@ -381,16 +387,17 @@ namespace Microsoft.SharePoint.Client
         /// <returns></returns>
         public static string FormatFieldXml(FieldCreationInformation fieldCreationInformation)
         {
-            var additionalAttributesList = new List<string>();
+            List<string> additionalAttributesList = new List<string>();
 
             if (fieldCreationInformation.AdditionalAttributes != null)
             {
-                additionalAttributesList.AddRange(
-                    fieldCreationInformation.AdditionalAttributes.Select(
-                    keyvaluepair => string.Format(Constants.FIELD_XML_PARAMETER_FORMAT, keyvaluepair.Key, keyvaluepair.Value)));
+                foreach (var keyvaluepair in fieldCreationInformation.AdditionalAttributes)
+                {
+                    additionalAttributesList.Add(string.Format(Constants.FIELD_XML_PARAMETER_FORMAT, keyvaluepair.Key, keyvaluepair.Value));
+                }
             }
 
-            var newFieldCaml = string.Format(Constants.FIELD_XML_FORMAT,
+            string newFieldCAML = string.Format(Constants.FIELD_XML_FORMAT,
                 fieldCreationInformation.FieldType,
                 fieldCreationInformation.InternalName,
                 fieldCreationInformation.DisplayName,
@@ -399,7 +406,7 @@ namespace Microsoft.SharePoint.Client
                 fieldCreationInformation.Required ? "TRUE" : "FALSE",
                 additionalAttributesList.Any() ? string.Join(" ", additionalAttributesList) : "");
 
-            return newFieldCaml;
+            return newFieldCAML;
         }
 
         /// <summary>
@@ -503,8 +510,9 @@ namespace Microsoft.SharePoint.Client
                 return fields;
             }
 
-            foreach (var field in fieldInternalNames.Select(fieldName => list.Fields.GetByInternalNameOrTitle(fieldName)))
+            foreach (var fieldName in fieldInternalNames)
             {
+                var field = list.Fields.GetByInternalNameOrTitle(fieldName);
                 list.Context.Load(field);
                 fields.Add(field);
             }
@@ -525,13 +533,22 @@ namespace Microsoft.SharePoint.Client
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Xml.Linq.XElement.Parse(System.String)")]
         private static List<KeyValuePair<string, string>> ParseAdditionalAttributes(string xmlAttributes)
         {
+            List<KeyValuePair<string, string>> attributes = null;
+
             // The XmlAttributes should be presented in the Key="Value" AnotherKey="Value" format.
-            if (string.IsNullOrEmpty(xmlAttributes)) return null;
+            if (!string.IsNullOrEmpty(xmlAttributes))
+            {
+                attributes = new List<KeyValuePair<string, string>>();
+                string parameterXml = string.Format(Constants.FIELD_XML_PARAMETER_WRAPPER_FORMAT, xmlAttributes); // Temporary xml structure
+                XElement xe = XElement.Parse(parameterXml);
 
-            var parameterXml = string.Format(Constants.FIELD_XML_PARAMETER_WRAPPER_FORMAT, xmlAttributes); // Temporary xml structure
-            var xe = XElement.Parse(parameterXml);
+                foreach (var attribute in xe.Attributes())
+                {
+                    attributes.Add(new KeyValuePair<string, string>(attribute.Name.LocalName, attribute.Value));
+                }
+            }
 
-            return xe.Attributes().Select(attribute => new KeyValuePair<string, string>(attribute.Name.LocalName, attribute.Value)).ToList();
+            return attributes;
         }
 
         #endregion
@@ -750,13 +767,14 @@ namespace Microsoft.SharePoint.Client
                 flink = contentType.FieldLinks.GetById(field.Id);
             }
 
-            if (!required && !hidden) return;
-
-            // Update FieldLink
-            flink.Required = required;
-            flink.Hidden = hidden;
-            contentType.Update(true);
-            web.Context.ExecuteQueryRetry();
+            if (required || hidden)
+            {
+                // Update FieldLink
+                flink.Required = required;
+                flink.Hidden = hidden;
+                contentType.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
         }
 
         /// <summary>
@@ -799,15 +817,18 @@ namespace Microsoft.SharePoint.Client
             var shortestMatchLength = int.MaxValue;
             ContentTypeId bestMatchId = null;
 
-            foreach (var contentType in contentTypes.Where(
-                contentType => contentType.StringId.StartsWith(baseContentTypeId, StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var contentType in contentTypes)
             {
-                Log.Debug(Constants.LOGGING_SOURCE, "Found match {0}", contentType.StringId);
-                if (contentType.StringId.Length >= shortestMatchLength) continue;
-
-                bestMatchId = contentType.Id;
-                shortestMatchLength = contentType.StringId.Length;
-                Log.Debug(Constants.LOGGING_SOURCE, " - Is best match. Best match length now {0}", shortestMatchLength);
+                if (contentType.StringId.StartsWith(baseContentTypeId, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Log.Debug(Constants.LOGGING_SOURCE, "Found match {0}", contentType.StringId);
+                    if (contentType.StringId.Length < shortestMatchLength)
+                    {
+                        bestMatchId = contentType.Id;
+                        shortestMatchLength = contentType.StringId.Length;
+                        Log.Debug(Constants.LOGGING_SOURCE, " - Is best match. Best match length now {0}", shortestMatchLength);
+                    }
+                }
             }
 
             return bestMatchId;
@@ -827,11 +848,27 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeId");
             }
 
-            var ctCol = searchInSiteHierarchy ? web.AvailableContentTypes : web.ContentTypes;
+            ContentTypeCollection ctCol;
+            if (searchInSiteHierarchy)
+            {
+                ctCol = web.AvailableContentTypes;
+            }
+            else
+            {
+                ctCol = web.ContentTypes;
+            }
 
             web.Context.Load(ctCol);
             web.Context.ExecuteQueryRetry();
-            return Enumerable.Any(ctCol, item => item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase));
+            foreach (var item in ctCol)
+            {
+                if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -994,17 +1031,15 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xDocument">Actual XML document</param>
         public static ContentType CreateContentTypeFromXML(this Web web, XDocument xDocument)
         {
-            if (xDocument.Root == null) return null;
-            
-            ContentType returnCt = null;
+            ContentType returnCT = null;
             var ns = xDocument.Root.Name.Namespace;
 
             var contentTypes = from cType in xDocument.Descendants(ns + "ContentType") select cType;
 
             foreach (var ct in contentTypes)
             {
-                var ctid = ct.Attribute("ID").Value;
-                var name = ct.Attribute("Name").Value;
+                string ctid = ct.Attribute("ID").Value;
+                string name = ct.Attribute("Name").Value;
 
                 if (web.ContentTypeExistsByName(name))
                 {
@@ -1017,23 +1052,23 @@ namespace Microsoft.SharePoint.Client
                     var group = ct.Attribute("Group") != null ? ct.Attribute("Group").Value : string.Empty;
 
                     // Create CT
-                    web.CreateContentType(name, description, ctid, @group);
+                    web.CreateContentType(name, description, ctid, group);
 
                     // Add fields to content type 
                     var fieldRefs = from fr in ct.Descendants(ns + "FieldRefs").Elements(ns + "FieldRef") select fr;
                     foreach (var fieldRef in fieldRefs)
                     {
                         var frid = fieldRef.Attribute("ID").Value;
-                        var required = fieldRef.Attribute("Required") != null && bool.Parse(fieldRef.Attribute("Required").Value);
-                        var hidden = fieldRef.Attribute("Hidden") != null && bool.Parse(fieldRef.Attribute("Hidden").Value);
+                        var required = fieldRef.Attribute("Required") != null ? bool.Parse(fieldRef.Attribute("Required").Value) : false;
+                        var hidden = fieldRef.Attribute("Hidden") != null ? bool.Parse(fieldRef.Attribute("Hidden").Value) : false;
                         web.AddFieldToContentTypeById(ctid, frid, required, hidden);
                     }
 
-                    returnCt = web.GetContentTypeById(ctid);
+                    returnCT = web.GetContentTypeById(ctid);
                 }
             }
 
-            return returnCt;
+            return returnCT;
         }
 
         /// <summary>
@@ -1121,7 +1156,15 @@ namespace Microsoft.SharePoint.Client
 
             web.Context.Load(ctCol);
             web.Context.ExecuteQueryRetry();
-            return Enumerable.FirstOrDefault(ctCol, item => item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase));
+            foreach (var item in ctCol)
+            {
+                if (item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1161,7 +1204,15 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(ctCol);
             list.Context.ExecuteQueryRetry();
 
-            return Enumerable.FirstOrDefault(ctCol, item => item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase));
+            foreach (var item in ctCol)
+            {
+                if (item.Id.StringValue.Equals(contentTypeId, StringComparison.OrdinalIgnoreCase))
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1343,15 +1394,22 @@ namespace Microsoft.SharePoint.Client
             var listContentTypes = list.ContentTypes;
             list.Context.Load(listContentTypes);
             list.Context.ExecuteQueryRetry();
+            IList<ContentTypeId> newOrder = new List<ContentTypeId>();
 
             // Casting throws "Specified method is not supported" when using in v15
             // var ctCol = listContentTypes.Cast<ContentType>().ToList();
-            var ctCol = listContentTypes.ToList();
+            List<ContentType> ctCol = new List<ContentType>();
+            foreach (ContentType ct in listContentTypes)
+            {
+                ctCol.Add(ct);
+            }
 
-            IList<ContentTypeId> newOrder = (
-                from ctypeName in contentTypeNamesOrIds select ctCol.Find(
-                    ct => ctypeName.Equals(ct.Name, StringComparison.OrdinalIgnoreCase) || ct.StringId.StartsWith(ctypeName)) 
-                    into ctype where ctype != null select ctype.Id).ToList();
+            foreach (var ctypeName in contentTypeNamesOrIds)
+            {
+                var ctype = ctCol.Find(ct => ctypeName.Equals(ct.Name, StringComparison.OrdinalIgnoreCase) || ct.StringId.StartsWith(ctypeName));
+                if (ctype != null)
+                    newOrder.Add(ctype.Id);
+            }
 
             list.RootFolder.UniqueContentTypeOrder = newOrder;
             list.RootFolder.Update();
