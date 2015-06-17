@@ -100,6 +100,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         /// <param name="container">Name of the container to delete the file from</param>
         public abstract void DeleteFile(string fileName, string container);
 
+        /// <summary>
+        /// Returns a filename without a path
+        /// </summary>
+        /// <param name="fileName">Path to the file to retrieve the filename from</param>
+        public abstract string GetFilenamePart(string fileName);
         #endregion
 
         #region Helper methods

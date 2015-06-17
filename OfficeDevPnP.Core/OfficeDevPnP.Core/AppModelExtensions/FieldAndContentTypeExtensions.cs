@@ -1360,7 +1360,7 @@ namespace Microsoft.SharePoint.Client
             list.Context.Load(ctCol);
             list.Context.ExecuteQueryRetry();
 
-            var ctIds = ctCol.Select(ct => ct.Id).ToList();
+            var ctIds = ctCol.AsEnumerable().Select(ct => ct.Id).ToList();
 
             // remove the folder content type
             var newOrder = ctIds.Except(ctIds.Where(id => id.StringValue.StartsWith("0x012000")))
