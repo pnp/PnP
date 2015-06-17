@@ -27,6 +27,8 @@
 
     <Feature Id="ProductFeature" Title="OfficeDev PnP PowerShell Commands" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="ENVIRONMENTVARS" />
+
     </Feature>
 
     <PropertyRef Id="NETFRAMEWORK45"/>
@@ -93,7 +95,17 @@
         <File Id="OfficeSDK.Client.Policy" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.Policy.dll" />
         <File Id="OfficeSDK.Client.TranslationServices" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.TranslationServices.dll" />
         <File Id="NewtonSoft" Source="$(var.OfficeDevPnP.Core.ProjectDir)bin\$(var.OfficeDevPnP.Core.Configuration)\Newtonsoft.Json.Dll" />
-        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="no" />
+        <!-- <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="no" /> -->
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="ENVIRONMENTVARS" Directory="TARGETDIR">
+      <Component Id="EnvironmentVarPerMachine" Guid="{4D971CA5-CFE1-4121-B265-7C56B75D12A1}">
+        <Condition>ALLUSERS=1  OR (ALLUSERS=2 AND Privileged)</Condition>
+        <Environment Id="PSMODULEPATHPERMACHINE" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      </Component>
+      <Component Id="EnvironmentVarPerUser" Guid="{CAE7B727-018A-4F37-9D62-C70363B9A9D1}">
+        <Condition>ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged))</Condition>
+        <Environment Id="PSMODULEPATHPERUSER" Name="PSMODULEPATH" Value="[LocalAppDataFolder]Apps\[ApplicationFolderName]" Permanent="no" Part="last" Action="set" System="no" />
       </Component>
     </ComponentGroup>
   </Fragment>
