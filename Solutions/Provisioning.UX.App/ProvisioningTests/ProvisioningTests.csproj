@@ -88,6 +88,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Assemblies\16\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -118,6 +122,7 @@
     <Compile Include="3_Data\TemplateConfigurationTests.cs" />
     <Compile Include="3_Data\SiteRequestFactoryTests.cs" />
     <Compile Include="3_Data\SiteRequestManagerTests.cs" />
+    <Compile Include="3_Data\MetadataFactoryTests.cs" />
     <Compile Include="4_Authentication\AuthenticationTests.cs" />
     <Compile Include="Mocks\MockSiteRequestInfo.cs" />
     <Compile Include="TestConstants.cs" />
@@ -133,7 +138,11 @@
     <None Include="appSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
     <None Include="provisioningSettings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Data\siteclassifications.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\SiteTemplates\Templates.config">
