@@ -52,7 +52,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         private string enumerationDomain;
         // Site scope variables
         private List<string> requestedSites;
-        private List<string> sitesToProcess;
+        protected List<string> sitesToProcess;
         private bool expandSubSites = false;
         // Threading
         private static int numberOfThreadsNotYetCompleted;
@@ -471,7 +471,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             catch (Exception ex)
             {
                 // Catch error in this case as we don't want to the whole program to terminate if one single site operation fails
-                Log.Error(Constants.LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_Error, e.Url, ex.Message);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.TimerJob_OnTimerJobRun_Error, e.Url, ex.Message);                
             }
         }
 
@@ -1257,7 +1257,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 }
                 else if (AuthenticationType == AuthenticationType.AppOnly)
                 {
-                    return GetAuthenticationManager(site).GetAppOnlyAuthenticatedContext(site, this.realm, this.clientId, this.clientSecret);
+                    return GetAuthenticationManager(site).GetAppOnlyAuthenticatedContext(GetTenantAdminSite(site), this.realm, this.clientId, this.clientSecret);
                 }
             }
 
@@ -1280,7 +1280,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             else
             {
                 //Good, we can use search for user profile and tenant API enumeration for regular sites
-                ClientContext ccEnumerate = GetAuthenticationManager(site).GetSharePointOnlineAuthenticatedContextTenant(GetTenantAdminSite(site), EnumerationUser, EnumerationPassword);
+                ClientContext ccEnumerate = GetAuthenticationManager(site).GetAppOnlyAuthenticatedContext(GetTenantAdminSite(site), this.realm, this.clientId, this.clientSecret);
                 Tenant tenant = new Tenant(ccEnumerate);
                 SiteEnumeration.Instance.ResolveSite(tenant, site, resolvedSites);
             }
