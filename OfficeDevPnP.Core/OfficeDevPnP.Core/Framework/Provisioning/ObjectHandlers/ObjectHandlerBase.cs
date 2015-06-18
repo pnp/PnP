@@ -29,7 +29,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public abstract void ProvisionObjects(Web web, ProvisioningTemplate template);
 
-        public abstract ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
+        public abstract ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
 
         internal void WriteWarning(string message, ProvisioningMessageType messageType)
         {

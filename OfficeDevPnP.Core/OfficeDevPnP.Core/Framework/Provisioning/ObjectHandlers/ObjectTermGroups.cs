@@ -281,7 +281,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return modelTerm.Id;
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override Model.ProvisioningTemplate ExtractObjects(Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             if (creationInfo.IncludeSiteCollectionTermGroup || creationInfo.IncludeAllTermGroups)
             {

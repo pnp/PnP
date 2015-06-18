@@ -23,7 +23,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
            
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // Set default values for Template ID and Version
             template.Id = String.Format("TEMPLATE-{0:N}", Guid.NewGuid()).ToUpper();
