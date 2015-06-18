@@ -1,8 +1,8 @@
 # Head & Footer SharePoint Add-In #
 
 ### Summary ###
-The Core.EmbedJavaScript.HeaderFooter sample provides a provision page to include a custom Header and Footer.
-The Header and Footer sample includes custom Global Breadcrumbs **(SharePoint or JSON Data)** and custom Ribbons that are acessible in all sites and subsites associated to Site Collection. The **Custom Breadcrumb is able to Navigate betweeen all Site Collection Sites and sub folders where user is located**, the **Site Collection Navigation is an custom Breadcrumb stored in PropertyBag base in JSON Data**. The Breadcrumb & Ribbon is available in all SharePoint Pages using an Scriptlink file stored in Site Collection, both features keep Minimal Download Strategy "MDS" enable.
+The Core.EmbedJavaScript.HeaderFooter sample provides a provision page to include a custom **Header and Footer**.
+The **Header and Footer** sample includes **custom Global Breadcrumbs (SharePoint or JSON Data)** and **custom Global Ribbons** that are acessible in all sites and subsites associated to Site Collection. The **Custom Breadcrumb is able to Navigate betweeen all Site Collection Sites and sub folders where user is located**, the **Site Collection Navigation is an custom Breadcrumb stored in PropertyBag base in JSON Data**. The Breadcrumb & Ribbon is available in all SharePoint Pages using an Scriptlink file stored in Site Collection, both features keep Minimal Download Strategy "MDS" enable.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -20,7 +20,7 @@ Core.EmbedJavaScript.HeaderFooter| **André Lage**
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | Jun 12th 2015 | Initial release
+1.0  | Jun 18th 2015 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -31,29 +31,32 @@ Version  | Date | Comments
 # Instalation #
 The Solution is an SharePoint Add-In that can be deployed in the app catalog site of the Tenant and then install in the SharePoint Site using "Add an app" Option.
 
-## Provisioning Global Breadcrumb and Ribbon ##
+## Provisioning Head and Footer ##
 
-The Add-in provides a Page to support the different steps of the provisioning and associated dependecies to include Global Breadcrumbs **(SharePoint or JSON Data)** & Ribbon in all Sites and Folders in the Site Collection.
+The Add-in provides a Page to support the different steps of the provisioning of **Header and Footer** and associated features such us **Global Breadcrumbs (SharePoint or JSON Data)** and **Custom Global Ribbon** acessible in all Sites and Folders in the Site Collection.
 
 ![](http://i.imgur.com/co8aq8I.png)
 
-The Page has 2 buttons to support the provision of Header and Footer.
+The Page has 1 JSON Editor and 2 buttons for provision of Features associated to **Header and Footer**.
 
-- The Add provision option includes the Objects **"PropertyBag/JSON/JSFile/ScripLink"** in the RootHostWeb.
-- The Remove provision option removes the Objects **"PropertyBag/JSON/JSFile/ScripLink"** from the RootHostWeb.
+1. **JSON Editor Area**, this feature allow to customize the JSON data to create and Custom Breadcumb acessible in the HostWeb Site.
+2. The Add provision option includes the Objects **"PropertyBag/JSON/JSFile/ScripLink"** in the RootHostWeb.
+3. The Remove provision option removes the Objects **"PropertyBag/JSON/JSFile/ScripLink"** from the RootHostWeb.
 
 ### Provision Sequence ###
-- PropertyBag **PnPGlobalBreadcrumbRibbon** is created in RootWeb of the SiteCollection, this item will have the following JSON data:
+- PropertyBag **PnPGlobalBreadcrumbRibbon** is created in RootWeb of the SiteCollection, this item will have the JSON data from the **JSON Editor Area**, if the JSON is not correct format then assumes the **default** JSON Data:
 **{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}**
 - A file from the AppWeb **PnPGlobal.js** is copied to folder **"_catalogs/masterpage/Display Template"**, the JS file includes the code for the creation of the Global Breadcrumb **(SharePoint or JSON Data)** & Ribbon. 
 - A **ScriptLink** is created in **SiteCollection** with name **PnPGlobalBreadcrumbRibbon** and linked to JS file **PnPGlobal.js**.
 
 ![](http://i.imgur.com/9uRUT6H.png)
 
-## Global Breadcrumb & Ribbon Add-In functionalities ##
+## Header and Footer Add-In functionalities ##
 1. Custom Header with Following Features:
-* Global BreadCrumb **(SharePoint or JSON Data)** is included bellow the Ribbon Banner.
-* Global Ribbon with custom Actions is included in the Ribbon Banner.
+* **Global BreadCrumb (SharePoint or JSON Data)** is included bellow the Ribbon Banner.
+* **Global Ribbon with custom Actions** is included in Ribbon Banner ().
+2. Custom Footer with Following Feature:
+* **Global BreadCrumb by SharePoint Data** (Path where users is located)
 
 ![](http://i.imgur.com/RXfIitR.png)
 
