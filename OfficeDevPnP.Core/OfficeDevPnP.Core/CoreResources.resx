@@ -687,4 +687,10 @@
   <data name="Provisioning_ObjectHandlers_ListInstancesDataRows" xml:space="preserve">
     <value>Data Rows</value>
   </data>
+  <data name="ObjectLookupFields_FieldNotExist" xml:space="preserve">
+    <value>ObjectLookupFields failed to update field with ID '{0}' StaticName '{1}' on url '{2}', because not exist.</value>
+  </data>
+  <data name="ObjectLookupFields_ListNotExist" xml:space="preserve">
+    <value>ObjectLookupFields failed to update field with ID '{0}' StaticName '{1}', bacause list on url '{2}' not exist.</value>
+  </data>
 </root>

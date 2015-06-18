@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using Field = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -31,48 +32,70 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void ProcessLookupFields(Web web, ProvisioningTemplate template)
         {
-            var rootWeb = (web.Context as ClientContext).Site.RootWeb;
-            rootWeb.Context.Load(rootWeb.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
-            rootWeb.Context.ExecuteQueryRetry();
+            var ctx = web.Context as ClientContext;
+            var rootWeb = ctx.Site.RootWeb;
+            ctx.Load(rootWeb, w => w.ServerRelativeUrl);
+            var rootLists = rootWeb.Lists;
+            ctx.Load(rootLists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+            ctx.ExecuteQueryRetry();
 
+            // update site columns lookup fields
             foreach (var siteField in template.SiteFields)
             {
                 var fieldElement = XElement.Parse(siteField.SchemaXml);
 
+                // if field has a List attribute we will process this lookup field here
                 if (fieldElement.Attribute("List") != null)
                 {
                     var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
                     var listIdentifier = fieldElement.Attribute("List").Value;
+                    var staticFieldName = fieldElement.Attribute("StaticName") != null
+                            ? fieldElement.Attribute("StaticName").Value
+                            : string.Empty;
                     var webId = string.Empty;
 
-                    var field = rootWeb.Fields.GetById(fieldId);
-                    rootWeb.Context.Load(field, f => f.SchemaXml);
-                    rootWeb.Context.ExecuteQueryRetry();
+                    var field = rootWeb.GetFieldById<Field>(fieldId);
+                    if (field == null)
+                    {
+                        Log.Warning(Constants.LOGGING_SOURCE,
+                            CoreResources.ObjectLookupFields_FieldNotExist, fieldId, staticFieldName, rootWeb.ServerRelativeUrl);
+                        continue;
+                    }
+                    ctx.Load(field, f => f.SchemaXml);
+                    ctx.ExecuteQueryRetry();
 
                     Guid listGuid;
                     if (!Guid.TryParse(listIdentifier, out listGuid))
                     {
-                        var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
-                        var sourceList = rootWeb.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
-                        if (sourceList != null)
+                        var rootWebSourceListUrl = UrlUtility.Combine(rootWeb.ServerRelativeUrl, listIdentifier.ToParsedString());
+                        var sourceList = rootLists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(rootWebSourceListUrl, StringComparison.OrdinalIgnoreCase));
+                        if (sourceList == null)
+                        {
+                            Log.Warning(Constants.LOGGING_SOURCE,
+                                CoreResources.ObjectLookupFields_ListNotExist, fieldId, staticFieldName,
+                                rootWebSourceListUrl);
+                        }
+                        else
                         {
                             listGuid = sourceList.Id;
 
-                            rootWeb.Context.Load(sourceList.ParentWeb);
-                            rootWeb.Context.ExecuteQueryRetry();
+                            ctx.Load(sourceList.ParentWeb);
+                            ctx.ExecuteQueryRetry();
 
                             webId = sourceList.ParentWeb.Id.ToString();
                         }
                     }
-                    if (listGuid != Guid.Empty)
+                    if (!string.IsNullOrEmpty(webId))
                     {
                         ProcessField(field, listGuid, webId);
                     }
                 }
             }
 
-            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
-            web.Context.ExecuteQueryRetry();
+            // update list assoc lookup fields
+            var webLists = web.Lists;
+            ctx.Load(webLists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+            ctx.ExecuteQueryRetry();
 
             foreach (var listInstance in template.Lists)
             {
@@ -83,33 +106,48 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
                     var listIdentifier = fieldElement.Attribute("List").Value;
+                    var staticFieldName = fieldElement.Attribute("StaticName") != null
+                            ? fieldElement.Attribute("StaticName").Value
+                            : string.Empty;
                     var webId = string.Empty;
 
                     var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
 
-                    var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
-                    if (createdList != null)
+                    var webSourceList = webLists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
+                    if (webSourceList != null)
                     {
-                        var field = createdList.Fields.GetById(fieldId);
-                        web.Context.Load(field, f => f.SchemaXml);
-                        web.Context.ExecuteQueryRetry();
+                        var field = webSourceList.GetFieldById<Field>(fieldId);
+                        if (field == null)
+                        {
+                            Log.Warning(Constants.LOGGING_SOURCE,
+                                CoreResources.ObjectLookupFields_FieldNotExist, fieldId, staticFieldName, webSourceList.RootFolder.ServerRelativeUrl);
+                            continue;
+                        }
+                        ctx.Load(field, f => f.SchemaXml);
+                        ctx.ExecuteQueryRetry();
 
                         Guid listGuid;
                         if (!Guid.TryParse(listIdentifier, out listGuid))
                         {
                             var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
-                            var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
-                            if (sourceList != null)
+                            var sourceList = webLists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                            if (sourceList == null)
+                            {
+                                Log.Warning(Constants.LOGGING_SOURCE,
+                                    CoreResources.ObjectLookupFields_ListNotExist, fieldId, staticFieldName,
+                                    sourceListUrl);
+                            }
+                            else
                             {
                                 listGuid = sourceList.Id;
 
-                                web.Context.Load(sourceList.ParentWeb);
-                                web.Context.ExecuteQueryRetry();
+                                ctx.Load(sourceList.ParentWeb);
+                                ctx.ExecuteQueryRetry();
 
                                 webId = sourceList.ParentWeb.Id.ToString();
                             }
                         }
-                        if (listGuid != Guid.Empty)
+                        if (!string.IsNullOrEmpty(webId))
                         {
                             ProcessField(field, listGuid, webId);
                         }
@@ -120,11 +158,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void ProcessField(Field field, Guid listGuid, string webId)
         {
-            var isDirty = false;
-
             var existingFieldElement = XElement.Parse(field.SchemaXml);
 
-            isDirty = UpdateFieldAttribute(existingFieldElement, "List", listGuid.ToString(), false);
+            var isDirty = UpdateFieldAttribute(existingFieldElement, "List", listGuid.ToString(), false);
 
             isDirty = UpdateFieldAttribute(existingFieldElement, "WebId", webId, isDirty);
 
