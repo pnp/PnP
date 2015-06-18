@@ -1,7 +1,9 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security;
 
@@ -12,8 +14,8 @@ namespace Provisioning.Framework
         static void Main(string[] args)
         {
             bool interactiveLogin = true;
-            string templateSiteUrl = "https://bertonline.sharepoint.com/sites/130049";
-            string targetSiteUrl = "https://bertonline.sharepoint.com/sites/pr1";
+            string templateSiteUrl = "https://bertonline.sharepoint.com/sites/provdemoget";
+            string targetSiteUrl = "https://bertonline.sharepoint.com/sites/provdemoapply";
             // Office 365: username@tenant.onmicrosoft.com
             // OnPrem: DOMAIN\Username
             string loginId = "bert.jansen@bertonline.onmicrosoft.com";
@@ -45,8 +47,14 @@ namespace Provisioning.Framework
                 //Provide count and pwd for connecting to the source
                 ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
 
+                ProvisioningTemplateCreationInformation ptc = new ProvisioningTemplateCreationInformation(ctx.Web);
+                ptc.ProgressDelegate = (message, step, total) => 
+                {
+                    Console.WriteLine(string.Format("Getting template - Step {0}/{1} : {2} ", step, total, message)); 
+                }; 
+
                 // Get template from existing site
-                template = ctx.Web.GetProvisioningTemplate();
+                template = ctx.Web.GetProvisioningTemplate(ptc);
             }
 
             // Save template using XML provider
@@ -70,8 +78,14 @@ namespace Provisioning.Framework
                 //Provide count and pwd for connecting to the source               
                 ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
 
+                ProvisioningTemplateApplyingInformation pta = new ProvisioningTemplateApplyingInformation();
+                pta.ProgressDelegate = (message, step, total) =>
+                {
+                    Console.WriteLine(string.Format("Applying template - Step {0}/{1} : {2} ", step, total, message));
+                }; 
+
                 // Apply template to existing site
-                ctx.Web.ApplyProvisioningTemplate(template);
+                ctx.Web.ApplyProvisioningTemplate(template, pta);
             }
         }
 
