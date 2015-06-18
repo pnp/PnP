@@ -38,16 +38,16 @@ namespace Provisioning.Common
         }
 
         /// <summary>
-        /// TODO
+        /// Member to create a site collection
         /// </summary>
-        /// <param name="siteRequest"></param>
-        /// <param name="template"></param>
+        /// <param name="siteRequest">The SiteRequest</param>
+        /// <param name="template">The Template</param>
         public void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
      
-            //    _siteprovisioningService.CreateSiteCollection(siteRequest, template);
+            _siteprovisioningService.CreateSiteCollection(siteRequest, template);
             if(siteRequest.EnableExternalSharing)
             {
                 _siteprovisioningService.SetExternalSharing(siteRequest);
@@ -55,7 +55,7 @@ namespace Provisioning.Common
            
         }
         /// <summary>
-        /// TODO
+        /// Member to apply the Provisioning Tempalte to a site
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
