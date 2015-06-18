@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return createdCT;
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // if this is a sub site then we're not creating content type entities. 
             if (web.IsSubSite())

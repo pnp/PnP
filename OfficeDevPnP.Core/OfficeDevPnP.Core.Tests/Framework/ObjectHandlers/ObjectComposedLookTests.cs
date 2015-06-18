@@ -22,7 +22,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 var template = new ProvisioningTemplate();
-                template = new ObjectComposedLook().CreateEntities(ctx.Web, template, null);
+                template = new ObjectComposedLook().ExtractObjects(ctx.Web, template, null);
                 Assert.IsInstanceOfType(template.ComposedLook, typeof(Core.Framework.Provisioning.Model.ComposedLook));
             }
         }

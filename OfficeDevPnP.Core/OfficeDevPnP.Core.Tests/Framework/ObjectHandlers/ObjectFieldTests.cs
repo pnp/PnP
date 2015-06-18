@@ -61,7 +61,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectField().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectField().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.SiteFields.Any());
                 Assert.IsInstanceOfType(template.SiteFields, typeof(List<Core.Framework.Provisioning.Model.Field>));

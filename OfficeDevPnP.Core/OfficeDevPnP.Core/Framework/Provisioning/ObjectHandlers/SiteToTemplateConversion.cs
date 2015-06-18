@@ -71,7 +71,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         progressDelegate(handler.Name, step, count);
                         step++;
                     }
-                    template = handler.CreateEntities(web, template, creationInfo);
+                    template = handler.ExtractObjects(web, template, creationInfo);
                 }
             }
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_FinishExtraction);
