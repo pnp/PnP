@@ -72,9 +72,11 @@
                 }
             });
 
+            //add properties to javaScript object
+            siteRequest.properties = props;
+
+            //process the siterequest
             processNewSiteRequest(siteRequest);
-            
-          //  $modalInstance.close($scope.siteConfiguration);
           
         };
 
