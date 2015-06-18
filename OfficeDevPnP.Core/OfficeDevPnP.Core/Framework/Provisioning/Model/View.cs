@@ -26,7 +26,29 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            XElement element = XElement.Parse(this.SchemaXml);
+            XElement element = PrepareViewForCompare(this.SchemaXml);
+            return element.ToString().GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is View))
+            {
+                return (false);
+            }
+            return (Equals((View)obj));
+        }
+
+        public bool Equals(View other)
+        {
+            XElement currentXml = PrepareViewForCompare(this.SchemaXml);
+            XElement otherXml = PrepareViewForCompare(other.SchemaXml);
+            return (XNode.DeepEquals(currentXml, otherXml));
+        }
+
+        private XElement PrepareViewForCompare(string schemaXML)
+        {
+            XElement element = XElement.Parse(schemaXML);
             if (element.Attribute("Name") != null)
             {
                 Guid nameGuid = Guid.Empty;
@@ -42,61 +64,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             }
             if (element.Attribute("ImageUrl") != null)
             {
-                var index = element.Attribute("ImageUrl").Value.IndexOf("rev=",StringComparison.InvariantCultureIgnoreCase);
-               
+                var index = element.Attribute("ImageUrl").Value.IndexOf("rev=", StringComparison.InvariantCultureIgnoreCase);
+
                 if (index > -1)
                 {
                     // Remove ?rev=23 in url
                     Regex regex = new Regex("\\?rev=([0-9])\\w+");
-                    element.SetAttributeValue("ImageUrl",regex.Replace(element.Attribute("ImageUrl").Value, ""));
+                    element.SetAttributeValue("ImageUrl", regex.Replace(element.Attribute("ImageUrl").Value, ""));
                 }
             }
-            //return (String.Format("{0}",
-//                this.SchemaXml).GetHashCode()); 
-            return element.ToString().GetHashCode();
-        }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is View))
-            {
-                return (false);
-            }
-            return (Equals((View)obj));
-        }
-
-        public bool Equals(View other)
-        {
-            XElement currentXml = XElement.Parse(this.SchemaXml);
-            XElement otherXml = XElement.Parse(other.SchemaXml);
-            if (currentXml.Attribute("Name") != null)
-            {
-                Guid nameGuid = Guid.Empty;
-                if (Guid.TryParse(currentXml.Attribute("Name").Value, out nameGuid))
-                {
-                    // Temporary remove guid
-                    currentXml.Attribute("Name").Remove();
-                }
-            }
-            if (currentXml.Attribute("Url") != null)
-            {
-                currentXml.Attribute("Url").Remove();
-            }
-            if (otherXml.Attribute("Name") != null)
-            {
-                Guid nameGuid = Guid.Empty;
-                if (Guid.TryParse(otherXml.Attribute("Name").Value, out nameGuid))
-                {
-                    // Temporary remove guid
-                    otherXml.Attribute("Name").Remove();
-                }
-            }
-            if (otherXml.Attribute("Url") != null)
-            {
-                otherXml.Attribute("Url").Remove();
-            }
-            
-            return (XNode.DeepEquals(currentXml, otherXml));
+            return element;
         }
 
         #endregion
