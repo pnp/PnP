@@ -32,7 +32,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private static void ProcessLookupFields(Web web, ProvisioningTemplate template)
         {
             var rootWeb = (web.Context as ClientContext).Site.RootWeb;
-            rootWeb.Context.Load(rootWeb.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
+            rootWeb.Context.Load(rootWeb.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
             rootWeb.Context.ExecuteQueryRetry();
 
             foreach (var siteField in template.SiteFields)
