@@ -20,7 +20,9 @@
                       var siteClassifciationTag = document.createElement('script');
                       siteClassifciationTag.type = 'text/javascript';
                       siteClassifciationTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/siteClassification.js';
-                      headID.appendChild(siteClassifciationTag);"/>
+                      headID.appendChild(siteClassifciationTag);">
+            <pnp:CommandUIExtension />
+          </pnp:CustomAction>
         <pnp:CustomAction Name="CA_SITE_EXTERNALSHARING"
                   Description="External Sharing Banner"
                   Location="ScriptLink"
@@ -31,7 +33,9 @@
                       var externalSharingTag = document.createElement('script');
                       externalSharingTag.type = 'text/javascript';
                       externalSharingTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/externalSharing.js';
-                      headID.appendChild(externalSharingTag);"/>
+                      headID.appendChild(externalSharingTag);">
+          <pnp:CommandUIExtension />
+        </pnp:CustomAction>
         <pnp:CustomAction Name="CA_SITE_SUBSITE_OVERRIDE"
                   Description="Override new sub-site link"
                   Location="ScriptLink"
@@ -43,7 +47,9 @@
                       var subsiteScriptTag = document.createElement('script');
                       subsiteScriptTag.type = 'text/javascript';
                       subsiteScriptTag.src = 'https://pnpsiteprov.azurewebsites.net/scripts/SubSiteOverride.js';
-                      headID.appendChild(subsiteScriptTag);"/>
+                      headID.appendChild(subsiteScriptTag);">
+          <pnp:CommandUIExtension />
+        </pnp:CustomAction>
       </pnp:SiteCustomActions>
       <pnp:WebCustomActions>
         <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION"
@@ -53,7 +59,9 @@
                   Title="Site Classification"
                   Sequence="1000"
                   Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
-                  Rights="31"/>
+                  Rights="31">
+          <pnp:CommandUIExtension />
+        </pnp:CustomAction>
         <pnp:CustomAction Name="CA_SITE_STDMENU_SITECLASSIFICATION"
                   Description="Site Classification Module"
                   Group="SiteActions"
@@ -61,7 +69,9 @@
                   Title="Site Classification"
                   Sequence="1000"
                   Url="https://pnpsiteprov.azurewebsites.net/pages/SiteClassification/SiteEdit.aspx?SPHostUrl={0}"
-                  Rights="31"/>
+                  Rights="31">
+          <pnp:CommandUIExtension />
+        </pnp:CustomAction>
       </pnp:WebCustomActions>
     </pnp:CustomActions>
     <pnp:ComposedLook Name="Contoso" Version="1"
@@ -71,9 +81,4 @@
                   MasterPage="~masterpagecatalog/seattle.master"
                   AlternateCSS=""
                   SiteLogo="~site/SiteAssets/siteLogo.png" />
-    <pnp:Providers>
-      <pnp:Provider Enabled="true" HandlerType="Provisioning.Provider.Security.SecurityProvider, Provisioning.Provider.Security">
-        <pnp:Configuration></pnp:Configuration>
-      </pnp:Provider>
-    </pnp:Providers>
 </pnp:ProvisioningTemplate>
