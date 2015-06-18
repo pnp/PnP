@@ -41,6 +41,14 @@
     },
     GetAppContext: function (context, hostWebUrl) {
         return new SP.AppContextSite(context, hostWebUrl);
+    },
+    IsJsonString: function (str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
     }
 }
 window.PnPCommon = window.Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Common;

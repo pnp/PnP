@@ -32,6 +32,7 @@
         var req = $.ajax({
             url: PnPApp.AppUrlFile,
             type: "GET",
+            headers: { "Accept": "application/json; odata=verbose" },
             cache: false
         }).done(function (fileContents) {
             if (fileContents !== undefined && fileContents.length > 0) {
@@ -159,7 +160,7 @@
     DeleteGetFileUrl: function () {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
-            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + PnPApp.ServerRelativeUrl + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
+            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + ((PnPApp.ServerRelativeUrl.length === 1) ? '' : PnPApp.ServerRelativeUrl) + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
             method: "POST",
             headers: {
                 "IF-MATCH": "*",

@@ -3,12 +3,21 @@
         PnPGlobal.CreateBreadcrumb();
         PnPGlobal.CreateStyle();
         PnPGlobal.LoadSiteBreadcrumb();
+        PnPGlobal.CreateFooter();
         window.addEventListener("DOMContentLoaded", RibbonValidation, false);
+    },
+    CreateFooter: function () {
+        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
+            var headID = document.getElementsByTagName("body")[0];
+            var FooterNode = document.createElement('div');
+            FooterNode.innerHTML = '<div id="PnPFooter" class="PnPFooter ms-ContentAccent1-bgColor"></div>';
+            headID.appendChild(FooterNode);
+        }, "sp.js");
     },
     CreateStyle: function () {
         var headID = document.getElementsByTagName("head")[0];
         var cssNode = document.createElement('style');
-        cssNode.innerHTML = "#CustomRibbon div{padding-top: 5px; padding-left: 10px; float: left;}.breadcrumb li {display: inline;}.breadcrumb li+li:before {content:\">> \";}";
+        cssNode.innerHTML = ".PnPFooter{height: 35px;width: 100%;background-position: 0 0;background-attachment: scroll;position:fixed;bottom:0;left:0;}.PnPFooter a{color:White;}#CustomRibbon div{padding-top: 5px; padding-left: 10px; float: left;}.breadcrumb li {display: inline;}.breadcrumb li+li:before {content:\">> \";}";
         headID.appendChild(cssNode);
     },
     CreateBreadcrumb: function () {
@@ -23,7 +32,7 @@
                 var breadcrumb = '<ol class="breadcrumb">';
 
                 for (var i = 0; i < results.Breadcrumb.length; i++) {
-                    breadcrumb = breadcrumb + '<li><a href="#">' + results.Breadcrumb[i].title + '</a></li>';
+                    breadcrumb = breadcrumb + '<li><a href="' + results.Breadcrumb[i].url + '">' + results.Breadcrumb[i].title + '</a></li>';
                 }
                 breadcrumb = breadcrumb + '</ol>';
                 element.innerHTML = breadcrumb;
@@ -43,16 +52,23 @@
             clientcontext.load(site, 'ServerRelativeUrl');
             clientcontext.executeQueryAsync(
             function () {
-                var element = document.createElement('div');
-                var breadcrumb = '<ol id="breadcrumbSite" class="breadcrumb">';
-                breadcrumb = breadcrumb + '</ol>';
-                element.innerHTML = breadcrumb;
+
+                var element = document.createElement('ol');
+                element.id = "breadcrumbSite";
+                element.className = "breadcrumb";
+                var Footerelement = document.createElement('ol');
+                Footerelement.id = "footerbreadcrumbSite";
+                Footerelement.className = "breadcrumb";
                 var Custombreadcrumb = document.getElementById("s4-bodyContainer");
                 Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                var CustomFooterbreadcrumb = document.getElementById("PnPFooter");
+                CustomFooterbreadcrumb.insertBefore(Footerelement, CustomFooterbreadcrumb.childNodes[0]);
                 var li = document.createElement('li');
                 li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
-                var Custombreadcrumb = document.getElementById("breadcrumbSite");
-                Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+                Custombreadcrumb = document.getElementById("breadcrumbSite");
+                Custombreadcrumb.insertBefore(li.cloneNode(true), Custombreadcrumb.childNodes[0]);
+                CustomFooterbreadcrumb = document.getElementById("footerbreadcrumbSite");
+                CustomFooterbreadcrumb.insertBefore(li.cloneNode(true), CustomFooterbreadcrumb.childNodes[0]);
                 if (site.get_serverRelativeUrl() !== currentWeb.get_serverRelativeUrl()) {
                     PnPGlobal.RecursiveWeb(currentWeb.get_parentWeb().get_serverRelativeUrl())
                 }
@@ -71,13 +87,17 @@
             var li = document.createElement('li');
             li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
             var Custombreadcrumb = document.getElementById("breadcrumbSite");
-            Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+            var CustomFooterbreadcrumb = document.getElementById("footerbreadcrumbSite");
+            Custombreadcrumb.insertBefore(li.cloneNode(true), Custombreadcrumb.childNodes[0]);
+            CustomFooterbreadcrumb.insertBefore(li.cloneNode(true), CustomFooterbreadcrumb.childNodes[0]);
             PnPGlobal.RecursiveWeb(currentWeb.get_parentWeb().get_serverRelativeUrl())
         } else {
             var li = document.createElement('li');
             li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
             var Custombreadcrumb = document.getElementById("breadcrumbSite");
-            Custombreadcrumb.insertBefore(li, Custombreadcrumb.childNodes[0]);
+            var CustomFooterbreadcrumb = document.getElementById("footerbreadcrumbSite");
+            Custombreadcrumb.insertBefore(li.cloneNode(true), Custombreadcrumb.childNodes[0]);
+            CustomFooterbreadcrumb.insertBefore(li.cloneNode(true), CustomFooterbreadcrumb.childNodes[0]);
         }
 
     }, fail);
@@ -170,7 +190,7 @@ function fail(sender, args) {
     alert(args.get_message());
 }
 function getQueryStringParameter(param, serverRelativeUrl) {
-    if (document.URL.indexOf("_layouts/15/start.aspx#") > -1) { return getQueryStringParameterMDS(param) }
+    if (document.URL.indexOf("_layouts/15/start.aspx#") > -1) { return getQueryStringParameterMDS(param, serverRelativeUrl) }
     else if (document.URL.split("?").length > 1) {
         var params = document.URL.split("?")[1].split("&");
         for (var i = 0; i < params.length; i = i + 1) {
@@ -191,7 +211,7 @@ function getQueryStringParameter(param, serverRelativeUrl) {
         }
     }
 }
-function getQueryStringParameterMDS(param) {
+function getQueryStringParameterMDS(param, serverRelativeUrl) {
     if (document.URL.split("#").length > 1) {
         if (document.URL.split("?").length > 1) {
             var params = document.URL.split("?")[1].split("&");
@@ -204,7 +224,7 @@ function getQueryStringParameterMDS(param) {
                 }
             }
         } else {
-            return decodeURIComponent(document.URL.split("#")[1]);
+            return serverRelativeUrl + decodeURIComponent(document.URL.split("#")[1]);
         }
     } else {
         return "";
@@ -227,11 +247,11 @@ function GetUrlDoc() {
         }
         var CustomUrl;
         if (path.split("/").length > 1) {
-            var params = path.split("/");
+            var params = clean(path.split("/"),"");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
                     fullurl = fullurl + params[i] + '/';
-                    if ((i === 1 || i === 0) && params[i].trim() === "Lists") {
+                    if (( i === 0) && params[i].trim() === "Lists") {
                     }
                     else {
                         if (params[i].indexOf('.aspx') === -1) {
@@ -240,13 +260,15 @@ function GetUrlDoc() {
                                     CustomUrl = document.createElement('li');
                                     CustomUrl.className = "ListBreadcumb";
                                     CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                                    document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                                    document.getElementById("footerbreadcrumbSite").appendChild(CustomUrl.cloneNode(true));
+                                    document.getElementById("breadcrumbSite").appendChild(CustomUrl.cloneNode(true));
                                 }
                             } else {
                                 CustomUrl = document.createElement('li');
                                 CustomUrl.className = "ListBreadcumb";
                                 CustomUrl.innerHTML = '<a href="' + fullurl + '">' + params[i] + '</a>';
-                                document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+                                document.getElementById("footerbreadcrumbSite").appendChild(CustomUrl.cloneNode(true));
+                                document.getElementById("breadcrumbSite").appendChild(CustomUrl.cloneNode(true));
                             }
 
                         }
@@ -258,7 +280,17 @@ function GetUrlDoc() {
             CustomUrl = document.createElement('li');
             CustomUrl.className = "ListBreadcumb";
             CustomUrl.innerHTML = '<a href="' + fullurl + '">' + path + '</a>';
-            document.getElementById("breadcrumbSite").appendChild(CustomUrl);
+            document.getElementById("footerbreadcrumbSite").appendChild(CustomUrl.cloneNode(true));
+            document.getElementById("breadcrumbSite").appendChild(CustomUrl.cloneNode(true));
         }
     }, fail);
 }
+function clean(value,deleteValue) {
+    for (var i = 0; i < value.length; i++) {
+        if (value[i] == deleteValue) {
+            value.splice(i, 1);
+            i--;
+        }
+    }
+    return value;
+};

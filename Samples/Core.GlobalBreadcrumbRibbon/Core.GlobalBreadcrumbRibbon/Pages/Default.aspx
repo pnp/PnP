@@ -45,36 +45,52 @@
         <tr>
             <td class="TBTitle">PropertyBag</td>
             <td class="TBObject"><b>PnPGlobalBreadcrumbRibbon</b></td>
-            <td class="TVStatus"><img id="TBPropertyBag" /> </td>
+            <td class="TVStatus">
+                <img id="TBPropertyBag" />
+            </td>
         </tr>
         <tr>
             <td class="TBTitle">Javascript File</td>
             <td class="TBObject"><b>PnPGlobal.js</b><a id="FileFolder">Link</a></td>
-            <td class="TVStatus"><img id="TBFile"  /> </td>
+            <td class="TVStatus">
+                <img id="TBFile" />
+            </td>
         </tr>
         <tr>
             <td class="TBTitle">SiteCollection</td>
             <td class="TBObject"><b>PnPGlobalBreadcrumbRibbon</b></td>
-            <td class="TVStatus"><img id="TBUserCustomAction" /> </td>
+            <td class="TVStatus">
+                <img id="TBUserCustomAction" />
+            </td>
         </tr>
     </table>
     <br />
     <div>
         <b>Provision Sequence:</b>
         <ol>
-            <li>PropertyBag <b>PnPGlobalBreadcrumbRibbon</b> is created in RootWeb of the SiteCollection, this item will have the following JSON data:<br /> <b>{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}</b></li>
+            <li>PropertyBag <b>PnPGlobalBreadcrumbRibbon</b> is created in RootWeb of the SiteCollection, this item will have the following JSON data:<br />
+                <b>{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}</b></li>
             <li>Copy of File <b>PnPGlobal.js</b> to <b>"_catalogs/masterpage/Display Template"</b>, this file supports the "ScriptLink" UserCustomAction</li>
             <li>SiteCollection ScriptLink with name <b>PnPGlobalBreadcrumbRibbon</b> to <b>PnPGlobal.js</b></li>
         </ol>
-
+        <br />
+        <b>Breadcrumb base in JSON</b><br />
+        <textarea id="PropertyBagJSON" rows="10" cols="150">{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}
+    </textarea>
+        
     </div>
+    <br />
     <div id="ProvisionTable">
-    <div>
-        <b>Add UserCustomAction Global Custom Breadcrumb and Ribbon in Site Collection</b> <br/><input type="submit" class="ms-input" style="width: 140px;" value="Add Provision" id="BtAddProvision" onclick="PnPApp.AddProvisionOfUserCustomAction(); return false;" />
-    </div>
-      <div>
-        <b>Remove UserCustomAction Global Custom Breadcrumb and Ribbon in Site Collection</b> <br/><input type="submit" class="ms-input" style="width: 140px;" value="Remove Provision" id="BtRemoveProvision" onclick="PnPApp.RemoveProvisionOfUserCustomAction(); return false;" />
-    </div>
+        <div>
+            <b>Add UserCustomAction Global Custom Breadcrumb and Ribbon in Site Collection</b>
+            <br />
+            <input type="submit" class="ms-input" style="width: 140px;" value="Add Provision" id="BtAddProvision" onclick="PnPApp.AddProvisionOfUserCustomAction(); return false;" />
         </div>
+        <div>
+            <b>Remove UserCustomAction Global Custom Breadcrumb and Ribbon in Site Collection</b>
+            <br />
+            <input type="submit" class="ms-input" style="width: 140px;" value="Remove Provision" id="BtRemoveProvision" onclick="PnPApp.RemoveProvisionOfUserCustomAction(); return false;" />
+        </div>
+    </div>
 
 </asp:Content>
