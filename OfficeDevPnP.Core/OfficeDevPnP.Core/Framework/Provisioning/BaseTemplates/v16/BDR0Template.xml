@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-BDR0template">
     <pnp:ProvisioningTemplate ID="BDR0template" Version="1">
       <pnp:PropertyBagEntries>
+        <pnp:PropertyBagEntry Key="docid_msft_hier_siteprefix" Value="ZKURY5CYDP2S" />
         <pnp:PropertyBagEntry Key="docid_enabled" Value="1" />
         <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
         <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
@@ -16,6 +17,7 @@
         <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
         <pnp:PropertyBagEntry Key="__CacheProfileListId" Value="4c11f2b7-56d2-45ff-88f7-5961ee0a9b3c" />
         <pnp:PropertyBagEntry Key="_VarRelationshipsListId" Value="4456f911-7cd0-44f0-910c-c1a2b5564477" />
+        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:45" />
         <pnp:PropertyBagEntry Key="SaveSiteAsTemplateEnabled" Value="false" />
         <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="8eadecf4-e3b9-492b-a40c-88eaecc6f627" />
         <pnp:PropertyBagEntry Key="_ReusableContentListId" Value="1803e5be-94e4-44ff-b2a3-43ed2cff0326" />
@@ -23,7 +25,8 @@
         <pnp:PropertyBagEntry Key="_SmtReportsListId" Value="a4fd6b8f-fe2e-4e02-b7cc-3ee8bb3577b2" />
         <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
         <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser" />
-        <pnp:PropertyBagEntry Key="docid_msft_hier_siteprefix" Value="ZKURY5CYDP2S" />
+        <pnp:PropertyBagEntry Key="docid_diwi_lf" Value="1" />
+        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="docid_diwi_ls" Value="1" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="5" />
         <pnp:PropertyBagEntry Key="allowmasterpageediting" Value="1" />
@@ -31,6 +34,7 @@
         <pnp:PropertyBagEntry Key="CBQTimeToLive" Value="3600" />
         <pnp:PropertyBagEntry Key="showurlstructure" Value="1" />
         <pnp:PropertyBagEntry Key="allowrevertfromtemplate" Value="1" />
+        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:31" />
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="3" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="3;4;5" />
         <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
@@ -38,10 +42,12 @@
         <pnp:PropertyBagEntry Key="__SiteColDocumentsListId" Value="48ed21e1-a726-4c68-9541-67c9a0f2a8cb" />
         <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
         <pnp:PropertyBagEntry Key="mossMDNHints_4219fbd1-b046-4a0f-8a24-23804c0d7191" Value="4" />
+        <pnp:PropertyBagEntry Key="docid_customProvider_assembly" Value="Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
         <pnp:PropertyBagEntry Key="docid_settings_ui" Value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&#xD;&#xA;&lt;DocIdUiSettings xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xD;&#xA;  &lt;Prefix /&gt;&#xD;&#xA;  &lt;AssignmentEnabled&gt;true&lt;/AssignmentEnabled&gt;&#xD;&#xA;&lt;/DocIdUiSettings&gt;" />
         <pnp:PropertyBagEntry Key="_webnavigationsettings" Value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot; standalone=&quot;yes&quot;?&gt;&#xD;&#xA;&lt;WebNavigationSettings Version=&quot;1.1&quot;&gt;&#xD;&#xA;  &lt;SiteMapProviderSettings&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;CurrentNavigationSwitchableProvider&quot; TargetProviderName=&quot;CurrentNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;CurrentNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;caa65de5-74fc-485e-9b88-a2a740dbf0f7&quot; /&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;GlobalNavigationSwitchableProvider&quot; TargetProviderName=&quot;GlobalNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;GlobalNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;caa65de5-74fc-485e-9b88-a2a740dbf0f7&quot; /&gt;&#xD;&#xA;  &lt;/SiteMapProviderSettings&gt;&#xD;&#xA;  &lt;NewPageSettings AddNewPagesToNavigation=&quot;True&quot; CreateFriendlyUrlsForNewPages=&quot;True&quot; /&gt;&#xD;&#xA;&lt;/WebNavigationSettings&gt;&#xD;&#xA;" />
         <pnp:PropertyBagEntry Key="allowslistpolicy" Value="True" />
         <pnp:PropertyBagEntry Key="vti_associatevisitorgroup" Value="4" />
+        <pnp:PropertyBagEntry Key="docid_customProvider_class" Value="Microsoft.Office.DocumentManagement.Internal.OobProvider" />
         <pnp:PropertyBagEntry Key="SiteCollectionGroupId437b86fc-1258-45a9-85ea-87a29156ce3c" Value="5844145b-4f18-46ee-8454-e3244676a811" />
         <pnp:PropertyBagEntry Key="CBQFlushOnTimeChange" Value="True" />
         <pnp:PropertyBagEntry Key="vti_filedialogpostprocessorid" Value="{f68e6d4e-383a-4c8d-ba4d-d2139f164281}" />
@@ -1839,7 +1845,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Content and Structure Reports" Description="Use the reports list to customize the queries that appear in the Content and Structure Tool views" DocumentTemplate="" TemplateType="100" Url="Reports List" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{4B0B2BF4-4752-4B81-A70F-EDF9D2A4DBDF}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templatebdr0/Reports List/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{4B0B2BF4-4752-4B81-A70F-EDF9D2A4DBDF}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templatebdr0/Reports List/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -1870,7 +1876,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Documents" Description="" DocumentTemplate="{site}/Documents/Forms/template.dotx" TemplateType="101" Url="Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" ContentTypesEnabled="true" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{E89AB8A5-56DF-48F1-8E14-137AEE116483}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{E89AB8A5-56DF-48F1-8E14-137AEE116483}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1900,7 +1906,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{B9E8028A-D82E-4426-B176-2B86C24A8730}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{B9E8028A-D82E-4426-B176-2B86C24A8730}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1917,7 +1923,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{428FFD63-4440-41EF-B745-D9FAD09DF363}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatebdr0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{428FFD63-4440-41EF-B745-D9FAD09DF363}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatebdr0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -1964,7 +1970,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x01004D5A79BAFA4A4576B79C56FF3D0D662D" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{8A380E5E-BE47-4F16-B3AB-2790CAE55448}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templatebdr0/ReusableContent/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{8A380E5E-BE47-4F16-B3AB-2790CAE55448}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templatebdr0/ReusableContent/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -1986,7 +1992,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{BAD9C11E-F5C3-4F77-A9CF-C4FA9A4E69F8}" DefaultView="TRUE" Type="HTML" DisplayName="Content Preview" Url="/sites/templatebdr0/ReusableContent/Content Preview.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{BAD9C11E-F5C3-4F77-A9CF-C4FA9A4E69F8}" DefaultView="TRUE" Type="HTML" DisplayName="Content Preview" Url="/sites/templatebdr0/ReusableContent/Content Preview.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -2009,7 +2015,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{9E24C6D5-E18B-40F0-AC60-E05A81B0E558}" Type="HTML" DisplayName="Automatic Update (Yes)" Url="/sites/templatebdr0/ReusableContent/Automatic Update Yes.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{9E24C6D5-E18B-40F0-AC60-E05A81B0E558}" Type="HTML" DisplayName="Automatic Update (Yes)" Url="/sites/templatebdr0/ReusableContent/Automatic Update Yes.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -2038,7 +2044,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{5A8BDFCB-DC41-492A-B134-34F15F5DBCA5}" Type="HTML" DisplayName="Automatic Update (No)" Url="/sites/templatebdr0/ReusableContent/Automatic Update No.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{5A8BDFCB-DC41-492A-B134-34F15F5DBCA5}" Type="HTML" DisplayName="Automatic Update (No)" Url="/sites/templatebdr0/ReusableContent/Automatic Update No.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -2079,7 +2085,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Collection Documents" Description="This system library was created by the Publishing Resources feature to store documents that are used throughout the site collection." DocumentTemplate="{site}/SiteCollectionDocuments/Forms/template.dotx" TemplateType="101" Url="SiteCollectionDocuments" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{3BB8EE40-09C7-4354-8B32-6FCB92300BEA}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/SiteCollectionDocuments/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{3BB8EE40-09C7-4354-8B32-6FCB92300BEA}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/SiteCollectionDocuments/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2112,7 +2118,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0120D520A808" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{12BFE8E0-932B-46D9-83D3-6C079940B8B7}" Type="HTML" DisplayName="All Assets" Url="/sites/templatebdr0/SiteCollectionImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{12BFE8E0-932B-46D9-83D3-6C079940B8B7}" Type="HTML" DisplayName="All Assets" Url="/sites/templatebdr0/SiteCollectionImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -2147,7 +2153,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{878EB06E-5717-4DFA-8AEF-B176207CD18C}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templatebdr0/SiteCollectionImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{878EB06E-5717-4DFA-8AEF-B176207CD18C}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templatebdr0/SiteCollectionImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -2217,7 +2223,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{8AAA0FC0-35D7-446E-A84C-083C99CB9E46}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{8AAA0FC0-35D7-446E-A84C-083C99CB9E46}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatebdr0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2244,7 +2250,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Tasks" Description="" DocumentTemplate="" TemplateType="171" Url="Lists/Tasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="f9ce21f8-f437-4f7e-8bc6-946378c850f0" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{24007D38-7B87-4D01-82BF-613E2A1FC1D1}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatebdr0/Lists/Tasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{24007D38-7B87-4D01-82BF-613E2A1FC1D1}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatebdr0/Lists/Tasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <ViewFields>
                 <FieldRef Name="Checkmark" />
                 <FieldRef Name="LinkTitle" />
@@ -2256,7 +2262,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{19F1130F-BDA0-4262-82CB-FF3877E20882}" MobileView="TRUE" Type="HTML" DisplayName="Late Tasks" Url="/sites/templatebdr0/Lists/Tasks/late.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{19F1130F-BDA0-4262-82CB-FF3877E20882}" MobileView="TRUE" Type="HTML" DisplayName="Late Tasks" Url="/sites/templatebdr0/Lists/Tasks/late.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <And>
@@ -2293,7 +2299,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{FE11F572-0044-4521-BFED-723FD4C13FD9}" MobileView="TRUE" Type="HTML" DisplayName="Upcoming" Url="/sites/templatebdr0/Lists/Tasks/Upcoming.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{FE11F572-0044-4521-BFED-723FD4C13FD9}" MobileView="TRUE" Type="HTML" DisplayName="Upcoming" Url="/sites/templatebdr0/Lists/Tasks/Upcoming.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <And>
@@ -2326,7 +2332,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{C4510704-B371-419E-A87F-C275C3C5BBF5}" MobileView="TRUE" Type="HTML" DisplayName="Completed" Url="/sites/templatebdr0/Lists/Tasks/completed.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{C4510704-B371-419E-A87F-C275C3C5BBF5}" MobileView="TRUE" Type="HTML" DisplayName="Completed" Url="/sites/templatebdr0/Lists/Tasks/completed.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <Geq>
@@ -2346,7 +2352,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{65561B52-D577-4ECA-8016-B50D35E3FBAA}" MobileView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatebdr0/Lists/Tasks/MyItems.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{65561B52-D577-4ECA-8016-B50D35E3FBAA}" MobileView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatebdr0/Lists/Tasks/MyItems.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <In>
@@ -2370,7 +2376,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{E1A39ED4-A8D5-44AE-88E9-1C7FC5F22AEA}" Type="GANTT" DisplayName="Gantt Chart" Url="/sites/templatebdr0/Lists/Tasks/gantt.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{E1A39ED4-A8D5-44AE-88E9-1C7FC5F22AEA}" Type="GANTT" DisplayName="Gantt Chart" Url="/sites/templatebdr0/Lists/Tasks/gantt.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <ViewFields>
                 <FieldRef Name="LinkTitle" />
                 <FieldRef Name="StartDate" />
@@ -2385,7 +2391,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{FD200257-ABB3-489D-8E4B-D73FC7B5C5D2}" Type="CALENDAR" TabularView="FALSE" DisplayName="Calendar" Url="/sites/templatebdr0/Lists/Tasks/calendar.aspx" Level="1" BaseViewID="9" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=39">
+            <View Name="{FD200257-ABB3-489D-8E4B-D73FC7B5C5D2}" Type="CALENDAR" TabularView="FALSE" DisplayName="Calendar" Url="/sites/templatebdr0/Lists/Tasks/calendar.aspx" Level="1" BaseViewID="9" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=40">
               <Query>
                 <Where>
                   <DateRangesOverlap>
@@ -2420,7 +2426,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Workflow Tasks" Description="This system library was created by the Publishing feature to store workflow tasks that are created in this site." DocumentTemplate="" TemplateType="107" Url="WorkflowTasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-a83e-497e-9ba0-7a5c597d0107" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{D9C117ED-6267-472D-B643-B06427E54769}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatebdr0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{D9C117ED-6267-472D-B643-B06427E54769}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatebdr0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -2441,7 +2447,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{4D4CF693-F10E-4ED5-8785-13909E226FDF}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatebdr0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{4D4CF693-F10E-4ED5-8785-13909E226FDF}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatebdr0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2468,7 +2474,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{9DDEAA21-1A3E-4BCB-ADFA-4367164322F8}" Type="HTML" DisplayName="Due Today" Url="/sites/templatebdr0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{9DDEAA21-1A3E-4BCB-ADFA-4367164322F8}" Type="HTML" DisplayName="Due Today" Url="/sites/templatebdr0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2495,7 +2501,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{C96C1032-95D8-400F-8C34-719541EACC78}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templatebdr0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{C96C1032-95D8-400F-8C34-719541EACC78}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templatebdr0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Neq>
@@ -2521,7 +2527,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{791D9B04-5F25-493A-ACC5-90485664E0A7}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templatebdr0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{791D9B04-5F25-493A-ACC5-90485664E0A7}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templatebdr0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="AssignedTo" />
@@ -2542,7 +2548,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{C22CB089-1F76-4BF2-B5E3-AF6175B97AE8}" Type="HTML" DisplayName="By My Groups" Url="/sites/templatebdr0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{C22CB089-1F76-4BF2-B5E3-AF6175B97AE8}" Type="HTML" DisplayName="By My Groups" Url="/sites/templatebdr0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Membership Type="CurrentUserGroups">

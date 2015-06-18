@@ -59,7 +59,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectCustomActions().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectCustomActions().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsInstanceOfType(template.CustomActions, typeof(CustomActions));
             }

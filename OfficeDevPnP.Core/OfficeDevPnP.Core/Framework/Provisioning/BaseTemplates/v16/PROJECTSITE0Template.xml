@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-PROJECTSITE0template">
     <pnp:ProvisioningTemplate ID="PROJECTSITE0template" Version="1">
       <pnp:PropertyBagEntries>
         <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
         <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
-        <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="6" />
         <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser" />
         <pnp:PropertyBagEntry Key="OriginalNotebookUrl" Value="https://bertonline.sharepoint.com{site}/_layouts/15/WopiFrame.aspx?sourcedoc={4405ebd7-8722-47a9-97f4-6840c4da3ba5}&amp;action=editnew" />
@@ -14,12 +13,16 @@
         <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="9d05c6a7-265b-4a69-931e-c8e19948751f" />
         <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
         <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="WSSEndUser;#WSSCentralAdmin;#FastEndUser;#FastCentralAdmin;#MSSEndUser;#MSSCentralAdmin;#PPSDesignerEndUser;#SQLWSSAddIn" />
+        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:34" />
+        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="8" />
         <pnp:PropertyBagEntry Key="vti_associategroups" Value="8;3;3;7;6" />
         <pnp:PropertyBagEntry Key="vti_associatevisitorgroup" Value="7" />
         <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
         <pnp:PropertyBagEntry Key="metadatatimestamp" Value="437b86fc125845a985ea87a29156ce3c|2015-03-27T08:10:01.077Z" />
         <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
+        <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
+        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:49" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="6;7;8" />
         <pnp:PropertyBagEntry Key="allowslistpolicy" Value="True" />
         <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
@@ -1416,7 +1419,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Calendar" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="106" Url="Lists/Calendar" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-ec85-4903-972d-ebe475780106" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{8D5F39BA-AC97-407C-A64A-8DDBBC2D731B}" MobileView="TRUE" Type="HTML" DisplayName="All Events" Url="/sites/templatePROJECTSITE0/Lists/Calendar/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/events.png?rev=39">
+            <View Name="{8D5F39BA-AC97-407C-A64A-8DDBBC2D731B}" MobileView="TRUE" Type="HTML" DisplayName="All Events" Url="/sites/templatePROJECTSITE0/Lists/Calendar/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/events.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="EventDate" />
@@ -1436,7 +1439,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{5F34D403-8B45-477A-A0C0-2EFDEE220D17}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="CALENDAR" TabularView="FALSE" RecurrenceRowset="TRUE" DisplayName="Calendar" Url="/sites/templatePROJECTSITE0/Lists/Calendar/calendar.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=39">
+            <View Name="{5F34D403-8B45-477A-A0C0-2EFDEE220D17}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="CALENDAR" TabularView="FALSE" RecurrenceRowset="TRUE" DisplayName="Calendar" Url="/sites/templatePROJECTSITE0/Lists/Calendar/calendar.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=40">
               <Query>
                 <Where>
                   <DateRangesOverlap>
@@ -1464,7 +1467,7 @@
               </ViewFields>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{B91BC74E-5EE7-4383-9EC1-B4A8AD5C3F4F}" MobileView="TRUE" Type="HTML" RecurrenceRowset="TRUE" DisplayName="Current Events" Url="/sites/templatePROJECTSITE0/Lists/Calendar/MyItems.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/events.png?rev=39">
+            <View Name="{B91BC74E-5EE7-4383-9EC1-B4A8AD5C3F4F}" MobileView="TRUE" Type="HTML" RecurrenceRowset="TRUE" DisplayName="Current Events" Url="/sites/templatePROJECTSITE0/Lists/Calendar/MyItems.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/events.png?rev=40">
               <Query>
                 <Where>
                   <DateRangesOverlap>
@@ -1506,7 +1509,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Documents" Description="" DocumentTemplate="{site}/Shared Documents/Forms/template.dotx" OnQuickLaunch="true" TemplateType="101" Url="Shared Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{899F7883-AE84-4806-8E55-795624539AEE}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/Shared Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{899F7883-AE84-4806-8E55-795624539AEE}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/Shared Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1533,7 +1536,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{FCB8AC2E-0560-4213-BBF8-DDB938460F21}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{FCB8AC2E-0560-4213-BBF8-DDB938460F21}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1550,7 +1553,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{851E36E2-63DF-424C-9835-6FE6251FEE9B}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatePROJECTSITE0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{851E36E2-63DF-424C-9835-6FE6251FEE9B}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatePROJECTSITE0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -1686,7 +1689,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Assets" Description="Use this library to store files which are included on pages within this site, such as images on Wiki pages." DocumentTemplate="{site}/SiteAssets/Forms/template.doc" TemplateType="101" Url="SiteAssets" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{71D5FE0A-89A4-45C2-AF66-F1C07BF4C155}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/SiteAssets/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{71D5FE0A-89A4-45C2-AF66-F1C07BF4C155}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/SiteAssets/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1710,7 +1713,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{ED8D38B7-D720-4947-94C2-5D17EE9BCD7C}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{ED8D38B7-D720-4947-94C2-5D17EE9BCD7C}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatePROJECTSITE0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1735,7 +1738,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Tasks" Description="" DocumentTemplate="" OnQuickLaunch="true" TemplateType="171" Url="Lists/Tasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="f9ce21f8-f437-4f7e-8bc6-946378c850f0" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{4E31AF0C-2EB9-4BC1-810A-DAEE53C92517}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{4E31AF0C-2EB9-4BC1-810A-DAEE53C92517}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <ViewFields>
                 <FieldRef Name="Checkmark" />
                 <FieldRef Name="LinkTitle" />
@@ -1747,7 +1750,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{16771252-3608-4F22-A9B3-932D8E060737}" MobileView="TRUE" Type="HTML" DisplayName="Late Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/late.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{16771252-3608-4F22-A9B3-932D8E060737}" MobileView="TRUE" Type="HTML" DisplayName="Late Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/late.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <And>
@@ -1784,7 +1787,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{B240BBC6-E1A7-493E-8676-4FACC5206D57}" MobileView="TRUE" Type="HTML" DisplayName="Upcoming" Url="/sites/templatePROJECTSITE0/Lists/Tasks/Upcoming.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{B240BBC6-E1A7-493E-8676-4FACC5206D57}" MobileView="TRUE" Type="HTML" DisplayName="Upcoming" Url="/sites/templatePROJECTSITE0/Lists/Tasks/Upcoming.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <And>
@@ -1817,7 +1820,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{082327B0-64E6-43B7-885B-8C156960DF71}" MobileView="TRUE" Type="HTML" DisplayName="Completed" Url="/sites/templatePROJECTSITE0/Lists/Tasks/completed.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{082327B0-64E6-43B7-885B-8C156960DF71}" MobileView="TRUE" Type="HTML" DisplayName="Completed" Url="/sites/templatePROJECTSITE0/Lists/Tasks/completed.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <Query>
                 <Where>
                   <Geq>
@@ -1837,7 +1840,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{A4B562F8-8373-48AC-A21C-95E682A077AE}" MobileView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/MyItems.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{A4B562F8-8373-48AC-A21C-95E682A077AE}" MobileView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templatePROJECTSITE0/Lists/Tasks/MyItems.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <In>
@@ -1861,7 +1864,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{448D4EC9-D62B-4B61-89CA-A8E7A436D5A7}" Type="GANTT" DisplayName="Gantt Chart" Url="/sites/templatePROJECTSITE0/Lists/Tasks/gantt.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=39">
+            <View Name="{448D4EC9-D62B-4B61-89CA-A8E7A436D5A7}" Type="GANTT" DisplayName="Gantt Chart" Url="/sites/templatePROJECTSITE0/Lists/Tasks/gantt.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issuelst.png?rev=40">
               <ViewFields>
                 <FieldRef Name="LinkTitle" />
                 <FieldRef Name="StartDate" />
@@ -1876,7 +1879,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{3B5068E9-75FE-48AE-8932-5738E3CDC199}" Type="CALENDAR" TabularView="FALSE" DisplayName="Calendar" Url="/sites/templatePROJECTSITE0/Lists/Tasks/calendar.aspx" Level="1" BaseViewID="9" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=39">
+            <View Name="{3B5068E9-75FE-48AE-8932-5738E3CDC199}" Type="CALENDAR" TabularView="FALSE" DisplayName="Calendar" Url="/sites/templatePROJECTSITE0/Lists/Tasks/calendar.aspx" Level="1" BaseViewID="9" ContentTypeID="0x" MobileUrl="_layouts/15/mobile/viewdaily.aspx" ImageUrl="/_layouts/15/images/events.png?rev=40">
               <Query>
                 <Where>
                   <DateRangesOverlap>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-SRCHCEN0template">
     <pnp:ProvisioningTemplate ID="SRCHCEN0template" Version="1">
       <pnp:PropertyBagEntries>
@@ -17,6 +17,7 @@
         <pnp:PropertyBagEntry Key="__CacheProfileListId" Value="665725cf-82e3-492a-b8c6-a2af5c3b4e9a" />
         <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="aa42a3c5-7f92-4f41-abd5-dda64e8358dc" />
         <pnp:PropertyBagEntry Key="_VarRelationshipsListId" Value="0ed6fe8d-c643-40ee-b351-e32e58c3b2ea" />
+        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:51" />
         <pnp:PropertyBagEntry Key="SaveSiteAsTemplateEnabled" Value="false" />
         <pnp:PropertyBagEntry Key="htmldesignviewnamehtmlmasterpages" Value="6238c7fc-1998-432d-9d00-1e4810eff6e4" />
         <pnp:PropertyBagEntry Key="__DocumentsListId" Value="45aa5da7-fe92-41f1-aba4-e42e4d760af0" />
@@ -28,13 +29,14 @@
         <pnp:PropertyBagEntry Key="__PagesListId" Value="400c7193-41e4-4a54-bafc-a3a4b89f9a1d" />
         <pnp:PropertyBagEntry Key="__ImagesListId" Value="0b13a272-badb-4dc4-b8e8-b1d96ee14870" />
         <pnp:PropertyBagEntry Key="__GlobalNavigationExcludes" Value="0c9877b6-5d15-470b-b488-c13faa3b9944;" />
+        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="__NoMobileMappingc7d01ab7fc7b4fa4ac54e66232f698f8" Value="True" />
         <pnp:PropertyBagEntry Key="_ReusableContentListId" Value="09ecb8b8-32ca-4649-9f5c-8318acb4692d" />
         <pnp:PropertyBagEntry Key="allowmasterpageediting" Value="1" />
         <pnp:PropertyBagEntry Key="dlc_webhasexpirationpolicy" Value="True" />
         <pnp:PropertyBagEntry Key="_webnavigationsettings" Value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot; standalone=&quot;yes&quot;?&gt;&#xD;&#xA;&lt;WebNavigationSettings Version=&quot;1.1&quot;&gt;&#xD;&#xA;  &lt;SiteMapProviderSettings&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;CurrentNavigationSwitchableProvider&quot; TargetProviderName=&quot;CurrentNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;CurrentNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;b40d645f-8824-45fb-a426-86a3aa18b2c4&quot; /&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;GlobalNavigationSwitchableProvider&quot; TargetProviderName=&quot;GlobalNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;GlobalNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;b40d645f-8824-45fb-a426-86a3aa18b2c4&quot; /&gt;&#xD;&#xA;  &lt;/SiteMapProviderSettings&gt;&#xD;&#xA;  &lt;NewPageSettings AddNewPagesToNavigation=&quot;True&quot; CreateFriendlyUrlsForNewPages=&quot;True&quot; /&gt;&#xD;&#xA;&lt;/WebNavigationSettings&gt;&#xD;&#xA;" />
         <pnp:PropertyBagEntry Key="showurlstructure" Value="1" />
-        <pnp:PropertyBagEntry Key="__DefaultPageLayout" Value="&lt;layout guid=&quot;83ec0045-1482-48ce-9150-c86b0dcee221&quot; url=&quot;_catalogs/masterpage/SearchResults.aspx&quot; /&gt;" />
+        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:35" />
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="3" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="3;4;5" />
         <pnp:PropertyBagEntry Key="vti_cmsviewformpagesanonstate" Value="False" />
@@ -45,6 +47,7 @@
         <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
         <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
         <pnp:PropertyBagEntry Key="dlc_sitehasexpirationpolicy" Value="True" />
+        <pnp:PropertyBagEntry Key="__DefaultPageLayout" Value="&lt;layout guid=&quot;83ec0045-1482-48ce-9150-c86b0dcee221&quot; url=&quot;_catalogs/masterpage/SearchResults.aspx&quot; /&gt;" />
         <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
         <pnp:PropertyBagEntry Key="__pageslistname" Value="Pages" />
         <pnp:PropertyBagEntry Key="htmldesignviewnamehtmldesignsandrelatedfiles" Value="e48b4242-2ffc-4eac-877d-dfd34bc210ec" />
@@ -3479,7 +3482,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Content and Structure Reports" Description="Use the reports list to customize the queries that appear in the Content and Structure Tool views" DocumentTemplate="" TemplateType="100" Url="Reports List" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{C60A9434-D7A6-4ABF-8320-8287028A8D59}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templateSRCHCEN0/Reports List/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{C60A9434-D7A6-4ABF-8320-8287028A8D59}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templateSRCHCEN0/Reports List/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -3510,7 +3513,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Documents" Description="This system library was created by the Publishing feature to store documents that are used on pages in this site." DocumentTemplate="" TemplateType="101" Url="Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{8C7BD0D5-3500-4797-86F7-7635EA925EB5}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{8C7BD0D5-3500-4797-86F7-7635EA925EB5}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -3538,7 +3541,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{389EF67F-0941-4298-BABA-7F64DB31B9DD}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{389EF67F-0941-4298-BABA-7F64DB31B9DD}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -3555,7 +3558,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{6E12CDB8-BF3C-43A9-A188-636DB0C72086}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateSRCHCEN0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{6E12CDB8-BF3C-43A9-A188-636DB0C72086}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateSRCHCEN0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -3602,7 +3605,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0120D520A808" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{0A697D0B-BD02-4611-9C37-E1843228F7A0}" Type="HTML" DisplayName="All Assets" Url="/sites/templateSRCHCEN0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{0A697D0B-BD02-4611-9C37-E1843228F7A0}" Type="HTML" DisplayName="All Assets" Url="/sites/templateSRCHCEN0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -3637,7 +3640,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{A90E9E8B-68DE-40D6-B065-A6A7B9FED706}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateSRCHCEN0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{A90E9E8B-68DE-40D6-B065-A6A7B9FED706}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateSRCHCEN0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -3711,7 +3714,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900796F542FC5E446758C697981E370458C" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{A114B7E1-1704-4794-B3C7-B926918AE285}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{A114B7E1-1704-4794-B3C7-B926918AE285}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -3761,7 +3764,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x01004D5A79BAFA4A4576B79C56FF3D0D662D" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{20C8DE82-68EC-480B-AB61-7A90584B3813}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templateSRCHCEN0/ReusableContent/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{20C8DE82-68EC-480B-AB61-7A90584B3813}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="/sites/templateSRCHCEN0/ReusableContent/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -3783,7 +3786,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{A3CCD4CF-E117-4FC5-9C7C-BFDFB475C51A}" DefaultView="TRUE" Type="HTML" DisplayName="Content Preview" Url="/sites/templateSRCHCEN0/ReusableContent/Content Preview.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{A3CCD4CF-E117-4FC5-9C7C-BFDFB475C51A}" DefaultView="TRUE" Type="HTML" DisplayName="Content Preview" Url="/sites/templateSRCHCEN0/ReusableContent/Content Preview.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -3806,7 +3809,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{AD850DAB-CAD4-4BEA-B014-21B8D1492471}" Type="HTML" DisplayName="Automatic Update (Yes)" Url="/sites/templateSRCHCEN0/ReusableContent/Automatic Update Yes.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{AD850DAB-CAD4-4BEA-B014-21B8D1492471}" Type="HTML" DisplayName="Automatic Update (Yes)" Url="/sites/templateSRCHCEN0/ReusableContent/Automatic Update Yes.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -3835,7 +3838,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{8329941A-7916-4C2A-AA9F-A5AC1C7FA21C}" Type="HTML" DisplayName="Automatic Update (No)" Url="/sites/templateSRCHCEN0/ReusableContent/Automatic Update No.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=39">
+            <View Name="{8329941A-7916-4C2A-AA9F-A5AC1C7FA21C}" Type="HTML" DisplayName="Automatic Update (No)" Url="/sites/templateSRCHCEN0/ReusableContent/Automatic Update No.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="ContentCategory" />
@@ -3876,7 +3879,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Collection Documents" Description="This system library was created by the Publishing Resources feature to store documents that are used throughout the site collection." DocumentTemplate="" TemplateType="101" Url="SiteCollectionDocuments" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{0FB91CFE-CA7F-40E3-AD7D-28292ABAE289}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/SiteCollectionDocuments/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{0FB91CFE-CA7F-40E3-AD7D-28292ABAE289}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/SiteCollectionDocuments/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -3907,7 +3910,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0120D520A808" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{FDBD0BBE-195D-4846-B98C-3B603FEBD862}" Type="HTML" DisplayName="All Assets" Url="/sites/templateSRCHCEN0/SiteCollectionImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{FDBD0BBE-195D-4846-B98C-3B603FEBD862}" Type="HTML" DisplayName="All Assets" Url="/sites/templateSRCHCEN0/SiteCollectionImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -3942,7 +3945,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{5C70E7FA-97AE-4797-AD88-A41805C656A9}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateSRCHCEN0/SiteCollectionImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{5C70E7FA-97AE-4797-AD88-A41805C656A9}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateSRCHCEN0/SiteCollectionImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -4010,7 +4013,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{DC17B3CB-C6FA-4CAC-B928-F7D57859DD90}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{DC17B3CB-C6FA-4CAC-B928-F7D57859DD90}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateSRCHCEN0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -4205,7 +4208,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Workflow Tasks" Description="This system library was created by the Publishing feature to store workflow tasks that are created in this site." DocumentTemplate="" TemplateType="107" Url="WorkflowTasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-a83e-497e-9ba0-7a5c597d0107" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{77B78896-6E60-4E69-B268-94B0EA02FBC7}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{77B78896-6E60-4E69-B268-94B0EA02FBC7}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -4226,7 +4229,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{AA577AE8-7471-4F43-A1DB-CD27A6724AC4}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{AA577AE8-7471-4F43-A1DB-CD27A6724AC4}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -4253,7 +4256,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{5F5E17D6-0FF1-4951-87DC-7EAD30E0346A}" Type="HTML" DisplayName="Due Today" Url="/sites/templateSRCHCEN0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{5F5E17D6-0FF1-4951-87DC-7EAD30E0346A}" Type="HTML" DisplayName="Due Today" Url="/sites/templateSRCHCEN0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -4280,7 +4283,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{0C53EA8D-EBAE-45D7-9C29-795A83E76736}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{0C53EA8D-EBAE-45D7-9C29-795A83E76736}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateSRCHCEN0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Neq>
@@ -4306,7 +4309,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{0A76C981-127C-4BE9-9E0D-764DA98E1FFF}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateSRCHCEN0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{0A76C981-127C-4BE9-9E0D-764DA98E1FFF}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateSRCHCEN0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="AssignedTo" />
@@ -4327,7 +4330,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{352AD129-C634-4B1E-A382-67ABF86C8186}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateSRCHCEN0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{352AD129-C634-4B1E-A382-67ABF86C8186}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateSRCHCEN0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Membership Type="CurrentUserGroups">

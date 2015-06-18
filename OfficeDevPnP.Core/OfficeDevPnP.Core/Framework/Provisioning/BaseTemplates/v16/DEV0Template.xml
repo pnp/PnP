@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-DEV0template">
     <pnp:ProvisioningTemplate ID="DEV0template" Version="1">
       <pnp:PropertyBagEntries>
         <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
         <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
-        <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="6" />
         <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser" />
         <pnp:PropertyBagEntry Key="OriginalNotebookUrl" Value="https://bertonline.sharepoint.com{site}/_layouts/15/WopiFrame.aspx?sourcedoc={a2cce317-006b-4576-8e2c-2b30af981bba}&amp;action=editnew" />
@@ -14,12 +13,16 @@
         <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="72bb4afb-38f9-4f2e-ac9a-0c4fdffa6607" />
         <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
         <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="WSSEndUser;#WSSCentralAdmin;#FastEndUser;#FastCentralAdmin;#MSSEndUser;#MSSCentralAdmin;#PPSDesignerEndUser;#SQLWSSAddIn" />
+        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:33" />
+        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="8" />
         <pnp:PropertyBagEntry Key="vti_associategroups" Value="8;3;3;7;6" />
         <pnp:PropertyBagEntry Key="vti_associatevisitorgroup" Value="7" />
         <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
         <pnp:PropertyBagEntry Key="metadatatimestamp" Value="437b86fc125845a985ea87a29156ce3c|2015-03-27T08:10:01.077Z" />
         <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
+        <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
+        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:48" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="6;7;8" />
         <pnp:PropertyBagEntry Key="allowslistpolicy" Value="True" />
         <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
@@ -1416,7 +1419,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="App Packages" Description="List of all app packages uploaded in the Dev Site" DocumentTemplate="{site}/Lists/AppPackages/Forms/template.dotx" TemplateType="101" Url="Lists/AppPackages" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{299A9B67-8997-4B07-A9F0-653286DC05B3}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Lists/AppPackages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{299A9B67-8997-4B07-A9F0-653286DC05B3}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Lists/AppPackages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1469,7 +1472,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Documents" Description="" DocumentTemplate="{site}/Shared Documents/Forms/template.dotx" OnQuickLaunch="true" TemplateType="101" Url="Shared Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{41B27062-FFDB-4F81-8E7E-20CE8F265DD8}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Shared Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{41B27062-FFDB-4F81-8E7E-20CE8F265DD8}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Shared Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1496,7 +1499,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{1B667E53-FEA9-4B76-B2EB-3AD1700C5AAF}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{1B667E53-FEA9-4B76-B2EB-3AD1700C5AAF}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1513,7 +1516,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{2E34C159-D29C-4642-AEE1-06A0714F8DE8}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatedev0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{2E34C159-D29C-4642-AEE1-06A0714F8DE8}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatedev0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -1649,7 +1652,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Assets" Description="Use this library to store files which are included on pages within this site, such as images on Wiki pages." DocumentTemplate="{site}/SiteAssets/Forms/template.doc" TemplateType="101" Url="SiteAssets" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{F4A2A228-9F78-46C5-B87A-0A5BDEC6DB9F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/SiteAssets/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{F4A2A228-9F78-46C5-B87A-0A5BDEC6DB9F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/SiteAssets/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1673,7 +1676,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Pages" Description="" DocumentTemplate="" TemplateType="119" Url="SitePages" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-c796-4402-9f2f-0eb9a6e71b18" ContentTypesEnabled="true" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{7895FFCE-B537-46E1-B490-0E63B8F1EA7E}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Pages" Url="/sites/templatedev0/SitePages/Forms/AllPages.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{7895FFCE-B537-46E1-B490-0E63B8F1EA7E}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Pages" Url="/sites/templatedev0/SitePages/Forms/AllPages.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="Modified" Ascending="FALSE" />
@@ -1692,7 +1695,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{ECB8E8D8-BFA1-4815-8F1F-1667970F2F02}" Type="HTML" DisplayName="Recent Changes" Url="/sites/templatedev0/SitePages/Forms/RecentChanges.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{ECB8E8D8-BFA1-4815-8F1F-1667970F2F02}" Type="HTML" DisplayName="Recent Changes" Url="/sites/templatedev0/SitePages/Forms/RecentChanges.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="Modified" Ascending="FALSE" />
@@ -1711,7 +1714,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{3C81F35C-BE5A-4731-B00F-387C197E1C76}" Type="HTML" DisplayName="Created By Me" Url="/sites/templatedev0/SitePages/Forms/CreatedByMe.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{3C81F35C-BE5A-4731-B00F-387C197E1C76}" Type="HTML" DisplayName="Created By Me" Url="/sites/templatedev0/SitePages/Forms/CreatedByMe.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -1738,7 +1741,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{3D917C96-07E1-4E09-9CF1-CF7CE30012E3}" Type="HTML" DisplayName="By Author" Url="/sites/templatedev0/SitePages/Forms/ByAuthor.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{3D917C96-07E1-4E09-9CF1-CF7CE30012E3}" Type="HTML" DisplayName="By Author" Url="/sites/templatedev0/SitePages/Forms/ByAuthor.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="Author" />
@@ -1760,7 +1763,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{68DF1C37-3C9A-449B-9C9A-E8CB4DD79258}" Type="HTML" DisplayName="By Editor" Url="/sites/templatedev0/SitePages/Forms/ByEditor.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{68DF1C37-3C9A-449B-9C9A-E8CB4DD79258}" Type="HTML" DisplayName="By Editor" Url="/sites/templatedev0/SitePages/Forms/ByEditor.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ToolbarTemplate="WikiLibraryViewToolBar" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="Editor" />
@@ -1789,7 +1792,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{FCB33679-3B9A-4247-A813-FB4335D849C2}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{FCB33679-3B9A-4247-A813-FB4335D849C2}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatedev0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
