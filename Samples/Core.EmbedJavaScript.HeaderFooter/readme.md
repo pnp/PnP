@@ -53,10 +53,10 @@ The Page has 1 JSON Editor and 2 buttons for provision of Features associated to
 
 ## Header and Footer Add-In functionalities ##
 1. Custom Header with Following Features:
-* **Global BreadCrumb (SharePoint or JSON Data)** is included bellow the Ribbon Banner.
-* **Global Ribbon with custom Actions** is included in Ribbon Banner ().
+    * **Global BreadCrumb (SharePoint or JSON Data)** is included bellow the Ribbon Banner.
+    * **Global Ribbon with custom Actions** is included in Ribbon Banner ().
 2. Custom Footer with Following Feature:
-* **Global BreadCrumb by SharePoint Data** (Path where users is located)
+    * **Global BreadCrumb by SharePoint Data** (Path where users is located)
 
 ![](http://i.imgur.com/RXfIitR.png)
 
