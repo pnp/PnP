@@ -68,9 +68,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 if (!caExists)
                 {
-                    var customActionEntity = new CustomActionEntity
+                    var customActionEntity = new CustomActionEntity()
                     {
-                        CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString(),
+                        CommandUIExtension = customAction.CommandUIExtension != null ? customAction.CommandUIExtension.ToString().ToParsedString() : string.Empty,
                         Description = customAction.Description,
                         Group = customAction.Group,
                         ImageUrl = customAction.ImageUrl.ToParsedString(),
@@ -110,11 +110,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (existingCustomAction != null)
                     {
                         var isDirty = false;
-                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToString().ToParsedString())
+                        
+                        if(customAction.CommandUIExtension != null)
                         {
-                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString();
-                            isDirty = true;
+                            if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToString().ToParsedString())
+                            {
+                                existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString();
+                                isDirty = true;
+                            }
                         }
+                       
                         if (existingCustomAction.Description != customAction.Description)
                         {
                             existingCustomAction.Description = customAction.Description;
