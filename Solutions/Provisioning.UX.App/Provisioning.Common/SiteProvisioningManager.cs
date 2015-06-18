@@ -46,7 +46,8 @@ namespace Provisioning.Common
         {
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
-            _siteprovisioningService.CreateSiteCollection(siteRequest, template);
+     
+            //    _siteprovisioningService.CreateSiteCollection(siteRequest, template);
             if(siteRequest.EnableExternalSharing)
             {
                 _siteprovisioningService.SetExternalSharing(siteRequest);

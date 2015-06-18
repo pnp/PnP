@@ -103,6 +103,10 @@
     <Compile Include="Configuration\ModulesSection.cs" />
     <Compile Include="Data\AbstractModule.cs" />
     <Compile Include="Data\FactoryException.cs" />
+    <Compile Include="Data\Metadata\IMetadataFactory.cs" />
+    <Compile Include="Data\Metadata\IMetadataManager.cs" />
+    <Compile Include="Data\Metadata\impl\AzureDocDbMetadataManager.cs" />
+    <Compile Include="Data\Metadata\MetadataFactory.cs" />
     <Compile Include="Data\SiteRequests\Impl\AzureDocDbRequestManager.cs" />
     <Compile Include="Data\SiteRequests\ISiteRequestFactory.cs" />
     <Compile Include="Data\Templates\Impl\AzureDocDbTemplateManager.cs" />
@@ -139,6 +143,7 @@
     <Compile Include="OnPremSiteProvisioningService.cs" />
     <Compile Include="ProvisioningTemplateException.cs" />
     <Compile Include="SharePointContext.cs" />
+    <Compile Include="SiteClassification.cs" />
     <Compile Include="SiteService.cs" />
     <Compile Include="SiteUser.cs" />
     <Compile Include="SiteRequestInformation.cs" />
@@ -167,6 +172,7 @@
       <Name>OfficeDevPnP.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
