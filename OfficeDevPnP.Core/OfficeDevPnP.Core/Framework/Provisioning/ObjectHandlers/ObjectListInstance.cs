@@ -483,22 +483,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingList.ContentTypesEnabled)
                 {
                     // Check if we need to add a content type
-                    ContentTypeBinding defaultCtBinding = null;
+                    
                     var existingContentTypes = existingList.ContentTypes;
                     web.Context.Load(existingContentTypes, cts => cts.Include(ct => ct.StringId));
                     web.Context.ExecuteQueryRetry();
-                    foreach (var ctBinding in templateList.ContentTypeBindings)
+
+                    var bindingsToAdd = templateList.ContentTypeBindings.Where(ctb => existingContentTypes.All(ct => !ctb.ContentTypeId.Equals(ct.StringId, StringComparison.InvariantCultureIgnoreCase))).ToList();
+                    var defaultCtBinding = templateList.ContentTypeBindings.FirstOrDefault(ctb => ctb.Default == true);
+                    foreach (var ctb in bindingsToAdd)
                     {
-                        var existingBinding = existingContentTypes.FirstOrDefault(ct => string.Equals(ct.StringId, ctBinding.ContentTypeId, StringComparison.InvariantCultureIgnoreCase));
-                        if (existingBinding == null)
-                        {
-                            existingList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy: true);
-                            if (ctBinding.Default)
-                            {
-                                defaultCtBinding = ctBinding;
-                            }
-                        }
+                        existingList.AddContentTypeToListById(ctb.ContentTypeId, searchContentTypeInSiteHierarchy: true);
                     }
+                
                     // default ContentTypeBinding should be set last because 
                     // list extension .SetDefaultContentTypeToList() re-sets 
                     // the list.RootFolder UniqueContentTypeOrder property
