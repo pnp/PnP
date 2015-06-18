@@ -70,7 +70,7 @@
             //get ALL terms for the termset and we will organize them in the async callback
             this.RawTerms = this.RawTermSet.getAllTerms();
             spContext.load(this.RawTermSet);
-            spContext.load(this.RawTerms);
+            spContext.load(this.RawTerms, 'Include(Id,Name,PathOfTerm,Labels)');
             spContext.executeQueryAsync(Function.createDelegate(this, this.termsLoadedSuccess), Function.createDelegate(this, this.termsLoadedFailed));
         },
         //internal callback when terms are returned from CSOM
@@ -681,7 +681,15 @@
                         $(suggestions).each(Function.createDelegate(this, function (i, e) {
                             if (i < this._maxSuggestions) {
                                 var match = e.Name.substring(0, txt.length); //get the matched text so we can highlight it
-                                var itemHtml = $('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + e.Name.replace(match, '<span style="background-color: yellow;">' + match + '</span>') + ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + ']</div>');
+                                var labels = e.RawTerm.get_labels().getEnumerator();
+                                var labelStr = "";
+                                while (labels.moveNext()) {
+                                    var label = labels.get_current();
+                                    if (!label.get_isDefaultForLanguage()) {
+                                        labelStr += "," + label.get_value();
+                                    }
+                                }
+                                var itemHtml = $('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + e.Name.replace(match, '<span style="background-color: yellow;">' + match + '</span>') + ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + labelStr + ']</div>');
                                 this._suggestionContainer.append(itemHtml);
                                 itemHtml.click(Function.createDelegate(this, this.suggestionClicked));
                             }
