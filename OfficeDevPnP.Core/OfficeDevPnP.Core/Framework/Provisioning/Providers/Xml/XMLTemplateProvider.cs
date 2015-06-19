@@ -203,9 +203,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 //save xml to a new stream
                 res = new MemoryStream();
                 xml.Save(res);
-                res.Seek(0, SeekOrigin.Begin);
             }
-
+            res.Seek(0, SeekOrigin.Begin);
             return res;
         }
 
