@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-CMSPUBLISHING0template">
     <pnp:ProvisioningTemplate ID="CMSPUBLISHING0template" Version="1">
       <pnp:PropertyBagEntries>
@@ -40,7 +40,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Documents" Description="This system library was created by the Publishing feature to store documents that are used on pages in this site." DocumentTemplate="{site}/Documents/Forms/template.dotx" TemplateType="101" Url="Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{12D46F1F-CB99-4CD6-AC75-5DB1F2AE9336}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{12D46F1F-CB99-4CD6-AC75-5DB1F2AE9336}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -244,7 +244,7 @@
                           </Expr1>
                           <Expr2>1</Expr2>
                           <Then>
-                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                           </Then>
                         </IfEqual>
                         <HTML><![CDATA[</a>]]></HTML>
@@ -330,7 +330,7 @@
                       </Expr1>
                       <Expr2>1</Expr2>
                       <Then>
-                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                       </Then>
                     </IfEqual>
                     <HTML><![CDATA[</a>]]></HTML>
@@ -879,7 +879,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0120D520A808" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{074AA4F8-B033-495C-9D24-AEEB0EBA2D82}" Type="HTML" DisplayName="All Assets" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{074AA4F8-B033-495C-9D24-AEEB0EBA2D82}" Type="HTML" DisplayName="All Assets" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -914,7 +914,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{2E1AB854-B9D3-4DAD-97C1-C22566C8AA74}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{2E1AB854-B9D3-4DAD-97C1-C22566C8AA74}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -1461,7 +1461,7 @@
                           </Expr1>
                           <Expr2>1</Expr2>
                           <Then>
-                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                           </Then>
                         </IfEqual>
                         <HTML><![CDATA[</a>]]></HTML>
@@ -1547,7 +1547,7 @@
                       </Expr1>
                       <Expr2>1</Expr2>
                       <Then>
-                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                       </Then>
                     </IfEqual>
                     <HTML><![CDATA[</a>]]></HTML>
@@ -2095,7 +2095,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{FF0C03AD-A801-4A2C-AB5B-4FC3F80B3249}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{FF0C03AD-A801-4A2C-AB5B-4FC3F80B3249}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2321,7 +2321,7 @@
                           </Expr1>
                           <Expr2>1</Expr2>
                           <Then>
-                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                            <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                           </Then>
                         </IfEqual>
                         <HTML><![CDATA[</a>]]></HTML>
@@ -2407,7 +2407,7 @@
                       </Expr1>
                       <Expr2>1</Expr2>
                       <Then>
-                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                       </Then>
                     </IfEqual>
                     <HTML><![CDATA[</a>]]></HTML>
@@ -2950,7 +2950,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Workflow Tasks" Description="This system library was created by the Publishing feature to store workflow tasks that are created in this site." DocumentTemplate="" TemplateType="107" Url="WorkflowTasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-a83e-497e-9ba0-7a5c597d0107" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{2AD9D9E4-4837-440D-BCE1-68409D18E1A8}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{2AD9D9E4-4837-440D-BCE1-68409D18E1A8}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -2971,7 +2971,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{1626D5D5-1245-4C6E-AF66-A88DDA8E15A6}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{1626D5D5-1245-4C6E-AF66-A88DDA8E15A6}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2998,7 +2998,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{3EDF2BAF-FA52-4362-950D-029D57C1033C}" Type="HTML" DisplayName="Due Today" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{3EDF2BAF-FA52-4362-950D-029D57C1033C}" Type="HTML" DisplayName="Due Today" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -3025,7 +3025,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{EA1268A0-7BB2-4E4C-90C2-5F15F342B426}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{EA1268A0-7BB2-4E4C-90C2-5F15F342B426}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Neq>
@@ -3051,7 +3051,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{BE3DB7A9-0DAC-4C4C-8EEC-3432FFBE37D0}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{BE3DB7A9-0DAC-4C4C-8EEC-3432FFBE37D0}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="AssignedTo" />
@@ -3072,7 +3072,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{8C63FAA4-571F-4414-86D2-1FCE96CFF297}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=39">
+            <View Name="{8C63FAA4-571F-4414-86D2-1FCE96CFF297}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Membership Type="CurrentUserGroups">
@@ -3135,7 +3135,7 @@
                     <HTML><![CDATA[);return false;" target="_self">]]></HTML>
                     <HTML><![CDATA[<img border="0" alt="]]></HTML>
                     <HTML>Edit</HTML>
-                    <HTML><![CDATA[" src="/_layouts/15/images/edititem.gif?rev=39"/>]]></HTML>
+                    <HTML><![CDATA[" src="/_layouts/15/images/edititem.gif?rev=40"/>]]></HTML>
                     <HTML><![CDATA[</a>]]></HTML>
                   </Then>
                   <Else>
@@ -3171,7 +3171,7 @@
                       </Expr1>
                       <Expr2>1</Expr2>
                       <Then>
-                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=39" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
+                        <HTML><![CDATA[<img src="/_layouts/15/images/blank.gif?rev=40" class="ms-hidden" border="0" width="1" height="1" alt="Use SHIFT+ENTER to open the menu (new window)."/>]]></HTML>
                       </Then>
                     </IfEqual>
                     <HTML><![CDATA[</a>]]></HTML>

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using Field = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -21,21 +19,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             this.ReportProgress = false;
         }
 
-        public override void ProvisionObjects(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
             ProcessLookupFields(web, template);
         }
 
-        public override Model.ProvisioningTemplate CreateEntities(Microsoft.SharePoint.Client.Web web, Model.ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             return template;
         }
 
-        private void ProcessLookupFields(Web web, ProvisioningTemplate template)
+        private static void ProcessLookupFields(Web web, ProvisioningTemplate template)
         {
-            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields));
-            web.Context.ExecuteQueryRetry();
             var rootWeb = (web.Context as ClientContext).Site.RootWeb;
+            rootWeb.Context.Load(rootWeb.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
+            rootWeb.Context.ExecuteQueryRetry();
 
             foreach (var siteField in template.SiteFields)
             {
@@ -45,95 +43,117 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
                     var listIdentifier = fieldElement.Attribute("List").Value;
+                    var webId = string.Empty;
 
                     var field = rootWeb.Fields.GetById(fieldId);
-                    web.Context.Load(field, f => f.SchemaXml);
-                    web.Context.ExecuteQueryRetry();
+                    rootWeb.Context.Load(field, f => f.SchemaXml);
+                    rootWeb.Context.ExecuteQueryRetry();
 
-                    var listGuid = Guid.Empty;
+                    Guid listGuid;
                     if (!Guid.TryParse(listIdentifier, out listGuid))
                     {
                         var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
-                        var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                        var sourceList = rootWeb.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
                         if (sourceList != null)
                         {
                             listGuid = sourceList.Id;
+
+                            rootWeb.Context.Load(sourceList.ParentWeb);
+                            rootWeb.Context.ExecuteQueryRetry();
+
+                            webId = sourceList.ParentWeb.Id.ToString();
                         }
                     }
                     if (listGuid != Guid.Empty)
                     {
-                        var existingFieldElement = XElement.Parse(field.SchemaXml);
-
-                        if (existingFieldElement.Attribute("List") == null)
-                        {
-                            existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
-                        }
-                        else
-                        {
-                            existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
-                        }
-                        field.SchemaXml = existingFieldElement.ToString();
-
-                        field.UpdateAndPushChanges(true);
-                        web.Context.ExecuteQueryRetry();
+                        ProcessField(field, listGuid, webId);
                     }
                 }
             }
 
-
+            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
+            web.Context.ExecuteQueryRetry();
 
             foreach (var listInstance in template.Lists)
             {
                 foreach (var listField in listInstance.Fields)
                 {
                     var fieldElement = XElement.Parse(listField.SchemaXml);
-                    if (fieldElement.Attribute("List") != null)
+                    if (fieldElement.Attribute("List") == null) continue;
+
+                    var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
+                    var listIdentifier = fieldElement.Attribute("List").Value;
+                    var webId = string.Empty;
+
+                    var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
+
+                    var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
+                    if (createdList != null)
                     {
-                        var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
-                        var listIdentifier = fieldElement.Attribute("List").Value;
+                        var field = createdList.Fields.GetById(fieldId);
+                        web.Context.Load(field, f => f.SchemaXml);
+                        web.Context.ExecuteQueryRetry();
 
-                        var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
-
-                        var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
-
-                        if (createdList != null)
+                        Guid listGuid;
+                        if (!Guid.TryParse(listIdentifier, out listGuid))
                         {
-                            var field = createdList.Fields.GetById(fieldId);
-                            web.Context.Load(field, f => f.SchemaXml);
-                            web.Context.ExecuteQueryRetry();
-
-                            var listGuid = Guid.Empty;
-                            if (!Guid.TryParse(listIdentifier, out listGuid))
+                            var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                            var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
+                            if (sourceList != null)
                             {
-                                var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
-                                var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
-                                if (sourceList != null)
-                                {
-                                    listGuid = sourceList.Id;
-                                }
-                            }
-                            if (listGuid != Guid.Empty)
-                            {
-                                var existingFieldElement = XElement.Parse(field.SchemaXml);
+                                listGuid = sourceList.Id;
 
-                                if (existingFieldElement.Attribute("List") == null)
-                                {
-                                    existingFieldElement.Add(new XAttribute("List", listGuid.ToString()));
-                                }
-                                else
-                                {
-                                    existingFieldElement.Attribute("List").SetValue(listGuid.ToString());
-                                }
-                                field.SchemaXml = existingFieldElement.ToString();
-
-                                field.Update();
+                                web.Context.Load(sourceList.ParentWeb);
                                 web.Context.ExecuteQueryRetry();
+
+                                webId = sourceList.ParentWeb.Id.ToString();
                             }
+                        }
+                        if (listGuid != Guid.Empty)
+                        {
+                            ProcessField(field, listGuid, webId);
                         }
                     }
                 }
             }
         }
+
+        private static void ProcessField(Field field, Guid listGuid, string webId)
+        {
+            var isDirty = false;
+
+            var existingFieldElement = XElement.Parse(field.SchemaXml);
+
+            isDirty = UpdateFieldAttribute(existingFieldElement, "List", listGuid.ToString(), false);
+
+            isDirty = UpdateFieldAttribute(existingFieldElement, "WebId", webId, isDirty);
+
+            isDirty = UpdateFieldAttribute(existingFieldElement, "SourceID", webId, isDirty);
+
+            if (isDirty)
+            {
+                field.SchemaXml = existingFieldElement.ToString();
+
+                field.UpdateAndPushChanges(true);
+                field.Context.ExecuteQueryRetry();
+            }
+        }
+
+        private static bool UpdateFieldAttribute(XElement existingFieldElement, string attributeName, string attributeValue, bool isDirty)
+        {
+            if (existingFieldElement.Attribute(attributeName) == null)
+            {
+                existingFieldElement.Add(new XAttribute(attributeName, attributeValue));
+                isDirty = true;
+            }
+            else if (!existingFieldElement.Attribute(attributeName).Value.Equals(attributeValue))
+            {
+                existingFieldElement.Attribute(attributeName).SetValue(attributeValue);
+                isDirty = true;
+            }
+            return isDirty;
+        }
+
 
         public override bool WillProvision(Web web, ProvisioningTemplate template)
         {

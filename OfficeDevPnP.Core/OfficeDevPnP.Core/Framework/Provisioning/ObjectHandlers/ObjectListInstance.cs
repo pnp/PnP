@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Web.Configuration;
-using System.Web.Instrumentation;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.ObjectHandlers.TokenDefinitions;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
+using ContentType = Microsoft.SharePoint.Client.ContentType;
 using Field = Microsoft.SharePoint.Client.Field;
 using View = OfficeDevPnP.Core.Framework.Provisioning.Model.View;
 
@@ -30,6 +28,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (template.Lists.Any())
             {
                 var rootWeb = (web.Context as ClientContext).Site.RootWeb;
+
                 if (!web.IsPropertyAvailable("ServerRelativeUrl"))
                 {
                     web.Context.Load(web, w => w.ServerRelativeUrl);
@@ -38,7 +37,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 web.Context.Load(web.Lists, lc => lc.IncludeWithDefaultProperties(l => l.RootFolder.ServerRelativeUrl));
                 web.Context.ExecuteQueryRetry();
-                var existingLists = web.Lists.AsEnumerable<List>().Select(existingList => existingList.RootFolder.ServerRelativeUrl).ToList();
+                var existingLists = web.Lists.AsEnumerable().Select(existingList => existingList.RootFolder.ServerRelativeUrl).ToList();
                 var serverRelativeUrl = web.ServerRelativeUrl;
 
                 var processedLists = new List<ListInfo>();
@@ -47,7 +46,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var templateList in template.Lists)
                 {
-                    int index = existingLists.FindIndex(x => x.Equals(UrlUtility.Combine(serverRelativeUrl, templateList.Url), StringComparison.OrdinalIgnoreCase));
+                    var index = existingLists.FindIndex(x => x.Equals(UrlUtility.Combine(serverRelativeUrl, templateList.Url), StringComparison.OrdinalIgnoreCase));
                     if (index == -1)
                     {
                         var createdList = CreateList(web, templateList);
@@ -89,7 +88,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 else
                                 {
-                                    UpdateFieldRef(listInfo, field, fieldRef);
+                                    UpdateFieldRef(field, fieldRef);
                                 }
                             }
 
@@ -109,20 +108,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
-                            XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
                             var id = fieldElement.Attribute("ID").Value;
 
-                            Guid fieldGuid = Guid.Empty;
-                            if (Guid.TryParse(id, out fieldGuid))
+                            Guid fieldGuid;
+                            if (!Guid.TryParse(id, out fieldGuid)) continue;
+
+                            var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
+                            if (fieldFromList == null)
                             {
-                                if (!listInfo.SiteList.FieldExistsById(fieldGuid))
-                                {
-                                    CreateField(fieldElement, listInfo);
-                                }
-                                else
-                                {
-                                    UpdateField(web, listInfo, fieldGuid, fieldElement);
-                                }
+                                CreateField(fieldElement, listInfo);
+                            }
+                            else
+                            {
+                                UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
                             }
                         }
                     }
@@ -131,7 +130,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
 
                 #endregion
-
 
                 #region Views
 
@@ -160,15 +158,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         {
                             throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
                         }
-                        else
-                        {
-                            var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
 
-                            if (existingView != null)
-                            {
-                                existingView.DeleteObject();
-                                web.Context.ExecuteQueryRetry();
-                            }
+                        var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
+
+                        if (existingView != null)
+                        {
+                            existingView.DeleteObject();
+                            web.Context.ExecuteQueryRetry();
                         }
 
                         var viewTitle = displayNameElement.Value;
@@ -190,7 +186,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         var viewDefault = viewElement.Attribute("DefaultView") != null && Boolean.Parse(viewElement.Attribute("DefaultView").Value);
 
                         // Row limit
-                        bool viewPaged = true;
+                        var viewPaged = true;
                         uint viewRowLimit = 30;
                         var rowLimitElement = viewElement.Descendants("RowLimit").FirstOrDefault();
                         if (rowLimitElement != null)
@@ -237,37 +233,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                 }
 
-
-
                 #endregion
 
-                #region DataRows
-
-                foreach (var listInfo in processedLists)
-                {
-                    var listInstance = listInfo.TemplateList;
-                    if (listInstance.DataRows != null && listInstance.DataRows.Any())
-                    {
-                        var list = listInfo.SiteList;
-                        foreach (var dataRow in listInfo.TemplateList.DataRows)
-                        {
-                            ListItemCreationInformation listitemCI = new ListItemCreationInformation();
-                            var listitem = list.AddItem(listitemCI);
-                            foreach (var dataValue in dataRow.Values)
-                            {
-                                listitem[dataValue.Key.ToParsedString()] = dataValue.Value.ToParsedString();
-                            }
-                            listitem.Update();
-                            web.Context.ExecuteQueryRetry(); // TODO: Run in batches?
-                        }
-                    }
-                }
-
-                #endregion
             }
         }
 
-        private void UpdateFieldRef(ListInfo listInfo, Field field, FieldRef fieldRef)
+        private static void UpdateFieldRef(Field field, FieldRef fieldRef)
         {
             var isDirty = false;
             if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != field.Title)
@@ -290,10 +261,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 field.UpdateAndPushChanges(true);
                 field.Context.ExecuteQueryRetry();
             }
-
         }
 
-        private void CreateFieldRef(ListInfo listInfo, Field field, FieldRef fieldRef)
+        private static void CreateFieldRef(ListInfo listInfo, Field field, FieldRef fieldRef)
         {
             var createdField = listInfo.SiteList.Fields.Add(field);
             if (!string.IsNullOrEmpty(fieldRef.DisplayName))
@@ -321,21 +291,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
         }
 
-        private void UpdateField(Web web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement)
+        private void UpdateField(ClientObject web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement, Field existingField)
         {
-            var existingField = web.Fields.GetById(fieldId);
             web.Context.Load(existingField, f => f.SchemaXml);
             web.Context.ExecuteQueryRetry();
 
-            XElement existingFieldElement = XElement.Parse(existingField.SchemaXml);
+            var existingFieldElement = XElement.Parse(existingField.SchemaXml);
 
-            XNodeEqualityComparer equalityComparer = new XNodeEqualityComparer();
+            var equalityComparer = new XNodeEqualityComparer();
 
-            if (equalityComparer.GetHashCode(existingFieldElement) != equalityComparer.GetHashCode(templateFieldElement)) // Is field different in template?
+            // Is field different in template?
+            if (equalityComparer.GetHashCode(existingFieldElement) != equalityComparer.GetHashCode(templateFieldElement))
             {
-                if (existingFieldElement.Attribute("Type").Value == templateFieldElement.Attribute("Type").Value) // Is existing field of the same type?
+                // Is existing field of the same type?
+                if (existingFieldElement.Attribute("Type").Value == templateFieldElement.Attribute("Type").Value)
                 {
-                    var listIdentifier = templateFieldElement.Attribute("List") != null ? templateFieldElement.Attribute("List").Value : null;
+                    var listIdentifier = templateFieldElement.Attribute("List") != null
+                        ? templateFieldElement.Attribute("List").Value
+                        : null;
 
                     if (listIdentifier != null)
                     {
@@ -390,8 +363,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 l => l.EnableAttachments,
                 l => l.EnableFolderCreation,
                 l => l.EnableMinorVersions,
-                l => l.DraftVersionVisibility,
-                l => l.MajorWithMinorVersionsLimit
+                l => l.DraftVersionVisibility
+#if !CLIENTSDKV15
+                ,l => l.MajorWithMinorVersionsLimit
+#endif
                 );
             web.Context.ExecuteQueryRetry();
 
@@ -408,9 +383,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (existingList.DocumentTemplateUrl != templateList.DocumentTemplate.ToParsedString())
                     {
                         existingList.DocumentTemplateUrl = templateList.DocumentTemplate.ToParsedString();
+                        isDirty = true;
                     }
                 }
-                if (templateList.Description != existingList.Description)
+                if (!string.IsNullOrEmpty(templateList.Description) && templateList.Description != existingList.Description)
                 {
                     existingList.Description = templateList.Description;
                     isDirty = true;
@@ -435,7 +411,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.EnableAttachments = templateList.EnableAttachments;
                     isDirty = true;
                 }
-                if (existingList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
+                if (existingList.BaseTemplate != (int) ListTemplateType.DiscussionBoard)
                 {
                     if (templateList.EnableFolderCreation != existingList.EnableFolderCreation)
                     {
@@ -455,7 +431,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         existingList.MajorVersionLimit = templateList.MaxVersionLimit;
                         isDirty = true;
                     }
-                    if (existingList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
+                    if (existingList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
                     {
                         // Only supported on Document Libraries
                         if (templateList.EnableMinorVersions != existingList.EnableMinorVersions)
@@ -463,9 +439,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingList.EnableMinorVersions = templateList.EnableMinorVersions;
                             isDirty = true;
                         }
-                        if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                        if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                         {
-                            existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
+                            existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
                             isDirty = true;
                         }
 
@@ -477,22 +453,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
 
                             if (DraftVisibilityType.Approver ==
-                                (DraftVisibilityType)templateList.DraftVersionVisibility)
+                                (DraftVisibilityType) templateList.DraftVersionVisibility)
                             {
                                 if (templateList.EnableModeration)
                                 {
-                                    if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                    if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                     {
-                                        existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
+                                        existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
                                         isDirty = true;
                                     }
                                 }
                             }
                             else
                             {
-                                if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                 {
-                                    existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
+                                    existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
                                     isDirty = true;
                                 }
                             }
@@ -509,22 +485,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingList.ContentTypesEnabled)
                 {
                     // Check if we need to add a content type
-                    ContentTypeBinding defaultCtBinding = null;
+                    
                     var existingContentTypes = existingList.ContentTypes;
                     web.Context.Load(existingContentTypes, cts => cts.Include(ct => ct.StringId));
                     web.Context.ExecuteQueryRetry();
-                    foreach (var ctBinding in templateList.ContentTypeBindings)
+
+                    var bindingsToAdd = templateList.ContentTypeBindings.Where(ctb => existingContentTypes.All(ct => !ctb.ContentTypeId.Equals(ct.StringId, StringComparison.InvariantCultureIgnoreCase))).ToList();
+                    var defaultCtBinding = templateList.ContentTypeBindings.FirstOrDefault(ctb => ctb.Default == true);
+                    foreach (var ctb in bindingsToAdd)
                     {
-                        var existingBinding = existingContentTypes.FirstOrDefault(ct => string.Equals(ct.StringId, ctBinding.ContentTypeId, StringComparison.InvariantCultureIgnoreCase));
-                        if (existingBinding == null)
-                        {
-                            existingList.AddContentTypeToListById(ctBinding.ContentTypeId, searchContentTypeInSiteHierarchy: true);
-                            if (ctBinding.Default)
-                            {
-                                defaultCtBinding = ctBinding;
-                            }
-                        }
+                        existingList.AddContentTypeToListById(ctb.ContentTypeId, searchContentTypeInSiteHierarchy: true);
                     }
+                
                     // default ContentTypeBinding should be set last because 
                     // list extension .SetDefaultContentTypeToList() re-sets 
                     // the list.RootFolder UniqueContentTypeOrder property
@@ -630,14 +602,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             web.Context.ExecuteQueryRetry();
 
             // Remove existing content types only if there are custom content type bindings
-            List<Microsoft.SharePoint.Client.ContentType> contentTypesToRemove =
-                new List<Microsoft.SharePoint.Client.ContentType>();
+            var contentTypesToRemove = new List<ContentType>();
             if (list.RemoveExistingContentTypes && list.ContentTypeBindings.Count > 0)
             {
-                foreach (var ct in createdList.ContentTypes)
-                {
-                    contentTypesToRemove.Add(ct);
-                }
+                contentTypesToRemove.AddRange(createdList.ContentTypes);
             }
 
             ContentTypeBinding defaultCtBinding = null;
@@ -678,7 +646,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var propertyLoadRequired = false;
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -699,7 +667,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var serverRelativeUrl = web.ServerRelativeUrl;
 
             // For each list in the site
-            ListCollection lists = web.Lists;
+            var lists = web.Lists;
 
             web.Context.Load(lists,
                 lc => lc.IncludeWithDefaultProperties(
@@ -715,166 +683,159 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         f => f.Required)));
 
             web.Context.ExecuteQuery();
-            foreach (var item in lists)
+            foreach (var item in lists.Where(l => l.Hidden == false))
             {
-                // Do not export system lists
-                if (!item.Hidden)
+                ListInstance baseTemplateList = null;
+                if (creationInfo.BaseTemplate != null)
                 {
-                    ListInstance baseTemplateList = null;
-                    int index = -1;
-                    if (creationInfo.BaseTemplate != null)
+                    // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves performance
+                    var index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length + 1)) &&
+                                                                               f.TemplateType.Equals(item.BaseTemplate));
+                    if (index != -1)
                     {
-                        // Check if we need to skip this list...if so let's do it before we gather all the other information for this list...improves performance
-                        index = creationInfo.BaseTemplate.Lists.FindIndex(f => f.Url.Equals(item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length + 1)) &&
-                                                                  f.TemplateType.Equals(item.BaseTemplate));
-                        if (index != -1)
-                        {
-                            baseTemplateList = creationInfo.BaseTemplate.Lists[index];
-                        }
+                        baseTemplateList = creationInfo.BaseTemplate.Lists[index];
                     }
+                }
 
-                    //if (index == -1)
-                    //{
-                    var contentTypeFields = new List<FieldRef>();
-                    ListInstance list = new ListInstance();
-                    list.Description = item.Description;
-                    list.EnableVersioning = item.EnableVersioning;
-                    list.TemplateType = item.BaseTemplate;
-                    list.Title = item.Title;
-                    list.Hidden = item.Hidden;
-                    list.EnableFolderCreation = item.EnableFolderCreation;
-                    list.DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url);
-                    list.ContentTypesEnabled = item.ContentTypesEnabled;
-                    list.Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/');
-                    list.TemplateFeatureID = item.TemplateFeatureId;
-                    list.EnableAttachments = item.EnableAttachments;
-                    list.OnQuickLaunch = item.OnQuickLaunch;
-                    list.MaxVersionLimit = item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0;
-                    list.EnableMinorVersions = item.EnableMinorVersions;
-                    list.MinorVersionLimit = item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit") ? item.MajorWithMinorVersionsLimit : 0;
-                    int count = 0;
+                var contentTypeFields = new List<FieldRef>();
+                var list = new ListInstance
+                {
+                    Description = item.Description,
+                    EnableVersioning = item.EnableVersioning,
+                    TemplateType = item.BaseTemplate,
+                    Title = item.Title,
+                    Hidden = item.Hidden,
+                    EnableFolderCreation = item.EnableFolderCreation,
+                    DocumentTemplate = Tokenize(item.DocumentTemplateUrl, web.Url),
+                    ContentTypesEnabled = item.ContentTypesEnabled,
+                    Url = item.RootFolder.ServerRelativeUrl.Substring(serverRelativeUrl.Length).TrimStart('/'),
+                    TemplateFeatureID = item.TemplateFeatureId,
+                    EnableAttachments = item.EnableAttachments,
+                    OnQuickLaunch = item.OnQuickLaunch,
+                    MaxVersionLimit =
+                        item.IsObjectPropertyInstantiated("MajorVersionLimit") ? item.MajorVersionLimit : 0,
+                    EnableMinorVersions = item.EnableMinorVersions,
+                    MinorVersionLimit =
+                        item.IsObjectPropertyInstantiated("MajorWithMinorVersionsLimit")
+                            ? item.MajorWithMinorVersionsLimit
+                            : 0
+                };
+                var count = 0;
 
-                    foreach (var ct in item.ContentTypes)
+                foreach (var ct in item.ContentTypes)
+                {
+                    web.Context.Load(ct, c => c.Parent);
+                    web.Context.ExecuteQuery();
+                    if (ct.Parent != null)
                     {
-                        web.Context.Load(ct, c => c.Parent);
-                        web.Context.ExecuteQuery();
-                        if (ct.Parent != null)
+                        // Add the parent to the list of content types
+                        if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
                         {
-                            // Add the parent to the list of content types
-                            if (!BuiltInContentTypeId.Contains(ct.Parent.StringId))
-                            {
-                                list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.Parent.StringId, Default = count == 0 ? true : false });
-                            }
-                        }
-                        else
-                        {
-                            list.ContentTypeBindings.Add(new ContentTypeBinding() { ContentTypeId = ct.StringId, Default = count == 0 });
-                        }
-
-                        web.Context.Load(ct.FieldLinks);
-                        web.Context.ExecuteQueryRetry();
-                        foreach (var fieldLink in ct.FieldLinks)
-                        {
-                            if (!fieldLink.Hidden)
-                            {
-                                contentTypeFields.Add(new FieldRef() { Id = fieldLink.Id });
-                            }
-                        }
-                        count++;
-                    }
-
-                    foreach (var view in item.Views)
-                    {
-                        if (!view.Hidden)
-                        {
-                            list.Views.Add(new View() { SchemaXml = view.ListViewXml });
-                        }
-                    }
-
-                    var siteColumns = web.Fields;
-                    web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
-                    web.Context.ExecuteQueryRetry();
-
-                    foreach (var field in item.Fields)
-                    {
-                        if (!field.Hidden)
-                        {
-                            if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
-                            {
-                                bool addField = true;
-                                if (item.ContentTypesEnabled && contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
-                                {
-                                    if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
-                                    {
-                                        addField = false;
-                                    }
-                                }
-
-                                XElement fieldElement = XElement.Parse(field.SchemaXml);
-                                var sourceId = fieldElement.Attribute("SourceID") != null ? fieldElement.Attribute("SourceID").Value : null;
-
-                                if (sourceId != null && sourceId == "http://schemas.microsoft.com/sharepoint/v3")
-                                {
-                                    if (field.InternalName == "Editor" ||
-                                        field.InternalName == "Author" ||
-                                        field.InternalName == "Title" ||
-                                        field.InternalName == "ID" ||
-                                        field.InternalName == "Created" ||
-                                        field.InternalName == "Modified" ||
-                                        field.InternalName == "Attachments" ||
-                                        field.InternalName == "_UIVersionString" ||
-                                        field.InternalName == "DocIcon" ||
-                                        field.InternalName == "LinkTitleNoMenu" ||
-                                        field.InternalName == "LinkTitle" ||
-                                        field.InternalName == "Edit" ||
-                                        field.InternalName == "AppAuthor" ||
-                                        field.InternalName == "AppEditor" ||
-                                        field.InternalName == "ContentType" ||
-                                        field.InternalName == "ItemChildCount" ||
-                                        field.InternalName == "FolderChildCount" ||
-                                        field.InternalName == "LinkFilenameNoMenu" ||
-                                        field.InternalName == "LinkFilename" ||
-                                        field.InternalName == "_CopySource" ||
-                                        field.InternalName == "ParentVersionString" ||
-                                        field.InternalName == "ParentLeafName" ||
-                                        field.InternalName == "_CheckinComment" ||
-                                        field.InternalName == "FileLeafRef" ||
-                                        field.InternalName == "FileSizeDisplay" ||
-                                        field.InternalName == "Preview" ||
-                                        field.InternalName == "ThumbnailOnForm")
-                                    {
-                                        addField = false;
-                                    }
-                                }
-                                if (addField)
-                                {
-
-                                    list.FieldRefs.Add(new FieldRef(field.InternalName)
-                                    {
-                                        Id = field.Id,
-                                        DisplayName = field.Title,
-                                        Required = field.Required,
-                                        Hidden = field.Hidden,
-                                    });
-                                }
-                            }
-                            else
-                            {
-                                list.Fields.Add((new Model.Field() { SchemaXml = field.SchemaXml }));
-                            }
-                        }
-                    }
-                    if (baseTemplateList != null)
-                    {
-                        if (!baseTemplateList.Equals(list))
-                        {
-                            template.Lists.Add(list);
+                            list.ContentTypeBindings.Add(new ContentTypeBinding { ContentTypeId = ct.Parent.StringId, Default = count == 0 });
                         }
                     }
                     else
                     {
+                        list.ContentTypeBindings.Add(new ContentTypeBinding { ContentTypeId = ct.StringId, Default = count == 0 });
+                    }
+
+                    web.Context.Load(ct.FieldLinks);
+                    web.Context.ExecuteQueryRetry();
+                    foreach (var fieldLink in ct.FieldLinks)
+                    {
+                        if (!fieldLink.Hidden)
+                        {
+                            contentTypeFields.Add(new FieldRef() { Id = fieldLink.Id });
+                        }
+                    }
+                    count++;
+                }
+
+                foreach (var view in item.Views.Where(view => !view.Hidden))
+                {
+                    list.Views.Add(new View { SchemaXml = view.ListViewXml });
+                }
+
+                var siteColumns = web.Fields;
+                web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
+                web.Context.ExecuteQueryRetry();
+
+                foreach (var field in item.Fields.Where(field => !field.Hidden))
+                {
+                    if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
+                    {
+                        var addField = true;
+                        if (item.ContentTypesEnabled && contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
+                        {
+                            if (contentTypeFields.FirstOrDefault(c => c.Id == field.Id) == null)
+                            {
+                                addField = false;
+                            }
+                        }
+
+                        var fieldElement = XElement.Parse(field.SchemaXml);
+                        var sourceId = fieldElement.Attribute("SourceID") != null ? fieldElement.Attribute("SourceID").Value : null;
+
+                        if (sourceId != null && sourceId == "http://schemas.microsoft.com/sharepoint/v3")
+                        {
+                            if (field.InternalName == "Editor" ||
+                                field.InternalName == "Author" ||
+                                field.InternalName == "Title" ||
+                                field.InternalName == "ID" ||
+                                field.InternalName == "Created" ||
+                                field.InternalName == "Modified" ||
+                                field.InternalName == "Attachments" ||
+                                field.InternalName == "_UIVersionString" ||
+                                field.InternalName == "DocIcon" ||
+                                field.InternalName == "LinkTitleNoMenu" ||
+                                field.InternalName == "LinkTitle" ||
+                                field.InternalName == "Edit" ||
+                                field.InternalName == "AppAuthor" ||
+                                field.InternalName == "AppEditor" ||
+                                field.InternalName == "ContentType" ||
+                                field.InternalName == "ItemChildCount" ||
+                                field.InternalName == "FolderChildCount" ||
+                                field.InternalName == "LinkFilenameNoMenu" ||
+                                field.InternalName == "LinkFilename" ||
+                                field.InternalName == "_CopySource" ||
+                                field.InternalName == "ParentVersionString" ||
+                                field.InternalName == "ParentLeafName" ||
+                                field.InternalName == "_CheckinComment" ||
+                                field.InternalName == "FileLeafRef" ||
+                                field.InternalName == "FileSizeDisplay" ||
+                                field.InternalName == "Preview" ||
+                                field.InternalName == "ThumbnailOnForm")
+                            {
+                                addField = false;
+                            }
+                        }
+                        if (addField)
+                        {
+
+                            list.FieldRefs.Add(new FieldRef(field.InternalName)
+                            {
+                                Id = field.Id,
+                                DisplayName = field.Title,
+                                Required = field.Required,
+                                Hidden = field.Hidden,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        list.Fields.Add((new Model.Field { SchemaXml = field.SchemaXml }));
+                    }
+                }
+                if (baseTemplateList != null)
+                {
+                    if (!baseTemplateList.Equals(list))
+                    {
                         template.Lists.Add(list);
                     }
+                }
+                else
+                {
+                    template.Lists.Add(list);
                 }
             }
 
@@ -894,7 +855,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!_willExtract.HasValue)
             {
-                ListCollection collList = web.Lists;
+                var collList = web.Lists;
                 var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
 
                 web.Context.ExecuteQuery();
@@ -902,7 +863,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 _willExtract = lists.Any();
             }
             return _willExtract.Value;
-
         }
     }
 }

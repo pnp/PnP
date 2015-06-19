@@ -22,7 +22,7 @@
     <WorkflowPartId>{b43554e6-900f-4386-8377-0b6b2bc9b69c}</WorkflowPartId>
     <CspkgPartId>{3cce3953-6db8-4f1b-8075-28d263b24187}</CspkgPartId>
     <SqlPackagePartId>{5ad2eb3a-eb10-4f46-a1a7-313def28669c}</SqlPackagePartId>
-    <ActivePublishProfile>spsiteprov</ActivePublishProfile>
+    <ActivePublishProfile>pnpsiteprov</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

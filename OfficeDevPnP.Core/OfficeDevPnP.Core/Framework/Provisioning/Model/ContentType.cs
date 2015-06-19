@@ -119,7 +119,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                     this.Overwrite == other.Overwrite &&
                     this.Sealed == other.Sealed &&
                     this.DocumentTemplate == other.DocumentTemplate &&
-                    this.FieldRefs == other.FieldRefs
+                    this.FieldRefs.DeepEquals(other.FieldRefs)
                 );
 
         }

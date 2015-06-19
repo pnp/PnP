@@ -32,13 +32,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            XElement element = XElement.Parse(this.SchemaXml);
-            if (element.Attribute("SourceID") != null)
-            {
-                element.Attribute("SourceID").Remove();
-            }
-            //return (String.Format("{0}",
-                //this.SchemaXml).GetHashCode()); 
+            XElement element = PrepareFieldForCompare(this.SchemaXml);
             return element.ToString().GetHashCode();
         }
 
@@ -53,20 +47,21 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(Field other)
         {
-            XElement currentXml = XElement.Parse(this.SchemaXml);
-            XElement otherXml = XElement.Parse(other.SchemaXml);
-
-            if (currentXml.Attribute("SourceID") != null)
-            {
-                currentXml.Attribute("SourceID").Remove();
-            }
-            if(otherXml.Attribute("SourceID") != null)
-            {
-                otherXml.Attribute("SourceID").Remove();
-            }
+            XElement currentXml = PrepareFieldForCompare(this.SchemaXml);
+            XElement otherXml = PrepareFieldForCompare(other.SchemaXml);
             return (XNode.DeepEquals(currentXml, otherXml));
         }
 
+        private XElement PrepareFieldForCompare(string schemaXML)
+        {
+            XElement element = XElement.Parse(schemaXML);
+            if (element.Attribute("SourceID") != null)
+            {
+                element.Attribute("SourceID").Remove();
+            }
+
+            return element;
+        }
         #endregion
     }
 }

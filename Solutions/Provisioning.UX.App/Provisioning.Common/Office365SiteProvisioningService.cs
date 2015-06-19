@@ -22,6 +22,9 @@ namespace Provisioning.Common
     /// </summary>
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
+        #region Private Instance Members
+        
+        #endregion
         #region Constructor
         /// <summary>
         /// Constructor
@@ -33,7 +36,7 @@ namespace Provisioning.Common
      
         public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
         {
-            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+           Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             UsingContext(ctx =>
             {
                 try
@@ -78,7 +81,7 @@ namespace Provisioning.Common
                         siteRequest.Url, ex.Message, ex);
                     throw;
                 }
-                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successfull, siteRequest.Url);
+               Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
             });
         }
 
@@ -113,13 +116,13 @@ namespace Provisioning.Common
                         _siteProps.SharingCapability = _targetSharingCapability;
                         _siteProps.Update();
                         ctx.ExecuteQuery();
-                        Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successfull, siteInfo.Url);
+                       Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successful, siteInfo.Url);
                     }
                    
                 }
                 catch(Exception _ex)
                 {
-                    Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
+                   Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
                 }
              
             });

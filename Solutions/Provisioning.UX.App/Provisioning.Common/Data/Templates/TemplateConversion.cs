@@ -59,15 +59,18 @@ namespace Provisioning.Common.Data.Templates
         private void HandlePropertyBagEntries(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
         {
             Dictionary<string, string> _props = JsonConvert.DeserializeObject<Dictionary<string, string>>(siteRequest.PropertiesJSON);
-
-            foreach(var prop in _props)
-            {
-                PropertyBagEntry _pb = new PropertyBagEntry();
-                _pb.Key = prop.Key;
-                _pb.Value = prop.Value;
-                provisioningTemplate.PropertyBagEntries.Add(_pb);
+            if(_props != null)
+            { 
+                foreach(var prop in _props)
+                {
+                    PropertyBagEntry _pb = new PropertyBagEntry();
+                    _pb.Key = prop.Key;
+                    _pb.Value = prop.Value;
+                    provisioningTemplate.PropertyBagEntries.Add(_pb);
+                }
             }
         }
+
         /// <summary>
         /// Member to handle the Url of custom actions
         /// </summary>

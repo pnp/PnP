@@ -128,7 +128,7 @@ namespace Provisioning.Common.Data.SiteRequests
         public const string EXTERNALSHARING_DISPLAYNAME = "External Sharing Enabled";
         public const FieldType EXTERNALSHARING_TYPE = FieldType.Boolean;
         public const string EXTERNALSHARING_DESC = "";
-        public const string EXTERNALSHARING_ATTRIB = "ReadOnly='TRUE' ShowInDisplayForm='TRUE'";
+        public const string EXTERNALSHARING_ATTRIB = "ShowInDisplayForm='TRUE'";
         public static readonly Guid EXTERNALSHARING_ID = new Guid("{BE2C62C2-5973-4223-A5B3-95E7379CCE66}");
 
         //Business Case

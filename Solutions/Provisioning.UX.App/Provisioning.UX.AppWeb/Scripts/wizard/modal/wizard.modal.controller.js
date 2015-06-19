@@ -53,14 +53,30 @@
             //property bag entries will enumerate all properties defined in siteConfiguration.properties
             var props = {};
             angular.forEach($scope.siteConfiguration.properties, function (value, key) {
-                props["_site_props_" + key] = value;
+                var data = value;
+                var propData = "";
+                if ($.isArray(data)) {
+                    angular.forEach(data, function (value, key) {
+                        if (propData == "") {
+                            propData = value;
+                        }
+                        else {
+                            propData = propData + "," + value;
+                        }
+                    });
+
+                    props["_site_props_" + key] = propData;
+                }
+                else {
+                    props["_site_props_" + key] = data;
+                }
             });
-            //set the properties object
+
+            //add properties to javaScript object
             siteRequest.properties = props;
 
+            //process the siterequest
             processNewSiteRequest(siteRequest);
-            
-          //  $modalInstance.close($scope.siteConfiguration);
           
         };
 
@@ -143,10 +159,10 @@
 
         function getTemplates() {
             //get the site templates
-            $.when($SharePointProvisioningService.getSiteTemplates($scope)).done(function (jsonObject) {
-                if (jsonObject != null) {
+            $.when($SharePointProvisioningService.getSiteTemplates($scope)).done(function (data, status) {
+                if (data != null) {
                     // Store returned templates 
-                    $scope.templates = jsonObject;
+                    $scope.templates = data;
                 }
 
             }).fail(function (err) {
@@ -214,35 +230,38 @@
         }
 
         function saveNewSiteRequest(request) {
-            $.when($SharePointProvisioningService.saveNewSiteRequest(request)).done(function (data) {
+            $.when($SharePointProvisioningService.createNewSiteRequest(request)).done(function (data, status) {
                 if (data != null) {
-                    if(data.success != true) {
-                        logSuccess("Sweet!, Site Request has been submitted");
-                        $modalInstance.close($scope.siteConfiguration);
-                    }
-                    else {
-                        logError("Oops, something bad has occured.")
-                    }
-
+                    logSuccess("Sweet!, Site Request has been submitted");
+                    $modalInstance.close($scope.siteConfiguration);
                 }
-            }).fail(function (err) {
+            }).fail(function (data, status) {
                 console.log(err);
             });
             console.log(request);
         }
 
         function processNewSiteRequest(request) {
-            $.when($SharePointProvisioningService.doesSiteRequestExist(request)).done(function (data) {
+
+            $.when($SharePointProvisioningService.getSiteRequestByUrl(request)).done(function (data, status) {
                 if (data != null) {
-                    if (data.doesExist != true) {
-                        saveNewSiteRequest(request);
-                    }
-                    else {
+                    if (status == 200) {
+                        //there is results dont save  the new site request
                         logError("There is an existing site request with this url. Please choose a new url for your site.");
                     }
+                    else if (status == 404) {
+
+                        $.when($SharePointProvisioningService.createNewSiteRequest(request)).done(function (data, status) {
+                            if (data != null) {
+                                logSuccess("Sweet!, Site Request has been submitted");
+                                $modalInstance.close($scope.siteConfiguration);
+                            }
+                        }).fail(function (data, status) {
+                            console.log(err);
+                        });
+                        console.log(request);
+                    }
                 }
-            }).fail(function (err) {
-                console.log(err);
             });
             console.log(request);
         }

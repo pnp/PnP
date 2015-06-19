@@ -71,7 +71,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         progressDelegate(handler.Name, step, count);
                         step++;
                     }
-                    template = handler.CreateEntities(web, template, creationInfo);
+                    template = handler.ExtractObjects(web, template, creationInfo);
                 }
             }
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_FinishExtraction);
@@ -107,6 +107,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             objectHandlers.Add(new ObjectContentType());
             objectHandlers.Add(new ObjectListInstance());
             objectHandlers.Add(new ObjectLookupFields());
+            objectHandlers.Add(new ObjectListInstanceDataRows());
             objectHandlers.Add(new ObjectFiles());
             objectHandlers.Add(new ObjectPages());
             objectHandlers.Add(new ObjectCustomActions());

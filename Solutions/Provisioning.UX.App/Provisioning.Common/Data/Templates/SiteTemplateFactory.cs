@@ -16,6 +16,7 @@ namespace Provisioning.Common.Data.Templates
     {
         #region Private Instance Members
         private static readonly SiteTemplateFactory _instance = new SiteTemplateFactory();
+        
         #endregion
         
         #region Constructors
@@ -61,13 +62,13 @@ namespace Provisioning.Common.Data.Templates
                 var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
                 instance.ConnectionString = _module.ConnectionString;
                 instance.Container = _module.Container;
-                Log.Info("Provisioning.Common.Data.Templates", PCResources.SiteTemplate_Factory_Created_Instance, _managerTypeString);
+               Log.Info("Provisioning.Common.Data.Templates", PCResources.SiteTemplate_Factory_Created_Instance, _managerTypeString);
                 return (ISiteTemplateManager)instance;
             }
             catch (Exception _ex)
             {
                 var _message = String.Format(PCResources.SiteTemplate_Factory_Created_Instance_Exception, _managerTypeString);
-                Log.Info("Provisioning.Common.Data.Templates", _message) ;
+                Log.Error("Provisioning.Common.Data.Templates", _message) ;
                 throw new FactoryException(_message, _ex);
             }
         }

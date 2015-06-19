@@ -22,6 +22,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
         const string DB_COLLECTION_ID = "SiteTemplateCollection";
         const string ACCOUNTENDPOINT_KEY = "AccountEndpoint";
         const string ACCOUNT_KEY = "AccountKey";
+        
 
         /// <summary>
         /// Internal Member that is used to get the Properties to Connect to Azure DocumentDB
@@ -146,7 +147,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
             catch (Exception _ex)
             {
                 var _message = string.Format(PCResources.TemplateProviderBase_Exception_Message, _ex.Message);
-                Log.Fatal("Provisioning.Common.Data.Templates.Impl.AzureDocDbTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
+                Log.Error("Provisioning.Common.Data.Templates.Impl.AzureDocDbTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
                 throw new DataStoreException(_message, _ex);
             }
         }
@@ -180,7 +181,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
             Database database = client.CreateDatabaseQuery().Where(db => db.Id == this.Container).ToArray().FirstOrDefault();
             if (database == null)
             {
-                Log.Info("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
+               Log.Info("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
                 database = await client.CreateDatabaseAsync(new Database { Id = this.Container });
             }
             return database;

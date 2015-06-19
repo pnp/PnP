@@ -5,6 +5,7 @@ using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
+using System.Xml.Linq;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
@@ -67,9 +68,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
                 if (!caExists)
                 {
-                    var customActionEntity = new CustomActionEntity
+                    var customActionEntity = new CustomActionEntity()
                     {
-                        CommandUIExtension = customAction.CommandUIExtension.ToParsedString(),
+                        CommandUIExtension = customAction.CommandUIExtension != null ? customAction.CommandUIExtension.ToString().ToParsedString() : string.Empty,
                         Description = customAction.Description,
                         Group = customAction.Group,
                         ImageUrl = customAction.ImageUrl.ToParsedString(),
@@ -80,7 +81,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         Remove = customAction.Remove,
                         Rights = customAction.Rights,
                         ScriptBlock = customAction.ScriptBlock.ToParsedString(),
-                        ScriptSrc = customAction.ScriptSrc.ToParsedString(),
+                        ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection"),
                         Sequence = customAction.Sequence,
                         Title = customAction.Title,
                         Url = customAction.Url.ToParsedString()
@@ -109,11 +110,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     if (existingCustomAction != null)
                     {
                         var isDirty = false;
-                        if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToParsedString())
+                        
+                        if(customAction.CommandUIExtension != null)
                         {
-                            existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToParsedString();
-                            isDirty = true;
+                            if (existingCustomAction.CommandUIExtension != customAction.CommandUIExtension.ToString().ToParsedString())
+                            {
+                                existingCustomAction.CommandUIExtension = customAction.CommandUIExtension.ToString().ToParsedString();
+                                isDirty = true;
+                            }
                         }
+                       
                         if (existingCustomAction.Description != customAction.Description)
                         {
                             existingCustomAction.Description = customAction.Description;
@@ -149,9 +155,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingCustomAction.ScriptBlock = customAction.ScriptBlock.ToParsedString();
                             isDirty = true;
                         }
-                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString())
+                        if (existingCustomAction.ScriptSrc != customAction.ScriptSrc.ToParsedString("~site","~sitecollection"))
                         {
-                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString();
+                            existingCustomAction.ScriptSrc = customAction.ScriptSrc.ToParsedString("~site","~sitecollection");
                             isDirty = true;
                         }
                         if (existingCustomAction.Title != customAction.Title.ToParsedString())
@@ -174,7 +180,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var context = web.Context as ClientContext;
             bool isSubSite = web.IsSubSite();
@@ -252,7 +258,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             customAction.Url = userCustomAction.Url;
             customAction.RegistrationId = userCustomAction.RegistrationId;
             customAction.RegistrationType = userCustomAction.RegistrationType;
-            customAction.CommandUIExtension = userCustomAction.CommandUIExtension;
+            customAction.CommandUIExtension = !System.String.IsNullOrEmpty(userCustomAction.CommandUIExtension) ?
+                XElement.Parse(userCustomAction.CommandUIExtension) : null;
 
             return customAction;
         }

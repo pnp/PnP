@@ -109,7 +109,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.ExecuteQueryRetry();
             }
             // Delta handling
-            List<Guid> targetIds = existingContentType.FieldLinks.Select(c1 => c1.Id).ToList();
+            List<Guid> targetIds = existingContentType.FieldLinks.AsEnumerable().Select(c1 => c1.Id).ToList();
             List<Guid> sourceIds = templateContentType.FieldRefs.Select(c1 => c1.Id).ToList();
 
             var fieldsNotPresentInTarget = sourceIds.Except(targetIds).ToArray();
@@ -179,7 +179,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return createdCT;
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // if this is a sub site then we're not creating content type entities. 
             if (web.IsSubSite())

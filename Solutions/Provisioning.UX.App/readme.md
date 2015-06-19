@@ -50,8 +50,8 @@ Version  | Date | Comments
 ### Prerequisites ###
 - Azure subscription and existing DocumentDB Account which can be configured for to store your site requests (Optional) 
 - April 2014 Cumulative Update or higher for the SharePoint 2013 on-premises builds
-- For SharePoint on-premises see Vesa's to [blog](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx) to configure Provisioning of site collection for on-premises.
-- If your are provisioning sites in a hybrid approach (on-premises and Office 365) it is required that your SharePoint on-premises farm is configured for Apps and must have a trust established to your Azure Active Directory
+- For SharePoint on-premises see Vesa's [blog](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx) to configure Provisioning of site collection for on-premises.
+- If your are provisioning sites in a hybrid approach (on-premises and Office 365) it is required that your SharePoint on-premises farm is configured for Apps and must have a trust established to your Azure Active Directory. See [Use an Office 365 SharePoint site to authorize provider-hosted apps on an on-premises SharePoint site](https://msdn.microsoft.com/en-us/library/office/dn155905.aspx) for more information.
 
 
 ----------
@@ -476,7 +476,7 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 #### Coming Updates ####
 - We are currently working on a update to the provisioning interface which will be a single page app instead of a dialog with many additional enhancements.
-- Template.config file will have the option to be centrally located.
+- Template.config file will have the option to be centrally locate.
 - Video walk-through and demo of the solution.
 
 
