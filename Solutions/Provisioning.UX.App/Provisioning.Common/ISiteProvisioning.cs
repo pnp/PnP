@@ -21,7 +21,7 @@ namespace Provisioning.Common
         /// <param name="siteRequest">The Site Request to create</param>
         /// <param name="template">The Master Configuration Template</param>
         /// <returns><see cref="Web"/>The newly created Web</returns>
-        void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+        void CreateSiteCollection(SiteInformation siteRequest, Template template);
 
         /// <summary>
         /// Checks to see if External Sharing Is enabled
@@ -32,7 +32,7 @@ namespace Provisioning.Common
         /// <summary>
         /// Enables External Sharing on a site.
         /// </summary>
-        void SetExternalSharing(SiteRequestInformation siteInfo);
+        void SetExternalSharing(SiteInformation siteInfo);
 
         /// <summary>
         /// Returns aa collection of Site Policies

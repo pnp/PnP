@@ -23,10 +23,6 @@ namespace Provisioning.Common
     /// </summary>
     public abstract class AbstractSiteProvisioningService : ISiteProvisioning, ISharePointClientService
     {
-
-        
-
-
         #region Properties
         /// <summary>
         /// Gets or Sets the services Authentication.
@@ -39,7 +35,7 @@ namespace Provisioning.Common
         #endregion
 
         #region ISiteProvisioning Members
-        public abstract void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+        public abstract void CreateSiteCollection(SiteInformation siteRequest, Template template);
 
         public virtual bool IsTenantExternalSharingEnabled(string tenantUrl)
         {
@@ -74,7 +70,7 @@ namespace Provisioning.Common
             return _returnResult;
         }
 
-        public abstract void SetExternalSharing(SiteRequestInformation siteInfo);
+        public abstract void SetExternalSharing(SiteInformation siteInfo);
 
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {

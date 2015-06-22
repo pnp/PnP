@@ -21,19 +21,16 @@ namespace Provisioning.Provider.Security
         /// <param name="configurationData"></param>
         public void ProcessRequest(ClientContext ctx, ProvisioningTemplate template, string configurationData)
         {
-            var _dynamicObject = JsonConvert.DeserializeObject<dynamic>(configurationData);
-
             var _sitePolicy = template.SitePolicy;
             if(string.IsNullOrEmpty(_sitePolicy))
             {
                 this.AddAllUsersSecurity(ctx);
             }
-
         }
 
         private void AddAllUsersSecurity(ClientContext ctx)
         {
-            var _web = ctx.Web;
+      
         }
     }
 }

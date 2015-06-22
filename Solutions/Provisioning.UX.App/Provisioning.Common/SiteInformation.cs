@@ -14,7 +14,7 @@ namespace Provisioning.Common
     /// Domain Object for working with Site Requests
     /// </summary>
     [DataContract]
-    public class SiteRequestInformation
+    public class SiteInformation
     {
         #region instance members
         private int _timeZoneId = 13;
@@ -67,6 +67,16 @@ namespace Provisioning.Common
         [DataMember]
         [JsonProperty(PropertyName = "template")]
         public string Template
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// The Site Template
+        /// </summary>
+        [DataMember]
+        [JsonProperty(PropertyName = "baseTemplate")]
+        public string BaseTemplate
         {
             get;
             set;
@@ -217,11 +227,11 @@ namespace Provisioning.Common
         public string BusinessCase { get; set; }
        
         /// <summary>
-        /// Site Request Properties stored in the repository as a JSON string
+        /// Additional site Metadata stored in the repository as a JSON string
         /// </summary>
         [DataMember]
-        [JsonProperty(PropertyName = "properties")]
-        public string PropertiesJSON { get; set; }
+        [JsonProperty(PropertyName = "siteMetaData")]
+        public string SiteMetadataJson { get; set; }
         #endregion
     }
 }

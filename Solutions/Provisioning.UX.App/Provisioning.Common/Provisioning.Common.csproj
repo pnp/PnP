@@ -146,7 +146,7 @@
     <Compile Include="SiteClassification.cs" />
     <Compile Include="SiteService.cs" />
     <Compile Include="SiteUser.cs" />
-    <Compile Include="SiteRequestInformation.cs" />
+    <Compile Include="SiteInformation.cs" />
     <Compile Include="SiteProvisioningManager.cs" />
     <Compile Include="SiteRequestStatus.cs" />
     <Compile Include="TokenHelper.cs" />

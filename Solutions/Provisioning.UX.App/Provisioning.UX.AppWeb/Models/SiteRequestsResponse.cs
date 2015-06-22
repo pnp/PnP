@@ -11,7 +11,7 @@ namespace Provisioning.UX.AppWeb.Models
     public class SiteRequestsResponse
     {
         [DataMember(Name = "requests")]
-        public ICollection<SiteRequestInformation> SiteRequests
+        public ICollection<SiteInformation> SiteRequests
         {
             get;
             set;

@@ -40,9 +40,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
 
         #region ISiteRequestManager Members
-        public ICollection<SiteRequestInformation> GetOwnerRequests(string email)
+        public ICollection<SiteInformation> GetOwnerRequests(string email)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -75,7 +75,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             });
             return _returnResults;
         }
-        public void CreateNewSiteRequest(SiteRequestInformation siteRequest)
+        public void CreateNewSiteRequest(SiteInformation siteRequest)
         {
             siteRequest.EnumStatus = SiteRequestStatus.New;
             UsingContext(client =>
@@ -115,9 +115,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
              });
         }
       
-        public SiteRequestInformation GetSiteRequestByUrl(string url)
+        public SiteInformation GetSiteRequestByUrl(string url)
         {
-            SiteRequestInformation _returnResult = null;
+            SiteInformation _returnResult = null;
             UsingContext(client =>
             {
                 try
@@ -151,9 +151,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _returnResult;
         }
 
-        public ICollection<SiteRequestInformation> GetNewRequests()
+        public ICollection<SiteInformation> GetNewRequests()
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -187,9 +187,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _returnResults;
         }
 
-        public ICollection<SiteRequestInformation> GetApprovedRequests()
+        public ICollection<SiteInformation> GetApprovedRequests()
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -225,7 +225,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
         public bool DoesSiteRequestExist(string url)
         {
-            SiteRequestInformation _siteRequest = null;
+            SiteInformation _siteRequest = null;
             bool _returnResult = false;
 
             UsingContext(client =>
@@ -342,12 +342,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="status"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        private Document UpdateSiteRequestStatusByUrl(DocumentClient client, string selfLink, SiteRequestInformation request, SiteRequestStatus status, string message)
+        private Document UpdateSiteRequestStatusByUrl(DocumentClient client, string selfLink, SiteInformation request, SiteRequestStatus status, string message)
         {
             dynamic _requestDocument = client.CreateDocumentQuery<Document>(selfLink).Where(d => d.Id == request.Id).AsEnumerable().FirstOrDefault();
             Document _d = _requestDocument; //Cast to Document to get the Selflink property
             Document _dReturnResult = null;
-            SiteRequestInformation _requestToUpdate = _requestDocument;
+            SiteInformation _requestToUpdate = _requestDocument;
             if(!string.IsNullOrEmpty(message))
             {
                 _requestToUpdate.RequestStatusMessage = message;
@@ -362,10 +362,10 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _dReturnResult;
         }
       
-        private List<SiteRequestInformation> GetSiteRequestsbyEmail(DocumentClient client, string collectionLink, string email)
+        private List<SiteInformation> GetSiteRequestsbyEmail(DocumentClient client, string collectionLink, string email)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
-            var siteRequests = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
+            var siteRequests = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                                where record.SiteOwner.Name == email
                                select record;
 
@@ -381,10 +381,10 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private List<SiteRequestInformation> GetSiteRequestsByStatus(DocumentClient client, string collectionLink, SiteRequestStatus status)
+        private List<SiteInformation> GetSiteRequestsByStatus(DocumentClient client, string collectionLink, SiteRequestStatus status)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
-            var siteRequests = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
+            var siteRequests = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                                where record.RequestStatus == status.ToString()
                                select record;
 
@@ -400,9 +400,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        private SiteRequestInformation GetSiteRequestByUrl(DocumentClient client, string collectionLink, string url)
+        private SiteInformation GetSiteRequestByUrl(DocumentClient client, string collectionLink, string url)
         { 
-            var siteRequests  = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            var siteRequests  = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                            where record.Url == url
                            select record;
 
@@ -416,7 +416,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        private Document SaveNewRequest(DocumentClient client, string collectionLink, SiteRequestInformation info )
+        private Document SaveNewRequest(DocumentClient client, string collectionLink, SiteInformation info )
         {
             //If Settings are set to autoapprove then automatically approve the requests
             if (_manager.GetAppSettings().AutoApprove)

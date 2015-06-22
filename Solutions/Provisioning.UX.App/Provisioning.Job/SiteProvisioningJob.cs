@@ -39,11 +39,10 @@ namespace Provisioning.Job
 
         public void ProcessSiteRequests()
         {
-
-            var _srManager = _requestFactory.GetSiteRequestManager();
-            var _requests = _srManager.GetApprovedRequests();
-            Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is {0} Site Request Messages pending in the queue.", _requests.Count);
-            //TODO LOG HOW MANY ITEMS
+            Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "Beginning Processing the site request repository");
+            var _siteManager = _requestFactory.GetSiteRequestManager();
+            var _requests = _siteManager.GetApprovedRequests();
+            Log.Info("Provisioning.Job.SiteProvisioningJob.ProcessSiteRequests", "There is {0} Site Request Messages pending in the repository.", _requests.Count);
             if(_requests.Count > 0)
             {
                 this.ProvisionSites(_requests);
@@ -54,7 +53,7 @@ namespace Provisioning.Job
             }
         }
 
-        public void ProvisionSites(ICollection<SiteRequestInformation> siteRequests)
+        public void ProvisionSites(ICollection<SiteInformation> siteRequests)
         {
             var _tm = this._siteTemplateFactory.GetManager();
             var _requestManager = this._requestFactory.GetSiteRequestManager();
@@ -64,16 +63,13 @@ namespace Provisioning.Job
                 try 
                 {
                     var _template = _tm.GetTemplateByName(siteRequest.Template);
-
                     //NO TEMPLATE FOUND THAT MATCHES WE CANNOT PROVISION A SITE
                     if (_template == null)
                     {
-                        Log.Error("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Template {0} was not found for Site Url {1}.", siteRequest.Template, siteRequest.Url);
+                        Log.Error("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Template: {0} was not found for Site {1}. Ensure that the Template file exits.", siteRequest.Template, siteRequest.Url);
                     }
+                   
                     var _provisioningTemplate = _tm.GetProvisioningTemplate(_template.ProvisioningTemplate);
-                  
-                 
-
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Processing);
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
                     Log.Info("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
@@ -99,7 +95,7 @@ namespace Provisioning.Job
         /// Sends a Notification that the Site was created
         /// </summary>
         /// <param name="info"></param>
-        protected void SendSuccessEmail(SiteRequestInformation info)
+        protected void SendSuccessEmail(SiteInformation info)
         {
             //TODO CLEAN UP EMAILS
             try
@@ -135,7 +131,7 @@ namespace Provisioning.Job
         /// </summary>
         /// <param name="info"></param>
         /// <param name="errorMessage"></param>
-        protected void SendFailureEmail(SiteRequestInformation info, string errorMessage)
+        protected void SendFailureEmail(SiteInformation info, string errorMessage)
         {
             try
             {

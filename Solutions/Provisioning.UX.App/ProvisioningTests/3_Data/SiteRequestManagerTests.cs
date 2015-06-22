@@ -90,7 +90,7 @@ namespace ProvisioningTests._3_Data
             Assert.AreEqual(_expected.Url, _actual.Url);
         }
 
-        public SiteRequestInformation GetSiteRequestMock()
+        public SiteInformation GetSiteRequestMock()
         {
             var _owner = new SiteUser()
             {
@@ -105,7 +105,7 @@ namespace ProvisioningTests._3_Data
             _additionalAdmins.Add(_admin1);
             _additionalAdmins.Add(_admin2);
 
-            var _siteInfo = new SiteRequestInformation()
+            var _siteInfo = new SiteInformation()
             {
                 Title = "Test Title",
                 Description = "Test Description",
