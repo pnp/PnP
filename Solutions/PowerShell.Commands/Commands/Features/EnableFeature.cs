@@ -11,7 +11,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
     [CmdletExample(Code = "PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe", SortOrder = 1)]
     [CmdletExample(Code = "PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Force", SortOrder = 2)]
     [CmdletExample(Code = "PS:> Enable-SPOFeature -Identity 99a00f6e-fb81-4dc7-8eac-e09c6f9132fe -Scope Web", SortOrder = 3)]
-    public class EnableFeature : SPOCmdlet
+    public class EnableFeature : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position=0, ValueFromPipeline=true, HelpMessage = "The id of the feature to enable.")]
         public GuidPipeBind Identity;
@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
         [Parameter(Mandatory = false, HelpMessage = "Forcibly enable the feature.")]
         public SwitchParameter Force;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, HelpMessage = "Specify the scope of the feature to active, either Web or Site. Defaults to Web.")]
         public FeatureScope Scope = FeatureScope.Web;
 
         [Parameter(Mandatory = false, HelpMessage = "Specify this parameter if the feature you're trying to active is part of a sandboxed solution.")]
@@ -31,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Features
             var featureId = Identity.Id;
             if(Scope == FeatureScope.Web)
             {
-                ClientContext.Web.ActivateFeature(featureId, Sandboxed);
+                this.SelectedWeb.ActivateFeature(featureId, Sandboxed);
             }
             else
             {
