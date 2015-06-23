@@ -265,6 +265,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void CreateFieldRef(ListInfo listInfo, Field field, FieldRef fieldRef)
         {
+            XElement element = XElement.Parse(field.SchemaXml);
+
+            element.SetAttributeValue("AllowDeletion", "TRUE");
+
+            field.SchemaXml = element.ToString();
+
             var createdField = listInfo.SiteList.Fields.Add(field);
             if (!string.IsNullOrEmpty(fieldRef.DisplayName))
             {
