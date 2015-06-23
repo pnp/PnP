@@ -17,7 +17,7 @@
     CreateStyle: function () {
         var headID = document.getElementsByTagName("head")[0];
         var cssNode = document.createElement('style');
-        cssNode.innerHTML = ".PnPFooter{height: 35px;width: 100%;background-position: 0 0;background-attachment: scroll;position:fixed;bottom:0;left:0;}.PnPFooter a{color:White;}#CustomRibbon div{padding-top: 5px; padding-left: 10px; float: left;}.breadcrumb li {display: inline;}.breadcrumb li+li:before {content:\">> \";}";
+        cssNode.innerHTML = ".PnPFooter{height: 35px;width: 100%;background-position: 0 0;background-attachment: scroll;position:fixed;bottom:0;left:0;}.PnPFooter .breadcrumb a{color:white;} .PnPFooter .breadcrumb li+li:before {content:\">> \";color:white;}.PnPFooter a{color:White;}#CustomRibbon div{padding-top: 5px; padding-left: 10px; float: left;}.breadcrumb li {display: inline;}.breadcrumb li+li:before {content:\">> \";}";
         headID.appendChild(cssNode);
     },
     CreateBreadcrumb: function () {
@@ -247,11 +247,11 @@ function GetUrlDoc() {
         }
         var CustomUrl;
         if (path.split("/").length > 1) {
-            var params = clean(path.split("/"),"");
+            var params = clean(path.split("/"), "");
             for (var i = 0; i < params.length; i = i + 1) {
                 if (params[i].trim() !== "") {
                     fullurl = fullurl + params[i] + '/';
-                    if (( i === 0) && params[i].trim() === "Lists") {
+                    if ((i === 0) && params[i].trim() === "Lists") {
                     }
                     else {
                         if (params[i].indexOf('.aspx') === -1) {
@@ -285,7 +285,7 @@ function GetUrlDoc() {
         }
     }, fail);
 }
-function clean(value,deleteValue) {
+function clean(value, deleteValue) {
     for (var i = 0; i < value.length; i++) {
         if (value[i] == deleteValue) {
             value.splice(i, 1);

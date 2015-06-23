@@ -28,7 +28,7 @@
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    Global Breadcrumb & Ribbon
+    PnP Header & Footer
 </asp:Content>
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
@@ -68,14 +68,14 @@
     <div>
         <b>Provision Sequence:</b>
         <ol>
-            <li>PropertyBag <b>PnPGlobalBreadcrumbRibbon</b> is created in RootWeb of the SiteCollection, this item will have the following JSON data:<br />
+            <li>PropertyBag <b>PnPGlobalBreadcrumbRibbon</b> is created in RootWeb of the SiteCollection, this item will have the JSON data from the <b>JSON Editor Area</b>, if the JSON it's not correct then assumes the <b>default</b> JSON Data:<br />
                 <b>{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}</b></li>
             <li>Copy of File <b>PnPGlobal.js</b> to <b>"_catalogs/masterpage/Display Template"</b>, this file supports the "ScriptLink" UserCustomAction</li>
             <li>SiteCollection ScriptLink with name <b>PnPGlobalBreadcrumbRibbon</b> to <b>PnPGlobal.js</b></li>
         </ol>
         <br />
-        <b>Breadcrumb base in JSON</b><br />
-        <textarea id="PropertyBagJSON" rows="10" cols="150">{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}
+        <b>Breadcrumb JSON Editor</b><br />
+        <textarea id="PropertyBagJSON" rows="5" cols="150">{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}
     </textarea>
         
     </div>

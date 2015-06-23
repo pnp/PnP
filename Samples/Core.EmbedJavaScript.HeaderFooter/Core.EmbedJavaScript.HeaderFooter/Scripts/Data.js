@@ -160,7 +160,7 @@
     DeleteGetFileUrl: function () {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
-            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + ((PnPApp.ServerRelativeUrl.length === 1) ? '' : PnPApp.ServerRelativeUrl) + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
+            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + ((PnPApp.ServerRelativeUrl.length === 1) ? '' : PnPApp.ServerRelativeUrl) + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.RootWeb + "'",
             method: "POST",
             headers: {
                 "IF-MATCH": "*",
