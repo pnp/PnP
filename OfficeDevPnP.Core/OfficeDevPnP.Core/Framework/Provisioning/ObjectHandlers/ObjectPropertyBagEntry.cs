@@ -17,6 +17,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_PropertyBagEntries);
 
+            // To handle situations where the propertybag is not updated fully when applying a theme, 
+            // we need to create a new context and use that one. Reloading the propertybag does not solve this.
+            var newContext = web.Context.Clone(web.Context.Url);
+
+            web = newContext.Web;
+
             foreach (var propbagEntry in template.PropertyBagEntries)
             {
                 if (!web.PropertyBagContainsKey(propbagEntry.Key))
