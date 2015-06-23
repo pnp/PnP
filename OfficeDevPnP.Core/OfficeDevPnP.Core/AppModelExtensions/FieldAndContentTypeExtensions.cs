@@ -430,7 +430,15 @@ namespace Microsoft.SharePoint.Client
 
                 if (fieldNode != null)
                 {
-                    var id = fieldNode.Attribute("ID").Value;
+                    string id = string.Empty;
+                    if (fieldNode.Attribute("ID") != null)
+                    {
+                        id = fieldNode.Attribute("ID").Value;
+                    }
+                    else
+                    {
+                        id = "<No ID specified in XML>";
+                    }
                     var name = fieldNode.Attribute("Name").Value;
 
                     Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
