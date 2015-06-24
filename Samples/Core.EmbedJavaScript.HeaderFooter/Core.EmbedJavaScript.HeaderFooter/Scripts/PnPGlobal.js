@@ -196,18 +196,18 @@ function getQueryStringParameter(param, serverRelativeUrl) {
         for (var i = 0; i < params.length; i = i + 1) {
             var singleParam = params[i].split("=");
             if (singleParam[0] == param)
-                return decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
+                return "/" + decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
         }
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
         } else {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
+            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
         }
     } else {
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
         } else {
-            return _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
+            return "/" +_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
         }
     }
 }

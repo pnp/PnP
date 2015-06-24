@@ -1,5 +1,5 @@
 ﻿Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Data = {
-    PropertyBag: '{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}',
+    PropertyBag: '{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}',
     AddHostPropertyBag: function (Item, property) {
         var context = PnPCommon.GetContext(PnPApp.AppWebUrl);
         var app = PnPCommon.GetAppContext(context, PnPApp.HostWebUrl);
