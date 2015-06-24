@@ -28,13 +28,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var _ctx = web.Context as ClientContext;
             foreach(var _provider in template.Providers)
             {
-                try
+                if (_provider.Enabled)
                 {
-                    _extManager.ExecuteExtensibilityCallOut(_ctx, _provider, template);
-                }
-                catch(Exception ex)
-                {
-                    Log.Error(Constants.LOGGING_SOURCE, ex.Message);
+                    try
+                    {
+                        _extManager.ExecuteExtensibilityCallOut(_ctx, _provider, template);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(Constants.LOGGING_SOURCE, ex.Message);
+                    }
                 }
             }
         }
