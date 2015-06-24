@@ -760,6 +760,12 @@ namespace Microsoft.SharePoint.Client
                 propertyLoadRequired = true;
             }
 
+            if (!field.IsPropertyAvailable("SchemaXml"))
+            {
+                web.Context.Load(field, f => f.SchemaXml);
+                propertyLoadRequired = true;
+            }
+
             if (propertyLoadRequired)
             {
                 web.Context.ExecuteQueryRetry();
