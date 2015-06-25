@@ -22,7 +22,6 @@ namespace Provisioning.Common.Data.Templates
             this.HandleCustomActions(provisioningTemplate, siteRequest);
             return provisioningTemplate;
         }
-
       
         private void HandleExternalSharing(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {

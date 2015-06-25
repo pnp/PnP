@@ -56,5 +56,10 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite
             _ctx.ExecuteQuery();
             return _permResult.Value;
         }
+
+        protected void Submit_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
