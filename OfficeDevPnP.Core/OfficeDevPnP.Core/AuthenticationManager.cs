@@ -210,7 +210,7 @@ namespace OfficeDevPnP.Core
         /// </summary>
         /// <param name="expiresOn">The ExpiresOn time of the current access token</param>
         /// <returns>Returns a TimeSpan represents the time interval within which the current access token is valid thru.</returns>
-        private TimeSpan GetLeaseTimeSpan(DateTime expiresOn)
+        private TimeSpan GetAccessTokenLease(DateTime expiresOn)
         {
             DateTime now = DateTime.UtcNow;
             DateTime expires = expiresOn.Kind == DateTimeKind.Utc ?
