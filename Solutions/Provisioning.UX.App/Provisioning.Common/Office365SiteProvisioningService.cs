@@ -116,13 +116,13 @@ namespace Provisioning.Common
                         _siteProps.SharingCapability = _targetSharingCapability;
                         _siteProps.Update();
                         ctx.ExecuteQuery();
-                       Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successful, siteInfo.Url);
+                        Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successful, siteInfo.Url);
                     }
                    
                 }
                 catch(Exception _ex)
                 {
-                   Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
+                    Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
                 }
              
             });

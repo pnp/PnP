@@ -241,7 +241,7 @@ namespace Provisioning.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An Error occured occured while creatingt the site collection {0}. The Error is {1}. Inner Exception {2}.
+        ///   Looks up a localized string similar to An Error occured occured while creating the site collection {0}. The Error is {1}. Inner Exception {2}.
         /// </summary>
         internal static string SiteCreation_Creation_Failure {
             get {
