@@ -30,7 +30,6 @@ namespace OfficeDevPnP.Core
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
             var spoPassword = EncryptionUtility.ToSecureString(tenantUserPassword);
-           
             return GetSharePointOnlineAuthenticatedContextTenant(siteUrl, tenantUser, spoPassword);
         }
 
@@ -123,7 +122,7 @@ namespace OfficeDevPnP.Core
                 {
                     Cookie fedAuthCookie = fedAuth.GetCookies(new Uri(siteUrl))["FedAuth"];
                     // If cookie is expired a new fedAuth cookie needs to be requested
-                    if (fedAuthCookie == null || fedAuthCookie.Expires < DateTime.UtcNow)
+                    if (fedAuthCookie == null || fedAuthCookie.Expires < DateTime.Now)
                     {
                         fedAuth = new UsernameMixed().GetFedAuthCookie(siteUrl, String.Format("{0}\\{1}", domain, user), password, new Uri(String.Format("https://{0}/adfs/services/trust/13/usernamemixed", sts)), idpId, logonTokenCacheExpirationWindow);
                     }
@@ -186,7 +185,7 @@ namespace OfficeDevPnP.Core
                             try
                             {
                                 Log.Debug(Constants.LOGGING_SOURCE, "Lease expiration date: {0}", response.ExpiresOn);
-                                var lease = response.ExpiresOn - DateTime.UtcNow;
+                                var lease = GetLeaseTimeSpan(response.ExpiresOn);
                                 lease =
                                     TimeSpan.FromSeconds(
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
@@ -204,6 +203,20 @@ namespace OfficeDevPnP.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the access token lease time span.
+        /// </summary>
+        /// <param name="expiresOn">The access token ExpiresOn time</param>
+        /// <returns>Returns a TimeSpan represents the time interval within which the current access token is valid thru.</returns>
+        private TimeSpan GetLeaseTimeSpan(DateTime expiresOn)
+        {
+            DateTime now = DateTime.UtcNow;
+            if (expiresOn.Kind == DateTimeKind.Utc)
+                return expiresOn - now;
+            else
+                return TimeZoneInfo.ConvertTimeToUtc(expiresOn) - now;
         }
     }
 }
