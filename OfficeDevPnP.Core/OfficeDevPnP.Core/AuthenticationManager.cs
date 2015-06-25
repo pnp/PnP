@@ -208,15 +208,15 @@ namespace OfficeDevPnP.Core
         /// <summary>
         /// Get the access token lease time span.
         /// </summary>
-        /// <param name="expiresOn">The access token ExpiresOn time</param>
+        /// <param name="expiresOn">The ExpiresOn time of the current access token</param>
         /// <returns>Returns a TimeSpan represents the time interval within which the current access token is valid thru.</returns>
         private TimeSpan GetLeaseTimeSpan(DateTime expiresOn)
         {
             DateTime now = DateTime.UtcNow;
-            if (expiresOn.Kind == DateTimeKind.Utc)
-                return expiresOn - now;
-            else
-                return TimeZoneInfo.ConvertTimeToUtc(expiresOn) - now;
+            DateTime expires = expiresOn.Kind == DateTimeKind.Utc ?
+                expiresOn : TimeZoneInfo.ConvertTimeToUtc(expiresOn);
+            TimeSpan lease = expires - now;
+            return lease;
         }
     }
 }
