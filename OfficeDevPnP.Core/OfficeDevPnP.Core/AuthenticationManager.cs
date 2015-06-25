@@ -185,7 +185,7 @@ namespace OfficeDevPnP.Core
                             try
                             {
                                 Log.Debug(Constants.LOGGING_SOURCE, "Lease expiration date: {0}", response.ExpiresOn);
-                                var lease = GetLeaseTimeSpan(response.ExpiresOn);
+                                var lease = GetAccessTokenLease(response.ExpiresOn);
                                 lease =
                                     TimeSpan.FromSeconds(
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
