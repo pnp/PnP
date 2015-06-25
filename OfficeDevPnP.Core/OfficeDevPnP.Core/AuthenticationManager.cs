@@ -30,7 +30,6 @@ namespace OfficeDevPnP.Core
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
             var spoPassword = EncryptionUtility.ToSecureString(tenantUserPassword);
-           
             return GetSharePointOnlineAuthenticatedContextTenant(siteUrl, tenantUser, spoPassword);
         }
 
@@ -186,7 +185,7 @@ namespace OfficeDevPnP.Core
                             try
                             {
                                 Log.Debug(Constants.LOGGING_SOURCE, "Lease expiration date: {0}", response.ExpiresOn);
-                                var lease = response.ExpiresOn - DateTime.Now;
+                                var lease = GetAccessTokenLease(response.ExpiresOn);
                                 lease =
                                     TimeSpan.FromSeconds(
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
@@ -204,6 +203,20 @@ namespace OfficeDevPnP.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the access token lease time span.
+        /// </summary>
+        /// <param name="expiresOn">The ExpiresOn time of the current access token</param>
+        /// <returns>Returns a TimeSpan represents the time interval within which the current access token is valid thru.</returns>
+        private TimeSpan GetAccessTokenLease(DateTime expiresOn)
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime expires = expiresOn.Kind == DateTimeKind.Utc ?
+                expiresOn : TimeZoneInfo.ConvertTimeToUtc(expiresOn);
+            TimeSpan lease = expires - now;
+            return lease;
         }
     }
 }
