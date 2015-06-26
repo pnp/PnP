@@ -28,8 +28,8 @@ Version  | Date | Comments
 
 ----------
 
-# Instalation #
-The Solution is an SharePoint Add-In that can be deployed in the app catalog site of the Tenant and then install in the SharePoint Site using "Add an app" Option.
+# Installation #
+The Solution is an SharePoint Add-In that can be deployed in the app catalog site of the Tenant and then installed in the SharePoint Site using "Add an app" Option.
 
 ## Provisioning Head and Footer ##
 
