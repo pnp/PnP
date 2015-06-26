@@ -67,6 +67,7 @@ private void CreateNewTargetTermGroup(ClientContext sourceClientContext, ClientC
                                       set => set.CustomProperties,
                                       set => set.IsAvailableForTagging,
                                       set => set.IsOpenForTermCreation,
+                                      set => set.CustomSortOrder,
                                       set => set.CustomProperties,
                                       set => set.Terms.Include(
                                                 term => term.Name,
