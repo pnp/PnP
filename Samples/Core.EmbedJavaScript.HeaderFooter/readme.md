@@ -1,4 +1,4 @@
-# Head & Footer SharePoint Add-In #
+# Header & Footer SharePoint Add-In #
 
 ### Summary ###
 The Core.EmbedJavaScript.HeaderFooter sample provides a provision page to include a custom **Header and Footer**.
