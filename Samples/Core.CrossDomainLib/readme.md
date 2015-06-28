@@ -146,7 +146,7 @@ var cdlUtil;
     });
 ``` 
 
-This code will post data entered in the textboes of the view back to the MVC webserver.
+This code will post data entered in the textboxes of the view back to the MVC webserver.
 
 ```JavaScript
 
