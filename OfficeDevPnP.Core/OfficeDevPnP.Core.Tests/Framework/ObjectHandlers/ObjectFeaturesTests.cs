@@ -42,7 +42,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectFeatures().ProvisionObjects(ctx.Web, template);
+                new ObjectFeatures().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var f = ctx.Web.IsFeatureActive(featureId);
 

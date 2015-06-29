@@ -1,5 +1,9 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-06-29**
+* Added OverwriteSystemPropertyBagValues parameter to Apply-SPOProvisioningTemplate cmdlet
+* Updated installer to allow for setting advanced properties.
+
 **2015-06-10**
 * Changed installers from 64 bit to 32 bit.
 * Added ResourceFolder parameter to Apply-SPOProvisioningTemplate cmdlet

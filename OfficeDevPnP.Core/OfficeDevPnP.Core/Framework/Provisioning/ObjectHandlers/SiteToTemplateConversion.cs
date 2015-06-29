@@ -135,7 +135,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         progressDelegate(handler.Name, step, count);
                         step++;
                     }
-                    handler.ProvisionObjects(web, template);
+                    handler.ProvisionObjects(web, template, provisioningInfo);
                 }
             }
 

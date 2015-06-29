@@ -44,7 +44,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectCustomActions().ProvisionObjects(ctx.Web, template);
+                new ObjectCustomActions().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 Assert.IsTrue(ctx.Site.CustomActionExists("Test Custom Action"));
             }

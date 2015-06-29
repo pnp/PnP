@@ -58,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectContentType().ProvisionObjects(ctx.Web, template);
+                new ObjectContentType().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var ct = ctx.Web.GetContentTypeByName("Test Content Type");
 

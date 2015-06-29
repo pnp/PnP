@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             {
                 TokenParser.Initialize(ctx.Web, template);
 
-                new ObjectTermGroups().ProvisionObjects(ctx.Web, template);
+                new ObjectTermGroups().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(ctx);
 
