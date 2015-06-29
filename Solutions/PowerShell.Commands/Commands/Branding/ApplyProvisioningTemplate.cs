@@ -38,6 +38,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
         [Parameter(Mandatory = false, HelpMessage = "Root folder where resources/files that are being referenced in the template are located. If not specified the same folder as where the provisioning template is located will be used.")]
         public string ResourceFolder;
 
+        [Parameter(Mandatory = false, HelpMessage = "Specify this parameter if you want to overwrite and/or create properties that are known to be system entries (starting with vti_, dlc_, etc.)")]
+        public SwitchParameter OverwriteSystemPropertyBagValues;
+
         protected override void ExecuteCmdlet()
         {
             if (!SelectedWeb.IsPropertyAvailable("Url"))
@@ -92,6 +95,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
                         WriteWarning(message);
                     }
                 };
+
+                applyingInformation.OverwriteSystemPropertyBagValues = OverwriteSystemPropertyBagValues;
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);
             }
         }
