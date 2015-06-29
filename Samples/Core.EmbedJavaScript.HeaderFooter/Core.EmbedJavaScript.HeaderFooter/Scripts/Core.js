@@ -1,9 +1,6 @@
 ﻿Core = {
-    GlobalBreadcrumbRibbon: {
-        Version: "1.0.0",
-        OfficeApp: {
-            SP: {
-            }
+    EmbedJavaScript: {
+        HeaderFooter: {
         }
     }
 }

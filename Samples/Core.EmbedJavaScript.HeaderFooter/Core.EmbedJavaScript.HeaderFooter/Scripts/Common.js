@@ -1,4 +1,4 @@
-﻿Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Common = {
+﻿Core.EmbedJavaScript.HeaderFooter.Common = {
     ShowWaitMessage: function () {
         if (PnPApp.waitForm === null) {
             PnPApp.waitForm = SP.UI.ModalDialog.showWaitScreenWithNoClose("Loading", "Your request is being processed. Please wait while this process completes.");
@@ -51,4 +51,4 @@
         return true;
     }
 }
-window.PnPCommon = window.Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Common;
+window.PnPCommon = window.Core.EmbedJavaScript.HeaderFooter.Common;

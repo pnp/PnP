@@ -1,4 +1,4 @@
-# Head & Footer SharePoint Add-In #
+# Header & Footer SharePoint Add-In #
 
 ### Summary ###
 The Core.EmbedJavaScript.HeaderFooter sample provides a provision page to include a custom **Header and Footer**.
@@ -45,7 +45,7 @@ The Page has 1 JSON Editor and 2 buttons for provision of Features associated to
 
 ### Provision Sequence ###
 - PropertyBag **PnPGlobalBreadcrumbRibbon** is created in RootWeb of the SiteCollection, this item will have the JSON data from the **JSON Editor Area**, if the JSON is not correct format then assumes the **default** JSON Data:
-**{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}**
+**{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}**
 - A file from the AppWeb **PnPGlobal.js** is copied to folder **"_catalogs/masterpage/Display Template"**, the JS file includes the code for the creation of the Global Breadcrumb **(SharePoint or JSON Data)** & Ribbon. 
 - A **ScriptLink** is created in **SiteCollection** with name **PnPGlobalBreadcrumbRibbon** and linked to JS file **PnPGlobal.js**.
 
@@ -56,7 +56,7 @@ The Page has 1 JSON Editor and 2 buttons for provision of Features associated to
     * **Global BreadCrumb (SharePoint or JSON Data)** is included bellow the Ribbon Banner.
     * **Global Ribbon with custom Actions** is included in Ribbon Banner ().
 2. Custom Footer with Following Feature:
-    * **Global BreadCrumb by SharePoint Data** (Path where users is located)
+    * **Global BreadCrumb by SharePoint Data** (Path where user is located)
 
 ![](http://i.imgur.com/RXfIitR.png)
 

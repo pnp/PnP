@@ -1,4 +1,4 @@
-﻿Core.GlobalBreadcrumbRibbon.OfficeApp.SP.App = {
+﻿Core.EmbedJavaScript.HeaderFooter.App = {
     HostWebUrl: PnPCommon.getQueryStringParameter("SPHostUrl").replace("#", ""),
     AppWebUrl: PnPCommon.getQueryStringParameter("SPAppWebUrl").replace("#", ""),
     AppUrlFile: PnPCommon.getQueryStringParameter("SPAppWebUrl").replace("#", "") + '/Scripts/PnPGlobal.js',
@@ -63,7 +63,7 @@
         PnPApp.GetInit();
     }
 }
-window.PnPApp = window.Core.GlobalBreadcrumbRibbon.OfficeApp.SP.App;
+window.PnPApp = window.Core.EmbedJavaScript.HeaderFooter.App;
 $(document).ready(function () {
     PnPApp.GetInit();
 });
