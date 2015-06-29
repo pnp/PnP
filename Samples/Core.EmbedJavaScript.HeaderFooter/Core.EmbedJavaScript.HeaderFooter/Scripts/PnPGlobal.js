@@ -1,18 +1,17 @@
-﻿CoreGlobalBreadcrumbRibbon = {
+﻿HeaderFooter = {
     GetInit: function () {
-        PnPGlobal.CreateBreadcrumb();
         PnPGlobal.CreateStyle();
-        PnPGlobal.LoadSiteBreadcrumb();
-        PnPGlobal.CreateFooter();
+        _spBodyOnLoadFunctionNames.push("PnPGlobal.CreateFooter");
         window.addEventListener("DOMContentLoaded", RibbonValidation, false);
     },
     CreateFooter: function () {
-        SP.SOD.executeOrDelayUntilScriptLoaded(function () {
             var headID = document.getElementsByTagName("body")[0];
             var FooterNode = document.createElement('div');
             FooterNode.innerHTML = '<div id="PnPFooter" class="PnPFooter ms-ContentAccent1-bgColor"></div>';
             headID.appendChild(FooterNode);
-        }, "sp.js");
+            PnPGlobal.CreateBreadcrumb();
+            PnPGlobal.LoadSiteBreadcrumb();
+      
     },
     CreateStyle: function () {
         var headID = document.getElementsByTagName("head")[0];
@@ -103,7 +102,7 @@
     }, fail);
     }
 }
-window.PnPGlobal = window.CoreGlobalBreadcrumbRibbon;
+window.PnPGlobal = window.HeaderFooter;
 
 PnPGlobal.GetInit();
 (function (open) {
@@ -196,18 +195,18 @@ function getQueryStringParameter(param, serverRelativeUrl) {
         for (var i = 0; i < params.length; i = i + 1) {
             var singleParam = params[i].split("=");
             if (singleParam[0] == param)
-                return "/" + decodeURIComponent(singleParam[1]).replace(serverRelativeUrl, "");
+                return "/" + decodeURIComponent(singleParam[1]);
         }
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return "/" + _spPageContextInfo.serverRequestPath;
         } else {
-            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
+            return "/" + _spPageContextInfo.serverRequestPath;
         }
     } else {
         if (_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] === "Lists") {
-            return "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0] + "/" + _spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[1];
+            return "/" + _spPageContextInfo.serverRequestPath;
         } else {
-            return "/" +_spPageContextInfo.serverRequestPath.replace(serverRelativeUrl, "").split("/")[0];
+            return "/" +_spPageContextInfo.serverRequestPath;
         }
     }
 }
