@@ -24,7 +24,7 @@
     <SqlPackagePartId>{5ad2eb3a-eb10-4f46-a1a7-313def28669c}</SqlPackagePartId>
     <ActivePublishProfile>pnpsiteprov</ActivePublishProfile>
     <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>C:\gitrepo\pnpFork\Solutions\Provisioning.UX.App\Backup2\</UpgradeBackupLocation>
+    <UpgradeBackupLocation>C:\gitrepo\pnpFork\Solutions\Provisioning.UX.App\Backup\Provisioning.UX.App\</UpgradeBackupLocation>
     <OldToolsVersion>12.0</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
