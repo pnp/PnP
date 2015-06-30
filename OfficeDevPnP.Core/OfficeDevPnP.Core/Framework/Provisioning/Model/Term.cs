@@ -87,7 +87,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
             {
                 foreach (var property in localProperties)
                 {
-                    this.Properties.Add(property.Key, property.Value);
+                    this.LocalProperties.Add(property.Key, property.Value);
                 }
             }
         }
