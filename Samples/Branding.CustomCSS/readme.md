@@ -1,7 +1,7 @@
 # CSS INJECTION PATTERN #
 
 ### Summary ###
-shows how to inject custom CSS to the host web from app.
+shows how to inject custom CSS to the host web from add-in.
 
 ### Note: ###
 If you are using Office 365 or 2014 April CU for on-premises, you should not be using this approach. As part of the new API versions, AlternateCSSUrl has been added to CSOM, which should be the default option. This newer technique is demonstrated in separate [sample](https://github.com/OfficeDev/PnP/tree/dev/Samples/Branding.AlternateCSSAndSiteLogo).
@@ -31,7 +31,7 @@ Version  | Date | Comments
 
 ----------
 
-# INJECT CUSTOM CSS FROM APP TO HOST WEB #
+# INJECT CUSTOM CSS FROM ADD-IN TO HOST WEB #
 This scenario shows how to modify host web branding or rending by injecting custom CSS on the site using JavaScript injection pattern. This is one way to modify the host web branding without providing a custom master page on the site.
 
 ![](http://i.imgur.com/ZY34zMB.png)

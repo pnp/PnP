@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
@@ -39,7 +40,8 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectField().ProvisionObjects(ctx.Web, template);
+                TokenParser.Initialize(ctx.Web, template);
+                new ObjectField().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var f = ctx.Web.GetFieldById<FieldText>(fieldId);
 
@@ -55,8 +57,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             using (var ctx = TestCommon.CreateClientContext())
             {
+                // Load the base template which will be used for the comparison work
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+
                 var template = new ProvisioningTemplate();
-                template = new ObjectField().CreateEntities(ctx.Web, template, null);
+                template = new ObjectField().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.SiteFields.Any());
                 Assert.IsInstanceOfType(template.SiteFields, typeof(List<Core.Framework.Provisioning.Model.Field>));

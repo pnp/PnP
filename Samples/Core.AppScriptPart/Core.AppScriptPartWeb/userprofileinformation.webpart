@@ -11,7 +11,7 @@
         <property name="Hidden" type="bool">False</property>
         <property name="Description" type="string">Shows user profile information of current user.</property>
         <property name="Content" type="string">&lt;script type="text/javascript" src="https://localhost:44361/scripts/userprofileinformation.js"&gt;&lt;/script&gt;
-&lt;div id="UserProfileAboutMe"&gt;&lt;div&gt;
+&lt;div id="UserProfileAboutMe"&gt;&lt;/div&gt;
 </property>
         <property name="CatalogIconImageUrl" type="string">/_layouts/images/wp_pers.gif</property>
         <property name="Title" type="string">User profile information</property>

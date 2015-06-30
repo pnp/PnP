@@ -5,13 +5,13 @@ This solution is a console application designed to run periodically as a schedul
 
 The example could be built upon in a governance scenario, where the governance team can monitor how site collections are used.
 
-The demonstration shows how you can run a console program periodically, without any user interaction. In a similiar way the console applicaiton could be replaced with a windows service to perform unattended operations to your tenant data. The code logic makes use of the app-only policy to perform calls "without any user". In my example I have used the Tenant permission scope with FullControl rights.  
+The demonstration shows how you can run a console program periodically, without any user interaction. In a similiar way the console applicaiton could be replaced with a windows service to perform unattended operations to your tenant data. The code logic makes use of the add-in only policy to perform calls "without any user". In my example I have used the Tenant permission scope with FullControl rights.  
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-The complete solution requires app registration with tenant permissions
+The complete solution requires add-in registration with tenant permissions
 
 ### Solution ###
 Solution | Author(s)
@@ -33,12 +33,12 @@ The solution has one Visual Studio project - Governance.SiteUsageReport, which i
 
 In this example the code logic builds an e-mail with a simple table of all site collections and data about them. This could be easily replaced with something else, such as generating an Excel document with OpenXml or anything else you would prefer.
 
-One interesting aspect of the demonstration is that there is no "SharePoint App" project, no app package file. It uses the app registration pages to acquire a ClientId and ClientSecret, but there is no deployment to the tenant.
+One interesting aspect of the demonstration is that there is no "SharePoint add-in" project, no add-in package file. It uses the add-in registration pages to acquire a ClientId and ClientSecret, but there is no deployment to the tenant.
 
 The other interesing element is the use of TokenHelper.cs. At the time of authoring v1, it has to be copied to the project and all of its needed references must be resolved to compile.
 
 # Setup and Execution #
-This solution is kept as simple as possible to illustrate the key elements. There is no app package, you just need to register a ClientId and ClientSecret and provide appropriate permissions.
+This solution is kept as simple as possible to illustrate the key elements. There is no add-in package, you just need to register a ClientId and ClientSecret and provide appropriate permissions.
 
 ## Dependencies ##
 The project has references to the following assemblies:
@@ -59,7 +59,7 @@ To compile TokenHelper.cs, the project also needs the following assemblies:
 The project also references OfficeDevPnP.Core to use the AppModelExtensions (Tenant) and the SiteEntity object.
 
 ## Permission Configuration ##
-This solution uses a provider-hosted approach, but does not have a tradition SharePoint app entry point and will execute periodically with no user interaction (ie - App-Only). Because of these two constraints, you must register the app in /_layouts/15/appregnew.aspx and then manually configure permissions for the app in /_layouts/15/appinv.aspx:
+This solution uses a provider-hosted approach, but does not have a tradition SharePoint add-in entry point and will execute periodically with no user interaction (ie - add-in Only). Because of these two constraints, you must register the add-in in /_layouts/15/appregnew.aspx and then manually configure permissions for the add-in in /_layouts/15/appinv.aspx:
 
 Permission Request XML:
 
@@ -70,7 +70,7 @@ Permission Request XML:
 ```
 Start by getting and registering a ClientId and ClientSecret through /_layouts/15/AppRegNew.aspx
 ![](http://i.imgur.com/qjzXtwD.png)
-Make sure you copy the ClientId and ClientSecret and plug them in the app.config. Notice how the App Domain and Redirect URI are not required in this case beacuse we have no URL interaction
+Make sure you copy the ClientId and ClientSecret and plug them in the app.config. Notice how the add-in Domain and Redirect URI are not required in this case beacuse we have no URL interaction
 
 When done you will get a confirmation message:
 ![](http://i.imgur.com/sWwsXDk.png)
@@ -78,16 +78,16 @@ When done you will get a confirmation message:
 Continue by giving it permissions through /_layouts/15/AppInv.aspx
 ![](http://i.imgur.com/F7TloiO.png)
 
-You will then be asked to confirm the trust and assign the app permissions:
+You will then be asked to confirm the trust and assign the add-in permissions:
 ![](http://i.imgur.com/s1G5MNX.png)
 
 
 ## Application Settings ##
-Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web app project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
+Because the solution has two interface, application settings need to be configured in to places...the app.config of the console application project and the web.config of the MVC web add-in project. The follow code sample outlines the appSettings that need to be configured with values specific to your tenant/environment:
 
 ```XML
 <appSettings>
-  <!-- The client id and client secret of the app as provided in /_layouts/15/appregnew.aspx -->
+  <!-- The client id and client secret of the add-in as provided in /_layouts/15/appregnew.aspx -->
   <add key="ClientID" value="YOUR_CLIENT_ID_FROM_APPREGNEW.ASPX" />
   <add key="ClientSecret" value="YOUR_CLIENT_SECRET_FROM_APPREGNEW.ASPX" />
   

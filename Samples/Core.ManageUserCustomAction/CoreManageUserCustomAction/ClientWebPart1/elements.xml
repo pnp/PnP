@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ClientWebPart Name="ClientWebPart" Title="Core.ManageUserCustomAction" Description="Core.ManageUserCustomAction description" DefaultWidth="300" DefaultHeight="200">
+    <Content Type="html" Src="(None)?{StandardTokens}" />
+  </ClientWebPart>
+</Elements>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{8008615A-64F7-4F65-B9D6-AA47F7A3E966}"
 	ProjectSection(SolutionItems) = preProject
@@ -31,6 +31,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob", "Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob\Core.TimerJobs.Samples.ContentTypeRetentionEnforcementJob.csproj", "{4276C8DC-176D-4724-BF89-F2828B4C87AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.CredentialManagerJob", "Core.TimerJobs.Samples.CredentialManagerJob\Core.TimerJobs.Samples.CredentialManagerJob.csproj", "{F804C31F-959F-42D0-9886-C2C18A05884E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.TimerJobs.Samples.TenantAPIJob", "Core.TimerJobs.Samples.TenantAPIJob\Core.TimerJobs.Samples.TenantAPIJob.csproj", "{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -128,6 +130,14 @@ Global
 		{F804C31F-959F-42D0-9886-C2C18A05884E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F804C31F-959F-42D0-9886-C2C18A05884E}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{F804C31F-959F-42D0-9886-C2C18A05884E}.Release15|Any CPU.Build.0 = Release|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0705BF-5A05-41A8-A4D8-6EEE24C0C801}.Release15|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

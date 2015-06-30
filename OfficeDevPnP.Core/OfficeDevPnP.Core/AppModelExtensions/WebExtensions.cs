@@ -54,8 +54,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritNavigation">Specifies whether the site inherits navigation.</param>
         public static Web CreateWeb(this Web parentWeb, string title, string leafUrl, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -88,8 +87,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the web was deleted; otherwise false if nothing was done</returns>
         public static bool DeleteWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -165,8 +163,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Web GetWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -190,8 +187,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the Web (site) exists; otherwise false</returns>
         public static bool WebExists(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -273,6 +269,13 @@ namespace Microsoft.SharePoint.Client
             {
                 return true;
             }
+        }
+
+        public static bool IsPublishingWeb(this Web web)
+        {
+            var featureActivated = GetPropertyBagValueInternal(web, "__PublishingFeatureActivated");
+
+            return featureActivated != null && bool.Parse(featureActivated.ToString());
         }
 
 
@@ -576,6 +579,10 @@ namespace Microsoft.SharePoint.Client
             keywordQuery.SelectProperties.Add("WebTemplate");
             keywordQuery.SortList.Add("SPSiteUrl", SortDirection.Ascending);
             SearchExecutor searchExec = new SearchExecutor(web.Context);
+
+            // Important to avoid trimming "similar" site collections
+            keywordQuery.TrimDuplicates = false;
+
             ClientResult<ResultTableCollection> results = searchExec.ExecuteQuery(keywordQuery);
             web.Context.ExecuteQueryRetry();
 
@@ -745,6 +752,7 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+        
 
         /// <summary>
         /// Checks if the given property bag entry exists
@@ -993,7 +1001,7 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         ///     web.SetLocalizationForSiteLabels("fi-fi", "Name of the site in Finnish", "Description in Finnish");
         /// </example>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
@@ -1018,10 +1026,11 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web"></param>
         /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
-        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template)
+        /// <param name="applyingInformation">Specified additional settings and or properties</param>
+        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation = null)
         {
             // Call actual handler
-            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template);
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template, applyingInformation);
         }
 
         /// <summary>
@@ -1044,13 +1053,41 @@ namespace Microsoft.SharePoint.Client
         /// will be compared with the default base template.
         /// </summary>
         /// <param name="web">Web to get template from</param>
-        /// <param name="connector">Connector that will be used to persist the files retrieved from the template "get"</param>
+        /// <param name="creationInfo">Specifies additional settings and/or properties</param>
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
         public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
         {
             return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
         }
+
         #endregion
 
+        #region Output Cache
+
+        /// <summary>
+        /// Sets output cache on publishing web. The settings can be maintained from UI by visiting url /_layouts/15/sitecachesettings.aspx
+        /// </summary>
+        /// <param name="web">SharePoint web</param>
+        /// <param name="enableOutputCache">Specify true to enable output cache. False otherwise.</param>
+        /// <param name="anonymousCacheProfileId">Applies for anonymous users access for a site in Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="authenticatedCacheProfileId">Applies for authenticated users access for a site in the Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="debugCacheInformation">Specify true to enable the display of additional cache information on pages in this site collection. False otherwise.</param>
+        public static void SetPageOutputCache(this Web web, bool enableOutputCache, int anonymousCacheProfileId, int authenticatedCacheProfileId, bool debugCacheInformation)
+        {
+            const string cacheProfileUrl = "Cache Profiles/{0}_.000";
+
+            string publishingWebValue = web.GetPropertyBagValueString("__PublishingFeatureActivated", string.Empty);
+            if (string.IsNullOrEmpty(publishingWebValue))
+            {
+                throw new Exception("Page output cache can be set only on publishing sites.");
+            }
+
+            web.SetPropertyBagValue("EnableCache", enableOutputCache.ToString());
+            web.SetPropertyBagValue("AnonymousPageCacheProfileUrl", string.Format(cacheProfileUrl, anonymousCacheProfileId));
+            web.SetPropertyBagValue("AuthenticatedPageCacheProfileUrl", string.Format(cacheProfileUrl, authenticatedCacheProfileId));
+            web.SetPropertyBagValue("EnableDebuggingOutput", debugCacheInformation.ToString());
+        }
+
+        #endregion
     }
 }

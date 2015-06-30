@@ -114,8 +114,7 @@ namespace Microsoft.SharePoint.Client
             if (documentSetName == null) { throw new ArgumentNullException("documentSetName"); }
             if (contentTypeId == null) { throw new ArgumentNullException("contentTypeId"); }
 
-            // TODO: Check for any other illegal characters in SharePoint
-            if (documentSetName.Contains('/') || documentSetName.Contains('\\'))
+            if (documentSetName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateDocumentSet_The_argument_must_be_a_single_document_set_name_and_cannot_contain_path_characters_, "documentSetName");
             }
@@ -146,8 +145,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder CreateFolder(this Web web, string folderName)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
+            if (folderName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_, "folderName");
             }
@@ -173,8 +171,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder CreateFolder(this Folder parentFolder, string folderName)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
+            if (folderName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_, "folderName");
             }
@@ -254,8 +251,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder EnsureFolder(this Web web, string folderName)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
+            if (folderName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_, "folderName");
             }
@@ -278,8 +274,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Folder EnsureFolder(this Folder parentFolder, string folderName)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
+            if (folderName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_, "folderName");
             }
@@ -483,8 +478,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("folderName");
             }
 
-            // TODO: Check for any other illegal characters in SharePoint
-            if (folderName.Contains('/') || folderName.Contains('\\'))
+            if (folderName.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException(CoreResources.FileFolderExtensions_CreateFolder_The_argument_must_be_a_single_folder_name_and_cannot_contain_path_characters_, "folderName");
             }
@@ -810,16 +804,18 @@ namespace Microsoft.SharePoint.Client
                 }
 
                 var fileServerRelativeUrl = UrlUtility.Combine(folder.ServerRelativeUrl, fileName);
-                var web = folder.ListItemAllFields.ParentList.ParentWeb;
+                var context = folder.Context as ClientContext;
+
+                var web = context.Web;
 
                 var file = web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 folder.Context.Load(file);
                 folder.Context.ExecuteQueryRetry();
                 return file;
             }
-            catch (Exception ex)
+            catch (ServerException sex)
             {
-                if (ex.Message == "File Not Found.")
+                if (sex.ServerErrorTypeName == "System.IO.FileNotFoundException")
                 {
                     return null;
                 }
@@ -1058,11 +1054,12 @@ namespace Microsoft.SharePoint.Client
                             l => l.EnableModeration,
                             l => l.ForceCheckout);
 
-                var checkOutRequired = parentList.ForceCheckout;
+                var checkOutRequired = false;
 
                 try
                 {
                     context.ExecuteQueryRetry();
+                    checkOutRequired = parentList.ForceCheckout;
                     publishingRequired = parentList.EnableMinorVersions; // minor versions implies that the file must be published
                     approvalRequired = parentList.EnableModeration;
                 }

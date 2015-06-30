@@ -8,7 +8,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
     [CmdletHelp("Disconnects the context", Category = "Base Cmdlets")]
     [CmdletExample(
-        Code = @"PS:> Disconnect-SPOnline")]
+        Code = @"PS:> Disconnect-SPOnline", SortOrder = 1)]
     public class DisconnectSPOnline : PSCmdlet
     {
         protected override void ProcessRecord()

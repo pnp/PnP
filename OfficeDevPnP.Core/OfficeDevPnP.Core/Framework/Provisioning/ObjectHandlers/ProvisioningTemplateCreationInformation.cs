@@ -14,17 +14,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         private ProvisioningTemplate baseTemplate;
         private FileConnectorBase fileConnector;
         private bool persistComposedLookFiles = false;
-        
+        private bool includeAllTermGroups = false;
+        private bool includeSiteCollectionTermGroup = false;
+        private List<String> propertyBagPropertiesToPreserve;
+
+        public ProvisioningProgressDelegate ProgressDelegate { get; set; }
+        public ProvisioningMessagesDelegate MessagesDelegate { get; set; }
+
         public ProvisioningTemplateCreationInformation(Web web)
         {
             this.baseTemplate = web.GetBaseTemplate();
+            this.propertyBagPropertiesToPreserve = new List<String>();
         }
 
         /// <summary>
         /// Base template used to compare against when we're "getting" a template
         /// </summary>
-        public ProvisioningTemplate BaseTemplate 
-        { 
+        public ProvisioningTemplate BaseTemplate
+        {
             get
             {
                 return this.baseTemplate;
@@ -66,6 +73,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
+        public bool IncludeAllTermGroups
+        {
+            get
+            {
+                return this.includeAllTermGroups;
+            }
+            set { this.includeAllTermGroups = value; }
+        }
 
+        public bool IncludeSiteCollectionTermGroup
+        {
+            get { return this.includeSiteCollectionTermGroup; }
+            set { this.includeSiteCollectionTermGroup = value; }
+        }
+
+        internal List<String> PropertyBagPropertiesToPreserve
+        {
+            get { return this.propertyBagPropertiesToPreserve; }
+            set { this.propertyBagPropertiesToPreserve = value; }
+        }
     }
 }

@@ -3,7 +3,7 @@
 ### Summary ###
 This sample shows how to create a menu that is populated from Term Store using JavaScript CSOM. The menu uses the language labels on terms and shows translated navigation nodes depending on users preferred language in user profile. This solution works cross site collections.
 
-To set up this sample a provider-hosted app using  .NET CSOM creates a term group, a term set with terms in term store. Also JavaScript files are uploaded to host web and script links are added.
+To set up this sample a provider-hosted add-in using  .NET CSOM creates a term group, a term set with terms in term store. Also JavaScript files are uploaded to host web and script links are added.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -11,7 +11,7 @@ To set up this sample a provider-hosted app using  .NET CSOM creates a term grou
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted app that's running the taxonomy menu is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+It's important that the provider hosted add-in that's running the taxonomy menu is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)

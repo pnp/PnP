@@ -50,6 +50,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         private string enumerationUser;
         private SecureString enumerationPassword;
         private string enumerationDomain;
+        private string tenantAdminSite;
         // Site scope variables
         private List<string> requestedSites;
         private List<string> sitesToProcess;
@@ -348,8 +349,25 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
                 ccSite = CreateClientContext(rootSite);
             }
 
+#if !CLIENTSDKV15
+            // Instantiate ClientContext against tenant admin site, this is needed to operate using the Tenant API
+            string tenantAdminSiteUrl = tenantAdminSite;
+            if (string.IsNullOrEmpty(tenantAdminSiteUrl))
+            {
+                tenantAdminSiteUrl = GetTenantAdminSite(site);
+            }
+            ClientContext ccTenant = CreateClientContext(tenantAdminSiteUrl);
+#else
+            // No easy way to detect tenant admin site in on-premises, so uses has to specify it
+            ClientContext ccTenant = null;
+            if (!String.IsNullOrEmpty(tenantAdminSite))
+            {
+                ccTenant = CreateClientContext(tenantAdminSite);
+            }
+#endif
+
             // Prepare the timerjob callback event arguments
-            TimerJobRunEventArgs e = new TimerJobRunEventArgs(site, ccSite, ccWeb, null, null, "", new Dictionary<string, string>(), this.ConfigurationData);
+            TimerJobRunEventArgs e = new TimerJobRunEventArgs(site, ccSite, ccWeb, ccTenant, null, null, "", new Dictionary<string, string>(), this.ConfigurationData);
 
             // Trigger the event to fire, but only when there's an event handler connected
             if (TimerJobRun != null)
@@ -572,6 +590,22 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 this.realm = value;
                 Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Realm, this.realm);
+            }
+        }
+
+        /// <summary>
+        /// Option to specify the tenant admin site. For MT this typically is not needed since we can detect the tenant admin site, but for on premises and DvNext this is needed
+        /// </summary>
+        public string TenantAdminSite
+        {
+            get
+            {
+                return this.tenantAdminSite;
+            }
+            set
+            {
+                this.tenantAdminSite = value;
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_Authentication_TenantAdmin, this.tenantAdminSite);
             }
         }
 
@@ -1022,14 +1056,14 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
             {
                 if (!IsValidUrl(site))
                 {
-                    throw new ArgumentException(string.Format(CoreResources.TimerJob_AddSite_Done, site), "site");
+                    throw new ArgumentException(string.Format(CoreResources.TimerJob_AddSite_InvalidUrl, site), "site");
                 }
             }
 
             if (!requestedSites.Contains(site))
             {
                 this.requestedSites.Add(site);
-                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_AddSite_InvalidUrl, site);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.TimerJob_AddSite_Done, site);
             }
         }
 

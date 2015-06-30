@@ -15,12 +15,12 @@ namespace Core.Throttling
         // The first parameter takes the "this" modifier
         // and specifies the type for which the method is defined. 
         /// <summary>
-        /// Extension method to invoke execute query with retry and exponential back off.
+        /// Extension method to invoke execute query with retry and incremental back off.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="retryCount">Maximum amount of retries before giving up.</param>
         /// <param name="delay">Initial delay in milliseconds.</param>
-        public static void ExecuteQueryWithExponentialRetry(this ClientContext context, int retryCount, int delay)
+        public static void ExecuteQueryWithIncrementalRetry(this ClientContext context, int retryCount, int delay)
         {
             int retryAttempts = 0;
             int backoffInterval = delay;
@@ -56,6 +56,10 @@ namespace Core.Throttling
                         //Add to retry count and increase delay.
                         retryAttempts++;
                         backoffInterval = backoffInterval * 2;
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
             }

@@ -17,7 +17,7 @@
                 <div id="divWaitingPanel" style="position: absolute; z-index: 3; background: rgb(255, 255, 255); width: 100%; bottom: 0px; top: 0px;">
                     <div style="top: 40%; position: absolute; left: 50%; margin-left: -150px;">
                         <img alt="Working on it" src="data:image/gif;base64,R0lGODlhEAAQAIAAAFLOQv///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgABACwJAAIAAgACAAACAoRRACH5BAUKAAEALAwABQACAAIAAAIChFEAIfkEBQoAAQAsDAAJAAIAAgAAAgKEUQAh+QQFCgABACwJAAwAAgACAAACAoRRACH5BAUKAAEALAUADAACAAIAAAIChFEAIfkEBQoAAQAsAgAJAAIAAgAAAgKEUQAh+QQFCgABACwCAAUAAgACAAACAoRRACH5BAkKAAEALAIAAgAMAAwAAAINjAFne8kPo5y02ouzLQAh+QQJCgABACwCAAIADAAMAAACF4wBphvID1uCyNEZM7Ov4v1p0hGOZlAAACH5BAkKAAEALAIAAgAMAAwAAAIUjAGmG8gPW4qS2rscRPp1rH3H1BUAIfkECQoAAQAsAgACAAkADAAAAhGMAaaX64peiLJa6rCVFHdQAAAh+QQJCgABACwCAAIABQAMAAACDYwBFqiX3mJjUM63QAEAIfkECQoAAQAsAgACAAUACQAAAgqMARaol95iY9AUACH5BAkKAAEALAIAAgAFAAUAAAIHjAEWqJeuCgAh+QQJCgABACwFAAIAAgACAAACAoRRADs=" style="width: 32px; height: 32px;" />
-                        <span class="ms-accentText" style="font-size: 36px;">&nbsp;Working on it...</span>
+                        <span class="ms-accentText" style="font-size: 36px;">&nbsp;Working on it as fast as I can...</span>
                     </div>
                 </div>
             </ProgressTemplate>
@@ -48,13 +48,13 @@
                     <asp:View ID="RecordedView" runat="server">
                         <div style="width: 450px; margin-left: 50px;">
                             <div id="divFieldTemplate" style="display: table; width: 100%;">
-                                <h3 class="ms-core-form-line">Status
+                                <h3 class="ms-core-form-line">Status of the applied operation:
                                 </h3>
                                 <div class="ms-core-form-line">
                                     <asp:Label ID="lblStatus" runat="server" />
                                 </div>
                                 <div id="divButtons" style="float: right;">
-                                    <asp:Button ID="btnProceed" runat="server" Text="Proceed" CssClass="ms-ButtonHeightWidth" OnClick="btnProceed_Click" />
+                                    <asp:Button ID="btnProceed" runat="server" Text="Proceed to host web" CssClass="ms-ButtonHeightWidth" OnClick="btnProceed_Click" />
                                 </div>
                             </div>
                         </div>

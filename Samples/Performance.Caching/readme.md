@@ -41,7 +41,7 @@ As mentioned, the sample just reads your ‘About Me’ data from your user prof
 
 ![](http://i.imgur.com/E6wtIS4.png)
 
-The Cache Expiration setting will set the default number of seconds for the localStorage items. When there is a value specified, and the text in the box is saved, two keys are created/updated -> ‘aboutMe’ & ‘aboutMeTimeStamp’. When the app checks localStorage (before a service call is made), it checks to see if the key exists, and checks for and retrieves the timestamp key. It compares the time stamp against expiration settings, and if the key is expired, it makes a call to get the user profile data and refreshes/creates the two keys. If there is no value set in the Cache Expiration, the ‘aboutMe’ key does not expire.
+The Cache Expiration setting will set the default number of seconds for the localStorage items. When there is a value specified, and the text in the box is saved, two keys are created/updated -> ‘aboutMe’ & ‘aboutMeTimeStamp’. When the add-in checks localStorage (before a service call is made), it checks to see if the key exists, and checks for and retrieves the timestamp key. It compares the time stamp against expiration settings, and if the key is expired, it makes a call to get the user profile data and refreshes/creates the two keys. If there is no value set in the Cache Expiration, the ‘aboutMe’ key does not expire.
 
 The ‘Clear Cache’ button will bust the cache by removing the key, which will trigger a call to get your user profile data and then it will create a new key and store the ‘About Me’ data in it.
 

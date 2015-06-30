@@ -13,7 +13,7 @@ You can find a few other useful samples in the code:
 
 ### Prerequisites ###
 Option 1:
--  Azures subscription with Azure AD setup
+-  Azure subscription with Azure AD setup
 -  Registration of an app in Azure AD is needed to make this sample work
 
 Option 2:

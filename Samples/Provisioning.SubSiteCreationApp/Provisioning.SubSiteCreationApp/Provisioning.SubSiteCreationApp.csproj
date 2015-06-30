@@ -20,6 +20,7 @@
     <WorkflowPartId>{5c3576c3-cc78-4260-9f72-aa72154761e1}</WorkflowPartId>
     <CspkgPartId>{95e96d18-df20-408d-b4de-1732361487ef}</CspkgPartId>
     <SqlPackagePartId>{2f8ccc59-2f22-44ed-8dbc-705d53065a00}</SqlPackagePartId>
+    <FileUpgradeFlags />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -7,10 +7,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 {
     [Cmdlet(VerbsCommon.Set, "SPOList")]
     [CmdletHelp("Updates list settings", Category = "Lists")]
+    [CmdletExample(
+        Code = @"Set-SPOList -Identity ""Demo List"" -EnableContentTypes $true", 
+        Remarks = "Switches the Enable Content Type switch on the list",
+        SortOrder = 1)]
     public class SetList : SPOWebCmdlet
     {
         [Parameter(Mandatory=true)]
         public ListPipeBind Identity;
+
+        [Parameter(Mandatory = false, HelpMessage = "Set to $true to enable content types, set to $false to disable content types")]
+        public bool EnableContentTypes;
 
         [Parameter(Mandatory = false)]
         public SwitchParameter BreakRoleInheritance;
@@ -40,6 +47,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
                 if (!string.IsNullOrEmpty(Title))
                 {
                     list.Title = Title;
+                    list.Update();
+                    ClientContext.ExecuteQueryRetry();
+                }
+
+                if (list.ContentTypesEnabled != EnableContentTypes)
+                {
+                    list.ContentTypesEnabled = EnableContentTypes;
                     list.Update();
                     ClientContext.ExecuteQueryRetry();
                 }

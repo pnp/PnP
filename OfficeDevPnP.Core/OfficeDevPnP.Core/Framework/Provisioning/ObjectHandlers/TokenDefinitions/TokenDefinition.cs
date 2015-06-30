@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
         }
 
         // public string[] Token { get; private set; }
-        public Web Web { get; private set; }
+        public Web Web { get; set; }
 
         public Regex[] GetRegex()
         {
@@ -33,6 +33,11 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
             return regexs;
         }
 
+        public Regex GetRegexForToken(string token)
+        {
+            return new Regex(token, RegexOptions.IgnoreCase);
+        }
+
         public int GetTokenLength()
         {
             return _tokens.Select(t => t.Length).Concat(new[] { 0 }).Max();
@@ -40,5 +45,9 @@ namespace OfficeDevPnP.Core.Framework.ObjectHandlers
 
         public abstract string GetReplaceValue();
 
+        public void ClearCache()
+        {
+            this.CacheValue = null;
+        }
     }
 }

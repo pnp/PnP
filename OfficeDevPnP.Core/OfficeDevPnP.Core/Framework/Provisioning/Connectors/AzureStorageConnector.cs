@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -284,6 +285,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                 throw;
             }
         }
+
+        public override string GetFilenamePart(string fileName)
+        {
+            if (fileName.IndexOf(@"/") != -1)
+            {
+                var parts = fileName.Split(new[] { @"/" }, StringSplitOptions.RemoveEmptyEntries);
+                return parts.LastOrDefault();
+            }
+            else
+            {
+                return fileName;
+            }
+        }
+
         #endregion
 
         #region Private methods
@@ -328,5 +343,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
             }
         }
         #endregion
+
+      
     }
 }

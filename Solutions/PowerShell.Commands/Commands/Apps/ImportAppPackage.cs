@@ -8,28 +8,29 @@ using OfficeDevPnP.Core;
 namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOAppPackage")]
-    [CmdletHelp("Adds a SharePoint App to a site",
-        Details = "This commands requires that you have an app package to deploy", Category = "Apps")]
+    
+    [CmdletHelp("Adds a SharePoint Addin to a site",
+        DetailedDescription = "This commands requires that you have an addin package to deploy", Category = "Apps")]
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -LoadOnly",
-        Remarks = @"This will load the app in the demo.app package, but will not install it to the site.
- ")]
+        Remarks = @"This will load the addin in the demo.app package, but will not install it to the site.
+ ", SortOrder = 1)]
     [CmdletExample(
         Code = @"PS:> Import-SPOAppPackage -Path c:\files\demo.app -Force",
-        Remarks = @"This load first activate the app sideloading feature, upload and install the app, and deactivate the app sideloading feature.
-    ")]
+        Remarks = @"This load first activate the addin sideloading feature, upload and install the addin, and deactivate the addin sideloading feature.
+    ", SortOrder = 2)]
     public class ImportAppPackage : SPOWebCmdlet
     {
-        [Parameter(Mandatory = false, HelpMessage = "Path pointing to the .app file")]
+        [Parameter(Mandatory = true, HelpMessage = "Path pointing to the .app file")]
         public string Path = string.Empty;
 
-        [Parameter(Mandatory = false, HelpMessage = "Will forcibly install the app by activating the app sideloading feature, installing the app, and deactivating the sideloading feature")]
+        [Parameter(Mandatory = false, HelpMessage = "Will forcibly install the app by activating the addin sideloading feature, installing the addin, and deactivating the sideloading feature")]
         public SwitchParameter Force;
 
-        [Parameter(Mandatory = false, HelpMessage = "Will only upload the app, but not install it")]
+        [Parameter(Mandatory = false, HelpMessage = "Will only upload the addin, but not install it")]
         public SwitchParameter LoadOnly = false;
 
-        [Parameter(Mandatory = false, HelpMessage = "Will install the app for the specified locale")]
+        [Parameter(Mandatory = false, HelpMessage = "Will install the addin for the specified locale")]
         public int Locale = -1;
 
         protected override void ExecuteCmdlet()

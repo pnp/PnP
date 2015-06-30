@@ -35,7 +35,7 @@ namespace Core.Throttling
                         ctx.Load(folder);
                         folder = folder.Folders.Add(DateTime.Now.Ticks.ToString());
                         // Extension method for executing query with throttling checks
-                        ctx.ExecuteQueryWithExponentialRetry(5, 30000); //5 retries, with a base delay of 30 seconds.
+                        ctx.ExecuteQueryWithIncrementalRetry(5, 30000); //5 retries, with a base delay of 30 seconds.
                         // Status indication for execution.
                         Console.WriteLine("CSOM request successful.");
                         // For loop handling.
