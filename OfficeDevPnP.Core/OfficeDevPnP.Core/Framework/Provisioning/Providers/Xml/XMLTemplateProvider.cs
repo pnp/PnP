@@ -193,11 +193,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 foreach (var xi in includes)
                 {
-                    //resolve xInclude and replace
-                    var href = xi.Attribute("href").Value;
-                    var incStream = this.Connector.GetFileStream(href);
-                    var resolved = XElement.Load(incStream);
-                    xi.ReplaceWith(resolved);
+                    Boolean includeResolved = false;
+
+                    // Resolve xInclude and replace
+                    String href = (String)xi.Attribute("href") ?? String.Empty; 
+
+                    // If there is the href attribute
+                    if (!String.IsNullOrEmpty(href))
+                    {
+                        Stream incStream = this.Connector.GetFileStream(href);
+
+                        // And if the referenced file can be loaded/resolved
+                        if (null != incStream)
+                        {
+                            // Replace the xi:include element with the target XML element
+                            var resolved = XElement.Load(incStream);
+                            xi.ReplaceWith(resolved);
+                            includeResolved = true;
+                        }
+                    }
+
+                    if (!includeResolved)
+                    {
+                        // Remove the xi:include element 
+                        // to avoid any processing failure
+                        xi.Remove();
+                    }
                 }
 
                 //save xml to a new stream
