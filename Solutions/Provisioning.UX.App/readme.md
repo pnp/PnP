@@ -546,5 +546,6 @@ The WebAPI controllers in the Provisioning.UX.AppWeb requires the [WebAPIContext
 #### Coming Updates ####
 - We are currently working on a update to the provisioning interface which will be a single page app instead of a dialog with many additional enhancements.
 - Template.config file will have the option to be centrally located.
+- People Picker implementation refractoring
 - Video walk-through and demo of the solution.
 - Sub Site Creation
