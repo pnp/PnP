@@ -1,4 +1,4 @@
-﻿Core.GlobalBreadcrumbRibbon.OfficeApp.SP.App = {
+﻿Core.EmbedJavaScript.HeaderFooter.App = {
     HostWebUrl: PnPCommon.getQueryStringParameter("SPHostUrl").replace("#", ""),
     AppWebUrl: PnPCommon.getQueryStringParameter("SPAppWebUrl").replace("#", ""),
     AppUrlFile: PnPCommon.getQueryStringParameter("SPAppWebUrl").replace("#", "") + '/Scripts/PnPGlobal.js',
@@ -8,7 +8,7 @@
     RootWeb: null,
     ServerRelativeUrl: null,
     GetInit: function () {
-        
+
         PnPData.GetFileREST(PnPApp.GetFileRESTSuccess);
         PnPData.GetSiteCollectionUserCustomAction(PnPApp.GetSiteCollectionUserCustomActionValidationSuccess);
     },
@@ -43,7 +43,17 @@
         }
     },
     AddProvisionOfUserCustomAction: function () {
-        PnPData.AddHostPropertyBag('vti_GlobalBreadcrumbRibbon', PnPData.PropertyBag);
+        if (document.getElementById('PropertyBagJSON').value !== "") {
+            if (PnPCommon.IsJsonString(document.getElementById('PropertyBagJSON').value)) {
+                PnPData.AddHostPropertyBag('vti_GlobalBreadcrumbRibbon', document.getElementById('PropertyBagJSON').value);
+            } else {
+                PnPData.AddHostPropertyBag('vti_GlobalBreadcrumbRibbon', PnPData.PropertyBag);
+                PnPCommon.NotifyMessage("JSON Parse is incorrect, default value was included");
+            }
+        } else {
+            PnPData.AddHostPropertyBag('vti_GlobalBreadcrumbRibbon', PnPData.PropertyBag);
+            PnPCommon.NotifyMessage("JSON Parse is incorrect, default value was included");
+        }
         PnPData.GetBinaryFile();
     },
     RemoveProvisionOfUserCustomAction: function () {
@@ -53,7 +63,7 @@
         PnPApp.GetInit();
     }
 }
-window.PnPApp = window.Core.GlobalBreadcrumbRibbon.OfficeApp.SP.App;
+window.PnPApp = window.Core.EmbedJavaScript.HeaderFooter.App;
 $(document).ready(function () {
     PnPApp.GetInit();
 });

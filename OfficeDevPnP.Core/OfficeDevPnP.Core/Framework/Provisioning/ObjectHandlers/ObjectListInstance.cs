@@ -21,7 +21,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             get { return "List instances"; }
         }
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ListInstances);
 
@@ -265,6 +265,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private static void CreateFieldRef(ListInfo listInfo, Field field, FieldRef fieldRef)
         {
+            XElement element = XElement.Parse(field.SchemaXml);
+
+            element.SetAttributeValue("AllowDeletion", "TRUE");
+
+            field.SchemaXml = element.ToString();
+
             var createdField = listInfo.SiteList.Fields.Add(field);
             if (!string.IsNullOrEmpty(fieldRef.DisplayName))
             {

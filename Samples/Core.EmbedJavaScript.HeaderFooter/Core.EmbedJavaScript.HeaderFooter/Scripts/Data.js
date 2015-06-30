@@ -1,5 +1,5 @@
-﻿Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Data = {
-    PropertyBag: '{"Breadcrumb": [{"title": "Home","description": "Home"},{"title": "Product Category","description": "Product Category"},{"title": "Product","description": "Product"},{"title": "Example","description": "Example"}]}',
+﻿Core.EmbedJavaScript.HeaderFooter.Data = {
+    PropertyBag: '{"Breadcrumb": [{"title": "Home","description": "Home","url":"https://github.com/OfficeDev"},{"title": "Product Category","description": "Product Category","url":"https://github.com/OfficeDev"},{"title": "Product","description": "Product","url":"https://github.com/OfficeDev"},{"title": "Example","description": "Example","url":"https://github.com/OfficeDev"}]}',
     AddHostPropertyBag: function (Item, property) {
         var context = PnPCommon.GetContext(PnPApp.AppWebUrl);
         var app = PnPCommon.GetAppContext(context, PnPApp.HostWebUrl);
@@ -32,6 +32,7 @@
         var req = $.ajax({
             url: PnPApp.AppUrlFile,
             type: "GET",
+            headers: { "Accept": "application/json; odata=verbose" },
             cache: false
         }).done(function (fileContents) {
             if (fileContents !== undefined && fileContents.length > 0) {
@@ -114,7 +115,7 @@
         newUserCustomAction.set_title("PnPGlobalBreadcrumbRibbon");
         newUserCustomAction.set_description("Global Breadcrumb and Ribbon is accessible in SP");
         newUserCustomAction.set_location('ScriptLink');
-        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js?version='+(((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1));
+        newUserCustomAction.set_scriptSrc('~SiteCollection/_catalogs/masterpage/Display Templates/PnPGlobal.js?version=' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1));
         newUserCustomAction.set_sequence(58);
         newUserCustomAction.update();
         context.executeQueryAsync(
@@ -159,7 +160,7 @@
     DeleteGetFileUrl: function () {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
-            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + _spPageContextInfo.siteServerRelativeUrl + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.HostWebUrl + "'",
+            url: PnPApp.AppWebUrl + "/_api/SP.AppContextSite(@target)/web/getfilebyserverrelativeurl('" + ((PnPApp.ServerRelativeUrl.length === 1) ? '' : PnPApp.ServerRelativeUrl) + "/_catalogs/masterpage/Display Templates/PnPGlobal.js')?@target='" + PnPApp.RootWeb + "'",
             method: "POST",
             headers: {
                 "IF-MATCH": "*",
@@ -170,7 +171,6 @@
             error: PnPCommon.NotifyError
         });
     },
-
     GetPropertieBag: function (success) {
         var executor = new SP.RequestExecutor(PnPApp.AppWebUrl);
         executor.executeAsync({
@@ -182,4 +182,4 @@
         });
     }
 }
-window.PnPData = window.Core.GlobalBreadcrumbRibbon.OfficeApp.SP.Data;
+window.PnPData = window.Core.EmbedJavaScript.HeaderFooter.Data;

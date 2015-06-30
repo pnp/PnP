@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
@@ -13,19 +14,53 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             get { return "Property bag entries"; }
         }
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_PropertyBagEntries);
 
+            var systemPropertyBagEntriesExclusions = new List<string>(new [] 
+            { 
+                "_", 
+                "vti_", 
+                "dlc_", 
+                "ecm_",
+                "profileschemaversion", 
+                "DesignPreview"
+            });
+
+            // To handle situations where the propertybag is not updated fully when applying a theme, 
+            // we need to create a new context and use that one. Reloading the propertybag does not solve this.
+            var newContext = web.Context.Clone(web.Context.Url);
+
+            web = newContext.Web;
+
             foreach (var propbagEntry in template.PropertyBagEntries)
             {
-                if (!web.PropertyBagContainsKey(propbagEntry.Key))
+                bool propExists = web.PropertyBagContainsKey(propbagEntry.Key);
+
+                if (propbagEntry.Overwrite)
                 {
-                    web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value.ToParsedString());
-                    if (propbagEntry.Indexed)
+                    var systemProp = systemPropertyBagEntriesExclusions.Any(k => propbagEntry.Key.StartsWith(k, StringComparison.OrdinalIgnoreCase));
+                    if (!systemProp || (systemProp && applyingInformation.OverwriteSystemPropertyBagValues))
                     {
-                        web.AddIndexedPropertyBagKey(propbagEntry.Key);
+                        web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value.ToParsedString());
+                        if (propbagEntry.Indexed)
+                        {
+                            web.AddIndexedPropertyBagKey(propbagEntry.Key);
+                        }
                     }
+                }
+                else
+                {
+                    if (!propExists)
+                    {
+                        web.SetPropertyBagValue(propbagEntry.Key, propbagEntry.Value.ToParsedString());
+                        if (propbagEntry.Indexed)
+                        {
+                            web.AddIndexedPropertyBagKey(propbagEntry.Key);
+                        }
+                    }
+
                 }
             }
         }
@@ -94,22 +129,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             });
             systemPropertyBagEntriesInclusions.AddRange(creationInfo.PropertyBagPropertiesToPreserve);
 
-            List<PropertyBagEntry> entriesToDelete = new List<PropertyBagEntry>();
+            var entriesToDelete = new List<PropertyBagEntry>();
 
             // Prepare the list of property bag entries that will be dropped
-            foreach (string property in systemPropertyBagEntriesExclusions)
+            foreach (var property in systemPropertyBagEntriesExclusions)
             {
                 var results = from prop in template.PropertyBagEntries
-                              where prop.Key.Contains(property)
+                              where prop.Key.StartsWith(property, StringComparison.OrdinalIgnoreCase)
                               select prop;
                 entriesToDelete.AddRange(results);
             }
 
             // Remove the property bag entries that we want to forcifully keep
-            foreach (string property in systemPropertyBagEntriesInclusions)
+            foreach (var property in systemPropertyBagEntriesInclusions)
             {
                 var results = from prop in entriesToDelete
-                              where prop.Key.Contains(property)
+                              where prop.Key.StartsWith(property, StringComparison.OrdinalIgnoreCase)
                               select prop;
                 // Drop the found elements from the delete list    
                 entriesToDelete = new List<PropertyBagEntry>(SymmetricExcept<PropertyBagEntry>(results, entriesToDelete));
@@ -136,10 +171,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             if (!_willProvision.HasValue)
             {
-                _willProvision = template.PropertyBagEntries.Any();;
+                _willProvision = template.PropertyBagEntries.Any(); ;
             }
             return _willProvision.Value;
-           
+
         }
 
         public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)

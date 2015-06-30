@@ -3,9 +3,9 @@
   <Files>
     <ProjectItemFile Source="Elements.xml" Target="Scripts\" Type="ElementManifest" />
     <ProjectItemFile Source="App.js" Target="Scripts\" Type="ElementFile" />
-    <ProjectItemFile Source="PnPGlobal.js" Target="Scripts\" Type="ElementFile" />
-    <ProjectItemFile Source="Data.js" Target="Scripts\" Type="ElementFile" />
-    <ProjectItemFile Source="Core.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="Common.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Core.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="Data.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="PnPGlobal.js" Target="Scripts\" Type="ElementFile" />
   </Files>
 </ProjectItem>

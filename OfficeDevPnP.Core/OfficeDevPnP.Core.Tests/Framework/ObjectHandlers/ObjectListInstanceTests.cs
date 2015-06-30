@@ -60,7 +60,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             {
                 TokenParser.Initialize(ctx.Web, template);
 
-                new ObjectListInstance().ProvisionObjects(ctx.Web, template);
+                new ObjectListInstance().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);

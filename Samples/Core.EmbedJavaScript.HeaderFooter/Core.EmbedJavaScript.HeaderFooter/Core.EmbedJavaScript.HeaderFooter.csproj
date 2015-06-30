@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B50EF43-03F8-402B-8D3D-C5FA2DD25800}</ProjectGuid>
+    <ProjectGuid>{6ABFAFAA-0383-479D-9FFD-081A7B8535CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Core.GlobalBreadcrumbRibbon</RootNamespace>
-    <AssemblyName>Core.GlobalBreadcrumbRibbon</AssemblyName>
+    <RootNamespace>Core.EmbedJavaScript.HeaderFooter</RootNamespace>
+    <AssemblyName>Core.EmbedJavaScript.HeaderFooter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetOfficeVersion>16.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
@@ -17,11 +17,11 @@
     <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
-    <AppFeaturePartId>{62f1936c-8cfd-4c18-927d-255315dae05a}</AppFeaturePartId>
-    <WspPartId>{6759f22c-b012-48bd-bc64-0deff21fca4b}</WspPartId>
-    <WorkflowPartId>{c7f3c059-eca2-4eb7-8985-901bd429c203}</WorkflowPartId>
-    <CspkgPartId>{28bd9aac-1c19-4d36-9bc1-99ea7915efad}</CspkgPartId>
-    <SqlPackagePartId>{78cbd51d-e696-452c-b094-91d11bba328b}</SqlPackagePartId>
+    <AppFeaturePartId>{18820891-9a1c-41e5-8d77-837b0e32c0a9}</AppFeaturePartId>
+    <WspPartId>{e18446c1-b497-46be-b62a-26ea853d5d04}</WspPartId>
+    <WorkflowPartId>{254c799d-f30f-4e5e-8096-356137769d57}</WorkflowPartId>
+    <CspkgPartId>{280abd28-8149-4bf8-a9cb-51102c1da380}</CspkgPartId>
+    <SqlPackagePartId>{87cd1838-924a-4b86-88e8-9c6bab066331}</SqlPackagePartId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,61 +45,51 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Pages\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{bbfbc9e0-1ed7-4904-8f37-887cfd79c548}</SharePointProjectItemId>
+      <SharePointProjectItemId>{4fc52bfb-77ce-4209-8c61-129c0e6801c4}</SharePointProjectItemId>
     </None>
-    <Content Include="Pages\Elements.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{78cbd51d-e696-452c-b094-91d11bba328b}</SharePointProjectItemId>
+      <SharePointProjectItemId>{87cd1838-924a-4b86-88e8-9c6bab066331}</SharePointProjectItemId>
     </None>
     <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\Core.js" />
     <Content Include="Scripts\Data.js" />
-    <Content Include="Scripts\Elements.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
     <Content Include="Scripts\PnPGlobal.js" />
     <Content Include="Scripts\_references.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{ec62ebda-88cc-46a1-942c-438765193f4f}</SharePointProjectItemId>
+      <SharePointProjectItemId>{50b965af-23cd-4e2a-b1fc-5ae18ebdae31}</SharePointProjectItemId>
     </None>
-    <Content Include="Content\Elements.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Content\Elements.xml" />
     <Content Include="Content\App.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\AppIcon.png">
       <OpcRelationship>manifest-icon</OpcRelationship>
     </Content>
-    <Content Include="Images\Elements.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Images\Elements.xml" />
     <None Include="Images\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{ea4f2c19-bf87-4711-821f-0849b94c4c47}</SharePointProjectItemId>
+      <SharePointProjectItemId>{89d3cadc-4b4c-43bc-8235-2360d502af26}</SharePointProjectItemId>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Package\Package.package">
-      <PackageId>{d46038f1-74aa-4fc6-923f-747294d0090b}</PackageId>
+      <PackageId>{ac6b7f67-3e27-4e9a-8b4b-a8308fd58ea6}</PackageId>
     </None>
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
     <None Include="Features\Feature1\Feature1.feature">
-      <FeatureId>{c67c26c6-2d7d-4d10-98bc-cf1a9b6fac78}</FeatureId>
+      <FeatureId>{92dd8978-2f31-4521-909e-7297f091d2fe}</FeatureId>
     </None>
     <None Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
-      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

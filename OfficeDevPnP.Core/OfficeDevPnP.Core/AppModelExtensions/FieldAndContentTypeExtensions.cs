@@ -430,7 +430,15 @@ namespace Microsoft.SharePoint.Client
 
                 if (fieldNode != null)
                 {
-                    var id = fieldNode.Attribute("ID").Value;
+                    string id = string.Empty;
+                    if (fieldNode.Attribute("ID") != null)
+                    {
+                        id = fieldNode.Attribute("ID").Value;
+                    }
+                    else
+                    {
+                        id = "<No ID specified in XML>";
+                    }
                     var name = fieldNode.Attribute("Name").Value;
 
                     Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
@@ -746,6 +754,18 @@ namespace Microsoft.SharePoint.Client
                 propertyLoadRequired = true;
             }
 
+            if (!contentType.IsPropertyAvailable("SchemaXml"))
+            {
+                web.Context.Load(contentType, ct => ct.SchemaXml);
+                propertyLoadRequired = true;
+            }
+
+            if (!field.IsPropertyAvailable("SchemaXml"))
+            {
+                web.Context.Load(field, f => f.SchemaXml);
+                propertyLoadRequired = true;
+            }
+
             if (propertyLoadRequired)
             {
                 web.Context.ExecuteQueryRetry();
@@ -758,6 +778,9 @@ namespace Microsoft.SharePoint.Client
             var flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
             if (flink == null)
             {
+                XElement fieldElement = XElement.Parse(field.SchemaXml);
+                fieldElement.SetAttributeValue("AllowDeletion", "TRUE"); // Default behavior when adding a field to a CT from the UI.
+                field.SchemaXml = fieldElement.ToString();
                 var fldInfo = new FieldLinkCreationInformation();
                 fldInfo.Field = field;
                 contentType.FieldLinks.Add(fldInfo);

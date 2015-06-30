@@ -11,6 +11,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
     {
         public ClientContext SiteClientContext;
         public ClientContext WebClientContext;
+        public ClientContext TenantClientContext;
         public string Url;
         public DateTime? PreviousRun;
         public bool? PreviousRunSuccessful;
@@ -25,16 +26,18 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="url">Url of the site the timer job is operating against</param>
         /// <param name="siteClientContext">ClientContext object for the root site of the site collection</param>
         /// <param name="webClientContext">ClientContext object for passed site Url</param>
+        /// <param name="tenantClientContext">ClientContext object to work with the Tenant API</param>
         /// <param name="previousRun">Datetime of the last run</param>
         /// <param name="previousRunSuccessful">Bool showing if the previous run was successful</param>
         /// <param name="previousRunVersion">Version of the timer job that was used for the previous run</param>
         /// <param name="properties">Custom keyword value collection that can be used to persist custom properties</param>
         /// <param name="configurationData">Optional timerjob configuration data</param>
-        internal TimerJobRunEventArgs(string url, ClientContext siteClientContext, ClientContext webClientContext, DateTime? previousRun, bool? previousRunSuccessful, string previousRunVersion, Dictionary<String, String> properties, string configurationData)
+        internal TimerJobRunEventArgs(string url, ClientContext siteClientContext, ClientContext webClientContext, ClientContext tenantClientContext, DateTime? previousRun, bool? previousRunSuccessful, string previousRunVersion, Dictionary<String, String> properties, string configurationData)
         {
             this.Url = url;
             this.SiteClientContext = siteClientContext;
             this.WebClientContext = webClientContext;
+            this.TenantClientContext = tenantClientContext;
             this.PreviousRun = previousRun;
             this.PreviousRunSuccessful = previousRunSuccessful;
             this.PreviousRunVersion = previousRunVersion;
@@ -49,7 +52,7 @@ namespace OfficeDevPnP.Core.Framework.TimerJobs
         /// <param name="ccSite">ClientContext object for the root site of the site collection</param>
         /// <param name="ccWeb">ClientContext object for passed site Url</param>
         /// <param name="configurationData">Configuration data</param>
-        internal TimerJobRunEventArgs(string url, ClientContext ccSite, ClientContext ccWeb, string configurationData) : this (url, ccSite, ccWeb, null, null, null, null, configurationData)
+        internal TimerJobRunEventArgs(string url, ClientContext ccSite, ClientContext ccWeb, ClientContext ccTenant, string configurationData) : this (url, ccSite, ccWeb, ccTenant, null, null, null, null, configurationData)
         {
         }
 

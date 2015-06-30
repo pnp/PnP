@@ -687,4 +687,7 @@
   <data name="Provisioning_ObjectHandlers_ListInstancesDataRows" xml:space="preserve">
     <value>Data Rows</value>
   </data>
+  <data name="TimerJob_Authentication_TenantAdmin" xml:space="preserve">
+    <value>Tenant admin site set to {0}.</value>
+  </data>
 </root>

@@ -11,16 +11,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Value { get; set; }
 
         public bool Indexed { get; set; }
+
+        public bool Overwrite { get; set; }
         #endregion
 
         #region Comparison code
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}",
+            return (String.Format("{0}|{1}|{2}|{3}",
                 this.Key,
                 this.Value,
-                this.Indexed).GetHashCode());
+                this.Indexed,
+                this.Overwrite).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -36,7 +39,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             return (this.Key == other.Key &&
                 this.Value == other.Value &&
-                this.Indexed == other.Indexed);
+                this.Indexed == other.Indexed &&
+                this.Overwrite == other.Overwrite);
         }
 
         #endregion

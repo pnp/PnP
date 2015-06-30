@@ -97,7 +97,7 @@ alert(""Hello!"");
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectPages().ProvisionObjects(ctx.Web, template);
+                new ObjectPages().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 ctx.Load(ctx.Web, w => w.ServerRelativeUrl);
                 ctx.ExecuteQueryRetry();
