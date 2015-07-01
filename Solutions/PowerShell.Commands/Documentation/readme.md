@@ -168,6 +168,8 @@ Cmdlet|Description
 **[Add&#8209;SPOFolder](AddSPOFolder.md)** |Creates a folder within a parent folder
 **[Get&#8209;SPOHomePage](GetSPOHomePage.md)** |Returns the URL to the home page
 **[Set&#8209;SPOIndexedProperties](SetSPOIndexedProperties.md)** |Marks values of the propertybag to be indexed by search. Notice that this will overwrite the existing flags, e.g. only the properties you define with the cmdlet will be indexed.
+**[Remove&#8209;SPOIndexedProperty](RemoveSPOIndexedProperty.md)** |Removes a key from propertybag to be indexed by search. The key and it's value retain in the propertybag, however it will not be indexed anymore.
+**[Add&#8209;SPOIndexedProperty](AddSPOIndexedProperty.md)** |Marks the value of the propertybag key to be indexed by search.
 **[Get&#8209;SPOIndexedPropertyKeys](GetSPOIndexedPropertyKeys.md)** |Returns the keys of the property bag values that have been marked for indexing by search
 **[Get&#8209;SPOMasterPage](GetSPOMasterPage.md)** |Returns the URLS of the default Master Page and the custom Master Page.
 **[Get&#8209;SPOPropertyBag](GetSPOPropertyBag.md)** |Returns the property bag values.
