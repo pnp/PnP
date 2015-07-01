@@ -235,12 +235,12 @@ namespace Microsoft.SharePoint.Client
 
             var result = deploymentService.SaveDefinition(def);
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (publish)
             {
                 deploymentService.PublishDefinition(result.Value);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             return result.Value;
         }
