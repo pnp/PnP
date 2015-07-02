@@ -28,56 +28,98 @@
         
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
+        $scope.siteConfiguration.responsibilities = { read: false };
       
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
 
+        //Form validation object
+        $scope.allFormsValid = {
+            readAndAccept: function () { return $scope.siteConfiguration.responsibilities.read; },
+            siteIntendedUse: false,
+            siteDetails: false,
+            sitePrivacy: false,
+            siteTemplate: function () { return $scope.siteConfiguration.template == null; }
+        };
+
+        //Watching the forms of the specific views
+        $scope.$watch('formWizard.$valid', function () {
+            switch ($scope.getCurrentStep()) {
+                case 3:
+                    $scope.allFormsValid.siteIntendedUse = $scope.formWizard.siteintendeduseform == null ? false : $scope.formWizard.siteintendeduseform.$valid;
+                    break;
+                case 5:
+                    $scope.allFormsValid.siteDetails = $scope.formWizard.sitedetailsform == null ? false : $scope.formWizard.sitedetailsform.$valid;
+                    break;
+                case 7:
+                    $scope.allFormsValid.sitePrivacy = $scope.formWizard.siteprivacyform == null ? false : $scope.formWizard.siteprivacyform.$valid;
+                    break;
+            }
+
+        });
+
+        //submitcheck
+        $scope.submitDenied = false;
+
+
         $scope.finished = function () {
-            //  save the site request when the wizard is complete
 
-            var siteRequest = new Object();
-            siteRequest.title = $scope.siteConfiguration.details.title;
-            siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
-            siteRequest.description = $scope.siteConfiguration.details.description;
-            siteRequest.lcid = $scope.siteConfiguration.language;
-            siteRequest.timeZoneId = $scope.siteConfiguration.timezone;
-            siteRequest.primaryOwner = $scope.siteConfiguration.primaryOwner;
-            siteRequest.additionalAdministrators = $scope.siteConfiguration.secondaryOwners;
-            siteRequest.sharePointOnPremises = $scope.siteConfiguration.spOnPrem;
-            siteRequest.template = $scope.siteConfiguration.template.title;
-            siteRequest.sitePolicy = $scope.siteConfiguration.privacy.classification;
-            siteRequest.businessCase = $scope.siteConfiguration.purpose.description;
-            siteRequest.enableExternalSharing = $scope.siteConfiguration.externalSharing
-    
-            //property bag entries will enumerate all properties defined in siteConfiguration.properties
-            var props = {};
-            angular.forEach($scope.siteConfiguration.properties, function (value, key) {
-                var data = value;
-                var propData = "";
-                if ($.isArray(data)) {
-                    angular.forEach(data, function (value, key) {
-                        if (propData == "") {
-                            propData = value;
-                        }
-                        else {
-                            propData = propData + "," + value;
-                        }
-                    });
+            //checks if all mandatory forms are valid before submit
+            if (!$scope.allFormsValid.readAndAccept() ||
+                !$scope.allFormsValid.siteIntendedUse ||
+                !$scope.allFormsValid.siteDetails ||
+                !$scope.allFormsValid.sitePrivacy ||
+                $scope.allFormsValid.siteTemplate()) {
 
-                    props["_site_props_" + key] = propData;
-                }
-                else {
-                    props["_site_props_" + key] = data;
-                }
-            });
+                $scope.submitDenied = true;
+            }
+            else {
 
-            //add properties to javaScript object
-            siteRequest.properties = props;
+                //  save the site request when the wizard is complete
 
-            //process the siterequest
-            processNewSiteRequest(siteRequest);
-          
+                var siteRequest = new Object();
+                siteRequest.title = $scope.siteConfiguration.details.title;
+                siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
+                siteRequest.description = $scope.siteConfiguration.details.description;
+                siteRequest.lcid = $scope.siteConfiguration.language;
+                siteRequest.timeZoneId = $scope.siteConfiguration.timezone;
+                siteRequest.primaryOwner = $scope.siteConfiguration.primaryOwner;
+                siteRequest.additionalAdministrators = $scope.siteConfiguration.secondaryOwners;
+                siteRequest.sharePointOnPremises = $scope.siteConfiguration.spOnPrem;
+                siteRequest.template = $scope.siteConfiguration.template.title;
+                siteRequest.sitePolicy = $scope.siteConfiguration.privacy.classification;
+                siteRequest.businessCase = $scope.siteConfiguration.purpose.description;
+                siteRequest.enableExternalSharing = $scope.siteConfiguration.externalSharing
+
+                //property bag entries will enumerate all properties defined in siteConfiguration.properties
+                var props = {};
+                angular.forEach($scope.siteConfiguration.properties, function (value, key) {
+                    var data = value;
+                    var propData = "";
+                    if ($.isArray(data)) {
+                        angular.forEach(data, function (value, key) {
+                            if (propData == "") {
+                                propData = value;
+                            }
+                            else {
+                                propData = propData + "," + value;
+                            }
+                        });
+
+                        props["_site_props_" + key] = propData;
+                    }
+                    else {
+                        props["_site_props_" + key] = data;
+                    }
+                });
+
+                //add properties to javaScript object
+                siteRequest.properties = props;
+
+                //process the siterequest
+                processNewSiteRequest(siteRequest);
+            }
         };
 
         $scope.interacted = function (field) {
