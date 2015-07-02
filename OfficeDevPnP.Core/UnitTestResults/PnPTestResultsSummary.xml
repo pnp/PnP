@@ -2,6 +2,32 @@
   <PnPTestSummary>
     <PnPConfigurationToTest>OnlineAppOnly</PnPConfigurationToTest>
     <TestDate>Thursday, July 2, 2015</TestDate>
+    <TestTime>12:39 PM</TestTime>
+    <PnPBranch>dev</PnPBranch>
+    <VSBuildConfiguration>debug</VSBuildConfiguration>
+    <NumberOfTests>3</NumberOfTests>
+    <ElapsedTime>0h 0m 1s</ElapsedTime>
+    <FailedTests>1</FailedTests>
+    <SkippedTests>0</SkippedTests>
+    <PassedTests>2</PassedTests>
+    <MDResultFile>c:\temp\pnpbuildtemp\PnPUnitTestResults-20150702-OnlineAppOnly-635714447851560431.md</MDResultFile>
+  </PnPTestSummary>
+  <PnPTestSummary>
+    <PnPConfigurationToTest>OnlineAppOnly</PnPConfigurationToTest>
+    <TestDate>Thursday, July 2, 2015</TestDate>
+    <TestTime>12:36 PM</TestTime>
+    <PnPBranch>dev</PnPBranch>
+    <VSBuildConfiguration>debug</VSBuildConfiguration>
+    <NumberOfTests>3</NumberOfTests>
+    <ElapsedTime>0h 0m 1s</ElapsedTime>
+    <FailedTests>1</FailedTests>
+    <SkippedTests>0</SkippedTests>
+    <PassedTests>2</PassedTests>
+    <MDResultFile>c:\temp\pnpbuildtemp\PnPUnitTestResults-20150702-OnlineAppOnly-635714446075820707.md</MDResultFile>
+  </PnPTestSummary>
+  <PnPTestSummary>
+    <PnPConfigurationToTest>OnlineAppOnly</PnPConfigurationToTest>
+    <TestDate>Thursday, July 2, 2015</TestDate>
     <TestTime>11:37 AM</TestTime>
     <PnPBranch>dev</PnPBranch>
     <VSBuildConfiguration>debug</VSBuildConfiguration>
