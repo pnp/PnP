@@ -8,7 +8,7 @@ Parameter | Value
 ----------|------
 PnP Unit Test configuration | OnlineAppOnly
 Test run date | Thursday, July 2, 2015
-Test run time | 10:32 AM
+Test run time | 12:49 PM
 PnP branch | dev
 Visual Studio build configuration | debug
 
@@ -33,10 +33,10 @@ Error |
 <tr>
 <td><b>Test name</b></td>
 <td><b>Test outcome</b></td>
-<td><b>Durantion</b></td>
+<td><b>Duration</b></td>
 <td><b>Message</b></td>
 </tr>
-<tr><td>OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter</td><td>Failed</td><td>0h 0m 1s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter threw exception: 
+<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter threw exception: 
 Newtonsoft.Json.JsonSerializationException: XmlNodeConverter can only convert JSON that begins with an object.</td></tr>
 
 </table>
@@ -47,7 +47,7 @@ Newtonsoft.Json.JsonSerializationException: XmlNodeConverter can only convert JS
 <tr>
 <td><b>Test name</b></td>
 <td><b>Test outcome</b></td>
-<td><b>Durantion</b></td>
+<td><b>Duration</b></td>
 <td><b>Message</b></td>
 </tr>
 
@@ -59,10 +59,10 @@ Newtonsoft.Json.JsonSerializationException: XmlNodeConverter can only convert JS
 <tr>
 <td><b>Test name</b></td>
 <td><b>Test outcome</b></td>
-<td><b>Durantion</b></td>
+<td><b>Duration</b></td>
 </tr>
-<tr><td>OfficeDevPnP.Core.Utilities.Tests.JsonUtilityTests.DeserializeListTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>OfficeDevPnP.Core.Utilities.Tests.JsonUtilityTests.DeserializeListIsNotFixedSizeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Utilities.Tests.JsonUtilityTests.DeserializeListTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Utilities.Tests.JsonUtilityTests.DeserializeListIsNotFixedSizeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 
 </table>
 
