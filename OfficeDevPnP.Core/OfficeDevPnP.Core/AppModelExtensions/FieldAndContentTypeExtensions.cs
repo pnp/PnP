@@ -1317,7 +1317,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.ContentTypeExistsByName(contentType.Name))
                 return;
             list.RemoveContentTypeByName(contentType.Name);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>

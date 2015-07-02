@@ -298,7 +298,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         tg => tg.Id,
                         tg => tg.Description,
                         tg => tg.TermSets.IncludeWithDefaultProperties(ts => ts.CustomSortOrder)));
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     termGroups = termStore.Groups.ToList();
                 }
                 else

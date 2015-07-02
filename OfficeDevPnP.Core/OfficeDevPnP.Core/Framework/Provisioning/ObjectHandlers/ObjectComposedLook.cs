@@ -116,7 +116,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 #endif
             if (executeQueryNeeded)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             // Information coming from the site
