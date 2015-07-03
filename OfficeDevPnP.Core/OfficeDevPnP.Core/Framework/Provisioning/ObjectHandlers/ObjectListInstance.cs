@@ -106,24 +106,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 {
                     if (listInfo.TemplateList.Fields.Any())
                     {
-                        foreach (var field in listInfo.TemplateList.Fields)
-                        {
-                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
-                            var id = fieldElement.Attribute("ID").Value;
-
-                            Guid fieldGuid;
-                            if (!Guid.TryParse(id, out fieldGuid)) continue;
-
-                            var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
-                            if (fieldFromList == null)
-                            {
-                                CreateField(fieldElement, listInfo);
-                            }
-                            else
-                            {
-                                UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
-                            }
-                        }
+                        ProcessListFields(web, listInfo, false);
+                        ProcessListFields(web, listInfo, true);
                     }
                     listInfo.SiteList.Update();
                     web.Context.ExecuteQueryRetry();
@@ -235,6 +219,31 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
+            }
+        }
+
+        private void ProcessListFields(Web web, ListInfo listInfo, bool typeIsCalculated)
+        {
+            foreach (var field in listInfo.TemplateList.Fields)
+            {
+                var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                var type = fieldElement.Attribute("Type").Value;
+                if (type.Equals("Calculated") && typeIsCalculated.Equals(false)) continue;
+                if (!type.Equals("Calculated") && typeIsCalculated) continue;
+
+                var id = fieldElement.Attribute("ID").Value;
+                Guid fieldGuid;
+                if (!Guid.TryParse(id, out fieldGuid)) continue;
+
+                var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
+                if (fieldFromList == null)
+                {
+                    CreateField(fieldElement, listInfo);
+                }
+                else
+                {
+                    UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
+                }
             }
         }
 
