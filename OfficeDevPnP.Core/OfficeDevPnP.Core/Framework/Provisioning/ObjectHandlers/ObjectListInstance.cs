@@ -109,6 +109,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
                             var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            if (fieldElement.Attribute("ID") == null)
+                            {
+                                throw new Exception(string.Format("Field schema has no ID: {0}",field.SchemaXml));
+                            }
                             var id = fieldElement.Attribute("ID").Value;
 
                             Guid fieldGuid;
@@ -295,6 +299,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var fieldXml = fieldElement.ToString();
             listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+            listInfo.SiteList.Context.ExecuteQueryRetry();
         }
 
         private void UpdateField(ClientObject web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement, Field existingField)
