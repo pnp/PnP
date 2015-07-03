@@ -111,21 +111,26 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
                             if (fieldElement.Attribute("ID") == null)
                             {
-                                throw new Exception(string.Format("Field schema has no ID: {0}",field.SchemaXml));
+                                throw new Exception(string.Format("Field schema has no ID attribute: {0}",field.SchemaXml));
                             }
                             var id = fieldElement.Attribute("ID").Value;
 
                             Guid fieldGuid;
-                            if (!Guid.TryParse(id, out fieldGuid)) continue;
-
-                            var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
-                            if (fieldFromList == null)
+                            if (!Guid.TryParse(id, out fieldGuid))
                             {
-                                CreateField(fieldElement, listInfo);
+                                throw new Exception(string.Format("ID for field is not a valid Guid", field.SchemaXml));
                             }
                             else
                             {
-                                UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
+                                var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
+                                if (fieldFromList == null)
+                                {
+                                    CreateField(fieldElement, listInfo);
+                                }
+                                else
+                                {
+                                    UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
+                                }
                             }
                         }
                     }
