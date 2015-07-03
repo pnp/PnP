@@ -10,7 +10,7 @@ namespace Provisioning.UX.AppWeb
 {
     public class ObjectMapper
     {
-        public static SiteRequestInformation ToSiteRequestInformation(SiteRequest request)
+        public static SiteInformation ToSiteRequestInformation(SiteRequest request)
         {
             var _owner = new SiteUser()
             {
@@ -28,7 +28,7 @@ namespace Provisioning.UX.AppWeb
                 }
             }
 
-            var _newRequest = new SiteRequestInformation();
+            var _newRequest = new SiteInformation();
             _newRequest.Title = request.Title;
             _newRequest.Description = request.Description;
             _newRequest.Url = request.Url;
@@ -45,7 +45,7 @@ namespace Provisioning.UX.AppWeb
             if(request.Properties != null)
             {
                 //Serialize Property Bag Entries
-                _newRequest.PropertiesJSON = JsonConvert.SerializeObject(request.Properties);
+                _newRequest.SiteMetadataJson = JsonConvert.SerializeObject(request.Properties);
             }
             return _newRequest;
         }

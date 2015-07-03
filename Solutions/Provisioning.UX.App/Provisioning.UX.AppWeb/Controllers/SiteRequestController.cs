@@ -47,7 +47,7 @@ namespace Provisioning.UX.AppWeb.Controllers
                 
                 }
                 else{
-                    return Request.CreateResponse<SiteRequestInformation>(HttpStatusCode.OK, _siteRequest);
+                    return Request.CreateResponse<SiteInformation>(HttpStatusCode.OK, _siteRequest);
                 }
                
             }
@@ -58,7 +58,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(JsonException _ex)
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
-                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                Log.Error("SiteRequestController.GetSiteRequest",
                      "There was an error processing the request. Error Message {0} Error Stack {1}",
                      _ex.Message,
                      _ex);
@@ -68,7 +68,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch (Exception _ex)
             {
                 var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
-                Log.Error("SiteRequestController.ValidateNewSiteRequestUrl",
+                Log.Error("SiteRequestController.GetSiteRequest",
                     "There was an error processing your request. Error Message {0} Error Stack {1}",
                     _ex.Message,
                     _ex);

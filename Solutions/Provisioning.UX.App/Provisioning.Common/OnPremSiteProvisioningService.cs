@@ -40,7 +40,7 @@ namespace Provisioning.Common
         /// so we have to create them.
         /// </summary>
         /// <param name="properties"></param>
-        public virtual void HandleDefaultGroups(SiteRequestInformation properties)
+        public virtual void HandleDefaultGroups(SiteInformation properties)
         {            
             string _ownerGroupDisplayName =string.Format(PCResources.Site_Web_OwnerGroup_Title, properties.Title);
             string _memberGroupDisplayName = string.Format(PCResources.Site_Web_MemberGroup_Title, properties.Title);
@@ -98,7 +98,7 @@ namespace Provisioning.Common
 
         }
 
-        public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
+        public override void CreateSiteCollection(SiteInformation siteRequest, Template template)
         {
            Log.Info("Provisioning.Common.OnPremSiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             
@@ -164,7 +164,7 @@ namespace Provisioning.Common
         /// This is not supported in on-premises builds.
         /// </summary>
         /// <param name="url"></param>
-        public override void SetExternalSharing(SiteRequestInformation siteInfo)
+        public override void SetExternalSharing(SiteInformation siteInfo)
         {
             Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
             return;

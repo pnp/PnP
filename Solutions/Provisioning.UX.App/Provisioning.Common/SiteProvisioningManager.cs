@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
@@ -25,7 +24,7 @@ namespace Provisioning.Common
         const string CONTAINERSTRING_KEY = "Container";
         #endregion
 
-        public SiteProvisioningManager(SiteRequestInformation siteRequest, Template template)
+        public SiteProvisioningManager(SiteInformation siteRequest, Template template)
         {
             if (template.SharePointOnPremises)
             {
@@ -42,7 +41,7 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="siteRequest">The SiteRequest</param>
         /// <param name="template">The Template</param>
-        public void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
+        public void CreateSiteCollection(SiteInformation siteRequest, Template template)
         {
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
@@ -59,7 +58,7 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
-        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
             try
             {
@@ -72,7 +71,6 @@ namespace Provisioning.Common
             }
             catch(Exception _ex)
             {
-                //TODO RESOURCE FILES
                 var _message =string.Format("Error Occured when applying the template: {0}", _ex.Message);
                 throw new ProvisioningTemplateException(_message, _ex);
             }

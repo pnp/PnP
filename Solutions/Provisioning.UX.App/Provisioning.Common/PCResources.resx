@@ -154,7 +154,7 @@
     <value>There was an error loading Provisioning Connector. Exception {0}"</value>
   </data>
   <data name="SiteCreation_Creation_Failure" xml:space="preserve">
-    <value>An Error occured occured while creatingt the site collection {0}. The Error is {1}. Inner Exception {2}</value>
+    <value>An Error occured occured while creating the site collection {0}. The Error is {1}. Inner Exception {2}</value>
   </data>
   <data name="SiteCreation_Creation_Starting" xml:space="preserve">
     <value>Creating Site Collection with url {0}</value>

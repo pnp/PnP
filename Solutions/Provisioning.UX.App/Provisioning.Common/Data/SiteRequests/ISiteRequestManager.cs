@@ -12,33 +12,33 @@ namespace Provisioning.Common.Data.SiteRequests
         /// Creates a New SharePoint Site Request
         /// </summary>
         /// <param name="siteRequest">The domain object for the site request</param>
-        void CreateNewSiteRequest(SiteRequestInformation siteRequest);
+        void CreateNewSiteRequest(SiteInformation siteRequest);
 
         /// <summary>
         /// Returns a Site Request from the site repository
         /// </summary>
         /// <param name="url">The Url of the site</param>
         /// <returns>A site Request Object or NULL</returns>
-        SiteRequestInformation GetSiteRequestByUrl(string url);
+        SiteInformation GetSiteRequestByUrl(string url);
 
         /// <summary>
         /// Returns a Collection of Requests by Users.
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        ICollection<SiteRequestInformation> GetOwnerRequests(string email);
+        ICollection<SiteInformation> GetOwnerRequests(string email);
 
         /// <summary>
         /// Returns a collection of all new Site Requests
         /// </summary>
         /// <returns>Will return a collection of new SiteRequests or an empty collection will be returned</returns>
-        ICollection<SiteRequestInformation> GetNewRequests();
+        ICollection<SiteInformation> GetNewRequests();
 
         /// <summary>
         /// Returns a collection of all Approved Site Requests
         /// </summary>
         /// <returns>Will return a collection of new SiteRequests or an empty collection will be returned</returns>
-        ICollection<SiteRequestInformation> GetApprovedRequests();
+        ICollection<SiteInformation> GetApprovedRequests();
 
         /// <summary>
         /// Returns if there is an existing site request

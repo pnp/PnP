@@ -182,9 +182,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// </summary>
         /// <param name="camlQuery">Query Query to Execute</param>
         /// <returns></returns>
-        private ICollection<SiteRequestInformation> GetSiteRequestsByCaml(string camlQuery)
+        private ICollection<SiteInformation> GetSiteRequestsByCaml(string camlQuery)
         {   
-            List<SiteRequestInformation> _siteRequests = new List<SiteRequestInformation>();
+            List<SiteInformation> _siteRequests = new List<SiteInformation>();
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
@@ -231,7 +231,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
                 foreach (ListItem _item in _listItemCollection)
                 {
-                    var _site = new SiteRequestInformation()
+                    var _site = new SiteInformation()
                     {
                         Title = this.BaseSet(_item, SiteRequestFields.TITLE),
                         Description = this.BaseSet(_item, SiteRequestFields.DESCRIPTION_NAME),
@@ -246,7 +246,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
                         SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
                         BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
-                        PropertiesJSON = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
+                        SiteMetadataJson = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
                         RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
                     };
                     _siteRequests.Add(_site);
@@ -255,9 +255,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _siteRequests;
         }
 
-        private SiteRequestInformation GetSiteRequestByCaml(string camlQuery, string filter)
+        private SiteInformation GetSiteRequestByCaml(string camlQuery, string filter)
         {
-            SiteRequestInformation _siteRequest = null;
+            SiteInformation _siteRequest = null;
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
@@ -309,7 +309,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 {
                     ListItem _item = _listItemCollection.First();
 
-                    _siteRequest = new SiteRequestInformation()
+                    _siteRequest = new SiteInformation()
                     {
                         Title = this.BaseSet(_item, SiteRequestFields.TITLE),
                         Description = this.BaseSet(_item, SiteRequestFields.DESCRIPTION_NAME),
@@ -324,7 +324,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                         TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
                         SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
                         BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
-                        PropertiesJSON = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
+                        SiteMetadataJson = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
                         RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
                     };
                 }
@@ -373,9 +373,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         #endregion
 
         #region ISiteRequestManager Members
-        public ICollection<SiteRequestInformation> GetOwnerRequests(string email)
+        public ICollection<SiteInformation> GetOwnerRequests(string email)
         {  
-            ICollection<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            ICollection<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
@@ -407,7 +407,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _returnResults;
         }
 
-        public void CreateNewSiteRequest(SiteRequestInformation siteRequest)
+        public void CreateNewSiteRequest(SiteInformation siteRequest)
         {
             UsingContext(ctx =>
             {
@@ -431,7 +431,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 _record[SiteRequestFields.EXTERNALSHARING_NAME] = siteRequest.EnableExternalSharing;
                 _record[SiteRequestFields.ONPREM_REQUEST_NAME] = siteRequest.SharePointOnPremises;
                 _record[SiteRequestFields.BC_NAME] = siteRequest.BusinessCase;
-                _record[SiteRequestFields.PROPS_NAME] = siteRequest.PropertiesJSON;
+                _record[SiteRequestFields.PROPS_NAME] = siteRequest.SiteMetadataJson;
                 //If Settings are set to autoapprove then automatically approve the requests
                 if(_manager.GetAppSettings().AutoApprove) 
                 {
@@ -472,17 +472,17 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             );
         }
 
-        public SiteRequestInformation GetSiteRequestByUrl(string url)
+        public SiteInformation GetSiteRequestByUrl(string url)
         {
             return this.GetSiteRequestByCaml(CAML_GETREQUEST_BY_URL, url);
         }
 
-        public ICollection<SiteRequestInformation> GetNewRequests()
+        public ICollection<SiteInformation> GetNewRequests()
         {
             return this.GetSiteRequestsByCaml(CAML_NEWREQUESTS);
         }
 
-        public ICollection<SiteRequestInformation> GetApprovedRequests()
+        public ICollection<SiteInformation> GetApprovedRequests()
         {
             return this.GetSiteRequestsByCaml(CAML_APPROVEDREQUESTS);
         }

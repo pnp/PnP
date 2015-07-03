@@ -34,7 +34,7 @@ namespace Provisioning.Common
         }
         #endregion
      
-        public override void CreateSiteCollection(SiteRequestInformation siteRequest, Template template)
+        public override void CreateSiteCollection(SiteInformation siteRequest, Template template)
         {
            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             UsingContext(ctx =>
@@ -89,7 +89,7 @@ namespace Provisioning.Common
         /// 
         /// </summary>
         /// <param name="siteInfo"></param>
-        public override void SetExternalSharing(SiteRequestInformation siteInfo)
+        public override void SetExternalSharing(SiteInformation siteInfo)
         {
             UsingContext(ctx =>
             {
@@ -116,13 +116,13 @@ namespace Provisioning.Common
                         _siteProps.SharingCapability = _targetSharingCapability;
                         _siteProps.Update();
                         ctx.ExecuteQuery();
-                       Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successful, siteInfo.Url);
+                        Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Successful, siteInfo.Url);
                     }
                    
                 }
                 catch(Exception _ex)
                 {
-                   Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
+                    Log.Info("Provisioning.Common.Office365SiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_Exception, siteInfo.Url, _ex);
                 }
              
             });

@@ -688,7 +688,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         f => f.InternalName,
                         f => f.Required)));
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in lists.Where(l => l.Hidden == false))
             {
                 ListInstance baseTemplateList = null;
@@ -731,7 +731,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 foreach (var ct in item.ContentTypes)
                 {
                     web.Context.Load(ct, c => c.Parent);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     if (ct.Parent != null)
                     {
                         // Add the parent to the list of content types
@@ -864,7 +864,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var collList = web.Lists;
                 var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
 
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 _willExtract = lists.Any();
             }

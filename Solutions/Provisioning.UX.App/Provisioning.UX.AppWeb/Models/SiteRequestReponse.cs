@@ -18,7 +18,7 @@ namespace Provisioning.UX.AppWeb.Models
 
 
         [DataMember(Name = "siteRequest")]
-        public SiteRequestInformation SiteRequest { get; set; }
+        public SiteInformation SiteRequest { get; set; }
         #endregion
     }
 }
