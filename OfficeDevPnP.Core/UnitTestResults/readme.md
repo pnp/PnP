@@ -4,6 +4,10 @@ Below table is showing the last 100 test run results.
 
 Configuration | Date | Time | Branch | Build | Passed | Failed | Skipped
 :-----|:-----|:----|:----:|:----:|:----:|:----:|:----:|
+ [OnlineAppOnly](PnPUnitTestResults-20150704-OnlineAppOnly-635716510953643453.md) | Saturday, July 4, 2015 | 9:58 PM | dev | debug | 207 | 11 | 29
+ [OnlineCred](PnPUnitTestResults-20150704-OnlineCred-635716496882188458.md) | Saturday, July 4, 2015 | 9:34 PM | dev | debug | 207 | 37 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150704-OnPremAppOnly-635716486805565736.md) | Saturday, July 4, 2015 | 9:18 PM | dev | debug15 | 189 | 7 | 43
+ [OnPremCred](PnPUnitTestResults-20150704-OnPremCred-635716476406408079.md) | Saturday, July 4, 2015 | 9:00 PM | dev | debug15 | 215 | 7 | 17
  [OnlineAppOnly](PnPUnitTestResults-20150704-OnlineAppOnly-635716393837208717.md) | Saturday, July 4, 2015 | 6:43 PM | dev | debug | 207 | 11 | 29
  [OnlineCred](PnPUnitTestResults-20150704-OnlineCred-635716379141616312.md) | Saturday, July 4, 2015 | 6:18 PM | dev | debug | 207 | 37 | 3
  [OnPremAppOnly](PnPUnitTestResults-20150704-OnPremAppOnly-635716369156373331.md) | Saturday, July 4, 2015 | 6:01 PM | dev | debug15 | 189 | 7 | 43
