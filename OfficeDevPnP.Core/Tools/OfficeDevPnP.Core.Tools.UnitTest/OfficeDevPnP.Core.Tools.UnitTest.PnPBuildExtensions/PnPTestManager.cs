@@ -127,9 +127,9 @@ namespace OfficeDevPnP.Core.Tools.UnitTest.PnPBuildExtensions
                                                                      result.SelectSingleNode("TestTime").InnerText,
                                                                      result.SelectSingleNode("PnPBranch").InnerText,
                                                                      result.SelectSingleNode("VSBuildConfiguration").InnerText,
+                                                                     result.SelectSingleNode("PassedTests").InnerText,
                                                                      result.SelectSingleNode("FailedTests").InnerText,
-                                                                     result.SelectSingleNode("SkippedTests").InnerText,
-                                                                     result.SelectSingleNode("PassedTests").InnerText));
+                                                                     result.SelectSingleNode("SkippedTests").InnerText));
                     }
                     else
                     {
