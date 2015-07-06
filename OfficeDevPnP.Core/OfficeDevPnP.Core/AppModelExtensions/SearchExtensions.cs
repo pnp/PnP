@@ -29,7 +29,7 @@ namespace Microsoft.SharePoint.Client
             SearchObjectOwner owner = new SearchObjectOwner(context, searchSettingsExportLevel);
 
             ClientResult<string> configresults = sconfig.ExportSearchConfiguration(owner);
-            context.ExecuteQuery();
+            context.ExecuteQueryRetry();
 
             if (configresults.Value != null)
             {

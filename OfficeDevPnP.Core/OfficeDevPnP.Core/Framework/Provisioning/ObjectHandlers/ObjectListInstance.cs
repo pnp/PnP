@@ -109,19 +109,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
                             var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            if (fieldElement.Attribute("ID") == null)
+                            {
+                                throw new Exception(string.Format("Field schema has no ID attribute: {0}",field.SchemaXml));
+                            }
                             var id = fieldElement.Attribute("ID").Value;
 
                             Guid fieldGuid;
-                            if (!Guid.TryParse(id, out fieldGuid)) continue;
-
-                            var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
-                            if (fieldFromList == null)
+                            if (!Guid.TryParse(id, out fieldGuid))
                             {
-                                CreateField(fieldElement, listInfo);
+                                throw new Exception(string.Format("ID for field is not a valid Guid: {0}", id));
                             }
                             else
                             {
-                                UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
+                                var fieldFromList = listInfo.SiteList.GetFieldById<Field>(fieldGuid);
+                                if (fieldFromList == null)
+                                {
+                                    CreateField(fieldElement, listInfo);
+                                }
+                                else
+                                {
+                                    UpdateField(web, listInfo, fieldGuid, fieldElement, fieldFromList);
+                                }
                             }
                         }
                     }
@@ -294,7 +303,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             var fieldXml = fieldElement.ToString();
-            listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+            listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.AddFieldInternalNameHint);
+            listInfo.SiteList.Context.ExecuteQueryRetry();
         }
 
         private void UpdateField(ClientObject web, ListInfo listInfo, Guid fieldId, XElement templateFieldElement, Field existingField)
@@ -688,7 +698,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         f => f.InternalName,
                         f => f.Required)));
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var item in lists.Where(l => l.Hidden == false))
             {
                 ListInstance baseTemplateList = null;
@@ -731,7 +741,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 foreach (var ct in item.ContentTypes)
                 {
                     web.Context.Load(ct, c => c.Parent);
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                     if (ct.Parent != null)
                     {
                         // Add the parent to the list of content types
@@ -864,7 +874,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 var collList = web.Lists;
                 var lists = web.Context.LoadQuery(collList.Where(l => l.Hidden == false));
 
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 _willExtract = lists.Any();
             }
