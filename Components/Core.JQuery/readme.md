@@ -29,7 +29,7 @@ Version  | Date | Comments
 # sp.addChrome.js #
 The document picker control makes it possible to browse one or more document libraries and select documents. An example would be a provider hosted application in which create PDF's from existing documents: you could then use this document picker control to select the needed documents. Below picture shows the control on the page:
 
-[Full details](/sp.addChrome.js.md)
+[Full details](sp.addChrome.js.md)
 
 
 
