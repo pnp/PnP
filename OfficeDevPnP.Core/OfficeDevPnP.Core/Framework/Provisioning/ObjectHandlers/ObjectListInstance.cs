@@ -118,7 +118,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             Guid fieldGuid;
                             if (!Guid.TryParse(id, out fieldGuid))
                             {
-                                throw new Exception(string.Format("ID for field is not a valid Guid", field.SchemaXml));
+                                throw new Exception(string.Format("ID for field is not a valid Guid: {0}", id));
                             }
                             else
                             {
@@ -303,7 +303,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             var fieldXml = fieldElement.ToString();
-            listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+            listInfo.SiteList.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.AddFieldInternalNameHint);
             listInfo.SiteList.Context.ExecuteQueryRetry();
         }
 
