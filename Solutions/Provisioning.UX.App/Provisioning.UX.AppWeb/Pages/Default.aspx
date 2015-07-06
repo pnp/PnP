@@ -47,6 +47,7 @@
     <script src="../scripts/wizard/modules/common.js"></script>
     <script src="../scripts/wizard/modules/logger.js"></script>
     <script src="../scripts/wizard/modules/spinner.js"></script>
+    <script src="../scripts/wizard/modules/filter.js"></script>
 
     <!-- common.bootstrap Modules -->
     <script src="../scripts/bootstrap.dialog.js"></script>
