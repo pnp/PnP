@@ -1,39 +1,34 @@
 ﻿<div class="modal-right-heading">
     <h1>Site Details</h1>
 </div>
+<div class="modal-right-body" ng-form="sitedetailsform">
 
-<div class="modal-right-body">
-
-    <div class="form-group has-feedback" ng-class="{ 'has-error' : formWizard.detailsName.$invalid && !formWizard.detailsName.$pristine, 'has-success' : formWizard.detailsName.$valid && !formWizard.detailsName.$pristine }">
+    <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsName.$invalid && !sitedetailsform.detailsName.$pristine, 'has-success' : sitedetailsform.detailsName.$valid && !sitedetailsform.detailsName.$pristine }">
         <label class="control-label" for="detailsName">Give your site a title</label>
         <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" required />
-        <div class="error-messages" ng-if="!formWizard.detailsName.$pristine" ng-messages="formWizard.detailsName.$error">
+        <div class="error-messages" ng-if="!sitedetailsform.detailsName.$pristine" ng-messages="sitedetailsform.detailsName.$error">
             <div ng-message="required">You did not give your site a title</div>
         </div>
     </div>
-
-    <div class="form-group form-inline has-feedback" ng-class="{ 'has-error' : formWizard.detailsUrl.$invalid && !formWizard.detailsUrl.$pristine, 'has-success' : formWizard.detailsUrl.$valid && !formWizard.detailsUrl.$pristine }">
+    <div class="form-group form-inline has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsUrl.$invalid && !sitedetailsform.detailsUrl.$pristine, 'has-success' : sitedetailsform.detailsUrl.$valid && !sitedetailsform.detailsUrl.$pristine }">
         <label class="control-label" for="detailsUrl">Give your site a URL</label><br />
-        <span>{{siteConfiguration.spNewSitePrefix}}</span>
+        <span>{{siteConfiguration.spNewSitePrefix}} </span><span ng-show="siteConfiguration.spNewSitePrefix === undefined" ng-click="setCurrentStep(4)" class="shortcut-message">No site template has been selected</span>
         <input type="text" name="detailsUrl" class="form-control" id="detailsUrl" ng-model="siteConfiguration.details.url" ng-minlength="3" ng-maxlength="50" ng-model-options="{ debounce: 2000 }" site-availability-validator required />
-        <div class="error-messages" ng-if="!formWizard.detailsUrl.$pristine" ng-messages="formWizard.detailsUrl.$error">
+        <div class="error-messages" ng-if="!sitedetailsform.detailsUrl.$pristine" ng-messages="sitedetailsform.detailsUrl.$error">
             <div ng-message="required">You did not enter a site url</div>
             <div ng-message="minlength">Your field is too short</div>
             <div ng-message="maxlength">Your field is too long</div>
             <div ng-message="site-loading">Checking for site availability...</div>
             <div ng-message="site-available">Sorry, but this site url is already taken</div>
         </div>
-
     </div>
-
-    <div class="form-group has-feedback" ng-class="{ 'has-error' : formWizard.detailsDescription.$invalid && !formWizard.detailsDescription.$pristine, 'has-success' : formWizard.detailsDescription.$valid && !formWizard.detailsDescription.$pristine }">
+    <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsDescription.$invalid && !sitedetailsform.detailsDescription.$pristine, 'has-success' : sitedetailsform.detailsDescription.$valid && !sitedetailsform.detailsDescription.$pristine }">
         <label class="control-label" for="detailsDescription">Give it a description</label>
         <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" required></textarea>
-        <div class="error-messages" ng-if="!formWizard.detailsDescription.$pristine" ng-messages="formWizard.detailsDescription.$error">
+        <div class="error-messages" ng-if="!sitedetailsform.detailsDescription.$pristine" ng-messages="sitedetailsform.detailsDescription.$error">
             <div ng-message="required">You did not enter a description</div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -49,7 +44,6 @@
                 </select>
             </div>
         </div>
-
         <div class="col-sm-6">
             <div class="form-group">
                 <label class="control-label" for="detailsDivision">Division</label>
@@ -62,7 +56,6 @@
                 <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.language" ng-options="l.value as l.key for l in languages" required></select>
             </div>
         </div>
-
         <div class="col-sm-6">
             <div class="form-group has-feedback">
                 <label class="control-label" for="detailsTimezone">Time Zone</label>
@@ -70,7 +63,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group has-feedback" ng-hide="!siteConfiguration.externalSharingEnabled">
@@ -79,9 +71,8 @@
                         <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.externalSharing" /> Enable External Sharing
                     </label>
                 </div>
-                
+
             </div>
         </div>
     </div>
-
 </div>

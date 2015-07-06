@@ -126,7 +126,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var fieldXml = templateFieldElement.ToString();
 
-            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.AddFieldInternalNameHint);
             web.Context.ExecuteQueryRetry();
         }
 
