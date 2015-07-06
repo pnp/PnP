@@ -1,20 +1,24 @@
-# Document picker for provider hosted apps #
+# jQuery extensions for SharePoint Apps #
 
 ### Summary ###
-This control is used to browse documents that are stored in document libaries in SharePoint. It can show multiple document libraries in 1 tree structure. If you click on one of the selected documents, it will open. It is possible to configure filters on document extensions and specify the number of selected files. There is support for a custom datasource that you can implement yourself to get data from sources that the control itself does not support.
+This project contains a set of jQuery extensions, described below, to enable extending SharePoint functionality to provider hosted apps using the familiar jQuery syntax. The currently available extensions are:
+
+ - sp.addChome - adds the SharePoint chrome controls
+ - sp.peoplePicker - adds a people picker control
+ - sp.documentPicker - adds a document picker control
 
 ### Prerequisites ###
-It's important that the provider hosted add-in that's running the document picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+It's important that the provider hosted app that's running the document picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.DocumentPicker | Stijn Neirinckx 
+Core.JQuery | Patrick Rodgers 
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | November 5th 2014 | Initial release
+1.0  | July 4th, 2015 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -22,10 +26,20 @@ Version  | Date | Comments
 
 ----------
 
-# HOW DOES THE DOCUMENT PICKER WORK? #
-The document picker control makes it possible to browse one or more document libraries and select documents. An examle would be a provider hosted application in which create PDF's from existing documents: you could then use this document picker control to select the needed documents. Below picture shows the control on the page:
+# sp.addChrome.js #
+The document picker control makes it possible to browse one or more document libraries and select documents. An example would be a provider hosted application in which create PDF's from existing documents: you could then use this document picker control to select the needed documents. Below picture shows the control on the page:
 
-![](http://i.imgur.com/OmGyuNE.png)
+[Full details](/sp.addChrome.js.md)
+
+
+
+
+
+
+
+
+---
+
 
 One you click on the *document* icon right to the control a dialog opens in which you select documents:
 
@@ -160,4 +174,7 @@ If this setting is set to true, the folders will be expanded by default. If set 
 ```JavaScript
 documentPickerWithOptions.ExpandFolders = false; //show the folders collapsed when dialog is opened
 ```
+
+
+
 
