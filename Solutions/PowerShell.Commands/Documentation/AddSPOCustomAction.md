@@ -1,5 +1,5 @@
 #Add-SPOCustomAction
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds a custom action to a web
 ##Syntax

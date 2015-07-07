@@ -1,5 +1,5 @@
 #Get-SPOField
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Returns a field from a list or site
 ##Syntax

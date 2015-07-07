@@ -1,5 +1,5 @@
 #Stop-SPOWorkflowInstance
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Stops a workflow instance
 ##Syntax

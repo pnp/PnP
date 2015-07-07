@@ -1,5 +1,5 @@
 #Remove-SPOContentTypeFromList
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Removes a content type from a list
 ##Syntax

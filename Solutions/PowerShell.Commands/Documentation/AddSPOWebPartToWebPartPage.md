@@ -1,5 +1,5 @@
 #Add-SPOWebPartToWebPartPage
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds a webpart to a web part page in a specified zone
 ##Syntax
