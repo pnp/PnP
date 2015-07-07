@@ -41,6 +41,13 @@
             maxSelectedUsers: 10
         });
 
+        // set value on load
+        $('#ppExample2').spPeoplePicker({
+            onLoaded: function () {
+                $(this).spPeoplePicker('set', { login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' });
+            }
+        });
+
         // setup default doc picker
         $('#dpDefault').spDocumentPicker();
 
@@ -114,7 +121,7 @@
     </div>
     <div id="example-container" class="container">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>People Picker, default settings</h4>
@@ -129,13 +136,28 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>People Picker, allow 10 users, require 2 characters</h4>
                     </div>
                     <div class="panel-body">
                         <div id="ppExample1"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-pp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-pp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-pp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>People Picker, set value on load</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="ppExample2"></div>
                     </div>
                     <div class="panel-footer">
                         <button class="btn btn-default btn-sm pnp-getvalue-pp">Get Value</button>

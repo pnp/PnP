@@ -124,7 +124,7 @@ $('#dpDefault').spDocumentPicker('set', null);
 
 ### A note on nodes ###
 
-The document picker nodeFilter function relies on "nodes" representing the various parts of the tree. Each node is a jQuery object representing an li tag with some custom attribute. All nodes have the "sp-docpicker-nodeType" attribute. These nodes are what are supplied to the node filter and any logic can then be applied to the jQuery object. The list of valid node types are:
+The document picker nodeFilter function relies on "nodes" representing the various parts of the tree. Each node is a jQuery object representing an li tag with custom attribute. All nodes have the "sp-docpicker-nodeType" attribute. These nodes are what are supplied to the node filter and any logic can then be applied to the jQuery object. The list of valid node types are:
 
 - web
 - list
@@ -138,3 +138,20 @@ The document picker nodeFilter function relies on "nodes" representing the vario
 ### Styling ###
 
 The control uses the default Bootstrap styles and functionality in association with the style found in the example [Site.css](Core.JQueryWeb/Content/Site.css). You can extend and modify these styles as needed to meet your needs.
+
+
+----------
+
+### Add In Web Requirements ###
+
+You must ensure creation of an Add In web for the extension to work correctly. This can be done by creating an empty list in your app project. Also, to recurse the site hierarchy when showing sub-sites you must request SiteCollection : Manage permissions:
+
+```XML
+<?xml version="1.0" encoding="utf-8" ?>
+<App  ...>
+  ...
+  <AppPermissionRequests>
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="Manage" />
+  </AppPermissionRequests>
+</App>
+```
