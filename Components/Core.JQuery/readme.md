@@ -26,7 +26,7 @@ Version  | Date | Comments
 
 ---
 
-## sp.addChrome.js ##
+## [sp.addChrome.js](sp.addChrome.js.md) ##
 
 Adds the SharePoint chrome control and host site styles to a provider hosted add in.[Full details](sp.addChrome.js.md)
 
@@ -34,7 +34,7 @@ Adds the SharePoint chrome control and host site styles to a provider hosted add
 
 ---
 
-## sp.peoplepicker.js ##
+## [sp.peoplepicker.js](sp.peoplepicker.js.md) ##
 
 Provides a customizable people picker control using jQuery and Bootstrap. [Full details](sp.peoplepicker.js.md)
 
@@ -42,7 +42,7 @@ Provides a customizable people picker control using jQuery and Bootstrap. [Full 
 
 ---
 
-## sp.documentpicker.js ##
+## [sp.documentpicker.js](sp.documentpicker.js.md) ##
 
 Provides a customizable document picker control using jQuery and Bootstrap. [Full details](sp.documentpicker.js.md)
 

@@ -3,9 +3,10 @@
 }
 <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
 <script type="text/javascript" src="~/Scripts/PnP/app.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/sp.peoplepicker.js"></script>
+
 <script type="text/javascript" src="~/Scripts/PnP/sp.addChrome.js"></script>
 <script type="text/javascript" src="~/Scripts/PnP/sp.documentpicker.js"></script>
-<script type="text/javascript" src="~/Scripts/PnP/sp.peoplepicker.js"></script>
 <script type="text/javascript">
 
     // this is used for our common example event handlers to reduce copy/paste of code
@@ -28,21 +29,8 @@
         // fire jQuery extension for app chrome
         $('#spChrome').addSPChrome({
             appTitle: 'Test Harness',
-            appIcon: '/Images/AppIcon.png',
-            settingsLinks: [
-                        {
-                            "linkUrl": $app.appendSPQueryToUrl("Setup.aspx"),
-                            "displayName": "Setup"
-                        },
-                        {
-                            "linkUrl": $app.appendSPQueryToUrl("AnotherLink.aspx"),
-                            "displayName": "Another Link"
-                        }
-            ],
-            hostUrl: $app.getUrlParamByName('SPHostUrl'),
-            helpUrl: $app.appendSPQueryToUrl("/Home/Index")
+            appIcon: '/Images/AppIcon.png'
         });
-
 
         // setup default people picker
         $('#ppDefault').spPeoplePicker();
