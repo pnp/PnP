@@ -1,5 +1,5 @@
 #Add-SPOField
-*Topic automatically generated on: 2015-06-05*
+*Topic automatically generated on: 2015-07-01*
 
 Adds a field to a list or as a site column
 ##Syntax
@@ -41,4 +41,8 @@ Parameter|Type|Required|Description
 ###Example 1
     PS:> Add-SPOField -List "Demo list" -DisplayName "Location" -InternalName "SPSLocation" -Type Choice -Group "Demo Group" -AddToDefaultView -Choices "Stockholm","Helsinki","Oslo"
 This will add field of type Choice to a the list "Demo List".
-<!-- Ref: 3592812E58ABC741B594A4CD1010B30E -->
+
+###Example 2
+    PS:>Add-SPOField -List "Demo list" -DisplayName "Speakers" -InternalName "SPSSpeakers" -Type MultiChoice -Group "Demo Group" -AddToDefaultView -Choices "Obiwan Kenobi","Darth Vader", "Anakin Skywalker"
+This will add field of type Multiple Choice to a the list "Demo List". (you can pick several choices for the same item)
+<!-- Ref: D6F4CA632CF71363438BD82423CAD561 -->

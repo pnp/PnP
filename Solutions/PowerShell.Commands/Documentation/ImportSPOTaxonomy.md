@@ -1,5 +1,5 @@
 #Import-SPOTaxonomy
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-06-11*
 
 Imports a taxonomy from either a string array or a file
 ##Syntax

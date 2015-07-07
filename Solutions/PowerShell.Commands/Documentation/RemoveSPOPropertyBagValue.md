@@ -1,5 +1,5 @@
 #Remove-SPOPropertyBagValue
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Removes a value from the property bag
 ##Syntax

@@ -1,5 +1,5 @@
 #Get-SPOSitePolicy
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Retrieves all or a specific site policy
 ##Syntax

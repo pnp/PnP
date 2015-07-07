@@ -1,5 +1,5 @@
 #New-SPOWeb
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-06-11*
 
 Creates a new subweb to the current web
 ##Syntax

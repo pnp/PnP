@@ -1,5 +1,5 @@
 #Remove-SPOList
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Deletes a list
 ##Syntax

@@ -1,5 +1,5 @@
 #Get-SPOGroup
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-06-11*
 
 Returns a specific group or all groups.
 ##Syntax
