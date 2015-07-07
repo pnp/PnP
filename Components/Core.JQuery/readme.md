@@ -23,8 +23,7 @@ Version  | Date | Comments
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
-
----
+----------
 
 ## [sp.addChrome.js](sp.addChrome.js.md) ##
 
@@ -32,7 +31,7 @@ Adds the SharePoint chrome control and host site styles to a provider hosted add
 
 ![](http://i.imgur.com/rlHatmn.png)
 
----
+----------
 
 ## [sp.peoplepicker.js](sp.peoplepicker.js.md) ##
 
@@ -40,7 +39,7 @@ Provides a customizable people picker control using jQuery and Bootstrap. [Full 
 
 ![](http://i.imgur.com/cpeP4aS.png)
 
----
+----------
 
 ## [sp.documentpicker.js](sp.documentpicker.js.md) ##
 

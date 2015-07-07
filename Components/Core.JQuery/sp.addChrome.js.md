@@ -12,6 +12,10 @@ The relevant files from the example solution are:
 - [app.js](Core.JQueryWeb/Scripts/PnP/app.js) : supporting functions
 - [Index.cshtml](Core.JQueryWeb/Views/Home/Index.cshtml) : example usage
 
+### Dependencies ###
+
+- jQuery >= 1.8
+
 ### Usage ###
 
 The extension is used like any other jQuery extension, based initially off of a jQuery object created using the selector syntax. The method signature is **addSPChrome([options])**
@@ -54,8 +58,7 @@ Once complete the SharePoint chrome control and host styles should be loaded in 
 
 ![](http://i.imgur.com/rlHatmn.png)
 
-
-----
+----------
 
 ### Configuration Options ###
 

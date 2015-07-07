@@ -177,8 +177,7 @@
             },
 
             fillWebFail: function () {
-                // retry??
-                alert('fail web');
+                console.log('fail web');
             },
 
             fillLibraryContainer: function (/*jQuery*/ node) {
@@ -237,7 +236,7 @@
             },
 
             fillLibraryFail: function () {
-                alert('library fail');
+                console.log('library fail');
             },
 
             fillFolderContainer: function (/*jQuery*/ node) {
@@ -295,7 +294,7 @@
             },
 
             fillFolderFail: function () {
-                alert('fill folder fail');
+                console.log('fill folder fail');
             },
 
             selectFile: function (/* jQuery */ source) {

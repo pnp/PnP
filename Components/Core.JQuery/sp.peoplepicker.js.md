@@ -11,6 +11,12 @@ The relevant files from the example solution are:
 - [sp.peoplepicker.js](Core.JQueryWeb/Scripts/PnP/sp.peoplepicker.js) : the jQuery extension
 - [app.js](Core.JQueryWeb/Scripts/PnP/app.js) : supporting functions
 - [Index.cshtml](Core.JQueryWeb/Views/Home/Index.cshtml) : example usage
+- [Site.css](Core.JQueryWeb/Content/Site.css) : control styles
+
+### Dependencies ###
+
+- jQuery >= 1.8
+- Bootstrap >= 3
 
 ### Usage ###
 
@@ -47,7 +53,7 @@ Once complete you should see a people picker control.
 
 ![](http://i.imgur.com/cpeP4aS.png)
 
-----
+----------
 
 ### Configuration Options ###
 
@@ -55,7 +61,7 @@ The extension supports the following configuration options:
 
 **Option** | **Required** | **Description** | **Default**
 ---- | ---- | ---- | ----
-onLoaded |  | A function accepting a single argument the originally selected people picker container element | null
+onLoaded |  | A function whose "this" will be the originally selected container element | null
 minSearchTriggerLength |  | Minimum number of characters entered before a call to the server | 4
 maximumEntitySuggestions |  | Maximum number of users to return from a search | 30
 principalType |  | Type of object for which to search. [Enumeration Details](http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx) | 1
@@ -70,9 +76,9 @@ This example specifies all the options:
 ```JavaScript
 $(function () {
     $('#ppDefault').spPeoplePicker({
-        onLoaded: function (container) {
+        onLoaded: function () {
             // set the value once the control is loaded
-            $(container).spPeoplePicker('set', [{ login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' }]);
+            $(this).spPeoplePicker('set', [{ login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' }]);
         },
         minSearchTriggerLength: 2,
         maximumEntitySuggestions: 10,
@@ -86,18 +92,18 @@ $(function () {
 });
 ```
 
----
+----------
 
 ### Get Values ###
 
-The people picker control supports getting the selected users using a command parameter. User(s) are returned in an array of plain objects with the following properties: login, title, displayName, email. Even if the control is set to only allow a single user an array is returned. Code sample and example return:
+The people picker control supports getting the selected user(s) using a command parameter. User(s) are returned in an array of plain objects with the following properties: login, title, displayName, email. Even if the control is set to only allow a single user an array is returned. Code sample and example return:
 
 ```JavaScript
 var selected = $('#ppDefault').spPeoplePicker('get');
 // selected == [{ login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' }]
 ```
 
----
+----------
 
 ### Set Values ###
 
@@ -109,7 +115,7 @@ $('#ppDefault').spPeoplePicker('set', [{ login: 'fakedomain\fakeuser', title: ''
 
 Note: You can set multiple users in a control set to allow a single user but users will not be able to add additional users or edit existing unless the number selected is reduced to below the configured value. This is by design so that any UI loading where the max users has been reduced will not break on load and still display the set values.
 
----
+----------
 
 ### Clear Values ###
 
@@ -120,6 +126,12 @@ $('#ppDefault').spPeoplePicker('clear');
 $('#ppDefault').spPeoplePicker('set', []);
 $('#ppDefault').spPeoplePicker('set', null);
 ```
+
+----------
+
+### Styling ###
+
+The control uses the default Bootstrap styles and functionality in association with the style found in the example [Site.css](Core.JQueryWeb/Content/Site.css). You can extend and modify these styles as needed to meet your needs.
 
 
 
