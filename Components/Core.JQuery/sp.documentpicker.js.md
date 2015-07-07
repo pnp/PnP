@@ -48,7 +48,7 @@ $(function() {
 });
 ```
 
-Once complete you should see a people picker control.
+Once complete you should see a document picker control.
 
 ![](http://i.imgur.com/eBFmjwq.png)
 
