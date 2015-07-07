@@ -38,10 +38,10 @@
                             "linkUrl": $app.appendSPQueryToUrl("AnotherLink.aspx"),
                             "displayName": "Another Link"
                         }
-            ]
+            ],
+            hostUrl: $app.getUrlParamByName('SPHostUrl'),
+            helpUrl: $app.appendSPQueryToUrl("/Home/Index")
         });
-
-
 
 
         // setup default people picker

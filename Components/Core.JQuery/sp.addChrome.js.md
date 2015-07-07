@@ -16,9 +16,15 @@ The relevant files from the example solution are:
 
 The extension is used like any other jQuery extension, based initially off of a jQuery object created using the selector syntax. The method signature is **addSPChrome([options])**
 
-#### Page Markup ####
+#### Include the needed files in your page ####
 
-You must provide some markup for the control to transform:
+```ASPX
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/app.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/sp.addChrome.js"></script>
+```
+
+#### Provide some markup for the extension to transform: ####
 
 ```HTML
 <div class="container-fluid">
@@ -31,7 +37,9 @@ You must provide some markup for the control to transform:
 </div>
 ```
 
-Then once the page loads you can transform using jQuery syntax. In the provided example we are using a custom on start method, here we use the jQuery standard. Also, we are providing the two base parameters, appTitle and appIcon.
+#### Transform Markup ####
+
+Then once the DOM loads you can transform using jQuery syntax, options are provided in a plain js object. In the provided example add in we are using a custom on start method, here we use the jQuery standard.
 
 ```JavaScript
 $(function() {
@@ -79,8 +87,9 @@ $(function () {
                     }
         ],
         hostUrl: $app.getUrlParamByName('SPHostUrl'),
-        helpUrl: "/Home/Index"
+        helpUrl: $app.appendSPQueryToUrl("/Home/Index")
     });
 });
 ```
 
+![](http://i.imgur.com/Q7LYZOn.png)
