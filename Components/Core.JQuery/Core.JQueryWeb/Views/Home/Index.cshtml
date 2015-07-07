@@ -28,8 +28,21 @@
         // fire jQuery extension for app chrome
         $('#spChrome').addSPChrome({
             appTitle: 'Test Harness',
-            appIcon: '/Images/AppIcon.png'
+            appIcon: '/Images/AppIcon.png',
+            settingsLinks: [
+                        {
+                            "linkUrl": $app.appendSPQueryToUrl("Setup.aspx"),
+                            "displayName": "Setup"
+                        },
+                        {
+                            "linkUrl": $app.appendSPQueryToUrl("AnotherLink.aspx"),
+                            "displayName": "Another Link"
+                        }
+            ]
         });
+
+
+
 
         // setup default people picker
         $('#ppDefault').spPeoplePicker();

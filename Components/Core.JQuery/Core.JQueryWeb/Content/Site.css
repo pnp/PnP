@@ -17,6 +17,12 @@ textarea {
     max-width: 280px;
 }
 
+#spChrome {
+    /* allow for scroll bar */
+    margin-right: 10px;
+}
+
+
 /* Begin People Picker Styles */
 
 .sp-peoplepicker-editDiv {
