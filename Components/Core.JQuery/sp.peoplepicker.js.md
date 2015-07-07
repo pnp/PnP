@@ -43,7 +43,7 @@ $(function() {
 });
 ```
 
-Once complete you should then see a people picker control.
+Once complete you should see a people picker control.
 
 ![](http://i.imgur.com/cpeP4aS.png)
 
@@ -54,7 +54,7 @@ Once complete you should then see a people picker control.
 The extension supports the following configuration options:
 
 **Option** | **Required** | **Description** | **Default**
----- | ---- | ----
+---- | ---- | ---- | ----
 onLoaded |  | A function accepting a single argument the originally selected people picker container element | null
 minSearchTriggerLength |  | Minimum number of characters entered before a call to the server | 4
 maximumEntitySuggestions |  | Maximum number of users to return from a search | 30
