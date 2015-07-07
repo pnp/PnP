@@ -14,3 +14,19 @@ The relevant files from the example solution are:
 
 ### Usage ###
 
+The extension is used like any other jQuery extension, based initially off of a jQuery object created using the selector syntax. The method signature is **addSPChrome([options])**
+
+#### Page Markup ####
+
+You must provide some markup for the control to transform, something similar to the below.
+
+```HTML
+<div class="container-fluid">
+    <div class="row">
+        <header class="col-md-12 hidden-xs">
+            <div id="spChrome"></div>
+        </header>
+    </div>
+	...
+</div>
+```
