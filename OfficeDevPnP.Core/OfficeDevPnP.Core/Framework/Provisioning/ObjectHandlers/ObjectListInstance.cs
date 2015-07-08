@@ -88,7 +88,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 else
                                 {
-                                    UpdateFieldRef(field, fieldRef);
+                                    UpdateFieldRef(listInfo.SiteList, field.Id, fieldRef);
                                 }
                             }
 
@@ -255,28 +255,34 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        private static void UpdateFieldRef(Field field, FieldRef fieldRef)
+        private static void UpdateFieldRef(List siteList, Guid fieldId, FieldRef fieldRef)
         {
+            // find the field in the list
+            var listField = siteList.Fields.GetById(fieldId);
+
+            siteList.Context.Load(listField, f => f.Title, f => f.Hidden, f => f.Required);
+            siteList.Context.ExecuteQueryRetry();
+
             var isDirty = false;
-            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != field.Title)
+            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != listField.Title)
             {
-                field.Title = fieldRef.DisplayName;
+                listField.Title = fieldRef.DisplayName;
                 isDirty = true;
             }
-            if (fieldRef.Hidden != field.Hidden)
+            if (fieldRef.Hidden != listField.Hidden)
             {
-                field.Hidden = fieldRef.Hidden;
+                listField.Hidden = fieldRef.Hidden;
                 isDirty = true;
             }
-            if (fieldRef.Required != field.Required)
+            if (fieldRef.Required != listField.Required)
             {
-                field.Required = fieldRef.Required;
+                listField.Required = fieldRef.Required;
                 isDirty = true;
             }
             if (isDirty)
             {
-                field.UpdateAndPushChanges(true);
-                field.Context.ExecuteQueryRetry();
+                listField.UpdateAndPushChanges(true);
+                siteList.Context.ExecuteQueryRetry();
             }
         }
 
