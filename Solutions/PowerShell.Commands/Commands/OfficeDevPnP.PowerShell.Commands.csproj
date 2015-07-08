@@ -240,6 +240,7 @@
     <Compile Include="Enums\AssociatedGroupType.cs" />
     <Compile Include="Enums\ConnectionType.cs" />
     <Compile Include="Enums\CredentialType.cs" />
+    <Compile Include="Enums\SearchConfigurationScope.cs" />
     <Compile Include="Enums\CustomActionScope.cs" />
     <Compile Include="Enums\FeatureScope.cs" />
     <Compile Include="Enums\NavigationNodeTypeEnum.cs" />
@@ -272,6 +273,8 @@
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="Search\SetSearchConfiguration.cs" />
+    <Compile Include="Search\GetSearchConfiguration.cs" />
     <Compile Include="Taxonomy\ImportTermGroupFromXml.cs" />
     <Compile Include="Taxonomy\ExportTermGroupToXml.cs" />
     <Compile Include="Taxonomy\NewTermGroup.cs" />

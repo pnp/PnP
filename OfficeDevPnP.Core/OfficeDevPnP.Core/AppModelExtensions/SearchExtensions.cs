@@ -25,21 +25,53 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("exportFilePath");
             }
 
-            SearchConfigurationPortability sconfig = new SearchConfigurationPortability(context);
-            SearchObjectOwner owner = new SearchObjectOwner(context, searchSettingsExportLevel);
+            var searchConfig = GetSearchConfigurationImplementation(context, searchSettingsExportLevel);
 
-            ClientResult<string> configresults = sconfig.ExportSearchConfiguration(owner);
-            context.ExecuteQueryRetry();
-
-            if (configresults.Value != null)
+            if (searchConfig != null)
             {
-                string results = configresults.Value;
-                System.IO.File.WriteAllText(exportFilePath, results, Encoding.ASCII);
+                System.IO.File.WriteAllText(exportFilePath, searchConfig, Encoding.ASCII);
             }
             else
             {
                 throw new Exception("No search settings to export.");
             }
+        }
+
+        /// <summary>
+        /// Returns the current search configuration as as string
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
+        public static string GetSearchConfiguration(this Web web)
+        {
+            return GetSearchConfigurationImplementation(web.Context, SearchObjectLevel.SPWeb);
+        }
+
+        /// <summary>
+        /// Returns the current search configuration as as string
+        /// </summary>
+        /// <param name="site"></param>
+        /// <returns></returns>
+        public static string GetSearchConfiguration(this Site site)
+        {
+            return GetSearchConfigurationImplementation(site.Context, SearchObjectLevel.SPSite);
+        }
+
+        /// <summary>
+        /// Returns the current search configuration for the specified object level
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="searchSettingsObjectLevel"></param>
+        /// <returns></returns>
+        private static string GetSearchConfigurationImplementation(ClientRuntimeContext context, SearchObjectLevel searchSettingsObjectLevel)
+        {
+            SearchConfigurationPortability sconfig = new SearchConfigurationPortability(context);
+            SearchObjectOwner owner = new SearchObjectOwner(context, searchSettingsObjectLevel);
+
+            ClientResult<string> configresults = sconfig.ExportSearchConfiguration(owner);
+            context.ExecuteQueryRetry();
+
+            return configresults.Value;
         }
 
         /// <summary>
@@ -57,18 +89,51 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("searchSchemaImportFilePath");
             }
 
+            SetSearchConfigurationImplementation(context, searchSettingsImportLevel, System.IO.File.ReadAllText(searchSchemaImportFilePath));
+
+        }
+
+        /// <summary>
+        /// Sets the search configuration
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="searchConfiguration"></param>
+        public static void SetSearchConfiguration(this Web web, string searchConfiguration)
+        {
+            SetSearchConfigurationImplementation(web.Context, SearchObjectLevel.SPWeb, searchConfiguration);
+        }
+
+        /// <summary>
+        /// Sets the search configuration
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="searchConfiguration"></param>
+        public static void SetSearchConfiguration(this Site site, string searchConfiguration)
+        {
+            SetSearchConfigurationImplementation(site.Context, SearchObjectLevel.SPWeb, searchConfiguration);
+        }
+
+
+        /// <summary>
+        /// Sets the search configuration at the specified object level
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="searchObjectLevel"></param>
+        /// <param name="searchConfiguration"></param>
+        private static void SetSearchConfigurationImplementation(ClientRuntimeContext context, SearchObjectLevel searchObjectLevel, string searchConfiguration)
+        {
 #if CLIENTSDKV15
-            if (searchSettingsImportLevel == SearchObjectLevel.Ssa)
+            if (searchObjectLevel == SearchObjectLevel.Ssa)
             {
                 // Reference: https://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.search.portability.searchconfigurationportability_members.aspx
                 throw new Exception("You cannot import customized search configuration settings to a Search service application (SSA).");
             }
 #endif
             SearchConfigurationPortability searchConfig = new SearchConfigurationPortability(context);
-            SearchObjectOwner owner = new SearchObjectOwner(context, searchSettingsImportLevel);
+            SearchObjectOwner owner = new SearchObjectOwner(context, searchObjectLevel);
 
             // Import search configuration
-            searchConfig.ImportSearchConfiguration(owner, System.IO.File.ReadAllText(searchSchemaImportFilePath));
+            searchConfig.ImportSearchConfiguration(owner, searchConfiguration);
             context.Load(searchConfig);
             context.ExecuteQueryRetry();
         }
@@ -87,7 +152,7 @@ namespace Microsoft.SharePoint.Client
 
             // Currently there is no direct API available to set the search center url on web.
             // Set search setting at web level   
-       
+
             // if another value was set then respect that
             if (String.IsNullOrEmpty(web.GetPropertyBagValueString("SRCH_SB_SET_SITE", string.Empty)))
             {

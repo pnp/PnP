@@ -29,5 +29,25 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 Assert.AreEqual(url, "");
             }
         }
+
+        [TestMethod]
+        public void GetSearchConfigurationFromWebTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                var config = clientContext.Web.GetSearchConfiguration();
+                Assert.IsNotNull(config);
+            }
+        }
+
+        [TestMethod]
+        public void GetSearchConfigurationFromSiteTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                var config = clientContext.Site.GetSearchConfiguration();
+                Assert.IsNotNull(config);
+            }
+        }
     }
 }
