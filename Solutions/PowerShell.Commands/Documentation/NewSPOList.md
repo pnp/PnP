@@ -1,5 +1,5 @@
 #New-SPOList
-*Topic automatically generated on: 2015-06-11*
+*Topic automatically generated on: 2015-07-08*
 
 Creates a new list
 ##Syntax
