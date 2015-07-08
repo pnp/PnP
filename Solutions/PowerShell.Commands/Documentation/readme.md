@@ -100,6 +100,11 @@ Cmdlet|Description
 **[Add&#8209;SPOWikiPage](AddSPOWikiPage.md)** |Adds a wiki page
 **[Get&#8209;SPOWikiPageContent](GetSPOWikiPageContent.md)** |Gets the contents/source of a wiki page
 **[Set&#8209;SPOWikiPageContent](SetSPOWikiPageContent.md)** |Sets the contents of a wikipage
+##Search
+Cmdlet|Description
+:-----|:----------
+**[Set&#8209;SPOSearchConfiguration](SetSPOSearchConfiguration.md)** |Returns the search configuration
+**[Get&#8209;SPOSearchConfiguration](GetSPOSearchConfiguration.md)** |Returns the search configuration
 ##Sites
 Cmdlet|Description
 :-----|:----------
