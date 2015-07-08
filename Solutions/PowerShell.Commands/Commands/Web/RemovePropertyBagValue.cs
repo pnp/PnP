@@ -57,7 +57,7 @@ namespace OfficeDevPnP.PowerShell.Commands
                     ClientContext.Load(folder.Properties);
                     ClientContext.ExecuteQueryRetry();
                 }
-                if (folder.Properties[Key] != null)
+                if (folder.Properties.FieldValues.ContainsKey(Key))
                 {
                     if (Force || ShouldContinue(string.Format(Properties.Resources.Delete0, Key), Properties.Resources.Confirm))
                     {

@@ -10,15 +10,15 @@ namespace OfficeDevPnP.PowerShell.Commands
     [CmdletHelp("Sets a property bag value", Category = "Webs")]
     [CmdletExample(
       Code = @"PS:> Set-SPOPropertyBagValue -Key MyKey -Value MyValue",
-      Remarks = "This set or add a value to the current web property bag",
+      Remarks = "This sets or adds a value to the current web property bag",
       SortOrder = 1)]
     [CmdletExample(
       Code = @"PS:> Set-SPOPropertyBagValue -Key MyKey -Value MyValue -Folder /",
-      Remarks = "This set or add a value to the root folder of the current web",
+      Remarks = "This sets or adds a value to the root folder of the current web",
       SortOrder = 2)]
     [CmdletExample(
       Code = @"PS:> Set-SPOPropertyBagValue -Key MyKey -Value MyValue -Folder /MyFolder",
-      Remarks = "This set or add a value to the folder MyFolder which is located in the root folder of the current web",
+      Remarks = "This sets or adds a value to the folder MyFolder which is located in the root folder of the current web",
       SortOrder = 3)]
     public class SetPropertyBagValue : SPOWebCmdlet
     {
@@ -34,7 +34,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, ParameterSetName = "Web")]
         public SwitchParameter Indexed;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Folder")]
+        [Parameter(Mandatory = false, ParameterSetName = "Folder", HelpMessage = "Site relative url of the folder. See examples for use.")]
         public string Folder;
 
         protected override void ExecuteCmdlet()
