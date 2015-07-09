@@ -55,3 +55,13 @@ Connect-SPOnline –Url https://yoursite.sharepoint.com –Credentials yourlabel
 
 ## Commands ##
 [Navigate here for an overview of all cmdlets and their parameters:](Documentation/readme.md)
+
+
+## Troubleshooting build ##
+Issue
+	SGEN : error : Could not load file or assembly 'file:///C:\Users\Administrator\Source\Repos\PnP\Assemblies\16\Microsoft.Office.Client.Policy.dll' or one of its dependencies. Operation is not supported. (Exception from HRESULT: 0x80131515)
+
+Resolution
+	Browse to C:\Users\Administrator\Source\Repos\PnP\Assemblies\16 , right click Microsoft.Office.Client.Policy.dll, Go to General tab and click "Unblock"
+Remark
+	Microsoft.Office.Client.Policy is the first file to throw this exception. Do the same resolution for all files under  C:\Users\Administrator\Source\Repos\PnP\Assemblies\16

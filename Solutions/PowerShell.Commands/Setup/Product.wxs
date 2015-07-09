@@ -96,8 +96,29 @@
         <File Id="FormatFile" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.Format.ps1xml" />
         <File Id="PSD1File" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1" />
         <File Id="TenantDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
-        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      <?if $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Release OR $(var.OfficeDevPnP.PowerShell.Commands.Configuration) = Debug ?>
+        <File Id="Microsoft.Data.Edm.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Data.Edm.dll"/>
+<File Id="Microsoft.Data.OData.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Data.OData.dll">
+  
+        
+</File>
+<File Id="Microsoft.Data.Services.Client.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Data.Services.Client.dll"/>
+<File Id="Microsoft.Office.Client.Policy.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.Policy.dll"/>
+<File Id="Microsoft.SharePoint.Client.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.dll"/>
+<File Id="Microsoft.SharePoint.Client.DocumentManagement.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.DocumentManagement.dll"/>
+<File Id="Microsoft.SharePoint.Client.Publishing.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Publishing.dll"/>
+<File Id="Microsoft.SharePoint.Client.Runtime.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Runtime.dll"/>
+<File Id="Microsoft.SharePoint.Client.Search.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Search.dll"/>
+<File Id="Microsoft.SharePoint.Client.Taxonomy.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Taxonomy.dll"/>
+<File Id="Microsoft.SharePoint.Client.UserProfiles.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.UserProfiles.dll"/>
+<File Id="Microsoft.SharePoint.Client.WorkflowServices.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.WorkflowServices.dll"/>
+<File Id="Microsoft.WindowsAzure.Storage.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.WindowsAzure.Storage.dll"/>
+<File Id="Newtonsoft.Json.dll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Newtonsoft.Json.dll"/>
+    <?endif?>    
+     
+        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[Modules]" Permanent="no" Part="last" Action="set" System="yes"  />
       </Component>
+    
     </ComponentGroup>
   </Fragment>
 </Wix>
