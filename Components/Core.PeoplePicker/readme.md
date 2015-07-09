@@ -9,7 +9,7 @@ This sample shows an implementation of a SharePoint People Picker control that c
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted app that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+It's important that the provider hosted add-in that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 
 ### Solution ###
@@ -28,16 +28,16 @@ Version  | Date | Comments
 
 ----------
 
-# HOW TO USE THE PEOPLEPICKER IN YOUR PROVIDER HOSTED SP APP? #
-Using the people picker in your provider hosted app does not require many steps :-)
+# HOW TO USE THE PEOPLEPICKER IN YOUR PROVIDER HOSTED SP ADD-IN? #
+Using the people picker in your provider hosted add-in does not require many steps :-)
 
-## ENSURE YOU TRIGGER THE CREATION OF AN APP WEB ##
-When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an app web. To ensure you have an app web you can just add a dummy module to your SharePoint app as shown below:
+## ENSURE YOU TRIGGER THE CREATION OF AN ADD-IN WEB ##
+When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a dummy module to your SharePoint add-in as shown below:
 
 ![](http://i.imgur.com/EUDXrvo.png)
 
 ## DEFINING JAVASCRIPT GLOBAL VARIABLES ##
-Your app should have a JavaScript file that’s being loaded by your app pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint clientcontext and one variable for the people picker:
+Your add-in should have a JavaScript file that’s being loaded by your add-in pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint clientcontext and one variable for the people picker:
 
 ```JavaScript
 // variable used for cross site CSOM calls
@@ -48,7 +48,7 @@ var peoplePicker;
 ```
 
 ## CREATE THE CLIENTCONTEXT OBJECT ##
-Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted app via a dialog in SharePoint.
+Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted add-in via a dialog in SharePoint.
 
 ```JavaScript
 //Wait for the page to load
@@ -441,3 +441,76 @@ csomPeoplePicker.MinimalCharactersBeforeSearching = 2;
 // Hookup everything
 csomPeoplePicker.Initialize();
 ```
+# APPENDIX E: INCLUDING A PLACEHOLDER ATTRIBUTE TO THE PEOPLEPICKER (BY VINCENT VERBEEK) #
+The regular peoplepicker uses javascript and css to resemble the look and feel of a SharePoint OOTB people picker. There could be scenarios where you want to put a placeholder text in the peoplepicker to better inform your users as to what will be done with their entry. This sample will show the required modifications in order to achieve this.
+
+**STEP 1:** Add the placeholder attribute and modify the width of the textbox accordingly:
+
+```ASPX
+<div id="divSiteOwner" class="cam-peoplepicker-userlookup ms-fullWidth">
+    <span id="spanSiteOwner"></span>
+    <asp:TextBox ID="inputSiteOwner" runat="server" CssClass="cam-peoplepicker-edit" Width="155" placeholder="Who will manage this site?"></asp:TextBox>
+</div>
+<div id="divSiteOwnerSearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
+<asp:HiddenField ID="hdnSiteOwner" runat="server" />
+```
+
+**STEP 2.1:** Since the value of the selected user isnt stored inside the textbox, the placeholder text does not dissapear after a user has been selected. In order to change this, we need to attach a change event to the hiddenfield and have that change event modify the placeholder text. Open the app.js file and include the following line of code in the $(document).ready function:
+```JavaScript
+//Make sure the change function is executed when the value of the hidden field changes
+$('#hdnSiteOwner').change(changeSiteOwnerPlaceholder);
+```
+
+**STEP 2.2:** The function changeSiteOwnerPlaceholder alters the placeholder text if the hiddenfield has a value.
+```JavaScript
+/* Hide the placeholder text when a site owner is selected */
+function changeSiteOwnerPlaceholder() {
+    if (document.getElementById("hdnSiteOwner").value != '[]')
+    {
+        $('#inputSiteOwner').attr('placeholder', '');
+    }
+    else
+    {
+        $('#inputSiteOwner').attr('placeholder', 'Who will manage this site?');
+    }
+}
+```
+
+**STEP 3** By default, hidden fields do not fire change events. This is because the change is not done by a user, but rather through code. To make sure the change event does fire whenever a user is added or removed, we need to alter the peoplepickercontrol.js file and specifically the methods RemoveResolvedUser, RecipientsSelected and DeleteProcessedUser and fire the change() event from there.
+```JavaScript
+// Remove resolved user from the array and updates the hidden field control with a JSON string
+PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
+    var newResolvedUsers = [];
+    for (var i = 0; i < this._ResolvedUsers.length; i++) {
+        var resolvedLookupValue = this._ResolvedUsers[i].Login ? this._ResolvedUsers[i].Login : this._ResolvedUsers[i].LookupId;
+        if (resolvedLookupValue != lookupValue) {
+            newResolvedUsers.push(this._ResolvedUsers[i]);
+        }
+    }
+    this._ResolvedUsers = newResolvedUsers;
+    this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
+    this.PeoplePickerData.change();
+}
+
+// Update the people picker control to show the newly added user
+PeoplePicker.prototype.RecipientSelected = function(login, name, email) {
+    this.HideSelectionBox();
+    // Push new resolved user to list
+    this.PushResolvedUser(this.ResolvedUser(login, name, email));
+    // Update the resolved user display 
+    this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
+    // Prepare the edit control for a second user selection
+    this.PeoplePickerEdit.val('');
+    this.PeoplePickerEdit.focus();
+    this.PeoplePickerData.change();
+}
+
+// Delete a resolved user
+PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
+    this.RemoveResolvedUser(lookupValue);
+    this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
+    this.PeoplePickerEdit.focus();
+    this.PeoplePickerData.change();
+}
+```
+

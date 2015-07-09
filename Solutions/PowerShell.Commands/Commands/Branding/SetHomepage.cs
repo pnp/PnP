@@ -10,7 +10,8 @@ namespace OfficeDevPnP.PowerShell.Commands
         Code = @"
     PS:> Set-SPOHomePage -Path SitePages/Home.aspx
 ",
-        Remarks = "Sets the home page to the home.aspx file which resides in the SitePages library")]
+        Remarks = "Sets the home page to the home.aspx file which resides in the SitePages library",
+        SortOrder = 1)]
     public class SetHomePage : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, HelpMessage = "The root folder relative path of the homepage", Position=0, ValueFromPipeline=true)]

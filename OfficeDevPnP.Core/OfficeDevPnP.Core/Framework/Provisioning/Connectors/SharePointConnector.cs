@@ -375,6 +375,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
                     streamResult.Value.CopyTo(stream);
 
                     Log.Info(Constants.LOGGING_SOURCE, CoreResources.Provisioning_Connectors_SharePoint_FileRetrieved, fileName, GetConnectionString(), container);
+
+                    // Set the stream position to the beginning
+                    stream.Position = 0;
                     return stream;
                 }
             }

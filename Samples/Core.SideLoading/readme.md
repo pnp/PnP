@@ -28,14 +28,14 @@ Version  | Date | Comments
 ----------
 
 # Overview #
-This scenario shows how one can use sideLoading of a Provider Hosted Application to install a SharePoint Provider Hosted Application to a site collection. SharePoint Administrators can deploy apps to their tenancy basically two different ways. Deploy from the app catalog (“app stapling”) or via sideloading. What is sideloading? App sideloading, from a SharePoint context, is the ability to install a SharePoint app directly into a site to explicitly bypass the regular governance controls of SharePoint. Sideloading apps is insecure. The main reason for blocking sideloading by default on non-developer sites is the risk that faulty apps pose to their host web/host site collection. Apps have the potential to destroy data and make sites or, given enough permissions, can even make site collections unusable. Therefore, apps should only be sideloaded in dev/test environments and in production only when deploying from the AppCatalog does not meet your needs. It is not recommended to sideload SharePoint Hosted-Applications, because of the risk of data loss.
+This scenario shows how one can use sideLoading of a Provider Hosted Application to install a SharePoint Provider Hosted Application to a site collection. SharePoint Administrators can deploy apps to their tenancy basically two different ways. Deploy from the add-in catalog (“app stapling”) or via sideloading. What is sideloading? add-in sideloading, from a SharePoint context, is the ability to install a SharePoint add-in directly into a site to explicitly bypass the regular governance controls of SharePoint. Sideloading apps is insecure. The main reason for blocking sideloading by default on non-developer sites is the risk that faulty apps pose to their host web/host site collection. Apps have the potential to destroy data and make sites or, given enough permissions, can even make site collections unusable. Therefore, apps should only be sideloaded in dev/test environments and in production only when deploying from the AppCatalog does not meet your needs. It is not recommended to sideload SharePoint Hosted-Applications, because of the risk of data loss.
 
 ***Note***
-- Enabling the app sideloading features requires tenant admin permissions (in a multi-tenant environment) or farm admin permissions (in a single tenant environment). 
-- You must have a user context when sideloading the application. App-only permission is not available.
-- Sideloading does not suppress the security check or compensate existing security requirements. It does however enable the programmatic installation of an app
-- You must still register and app principal for SharePoint Provider hosted applications
-- You should deactivate the sideloading feature immediately once the app is in installed. Site Collections administrators can install apps using CSOM which could circumvent your governance practices.
+- Enabling the add-in sideloading features requires tenant admin permissions (in a multi-tenant environment) or farm admin permissions (in a single tenant environment). 
+- You must have a user context when sideloading the application. Add-in only permission is not available.
+- Sideloading does not suppress the security check or compensate existing security requirements. It does however enable the programmatic installation of an add-in
+- You must still register and add-in principal for SharePoint Provider hosted applications
+- You should deactivate the sideloading feature immediately once the add-in is in installed. Site Collections administrators can install apps using CSOM which could circumvent your governance practices.
 
 
 ## Permissions ##
@@ -45,22 +45,22 @@ This scenario shows how one can use sideLoading of a Provider Hosted Application
 
 ## Centrally Deployed Apps VS Sideloading comparison ##
 
-- APP STAPLING (Deploy from the app catalog)  
-	- Custom actions and app parts are not supported 
-	- App Install, Uninstall and upgrade event receivers cannot be handled
+- ADD-IN STAPLING (Deploy from the add-in catalog)  
+	- Custom actions and add-in parts are not supported 
+	- Add-in Install, Uninstall and upgrade event receivers cannot be handled
 	- Site Collection Administrators cannot uninstall the application
 	- Applied to new and existing site collections
-	- There is metadata about the app and updates are applied
+	- There is metadata about the add-in and updates are applied
 
 ----------
 	
 -  Sideloading (Installing Provider hosted applications programmactically)
-	- Custom actions and app parts are supported
-	- App Install, Uninstall and upgrade event receivers do fire and can be handled
+	- Custom actions and add-in parts are supported
+	- Add-in Install, Uninstall and upgrade event receivers do fire and can be handled
 	- Site Collection Administrators can uninstall the application
 	- Custom code must be used to install the application
 	- Tenant Administrators must enable the sideloading feature prior to install the application and should be disabled after the application is installed
-	- There is no metadata about the app and updates have to be managed manually
+	- There is no metadata about the add-in and updates have to be managed manually
 
 ## How to use ##
 
@@ -84,7 +84,7 @@ _ctx.AuthenticationMode = ClientAuthenticationMode.Default;
 //For SharePoint Online
 _ctx.Credentials = new SharePointOnlineCredentials(_userName, _pwd);
 
-string _path = GetUserInput("Please supply path to your app package:");
+string _path = GetUserInput("Please supply path to your add-in package:");
 Site _site = _ctx.Site;
 Web _web = _ctx.Web;
 
@@ -123,7 +123,7 @@ catch (Exception _ex)
 ## Dependencies ##
 - 	Microsoft.SharePoint.Client
 -   Microsoft.SharePoint.Client.Runtime
--   [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+-   [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
 

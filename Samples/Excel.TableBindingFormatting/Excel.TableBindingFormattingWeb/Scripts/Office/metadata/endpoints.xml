@@ -1,0 +1,315 @@
+<?xml version="1.0"?>
+<!--
+  For internal use only - DisplayName attribute values are not final.
+-->
+<Endpoints>
+  <Endpoint Name="Excel" Platform="Win32" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Excel 2013 SP1">
+    <Sets>
+      <Set Name="BindingEvents" Version="1.1" />
+      <Set Name="DocumentEvents" Version="1.1" />
+      <Set Name="MatrixBindings" Version="1.1" />
+      <Set Name="MatrixCoercion" Version="1.1" />
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TableBindings" Version="1.1" />
+      <Set Name="TableCoercion" Version="1.1" />
+      <Set Name="TextBindings" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromPromptAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getFilePropertiesAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.goToByIdAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+      <Method Name="MatrixBinding.getDataAsync" />
+      <Method Name="MatrixBinding.setDataAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.clearFormatsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+      <Method Name="TableBinding.setFormatsAsync" />
+      <Method Name="TableBinding.setTableOptionsAsync" />
+      <Method Name="TextBinding.getDataAsync" />
+      <Method Name="TextBinding.setDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="PowerPoint" Platform="Win32" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft PowerPoint 2013 SP1">
+    <Sets>
+      <Set Name="ActiveView" Version="1.1" />
+      <Set Name="CompressedFile" Version="1.1" />
+      <Set Name="DocumentEvents" Version="1.1" />
+      <Set Name="File" Version="1.1" />
+      <Set Name="PdfFile" Version="1.1" />
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getActiveViewAsync" />
+      <Method Name="Document.getFileAsync" />
+      <Method Name="Document.getFilePropertiesAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.goToByIdAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+      <Method Name="File.closeAsync" />
+      <Method Name="File.getSliceAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="Project" Platform="Win32" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Project 2013 SP1">
+    <Sets>
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getProjectFieldAsync" />
+      <Method Name="Document.getResourceFieldAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.getSelectedResourceAsync" />
+      <Method Name="Document.getSelectedTaskAsync" />
+      <Method Name="Document.getSelectedViewAsync" />
+      <Method Name="Document.getTaskAsync" />
+      <Method Name="Document.getTaskFieldAsync" />
+      <Method Name="Document.getWSSUrlAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="Word" Platform="Win32" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Word 2013 SP1">
+    <Sets>
+      <Set Name="BindingEvents" Version="1.1" />
+      <Set Name="CompressedFile" Version="1.1" />
+      <Set Name="CustomXmlParts" Version="1.1" />
+      <Set Name="DocumentEvents" Version="1.1" />
+      <Set Name="File" Version="1.1" />
+      <Set Name="HtmlCoercion" Version="1.1" />
+      <Set Name="MatrixBindings" Version="1.1" />
+      <Set Name="MatrixCoercion" Version="1.1" />
+      <Set Name="OoxmlCoercion" Version="1.1" />
+      <Set Name="PdfFile" Version="1.1" />
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TableBindings" Version="1.1" />
+      <Set Name="TableCoercion" Version="1.1" />
+      <Set Name="TextBindings" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+      <Set Name="TextFile" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="CustomXmlNode.getNodesAsync" />
+      <Method Name="CustomXmlNode.getNodeValueAsync" />
+      <Method Name="CustomXmlNode.getXmlAsync" />
+      <Method Name="CustomXmlNode.setNodeValueAsync" />
+      <Method Name="CustomXmlNode.setXmlAsync" />
+      <Method Name="CustomXmlPart.addHandlerAsync" />
+      <Method Name="CustomXmlPart.deleteAsync" />
+      <Method Name="CustomXmlPart.getNodesAsync" />
+      <Method Name="CustomXmlPart.getXmlAsync" />
+      <Method Name="CustomXmlPart.removeHandlerAsync" />
+      <Method Name="CustomXmlParts.addAsync" />
+      <Method Name="CustomXmlParts.getByIdAsync" />
+      <Method Name="CustomXmlParts.getByNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.addNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.getNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.getPrefixAsync" />
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getFileAsync" />
+      <Method Name="Document.getFilePropertiesAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.goToByIdAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+      <Method Name="File.closeAsync" />
+      <Method Name="File.getSliceAsync" />
+      <Method Name="MatrixBinding.getDataAsync" />
+      <Method Name="MatrixBinding.setDataAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+      <Method Name="TextBinding.getDataAsync" />
+      <Method Name="TextBinding.setDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="Outlook" Platform="Win32" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Outlook 2013 SP1">
+    <Sets>
+      <Set Name="Mailbox" Version="1.1" />
+    </Sets>
+  </Endpoint>
+  <Endpoint Name="Outlook" Platform="Web" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Outlook Web App 2013 SP1">
+    <Sets>
+      <Set Name="Mailbox" Version="1.1" />
+    </Sets>
+  </Endpoint>
+  <Endpoint Name="Excel" Platform="Web" MajorVersion="15" ApiSetVersion="1" DisplayName="Microsoft Excel Web App 2013 SP1">
+    <Sets>
+      <Set Name="BindingEvents" Version="1.1" />
+      <Set Name="DocumentEvents" Version="1.1" />
+      <Set Name="MatrixBindings" Version="1.1" />
+      <Set Name="MatrixCoercion" Version="1.1" />
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TableBindings" Version="1.1" />
+      <Set Name="TableCoercion" Version="1.1" />
+      <Set Name="TextBindings" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromPromptAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+      <Method Name="MatrixBinding.getDataAsync" />
+      <Method Name="MatrixBinding.setDataAsync" />
+      <Method Name="Settings.addHandlerAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.refreshAsync" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.removeHandlerAsync" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+      <Method Name="TextBinding.getDataAsync" />
+      <Method Name="TextBinding.setDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="Access" Platform="Web" MajorVersion="16" ApiSetVersion="0" DisplayName="Microsoft Access Web App for Office 365">
+    <Sets>
+      <Set Name="BindingEvents" Version="1.1" />
+      <Set Name="PartialTableBindings" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TableBindings" Version="1.1" />
+      <Set Name="TableCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromPromptAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="Settings.addHandlerAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.refreshAsync" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.removeHandlerAsync" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="Excel" Platform="Web" MajorVersion="16" ApiSetVersion="0" DisplayName="Microsoft Excel Web App for Office 365">
+    <Sets>
+      <Set Name="BindingEvents" Version="1.1" />
+      <Set Name="DocumentEvents" Version="1.1" />
+      <Set Name="MatrixBindings" Version="1.1" />
+      <Set Name="MatrixCoercion" Version="1.1" />
+      <Set Name="Selection" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+      <Set Name="TableBindings" Version="1.1" />
+      <Set Name="TableCoercion" Version="1.1" />
+      <Set Name="TextBindings" Version="1.1" />
+      <Set Name="TextCoercion" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromPromptAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+      <Method Name="MatrixBinding.getDataAsync" />
+      <Method Name="MatrixBinding.setDataAsync" />
+      <Method Name="Settings.addHandlerAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.refreshAsync" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.removeHandlerAsync" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+      <Method Name="TextBinding.getDataAsync" />
+      <Method Name="TextBinding.setDataAsync" />
+    </Methods>
+  </Endpoint>
+  <Endpoint Name="PowerPoint" Platform="Web" MajorVersion="16" ApiSetVersion="0" DisplayName="Microsoft PowerPoint Web App for Office 365">
+    <Sets>
+      <Set Name="ActiveView" Version="1.1" />
+      <Set Name="Settings" Version="1.1" />
+    </Sets>
+    <Methods>
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.getActiveViewAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+      <Method Name="Settings.addHandlerAsync" />
+      <Method Name="Settings.get" />
+      <Method Name="Settings.refreshAsync" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.removeHandlerAsync" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+    </Methods>
+  </Endpoint>
+</Endpoints>

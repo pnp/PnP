@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 {
@@ -63,6 +65,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
 
                     //System.Attribute.GetCustomAttributes(t); 
 
+                    // Get info from attributes
                     foreach (var attr in attrs)
                     {
                         if (attr is CmdletAttribute)
@@ -85,11 +88,10 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         {
                             var a = (CmdletExampleAttribute)attr;
                             examples.Add(a);
-
-
                         }
                     }
 
+                    // Store in CmdletInfo structure
                     var cmdletInfo = new CmdletInfo(verb, noun);
                     cmdletInfo.Description = description;
                     cmdletInfo.DetailedDescription = detaileddescription;
@@ -97,7 +99,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     cmdletInfo.Copyright = copyright;
                     cmdletInfo.Category = category;
 
-
+                    // Build XElement for command
                     var commandElement = new XElement(command + "command", mamlNsAttr, commandNsAttr, devNsAttr);
                     var detailsElement = new XElement(command + "details");
                     commandElement.Add(detailsElement);
@@ -109,11 +111,14 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     detailsElement.Add(new XElement(command + "noun", noun));
                     detailsElement.Add(new XElement(dev + "version", version));
 
-                    commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
-
+                    if (!string.IsNullOrWhiteSpace(detaileddescription))
+                    {
+                        commandElement.Add(new XElement(maml + "description", new XElement(maml + "para", detaileddescription)));
+                    }
                     var syntaxElement = new XElement(command + "syntax");
                     commandElement.Add(syntaxElement);
 
+                    // Store syntaxes in CmdletInfo structure (if not AllParameterSets), and also in all syntaxItems list
                     var fields = t.GetFields();
                     var syntaxItems = new List<SyntaxItem>();
                     foreach (var field in fields)
@@ -136,22 +141,23 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                             cmdletInfo.Syntaxes.Add(cmdletSyntax);
                                         }
 
-                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
-                                    }
+                                        cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
 
-                                    var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
-                                    if (syntaxItem == null)
-                                    {
-                                        syntaxItem = new SyntaxItem(a.ParameterSetName);
-                                        syntaxItems.Add(syntaxItem);
+                                        var syntaxItem = syntaxItems.FirstOrDefault(x => x.Name == a.ParameterSetName);
+                                        if (syntaxItem == null)
+                                        {
+                                            syntaxItem = new SyntaxItem(a.ParameterSetName);
+                                            syntaxItems.Add(syntaxItem);
+                                        }
+                                        syntaxItem.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                     }
-                                    syntaxItem.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
                                 }
                             }
                         }
                     }
 
                     // all parameters
+                    // Add AllParameterSets to all CmdletInfo syntax sets and syntaxItems sets (first checking there is at least one, i.e. if all are marked AllParameterSets)
                     foreach (var field in fields)
                     {
                         foreach (Attribute attr in field.GetCustomAttributes(typeof(ParameterAttribute), true))
@@ -163,18 +169,22 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 {
                                     if (a.ParameterSetName == ParameterAttribute.AllParameterSets)
                                     {
+                                        if (syntaxItems.Count == 0)
+                                        {
+                                            syntaxItems.Add(new SyntaxItem(ParameterAttribute.AllParameterSets));
+                                        }
                                         foreach (var si in syntaxItems)
                                         {
-                                            si.Parameters.Add(new SyntaxItem.Parameter() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                            si.Parameters.Add(new SyntaxItem.Parameter() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                         }
 
                                         if (cmdletInfo.Syntaxes.Count == 0)
                                         {
-                                            cmdletInfo.Syntaxes.Add(new CmdletSyntax() {ParameterSetName = ParameterAttribute.AllParameterSets});
+                                            cmdletInfo.Syntaxes.Add(new CmdletSyntax() { ParameterSetName = ParameterAttribute.AllParameterSets });
                                         }
                                         foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
                                         {
-                                            cmdletSyntax.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                            cmdletSyntax.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
                                         }
                                     }
                                 }
@@ -182,7 +192,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
-                    //
+                    // Build XElement for parameters from syntaxItems list (note: syntax element is set above)
                     foreach (var syntaxItem in syntaxItems)
                     {
                         var syntaxItemElement = new XElement(command + "syntaxItem");
@@ -197,12 +207,13 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                             parameterElement.Add(new XElement(maml + "name", parameter.Name));
 
                             parameterElement.Add(new XElement(maml + "description", new XElement(maml + "para", parameter.Description)));
-                            parameterElement.Add(new XElement(command + "parameterValue", parameter.Type));
+                            parameterElement.Add(new XElement(command + "parameterValue", new XAttribute("required", parameter.Type != "SwitchParameter"), parameter.Type));
 
                             syntaxItemElement.Add(parameterElement);
                         }
                     }
 
+                    // Also store parameters in cmdletInfo.Parameters (all parameters) and XElement parameters
                     var parametersElement = new XElement(command + "parameters");
                     commandElement.Add(parametersElement);
 
@@ -215,7 +226,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                 var a = (ParameterAttribute)attr;
                                 if (!a.DontShow)
                                 {
-                                    cmdletInfo.Parameters.Add(new CmdletParameterInfo() {Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name});
+                                    cmdletInfo.Parameters.Add(new CmdletParameterInfo() { Name = field.Name, Description = a.HelpMessage, Position = a.Position, Required = a.Mandatory, Type = field.FieldType.Name });
 
                                     var parameter2Element = new XElement(command + "parameter", new XAttribute("required", a.Mandatory), new XAttribute("position", a.Position > 0 ? a.Position.ToString() : "named"));
 
@@ -239,6 +250,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                         }
                     }
 
+                    // XElement inputTypes
                     commandElement.Add(
                         new XElement(command + "inputTypes",
                             new XElement(command + "inputType",
@@ -249,6 +261,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                         new XElement(maml + "para", "description"))))));
                     helpItems.Add(commandElement);
 
+                    // XElement return values
                     commandElement.Add(
                         new XElement(command + "returnValues",
                             new XElement(command + "returnValue",
@@ -258,6 +271,7 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                                     new XElement(maml + "description",
                                         new XElement(maml + "para", "description"))))));
 
+                    // XElement examples
                     var examplesElement = new XElement(command + "examples");
                     var exampleCount = 1;
                     foreach (var exampleAttr in examples.OrderBy(e => e.SortOrder))
@@ -276,66 +290,104 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
                     }
                     commandElement.Add(examplesElement);
 
+                    // Markdown from CmdletInfo
                     if (generateMarkdown)
                     {
                         if (!string.IsNullOrEmpty(cmdletInfo.Verb) && !string.IsNullOrEmpty(cmdletInfo.Noun))
                         {
+                            string mdFilePath = string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun);
                             toc.Add(cmdletInfo);
-                            using (var docfile = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\{1}{2}.md", solutionDir, cmdletInfo.Verb, cmdletInfo.Noun)))
+                            var existingHashCode = string.Empty;
+                            if (System.IO.File.Exists(mdFilePath))
                             {
-                                docfile.WriteLine("#{0}", cmdletInfo.FullCommand);
-                                docfile.WriteLine("*Topic automatically generated on: {0}*", DateTime.Now.ToString("yyyy-MM-dd"));
-                                docfile.WriteLine("");
-                                docfile.WriteLine(cmdletInfo.Description);
-                                docfile.WriteLine("##Syntax");
-                                foreach (var cmdletSyntax in cmdletInfo.Syntaxes)
+                                // Calculate hashcode
+                                var existingFileText = System.IO.File.ReadAllText(mdFilePath);
+                                var refPosition = existingFileText.IndexOf("<!-- Ref:");
+                                if (refPosition > -1)
                                 {
-                                    var syntaxText = new StringBuilder();
-                                    syntaxText.AppendFormat("```powershell\r\n{0}", cmdletInfo.FullCommand);
-                                    foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
+                                    var refEndPosition = existingFileText.IndexOf("-->", refPosition);
+                                    if (refEndPosition > -1)
                                     {
-                                        syntaxText.Append(" ");
-                                        if (!par.Required)
+                                        var refCode = existingFileText.Substring(refPosition + 9, refEndPosition - refPosition - 9).Trim();
+                                        if (!string.IsNullOrEmpty(refCode))
                                         {
-                                            syntaxText.Append("[");
-                                        }
-                                        syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
-                                        if (!par.Required)
-                                        {
-                                            syntaxText.Append("]");
+                                            existingHashCode = refCode;
                                         }
                                     }
-                                    // Add All ParameterSet ones
-                                    docfile.WriteLine(syntaxText);
-                                    docfile.WriteLine("```");
-                                    docfile.WriteLine("&nbsp;");
-                                    docfile.WriteLine("");
                                 }
+                            }
+                            var docHeaderBuilder = new StringBuilder();
 
-                                if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
+
+                            // Separate header from body to calculate the hashcode later
+                            docHeaderBuilder.AppendFormat("#{0}{1}", cmdletInfo.FullCommand, Environment.NewLine);
+                            docHeaderBuilder.AppendFormat("*Topic automatically generated on: {0}*{1}", DateTime.Now.ToString("yyyy'-'MM'-'dd"), Environment.NewLine);
+                            docHeaderBuilder.Append(Environment.NewLine);
+
+                            // Body 
+                            var docBuilder = new StringBuilder();
+                            docBuilder.AppendFormat("{0}{1}", cmdletInfo.Description, Environment.NewLine);
+                            docBuilder.AppendFormat("##Syntax{0}", Environment.NewLine);
+                            foreach (var cmdletSyntax in cmdletInfo.Syntaxes.OrderBy(s => s.ParameterSetName))
+                            {
+                                var syntaxText = new StringBuilder();
+                                syntaxText.AppendFormat("```powershell\r\n{0}", cmdletInfo.FullCommand);
+                                foreach (var par in cmdletSyntax.Parameters.OrderBy(p => p.Position))
                                 {
-                                    docfile.WriteLine("##Detailed Description");
-                                    docfile.WriteLine(cmdletInfo.DetailedDescription);
-                                    docfile.WriteLine("");
+                                    syntaxText.Append(" ");
+                                    if (!par.Required)
+                                    {
+                                        syntaxText.Append("[");
+                                    }
+                                    if (par.Type == "SwitchParameter")
+                                    {
+                                        syntaxText.AppendFormat("-{0} [<{1}>]", par.Name, par.Type);
+                                    }
+                                    else
+                                    {
+                                        syntaxText.AppendFormat("-{0} <{1}>", par.Name, par.Type);
+                                    }
+                                    if (!par.Required)
+                                    {
+                                        syntaxText.Append("]");
+                                    }
                                 }
-                                docfile.WriteLine("##Parameters");
-                                docfile.WriteLine("Parameter|Type|Required|Description");
-                                docfile.WriteLine("---------|----|--------|-----------");
-                                foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
-                                {
-                                    docfile.WriteLine("{0}|{1}|{2}|{3}", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
-                                }
-                                if (examples.Any())
-                                    docfile.WriteLine("##Examples");
-                                var examplesCount = 1;
-                                foreach (var example in examples.OrderBy(e => e.SortOrder))
-                                {
-                                    docfile.WriteLine(example.Introduction);
-                                    docfile.WriteLine("###Example {0}", examplesCount);
-                                    docfile.WriteLine("    {0}", example.Code);
-                                    docfile.WriteLine(example.Remarks);
-                                    examplesCount++;
-                                }
+                                // Add All ParameterSet ones
+                                docBuilder.Append(syntaxText);
+                                docBuilder.AppendFormat("\n```\n\n\n");
+                            }
+
+                            if (!string.IsNullOrEmpty(cmdletInfo.DetailedDescription))
+                            {
+                                docBuilder.Append("##Detailed Description\n");
+                                docBuilder.AppendFormat("{0}\n\n", cmdletInfo.DetailedDescription);
+                            }
+                            docBuilder.Append("##Parameters\n");
+                            docBuilder.Append("Parameter|Type|Required|Description\n");
+                            docBuilder.Append("---------|----|--------|-----------\n");
+                            foreach (var par in cmdletInfo.Parameters.OrderBy(x => x.Name))
+                            {
+                                docBuilder.AppendFormat("|{0}|{1}|{2}|{3}|\n", par.Name, par.Type, par.Required ? "True" : "False", par.Description);
+                            }
+                            if (examples.Any())
+                                docBuilder.Append("##Examples\n");
+                            var examplesCount = 1;
+                            foreach (var example in examples.OrderBy(e => e.SortOrder))
+                            {
+                                docBuilder.AppendFormat("{0}\n", example.Introduction);
+                                docBuilder.AppendFormat("###Example {0}\n", examplesCount);
+                                docBuilder.AppendFormat("    {0}\n", example.Code);
+                                docBuilder.AppendFormat("{0}\n", example.Remarks);
+                                examplesCount++;
+                            }
+
+                            var newHashCode = CalculateMD5Hash(docBuilder.ToString());
+
+                            docBuilder.AppendFormat("<!-- Ref: {0} -->", newHashCode); // Add hashcode of generated text to the file as hidden entry
+                            if (newHashCode != existingHashCode)
+                            {
+
+                                System.IO.File.WriteAllText(mdFilePath, docHeaderBuilder.Append(docBuilder).ToString());
                             }
                         }
                     }
@@ -347,32 +399,63 @@ namespace OfficeDevPnP.PowerShell.CmdletHelpGenerator
             if (generateMarkdown)
             {
                 // Create the readme.md
-                using (var readme = new System.IO.StreamWriter(string.Format("{0}\\Documentation\\readme.md", solutionDir)))
+                var existingHashCode = string.Empty;
+                var readmePath = string.Format("{0}\\Documentation\\readme.md", solutionDir);
+                if (System.IO.File.Exists(readmePath))
                 {
-                    readme.WriteLine("# Cmdlet Documentation #");
-                    readme.WriteLine("Below you can find a list of all the available cmdlets. Many commands provide built-in help and examples. Retrieve the detailed help with ");
-                    readme.WriteLine("\r\n```powershell\r\nGet-Help Connect-SPOnline -Detailed\r\n```\r\n\r\n");
+                    existingHashCode = CalculateMD5Hash(System.IO.File.ReadAllText(readmePath));
+                }
+                var docBuilder = new StringBuilder();
 
-                    // Get all unique categories
-                    var categories = toc.Select(c => c.Category).Distinct();
 
-                    foreach (var category in categories.OrderBy(c => c))
+                docBuilder.AppendFormat("# Cmdlet Documentation #{0}", Environment.NewLine);
+                docBuilder.AppendFormat("Below you can find a list of all the available cmdlets. Many commands provide built-in help and examples. Retrieve the detailed help with {0}", Environment.NewLine);
+                docBuilder.AppendFormat("{0}```powershell{0}Get-Help Connect-SPOnline -Detailed{0}```{0}{0}", Environment.NewLine);
+
+                // Get all unique categories
+                var categories = toc.Select(c => c.Category).Distinct();
+
+                foreach (var category in categories.OrderBy(c => c))
+                {
+                    docBuilder.AppendFormat("##{0}{1}", category, Environment.NewLine);
+
+                    docBuilder.AppendFormat("Cmdlet|Description{0}", Environment.NewLine);
+                    docBuilder.AppendFormat(":-----|:----------{0}", Environment.NewLine);
+                    foreach (var cmdletInfo in toc.Where(c => c.Category == category).OrderBy(c => c.Noun))
                     {
-                        readme.WriteLine("##{0}",category);
-
-                        readme.WriteLine("Cmdlet|Description");
-                        readme.WriteLine(":-----|:----------");
-                        foreach (var cmdletInfo in toc.Where(c => c.Category == category).OrderBy(c => c.Noun))
-                        {
-                            var description = cmdletInfo.Description.Replace("\r\n", " ");
-                            readme.WriteLine("**[{0}]({1}{2}.md)** |{3}", cmdletInfo.FullCommand.Replace("-", "&#8209;"), cmdletInfo.Verb, cmdletInfo.Noun, description);
-                        }
+                        var description = cmdletInfo.Description.Replace("\r\n", " ");
+                        docBuilder.AppendFormat("**[{0}]({1}{2}.md)** |{3}{4}", cmdletInfo.FullCommand.Replace("-", "&#8209;"), cmdletInfo.Verb, cmdletInfo.Noun, description, Environment.NewLine);
                     }
                 }
 
-            }
+                var newHashCode = CalculateMD5Hash(docBuilder.ToString());
+                if (newHashCode != existingHashCode)
+                {
+                    System.IO.File.WriteAllText(readmePath, docBuilder.ToString());
+                }
 
+            }
         }
+
+        private static string CalculateMD5Hash(string input)
+        {
+            // From http://blogs.msdn.com/b/csharpfaq/archive/2006/10/09/how-do-i-calculate-a-md5-hash-from-a-string_3f00_.aspx
+
+            // step 1, calculate MD5 hash from input
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(input);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            // step 2, convert byte array to hex string
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+            return sb.ToString();
+        }
+
+
 
         private class SyntaxItem
         {

@@ -8,12 +8,14 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsData.Import, "SPOTaxonomy", SupportsShouldProcess = true)]
     [CmdletHelp("Imports a taxonomy from either a string array or a file", Category = "Taxonomy")]
-    [CmdletExample(Code = @"
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'",
-           Remarks = "Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'")]
-    [CmdletExample(Code = @"
-PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'",
-       Remarks = "Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'")]
+    [CmdletExample(
+        Code = @"PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm'",
+        Remarks = "Creates a new termgroup, 'Company', a termset 'Locations' and a term 'Stockholm'",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Locations|Stockholm|North'",
+        Remarks = "Creates a new termgroup, 'Company', a termset 'Locations', a term 'Stockholm' and two subterms: 'Central', and 'North'",
+        SortOrder = 2)]
     public class ImportTaxonomy : SPOCmdlet
     {
 
@@ -37,14 +39,14 @@ PS:> Import-SPOTaxonomy -Terms 'Company|Locations|Stockholm|Central','Company|Lo
 
         protected override void ExecuteCmdlet()
         {
-            if (!System.IO.Path.IsPathRooted(Path))
-            {
-                Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
-            }
-
             string[] lines;
             if (ParameterSetName == "File")
             {
+                if (!System.IO.Path.IsPathRooted(Path))
+                {
+                    Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
+                }
+
                 lines = File.ReadAllLines(Path);
             }
             else

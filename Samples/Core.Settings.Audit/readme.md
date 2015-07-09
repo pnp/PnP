@@ -4,12 +4,12 @@
 Demonstrates how to control auditing settings in the site collection level using CSOM.
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT) - Waiting for new re-distributable
+-  Office 365 Multi Tenant (MT) 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-2014 December CU installed on farm for on-premises or new re-distributable package for cloud CSOM (released around end of January 2015).
+2014 December CU installed on farm for on-premises or new re-distributable package for cloud CSOM (April 2015 release).
 
 ### Solution ###
 Solution | Author(s)
@@ -20,6 +20,7 @@ Core.Settings.Audit | Vesa Juvonen
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | December 22th 2014 | Initial release
+1.1  | April 13th 2015 | Updated to use latest Office 365 CSOM
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

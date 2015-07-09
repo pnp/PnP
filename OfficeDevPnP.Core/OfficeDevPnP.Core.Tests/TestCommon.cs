@@ -89,6 +89,26 @@ namespace OfficeDevPnP.Core.Tests {
             return CreateContext(TenantUrl, Credentials);
         }
 
+        public static bool AppOnlyTesting()
+        {
+            if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["Realm"]) &&
+                !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppId"]) &&
+                !String.IsNullOrEmpty(ConfigurationManager.AppSettings["AppSecret"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOCredentialManagerLabel"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOUserName"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["SPOPassword"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremUserName"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremDomain"]) &&
+                String.IsNullOrEmpty(ConfigurationManager.AppSettings["OnPremPassword"]))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private static ClientContext CreateContext(string contextUrl, ICredentials credentials)
         {
             ClientContext context;

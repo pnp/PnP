@@ -26,7 +26,7 @@ Version  | Date | Comments
 ----------
 
 # General #
-This sample shows how one construct requests from SPA and proxy through app server to add necessary access tokens. It also could help to familiarize people with how simple it is to get started using AngularJS as a tool for more complex apps.
+This sample shows how one construct requests from SPA and proxy through add-in server to add necessary access tokens. It also could help to familiarize people with how simple it is to get started using AngularJS as a tool for more complex apps.
 In order for provider hosted apps to request resources from SharePoint it must send an access token for authentication.  Currently SharePoint doesn't support the OAuth 2.0 Implicit grant flow so the access tokens we get have a longer expiration period and must be protected with more caution.
 
 In other words, we can't expose the access tokens to the client and must make request through the server; however we still want to use the same programming model of having all the logic on the client. To have the best of both worlds we use a custom web api controller which acts as proxy add access token to requests and passing them through to SharePoint.
@@ -48,7 +48,7 @@ See: http://www.itunity.com/article/managing-tokens-sharepoint-2013-singlepage-p
 7.	Update controller to get the access token from the spContext based on the httpRequestMessage url
 8.	Update controller to send the httpRequestMessage and return the response
 
-At this point you should have the server side logic completed. When the app is first loaded and hits the index action the spContext is saved, then future requests to the custom controller retrieve this context from the session and apply access tokens to the requests.
+At this point you should have the server side logic completed. When the add-in is first loaded and hits the index action the spContext is saved, then future requests to the custom controller retrieve this context from the session and apply access tokens to the requests.
 
 ## Client Side Setup ##
 This particular example uses AngularJS as it seems to be popular with those haven’t heard of EmberJS. Ok that was a joke to make sure you are reading. Anyways yes this uses angularjs but it really doesn’t matter what you use as long as you follow the following steps:

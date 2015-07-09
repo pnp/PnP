@@ -18,7 +18,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void ContainsInvalidUrlCharsReturnsTrueForInvalidString()
         {
-            var targetVals = new List<char> { '#', '%', '&', '*', '{', '}', '\\', ':', '<', '>', '?', '/', '+', '|', '"' };
+#if !CLIENTSDKV15
+            var targetVals = new List<char> { '#', '%', '*', '\\', ':', '<', '>', '?', '/', '+', '|', '"' };
+#else
+            var targetVals = new List<char> { '#', '~', '%', '&', '*', '{', '}', '\\', ':', '<', '>', '?', '/', '+', '|', '"' };
+#endif
 
             targetVals.ForEach(v => Assert.IsTrue((string.Format("abc{0}abc", v).ContainsInvalidUrlChars())));
         }
@@ -26,7 +30,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void StripInvalidUrlCharsReturnsStrippedString()
         {
-            var invalidString = "a#%&*{}\\:<>?/+|b";
+#if !CLIENTSDKV15
+            var invalidString = "a#%*\\:<>?/+|b";
+#else
+            var invalidString = "a#~%&*{}\\:<>?/+|b";
+#endif
 
             Assert.AreEqual("ab", invalidString.StripInvalidUrlChars());
         }
@@ -34,9 +42,13 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void ReplaceInvalidUrlCharsReturnsStrippedString()
         {
-            var invalidString = "a#%&*{}\\:<>?/+|b";
-
-            Assert.AreEqual("a------------------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
+#if !CLIENTSDKV15
+            var invalidString = "a#%*\\:<>?/+|b";
+            Assert.AreEqual("a---------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
+#else
+            var invalidString = "a#~%&*{}\\:<>?/+|b";
+            Assert.AreEqual("a---------------------------------------------b", invalidString.ReplaceInvalidUrlChars("---"));
+#endif
         }
     }
 }

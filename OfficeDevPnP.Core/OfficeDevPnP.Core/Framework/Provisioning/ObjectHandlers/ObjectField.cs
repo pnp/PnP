@@ -1,18 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Web.Services.Discovery;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
+using SPField = Microsoft.SharePoint.Client.Field;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectField : ObjectHandlerBase
+    internal class ObjectField : ObjectHandlerBase
     {
+        public override string Name
+        {
+            get { return "Fields"; }
+        }
         public override void ProvisionObjects(Web web, ProvisioningTemplate template)
         {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Fields);
 
             // if this is a sub site then we're not provisioning fields. Technically this can be done but it's not a recommended practice
             if (web.IsSubSite())
@@ -20,30 +31,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 return;
             }
 
-            var parser = new TokenParser(web);
             var existingFields = web.Fields;
 
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id));
             web.Context.ExecuteQueryRetry();
-            var existingFieldIds = existingFields.Select(l => l.Id).ToList();
-
+            var existingFieldIds = existingFields.AsEnumerable<SPField>().Select(l => l.Id).ToList();
             var fields = template.SiteFields;
 
             foreach (var field in fields)
             {
-                XDocument document = XDocument.Parse(field.SchemaXml);
-                var fieldId = document.Root.Attribute("ID").Value;
+                XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                var fieldId = fieldElement.Attribute("ID").Value;
 
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var fieldXml = parser.Parse(field.SchemaXml);
+                    var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
+
+                    if (listIdentifier != null)
+                    {
+                        // Temporary remove list attribute from list
+                        fieldElement.Attribute("List").Remove();
+                    }
+
+                    var fieldXml = fieldElement.ToString();
+
                     web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
-                    web.Context.ExecuteQueryRetry();
                 }
             }
         }
-
 
         public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
@@ -54,6 +70,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             var existingFields = web.Fields;
+            web.Context.Load(web, w => w.ServerRelativeUrl);
             web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
             web.Context.ExecuteQueryRetry();
 
@@ -62,7 +79,33 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 if (!BuiltInFieldId.Contains(field.Id))
                 {
-                    template.SiteFields.Add(new Field() { SchemaXml = field.SchemaXml });
+                    var fieldXml = field.SchemaXml;
+                    XElement element = XElement.Parse(fieldXml);
+
+                    // Check if the field contains a reference to a list. If by Guid, rewrite the value of the attribute to use web relative paths
+                    var listIdentifier = element.Attribute("List") != null ? element.Attribute("List").Value : null;
+                    if (!string.IsNullOrEmpty(listIdentifier))
+                    {
+                        var listGuid = Guid.Empty;
+                        if (Guid.TryParse(listIdentifier, out listGuid))
+                        {
+                            var list = web.Lists.GetById(listGuid);
+                            web.Context.Load(list, l => l.RootFolder.ServerRelativeUrl);
+                            web.Context.ExecuteQueryRetry();
+
+                            var listUrl = list.RootFolder.ServerRelativeUrl.Substring(web.ServerRelativeUrl.Length).TrimStart('/');
+                            element.Attribute("List").SetValue(listUrl);
+                            fieldXml = element.ToString();
+                        }
+                    }
+
+                    // Check if we have version attribute. Remove if exists 
+                    if (element.Attribute("Version") != null)
+                    {
+                        element.Attributes("Version").Remove();
+                        fieldXml = element.ToString();
+                    }
+                    template.SiteFields.Add(new Field() { SchemaXml = fieldXml });
                 }
             }
             // If a base template is specified then use that one to "cleanup" the generated template model
@@ -94,5 +137,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             return template;
         }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.SiteFields.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
+        }
     }
 }
+

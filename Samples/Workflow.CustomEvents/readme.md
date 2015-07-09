@@ -44,4 +44,4 @@ Using the Workflows page or the ECB menu item named "Start Sample Workflow" you 
 Using ECB menu item named "Fire Custom Event" you can fire the custom event.
 
 # HOW TO TEST THE SAMPLE #
-Using Visual Studio 2013, configure the target SharePoint Online site collection, and simply start (F5) the SharePoint App from within Visual Studio 2013
+Using Visual Studio 2013, configure the target SharePoint Online site collection, and simply start (F5) the SharePoint add-in from within Visual Studio 2013

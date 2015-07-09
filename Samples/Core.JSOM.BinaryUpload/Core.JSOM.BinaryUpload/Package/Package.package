@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="3d654e81-9a0d-4584-85c6-d2ae3c4fc15d" 
+        solutionId="3d654e81-9a0d-4584-85c6-d2ae3c4fc15d" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Core.JSOM.BinaryUpload"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="016a619b-201a-423a-b47b-6d5f1be04778" />
+  </features>
+</package>

@@ -44,7 +44,7 @@ This solution can be incorporated into a custom site provisioning process and ha
 In order to use Site Policies within your environment you must use the Content Type Hub to publish out site policies to site collections. If you are using a SharePoint Online MT environment the content type hub is already provisioned and configured for you and is located https://TENANT/sites/contentTypeHub. You publish the Site Policies very similar to publishing content types, and in fact Site Policies is a content type under the covers. The name of the content is Project Policy and has an ID 0x010085EC78BE64F9478aAE3ED069093B9963.
 
 ### Note: ###
-Creating Site Policies programmatically is not available today using app model. 
+Creating Site Policies programmatically is not available today using add-in model. 
 
 ![](http://i.imgur.com/njiTUNy.png)
 

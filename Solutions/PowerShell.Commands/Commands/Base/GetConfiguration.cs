@@ -16,6 +16,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
+            WriteWarning("This cmdlet will be deprecated in the August 2015 release");
             XDocument document;
 
             // check for existing configuration, if not existing, create it
