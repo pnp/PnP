@@ -106,6 +106,28 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, url.ToString());
         }
 
+        internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string adfsHostName, string relyingParty, PSCredential credentials, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
+        {
+            Core.AuthenticationManager authManager = new Core.AuthenticationManager();
+
+            var networkCredentials = credentials.GetNetworkCredential();
+            var context = authManager.GetADFSUserNameMixedAuthenticatedContext(url.ToString(), networkCredentials.UserName, networkCredentials.Password, networkCredentials.Domain, adfsHostName, relyingParty);
+
+            context.ApplicationName = Properties.Resources.ApplicationName;
+            context.RequestTimeout = requestTimeout;
+
+            var connectionType = ConnectionType.OnPrem;
+
+            if (skipAdminCheck == false)
+            {
+                if (IsTenantAdminSite(context))
+                {
+                    connectionType = ConnectionType.TenantAdmin;
+                }
+            }
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
+        }
+
         public static string GetRealmFromTargetUrl(Uri targetApplicationUri)
         {
             WebRequest request = WebRequest.Create(targetApplicationUri + "/_vti_bin/client.svc");
