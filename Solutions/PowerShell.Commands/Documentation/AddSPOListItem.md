@@ -1,5 +1,5 @@
 #Add-SPOListItem
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds an item to a list
 ##Syntax

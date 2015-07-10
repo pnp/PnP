@@ -1,5 +1,5 @@
 #Get-SPOWorkflowDefinition
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Returns a workflow definition
 ##Syntax

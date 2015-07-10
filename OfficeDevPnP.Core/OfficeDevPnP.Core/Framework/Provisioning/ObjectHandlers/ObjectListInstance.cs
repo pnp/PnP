@@ -88,7 +88,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 else
                                 {
-                                    UpdateFieldRef(field, fieldRef);
+                                    UpdateFieldRef(listInfo.SiteList, field.Id, fieldRef);
                                 }
                             }
 
@@ -111,7 +111,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
                             if (fieldElement.Attribute("ID") == null)
                             {
-                                throw new Exception(string.Format("Field schema has no ID attribute: {0}",field.SchemaXml));
+                                throw new Exception(string.Format("Field schema has no ID attribute: {0}", field.SchemaXml));
                             }
                             var id = fieldElement.Attribute("ID").Value;
 
@@ -244,31 +244,45 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
+                // If an existing view is updated, and the list is to be listed on the QuickLaunch, it is removed because the existing view will be deleted and recreated from scratch. 
+                foreach (var listInfo in processedLists)
+                {
+                    listInfo.SiteList.OnQuickLaunch = listInfo.TemplateList.OnQuickLaunch;
+                    listInfo.SiteList.Update();
+                }
+                web.Context.ExecuteQueryRetry();
+
             }
         }
 
-        private static void UpdateFieldRef(Field field, FieldRef fieldRef)
+        private static void UpdateFieldRef(List siteList, Guid fieldId, FieldRef fieldRef)
         {
+            // find the field in the list
+            var listField = siteList.Fields.GetById(fieldId);
+
+            siteList.Context.Load(listField, f => f.Title, f => f.Hidden, f => f.Required);
+            siteList.Context.ExecuteQueryRetry();
+
             var isDirty = false;
-            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != field.Title)
+            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != listField.Title)
             {
-                field.Title = fieldRef.DisplayName;
+                listField.Title = fieldRef.DisplayName;
                 isDirty = true;
             }
-            if (fieldRef.Hidden != field.Hidden)
+            if (fieldRef.Hidden != listField.Hidden)
             {
-                field.Hidden = fieldRef.Hidden;
+                listField.Hidden = fieldRef.Hidden;
                 isDirty = true;
             }
-            if (fieldRef.Required != field.Required)
+            if (fieldRef.Required != listField.Required)
             {
-                field.Required = fieldRef.Required;
+                listField.Required = fieldRef.Required;
                 isDirty = true;
             }
             if (isDirty)
             {
-                field.UpdateAndPushChanges(true);
-                field.Context.ExecuteQueryRetry();
+                listField.UpdateAndPushChanges(true);
+                siteList.Context.ExecuteQueryRetry();
             }
         }
 
@@ -381,9 +395,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 l => l.EnableMinorVersions,
                 l => l.DraftVersionVisibility
 #if !CLIENTSDKV15
-                ,l => l.MajorWithMinorVersionsLimit
+, l => l.MajorWithMinorVersionsLimit
 #endif
-                );
+);
             web.Context.ExecuteQueryRetry();
 
             if (existingList.BaseTemplate == templateList.TemplateType)
@@ -427,7 +441,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.EnableAttachments = templateList.EnableAttachments;
                     isDirty = true;
                 }
-                if (existingList.BaseTemplate != (int) ListTemplateType.DiscussionBoard)
+                if (existingList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
                 {
                     if (templateList.EnableFolderCreation != existingList.EnableFolderCreation)
                     {
@@ -447,7 +461,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         existingList.MajorVersionLimit = templateList.MaxVersionLimit;
                         isDirty = true;
                     }
-                    if (existingList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
+                    if (existingList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
                     {
                         // Only supported on Document Libraries
                         if (templateList.EnableMinorVersions != existingList.EnableMinorVersions)
@@ -455,9 +469,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingList.EnableMinorVersions = templateList.EnableMinorVersions;
                             isDirty = true;
                         }
-                        if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                        if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                         {
-                            existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                            existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                             isDirty = true;
                         }
 
@@ -469,22 +483,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
 
                             if (DraftVisibilityType.Approver ==
-                                (DraftVisibilityType) templateList.DraftVersionVisibility)
+                                (DraftVisibilityType)templateList.DraftVersionVisibility)
                             {
                                 if (templateList.EnableModeration)
                                 {
-                                    if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                    if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                     {
-                                        existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                                        existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                                         isDirty = true;
                                     }
                                 }
                             }
                             else
                             {
-                                if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                 {
-                                    existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                                    existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                                     isDirty = true;
                                 }
                             }
@@ -501,7 +515,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingList.ContentTypesEnabled)
                 {
                     // Check if we need to add a content type
-                    
+
                     var existingContentTypes = existingList.ContentTypes;
                     web.Context.Load(existingContentTypes, cts => cts.Include(ct => ct.StringId));
                     web.Context.ExecuteQueryRetry();
@@ -512,7 +526,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingList.AddContentTypeToListById(ctb.ContentTypeId, searchContentTypeInSiteHierarchy: true);
                     }
-                
+
                     // default ContentTypeBinding should be set last because 
                     // list extension .SetDefaultContentTypeToList() re-sets 
                     // the list.RootFolder UniqueContentTypeOrder property

@@ -1,5 +1,5 @@
 #Get-SPOView
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Returns one or all views from a list
 ##Syntax

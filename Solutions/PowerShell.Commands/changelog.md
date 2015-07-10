@@ -1,5 +1,12 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-07-08**
+* Added Get-SPOSearchConfiguration and Set-SPOSearchConfiguration cmdlets
+* Added support for folder property bags in Set-SPOPropertyBagValue, Get-SPOPropertyBag and Remove-SPOPropertyBagValue. See the help of the cmdlets for more details and examples.
+
+**2015-07-01**
+* Added Add-SPOIndexedProperty and Remove-SPOIndexedProperty to allow adding or removing single keys from a set of indexed properties.
+
 **2015-06-29**
 * Added OverwriteSystemPropertyBagValues parameter to Apply-SPOProvisioningTemplate cmdlet
 * Updated installer to allow for setting advanced properties.

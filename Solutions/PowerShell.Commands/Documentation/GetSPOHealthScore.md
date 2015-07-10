@@ -1,5 +1,5 @@
 #Get-SPOHealthScore
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Retrieves the current health score value of the server
 ##Syntax

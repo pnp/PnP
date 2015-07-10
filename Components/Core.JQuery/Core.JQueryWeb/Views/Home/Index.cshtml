@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/app.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/sp.peoplepicker.js"></script>
+
+<script type="text/javascript" src="~/Scripts/PnP/sp.addChrome.js"></script>
+<script type="text/javascript" src="~/Scripts/PnP/sp.documentpicker.js"></script>
+<script type="text/javascript">
+
+    // this is used for our common example event handlers to reduce copy/paste of code
+    var baseEventHandler = function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        var btn = $(this);
+        var panel = btn.closest('div.panel');
+        var bodyg = panel.find('div.panel-body');
+        var inputContainer = bodyg.children()[0];
+
+        return $(inputContainer);
+    };
+
+    // custom on start, ensures jQuery is ready and links have query string
+    $app.onStart(function () {
+
+        // fire jQuery extension for app chrome
+        $('#spChrome').addSPChrome({
+            appTitle: 'Test Harness',
+            appIcon: '/Images/AppIcon.png'
+        });
+
+        // setup default people picker
+        $('#ppDefault').spPeoplePicker();
+
+        // allow 10 selected users, trigger search on 2 entered characters
+        $('#ppExample1').spPeoplePicker({
+            minSearchTriggerLength: 2,
+            maxSelectedUsers: 10
+        });
+
+        // set value on load
+        $('#ppExample2').spPeoplePicker({
+            onLoaded: function () {
+                $(this).spPeoplePicker('set', { login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' });
+            }
+        });
+
+        // setup default doc picker
+        $('#dpDefault').spDocumentPicker();
+
+        // allow multiple, show subsites
+        $('#dpExample1').spDocumentPicker({
+            allowMultiple: true,
+            showSubSites: true
+        });
+
+        // show subsites, filter anything that starts with an "a" or "A" in the title
+        $('#dpExample2').spDocumentPicker({
+            showSubSites: true,
+            nodeFilter: function (node) {
+                return !/^a/i.test(node.text());
+            }
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-getvalue-pp', function (e) {
+
+            var inputContainer = baseEventHandler.call(this, e);
+
+            alert(JSON.stringify(inputContainer.spPeoplePicker('get')));
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-clearvalue-pp', function (e) {
+            var inputContainer = baseEventHandler.call(this, e);
+
+            inputContainer.spPeoplePicker('clear');
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-setvalue-pp', function (e) {
+            var inputContainer = baseEventHandler.call(this, e);
+
+            // works to pass an array to set of 1 or more objects, an empty array will clear the control
+            // .spPeoplePicker('clear') and .spPeoplePicker('set', []) are equivelent - though clear is preferred should special functionality be added to that code path
+            inputContainer.spPeoplePicker('set', [{ login: 'fakedomain\fakeuser', title: '', displayName: 'Fake User', email: 'fake.user@fakedomain.com' }]);
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-getvalue-dp', function (e) {
+
+            var inputContainer = baseEventHandler.call(this, e);
+
+            alert(JSON.stringify(inputContainer.spDocumentPicker('get')));
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-clearvalue-dp', function (e) {
+            var inputContainer = baseEventHandler.call(this, e);
+
+            inputContainer.spDocumentPicker('clear');
+        });
+
+        // handle all the button clicks at the container level
+        $('#example-container').on('click', 'button.pnp-setvalue-dp', function (e) {
+            var inputContainer = baseEventHandler.call(this, e);
+
+            // note you can pass a single object or an array of objects to set the control
+            inputContainer.spDocumentPicker('set', { path: '/sites/fake/server/relative/path/file.txt', name: 'File Name' });
+        });
+    });
+</script>
+<div class="container-fluid">
+    <div class="row">
+        <header class="col-md-12 hidden-xs">
+            <div id="spChrome"></div>
+        </header>
+    </div>
+    <div id="example-container" class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>People Picker, default settings</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="ppDefault"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-pp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-pp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-pp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>People Picker, allow 10 users, require 2 characters</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="ppExample1"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-pp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-pp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-pp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>People Picker, set value on load</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="ppExample2"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-pp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-pp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-pp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Document Picker, default settings</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="dpDefault"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-dp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-dp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-dp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Document Picker, allow multiple selections, show subsites</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="dpExample1"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-dp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-dp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-dp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Document Picker, custom node filter (remove anything with an 'a' in the title)</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="dpExample2"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-default btn-sm pnp-getvalue-dp">Get Value</button>
+                        <button class="btn btn-default btn-sm pnp-clearvalue-dp">Clear Value</button>
+                        <button class="btn btn-default btn-sm pnp-setvalue-dp">Set Value</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

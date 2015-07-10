@@ -1,5 +1,5 @@
 #Add-SPONavigationNode
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds a menu item to either the quicklaunch or top navigation
 ##Syntax

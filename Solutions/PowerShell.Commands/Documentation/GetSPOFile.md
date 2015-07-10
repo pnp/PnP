@@ -1,5 +1,5 @@
 #Get-SPOFile
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-06-11*
 
 Downloads a file.
 ##Syntax
