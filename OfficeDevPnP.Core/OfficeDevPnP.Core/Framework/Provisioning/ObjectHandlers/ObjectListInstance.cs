@@ -108,7 +108,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
-                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString("~sitecollection", "~site"));
                             if (fieldElement.Attribute("ID") == null)
                             {
                                 throw new Exception(string.Format("Field schema has no ID attribute: {0}", field.SchemaXml));
