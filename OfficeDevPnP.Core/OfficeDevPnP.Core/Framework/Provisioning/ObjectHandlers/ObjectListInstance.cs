@@ -225,8 +225,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             PersonalView = false,
                             SetAsDefaultView = viewDefault
                         };
+                        var createdView = createdList.Views.Add(viewCI);
 
-                        createdList.Views.Add(viewCI);
+                        // Scope
+                        var scope = viewElement.Attribute("Scope") != null ? viewElement.Attribute("Scope").Value : null;
+                        ViewScope parsedScope = ViewScope.DefaultValue;
+                        if (!string.IsNullOrEmpty(scope) && Enum.TryParse<ViewScope>(scope, out parsedScope))
+                        {
+                            createdView.Scope = parsedScope;
+                            createdView.Update();
+                        }
+
                         createdList.Update();
                         web.Context.ExecuteQueryRetry();
                     }
