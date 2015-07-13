@@ -3,6 +3,8 @@ using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
 using System.Management.Automation;
+using System.Net;
+using Microsoft.SharePoint.Client.CompliancePolicy;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
@@ -64,7 +66,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 creds = Credentials.Credential;
             }
-          
+
             if (ParameterSetName == "Token")
             {
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
@@ -73,10 +75,59 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 if (!CurrentCredentials && creds == null)
                 {
-                    creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                    creds = GetCredentials();
+                    if (creds == null)
+                    {
+                        creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                    }
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+        }
+
+        private PSCredential GetCredentials()
+        {
+            PSCredential creds = null;
+
+            var connectionURI = new Uri(Url);
+
+            // Try to get the credentials by full url
+
+            creds = Utilities.CredentialManager.GetCredential(Url);
+            if (creds == null)
+            {
+                // Try to get the credentials by splitting up the path
+                var pathString = string.Format("{0}://{1}",connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}",connectionURI.Host,connectionURI.Port));
+                var path = connectionURI.AbsolutePath;
+                while (path.IndexOf('/') != -1)
+                {
+                    path = path.Substring(0, path.LastIndexOf('/'));
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        var pathUrl = string.Format("{0}{1}", pathString, path);
+                        creds = Utilities.CredentialManager.GetCredential(pathUrl);
+                        if (creds != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (creds == null)
+                {
+                    // Try to find the credentials by schema and hostname
+                    creds = Utilities.CredentialManager.GetCredential(connectionURI.Scheme + "://" + connectionURI.Host);
+
+                    if (creds == null)
+                    {
+                        // try to find the credentials by hostname
+                        creds = Utilities.CredentialManager.GetCredential(connectionURI.Host);
+                    }
+                }
+
+            }
+
+            return creds;
         }
     }
 }
