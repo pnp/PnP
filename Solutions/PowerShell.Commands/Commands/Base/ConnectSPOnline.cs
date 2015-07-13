@@ -28,6 +28,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]
         public string Url;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Adal;
+
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
         public CredentialPipeBind Credentials;
 
@@ -61,27 +64,35 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            PSCredential creds = null;
-            if (Credentials != null)
+            if (Adal)
             {
-                creds = Credentials.Credential;
-            }
-
-            if (ParameterSetName == "Token")
-            {
-                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateAdalConnection(new Uri(Url), "", Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
             else
             {
-                if (!CurrentCredentials && creds == null)
+
+                PSCredential creds = null;
+                if (Credentials != null)
                 {
-                    creds = GetCredentials();
-                    if (creds == null)
-                    {
-                        creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
-                    }
+                    creds = Credentials.Credential;
                 }
-                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+
+                if (ParameterSetName == "Token")
+                {
+                    SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+                }
+                else
+                {
+                    if (!CurrentCredentials && creds == null)
+                    {
+                        creds = GetCredentials();
+                        if (creds == null)
+                        {
+                            creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                        }
+                    }
+                    SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+                }
             }
         }
 
