@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -161,83 +160,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Context.ExecuteQueryRetry();
                     foreach (var view in list.Views)
                     {
-                        var viewElement = XElement.Parse(view.SchemaXml);
-                        var displayNameElement = viewElement.Attribute("DisplayName");
-                        if (displayNameElement == null)
-                        {
-                            throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
-                        }
-
-                        var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
-
-                        if (existingView != null)
-                        {
-                            existingView.DeleteObject();
-                            web.Context.ExecuteQueryRetry();
-                        }
-
-                        var viewTitle = displayNameElement.Value;
-
-                        // Type
-                        var viewTypeString = viewElement.Attribute("Type") != null ? viewElement.Attribute("Type").Value : "None";
-                        viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
-                        var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
-
-                        // Fields
-                        string[] viewFields = null;
-                        var viewFieldsElement = viewElement.Descendants("ViewFields").FirstOrDefault();
-                        if (viewFieldsElement != null)
-                        {
-                            viewFields = (from field in viewElement.Descendants("ViewFields").Descendants("FieldRef") select field.Attribute("Name").Value).ToArray();
-                        }
-
-                        // Default view
-                        var viewDefault = viewElement.Attribute("DefaultView") != null && Boolean.Parse(viewElement.Attribute("DefaultView").Value);
-
-                        // Row limit
-                        var viewPaged = true;
-                        uint viewRowLimit = 30;
-                        var rowLimitElement = viewElement.Descendants("RowLimit").FirstOrDefault();
-                        if (rowLimitElement != null)
-                        {
-                            if (rowLimitElement.Attribute("Paged") != null)
-                            {
-                                viewPaged = bool.Parse(rowLimitElement.Attribute("Paged").Value);
-                            }
-                            viewRowLimit = uint.Parse(rowLimitElement.Value);
-                        }
-
-                        // Query
-                        var viewQuery = new StringBuilder();
-                        foreach (var queryElement in viewElement.Descendants("Query").Elements())
-                        {
-                            viewQuery.Append(queryElement.ToString());
-                        }
-
-                        var viewCI = new ViewCreationInformation
-                        {
-                            ViewFields = viewFields,
-                            RowLimit = viewRowLimit,
-                            Paged = viewPaged,
-                            Title = viewTitle,
-                            Query = viewQuery.ToString(),
-                            ViewTypeKind = viewType,
-                            PersonalView = false,
-                            SetAsDefaultView = viewDefault
-                        };
-                        var createdView = createdList.Views.Add(viewCI);
-
-                        // Scope
-                        var scope = viewElement.Attribute("Scope") != null ? viewElement.Attribute("Scope").Value : null;
-                        ViewScope parsedScope = ViewScope.DefaultValue;
-                        if (!string.IsNullOrEmpty(scope) && Enum.TryParse<ViewScope>(scope, out parsedScope))
-                        {
-                            createdView.Scope = parsedScope;
-                            createdView.Update();
-                        }
-
-                        createdList.Update();
-                        web.Context.ExecuteQueryRetry();
+                        CreateView(web, view, existingViews, createdList);
                     }
 
                     // Removing existing views set the OnQuickLaunch option to false and need to be re-set.
@@ -262,6 +185,102 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.ExecuteQueryRetry();
 
             }
+        }
+
+        private void CreateView(Web web, View view, ViewCollection existingViews, List createdList)
+        {
+            var viewElement = XElement.Parse(view.SchemaXml);
+            var displayNameElement = viewElement.Attribute("DisplayName");
+            if (displayNameElement == null)
+            {
+                throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
+            }
+
+            var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
+
+            if (existingView != null)
+            {
+                existingView.DeleteObject();
+                web.Context.ExecuteQueryRetry();
+            }
+
+            var viewTitle = displayNameElement.Value;
+
+            // Type
+            var viewTypeString = viewElement.Attribute("Type") != null ? viewElement.Attribute("Type").Value : "None";
+            viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
+            var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
+
+            // Fields
+            string[] viewFields = null;
+            var viewFieldsElement = viewElement.Descendants("ViewFields").FirstOrDefault();
+            if (viewFieldsElement != null)
+            {
+                viewFields = (from field in viewElement.Descendants("ViewFields").Descendants("FieldRef") select field.Attribute("Name").Value).ToArray();
+            }
+
+            // Default view
+            var viewDefault = viewElement.Attribute("DefaultView") != null && Boolean.Parse(viewElement.Attribute("DefaultView").Value);
+
+            // Row limit
+            var viewPaged = true;
+            uint viewRowLimit = 30;
+            var rowLimitElement = viewElement.Descendants("RowLimit").FirstOrDefault();
+            if (rowLimitElement != null)
+            {
+                if (rowLimitElement.Attribute("Paged") != null)
+                {
+                    viewPaged = bool.Parse(rowLimitElement.Attribute("Paged").Value);
+                }
+                viewRowLimit = uint.Parse(rowLimitElement.Value);
+            }
+
+            // Query
+            var viewQuery = new StringBuilder();
+            foreach (var queryElement in viewElement.Descendants("Query").Elements())
+            {
+                viewQuery.Append(queryElement.ToString());
+            }
+
+            var viewCI = new ViewCreationInformation
+            {
+                ViewFields = viewFields,
+                RowLimit = viewRowLimit,
+                Paged = viewPaged,
+                Title = viewTitle,
+                Query = viewQuery.ToString(),
+                ViewTypeKind = viewType,
+                PersonalView = false,
+                SetAsDefaultView = viewDefault,
+            };
+
+            var createdView = createdList.Views.Add(viewCI);
+            web.Context.Load(createdView, v => v.Scope, v => v.JSLink);
+            web.Context.ExecuteQueryRetry();
+
+            // Scope
+            var scope = viewElement.Attribute("Scope") != null ? viewElement.Attribute("Scope").Value : null;
+            ViewScope parsedScope = ViewScope.DefaultValue;
+            if (!string.IsNullOrEmpty(scope) && Enum.TryParse<ViewScope>(scope, out parsedScope))
+            {
+                createdView.Scope = parsedScope;
+                createdView.Update();
+            }
+
+            // JSLink
+            var jslinkElement = viewElement.Descendants("JSLink").FirstOrDefault();
+            if (jslinkElement != null)
+            {
+                var jslink = jslinkElement.Value;
+                if (createdView.JSLink != jslink)
+                {
+                    createdView.JSLink = jslink;
+                    createdView.Update();
+                }
+            }
+
+            createdList.Update();
+            web.Context.ExecuteQueryRetry();
         }
 
         private static void UpdateFieldRef(List siteList, Guid fieldId, FieldRef fieldRef)
@@ -792,7 +811,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var view in item.Views.Where(view => !view.Hidden))
                 {
-                    list.Views.Add(new View { SchemaXml = view.ListViewXml });
+                    var schemaElement = XElement.Parse(view.ListViewXml);
+
+                    // Toolbar is not supported
+
+                    var toolbarElement = schemaElement.Descendants("Toolbar").FirstOrDefault();
+                    if (toolbarElement != null)
+                    {
+                        toolbarElement.Remove();
+                    }
+
+                    // XslLink is not supported
+                    var xslLinkElement = schemaElement.Descendants("XslLink").FirstOrDefault();
+                    if (xslLinkElement != null)
+                    {
+                        xslLinkElement.Remove();
+                    }
+
+                    list.Views.Add(new View { SchemaXml = schemaElement.ToString() });
                 }
 
                 var siteColumns = web.Fields;
