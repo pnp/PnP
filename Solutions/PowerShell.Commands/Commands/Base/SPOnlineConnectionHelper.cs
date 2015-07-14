@@ -14,8 +14,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     internal class SPOnlineConnectionHelper
     {
-        private static readonly string AdalClientId = "e6a41c50-27bf-4ac1-b379-7992722a1a87";
-        private static readonly Uri AdalReturnUri = new Uri("http://pnp");
         private const string CommonAuthority = "https://login.windows.net/Common";
         public static AuthenticationContext AuthContext { get; set; }
         private static string ContextUrl { get; set; }
@@ -23,6 +21,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         static SPOnlineConnectionHelper()
         {
         }
+
+        internal static Uri RedirectUri;
+        internal static string ClientId;
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string realm, string clientId, string clientSecret, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
@@ -51,8 +52,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
-        internal static SPOnlineConnection InstantiateAdalConnection(Uri url, string clientID, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
+        internal static SPOnlineConnection InstantiateAdalConnection(Uri url, string clientId, Uri redirectUri, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
+            ClientId = clientId;
+            RedirectUri = redirectUri;
+
             var context = new ClientContext(url);
             ContextUrl = url.ToString();
             context.ExecutingWebRequest += ctx_ExecutingWebRequest;
@@ -116,7 +120,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
                 //try to get the AccessToken silently using the resourceId that was passed in
                 //and the client ID of the application.
-                ar = (await AuthContext.AcquireTokenSilentAsync(resourceId, AdalClientId));
+                ar = (await AuthContext.AcquireTokenSilentAsync(resourceId, ClientId));
             }
             catch (Exception)
             {
@@ -127,7 +131,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 try
                 {
-                    ar = AuthContext.AcquireToken(resourceId, AdalClientId, AdalReturnUri, PromptBehavior.Auto);
+                    ar = AuthContext.AcquireToken(resourceId, ClientId, RedirectUri, PromptBehavior.Always);
 
                 }
                 catch (Exception acquireEx)

@@ -2,6 +2,7 @@
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
+using System.IO;
 using System.Management.Automation;
 using System.Net;
 using Microsoft.SharePoint.Client.CompliancePolicy;
@@ -32,9 +33,6 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]
         public string Url;
 
-        [Parameter(Mandatory = false)]
-        public SwitchParameter Adal;
-
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
         public CredentialPipeBind Credentials;
 
@@ -57,31 +55,31 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         public string Realm;
 
         [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client ID to use.")]
-        [Alias("ClientId")]
         public string AppId;
 
         [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client Secret to use.")]
-        [Alias("ClientSecret")]
         public string AppSecret;
 
-        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="Relying party identifier of the SharePoint farm inside ADFS.")]
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "Relying party identifier of the SharePoint farm inside ADFS.")]
         public string RelyingPartyIdentifier;
 
-        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
         public string AdfsHostName;
+
+        [Parameter(Mandatory = true, ParameterSetName = "Adal", HelpMessage = "The Client ID of the Azure AD Application")]
+        public string ClientId;
+
+        [Parameter(Mandatory = true, ParameterSetName = "Adal", HelpMessage = "The Redirect URI of the Azure AD Application")]
+        public string RedirectUri;
+
+        [Parameter(Mandatory = false, ParameterSetName = "Adal", HelpMessage = "Clears the token cache.")]
+        public SwitchParameter ClearTokenCache;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
 
         protected override void ProcessRecord()
         {
-            if (Adal)
-            {
-                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateAdalConnection(new Uri(Url), "", Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
-            }
-            else
-            {
-
             PSCredential creds = null;
             if (Credentials != null)
             {
@@ -101,6 +99,19 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), AdfsHostName, RelyingPartyIdentifier, creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+            else if (ParameterSetName == "Adal")
+            {
+                if (ClearTokenCache)
+                {
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    string configFile = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell\\tokencache.dat");
+                    if (File.Exists(configFile))
+                    {
+                        File.Delete(configFile);
+                    }
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateAdalConnection(new Uri(Url), ClientId, new Uri(RedirectUri), Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
             else
             {
                 if (!CurrentCredentials && creds == null)
@@ -113,7 +124,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
-        }
+
         }
 
         private PSCredential GetCredentials()
@@ -128,7 +139,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (creds == null)
             {
                 // Try to get the credentials by splitting up the path
-                var pathString = string.Format("{0}://{1}",connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}",connectionURI.Host,connectionURI.Port));
+                var pathString = string.Format("{0}://{1}", connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}", connectionURI.Host, connectionURI.Port));
                 var path = connectionURI.AbsolutePath;
                 while (path.IndexOf('/') != -1)
                 {
