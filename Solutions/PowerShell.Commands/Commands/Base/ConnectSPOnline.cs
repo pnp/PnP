@@ -23,12 +23,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
        Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'",
        Remarks = @"This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
     ", SortOrder = 3)]
+    [CmdletExample(
+     Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials (Get-Credential) -AdfsHostName 'sts.consoso.com' -RelyingPartyIdentifier 'urn:sharepoint:contoso'",
+     Remarks = @"This will prompt for username and password and creates a context using ADFS to authenticate.
+    ", SortOrder = 4)]
     public class ConnectSPOnline : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]
         public string Url;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
+        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
         public CredentialPipeBind Credentials;
 
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the current user credentials")]
@@ -55,6 +59,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, ParameterSetName = "Token")]
         public string AppSecret;
 
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="Relying party identifier of the SharePoint farm inside ADFS.")]
+        public string RelyingPartyIdentifier;
+
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
+        public string AdfsHostName;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
@@ -70,6 +79,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (ParameterSetName == "Token")
             {
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+            else if (ParameterSetName == "ADFS")
+            {
+                if (creds == null)
+                {
+                    creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), AdfsHostName, RelyingPartyIdentifier, creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
             else
             {
