@@ -50,13 +50,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "The request timeout. Default is 180000")]
         public int RequestTimeout = 1800000;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Token")]
+        [Parameter(Mandatory = false, ParameterSetName = "Token", HelpMessage = "Authentication realm. If not specified will be resolved from the url specified.")]
         public string Realm;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client ID to use.")]
+        [Alias("ClientId")]
         public string AppId;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client Secret to use.")]
+        [Alias("ClientSecret")]
         public string AppSecret;
 
         [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="Relying party identifier of the SharePoint farm inside ADFS.")]
@@ -82,6 +84,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
             else if (ParameterSetName == "ADFS")
             {
+                creds = GetCredentials();
                 if (creds == null)
                 {
                     creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
