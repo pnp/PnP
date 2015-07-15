@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Management.Automation;
 using System.Net;
+using System.Security;
 using Microsoft.SharePoint.Client.CompliancePolicy;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
@@ -66,13 +67,23 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
         public string AdfsHostName;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Adal", HelpMessage = "The Client ID of the Azure AD Application")]
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Client ID of the Azure AD Application")]
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Client ID of the Azure AD Application")]
         public string ClientId;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Adal", HelpMessage = "The Redirect URI of the Azure AD Application")]
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Redirect URI of the Azure AD Application")]
         public string RedirectUri;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Adal", HelpMessage = "Clears the token cache.")]
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Azure AD Tenant name,e.g. mycompany.onmicrosoft.com")]
+        public string Tenant;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Path to the certificate (*.pfx)")]
+        public string CertificatePath;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Password to the certificate (*.pfx)")]
+        public SecureString CertificatePassword;
+
+        [Parameter(Mandatory = false, ParameterSetName = "NativeAAD", HelpMessage = "Clears the token cache.")]
         public SwitchParameter ClearTokenCache;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
@@ -99,7 +110,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), AdfsHostName, RelyingPartyIdentifier, creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
-            else if (ParameterSetName == "Adal")
+            else if (ParameterSetName == "NativeAAD")
             {
                 if (ClearTokenCache)
                 {
@@ -110,7 +121,11 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                         File.Delete(configFile);
                     }
                 }
-                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateAdalConnection(new Uri(Url), ClientId, new Uri(RedirectUri), Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADNativeApplicationConnection(new Uri(Url), ClientId, new Uri(RedirectUri), MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+            else if (ParameterSetName == "AppOnlyAAD")
+            {
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADAppOnlyConnection(new Uri(Url), ClientId, Tenant, CertificatePath, CertificatePassword, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
             else
             {

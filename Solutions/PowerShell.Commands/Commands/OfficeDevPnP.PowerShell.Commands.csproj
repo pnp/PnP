@@ -212,7 +212,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Apps\UninstallAppInstance.cs" />
-    <Compile Include="Base\FileTokenCache.cs" />
     <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />

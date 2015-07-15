@@ -8,7 +8,11 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 using System.Net;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using OfficeDevPnP.Core;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
@@ -52,16 +56,17 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
-        internal static SPOnlineConnection InstantiateAdalConnection(Uri url, string clientId, Uri redirectUri, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
+        internal static SPOnlineConnection InitiateAzureADNativeApplicationConnection(Uri url, string clientId, Uri redirectUri, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
-            ClientId = clientId;
-            RedirectUri = redirectUri;
+            Core.AuthenticationManager authManager = new Core.AuthenticationManager();
 
-            var context = new ClientContext(url);
-            ContextUrl = url.ToString();
-            context.ExecutingWebRequest += ctx_ExecutingWebRequest;
-            context.ApplicationName = Properties.Resources.ApplicationName;
-            context.RequestTimeout = requestTimeout;
+
+            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string configFile = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell\\tokencache.dat");
+            FileTokenCache cache = new FileTokenCache(configFile);
+
+            var context = authManager.GetAzureADNativeApplicationAuthenticatedContext(url.ToString(), clientId, redirectUri, cache);
+
             var connectionType = ConnectionType.OnPrem;
             if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
@@ -77,72 +82,26 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
-        private static string GetSharePointHost(string url)
+        internal static SPOnlineConnection InitiateAzureADAppOnlyConnection(Uri url, string clientId, string tenant, string certificatePath, SecureString certificatePassword, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
-            Uri theHost = new Uri(url);
-            return theHost.Scheme + "://" + theHost.Host + "/";
-        }
+            Core.AuthenticationManager authManager = new Core.AuthenticationManager();
+            var context = authManager.GetAzureADAppOnlyAuthenticatedContext(url.ToString(), clientId, tenant, certificatePath, certificatePassword);
 
-        async static void ctx_ExecutingWebRequest(object sender, WebRequestEventArgs e)
-        {
-            AuthenticationResult ar = await AcquireTokenAsync(CommonAuthority, GetSharePointHost(ContextUrl));
-
-            if (ar != null)
+            var connectionType = ConnectionType.OnPrem;
+            if (url.Host.ToUpperInvariant().EndsWith("SHAREPOINT.COM"))
             {
-                e.WebRequestExecutor.RequestHeaders["Authorization"] = "Bearer " + ar.AccessToken;
+                connectionType = ConnectionType.O365;
             }
-        }
-
-        private static async Task<AuthenticationResult> AcquireTokenAsync(string authContextUrl, string resourceId)
-        {
-            AuthenticationResult ar = null;
-            string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string configFile = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell\\tokencache.dat");
-            FileTokenCache cache = new FileTokenCache(configFile);
-            try
+            if (skipAdminCheck == false)
             {
-
-                //create a new authentication context for our app
-                AuthContext = new AuthenticationContext(authContextUrl, cache);
-
-                //look to see if we have an authentication context in cache already
-                //we would have gotten this when we authenticated previously
-                if (AuthContext.TokenCache.ReadItems().Any())
+                if (IsTenantAdminSite(context))
                 {
-
-                    //re-bind AuthenticationContext to the authority source of the cached token.
-                    //this is needed for the cache to work when asking for a token from that authority.
-                    string cachedAuthority =
-                        AuthContext.TokenCache.ReadItems().First().Authority;
-
-                    AuthContext = new AuthenticationContext(cachedAuthority, cache);
-                }
-
-                //try to get the AccessToken silently using the resourceId that was passed in
-                //and the client ID of the application.
-                ar = (await AuthContext.AcquireTokenSilentAsync(resourceId, ClientId));
-            }
-            catch (Exception)
-            {
-                //not in cache; we'll get it with the full oauth flow
-            }
-
-            if (ar == null)
-            {
-                try
-                {
-                    ar = AuthContext.AcquireToken(resourceId, ClientId, RedirectUri, PromptBehavior.Always);
-
-                }
-                catch (Exception acquireEx)
-                {
-                    //utter failure here, we need let the user know we just can't do it
-                   throw new Exception("Error trying to acquire authentication result: " + acquireEx.Message);
+                    connectionType = ConnectionType.TenantAdmin;
                 }
             }
-
-            return ar;
+            return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
+
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
