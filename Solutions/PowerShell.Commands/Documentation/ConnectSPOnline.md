@@ -28,6 +28,11 @@ Connect-SPOnline [-Realm <String>] -AppId <String> -AppSecret <String> [-Minimal
 ```
 
 
+```powershell
+Connect-SPOnline [-Realm <String>] -AppId <String> -AppSecret <String> [-Credentials <CredentialPipeBind>] [-MinimalHealthScore <Int32>] [-RetryCount <Int32>] [-RetryWait <Int32>] [-RequestTimeout <Int32>] [-SkipTenantAdminCheck [<SwitchParameter>]] -Url <String>
+```
+
+
 ##Detailed Description
 If no credentials have been specified, and the CurrentCredentials parameter has not been specified, you will be prompted for credentials.
 
