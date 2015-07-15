@@ -107,9 +107,9 @@ namespace OfficeDevPnP.Core
         /// <param name="redirectUrl">The Azure AD Native Application Redirect Uri as a string</param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAdalNativeApplicationAuthenticatedContext(string siteUrl, string clientId, string redirectUrl, TokenCache tokenCache = null)
+        public ClientContext GetAzureADNativeApplicationAuthenticatedContext(string siteUrl, string clientId, string redirectUrl, TokenCache tokenCache = null)
         {
-            return GetAdalNativeApplicationAuthenticatedContext(siteUrl, clientId, new Uri(redirectUrl), tokenCache);
+            return GetAzureADNativeApplicationAuthenticatedContext(siteUrl, clientId, new Uri(redirectUrl), tokenCache);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace OfficeDevPnP.Core
         /// <param name="redirectUri">The Azure AD Native Application Redirect Uri</param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAdalNativeApplicationAuthenticatedContext(string siteUrl, string clientId, Uri redirectUri, TokenCache tokenCache = null)
+        public ClientContext GetAzureADNativeApplicationAuthenticatedContext(string siteUrl, string clientId, Uri redirectUri, TokenCache tokenCache = null)
         {
             var clientContext = new ClientContext(siteUrl);
             _contextUrl = siteUrl;
@@ -207,11 +207,11 @@ namespace OfficeDevPnP.Core
         /// <param name="thumbPrint">The thumbprint of the certificate to locate in the store</param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, StoreName storeName, StoreLocation storeLocation, string thumbPrint, TokenCache tokenCache = null)
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, StoreName storeName, StoreLocation storeLocation, string thumbPrint)
         {
             var cert = X509CertificateUtility.LoadCertificate(storeName, storeLocation, thumbPrint);
 
-            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert, tokenCache);
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert);
         }
 
         /// <summary>
@@ -224,11 +224,11 @@ namespace OfficeDevPnP.Core
         /// <param name="certificatePassword">Password to the certificate</param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, string certificatePassword, TokenCache tokenCache = null)
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, string certificatePassword)
         {
             var certPassword = EncryptionUtility.ToSecureString(certificatePassword);
 
-            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, certificatePath, certPassword, tokenCache);
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, certificatePath, certPassword);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace OfficeDevPnP.Core
         /// <param name="certificatePassword">Password to the certificate</param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, SecureString certificatePassword, TokenCache tokenCache = null)
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, SecureString certificatePassword)
         {
             var certfile = System.IO.File.OpenRead(certificatePath);
             var certificateBytes = new byte[certfile.Length];
@@ -253,7 +253,7 @@ namespace OfficeDevPnP.Core
                 X509KeyStorageFlags.MachineKeySet |
                 X509KeyStorageFlags.PersistKeySet);
 
-            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert, tokenCache);
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert);
         }
 
         /// <summary>
@@ -265,7 +265,7 @@ namespace OfficeDevPnP.Core
         /// <param name="certificate"></param>
         /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
-        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, X509Certificate2 certificate, TokenCache tokenCache = null)
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, X509Certificate2 certificate)
         {
 
             var clientContext = new ClientContext(siteUrl);
