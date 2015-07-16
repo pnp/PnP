@@ -94,8 +94,9 @@
         <File Id="OnlineSDK.Client.Tenant" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
         <File Id="OfficeSDK.Client.Policy" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.Policy.dll" />
         <File Id="OfficeSDK.Client.TranslationServices" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.TranslationServices.dll" />
+        <File Id="IdentityModel.Clients.ActiveDirectory" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+        <File Id="IdentityModel.Clients.ActiveDirectory.WindowsForms" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
         <File Id="NewtonSoft" Source="$(var.OfficeDevPnP.Core.ProjectDir)bin\$(var.OfficeDevPnP.Core.Configuration)\Newtonsoft.Json.Dll" />
-        <!-- <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="no" /> -->
       </Component>
     </ComponentGroup>
     <ComponentGroup Id="ENVIRONMENTVARS" Directory="TARGETDIR">
