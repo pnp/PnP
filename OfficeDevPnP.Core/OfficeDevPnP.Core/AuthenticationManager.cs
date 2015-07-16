@@ -98,7 +98,7 @@ namespace OfficeDevPnP.Core
             return clientContext;
         }
 
-
+#if !CLIENTSDKV15
         /// <summary>
         /// Returns a SharePoint ClientContext using Azure Active Directory authentication. This requires that you have a Azure AD Native Application registered. The user will be prompted for authentication.
         /// </summary>
@@ -205,7 +205,6 @@ namespace OfficeDevPnP.Core
         /// <param name="storeName">The name of the store for the certificate</param>
         /// <param name="storeLocation">The location of the store for the certificate</param>
         /// <param name="thumbPrint">The thumbprint of the certificate to locate in the store</param>
-        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
         public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, StoreName storeName, StoreLocation storeLocation, string thumbPrint)
         {
@@ -222,7 +221,6 @@ namespace OfficeDevPnP.Core
         /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
         /// <param name="certificatePath">The path to the certificate (*.pfx) file on the file system</param>
         /// <param name="certificatePassword">Password to the certificate</param>
-        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
         public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, string certificatePassword)
         {
@@ -239,7 +237,6 @@ namespace OfficeDevPnP.Core
         /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
         /// <param name="certificatePath">The path to the certificate (*.pfx) file on the file system</param>
         /// <param name="certificatePassword">Password to the certificate</param>
-        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
         public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, SecureString certificatePassword)
         {
@@ -263,7 +260,6 @@ namespace OfficeDevPnP.Core
         /// <param name="clientId">The Azure AD Application Client ID</param>
         /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
         /// <param name="certificate"></param>
-        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
         /// <returns></returns>
         public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, X509Certificate2 certificate)
         {
@@ -286,7 +282,7 @@ namespace OfficeDevPnP.Core
 
             return clientContext;
         }
-
+#endif
 
         /// <summary>
         /// Returns a SharePoint on-premises / SharePoint Online Dedicated ClientContext object
