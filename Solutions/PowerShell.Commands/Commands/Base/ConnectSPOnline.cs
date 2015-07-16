@@ -2,8 +2,10 @@
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
+using System.IO;
 using System.Management.Automation;
 using System.Net;
+using System.Security;
 using Microsoft.SharePoint.Client.CompliancePolicy;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
@@ -32,7 +34,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]
         public string Url;
 
-        [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
+        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "Credentials of the user to connect with. Either specify a PSCredential object or a string. In case of a string value a lookup will be done to the Windows Credential Manager for the correct credentials.")]
         public CredentialPipeBind Credentials;
 
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the current user credentials")]
@@ -54,19 +56,37 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         public string Realm;
 
         [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client ID to use.")]
-        [Alias("ClientId")]
         public string AppId;
 
         [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client Secret to use.")]
-        [Alias("ClientSecret")]
         public string AppSecret;
 
-        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="Relying party identifier of the SharePoint farm inside ADFS.")]
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "Relying party identifier of the SharePoint farm inside ADFS.")]
         public string RelyingPartyIdentifier;
 
-        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage="DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
+        [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
         public string AdfsHostName;
 
+#if !CLIENTSDKV15
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Client ID of the Azure AD Application")]
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Client ID of the Azure AD Application")]
+        public string ClientId;
+
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Redirect URI of the Azure AD Application")]
+        public string RedirectUri;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Azure AD Tenant name,e.g. mycompany.onmicrosoft.com")]
+        public string Tenant;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Path to the certificate (*.pfx)")]
+        public string CertificatePath;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Password to the certificate (*.pfx)")]
+        public SecureString CertificatePassword;
+
+        [Parameter(Mandatory = false, ParameterSetName = "NativeAAD", HelpMessage = "Clears the token cache.")]
+        public SwitchParameter ClearTokenCache;
+#endif
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
 
@@ -91,6 +111,25 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), AdfsHostName, RelyingPartyIdentifier, creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+#if !CLIENTSDKV15
+            else if (ParameterSetName == "NativeAAD")
+            {
+                if (ClearTokenCache)
+                {
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    string configFile = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell\\tokencache.dat");
+                    if (File.Exists(configFile))
+                    {
+                        File.Delete(configFile);
+                    }
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADNativeApplicationConnection(new Uri(Url), ClientId, new Uri(RedirectUri), MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+            else if (ParameterSetName == "AppOnlyAAD")
+            {
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADAppOnlyConnection(new Uri(Url), ClientId, Tenant, CertificatePath, CertificatePassword, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+#endif
             else
             {
                 if (!CurrentCredentials && creds == null)
@@ -103,6 +142,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+
         }
 
         private PSCredential GetCredentials()
@@ -117,7 +157,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (creds == null)
             {
                 // Try to get the credentials by splitting up the path
-                var pathString = string.Format("{0}://{1}",connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}",connectionURI.Host,connectionURI.Port));
+                var pathString = string.Format("{0}://{1}", connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}", connectionURI.Host, connectionURI.Port));
                 var path = connectionURI.AbsolutePath;
                 while (path.IndexOf('/') != -1)
                 {
