@@ -15,6 +15,7 @@ Cmdlet|Description
 Cmdlet|Description
 :-----|:----------
 **[Get&#8209;SPOAuthenticationRealm](GetSPOAuthenticationRealm.md)** |Gets the authentication realm for the current web
+**[Get&#8209;SPOAzureADManifestKeyCredentials](GetSPOAzureADManifestKeyCredentials.md)** |Creates the JSON snippet that is required for the manifest json file for Azure WebApplication / WebAPI apps
 **[Set&#8209;SPOConfiguration](SetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOConfiguration](GetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOContext](GetSPOContext.md)** |Returns a Client Side Object Model context
