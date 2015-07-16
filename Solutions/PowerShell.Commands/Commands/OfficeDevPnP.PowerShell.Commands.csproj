@@ -214,6 +214,7 @@
     <Compile Include="Apps\UninstallAppInstance.cs" />
     <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
+    <Compile Include="Base\GetAzureADManifestKeyCredentials.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\TermGroupPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />

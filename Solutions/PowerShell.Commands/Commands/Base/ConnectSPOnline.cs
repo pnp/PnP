@@ -67,6 +67,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = true, ParameterSetName = "ADFS", HelpMessage = "DNS name of the ADFS server which the SharePoint farm uses for authentication.")]
         public string AdfsHostName;
 
+#if !CLIENTSDKV15
         [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Client ID of the Azure AD Application")]
         [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Client ID of the Azure AD Application")]
         public string ClientId;
@@ -85,7 +86,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
 
         [Parameter(Mandatory = false, ParameterSetName = "NativeAAD", HelpMessage = "Clears the token cache.")]
         public SwitchParameter ClearTokenCache;
-
+#endif
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
 
@@ -110,6 +111,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), AdfsHostName, RelyingPartyIdentifier, creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+#if !CLIENTSDKV15
             else if (ParameterSetName == "NativeAAD")
             {
                 if (ClearTokenCache)
@@ -127,6 +129,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADAppOnlyConnection(new Uri(Url), ClientId, Tenant, CertificatePath, CertificatePassword, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+#endif
             else
             {
                 if (!CurrentCredentials && creds == null)
