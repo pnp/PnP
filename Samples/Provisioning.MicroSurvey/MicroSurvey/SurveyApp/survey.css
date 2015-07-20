@@ -1,0 +1,86 @@
+﻿.microSurvey 
+{
+  color: #525252;
+  font-family: Georgia, serif;
+  border-width: 0.05em;
+  border-style: solid;
+  padding: 0.25em;
+  background: #f9f9f9;
+}
+.surveyQuestion 
+{
+  font-size: 125%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  text-align: center;
+}
+.messagePanel
+{
+  font-size: 250%;
+  padding: 20px;
+  text-align: center;
+}
+.questionPanel .surveyAnswers table 
+{
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 1em;
+  border-collapse: separate;
+}
+.questionPanel .surveyAnswers td 
+{
+  color:#fff;
+  text-transform:uppercase;
+  font-family:Helvetica, Arial, sans-serif;
+  font-weight:600;
+  border-width: 0.05em;
+  border-radius: 0.8em;
+  border-style: solid;
+  text-align: center;
+  padding: 0;
+  overflow: hidden;
+  background: #55a5e4;
+}
+.resultsPanel .answerCanvas
+{
+  height: 6em;
+  width: 99%;
+  border-width:0.05em;
+  border-radius: 0.01em;
+  border-style: solid;
+  }
+.editPanel .label
+{
+  font-family:Helvetica, Arial, sans-serif;
+  font-size: x-large;
+  text-align: right;
+}
+.editPanel .buttons
+{
+    text-align: right;
+}
+.editPanel .errorMessage
+{
+    color: red;
+}
+
+.button-link 
+{
+    height:1.5em;
+    width: 10em;
+    display: block;
+    padding: 0.3em;
+    margin: 0.3em;
+    background: white;
+    color: black;
+    border-radius: 0.2em;
+    border: solid 1px black;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+.button-link:hover 
+{
+    text-decoration: none;
+}
