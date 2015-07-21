@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction Id="76b78fc8-9ce6-4262-857c-57b3a04254d1.CalendarButton"
+                RegistrationType="List"
+                RegistrationId="106"
+                Location="CommandUI.Ribbon"
+                Sequence="10001"
+                Title="Remote Calendar Access"
+                HostWebDialog="TRUE"
+                HostWebDialogHeight="100"
+                HostWebDialogWidth="800">
+    <CommandUIExtension>
+      <!-- 
+      Update the UI definitions below with the controls and the command actions
+      that you want to enable for the custom action.
+      -->
+      <CommandUIDefinitions>
+        <CommandUIDefinition Location="Ribbon.Calendar.Calendar.Actions.Controls._children">
+          <Button Id="Ribbon.Calendar.Calendar.Actions.CalendarButtonButton"
+                  Alt="Remote Calendar Access"
+                  Sequence="100"
+                  Command="Invoke_CalendarButtonButtonRequest"
+                  LabelText="Remote Calendar Access"
+                  TemplateAlias="o1"
+                  Image32by32="~remoteAppUrl/Content/Images/calendar_32xLG.png"
+                  Image16by16="~remoteAppUrl/Content/Images/calendar_16xLG.png"/>
+        </CommandUIDefinition>
+      </CommandUIDefinitions>
+      <CommandUIHandlers>
+        <CommandUIHandler Command="Invoke_CalendarButtonButtonRequest"
+                          CommandAction="~remoteAppUrl/Home/URL?{StandardTokens}&amp;SPListItemId={SelectedItemId}&amp;SPListId={SelectedListId}"/>
+      </CommandUIHandlers>
+    </CommandUIExtension >
+  </CustomAction>
+</Elements>
