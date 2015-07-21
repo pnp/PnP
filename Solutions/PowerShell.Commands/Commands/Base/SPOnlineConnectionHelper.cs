@@ -13,6 +13,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Utilities;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
@@ -56,6 +58,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
 
+#if !CLIENTSDKV15
         internal static SPOnlineConnection InitiateAzureADNativeApplicationConnection(Uri url, string clientId, Uri redirectUri, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
             Core.AuthenticationManager authManager = new Core.AuthenticationManager();
@@ -101,7 +104,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             }
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, null, url.ToString());
         }
-
+#endif
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, PSCredential credentials, PSHost host, bool currentCredentials, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
@@ -168,12 +171,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return new SPOnlineConnection(context, connectionType, minimalHealthScore, retryCount, retryWait, credentials, url.ToString());
         }
 
-        internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string adfsHostName, string relyingParty, PSCredential credentials, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
+        internal static SPOnlineConnection InstantiateAdfsConnection(Uri url, PSCredential credentials, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
             Core.AuthenticationManager authManager = new Core.AuthenticationManager();
 
             var networkCredentials = credentials.GetNetworkCredential();
-            var context = authManager.GetADFSUserNameMixedAuthenticatedContext(url.ToString(), networkCredentials.UserName, networkCredentials.Password, networkCredentials.Domain, adfsHostName, relyingParty);
+
+            string adfsHost;
+            string adfsRelyingParty;
+            GetAdfsConfigurationFromTargetUri(url, out adfsHost, out adfsRelyingParty);
+
+            if (string.IsNullOrEmpty(adfsHost) || string.IsNullOrEmpty(adfsRelyingParty))
+            {
+                throw new Exception("Cannot retrieve ADFS settings.");
+            }
+
+            var context = authManager.GetADFSUserNameMixedAuthenticatedContext(url.ToString(), networkCredentials.UserName, networkCredentials.Password, networkCredentials.Domain, adfsHost, adfsRelyingParty);
 
             context.ApplicationName = Properties.Resources.ApplicationName;
             context.RequestTimeout = requestTimeout;
@@ -238,6 +251,34 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             return null;
         }
 
+        public static void GetAdfsConfigurationFromTargetUri(Uri targetApplicationUri, out string adfsHost, out string adfsRelyingParty)
+        {
+            adfsHost = "";
+            adfsRelyingParty = "";
+
+            var trustEndpoint = new Uri(new Uri(targetApplicationUri.GetLeftPart(UriPartial.Authority)), "/_trust/");
+            var request = (HttpWebRequest)WebRequest.Create(trustEndpoint);
+            request.AllowAutoRedirect = false;
+
+            try
+            {
+                using (var response = request.GetResponse())
+                {
+                    var locationHeader = response.Headers["Location"];
+                    if (locationHeader != null)
+                    {
+                        var redirectUri = new Uri(locationHeader);
+                        Dictionary<string, string> queryParameters = Regex.Matches(redirectUri.Query, "([^?=&]+)(=([^&]*))?").Cast<Match>().ToDictionary(x => x.Groups[1].Value, x => Uri.UnescapeDataString(x.Groups[3].Value));
+                        adfsHost = redirectUri.Host;
+                        adfsRelyingParty = queryParameters["wtrealm"];
+                    }
+                }
+            } catch(WebException ex)
+            {
+                throw new Exception("Endpoint does not use ADFS for authentication.", ex);
+            }
+        }
+
         private static bool IsTenantAdminSite(ClientContext clientContext)
         {
             try
@@ -255,6 +296,5 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
                 return false;
             }
         }
-
     }
 }
