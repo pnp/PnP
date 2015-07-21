@@ -1,21 +1,24 @@
 ﻿using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.DocumentSet;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 {
-    public sealed class ContentTypePipeBind
+    public sealed class DocumentSetPipeBind
     {
         private readonly string _id;
         private readonly string _name;
         private readonly ContentType _contentType;
+        private readonly DocumentSetTemplate _documentSetTemplate;
 
-        public ContentTypePipeBind()
+        public DocumentSetPipeBind()
         {
             _id = string.Empty;
             _name = string.Empty;
             _contentType = null;
+            _documentSetTemplate = null;
         }
 
-        public ContentTypePipeBind(string id)
+        public DocumentSetPipeBind(string id)
         {
             if (id.ToLower().StartsWith("0x0"))
             {
@@ -28,9 +31,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
 
         }
 
-        public ContentTypePipeBind(ContentType contentType)
+        public DocumentSetPipeBind(ContentType contentType)
         {
             _contentType = contentType;
+        }
+
+        public DocumentSetPipeBind(DocumentSetTemplate documentSetTemplate)
+        {
+            _documentSetTemplate = documentSetTemplate;
         }
 
         public string Id
@@ -61,24 +69,32 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             get { return _contentType; }
         }
 
-        public ContentType GetContentType(Web web)
+        public DocumentSetTemplate GetDocumentSetTemplate(Web web)
         {
-            if (ContentType != null)
+            if (_contentType != null)
             {
-                return ContentType;
+                var docSet = DocumentSetTemplate.GetDocumentSetTemplate(web.Context, _contentType);
+                return docSet;
             }
-            ContentType ct;
-            if (!string.IsNullOrEmpty(Id))
+            else if (_documentSetTemplate != null)
             {
-                ct = web.GetContentTypeById(Id,true);
-
+                return _documentSetTemplate;
             }
             else
             {
-                ct = web.GetContentTypeByName(Name,true);
-            }
+                ContentType ct;
+                if (!string.IsNullOrEmpty(Id))
+                {
+                    ct = web.GetContentTypeById(Id, true);
 
-            return ct;
+                }
+                else
+                {
+                    ct = web.GetContentTypeByName(Name, true);
+                }
+                var docSet = DocumentSetTemplate.GetDocumentSetTemplate(web.Context, ct);
+                return docSet;
+            }
         }
     }
 }

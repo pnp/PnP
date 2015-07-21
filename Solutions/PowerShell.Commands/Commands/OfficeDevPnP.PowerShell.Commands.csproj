@@ -215,6 +215,7 @@
     <Compile Include="Base\GetAuthenticationRealm.cs" />
     <Compile Include="Base\Constants.cs" />
     <Compile Include="Base\GetAzureADManifestKeyCredentials.cs" />
+    <Compile Include="Base\PipeBinds\DocumentSetPipeBind.cs" />
     <Compile Include="Base\PipeBinds\FeaturePipeBind.cs" />
     <Compile Include="Base\PipeBinds\TermGroupPipeBind.cs" />
     <Compile Include="Base\PipeBinds\WorkflowInstancePipeBind.cs" />
@@ -247,9 +248,14 @@
     <Compile Include="ContentTypes\RemoveContentTypeFromList.cs" />
     <Compile Include="ContentTypes\SetDefaultContentTypeToList.cs" />
     <Compile Include="ContentTypes\AddContentTypeToList.cs" />
+    <Compile Include="DocumentSets\GetDocumentSetTemplate.cs" />
+    <Compile Include="DocumentSets\RemoveContentTypeFromDocumentSet.cs" />
+    <Compile Include="DocumentSets\AddContentTypeToDocumentSet.cs" />
+    <Compile Include="DocumentSets\SetDocumentSetField.cs" />
     <Compile Include="Enums\AssociatedGroupType.cs" />
     <Compile Include="Enums\ConnectionType.cs" />
     <Compile Include="Enums\CredentialType.cs" />
+    <Compile Include="Enums\DocumentSetFieldScope.cs" />
     <Compile Include="Enums\SearchConfigurationScope.cs" />
     <Compile Include="Enums\CustomActionScope.cs" />
     <Compile Include="Enums\FeatureScope.cs" />
