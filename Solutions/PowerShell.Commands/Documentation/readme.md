@@ -15,6 +15,7 @@ Cmdlet|Description
 Cmdlet|Description
 :-----|:----------
 **[Get&#8209;SPOAuthenticationRealm](GetSPOAuthenticationRealm.md)** |Gets the authentication realm for the current web
+**[Get&#8209;SPOAzureADManifestKeyCredentials](GetSPOAzureADManifestKeyCredentials.md)** |Creates the JSON snippet that is required for the manifest json file for Azure WebApplication / WebAPI apps
 **[Set&#8209;SPOConfiguration](SetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOConfiguration](GetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOContext](GetSPOContext.md)** |Returns a Client Side Object Model context
@@ -51,6 +52,13 @@ Cmdlet|Description
 **[Add&#8209;SPOContentTypeToList](AddSPOContentTypeToList.md)** |Adds a new content type to a list
 **[Set&#8209;SPODefaultContentTypeToList](SetSPODefaultContentTypeToList.md)** |Sets the default content type for a list
 **[Add&#8209;SPOFieldToContentType](AddSPOFieldToContentType.md)** |Adds an existing site column to a content type
+##Document Sets
+Cmdlet|Description
+:-----|:----------
+**[Remove&#8209;SPOContentTypeFromDocumentSet](RemoveSPOContentTypeFromDocumentSet.md)** |Removes a content type from a document set
+**[Add&#8209;SPOContentTypeToDocumentSet](AddSPOContentTypeToDocumentSet.md)** |Adds a content type to a document set
+**[Set&#8209;SPODocumentSetField](SetSPODocumentSetField.md)** |Sets a site column from the avaiable content types to a document set
+**[Get&#8209;SPODocumentSetTemplate](GetSPODocumentSetTemplate.md)** |Retrieves a document set template
 ##Event Receivers
 Cmdlet|Description
 :-----|:----------
@@ -81,9 +89,9 @@ Cmdlet|Description
 :-----|:----------
 **[Set&#8209;SPODefaultColumnValues](SetSPODefaultColumnValues.md)** |Sets default column values for a document library
 **[Remove&#8209;SPOList](RemoveSPOList.md)** |Deletes a list
-**[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Get&#8209;SPOList](GetSPOList.md)** |Returns a List object
 **[New&#8209;SPOList](NewSPOList.md)** |Creates a new list
+**[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Add&#8209;SPOListItem](AddSPOListItem.md)** |Adds an item to a list
 **[Get&#8209;SPOListItem](GetSPOListItem.md)** |Retrieves list items
 **[Set&#8209;SPOListPermission](SetSPOListPermission.md)** |Sets list permissions

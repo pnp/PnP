@@ -4,6 +4,30 @@ Below table is showing the last 100 test run results.
 
 Configuration | Date | Time | Branch | Build | Passed | Failed | Skipped
 :-----|:-----|:----|:----:|:----:|:----:|:----:|:----:|
+ [OnlineAppOnly](PnPUnitTestResults-20150716-OnlineAppOnly-635726016959840483.md) | Thursday, July 16, 2015 | 10:01 PM | dev | debug | 206 | 14 | 29
+ [OnlineCred](PnPUnitTestResults-20150715-OnlineCred-635726001813190688.md) | Wednesday, July 15, 2015 | 9:36 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150715-OnPremAppOnly-635725991518592370.md) | Wednesday, July 15, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150715-OnPremCred-635725980386835346.md) | Wednesday, July 15, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
+ [OnlineAppOnly](PnPUnitTestResults-20150715-OnlineAppOnly-635725160143570695.md) | Wednesday, July 15, 2015 | 10:13 PM | dev | debug | 206 | 14 | 29
+ [OnlineCred](PnPUnitTestResults-20150714-OnlineCred-635725137658045588.md) | Tuesday, July 14, 2015 | 9:36 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150714-OnPremAppOnly-635725127501016942.md) | Tuesday, July 14, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150714-OnPremCred-635725116406057370.md) | Tuesday, July 14, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
+ [OnlineAppOnly](PnPUnitTestResults-20150714-OnlineAppOnly-635724297993116735.md) | Tuesday, July 14, 2015 | 10:16 PM | dev | debug | 205 | 15 | 29
+ [OnlineCred](PnPUnitTestResults-20150713-OnlineCred-635724273366044283.md) | Monday, July 13, 2015 | 9:35 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150713-OnPremAppOnly-635724263420195968.md) | Monday, July 13, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150713-OnPremCred-635724252395074683.md) | Monday, July 13, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
+ [OnlineAppOnly](PnPUnitTestResults-20150713-OnlineAppOnly-635723424002740090.md) | Monday, July 13, 2015 | 10:00 PM | dev | debug | 206 | 14 | 29
+ [OnlineCred](PnPUnitTestResults-20150712-OnlineCred-635723409461060274.md) | Sunday, July 12, 2015 | 9:35 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150712-OnPremAppOnly-635723399431297596.md) | Sunday, July 12, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150712-OnPremCred-635723388385538134.md) | Sunday, July 12, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
+ [OnlineAppOnly](PnPUnitTestResults-20150712-OnlineAppOnly-635722559893596692.md) | Sunday, July 12, 2015 | 9:59 PM | dev | debug | 206 | 14 | 29
+ [OnlineCred](PnPUnitTestResults-20150711-OnlineCred-635722545560505703.md) | Saturday, July 11, 2015 | 9:35 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150711-OnPremAppOnly-635722535403027939.md) | Saturday, July 11, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150711-OnPremCred-635722524386696265.md) | Saturday, July 11, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
+ [OnlineAppOnly](PnPUnitTestResults-20150711-OnlineAppOnly-635721696246873951.md) | Saturday, July 11, 2015 | 10:00 PM | dev | debug | 206 | 14 | 29
+ [OnlineCred](PnPUnitTestResults-20150710-OnlineCred-635721681393722814.md) | Friday, July 10, 2015 | 9:35 PM | dev | debug | 208 | 38 | 3
+ [OnPremAppOnly](PnPUnitTestResults-20150710-OnPremAppOnly-635721671405046647.md) | Friday, July 10, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43
+ [OnPremCred](PnPUnitTestResults-20150710-OnPremCred-635721660374763828.md) | Friday, July 10, 2015 | 9:00 PM | dev | debug15 | 216 | 8 | 17
  [OnlineAppOnly](PnPUnitTestResults-20150710-OnlineAppOnly-635720832014665935.md) | Friday, July 10, 2015 | 10:00 PM | dev | debug | 206 | 14 | 29
  [OnlineCred](PnPUnitTestResults-20150709-OnlineCred-635720817577453764.md) | Thursday, July 9, 2015 | 9:35 PM | dev | debug | 208 | 38 | 3
  [OnPremAppOnly](PnPUnitTestResults-20150709-OnPremAppOnly-635720807563605079.md) | Thursday, July 9, 2015 | 9:19 PM | dev | debug15 | 188 | 10 | 43

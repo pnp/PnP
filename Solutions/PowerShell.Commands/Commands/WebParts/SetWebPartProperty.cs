@@ -19,18 +19,17 @@ namespace OfficeDevPnP.PowerShell.Commands
         public string Key = string.Empty;
 
         [Parameter(Mandatory = true)]
-        public object Value = string.Empty;
+        public PSObject Value = string.Empty;
 
         protected override void ExecuteCmdlet()
         {
-            var stringValue = Value as string;
-            if (stringValue != null)
+            if (Value.BaseObject is string)
             {
-                SelectedWeb.SetWebPartProperty(Key, stringValue, Identity.Id, PageUrl);
+                SelectedWeb.SetWebPartProperty(Key, Value.ToString(), Identity.Id, PageUrl);
             }
-            else if (Value is int)
+            else if (Value.BaseObject is int)
             {
-                SelectedWeb.SetWebPartProperty(Key, (int)Value, Identity.Id, PageUrl);
+                SelectedWeb.SetWebPartProperty(Key, (int)Value.BaseObject, Identity.Id, PageUrl);
             }
         }
     }
