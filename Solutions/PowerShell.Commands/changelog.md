@@ -1,5 +1,9 @@
 # OfficeDevPnP.PowerShell Changelog #
 
+**2015-07-22**
+
+* Added Remove-SPOGroup cmdlet
+
 **2015-07-14**
 
 * Added additional attribute (-Key) to Get-SPOWebPartProperty cmdlet

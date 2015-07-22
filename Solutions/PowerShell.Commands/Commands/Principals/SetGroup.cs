@@ -49,19 +49,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
 
         protected override void ExecuteCmdlet()
         {
-            Group group = null;
-            if (Identity.Id != -1)
-            {
-                group = SelectedWeb.SiteGroups.GetById(Identity.Id);
-            }
-            else if (!string.IsNullOrEmpty(Identity.Name))
-            {
-                group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
-            }
-            else if (Identity.Group != null)
-            {
-                group = Identity.Group;
-            }
+            var group = Identity.GetGroup(SelectedWeb);
 
             ClientContext.Load(group, 
                 g => g.AllowMembersEditMembership, 

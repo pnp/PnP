@@ -77,7 +77,7 @@ Remarks = @"This will add field of type Multiple Choice to a the list ""Demo Lis
 
             if (List != null)
             {
-                var list = SelectedWeb.GetList(List);
+                var list = List.GetList(SelectedWeb);
                 Field f;
                 if (ParameterSetName != "FieldRef")
                 {
