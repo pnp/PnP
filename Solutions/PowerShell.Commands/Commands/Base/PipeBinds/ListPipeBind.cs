@@ -51,5 +51,32 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             get { return _name; }
         }
+
+        internal List GetList(Web web)
+        {
+            List list = null;
+            if (List != null)
+            {
+                list = List;
+            }
+            else if (Id != Guid.Empty)
+            {
+                list = web.Lists.GetById(Id);
+            }
+            else if (!string.IsNullOrEmpty(Title))
+            {
+                list = web.GetListByTitle(Title);
+                if (list == null)
+                {
+                    list = web.GetListByUrl(Title);
+                }
+            }
+            if (list != null)
+            {
+                web.Context.Load(list, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.ContentTypesEnabled);
+                web.Context.ExecuteQueryRetry();
+            }
+            return list;
+        }
     }
 }

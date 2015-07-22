@@ -39,7 +39,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         
         protected override void ExecuteCmdlet()
         {
-            var list = SelectedWeb.GetList(List);
+            var list = List.GetList(SelectedWeb);
 
             list.AddWorkflowSubscription(DefinitionName,Name,StartManually,StartOnCreated,StartOnChanged,HistoryListName,TaskListName, AssociationValues);
         }

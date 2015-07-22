@@ -50,7 +50,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Lists
 
         protected override void ExecuteCmdlet()
         {
-            var list = SelectedWeb.GetList(List);
+            var list = List.GetList(SelectedWeb);
 
             if (Id != -1)
             {
