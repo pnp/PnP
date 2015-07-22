@@ -261,7 +261,6 @@
     <Compile Include="Enums\FeatureScope.cs" />
     <Compile Include="Enums\NavigationNodeTypeEnum.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
-    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="ContentTypes\AddFieldToContentType.cs" />
     <Compile Include="ContentTypes\RemoveContentType.cs" />
     <Compile Include="ContentTypes\GetContentType.cs" />
@@ -288,6 +287,7 @@
     <Compile Include="Base\PipeBinds\ViewPipeBind.cs" />
     <Compile Include="Lists\SetList.cs" />
     <Compile Include="Lists\SetListPermission.cs" />
+    <Compile Include="Principals\RemoveGroup.cs" />
     <Compile Include="Principals\SetGroup.cs" />
     <Compile Include="Search\SetSearchConfiguration.cs" />
     <Compile Include="Search\GetSearchConfiguration.cs" />

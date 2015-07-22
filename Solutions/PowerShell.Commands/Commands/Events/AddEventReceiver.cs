@@ -39,7 +39,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "List")
             {
-                var list = SelectedWeb.GetList(List);
+                var list = List.GetList(SelectedWeb);
                 WriteObject(list.AddRemoteEventReceiver(Name, Url, EventReceiverType, Synchronization, SequenceNumber, Force));
             }
             else

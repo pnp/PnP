@@ -31,7 +31,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (ParameterSetName == "List")
             {
-                var list = SelectedWeb.GetList(List);
+                var list = List.GetList(SelectedWeb);
 
                 if (list != null)
                 {
