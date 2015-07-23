@@ -210,4 +210,7 @@
   <data name="RemoveNavigationNode0" xml:space="preserve">
     <value>Remove Navigation Node '{0}'</value>
   </data>
+  <data name="RemoveGroup0" xml:space="preserve">
+    <value>Remove Group '{0}'</value>
+  </data>
 </root>

@@ -20,7 +20,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Workflows
         {
             if (List != null)
             {
-                var list = SelectedWeb.GetList(List);
+                var list = List.GetList(SelectedWeb);
 
                 if (string.IsNullOrEmpty(Name))
                 {

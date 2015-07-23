@@ -9,10 +9,16 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
     [CmdletHelp("Returns a specific group or all groups.", Category = "User and group management")]
     [CmdletExample(
         Code = @"PS:> Get-SPOGroup", 
+        Remarks = "Returns all groups",
         SortOrder = 1)]
     [CmdletExample(
-        Code = @"PS:> Get-SPOGroup -Name 'Site Members'", 
+        Code = @"PS:> Get-SPOGroup -Identity 'My Site Users'", 
+        Remarks = "This will return the group called 'My Site Users' if available",
         SortOrder = 2)]
+    [CmdletExample(
+        Code = @"PS:> Get-SPOGroup -AssociatedMemberGroup",
+        Remarks = "This will return the current members group for the site",
+        SortOrder = 3)]
     public class GetGroup : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, Position = 0, ValueFromPipeline = true, ParameterSetName = "ByName", HelpMessage = "Get a specific group by name")]
@@ -32,24 +38,7 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         {
             if (ParameterSetName == "ByName")
             {
-                Group group = null;
-                if(Identity.Id != -1)
-                {
-                    group = SelectedWeb.SiteGroups.GetById(Identity.Id);
-                }
-                else if(!string.IsNullOrEmpty(Identity.Name))
-                {
-                    group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
-                } else if (Identity.Group != null)
-                {
-                    group = Identity.Group;
-                }
-
-                ClientContext.Load(group);
-                ClientContext.Load(group.Users);
-
-                ClientContext.ExecuteQueryRetry();
-
+                Group group = Identity.GetGroup(SelectedWeb);
                 WriteObject(group);
             }
             else if (ParameterSetName == "Members")

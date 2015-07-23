@@ -145,6 +145,7 @@ Cmdlet|Description
 ##User and group management
 Cmdlet|Description
 :-----|:----------
+**[Remove&#8209;SPOGroup](RemoveSPOGroup.md)** |Removes a group.
 **[Set&#8209;SPOGroup](SetSPOGroup.md)** |Updates a group
 **[New&#8209;SPOGroup](NewSPOGroup.md)** |Adds a user to the build-in Site User Info List and returns a user object
 **[Get&#8209;SPOGroup](GetSPOGroup.md)** |Returns a specific group or all groups.
