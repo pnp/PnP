@@ -89,7 +89,7 @@ namespace Provisioning.Common.Data.Templates.Impl
                 if(_fileExists)
                 {
                     XDocument _doc = XDocument.Load(_filePath);
-                    this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
+                    this._data = XmlSerializerManager.Deserialize<XMLSiteTemplateData>(_doc);
                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
                 }
                 else
@@ -101,7 +101,7 @@ namespace Provisioning.Common.Data.Templates.Impl
                     {
                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_File_Found, _filePath);
                         XDocument _doc = XDocument.Load(_filePath);
-                        this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
+                        this._data = XmlSerializerManager.Deserialize<XMLSiteTemplateData>(_doc);
                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
                     }
                     else

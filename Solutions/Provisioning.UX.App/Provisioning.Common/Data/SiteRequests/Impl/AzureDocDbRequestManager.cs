@@ -20,7 +20,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         const string ACCOUNT_KEY = "AccountKey";
         private static readonly IConfigurationFactory _cf = ConfigurationFactory.GetInstance();
         private static readonly IAppSettingsManager _manager = _cf.GetAppSetingsManager();
-        
         #endregion
 
         /// <summary>

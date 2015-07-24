@@ -40,9 +40,9 @@ namespace Provisioning.Common.Data.Metadata.impl
         /// Returns a Collection of Site Classification Objects.
         /// </summary>
         /// <returns></returns>
-        public List<SiteClassification> GetSiteClassifications()
+        public ICollection<SiteClassification> GetAvailableSiteClassifications()
         {
-            List<SiteClassification> _returnResult = new List<SiteClassification>();
+            ICollection<SiteClassification> _returnResult = new List<SiteClassification>();
             UsingContext(client =>
             {
                 try

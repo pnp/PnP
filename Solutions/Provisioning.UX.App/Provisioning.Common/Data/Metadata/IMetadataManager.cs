@@ -12,7 +12,7 @@ namespace Provisioning.Common.Data.Metadata
         /// Returns a collection of the available site classification
         /// </summary>
         /// <returns></returns>
-        List<SiteClassification> GetSiteClassifications();
+        ICollection<SiteClassification> GetAvailableSiteClassifications();
 
         /// <summary>
         /// Gets a site classification by name
