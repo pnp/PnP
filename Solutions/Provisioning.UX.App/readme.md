@@ -120,6 +120,7 @@ Once user is done with the views in the wizard, they will be presented with a co
 
 # Getting Started #
 
+
 #### Site Policies ####
 We need to define the site policies that will be available in all your sites collections. We are going to define the Site Policies in the content type hub and publish. In this example we are using SharePoint Online MT, but this same approach is available in SharePoint Online Dedicated as well as SharePoint on-premises. If your environment is hosted in SharePoint Online MT, your content type hub would be located at the following URL. https://[tenanatname]/sites/contentTypeHub. Navigate to Settings, then Site Policies under Site Collection Administration, and then finally create. 
 
@@ -134,6 +135,9 @@ Repeat the above setup two more times for MBI and LBI. You should end up with th
 ![](http://i.imgur.com/lrw7nQD.png)
 
 Once we have the policies created we are going to publish the Site Policies from the content type hub so they will be available to all the sites.
+
+#### SharePoint Data Repository ####
+If you will be hosting the Site Requests in SharePoint list you will have to pre-provision the necessary lists. The PnP Provisioning Engine is used to provision the Fields, Content Types, and lists. The Template file PnPSiteProvisioning.xml may be found in the source directory under setup.  See [https://github.com/OfficeDev/PnP/tree/master/Binaries/PowerShell.Commands](https://github.com/OfficeDev/PnP/tree/master/Binaries/PowerShell.Commands "PnP cmdlets")
 
 #### App Registration and Permissions ####
 
