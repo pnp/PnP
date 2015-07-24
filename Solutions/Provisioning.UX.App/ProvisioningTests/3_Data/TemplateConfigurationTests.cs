@@ -84,7 +84,7 @@ namespace ProvisioningTests._3_Data
         {
             XMLSiteTemplateData _tc;
             XDocument _doc = XDocument.Load("Resources/SiteTemplates/Templates.config");
-            _tc = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
+            _tc = XmlSerializerManager.Deserialize<XMLSiteTemplateData>(_doc);
             var _templates = _tc.Templates;
             Assert.AreEqual(3, _templates.Count);
         }
