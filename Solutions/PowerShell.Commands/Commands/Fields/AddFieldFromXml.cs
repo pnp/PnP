@@ -21,7 +21,7 @@ namespace OfficeDevPnP.PowerShell.Commands
 
             if (List != null)
             {
-                List list = SelectedWeb.GetList(List);
+                List list = List.GetList(SelectedWeb);
 
                 f = list.CreateField(FieldXml);
             }

@@ -1,7 +1,7 @@
-# File Upload CSOM SharePoint App #
+# File Upload CSOM SharePoint Add-In #
 
 ### Summary ###
-This simple sample shows how to upload a large file into a SharePoint Library and Folder using client side object model from within a SharePoint App.
+This simple sample shows how to upload a large file into a SharePoint Library and Folder using client side object model from within a SharePoint add-in.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

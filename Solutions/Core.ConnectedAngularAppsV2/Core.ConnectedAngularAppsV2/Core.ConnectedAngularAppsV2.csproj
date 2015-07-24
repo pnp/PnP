@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2608C4F2-71F6-48D2-B2F1-8D821029E9EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Core.ConnectedAngularAppsV2</RootNamespace>
+    <AssemblyName>Core.ConnectedAngularAppsV2</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>16.1</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+    <ProjectMode>SharePointApp</ProjectMode>
+    <AppFeaturePartId>{d7a8a7ad-f4e3-4593-94bf-8a87e2d1de38}</AppFeaturePartId>
+    <WspPartId>{31daf324-8cbf-411b-8d38-927504f5db04}</WspPartId>
+    <WorkflowPartId>{1762479a-d797-4e09-9ccb-f4d7c4abdc3e}</WorkflowPartId>
+    <CspkgPartId>{19c7dd91-4b16-4d6f-96e0-bf676931c5a4}</CspkgPartId>
+    <SqlPackagePartId>{3ea96827-7a82-4923-bc66-34dbe1b62695}</SqlPackagePartId>
+    <ActivePublishProfile>corpevents</ActivePublishProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="CorporateEvents\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <Content Include="EventSessions\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <Content Include="Features\Placeholder\Placeholder.Template.xml">
+      <DependentUpon>Placeholder.feature</DependentUpon>
+    </Content>
+    <Content Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </Content>
+    <Content Include="Placeholder\Elements.xml" />
+    <Content Include="Placeholder\Sample.txt" />
+    <Content Include="Speakers\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <AppManifestFile Include="AppManifest.xml">
+      <SubType>Designer</SubType>
+    </AppManifestFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core.ConnectedAngularAppsV2Web\Core.ConnectedAngularAppsV2Web.csproj">
+      <Project>{A3140519-0946-4626-91F0-2F80F2366FEB}</Project>
+      <Name>Core.ConnectedAngularAppsV2Web</Name>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <OutputItemType>SharePointWebProjectOutput</OutputItemType>
+      <RoleName>Core.ConnectedAngularAppsV2Web</RoleName>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="CorporateEvents\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{62b03d97-04a8-40a7-8750-34d7e9ec4977}</SharePointProjectItemId>
+    </None>
+    <None Include="EventSessions\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{1657dd28-8dd4-4e42-8914-6c3c6e950c64}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Placeholder\Placeholder.feature">
+      <FeatureId>{8234fc9d-1b58-4351-a4a3-5eb2e3a8217a}</FeatureId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{2e00f8c1-7ad9-40c2-9f29-f4032114d97a}</PackageId>
+    </None>
+    <None Include="Placeholder\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7b49599a-0ef5-42e1-b062-3c856f73a9af}</SharePointProjectItemId>
+    </None>
+    <None Include="Speakers\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{624290e3-0685-4185-a8a1-f9922bc4e6dc}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

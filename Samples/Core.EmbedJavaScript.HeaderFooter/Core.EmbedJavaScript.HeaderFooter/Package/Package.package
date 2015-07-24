@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="ac6b7f67-3e27-4e9a-8b4b-a8308fd58ea6" 
+        solutionId="ac6b7f67-3e27-4e9a-8b4b-a8308fd58ea6" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="Core.EmbedJavaScript.HeaderFooter"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="92dd8978-2f31-4521-909e-7297f091d2fe" />
+  </features>
+</package>

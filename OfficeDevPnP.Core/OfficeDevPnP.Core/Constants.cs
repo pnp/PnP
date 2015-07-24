@@ -11,6 +11,7 @@ namespace OfficeDevPnP.Core
         public static readonly Guid MINIMALDOWNLOADSTRATEGYFEATUREID = new Guid("87294c72-f260-42f3-a41b-981a2ffce37a");
 
         internal const string LOGGING_SOURCE = "OfficeDevPnP.Core";
+        internal const string LOGGING_SOURCE_FRAMEWORK_PROVISIONING = "PnP Provisioning";
 
         internal const string FIELD_XML_FORMAT = @"<Field Type=""{0}"" Name=""{1}"" DisplayName=""{2}"" ID=""{3}"" Group=""{4}"" Required=""{5}"" {6}/>";
         internal const string FIELD_XML_PARAMETER_FORMAT = @"{0}=""{1}""";

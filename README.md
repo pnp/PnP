@@ -5,6 +5,6 @@ Check additional details from the [GitHub project wiki](https://github.com/Offic
 
 ![](http://i.imgur.com/l01hhvE.png)
 
-This package is released by a group of volunteers who are committed to continue further expanding this sample package in the future. You are more than welcome to join the team on helping to provide samples which shows different patterns and practices towards app model development with SharePoint and Office client.
+This package is released by a group of volunteers who are committed to continue further expanding this sample package in the future. You are more than welcome to join the team on helping to provide samples which shows different patterns and practices towards add-in model development with SharePoint and Office client.
 
 Currently this project is very focused on the SharePoint scenarios but we are keeping a keen eye towards including the all-up Office Developer story as we move forward. Your submissions on this area are more than welcome.

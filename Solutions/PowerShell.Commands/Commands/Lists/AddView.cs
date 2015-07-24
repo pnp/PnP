@@ -7,7 +7,9 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Add, "SPOView")]
     [CmdletHelp("Adds a view to a list", Category = "Lists")]
-    [CmdletExample(Code = @"Add-SPOView -List ""Demo List"" -Title ""Demo View"" -Fields ""Title"",""Address""")]
+    [CmdletExample(
+        Code = @"Add-SPOView -List ""Demo List"" -Title ""Demo View"" -Fields ""Title"",""Address""",
+        SortOrder = 1)]
     public class AddView : SPOWebCmdlet
     {
         [Parameter(Mandatory = false, ValueFromPipeline = true, Position = 0, HelpMessage = "The ID or Url of the list.")]
@@ -39,7 +41,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             List list = null;
             if (List != null)
             {
-                list = SelectedWeb.GetList(List);
+                list = List.GetList(SelectedWeb);
             }
             if (list != null)
             {

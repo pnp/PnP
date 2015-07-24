@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using OfficeDevPnP.Core.Utilities;
 
@@ -87,6 +88,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Connectors
         public override string GetFile(string fileName)
         {
             return GetFile(fileName, GetContainer());
+        }
+
+        public override string GetFilenamePart(string fileName)
+        {
+            if (fileName.IndexOf(@"\") != -1)
+            {
+                var parts = fileName.Split(new []{@"\"}, StringSplitOptions.RemoveEmptyEntries);
+                return parts.LastOrDefault();
+            }
+            else
+            {
+                return fileName;
+            }
         }
 
         /// <summary>

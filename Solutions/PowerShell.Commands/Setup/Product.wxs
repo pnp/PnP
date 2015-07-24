@@ -10,19 +10,33 @@
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
      >
-  <Product Id="*" Name="$(var.ProductName)" Language="1033" Version="1.0.0.0" Manufacturer="OfficeDev PnP" UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
-    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
-    <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+  <Product Id="*"
+           Name="$(var.ProductName)"
+           Language="1033"
+           Version="1.2.0.0"
+           Manufacturer="OfficeDev PnP"
+           UpgradeCode="630fe2af-dc42-467d-94c8-6eefd065cbfa">
+
+    <Package InstallerVersion="200"
+             Compressed="yes"  />
+    <!--<Property Id="MSIUSEREALADMINDETECTION" Value="1" />-->
+
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
     <MediaTemplate  EmbedCab="yes" />
 
     <Feature Id="ProductFeature" Title="OfficeDev PnP PowerShell Commands" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="ENVIRONMENTVARS" />
+
     </Feature>
+
     <PropertyRef Id="NETFRAMEWORK45"/>
+
     <Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
       <![CDATA[Installed OR NETFRAMEWORK45]]>
     </Condition>
+
     <Property Id="POWERSHELLCOMPATIBLE">
       <RegistrySearch Id="PSCompatible"
                       Root="HKLM"
@@ -31,72 +45,68 @@
                       Type="raw" />
     </Property>
 
-    <Property Id="CLIENTASSEMBLIES">
-      <DirectorySearch Id="Client" Path="[WindowsFolder]Microsoft.NET\assembly\GAC_MSIL" Depth="2">
-        <FileSearch Name="Microsoft.SharePoint.Client.dll" MinVersion="$(var.AssemblyVersion)"/>
-      </DirectorySearch>
-    </Property>
-    
     <Condition Message="PowerShell 3.0 is required. Please install PowerShell 3.0 then run this installer again.">
       <![CDATA[Installed OR (POWERSHELLCOMPATIBLE >< "3.0")]]>
     </Condition>
-
-    <UI Id="CheckClientSDK">
-      <Dialog Id="CheckClientSDKDlg" Width="260" Height="100" Title="SharePoint Online Client Components SDK" NoMinimize="yes" >
-
-        <Control Id="Message" Type="Text" X="10" Y="10" Width="240" Height="30" Text="SharePoint Online Client Components SDK version 16 or newer is required. Please download and install, then run this installer again." />
-
-        <Control Id="Link" Type="Hyperlink" X="10" Y="40" Height="40" Width="240">
-          <Text>
-            <![CDATA[<a href="http://www.microsoft.com/en-us/download/details.aspx?id=42038">Download the SharePoint Online Client Components SDK</a>]]>
-          </Text>
-        </Control>
-        
-        <Control Id="Return" Type="PushButton" X="110" Y="72" Width="70" Height="17" Default="yes" Cancel="yes" Text="&amp;Cancel install">
-          <Publish Event="EndDialog" Value="Exit">1</Publish>
-        </Control>
-
-      </Dialog>
-
-      <InstallUISequence>
-        <Show Dialog="CheckClientSDKDlg" Before="WelcomeEulaDlg" >
-          <![CDATA[NOT (Installed OR CLIENTASSEMBLIES)]]>
-        </Show>
-      </InstallUISequence>
-    </UI>
   </Product>
+
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFiles64Folder">
+      <Directory Id="ProgramFilesFolder">
         <Directory Id="APPFOLDER" Name="OfficeDevPnP">
           <Directory Id="PowerShell" Name="PowerShell">
             <Directory Id="Modules" Name="Modules">
-              <Directory Id="INSTALLFOLDER" Name="OfficeDevPnP.PowerShell.Commands" />
+              <Directory Id="APPLICATIONFOLDER" Name="OfficeDevPnP.PowerShell.Commands" />
             </Directory>
           </Directory>
         </Directory>
       </Directory>
     </Directory>
 
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <WixVariable Id="WixUILicenseRtf" Value="Apache License Version 2.rtf" />
     <WixVariable Id="WixUIDialogBmp" Value="officedevpnp.bmp"/>
     <WixVariable Id="WixUIBannerBmp" Value="setupbanner.png"/>
-    <UIRef Id="WixUI_Minimal" />
+
+    <Property Id="ApplicationFolderName" Value="OfficeDevPnP.PowerShell.Commands" />
+    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+    <UIRef Id="WixUI_Advanced" />
 
   </Fragment>
 
   <Fragment>
-    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="PowerShellCommands" Guid="{1F5CA574-E185-49D2-9A91-CD46A8548D3E}" Win64="yes">
+    <ComponentGroup Id="ProductComponents" Directory="APPLICATIONFOLDER">
+      <Component Id="PowerShellCommands" Guid="{1F5CA574-E185-49D2-9A91-CD46A8548D3E}">
         <File Id="Commands" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)" />
         <File Id="CommandsHelp" Source="$(var.OfficeDevPnP.PowerShell.Commands.TargetPath)-help.xml"/>
         <File Id="Core" Source="$(var.OfficeDevPnP.Core.TargetPath)"/>
         <File Id="CmdletHelpAttributes" Source="$(var.OfficeDevPnP.PowerShell.CmdletHelpAttributes.TargetPath)"/>
         <File Id="FormatFile" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.Format.ps1xml" />
         <File Id="PSD1File" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\ModuleFiles\OfficeDevPnP.PowerShell.Commands.psd1" />
-        <File Id="TenantDll" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
-        <Environment Id="PSMODULEPATH" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+        <File Id="ClientSDK.Client" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.dll" />
+        <File Id="ClientSDK.Client.Runtime" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Runtime.dll" />
+        <File Id="ClientSDK.Client.Taxonomy" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Taxonomy.dll" />
+        <File Id="ClientSDK.Client.UserProfiles" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.UserProfiles.dll" />
+        <File Id="ClientSDK.Client.WorkflowServices" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.WorkflowServices.dll" />
+        <File Id="ClientSDK.Client.DocumentManagement" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.DocumentManagement.dll" />
+        <File Id="ClientSDK.Client.Publishing" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Publishing.dll" />
+        <File Id="ClientSDK.Client.Search" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Search.dll" />
+        <File Id="ClientSDK.Client.Search.Applications" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.SharePoint.Client.Search.Applications.dll" />
+        <File Id="OnlineSDK.Client.Tenant" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+        <File Id="OfficeSDK.Client.Policy" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.Policy.dll" />
+        <File Id="OfficeSDK.Client.TranslationServices" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.Office.Client.TranslationServices.dll" />
+        <File Id="IdentityModel.Clients.ActiveDirectory" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
+        <File Id="IdentityModel.Clients.ActiveDirectory.WindowsForms" Source="$(var.OfficeDevPnP.PowerShell.Commands.ProjectDir)bin\$(var.OfficeDevPnP.PowerShell.Commands.Configuration)\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll" />
+        <File Id="NewtonSoft" Source="$(var.OfficeDevPnP.Core.ProjectDir)bin\$(var.OfficeDevPnP.Core.Configuration)\Newtonsoft.Json.Dll" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="ENVIRONMENTVARS" Directory="TARGETDIR">
+      <Component Id="EnvironmentVarPerMachine" Guid="{4D971CA5-CFE1-4121-B265-7C56B75D12A1}">
+        <Condition>ALLUSERS=1  OR (ALLUSERS=2 AND Privileged)</Condition>
+        <Environment Id="PSMODULEPATHPERMACHINE" Name="PSMODULEPATH" Value="[APPFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
+      </Component>
+      <Component Id="EnvironmentVarPerUser" Guid="{CAE7B727-018A-4F37-9D62-C70363B9A9D1}">
+        <Condition>ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged))</Condition>
+        <Environment Id="PSMODULEPATHPERUSER" Name="PSMODULEPATH" Value="[LocalAppDataFolder]Apps\[ApplicationFolderName]" Permanent="no" Part="last" Action="set" System="no" />
       </Component>
     </ComponentGroup>
   </Fragment>

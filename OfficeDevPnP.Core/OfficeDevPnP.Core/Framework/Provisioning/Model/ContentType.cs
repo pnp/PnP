@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+using OfficeDevPnP.Core.Extensions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -12,16 +14,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
     /// </summary>
     public partial class ContentType : IEquatable<ContentType>
     {
+
         #region Private Members
+        private string _id;
         private List<FieldRef> _fieldRefs = new List<FieldRef>();
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// The ID of the Content Type
+        /// The Id of the Content Type
         /// </summary>
-        public string ID { get; set; }
+        public string Id { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// The name of the Content Type
@@ -59,7 +63,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public ContentType(string id, string name, string description, string group, bool contenttypeSealed, bool hidden, bool readyonly, string documentTemplate, bool overwrite, IEnumerable<FieldRef> fieldRefs)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
             this.Description = description;
             this.Group = group;
@@ -79,8 +83,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}",
-                this.ID,
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}",
+                this.Id,
                 this.Name,
                 this.Description,
                 this.Group,
@@ -88,7 +92,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.ReadOnly,
                 this.Overwrite,
                 this.Sealed,
-                this.DocumentTemplate
+                this.DocumentTemplate,
+                this.FieldRefs.Aggregate(0, (acc, next) => acc += next.GetHashCode())
                ).GetHashCode());
         }
 
@@ -103,19 +108,20 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public bool Equals(ContentType other)
         {
-           
-                // 2015-04 release
-                return (this.ID == other.ID &&
-                        this.Name == other.Name &&
-                        this.Description == other.Description &&
-                        this.Group == other.Group &&
-                        this.Hidden == other.Hidden &&
-                        this.ReadOnly == other.ReadOnly &&
-                        this.Overwrite == other.Overwrite &&
-                        this.Sealed == other.Sealed &&
-                        this.DocumentTemplate == other.DocumentTemplate
-                    );
-           
+
+            // 2015-04 release
+            return (this.Id == other.Id &&
+                    this.Name == other.Name &&
+                    this.Description == other.Description &&
+                    this.Group == other.Group &&
+                    this.Hidden == other.Hidden &&
+                    this.ReadOnly == other.ReadOnly &&
+                    this.Overwrite == other.Overwrite &&
+                    this.Sealed == other.Sealed &&
+                    this.DocumentTemplate == other.DocumentTemplate &&
+                    this.FieldRefs.DeepEquals(other.FieldRefs)
+                );
+
         }
 
         #endregion

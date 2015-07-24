@@ -7,9 +7,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
     [Cmdlet("New", "SPOGroup")]
     [CmdletHelp("Adds a user to the build-in Site User Info List and returns a user object", Category = "User and group management")]
-    [CmdletExample(Code = @"
-PS:> New-SPOUser -LogonName user@company.com
-")]
+    [CmdletExample(
+        Code = @"PS:> New-SPOUser -LogonName user@company.com",
+        SortOrder = 1)]
     public class NewGroup : SPOWebCmdlet
     {
         [Parameter(Mandatory = true)]
@@ -27,14 +27,23 @@ PS:> New-SPOUser -LogonName user@company.com
         [Parameter(Mandatory = false)]
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
-        [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
+        [Parameter(Mandatory = false)]
+        public SwitchParameter AllowMembersEditMembership;
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter OnlyAllowMembersViewMembership;
+
+        [Parameter(Mandatory = false)]
+        public string RequestToJoinEmail;
+
+        [Parameter(Mandatory = false, DontShow = true)] // Not promoted to use anymore. Use Set-SPOGroup
         public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
             var web = SelectedWeb;
 
-            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
+            var groupCI = new GroupCreationInformation { Title = Title, Description = Description };
 
             var group = web.SiteGroups.Add(groupCI);
 
@@ -53,12 +62,27 @@ PS:> New-SPOUser -LogonName user@company.com
                 group.AutoAcceptRequestToJoinLeave = true;
                 dirty = true;
             }
+            if (AllowMembersEditMembership)
+            {
+                group.AllowMembersEditMembership = true;
+                dirty = true;
+            }
+            if (OnlyAllowMembersViewMembership)
+            {
+                group.OnlyAllowMembersViewMembership = true;
+                dirty = true;
+            }
+            if (!string.IsNullOrEmpty(RequestToJoinEmail))
+            {
+                group.RequestToJoinLeaveEmailSetting = RequestToJoinEmail;
+                dirty = true;
+            }
+
             if (dirty)
             {
                 group.Update();
                 ClientContext.ExecuteQueryRetry();
             }
-
 
             if (!string.IsNullOrEmpty(Owner))
             {

@@ -28,10 +28,10 @@ Version  | Date | Comments
 ----------
 
 # SCENARIO 1: DISPLAY PERMISSIONS ACROSS ALL “NON-MY SITE” SITE COLLECTIONS #
-This scenario shows how to retrieve all permissions from each “non-My Site” site collection.  This scenario relies on the SharePoint Search Service Application to be implemented and configured to crawl any site collection that you wish to pull permissions from.  It also borrows from the Contoso.Management.SiteEnumeration project for querying the search service to return search results for site collections.  Retrieval of SharePoint permissions will be performed via CSOM in a provider hosted app.
+This scenario shows how to retrieve all permissions from each “non-My Site” site collection.  This scenario relies on the SharePoint Search Service Application to be implemented and configured to crawl any site collection that you wish to pull permissions from.  It also borrows from the Contoso.Management.SiteEnumeration project for querying the search service to return search results for site collections.  Retrieval of SharePoint permissions will be performed via CSOM in a provider hosted add-in.
 
 ## DISPLAY PERMISSIONS ##
-In the current version of the app there is no user interaction.  When the app is launched the CSOM code will query the tenant for any non-My Site site collections that exist in the search index.  This is performed by the **GetSites** method which also relies on the **ProcessQuery** helper method (adapted from Contoso.Management.SiteEnumeration solution).
+In the current version of the add-in there is no user interaction.  When the add-in is launched the CSOM code will query the tenant for any non-My Site site collections that exist in the search index.  This is performed by the **GetSites** method which also relies on the **ProcessQuery** helper method (adapted from Contoso.Management.SiteEnumeration solution).
 
 ```C#
 private List<Site> GetSites(ClientContext clientContext)
@@ -93,7 +93,7 @@ if (!securableObject.HasUniqueRoleAssignments)
 }
 ```
 
-If the permissions are different then each of the role assignments is enumerated and the principal type (group or user), login name, and the assigned permission level are output to the app.
+If the permissions are different then each of the role assignments is enumerated and the principal type (group or user), login name, and the assigned permission level are output to the add-in.
 
 ```C#
 else

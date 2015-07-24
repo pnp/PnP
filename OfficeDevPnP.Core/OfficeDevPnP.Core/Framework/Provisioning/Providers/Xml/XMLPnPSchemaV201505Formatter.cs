@@ -83,7 +83,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             wrappedResult.Templates = new V201505.Templates[] { 
                 new V201505.Templates 
                 { 
-                    ID = String.Format("CONTAINER-{0}", template.ID),
+                    ID = String.Format("CONTAINER-{0}", template.Id),
                     ProvisioningTemplate = new V201505.ProvisioningTemplate[]
                     {
                         result
@@ -93,7 +93,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             #region Basic Properties
             // Translate basic properties
-            result.ID = template.ID;
+            result.ID = template.Id;
             result.Version = (Decimal)template.Version;
             result.VersionSpecified = true;
             result.SitePolicy = template.SitePolicy;
@@ -105,10 +105,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 result.PropertyBagEntries =
                     (from bag in template.PropertyBagEntries
-                     select new V201505.StringDictionaryItem
+                     select new V201505.PropertyBagEntry()
                      {
                          Key = bag.Key,
                          Value = bag.Value,
+                         Indexed = bag.Indexed
                      }).ToArray();
             }
             else
@@ -205,15 +206,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 result.ContentTypes = (from ct in template.ContentTypes
                                        select new V201505.ContentType
             {
-                ID = ct.ID,
+                ID = ct.Id,
                 Description = ct.Description,
                 Group = ct.Group,
                 Name = ct.Name,
                 FieldRefs = ct.FieldRefs.Count > 0 ?
                     (from fieldRef in ct.FieldRefs
-                     select new V201505.FieldRef
+                     select new V201505.ContentTypeFieldRef
                      {
-                         ID = fieldRef.ID.ToString(),
+                         Name = fieldRef.Name,
+                         ID = fieldRef.Id.ToString(),
                          Hidden = fieldRef.Hidden,
                          Required = fieldRef.Required
                      }).ToArray() : null,
@@ -238,6 +240,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          Description = list.Description,
                          DocumentTemplate = list.DocumentTemplate,
                          EnableVersioning = list.EnableVersioning,
+                         EnableMinorVersions = list.EnableMinorVersions,
+                         EnableModeration = list.EnableModeration,
+                         DraftVersionVisibility = list.DraftVersionVisibility,
                          Hidden = list.Hidden,
                          MinorVersionLimit = list.MinorVersionLimit,
                          MinorVersionLimitSpecified = true,
@@ -255,7 +260,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             (from contentTypeBinding in list.ContentTypeBindings
                              select new V201505.ContentTypeBinding
                              {
-                                 ContentTypeID = contentTypeBinding.ContentTypeID,
+                                 ContentTypeID = contentTypeBinding.ContentTypeId,
                                  Default = contentTypeBinding.Default,
                              }).ToArray() : null,
                          Views = list.Views.Count > 0 ?
@@ -275,12 +280,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          } : null,
                          FieldRefs = list.FieldRefs.Count > 0 ?
                          (from fieldRef in list.FieldRefs
-                          select new V201505.FieldRef
+                          select new V201505.ListInstanceFieldRef
                           {
+                              Name = fieldRef.Name,
                               DisplayName = fieldRef.DisplayName,
                               Hidden = fieldRef.Hidden,
                               Required = fieldRef.Required,
-                              ID = fieldRef.ID.ToString(),
+                              ID = fieldRef.Id.ToString(),
                           }).ToArray() : null,
                          DataRows = list.DataRows.Count > 0 ?
                              new List<DataValue[]>(
@@ -313,7 +319,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.SiteFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -331,7 +337,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from feature in template.Features.WebFeatures
                          select new V201505.Feature
                          {
-                             ID = feature.ID.ToString(),
+                             ID = feature.Id.ToString(),
                              Deactivate = feature.Deactivate,
                          }).ToArray();
                 }
@@ -354,6 +360,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from customAction in template.CustomActions.SiteCustomActions
                          select new V201505.CustomAction
                          {
+                             CommandUIExtension = new CustomActionCommandUIExtension {
+                                 Any = customAction.CommandUIExtension != null ?
+                                    (from x in customAction.CommandUIExtension.Elements() select x.ToXmlElement()).ToArray() : null,
+                             },
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
                              Group = customAction.Group,
@@ -381,6 +391,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         (from customAction in template.CustomActions.WebCustomActions
                          select new V201505.CustomAction
                          {
+                             CommandUIExtension = new CustomActionCommandUIExtension
+                             {
+                                 Any = customAction.CommandUIExtension != null ?
+                                    (from x in customAction.CommandUIExtension.Elements() select x.ToXmlElement()).ToArray() : null,
+                             },
                              Description = customAction.Description,
                              Enabled = customAction.Enabled,
                              Group = customAction.Group,
@@ -424,6 +439,13 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Contents = wp.Contents,
                                  Title = wp.Title,
                              }).ToArray() : null,
+                         Properties = file.Properties != null && file.Properties.Count > 0 ?
+                            (from p in file.Properties
+                             select new V201505.StringDictionaryItem
+                             {
+                                 Key = p.Key,
+                                 Value = p.Value
+                             }).ToArray() : null
                      }).ToArray();
             }
             else
@@ -442,32 +464,32 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 {
                     var schemaPage = new V201505.Page();
 
-                    var pageLayout = WIKIPAGELAYOUT.OneColumn;
+                    var pageLayout = V201505.WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
                         case WikiPageLayout.OneColumn:
-                            pageLayout = WIKIPAGELAYOUT.OneColumn;
+                            pageLayout = V201505.WikiPageLayout.OneColumn;
                             break;
                         case WikiPageLayout.OneColumnSideBar:
-                            pageLayout = WIKIPAGELAYOUT.OneColumnSidebar;
+                            pageLayout = V201505.WikiPageLayout.OneColumnSidebar;
                             break;
                         case WikiPageLayout.TwoColumns:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumns;
+                            pageLayout = V201505.WikiPageLayout.TwoColumns;
                             break;
                         case WikiPageLayout.TwoColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeader;
                             break;
                         case WikiPageLayout.TwoColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.TwoColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
                         case WikiPageLayout.ThreeColumns:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumns;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumns;
                             break;
                         case WikiPageLayout.ThreeColumnsHeader:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeader;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeader;
                             break;
                         case WikiPageLayout.ThreeColumnsHeaderFooter:
-                            pageLayout = WIKIPAGELAYOUT.ThreeColumnsHeaderFooter;
+                            pageLayout = V201505.WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
                     schemaPage.Layout = pageLayout;
@@ -501,18 +523,27 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                      select new V201505.TermGroup
                      {
                          Name = grp.Name,
-                         ID = grp.ID.ToString(),
+                         ID = grp.Id.ToString(),
                          Description = grp.Description,
                          TermSets = (
                             from termSet in grp.TermSets
                             select new V201505.TermSet
                             {
-                                ID = termSet.ID.ToString(),
+                                ID = termSet.Id.ToString(),
                                 Name = termSet.Name,
+                                IsAvailableForTagging = termSet.IsAvailableForTagging,
+                                IsOpenForTermCreation = termSet.IsOpenForTermCreation,
                                 Description = termSet.Description,
                                 Language = termSet.Language.HasValue ? termSet.Language.Value : 0,
                                 LanguageSpecified = termSet.Language.HasValue,
                                 Terms = termSet.Terms.FromModelTermsToSchemaTerms(),
+                                CustomProperties = termSet.Properties.Count > 0 ?
+                                     (from p in termSet.Properties
+                                      select new V201505.StringDictionaryItem
+                                      {
+                                          Key = p.Key,
+                                          Value = p.Value
+                                      }).ToArray() : null,
                             }).ToArray(),
                      }).ToArray();
             }
@@ -667,7 +698,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             #region Basic Properties
             // Translate basic properties
-            result.ID = source.ID;
+            result.Id = source.ID;
             result.Version = (Double)source.Version;
             result.SitePolicy = source.SitePolicy;
             #endregion
@@ -682,6 +713,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     {
                         Key = bag.Key,
                         Value = bag.Value,
+                        Indexed = bag.Indexed
                     });
             }
             #endregion
@@ -761,9 +793,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         contentType.Overwrite,
                         (contentType.FieldRefs != null ?
                             (from fieldRef in contentType.FieldRefs
-                             select new Model.FieldRef
+                             select new Model.FieldRef(fieldRef.Name)
                              {
-                                 ID = Guid.Parse(fieldRef.ID),
+                                 Id = Guid.Parse(fieldRef.ID),
                                  Hidden = fieldRef.Hidden,
                                  Required = fieldRef.Required
                              }) : null)
@@ -783,7 +815,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 (from contentTypeBinding in list.ContentTypeBindings
                                  select new Model.ContentTypeBinding
                                  {
-                                     ContentTypeID = contentTypeBinding.ContentTypeID,
+                                     ContentTypeId = contentTypeBinding.ContentTypeID,
                                      Default = contentTypeBinding.Default,
                                  }) : null),
                         (list.Views != null ?
@@ -800,12 +832,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  }) : null),
                         (list.FieldRefs != null ?
                                  (from fieldRef in list.FieldRefs
-                                  select new Model.FieldRef
+                                  select new Model.FieldRef(fieldRef.Name)
                                   {
                                       DisplayName = fieldRef.DisplayName,
                                       Hidden = fieldRef.Hidden,
                                       Required = fieldRef.Required,
-                                      ID = Guid.Parse(fieldRef.ID)
+                                      Id = Guid.Parse(fieldRef.ID)
                                   }) : null),
                         (list.DataRows != null ?
                                  (from dataRow in list.DataRows
@@ -819,6 +851,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         Description = list.Description,
                         DocumentTemplate = list.DocumentTemplate,
                         EnableVersioning = list.EnableVersioning,
+                        EnableMinorVersions = list.EnableMinorVersions,
+                        DraftVersionVisibility = list.DraftVersionVisibility,
+                        EnableModeration = list.EnableModeration,
                         Hidden = list.Hidden,
                         MinorVersionLimit = list.MinorVersionLimitSpecified ? list.MinorVersionLimit : 0,
                         MaxVersionLimit = list.MaxVersionLimitSpecified ? list.MaxVersionLimit : 0,
@@ -845,7 +880,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.SiteFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -855,7 +890,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from feature in source.Features.WebFeatures
                         select new Model.Feature
                         {
-                            ID = new Guid(feature.ID),
+                            Id = new Guid(feature.ID),
                             Deactivate = feature.Deactivate,
                         });
                 }
@@ -872,6 +907,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from customAction in source.CustomActions.SiteCustomActions
                         select new Model.CustomAction
                         {
+                            CommandUIExtension = (customAction.CommandUIExtension != null && customAction.CommandUIExtension.Any != null) ?
+                                (new XElement("CommandUIExtension", from x in customAction.CommandUIExtension.Any select x.ToXElement())) : null,
                             Description = customAction.Description,
                             Enabled = customAction.Enabled,
                             Group = customAction.Group,
@@ -892,6 +929,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         from customAction in source.CustomActions.WebCustomActions
                         select new Model.CustomAction
                         {
+                            CommandUIExtension = (customAction.CommandUIExtension != null && customAction.CommandUIExtension.Any != null) ?
+                                (new XElement("CommandUIExtension", from x in customAction.CommandUIExtension.Any select x.ToXElement())) : null,
                             Description = customAction.Description,
                             Enabled = customAction.Enabled,
                             Group = customAction.Group,
@@ -918,7 +957,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     select new Model.File(file.Src,
                         file.Folder,
                         file.Overwrite,
-                        file.Create,
                         file.WebParts != null ?
                             (from wp in file.WebParts
                              select new Model.WebPart
@@ -927,8 +965,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                      Zone = wp.Zone,
                                      Title = wp.Title,
                                      Contents = wp.Contents
-                                 }) : null
-                            )
+                                 }) : null,
+                        file.Properties != null ? file.Properties.ToDictionary(k => k.Key, v => v.Value) : null
+                        )
                     );
             }
             #endregion
@@ -943,28 +982,28 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                     var pageLayout = WikiPageLayout.OneColumn;
                     switch (page.Layout)
                     {
-                        case WIKIPAGELAYOUT.OneColumn:
+                        case V201505.WikiPageLayout.OneColumn:
                             pageLayout = WikiPageLayout.OneColumn;
                             break;
-                        case WIKIPAGELAYOUT.OneColumnSidebar:
+                        case V201505.WikiPageLayout.OneColumnSidebar:
                             pageLayout = WikiPageLayout.OneColumnSideBar;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumns:
+                        case V201505.WikiPageLayout.TwoColumns:
                             pageLayout = WikiPageLayout.TwoColumns;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeader:
+                        case V201505.WikiPageLayout.TwoColumnsHeader:
                             pageLayout = WikiPageLayout.TwoColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.TwoColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.TwoColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.TwoColumnsHeaderFooter;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumns:
+                        case V201505.WikiPageLayout.ThreeColumns:
                             pageLayout = WikiPageLayout.ThreeColumns;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeader:
+                        case V201505.WikiPageLayout.ThreeColumnsHeader:
                             pageLayout = WikiPageLayout.ThreeColumnsHeader;
                             break;
-                        case WIKIPAGELAYOUT.ThreeColumnsHeaderFooter:
+                        case V201505.WikiPageLayout.ThreeColumnsHeaderFooter:
                             pageLayout = WikiPageLayout.ThreeColumnsHeaderFooter;
                             break;
                     }
@@ -979,7 +1018,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                  Row = (uint)wp.Row,
                                  Contents = wp.Contents
 
-                             }).ToList() : null)));
+                             }).ToList() : null), page.WelcomePage));
 
                 }
             }
@@ -1000,7 +1039,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                                 !string.IsNullOrEmpty(termSet.ID) ? Guid.Parse(termSet.ID) : Guid.Empty,
                                 termSet.Name,
                                 termSet.LanguageSpecified ? (int?)termSet.Language : null,
-                                termSet.Terms.FromSchemaTermsToModelTerms())
+                                termSet.IsAvailableForTagging,
+                                termSet.IsOpenForTermCreation,
+                                termSet.Terms != null ? termSet.Terms.FromSchemaTermsToModelTerms() : null,
+                                termSet.CustomProperties != null ? termSet.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null)
                             {
                                 Description = termSet.Description,
                             })
@@ -1040,7 +1082,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                             result.Providers.Add(
                                 new Model.Provider
                                 {
-                                    Assembly = handlerType.AssemblyQualifiedName,
+                                    Assembly = handlerType.Assembly.FullName,
                                     Type = handlerType.FullName,
                                     Configuration = provider.Configuration != null ? provider.Configuration.ToProviderConfiguration() : null,
                                     Enabled = provider.Enabled,
@@ -1059,17 +1101,19 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
         public static V201505.Term[] FromModelTermsToSchemaTerms(this List<Model.Term> terms)
         {
-            V201505.Term[] result = (
+            V201505.Term[] result = terms.Count > 0 ? (
                 from term in terms
                 select new V201505.Term
                 {
-                    ID = term.ID.ToString(),
+                    ID = term.Id.ToString(),
                     Name = term.Name,
                     Description = term.Description,
                     Owner = term.Owner,
+                    LanguageSpecified = term.Language.HasValue,
+                    Language = term.Language.HasValue ? term.Language.Value : 1033,
                     IsAvailableForTagging = term.IsAvailableForTagging,
                     CustomSortOrder = term.CustomSortOrder,
-                    ChildTerms = new TermChildTerms { Items = term.Terms.FromModelTermsToSchemaTerms() },
+                    Terms = term.Terms.Count > 0 ? new TermTerms { Items = term.Terms.FromModelTermsToSchemaTerms() } : null,
                     CustomProperties = term.Properties.Count > 0 ?
                         (from p in term.Properties
                          select new V201505.StringDictionaryItem
@@ -1089,11 +1133,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                          select new V201505.TermLabelsLabel
                          {
                              Language = l.Language,
-                             IsDefaultForLanguage = l.IsDefaultForLanguage.HasValue ? l.IsDefaultForLanguage.Value : false,
-                             IsDefaultForLanguageSpecified = l.IsDefaultForLanguage.HasValue,
+                             IsDefaultForLanguage = l.IsDefaultForLanguage,
                              Value = l.Value,
                          }).ToArray() : null,
-                }).ToArray();
+                }).ToArray() : null;
 
             return (result);
         }
@@ -1105,8 +1148,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 select new Model.Term(
                     !string.IsNullOrEmpty(term.ID) ? Guid.Parse(term.ID) : Guid.Empty,
                     term.Name,
-                    null, // TODO: language
-                    (term.ChildTerms != null && term.ChildTerms.Items != null) ? term.ChildTerms.Items.FromSchemaTermsToModelTerms() : null,
+                    term.LanguageSpecified ? term.Language : (int?)null,
+                    (term.Terms != null && term.Terms.Items != null) ? term.Terms.Items.FromSchemaTermsToModelTerms() : null,
                     term.Labels != null ?
                     (new List<Model.TermLabel>(
                         from label in term.Labels
@@ -1114,7 +1157,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         {
                             Language = label.Language,
                             Value = label.Value,
-                            IsDefaultForLanguage = label.IsDefaultForLanguageSpecified ? label.IsDefaultForLanguage : false,
+                            IsDefaultForLanguage = label.IsDefaultForLanguage
                         }
                     )) : null,
                     term.CustomProperties != null ? term.CustomProperties.ToDictionary(k => k.Key, v => v.Value) : null,

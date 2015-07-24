@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:fontScheme name="Georgia" previewSlot1="title" previewSlot2="body" xmlns:s="http://schemas.microsoft.com/sharepoint/">
+    <s:fontSlots>
+        <s:fontSlot name="title">
+            <s:latin typeface="Georgia"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI Light" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI Light" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="navigation">
+            <s:latin typeface="Georgia"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="small-heading">
+            <s:latin typeface="Georgia"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="heading">
+            <s:latin typeface="Georgia"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI Semilight" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI Semilight" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="large-heading">
+            <s:latin typeface="Georgia"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI Light" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI Light" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="body">
+            <s:latin typeface="Segoe UI"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+        <s:fontSlot name="large-body">
+            <s:latin typeface="Segoe UI Semilight"/>
+            <s:ea typeface=""/>
+            <s:cs typeface="Segoe UI Semilight" />
+            <s:font script="Arab" typeface="Tahoma" />
+            <s:font script="Deva" typeface="Mangal" />
+            <s:font script="Grek" typeface="Segoe UI Semilight" />
+            <s:font script="Hang" typeface="Malgun Gothic" />
+            <s:font script="Hans" typeface="Microsoft YaHei" />
+            <s:font script="Hant" typeface="Microsoft JhengHei" />
+            <s:font script="Hebr" typeface="Tahoma" />
+            <s:font script="Hira" typeface="Meiryo" />
+            <s:font script="Thai" typeface="Tahoma" />
+            <s:font script="Armn" typeface="Tahoma" />
+            <s:font script="Beng" typeface="Vrinda" />
+            <s:font script="Cher" typeface="Plantagenet Cherokee" />
+            <s:font script="Ethi" typeface="Nyala" />
+            <s:font script="Geor" typeface="Sylfaen" />
+            <s:font script="Gujr" typeface="Shruti" />
+            <s:font script="Guru" typeface="Raavi" />
+            <s:font script="Knda" typeface="Tunga" />
+            <s:font script="Khmr" typeface="DaunPenh" />
+            <s:font script="Laoo" typeface="DokChampa" />
+            <s:font script="Mlym" typeface="Kartika" />
+            <s:font script="Mymr" typeface="Myanmar Text" />
+            <s:font script="Orya" typeface="Kalinga" />
+            <s:font script="Sinh" typeface="Iskoola Pota" />
+            <s:font script="Syrc" typeface="Estrangelo Edessa" />
+            <s:font script="Taml" typeface="Latha" />
+            <s:font script="Telu" typeface="Gautami" />
+            <s:font script="Thaa" typeface="MV Boli" />
+            <s:font script="Tibt" typeface="Cordia New" />
+            <s:font script="Yiii" typeface="Microsoft Yi Baiti" />
+        </s:fontSlot>
+    </s:fontSlots>
+</s:fontScheme>

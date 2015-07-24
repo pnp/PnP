@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Enums;
+using OfficeDevPnP.Core.Entities;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
@@ -161,5 +162,6 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             }
         }
         #endregion
+
     }
 }

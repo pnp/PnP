@@ -8,12 +8,12 @@ namespace OfficeDevPnP.PowerShell.Commands
 {
     [Cmdlet(VerbsCommon.Set, "SPOTaxonomyFieldValue")]
     [CmdletHelp("Sets a taxonomy term value in a listitem field",Category = "Taxonomy")]
-    [CmdletExample(Code = @"
-PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -Label 'HR'
-    ")]
-    [CmdletExample(Code = @"
-PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -TermPath 'CORPORATE|DEPARTMENTS|HR'
-    ")]
+    [CmdletExample(
+        Code = @"PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -Label 'HR'",
+        SortOrder = 1)]
+    [CmdletExample(
+        Code = @"PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -TermPath 'CORPORATE|DEPARTMENTS|HR'",
+        SortOrder = 2)]
     public class SetTaxonomyFieldValue : SPOCmdlet
     {
         [Parameter(Mandatory = true, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "The list item to set the field value to")]
@@ -34,8 +34,8 @@ PS:> Set-SPOTaxonomyFieldValue -ListItem $item -InternalFieldName 'Department' -
         protected override void ExecuteCmdlet()
         {
             Field field = ListItem.ParentList.Fields.GetByInternalNameOrTitle(InternalFieldName);
-            ClientContext.Load(field);
-            ClientContext.ExecuteQueryRetry();
+            ListItem.Context.Load(field);
+            ListItem.Context.ExecuteQueryRetry();
 
             switch (ParameterSetName)
             {

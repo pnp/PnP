@@ -46,5 +46,26 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
             _name = name;
         }
 
+        internal Group GetGroup(Web web)
+        {
+            Group group = null;
+            if (Id != -1)
+            {
+                group = web.SiteGroups.GetById(Id);
+            }
+            else if (!string.IsNullOrEmpty(Name))
+            {
+                group = web.SiteGroups.GetByName(Name);
+            }
+            else if (Group != null)
+            {
+                group = Group;
+            }
+
+            web.Context.Load(group);
+            web.Context.Load(group.Users);
+            web.Context.ExecuteQueryRetry();
+            return group;
+        }
     }
 }

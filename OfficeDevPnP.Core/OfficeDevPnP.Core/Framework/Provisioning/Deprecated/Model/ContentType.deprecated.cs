@@ -8,28 +8,5 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
     public partial class ContentType
     {
-        #region Will be deprecated in June 2015 release
-
-        #region Private Members
-        private string _schemaXML = string.Empty;
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or Sets value that specifies the XML Schema representing the content type.
-        /// <seealso>
-        ///     <cref>https://msdn.microsoft.com/en-us/library/office/ms463449.aspx</cref>
-        /// </seealso>
-        /// </summary>
-        [Obsolete("Use the other properties in this object to specify the content type. This deprecated property will be removed in the June 2015 release.")]
-        public string SchemaXml
-        {
-            get { return this._schemaXML; }
-            set { this._schemaXML = value; }
-        }
-
-        #endregion
-        #endregion
     }
 }

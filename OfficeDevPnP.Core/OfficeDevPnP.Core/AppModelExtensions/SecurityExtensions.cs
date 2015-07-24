@@ -898,7 +898,9 @@ namespace Microsoft.SharePoint.Client
             if (group != null)
             {
                 User user = group.Users.GetByLoginName(userLoginName);
-                if (user != null)
+                web.Context.Load(user);
+                web.Context.ExecuteQueryRetry();
+                if (!user.ServerObjectIsNull.Value)
                 {
                     web.RemoveUserFromGroup(group, user);
                 }
@@ -1047,6 +1049,11 @@ namespace Microsoft.SharePoint.Client
         }
         #endregion
 
+        /// <summary>
+        /// Returns the authentication realm for the current web
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
         public static Guid GetAuthenticationRealm(this Web web)
         {
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using OfficeDevPnP.Core.Extensions;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -90,7 +92,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public bool EnableVersioning { get; set; }
 
         /// <summary>
-        /// Gets or sets the MinorVersionLimit  for verisioning, just in case it is enabled on the list
+        /// Gets or sets whether minor verisioning is enabled on the list
+        /// </summary>
+        public bool EnableMinorVersions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DraftVersionVisibility for the list
+        /// </summary>
+        public int DraftVersionVisibility { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether moderation/content approval is enabled on the list
+        /// </summary>
+        public bool EnableModeration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MinorVersionLimit  for versioning, just in case it is enabled on the list
         /// </summary>
         public int MinorVersionLimit { get; set; }
 
@@ -180,7 +197,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         public override int GetHashCode()
         {
-            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}",
+            return (String.Format("{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|{10}|{11}|{12}|{13}|{14}|{15}|{16}|{17}|{18}|{19}|{20}|{21}",
                 this.ContentTypesEnabled,
                 this.Description,
                 this.DocumentTemplate,
@@ -196,7 +213,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Title,
                 this.Url,
                 this.TemplateFeatureID,
-                this.RemoveExistingViews).GetHashCode());
+                this.RemoveExistingViews,
+                this.EnableMinorVersions,
+                this.EnableModeration,
+                this.ContentTypeBindings.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Views.Aggregate(0, (acc, next) => acc += next.GetHashCode()),
+                this.Fields.Aggregate(0, (acc, next) => acc += next.GetHashCode() ),
+                this.FieldRefs.Aggregate(0, (acc, next) => acc += next.GetHashCode())
+                ).GetHashCode());
         }
 
         public override bool Equals(object obj)
@@ -214,6 +238,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Description == other.Description &&
                 this.DocumentTemplate == other.DocumentTemplate &&
                 this.EnableVersioning == other.EnableVersioning &&
+                this.EnableMinorVersions == other.EnableMinorVersions &&
+                this.EnableModeration == other.EnableModeration &&
                 this.Hidden == other.Hidden &&
                 this.MaxVersionLimit == other.MaxVersionLimit &&
                 this.MinorVersionLimit == other.MinorVersionLimit &&
@@ -225,7 +251,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
                 this.Title == other.Title &&
                 this.Url == other.Url &&
                 this.TemplateFeatureID == other.TemplateFeatureID &&
-                this.RemoveExistingViews == other.RemoveExistingViews);
+                this.RemoveExistingViews == other.RemoveExistingViews &&
+                this.ContentTypeBindings.DeepEquals(other.ContentTypeBindings) &&
+                this.Views.DeepEquals(other.Views) &&
+                this.Fields.DeepEquals(other.Fields) &&
+                this.FieldRefs.DeepEquals(other.FieldRefs));
         }
 
         #endregion

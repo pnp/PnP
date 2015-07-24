@@ -3,87 +3,95 @@ using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
+using System.Linq;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectFeatures : ObjectHandlerBase
+    internal class ObjectFeatures : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override string Name
         {
+            get { return "Features"; }
+        }
+
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
+        {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Features);
+
             var context = web.Context as ClientContext;
-            
+
             // if this is a sub site then we're not enabling the site collection scoped features
             if (!web.IsSubSite())
             {
                 var siteFeatures = template.Features.SiteFeatures;
-                ProvisionFeaturesImplementation(context.Site, siteFeatures);
+                ProvisionFeaturesImplementation<Site>(context.Site, siteFeatures);
             }
 
             var webFeatures = template.Features.WebFeatures;
-            ProvisionFeaturesImplementation(web, webFeatures);
+            ProvisionFeaturesImplementation<Web>(web, webFeatures);
         }
 
-        private static void ProvisionFeaturesImplementation(object parent, List<Feature> webFeatures)
+        private static void ProvisionFeaturesImplementation<T>(T parent, List<Feature> features)
         {
+            var activeFeatures = new List<Microsoft.SharePoint.Client.Feature>();
             Web web = null;
             Site site = null;
             if (parent is Site)
             {
                 site = parent as Site;
+                site.Context.Load(site.Features, fs => fs.Include(f => f.DefinitionId));
+                site.Context.ExecuteQueryRetry();
+                activeFeatures = site.Features.ToList();
             }
             else
             {
                 web = parent as Web;
+                web.Context.Load(web.Features, fs => fs.Include(f => f.DefinitionId));
+                web.Context.ExecuteQueryRetry();
+                activeFeatures = web.Features.ToList();
             }
 
-            if (webFeatures != null)
+            if (features != null)
             {
-                foreach (var feature in webFeatures)
+                foreach (var feature in features)
                 {
                     if (!feature.Deactivate)
                     {
-                        if (site != null)
+                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) == null)
                         {
-                            if (!site.IsFeatureActive(feature.ID))
+                            if (site != null)
                             {
-                                site.ActivateFeature(feature.ID);
+                                site.ActivateFeature(feature.Id);
                             }
-                        }
-                        else
-                        {
-                            if (!web.IsFeatureActive(feature.ID))
+                            else
                             {
-                                web.ActivateFeature(feature.ID);
+                                web.ActivateFeature(feature.Id);
                             }
                         }
 
                     }
                     else
                     {
-                        if (site != null)
+                        if (activeFeatures.FirstOrDefault(f => f.DefinitionId == feature.Id) != null)
                         {
-                            if (site.IsFeatureActive(feature.ID))
+                            if (site != null)
                             {
-                                site.DeactivateFeature(feature.ID);
-
+                                site.DeactivateFeature(feature.Id);
                             }
-                        }
-                        else
-                        {
-                            if (web.IsFeatureActive(feature.ID))
+                            else
                             {
-                                web.DeactivateFeature(feature.ID);
+                                web.DeactivateFeature(feature.Id);
                             }
                         }
                     }
-
                 }
             }
         }
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var context = web.Context as ClientContext;
             bool isSubSite = web.IsSubSite();
@@ -100,7 +108,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var features = new Features();
             foreach (var feature in webFeatures)
             {
-                features.WebFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
+                features.WebFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
             }
 
             // if this is a sub site then we're not creating  site collection scoped feature entities
@@ -108,7 +116,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in siteFeatures)
                 {
-                    features.SiteFeatures.Add(new Feature() { Deactivate = false, ID = feature.DefinitionId });
+                    features.SiteFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
                 }
             }
 
@@ -133,7 +141,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in baseTemplate.Features.SiteFeatures)
                 {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature.Id));
 
                     if (index > -1)
                     {
@@ -141,9 +149,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                 }
 
-                foreach(var feature in featuresToExclude)
+                foreach (var feature in featuresToExclude)
                 {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.ID.Equals(feature));
+                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature));
 
                     if (index > -1)
                     {
@@ -155,7 +163,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var feature in baseTemplate.Features.WebFeatures)
             {
-                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature.ID));
+                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature.Id));
 
                 if (index > -1)
                 {
@@ -165,7 +173,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var feature in featuresToExclude)
             {
-                int index = template.Features.WebFeatures.FindIndex(f => f.ID.Equals(feature));
+                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature));
 
                 if (index > -1)
                 {
@@ -176,5 +184,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             return template;
         }
 
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Features.SiteFeatures.Any() || template.Features.WebFeatures.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
+        }
     }
 }

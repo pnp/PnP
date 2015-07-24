@@ -1,7 +1,7 @@
 # Site Collection Provisioning #
 
 ### Summary ###
-Demonstrates how to create site collections using CSOM for Office 365 from provider hosted app.
+Demonstrates how to create site collections using CSOM for Office 365 from provider hosted add-in.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -82,15 +82,15 @@ var tenant = new Tenant(adminContext);
 
 SiteColectionCreation – SharePoint Application 
 
-Because the app needs the ability to create sub-sites and site collections anywhere in the tenancy, it will need FullControl permission on the entire tenancy.  The app will also need to make app-only calls to SharePoint, so it can work with tenant objects or sites outside the context.  Both these settings can be configured in the Permissions tab of the AppManifest.xml.
+Because the add-in needs the ability to create sub-sites and site collections anywhere in the tenancy, it will need FullControl permission on the entire tenancy.  The add-in will also need to make add-in only calls to SharePoint, so it can work with tenant objects or sites outside the context.  Both these settings can be configured in the Permissions tab of the AppManifest.xml.
 
 **NOTE**: You should typically avoid requesting tenancy permissions in your apps…especially with FullControl.  It is a best practice for apps to request the minimum permissions they need to function.  The “tenancy” permission scope is in place specifically for scenarios like provisioning.  
 
 
 # SHAREPOINT ONLINE SETUP #
-The first step to create the application principal. The app principal is an actual principal in SharePoint 2013 for the app that can be granted permissions.  To register the app principal, we will use the “_layouts/AppRegNew.aspx”. 
+The first step to create the application principal. The add-in principal is an actual principal in SharePoint 2013 for the add-in that can be granted permissions.  To register the add-in principal, we will use the “_layouts/AppRegNew.aspx”. 
 
-Now we need to grant permissions to the app principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
+Now we need to grant permissions to the add-in principal.  You will have to navigate to another page in SharePoint which is the “_layouts/AppInv.aspx”. This is where you will grant the application Tenant permissions, so that our Site Provisioning application may create site collections.
 
 ```XML
 <AppPermissionRequests AllowAppOnlyPolicy="true">
@@ -103,6 +103,6 @@ Now we need to grant permissions to the app principal.  You will have to navigat
 - Microsoft.Online.SharePoint.Client.Tenant
 - Microsoft.SharePoint.Client.dll
 - Microsoft.SharePoint.Client.Runtime.dll
-- [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+- [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 

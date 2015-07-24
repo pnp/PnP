@@ -38,19 +38,19 @@ namespace Microsoft.SharePoint.Client
         public static TField CreateField<TField>(this Web web, FieldCreationInformation fieldCreationInformation, bool executeQuery = true) where TField : Field
         {
             if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
-        {
+            {
                 throw new ArgumentNullException("InternalName");
-        }
+            }
 
             if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
             {
                 throw new ArgumentNullException("DisplayName");
-        }
+            }
 
-            FieldCollection fields = web.Fields;
+            var fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             web.Context.ExecuteQueryRetry();
-            
+
             var field = CreateFieldBase<TField>(fields, fieldCreationInformation, executeQuery);
             return field;
         }
@@ -69,21 +69,27 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("fieldAsXml");
             }
 
-            XDocument xd = XDocument.Parse(fieldAsXml);
-            var ns = xd.Root.Name.Namespace;
+            var xd = XDocument.Parse(fieldAsXml);
+            if (xd.Root != null)
+            {
+                var ns = xd.Root.Name.Namespace;
 
-            var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
+                var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
 
-            string id = fieldNode.Attribute("ID").Value;
-            string name = fieldNode.Attribute("Name").Value;
+                if (fieldNode != null)
+                {
+                    var id = fieldNode.Attribute("ID").Value;
+                    var name = fieldNode.Attribute("Name").Value;
 
-            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
+                }
+            }
 
-            FieldCollection fields = web.Fields;
+            var fields = web.Fields;
             web.Context.Load(fields);
             web.Context.ExecuteQueryRetry();
 
-            Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
+            var field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             web.Update();
 
             if (executeQuery)
@@ -93,18 +99,23 @@ namespace Microsoft.SharePoint.Client
 
             return field;
         }
-
+        /// <summary>
+        /// Removes a field by specifying its internal name
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="internalName"></param>
         public static void RemoveFieldByInternalName(this Web web, string internalName)
         {
             var fields = web.Context.LoadQuery(web.Fields.Where(f => f.InternalName == internalName));
             web.Context.ExecuteQueryRetry();
 
-            if (!fields.Any())
+            var enumerable = fields as Field[] ?? fields.ToArray();
+            if (!enumerable.Any())
             {
                 throw new ArgumentException(string.Format("Could not find field with internalName {0}", internalName));
             }
 
-            fields.First().DeleteObject();
+            enumerable.First().DeleteObject();
         }
 
         /// <summary>
@@ -114,7 +125,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlFilePath">Absolute path to the xml location</param>
         public static void CreateFieldsFromXMLFile(this Web web, string xmlFilePath)
         {
-            XDocument xd = XDocument.Load(xmlFilePath);
+            var xd = XDocument.Load(xmlFilePath);
 
             // Perform the action field creation
             CreateFieldsFromXML(web, xd);
@@ -127,7 +138,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlStructure">XML structure in string format</param>
         public static void CreateFieldsFromXMLString(this Web web, string xmlStructure)
         {
-            XDocument xd = XDocument.Parse(xmlStructure);
+            var xd = XDocument.Parse(xmlStructure);
 
             // Perform the action field creation
             CreateFieldsFromXML(web, xd);
@@ -146,8 +157,8 @@ namespace Microsoft.SharePoint.Client
 
             foreach (var field in fields)
             {
-                string id = field.Attribute("ID").Value;
-                string name = field.Attribute("Name").Value;
+                var id = field.Attribute("ID").Value;
+                var name = field.Attribute("Name").Value;
 
                 // If field already existed, let's move on
                 if (web.FieldExistsByName(name))
@@ -170,12 +181,7 @@ namespace Microsoft.SharePoint.Client
         public static bool FieldExistsById(this Web web, Guid fieldId)
         {
             var field = web.GetFieldById<Field>(fieldId);
-            if (field != null)
-            {
-                return true;
-            }
-
-            return false;
+            return field != null;
         }
 
         /// <summary>
@@ -198,7 +204,23 @@ namespace Microsoft.SharePoint.Client
             else
             {
                 return web.Context.CastTo<TField>(field);
+            }
         }
+
+        /// <summary>
+        /// Returns the field if it exists. Null if it does not exist.
+        /// </summary>
+        /// <typeparam name="TField">The selected field type to return.</typeparam>
+        /// <param name="list">List to be processed. Columns assoc in lists are defined on web or rootweb.</param>
+        /// <param name="fieldId">Guid for the field ID</param>
+        /// <returns>Field of type TField</returns>
+        public static TField GetFieldById<TField>(this List list, Guid fieldId) where TField : Field
+        {
+            var fields = list.Context.LoadQuery(list.Fields.Where(f => f.Id == fieldId));
+            list.Context.ExecuteQueryRetry();
+
+            var field = fields.FirstOrDefault();
+            return field == null ? null : list.Context.CastTo<TField>(field);
         }
 
         /// <summary>
@@ -213,19 +235,12 @@ namespace Microsoft.SharePoint.Client
             if (!fields.ServerObjectIsNull.HasValue ||
                 fields.ServerObjectIsNull.Value)
             {
-                    fields.Context.Load(fields);
+                fields.Context.Load(fields);
                 fields.Context.ExecuteQueryRetry();
             }
 
             var field = fields.FirstOrDefault(f => f.StaticName == internalName);
-            if (field == null)
-            {
-                return null;
-            }
-            else
-            {
-                return fields.Context.CastTo<TField>(field);
-        }
+            return field == null ? null : fields.Context.CastTo<TField>(field);
         }
 
         /// <summary>
@@ -241,15 +256,10 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("fieldName");
             }
 
-            FieldCollection fields = web.Fields;
-            IEnumerable<Field> results = web.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
+            var fields = web.Fields;
+            var results = web.Context.LoadQuery(fields.Where(item => item.InternalName == fieldName));
             web.Context.ExecuteQueryRetry();
-            if (results.FirstOrDefault() != null)
-            {
-                return true;
-            }
-
-            return false;
+            return results.FirstOrDefault() != null;
         }
 
         /// <summary>
@@ -287,16 +297,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("fieldName");
             }
 
-            ContentType ct = GetContentTypeByName(web, contentTypeName);
-            FieldCollection fields = ct.Fields;
-            IEnumerable<Field> results = ct.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
+            var ct = GetContentTypeByName(web, contentTypeName);
+            var fields = ct.Fields;
+            var results = ct.Context.LoadQuery(fields.Where(item => item.InternalName == fieldName));
             ct.Context.ExecuteQueryRetry();
-            if (results.FirstOrDefault() != null)
-            {
-                return true;
-            }
-
-            return false;
+            return results.FirstOrDefault() != null;
         }
 
 
@@ -329,14 +334,14 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(fieldCreationInformation.InternalName))
             {
                 throw new ArgumentNullException("InternalName");
-        }
+            }
 
             if (string.IsNullOrEmpty(fieldCreationInformation.DisplayName))
-        {
+            {
                 throw new ArgumentNullException("DisplayName");
             }
 
-            FieldCollection fields = list.Fields;
+            var fields = list.Fields;
             list.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
             list.Context.ExecuteQueryRetry();
 
@@ -361,7 +366,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentException("id", "Field already exists");
             }
 
-            string newFieldCAML = FormatFieldXml(fieldCreationInformation);
+            var newFieldCAML = FormatFieldXml(fieldCreationInformation);
 
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, fieldCreationInformation.InternalName, fieldCreationInformation.Id);
             field = fields.AddFieldAsXml(newFieldCAML, fieldCreationInformation.AddToDefaultView, AddFieldOptions.AddFieldInternalNameHint);
@@ -375,6 +380,11 @@ namespace Microsoft.SharePoint.Client
             return fields.Context.CastTo<TField>(field);
         }
 
+        /// <summary>
+        /// Formats a fieldcreationinformation object into Field CAML xml.
+        /// </summary>
+        /// <param name="fieldCreationInformation"></param>
+        /// <returns></returns>
         public static string FormatFieldXml(FieldCreationInformation fieldCreationInformation)
         {
             List<string> additionalAttributesList = new List<string>();
@@ -407,20 +417,34 @@ namespace Microsoft.SharePoint.Client
         /// <returns>The newly created field or existing field.</returns>
         public static Field CreateField(this List list, string fieldAsXml)
         {
-            FieldCollection fields = list.Fields;
+            var fields = list.Fields;
             list.Context.Load(fields);
             list.Context.ExecuteQueryRetry();
 
-            XDocument xd = XDocument.Parse(fieldAsXml);
-            var ns = xd.Root.Name.Namespace;
+            var xd = XDocument.Parse(fieldAsXml);
+            if (xd.Root != null)
+            {
+                var ns = xd.Root.Name.Namespace;
 
-            var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
+                var fieldNode = (from f in xd.Elements(ns + "Field") select f).FirstOrDefault();
 
-            string id = fieldNode.Attribute("ID").Value;
-            string name = fieldNode.Attribute("Name").Value;
+                if (fieldNode != null)
+                {
+                    string id = string.Empty;
+                    if (fieldNode.Attribute("ID") != null)
+                    {
+                        id = fieldNode.Attribute("ID").Value;
+                    }
+                    else
+                    {
+                        id = "<No ID specified in XML>";
+                    }
+                    var name = fieldNode.Attribute("Name").Value;
 
-            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
-            Field field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateField01, name, id);
+                }
+            }
+            var field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
             list.Context.ExecuteQueryRetry();
@@ -436,19 +460,11 @@ namespace Microsoft.SharePoint.Client
         /// <returns>True if the fields exists, false otherwise</returns>
         public static bool FieldExistsById(this List list, Guid fieldId)
         {
-            FieldCollection fields = list.Fields;
-            list.Context.Load(fields);
+            var fields = list.Fields;
+            var results = list.Context.LoadQuery(fields.Where(item => item.Id == fieldId));
             list.Context.ExecuteQueryRetry();
 
-            foreach (var item in fields)
-            {
-                if (item.Id == fieldId)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return results.FirstOrDefault() != null;
         }
 
         /// <summary>
@@ -480,16 +496,11 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("fieldName");
             }
 
-            FieldCollection fields = list.Fields;
-            IEnumerable<Field> results = list.Context.LoadQuery<Field>(fields.Where(item => item.InternalName == fieldName));
+            var fields = list.Fields;
+            var results = list.Context.LoadQuery(fields.Where(item => item.InternalName == fieldName));
             list.Context.ExecuteQueryRetry();
 
-            if (results.FirstOrDefault() != null)
-            {
-                return true;
-            }
-
-            return false;
+            return results.FirstOrDefault() != null;
         }
 
         /// <summary>
@@ -563,7 +574,7 @@ namespace Microsoft.SharePoint.Client
         public static void AddContentTypeToListById(this Web web, string listTitle, string contentTypeId, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             // Get content type instance
-            ContentType contentType = GetContentTypeById(web, contentTypeId, searchContentTypeInSiteHierarchy);
+            var contentType = GetContentTypeById(web, contentTypeId, searchContentTypeInSiteHierarchy);
 
             // Add content type to list
             AddContentTypeToList(web, listTitle, contentType, defaultContent);
@@ -580,7 +591,7 @@ namespace Microsoft.SharePoint.Client
         public static void AddContentTypeToListByName(this Web web, string listTitle, string contentTypeName, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
             // Get content type instance
-            ContentType contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
+            var contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
 
             // Add content type to list
             AddContentTypeToList(web, listTitle, contentType, defaultContent);
@@ -596,7 +607,7 @@ namespace Microsoft.SharePoint.Client
         public static void AddContentTypeToList(this Web web, string listTitle, ContentType contentType, bool defaultContent = false)
         {
             // Get list instances
-            List list = web.GetListByTitle(listTitle);
+            var list = web.GetListByTitle(listTitle);
 
             // Add content type to list
             AddContentTypeToList(list, contentType, defaultContent);
@@ -611,8 +622,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
         public static void AddContentTypeToListById(this List list, string contentTypeID, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
-            Web web = list.ParentWeb;
-            ContentType contentType = GetContentTypeById(web, contentTypeID, searchContentTypeInSiteHierarchy);
+            var web = list.ParentWeb;
+            var contentType = GetContentTypeById(web, contentTypeID, searchContentTypeInSiteHierarchy);
             AddContentTypeToList(list, contentType, defaultContent);
         }
 
@@ -625,8 +636,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="searchContentTypeInSiteHierarchy">search for content type in site hierarchy</param>
         public static void AddContentTypeToListByName(this List list, string contentTypeName, bool defaultContent = false, bool searchContentTypeInSiteHierarchy = false)
         {
-            Web web = list.ParentWeb;
-            ContentType contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
+            var web = list.ParentWeb;
+            var contentType = GetContentTypeByName(web, contentTypeName, searchContentTypeInSiteHierarchy);
             AddContentTypeToList(list, contentType, defaultContent);
         }
 
@@ -679,13 +690,13 @@ namespace Microsoft.SharePoint.Client
         public static void AddFieldToContentTypeById(this Web web, string contentTypeID, string fieldId, bool required = false, bool hidden = false)
         {
             // Get content type
-            ContentType ct = web.GetContentTypeById(contentTypeID);
+            var ct = web.GetContentTypeById(contentTypeID);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
             web.Context.ExecuteQueryRetry();
 
             // Get field
-            Field fld = web.Fields.GetById(new Guid(fieldId));
+            var fld = web.Fields.GetById(new Guid(fieldId));
 
             // Add field association to content type
             AddFieldToContentType(web, ct, fld, required, hidden);
@@ -702,13 +713,13 @@ namespace Microsoft.SharePoint.Client
         public static void AddFieldToContentTypeByName(this Web web, string contentTypeName, Guid fieldID, bool required = false, bool hidden = false)
         {
             // Get content type
-            ContentType ct = web.GetContentTypeByName(contentTypeName);
+            var ct = web.GetContentTypeByName(contentTypeName);
             web.Context.Load(ct);
             web.Context.Load(ct.FieldLinks);
             web.Context.ExecuteQueryRetry();
 
             // Get field
-            Field fld = web.Fields.GetById(fieldID);
+            var fld = web.Fields.GetById(fieldID);
 
             // Add field association to content type
             AddFieldToContentType(web, ct, fld, required, hidden);
@@ -724,7 +735,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="hidden">Optionally make this a hidden field</param>
         public static void AddFieldToContentType(this Web web, ContentType contentType, Field field, bool required = false, bool hidden = false)
         {
-            bool propertyLoadRequired = false;
+            var propertyLoadRequired = false;
             if (!contentType.IsPropertyAvailable("Id"))
             {
                 web.Context.Load(contentType, ct => ct.Id);
@@ -743,6 +754,18 @@ namespace Microsoft.SharePoint.Client
                 propertyLoadRequired = true;
             }
 
+            if (!contentType.IsPropertyAvailable("SchemaXml"))
+            {
+                web.Context.Load(contentType, ct => ct.SchemaXml);
+                propertyLoadRequired = true;
+            }
+
+            if (!field.IsPropertyAvailable("SchemaXml"))
+            {
+                web.Context.Load(field, f => f.SchemaXml);
+                propertyLoadRequired = true;
+            }
+
             if (propertyLoadRequired)
             {
                 web.Context.ExecuteQueryRetry();
@@ -752,13 +775,16 @@ namespace Microsoft.SharePoint.Client
 
             // Get the field if already exists in content type, else add field to content type
             // This will help to customize (required or hidden) any pre-existing field, also to handle existing field of Parent Content type
-            FieldLink flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
+            var flink = contentType.FieldLinks.FirstOrDefault(fld => fld.Id == field.Id);
             if (flink == null)
             {
-            FieldLinkCreationInformation fldInfo = new FieldLinkCreationInformation();
-            fldInfo.Field = field;
-            contentType.FieldLinks.Add(fldInfo);
-            contentType.Update(true);
+                XElement fieldElement = XElement.Parse(field.SchemaXml);
+                fieldElement.SetAttributeValue("AllowDeletion", "TRUE"); // Default behavior when adding a field to a CT from the UI.
+                field.SchemaXml = fieldElement.ToString();
+                var fldInfo = new FieldLinkCreationInformation();
+                fldInfo.Field = field;
+                contentType.FieldLinks.Add(fldInfo);
+                contentType.Update(true);
                 web.Context.ExecuteQueryRetry();
 
                 flink = contentType.FieldLinks.GetById(field.Id);
@@ -882,26 +908,13 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeName");
             }
 
-            ContentTypeCollection ctCol;
-            if (searchInSiteHierarchy)
-            {
-                ctCol = web.AvailableContentTypes;
-            }
-            else
-            {
-                ctCol = web.ContentTypes;
-            }
+            var ctCol = searchInSiteHierarchy ? web.AvailableContentTypes : web.ContentTypes;
 
-            IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
+            var results = web.Context.LoadQuery(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQueryRetry();
 
-            ContentType ct = results.FirstOrDefault();
-            if (ct != null)
-            {
-                return true;
-            }
-
-            return false;
+            var ct = results.FirstOrDefault();
+            return ct != null;
         }
 
         /// <summary>
@@ -923,7 +936,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeId");
             }
 
-            List list = web.GetListByTitle(listTitle);
+            var list = web.GetListByTitle(listTitle);
             return ContentTypeExistsById(list, contentTypeId);
         }
 
@@ -951,19 +964,11 @@ namespace Microsoft.SharePoint.Client
                 return false;
             }
 
-            ContentTypeCollection ctCol = list.ContentTypes;
+            var ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
             list.Context.ExecuteQueryRetry();
 
-            foreach (var item in ctCol)
-            {
-                if (item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Enumerable.Any(ctCol, item => item.Id.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -985,7 +990,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeName");
             }
 
-            List list = web.GetListByTitle(listTitle);
+            var list = web.GetListByTitle(listTitle);
             return ContentTypeExistsByName(list, contentTypeName);
         }
 
@@ -1013,16 +1018,11 @@ namespace Microsoft.SharePoint.Client
                 return false;
             }
 
-            ContentTypeCollection ctCol = list.ContentTypes;
-            IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
+            var ctCol = list.ContentTypes;
+            var results = list.Context.LoadQuery(ctCol.Where(item => item.Name == contentTypeName));
             list.Context.ExecuteQueryRetry();
 
-            if (results.FirstOrDefault() != null)
-            {
-                return true;
-            }
-
-            return false;
+            return results.FirstOrDefault() != null;
         }
 
         /// <summary>
@@ -1032,7 +1032,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="absolutePathToFile">Absolute path to the xml location</param>
         public static ContentType CreateContentTypeFromXMLFile(this Web web, string absolutePathToFile)
         {
-            XDocument xd = XDocument.Load(absolutePathToFile);
+            var xd = XDocument.Load(absolutePathToFile);
             return CreateContentTypeFromXML(web, xd);
         }
 
@@ -1043,7 +1043,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="xmlStructure">XML structure in string format</param>
         public static ContentType CreateContentTypeFromXMLString(this Web web, string xmlStructure)
         {
-            XDocument xd = XDocument.Parse(xmlStructure);
+            var xd = XDocument.Parse(xmlStructure);
             return CreateContentTypeFromXML(web, xd);
         }
 
@@ -1075,7 +1075,7 @@ namespace Microsoft.SharePoint.Client
                     var group = ct.Attribute("Group") != null ? ct.Attribute("Group").Value : string.Empty;
 
                     // Create CT
-                web.CreateContentType(name, description, ctid, group);
+                    web.CreateContentType(name, description, ctid, group);
 
                     // Add fields to content type 
                     var fieldRefs = from fr in ct.Descendants(ns + "FieldRefs").Elements(ns + "FieldRef") select fr;
@@ -1122,18 +1122,18 @@ namespace Microsoft.SharePoint.Client
         {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
 
-            ContentTypeCollection contentTypes = web.ContentTypes;
+            var contentTypes = web.ContentTypes;
 
-            ContentTypeCreationInformation newCt = new ContentTypeCreationInformation();
+            var newCt = new ContentTypeCreationInformation();
 
-            
+
             // Set the properties for the content type
             newCt.Name = name;
             newCt.Id = id;
             newCt.Description = description;
             newCt.Group = group;
             newCt.ParentContentType = parentContentType;
-            ContentType myContentType = contentTypes.Add(newCt);
+            var myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQueryRetry();
 
             // Return the content type object
@@ -1154,17 +1154,9 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeName");
             }
 
-            ContentTypeCollection ctCol;
-            if (searchInSiteHierarchy)
-            {
-                ctCol = web.AvailableContentTypes;
-            }
-            else
-            {
-                ctCol = web.ContentTypes;
-            }
+            var ctCol = searchInSiteHierarchy ? web.AvailableContentTypes : web.ContentTypes;
 
-            IEnumerable<ContentType> results = web.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
+            var results = web.Context.LoadQuery(ctCol.Where(item => item.Name == contentTypeName));
             web.Context.ExecuteQueryRetry();
             return results.FirstOrDefault();
         }
@@ -1183,15 +1175,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeId");
             }
 
-            ContentTypeCollection ctCol;
-            if (searchInSiteHierarchy)
-            {
-                ctCol = web.AvailableContentTypes;
-            }
-            else
-            {
-                ctCol = web.ContentTypes;
-            }
+            var ctCol = searchInSiteHierarchy ? web.AvailableContentTypes : web.ContentTypes;
 
             web.Context.Load(ctCol);
             web.Context.ExecuteQueryRetry();
@@ -1219,8 +1203,8 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeName");
             }
 
-            ContentTypeCollection ctCol = list.ContentTypes;
-            IEnumerable<ContentType> results = list.Context.LoadQuery<ContentType>(ctCol.Where(item => item.Name == contentTypeName));
+            var ctCol = list.ContentTypes;
+            var results = list.Context.LoadQuery(ctCol.Where(item => item.Name == contentTypeName));
             list.Context.ExecuteQueryRetry();
 
             return results.FirstOrDefault();
@@ -1239,7 +1223,7 @@ namespace Microsoft.SharePoint.Client
                 throw new ArgumentNullException("contentTypeId");
             }
 
-            ContentTypeCollection ctCol = list.ContentTypes;
+            var ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
             list.Context.ExecuteQueryRetry();
 
@@ -1264,9 +1248,9 @@ namespace Microsoft.SharePoint.Client
         {
 
             // Get list instances
-            List list = web.GetListByTitle(listTitle);
+            var list = web.GetListByTitle(listTitle);
             // Get content type instance
-            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            var contentType = GetContentTypeByName(web, contentTypeName);
             // Remove content type from list
             RemoveContentTypeFromList(web, list, contentType);
 
@@ -1283,9 +1267,9 @@ namespace Microsoft.SharePoint.Client
             if (string.IsNullOrEmpty(contentTypeName))
                 throw new ArgumentNullException("contentTypeName");
             // Get content type instance
-            ContentType contentType = GetContentTypeByName(web, contentTypeName);
+            var contentType = GetContentTypeByName(web, contentTypeName);
             // Remove content type from list
-           RemoveContentTypeFromList(web, list, contentType);
+            RemoveContentTypeFromList(web, list, contentType);
 
         }
 
@@ -1298,8 +1282,8 @@ namespace Microsoft.SharePoint.Client
         public static void RemoveContentTypeFromListById(this Web web, string listTitle, string contentTypeId)
         {
             // Get list instances
-            List list = web.GetListByTitle(listTitle);
-            ContentType contentType = GetContentTypeById(web, contentTypeId);
+            var list = web.GetListByTitle(listTitle);
+            var contentType = GetContentTypeById(web, contentTypeId);
             // Remove content type from list
             RemoveContentTypeFromList(web, list, contentType);
         }
@@ -1314,7 +1298,7 @@ namespace Microsoft.SharePoint.Client
         {
             if (string.IsNullOrEmpty(contentTypeId))
                 throw new ArgumentNullException("contentTypeId");
-            ContentType contentType = GetContentTypeById(web, contentTypeId);
+            var contentType = GetContentTypeById(web, contentTypeId);
             // Remove content type from list
             RemoveContentTypeFromList(web, list, contentType);
         }
@@ -1333,7 +1317,7 @@ namespace Microsoft.SharePoint.Client
             if (!list.ContentTypeExistsByName(contentType.Name))
                 return;
             list.RemoveContentTypeByName(contentType.Name);
-            list.Context.ExecuteQuery();
+            list.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1367,7 +1351,7 @@ namespace Microsoft.SharePoint.Client
         public static void SetDefaultContentTypeToList(this Web web, string listTitle, string contentTypeId)
         {
             // Get list instances
-            List list = web.GetListByTitle(listTitle);
+            var list = web.GetListByTitle(listTitle);
             web.Context.Load(list);
             web.Context.ExecuteQueryRetry();
 
@@ -1395,15 +1379,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="contentTypeId">Complete ID for the content type</param>
         public static void SetDefaultContentTypeToList(this List list, string contentTypeId)
         {
-            ContentTypeCollection ctCol = list.ContentTypes;
+            var ctCol = list.ContentTypes;
             list.Context.Load(ctCol);
             list.Context.ExecuteQueryRetry();
 
-            var ctIds = new List<ContentTypeId>();
-            foreach (ContentType ct in ctCol)
-            {
-                ctIds.Add(ct.Id);
-            }
+            var ctIds = ctCol.AsEnumerable().Select(ct => ct.Id).ToList();
 
             // remove the folder content type
             var newOrder = ctIds.Except(ctIds.Where(id => id.StringValue.StartsWith("0x012000")))
@@ -1476,7 +1456,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForContentType(this Web web, string contentTypeName, string cultureName, string nameResource, string descriptionResource)
         {
-            ContentType contentType = web.GetContentTypeByName(contentTypeName);
+            var contentType = web.GetContentTypeByName(contentTypeName);
             contentType.SetLocalizationForContentType(cultureName, nameResource, descriptionResource);
         }
 
@@ -1490,11 +1470,11 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForContentType(this List list, string contentTypeId, string cultureName, string nameResource, string descriptionResource)
         {
-            ContentTypeCollection contentTypes = list.ContentTypes;
+            var contentTypes = list.ContentTypes;
             list.Context.Load(contentTypes);
             list.Context.ExecuteQueryRetry();
 
-            ContentType contentType = contentTypes.GetById(contentTypeId);
+            var contentType = contentTypes.GetById(contentTypeId);
             list.Context.ExecuteQueryRetry();
 
             contentType.SetLocalizationForContentType(cultureName, nameResource, descriptionResource);
@@ -1532,8 +1512,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForField(this Web web, Guid siteColumnId, string cultureName, string titleResource, string descriptionResource)
         {
-            FieldCollection fields = web.Fields;
-            Field fld = fields.GetById(siteColumnId);
+            var fields = web.Fields;
+            var fld = fields.GetById(siteColumnId);
             SetLocalizationForField(fld, cultureName, titleResource, descriptionResource);
         }
 
@@ -1547,8 +1527,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForField(this Web web, string siteColumnName, string cultureName, string titleResource, string descriptionResource)
         {
-            FieldCollection fields = web.Fields;
-            Field fld = fields.GetByInternalNameOrTitle(siteColumnName);
+            var fields = web.Fields;
+            var fld = fields.GetByInternalNameOrTitle(siteColumnName);
             SetLocalizationForField(fld, cultureName, titleResource, descriptionResource);
         }
 
@@ -1575,8 +1555,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForField(this List list, Guid siteColumnId, string cultureName, string titleResource, string descriptionResource)
         {
-            FieldCollection fields = list.Fields;
-            Field fld = fields.GetById(siteColumnId);
+            var fields = list.Fields;
+            var fld = fields.GetById(siteColumnId);
             SetLocalizationForField(fld, cultureName, titleResource, descriptionResource);
         }
 
@@ -1590,8 +1570,8 @@ namespace Microsoft.SharePoint.Client
         /// <param name="descriptionResource">Localized value for the Description property</param>
         public static void SetLocalizationForField(this List list, string siteColumnName, string cultureName, string titleResource, string descriptionResource)
         {
-            FieldCollection fields = list.Fields;
-            Field fld = fields.GetByInternalNameOrTitle(siteColumnName);
+            var fields = list.Fields;
+            var fld = fields.GetByInternalNameOrTitle(siteColumnName);
             SetLocalizationForField(fld, cultureName, titleResource, descriptionResource);
         }
 

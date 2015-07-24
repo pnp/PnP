@@ -73,7 +73,7 @@ namespace Core.QueueWebJobUsageWeb
 
                 // Change active view
                 processViews.ActiveViewIndex = 1;
-                lblStatus.Text = "Synchronous operation completed.";
+                lblStatus.Text = "Document library created using synchronous operation.";
             }
         }
 
@@ -96,7 +96,7 @@ namespace Core.QueueWebJobUsageWeb
 
                 // Change active view
                 processViews.ActiveViewIndex = 1;
-                lblStatus.Text = "Asynchronous operation started, end user can continue.";
+                lblStatus.Text = "Asynchronous operation to create document library started.";
             }
         }
 

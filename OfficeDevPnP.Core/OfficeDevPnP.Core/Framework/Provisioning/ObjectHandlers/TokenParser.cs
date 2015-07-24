@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Management;
 using Microsoft.IdentityModel.Protocols.WSIdentity;
@@ -72,19 +73,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             // Add TermSetIds
             TaxonomySession session = TaxonomySession.GetTaxonomySession(web.Context);
             var termStore = session.GetDefaultSiteCollectionTermStore();
-            web.Context.Load(termStore.Groups,
-                g => g.Include(
-                    tg => tg.Name,
-                    tg => tg.TermSets.Include(
-                        ts => ts.Name,
-                        ts => ts.Id)
-                ));
+            web.Context.Load(termStore);
             web.Context.ExecuteQueryRetry();
-            foreach (var termGroup in termStore.Groups)
+            if (!termStore.ServerObjectIsNull.Value)
             {
-                foreach (var termSet in termGroup.TermSets)
+                web.Context.Load(termStore.Groups,
+                    g => g.Include(
+                        tg => tg.Name,
+                        tg => tg.TermSets.Include(
+                            ts => ts.Name,
+                            ts => ts.Id)
+                    ));
+                web.Context.ExecuteQueryRetry();
+                foreach (var termGroup in termStore.Groups)
                 {
-                    _tokens.Add(new TermSetIdToken(web, termGroup.Name, termSet.Name, termSet.Id));
+                    foreach (var termSet in termGroup.TermSets)
+                    {
+                        _tokens.Add(new TermSetIdToken(web, termGroup.Name, termSet.Name, termSet.Id));
+                    }
                 }
             }
 
@@ -108,13 +114,35 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         public static string ToParsedString(this string input)
         {
+            return ToParsedString(input, null);
+        }
+
+        public static string ToParsedString(this string input, params string[] tokensToSkip)
+        {
             if (!string.IsNullOrEmpty(input))
             {
                 foreach (var token in _tokens)
                 {
-                    foreach (var regex in token.GetRegex().Where(regex => regex.IsMatch(input)))
+                    if (tokensToSkip != null)
                     {
-                        input = regex.Replace(input, token.GetReplaceValue());
+                        if (token.GetTokens().Except(tokensToSkip, StringComparer.InvariantCultureIgnoreCase).Any())
+                        {
+                            foreach (var filteredToken in token.GetTokens().Except(tokensToSkip, StringComparer.InvariantCultureIgnoreCase))
+                            {
+                                var regex = token.GetRegexForToken(filteredToken);
+                                if (regex.IsMatch(input))
+                                {
+                                    input = regex.Replace(input, token.GetReplaceValue());
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var regex in token.GetRegex().Where(regex => regex.IsMatch(input)))
+                        {
+                            input = regex.Replace(input, token.GetReplaceValue());
+                        }
                     }
                 }
             }

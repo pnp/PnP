@@ -28,8 +28,7 @@ namespace Microsoft.SharePoint.Client
                 using (Stream stream = typeof(BaseTemplateManager).Assembly.GetManifestResourceStream(baseTemplate))
                 {
                     // Get the XML document from the stream
-                    ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(
-                        XMLConstants.PROVISIONING_SCHEMA_NAMESPACE_2015_03);
+                    ITemplateFormatter formatter = XMLPnPSchemaFormatter.GetSpecificFormatter(XMLPnPSchemaVersion.V201505);
 
                     // And convert it into a ProvisioningTemplate
                     provisioningTemplate = formatter.ToProvisioningTemplate(stream);

@@ -3,14 +3,21 @@ using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 using User = OfficeDevPnP.Core.Framework.Provisioning.Model.User;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectSiteSecurity : ObjectHandlerBase
+    internal class ObjectSiteSecurity : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override string Name
         {
+            get { return "Site Security"; }
+        }
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
+        {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_SiteSecurity);
+
             // if this is a sub site then we're not provisioning security as by default security is inherited from the root site
             if (web.IsSubSite())
             {
@@ -50,7 +57,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 user.Update();
                 web.Context.ExecuteQueryRetry();
             }
-
         }
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)
@@ -65,7 +71,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         }
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
 
             // if this is a sub site then we're not creating security entities as by default security is inherited from the root site
@@ -191,6 +197,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
 
             return template;
+        }
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Security.AdditionalAdministrators.Any() || template.Security.AdditionalMembers.Any() || template.Security.AdditionalOwners.Any() || template.Security.AdditionalVisitors.Any();    
+            }
+            return _willProvision.Value;
+
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = true;
+            }
+            return _willExtract.Value;
         }
     }
 }

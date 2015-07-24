@@ -41,7 +41,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             var contentType = new ContentType()
             {
-                ID = "0x010100503B9E20E5455344BFAC2292DC6FE805",
+                Id = "0x010100503B9E20E5455344BFAC2292DC6FE805",
                 Name = "Test Content Type",
                 Group = "PnP",
                 Description = "Test Description",
@@ -51,14 +51,14 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             contentType.FieldRefs.Add(new FieldRef()
             {
-                ID = BuiltInFieldId.Category,
+                Id = BuiltInFieldId.Category,
                 DisplayName = "Test Category",
             });
             template.ContentTypes.Add(contentType);
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectContentType().ProvisionObjects(ctx.Web, template);
+                new ObjectContentType().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var ct = ctx.Web.GetContentTypeByName("Test Content Type");
 
@@ -78,7 +78,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectContentType().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectContentType().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.ContentTypes.Any());
                 Assert.IsInstanceOfType(template.ContentTypes, typeof(List<ContentType>));

@@ -8,7 +8,7 @@ The CDN Manager is used to manage Content Delivery Network (CDN) references for 
 -  Office 365 Dedicated (D)
 -  SharePoint 2013 on-premises
 
-## To get started with the app:
+## To get started with the add-in:
 1. Download the project
 2. Change the SiteUrl property to refer to one of your sites
 3. Hit F5 to start debugging
@@ -31,7 +31,7 @@ Version  | Date | Comments
 ----------
 
 # Using CDN Manager with a Script Editor Web Part #
-You can use the following code directly in a script editor web part to try out the functionality. This assumes that you have injected the jQuery library reference that is preloaded in the app.
+You can use the following code directly in a script editor web part to try out the functionality. This assumes that you have injected the jQuery library reference that is preloaded in the add-in.
 
 Simple jQuery
   ```JavaScript
@@ -67,7 +67,7 @@ Knockout and jQuery loading simultaneously
 
 
 # Using CDN Manager with JS Link #
-The CDN Manager can also be used to load references in JSLink files. If you activate the bootstrap CSS and JS that comes pre-loaded in the app, then the following code can be used to create a bootstrap progress bar in tasks lists.
+The CDN Manager can also be used to load references in JSLink files. If you activate the bootstrap CSS and JS that comes pre-loaded in the add-in, then the following code can be used to create a bootstrap progress bar in tasks lists.
 
   ```JavaScript
  

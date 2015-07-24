@@ -26,22 +26,39 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         [Parameter(Mandatory = false)]
         public string Title = string.Empty;
 
+        [Parameter(Mandatory = false)]
+        public string Owner;
+
+        [Parameter(Mandatory = false)]
+        public string Description;
+
+        [Parameter(Mandatory = false)]
+        public bool AllowRequestToJoinLeave;
+
+        [Parameter(Mandatory = false)]
+        public bool AutoAcceptRequestToJoinLeave;
+
+        [Parameter(Mandatory = false)]
+        public bool AllowMembersEditMembership;
+
+        [Parameter(Mandatory = false)]
+        public bool OnlyAllowMembersViewMembership;
+
+        [Parameter(Mandatory = false)]
+        public string RequestToJoinEmail;
+
         protected override void ExecuteCmdlet()
         {
-            Group group = null;
-            if (Identity.Id != -1)
-            {
-                group = SelectedWeb.SiteGroups.GetById(Identity.Id);
-            }
-            else if (!string.IsNullOrEmpty(Identity.Name))
-            {
-                group = SelectedWeb.SiteGroups.GetByName(Identity.Name);
-            }
-            else if (Identity.Group != null)
-            {
-                group = Identity.Group;
-            }
+            var group = Identity.GetGroup(SelectedWeb);
 
+            ClientContext.Load(group, 
+                g => g.AllowMembersEditMembership, 
+                g => g.AllowRequestToJoinLeave, 
+                g => g.AutoAcceptRequestToJoinLeave,
+                g => g.OnlyAllowMembersViewMembership,
+                g => g.RequestToJoinLeaveEmailSetting);
+            ClientContext.ExecuteQueryRetry();
+            
             if (SetAssociatedGroup != AssociatedGroupType.None)
             {
                 switch (SetAssociatedGroup)
@@ -88,11 +105,68 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                 }
             }
 
-            if(!string.IsNullOrEmpty(Title))
+            var dirty = false;
+            if (!string.IsNullOrEmpty(Title))
             {
                 group.Title = Title;
+                dirty = true;
+            }
+            if (!string.IsNullOrEmpty(Description))
+            {
+                group.Description = Description;
+                dirty = true;
+            }
+            if (AllowRequestToJoinLeave != group.AllowRequestToJoinLeave)
+            {
+                group.AllowRequestToJoinLeave = AllowRequestToJoinLeave;
+                dirty = true;
+            } 
+
+            if (AutoAcceptRequestToJoinLeave != group.AutoAcceptRequestToJoinLeave)
+            {
+                group.AutoAcceptRequestToJoinLeave = AutoAcceptRequestToJoinLeave;
+                dirty = true;
+            }
+            if (AllowMembersEditMembership != group.AllowMembersEditMembership)
+            {
+                group.AllowMembersEditMembership = AllowMembersEditMembership;
+                dirty = true;
+            }
+            if (OnlyAllowMembersViewMembership != group.OnlyAllowMembersViewMembership)
+            {
+                group.OnlyAllowMembersViewMembership = OnlyAllowMembersViewMembership;
+                dirty = true;
+            }
+            if (RequestToJoinEmail != group.RequestToJoinLeaveEmailSetting)
+            {
+                group.RequestToJoinLeaveEmailSetting = RequestToJoinEmail;
+                dirty = true;
+            }
+            if(dirty)
+            {
                 group.Update();
                 ClientContext.ExecuteQueryRetry();
+            }
+
+
+            if (!string.IsNullOrEmpty(Owner))
+            {
+                Principal groupOwner;
+
+                try
+                {
+                    groupOwner = SelectedWeb.EnsureUser(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQueryRetry();
+                }
+                catch
+                {
+                    groupOwner = SelectedWeb.SiteGroups.GetByName(Owner);
+                    group.Owner = groupOwner;
+                    group.Update();
+                    ClientContext.ExecuteQueryRetry();
+                }
             }
             
         }

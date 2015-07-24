@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ClientWebPart Name="CorporateEvents" Title="Corporate Events" Description="Corporate Events App Part" DefaultWidth="700" DefaultHeight="500">
+
+    <!-- Content element identifies the location of the page that will render inside the client web part
+         Properties are referenced on the query string using the pattern _propertyName_
+         Example: Src="~appWebUrl/Pages/ClientWebPart1.aspx?Property1=_property1_" -->
+    <!--<Content Type="html" Src="~remoteAppUrl/Pages/CorporateEvents.aspx?{StandardTokens}" />-->
+    <Content Type="html" Src="~remoteAppUrl/Pages/CorporateEvents.aspx?{StandardTokens}&amp;SessionKey=_SessionKey_&amp;CombineUserIdWithSessionKey=_CombineUserIdWithSessionKey_" />
+    <!-- Define properties in the Properties element.
+         Remember to put Property Name on the Src attribute of the Content element above. -->
+    <Properties>
+      <Property Name="SessionKey" Type="string" WebBrowsable="true" WebDisplayName="Session Key" WebDescription="Set Unique Session Key for SignalR" WebCategory="App Custom Properties" DefaultValue="" RequiresDesignerPermission="true" />
+      <Property Name="CombineUserIdWithSessionKey" Type="boolean" WebBrowsable="true" WebDisplayName="Combine Session Key with UserId" WebDescription="Use Session Key with UserId for SignalR Group Uniqueness" WebCategory="App Custom Properties" DefaultValue="false" RequiresDesignerPermission="true" />
+    </Properties>
+
+  </ClientWebPart>
+</Elements>

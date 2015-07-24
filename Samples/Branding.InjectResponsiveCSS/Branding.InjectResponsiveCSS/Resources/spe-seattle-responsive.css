@@ -1,0 +1,352 @@
+/* =SharePoint Experts, Inc. - CSS for creating a responsive design for Seattle.master in SharePoint 2013 and SharePoint Online. 
+For more details see the related blog post at http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive
+
+-Copyright SharePoint Experts, Inc. and Heather Solomon. Distributed to the public for reference and educational purposes. Code may be used as long as this copyright message stays intact. 
+-sharepointexperience.com
+*/
+/* 
+
+
+*/
+
+
+
+/* Font Awesome is a free font. http://fontawesome.io  
+Check for latest version at http://fontawesome.io/get-started 
+This should be moved to the top of your CSS file, irregardless of media queries */
+@import "//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css";
+
+
+@media screen and (max-width: 1044px) {
+	/* Hide unnecessary page elements */
+	.ms-core-listMenu-horizontalBox .ms-listMenu-editLink  /* Global navigation "Edit Links" when managed navigation is in use */ {
+		display: none;
+	}
+
+	/* Undo the crazy that SharePoint creates with table display set to DIVs*/
+	#s4-titlerow .ms-table,
+	#s4-titlerow .ms-tableRow,
+	#s4-titlerow .ms-tableCell {
+		display: block;
+	}
+
+	/* Site logo wrapper */	
+	#siteIcon {
+		float: none;  /* Remove OOTB float - this allows title row elements to return to typical block elements along with the table display changes above */
+		text-align: left;  /* Alter OOTB alignment */
+	}
+
+	/* Page title text */
+	#pageTitle {
+		position: absolute;  /* Remove from content flow and create precise placement based on parent container */
+		top: 30px;  /* Position from top */
+		left: 220px;   /* Positioning from left */
+	}
+  
+  	/* Top nav bar size */
+	.ms-breadcrumb-box {
+		height: 30px;   /* Alter OOTB height */
+	}
+
+	/* Top nav bar placement & formatting */
+	.ms-breadcrumb-top > .ms-core-navigation {
+		display: block;  /* Force respect of some declarations */
+		margin-top: 20px;  /* Create space between the site logo/title and nav bar */
+	}
+  
+  	/* Search placement */
+	.ms-mpSearchBox.ms-floatRight,
+	#searchInputBox  {
+		float: none;  /* Remove OOTB float - this allows the search to move to the left under the top nav bar */
+	} 
+  
+  	/* Adjust padding for content containers */
+	#s4-bodyContainer {
+		padding-bottom: 60px;  /* Alter OOTB padding */
+	}
+  	#contentRow {
+		padding-top: 80px;  /* Alter OOTB padding */
+	}
+}
+
+@media screen and (max-width: 926px) {
+
+/* --- Enterprise Wiki --- */
+	/* Content area wrapper, parent of col-fluid-1 and col-fluid-2 */
+	#contentBox {
+		min-width: inherit;   /* Reset OOTB min-width from fixed value to inherit which will take up the available space */
+	}
+
+	/* Alter right column on Enterprise Wiki default page */
+	.right-wp-zone-col {
+		float: none;  /* Remove OOTB float */
+	}
+
+	/* Sub content area wrappers, sibling to right-wp-zone-col */
+	.col-fluid-1,
+	.col-fluid-2 {
+		margin-right: 10px;  /* Alter OOTB margin */
+	}
+
+	
+/* --- Blog --- */
+	/* Reset min-widths on content containers */
+	#contentBox,
+	.ms-blog-MainArea {
+		min-width: inherit;   /* Reset OOTB min-width from fixed value to inherit which will take up the available space */
+	}
+
+	/* Table conversions so table cells will wrap */
+	.ms-blog-MainArea {
+		display: block;  /* Switch from a table display to a block level display, which forces other elements to be above or below */
+	}
+	.ms-blog-MainArea td:first-child, 
+	.ms-blog-LeftColumn {
+		display: inline-block;  /* Switch from a table cell display to an inline block level display, which allows other elements to be to the right or left */
+		width: auto;
+	}
+
+
+/* --- Team Site --- */
+	/* Reset min-widths on content container */
+	#contentBox {
+		min-width: inherit;   /* Reset OOTB min-width from fixed value to inherit which will take up the available space */
+	}
+
+	/* Table conversions so table cells will wrap */
+	#layoutsTable {
+		display: block;  /* Switch from a table display to a block level display, which forces other elements to be above or below */
+	}
+	#layoutsTable td {
+		display: inline-block;   /* Switch from a table cell display to an inline block level display, which allows other elements to be to the right or left */
+		width: auto;
+	}
+
+	/* Right side table cell */
+	.ms-wiki-columnSpacing {
+		padding-left: 0;  /* Alter OOTB padding */
+	}
+}
+
+@media screen and (max-width: 740px) {
+	/* Hide the left nav bar */
+	#sideNavBox {
+		display: none;
+	}
+
+	/* Reset the margin of the content area */
+	#contentBox {
+		margin-left: 20px;
+	}
+
+	/* Remove the content area border */
+	.right-wp-zone-col {
+		border: 0;
+	}
+}
+
+@media screen and (max-width: 740px) {
+	/* Set the parent as the Flexbox container */
+	#contentRow {
+		display: flex;
+		display: -ms-flexbox;  /* IE10 */
+		display: -webkit-box;  /* Safari, Android */
+		flex-wrap: wrap;
+		-ms-flex-wrap: wrap;  /* IE10 */
+	}
+
+	/* Set the order of the Flexbox items */
+	#sideNavBox {
+		order: 2;
+		-ms-flex-order: 2;  /* IE10 */
+		-webkit-order: 2; /* Safari, Android */
+		margin-top: 20px;  /* Add spacing between content area and left nav */
+	}
+	#contentBox {
+		margin-left: 20px;  /* Reset the margin of the content area */
+		order: 1;
+		-ms-flex-order: 1;  /* IE10 */
+		-webkit-order: 1; /* Safari, Android */
+	}
+
+	/* Remove the content area border */
+	.right-wp-zone-col {
+		border: 0;
+	}
+}
+
+
+@media screen and (max-width: 740px) {
+	 /* Reset the margin of the content area */
+	#contentBox {
+		margin-left: 20px;
+	}
+
+	/* Remove the content area border */
+	.right-wp-zone-col {
+		border: 0;
+	}
+
+	/* Format left nav container and items */
+	#sideNavBox {
+		float: none;  /* Remove OOTB float so content appears beneath the nav */
+		border: 1px solid #999;  /* Bounding box */
+		border-radius: 15px;  /* Rounded corners */
+		padding: 5px 10px;  /* Add padding to space content from border */ 
+		margin-bottom: 15px;  /* Create space between left nav and content underneath */
+	}
+	.ms-core-sideNavBox-removeLeftMargin {
+		margin-left: 0;  /* Alter OOTB margin */
+	}
+	#sideNavBox .ms-core-listMenu-item {
+		padding: 3px 10px;  /* Alter OOTB padding */
+	}
+
+	/* Add header text */
+	#sideNavBox:before {
+		content: "Additional Resources:";  /* Header text */
+		padding-bottom: 7px;  /* Space out text from horizontal rule */
+		display: block;  /* Required for padding to work */
+		border-bottom: 1px solid #999;  /* Horizontal rule */
+	}
+
+	/* Hide child level navigation items and other unnecessary items */
+	#sideNavBox ul.root ul,
+	.ms-core-listMenu-verticalBox .ms-listMenu-editLink,  /* Current navigation "Edit Links" when managed navigation is in use */
+	.ms-core-sideNavBox-removeLeftMargin > .ms-core-listMenu-verticalBox  /* Site Contents */ {
+		display: none;
+	}
+}
+
+
+@media screen and (max-width: 470px) {
+	/* Hide Edit Links (icon and text) */
+	div[id$="TopNavigationMenu"] li.static.ms-listMenu-editLink,  /* Desktop view */
+	div[id$="TopNavigationMenu"] ul.root:hover li.ms-listMenu-editLink /* Mobile view */ {
+		display: none;
+	}
+    
+	/* Adjust menu placement from previous responsive changes */
+	.ms-breadcrumb-box {
+		height: 40px; /* Increase height previously set */
+		margin: 10px 0 5px -15px;  /* Move nav closer to logo and edge of page */
+	}
+    
+	/* Remove unnecessary branding from global nav */
+	div[id$="TopNavigationMenu"] ul.root {
+		border: 0;
+		background: #fff;
+	}
+
+	/* Add "Menu" text before nav list - necessary to prevent mobile user accidentally jumping to first nav item when menu is activated */
+	div[id$="TopNavigationMenu"] ul.root > li.static:first-child:before {
+		content: "Menu";
+		display: block;
+		padding: 5%;
+		background: #ccc;
+	}
+
+	/* Reset global navigation item formatting */
+	div[id$="TopNavigationMenu"] li.static a.static,  /* First level of nav */
+	div[id$="TopNavigationMenu"] li.static a.dynamic  /* Second level of nav */ {
+		min-width: 100px;  /* Optional */
+		width: auto;   /* Can also set to an absolute value */
+		padding: 10% 15%;
+		border-top: 0;
+		border-bottom: 1px solid #dfdfdf;
+		margin-right: 0; 
+		display: block;
+		font-size: .8rem;
+		line-height: 1.5;
+		position: relative;
+	}
+	div[id$="TopNavigationMenu"] li.static a.dynamic {
+		padding-left:25%; 
+	}
+	 div[id$="TopNavigationMenu"] li.static > a:last-child {
+		border-bottom: 0;
+	}
+	div[id$="TopNavigationMenu"] li.static a:hover  {
+		background: rgba(205,230,247,0.5); 
+	}
+
+	 /* Reset positioning of level 2 navigation items */
+	div[id$="TopNavigationMenu"] ul.dynamic {
+		border: 0;
+		box-shadow: none;
+		left: 0;
+		top: 0;
+		position: relative;
+		padding: 0;
+		width: auto !important;  /* !important required to override inline style */
+		left: 0 !important;  /* !important required to override inline style */
+		top: 0 !important;  /* !important required to override inline style */
+	}
+
+ 	/* Hide level 3 navigation items */
+	div[id$="TopNavigationMenu"] ul.dynamic ul.dynamic {
+		display: none;
+	}
+
+	/* Remove drop down arrows on navigation items with dynamic children menus */
+	#s4-titlerow div[id$="TopNavigationMenu"] .dynamic-children.additional-background {
+		background-image: none; 
+	}
+	    
+	/* Insert stacked lines icon to designate global navigation */
+	div[id$="TopNavigationMenu"] ul.root:before {
+		content: "\f0c9";
+		font-family: FontAwesome;
+		background: white;
+		font-size: 1.4rem;
+		width: 2.6rem;
+		height: 1.4rem;
+		padding: .3rem 0;
+		display: block;
+		border-radius: 5px;
+		text-align: center;
+		border: 1px solid #ccc;
+		margin: 0 15px;
+	}
+
+	/* Hide stacked lines icon on hover */
+	div[id$="TopNavigationMenu"] ul.root:hover:before {
+		display: none;
+	}
+
+	/* Hide global navigation items */
+	div[id$="TopNavigationMenu"] ul.root > li {
+		display: none;
+	}
+
+	/* Display global navigation box on hover */
+	div[id$="TopNavigationMenu"] ul.root:hover {
+		background: white;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		margin: 0 0 0 15px;
+		position: absolute;
+		z-index: 2;
+	}
+
+	/* Display global navigation items on hover */
+	div[id$="TopNavigationMenu"] ul.root:hover > li {
+		display: block;
+	}
+}
+
+
+@media screen and (max-width: 360px) {
+	/* Hide right side of Suite Bar links */
+	.ms-core-deltaSuiteLinks {
+		display: none;
+	}
+}
+
+
+
+
+/* 
+SharePoint Experts, Inc. 
+sharepointexperience.com
+*/

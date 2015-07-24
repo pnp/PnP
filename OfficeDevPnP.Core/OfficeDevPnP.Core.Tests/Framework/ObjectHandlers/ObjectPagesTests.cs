@@ -20,7 +20,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
     [TestClass]
     public class ObjectPagesTests
     {
-        private string webpartcontents = @"<webParts><webPart xmlns=""http://schemas.microsoft.com/WebPart/v3""><metaData><type name=""Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"" /><importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+        private string webpartcontents = @"<webParts><webPart xmlns=""http://schemas.microsoft.com/WebPart/v3""><metaData><type name=""Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"" /><importErrorMessage>Cannot import this Web Part.</importErrorMessage>
     </metaData>
     <data>
       <properties>
@@ -97,7 +97,7 @@ alert(""Hello!"");
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectPages().ProvisionObjects(ctx.Web, template);
+                new ObjectPages().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 ctx.Load(ctx.Web, w => w.ServerRelativeUrl);
                 ctx.ExecuteQueryRetry();
@@ -121,7 +121,7 @@ alert(""Hello!"");
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectPages().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectPages().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsInstanceOfType(template.Pages, typeof(List<Core.Framework.Provisioning.Model.Page>));
             }

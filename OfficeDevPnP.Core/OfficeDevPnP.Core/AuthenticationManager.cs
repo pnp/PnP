@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.IdentityModel.TokenProviders.ADFS;
 using OfficeDevPnP.Core.Utilities;
@@ -19,6 +25,12 @@ namespace OfficeDevPnP.Core
         private string appOnlyAccessToken;
         private object tokenLock = new object();
         private CookieContainer fedAuth = null;
+        private string _contextUrl;
+        private TokenCache _tokenCache;
+        private const string _commonAuthority = "https://login.windows.net/Common";
+        private static AuthenticationContext _authContext = null;
+        private string _clientId;
+        private Uri _redirectUri;
 
         /// <summary>
         /// Returns a SharePointOnline ClientContext object 
@@ -30,7 +42,6 @@ namespace OfficeDevPnP.Core
         public ClientContext GetSharePointOnlineAuthenticatedContextTenant(string siteUrl, string tenantUser, string tenantUserPassword)
         {
             var spoPassword = EncryptionUtility.ToSecureString(tenantUserPassword);
-           
             return GetSharePointOnlineAuthenticatedContextTenant(siteUrl, tenantUser, spoPassword);
         }
 
@@ -86,6 +97,192 @@ namespace OfficeDevPnP.Core
             clientContext.Credentials = new NetworkCredential(user, password, domain);
             return clientContext;
         }
+
+#if !CLIENTSDKV15
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory authentication. This requires that you have a Azure AD Native Application registered. The user will be prompted for authentication.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Native Application Client ID</param>
+        /// <param name="redirectUrl">The Azure AD Native Application Redirect Uri as a string</param>
+        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
+        /// <returns></returns>
+        public ClientContext GetAzureADNativeApplicationAuthenticatedContext(string siteUrl, string clientId, string redirectUrl, TokenCache tokenCache = null)
+        {
+            return GetAzureADNativeApplicationAuthenticatedContext(siteUrl, clientId, new Uri(redirectUrl), tokenCache);
+        }
+
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory authentication. This requires that you have a Azure AD Native Application registered. The user will be prompted for authentication.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Native Application Client ID</param>
+        /// <param name="redirectUri">The Azure AD Native Application Redirect Uri</param>
+        /// <param name="tokenCache">Optional token cache. If not specified an in-memory token cache will be used</param>
+        /// <returns></returns>
+        public ClientContext GetAzureADNativeApplicationAuthenticatedContext(string siteUrl, string clientId, Uri redirectUri, TokenCache tokenCache = null)
+        {
+            var clientContext = new ClientContext(siteUrl);
+            _contextUrl = siteUrl;
+            _tokenCache = tokenCache;
+            _clientId = clientId;
+            _redirectUri = redirectUri;
+            clientContext.ExecutingWebRequest += clientContext_NativeApplicationExecutingWebRequest;
+
+            return clientContext;
+        }
+
+        async void clientContext_NativeApplicationExecutingWebRequest(object sender, WebRequestEventArgs e)
+        {
+            var host = new Uri(_contextUrl);
+            var ar = await AcquireNativeApplicationTokenAsync(_commonAuthority, host.Scheme + "://" + host.Host + "/");
+
+            if (ar != null)
+            {
+                e.WebRequestExecutor.RequestHeaders["Authorization"] = "Bearer " + ar.AccessToken;
+            }
+        }
+
+        private async Task<AuthenticationResult> AcquireNativeApplicationTokenAsync(string authContextUrl, string resourceId)
+        {
+            AuthenticationResult ar = null;
+
+            try
+            {
+                if (_tokenCache != null)
+                {
+                    _authContext = new AuthenticationContext(authContextUrl, _tokenCache);
+                }
+                else
+                {
+
+                    _authContext = new AuthenticationContext(authContextUrl);
+                }
+
+                if (_authContext.TokenCache.ReadItems().Any())
+                {
+                    string cachedAuthority =
+                        _authContext.TokenCache.ReadItems().First().Authority;
+
+                    if (_tokenCache != null)
+                    {
+                        _authContext = new AuthenticationContext(cachedAuthority, _tokenCache);
+                    }
+                    else
+                    {
+                        _authContext = new AuthenticationContext(cachedAuthority);
+                    }
+                }
+                ar = (await _authContext.AcquireTokenSilentAsync(resourceId, _clientId));
+            }
+            catch (Exception)
+            {
+                //not in cache; we'll get it with the full oauth flow
+            }
+
+            if (ar == null)
+            {
+                try
+                {
+                    ar = _authContext.AcquireToken(resourceId, _clientId, _redirectUri, PromptBehavior.Always);
+
+                }
+                catch (Exception acquireEx)
+                {
+                    throw new Exception("Error trying to acquire authentication result: " + acquireEx.Message);
+                }
+            }
+
+            return ar;
+        }
+
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory App Only Authentication. This requires that you have a certificated created, and updated the key credentials key in the application manifest in the azure AD accordingly.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Application Client ID</param>
+        /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
+        /// <param name="storeName">The name of the store for the certificate</param>
+        /// <param name="storeLocation">The location of the store for the certificate</param>
+        /// <param name="thumbPrint">The thumbprint of the certificate to locate in the store</param>
+        /// <returns></returns>
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, StoreName storeName, StoreLocation storeLocation, string thumbPrint)
+        {
+            var cert = X509CertificateUtility.LoadCertificate(storeName, storeLocation, thumbPrint);
+
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert);
+        }
+
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory App Only Authentication. This requires that you have a certificated created, and updated the key credentials key in the application manifest in the azure AD accordingly.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Application Client ID</param>
+        /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
+        /// <param name="certificatePath">The path to the certificate (*.pfx) file on the file system</param>
+        /// <param name="certificatePassword">Password to the certificate</param>
+        /// <returns></returns>
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, string certificatePassword)
+        {
+            var certPassword = EncryptionUtility.ToSecureString(certificatePassword);
+
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, certificatePath, certPassword);
+        }
+
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory App Only Authentication. This requires that you have a certificated created, and updated the key credentials key in the application manifest in the azure AD accordingly.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Application Client ID</param>
+        /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
+        /// <param name="certificatePath">The path to the certificate (*.pfx) file on the file system</param>
+        /// <param name="certificatePassword">Password to the certificate</param>
+        /// <returns></returns>
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, string certificatePath, SecureString certificatePassword)
+        {
+            var certfile = System.IO.File.OpenRead(certificatePath);
+            var certificateBytes = new byte[certfile.Length];
+            certfile.Read(certificateBytes, 0, (int)certfile.Length);
+            var cert = new X509Certificate2(
+                certificateBytes,
+                certificatePassword,
+                X509KeyStorageFlags.Exportable |
+                X509KeyStorageFlags.MachineKeySet |
+                X509KeyStorageFlags.PersistKeySet);
+
+            return GetAzureADAppOnlyAuthenticatedContext(siteUrl, clientId, tenant, cert);
+        }
+
+        /// <summary>
+        /// Returns a SharePoint ClientContext using Azure Active Directory App Only Authentication. This requires that you have a certificated created, and updated the key credentials key in the application manifest in the azure AD accordingly.
+        /// </summary>
+        /// <param name="siteUrl">Site for which the ClientContext object will be instantiated</param>
+        /// <param name="clientId">The Azure AD Application Client ID</param>
+        /// <param name="tenant">The Azure AD Tenant, e.g. mycompany.onmicrosoft.com</param>
+        /// <param name="certificate"></param>
+        /// <returns></returns>
+        public ClientContext GetAzureADAppOnlyAuthenticatedContext(string siteUrl, string clientId, string tenant, X509Certificate2 certificate)
+        {
+
+            var clientContext = new ClientContext(siteUrl);
+
+            var authority = string.Format(CultureInfo.InvariantCulture, "https://login.windows.net/{0}/", tenant);
+
+            var authContext = new AuthenticationContext(authority);
+
+            var clientAssertionCertificate = new ClientAssertionCertificate(clientId, certificate);
+
+            var host = new Uri(siteUrl);
+
+            clientContext.ExecutingWebRequest += (sender, args) =>
+            {
+                var ar = authContext.AcquireToken(host.Scheme + "://" + host.Host + "/", clientAssertionCertificate);
+                args.WebRequestExecutor.RequestHeaders["Authorization"] = "Bearer " + ar.AccessToken;
+            };
+
+            return clientContext;
+        }
+#endif
 
         /// <summary>
         /// Returns a SharePoint on-premises / SharePoint Online Dedicated ClientContext object
@@ -186,7 +383,7 @@ namespace OfficeDevPnP.Core
                             try
                             {
                                 Log.Debug(Constants.LOGGING_SOURCE, "Lease expiration date: {0}", response.ExpiresOn);
-                                var lease = response.ExpiresOn - DateTime.Now;
+                                var lease = GetAccessTokenLease(response.ExpiresOn);
                                 lease =
                                     TimeSpan.FromSeconds(
                                         Math.Min(lease.TotalSeconds - TimeSpan.FromMinutes(5).TotalSeconds,
@@ -204,6 +401,20 @@ namespace OfficeDevPnP.Core
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the access token lease time span.
+        /// </summary>
+        /// <param name="expiresOn">The ExpiresOn time of the current access token</param>
+        /// <returns>Returns a TimeSpan represents the time interval within which the current access token is valid thru.</returns>
+        private TimeSpan GetAccessTokenLease(DateTime expiresOn)
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime expires = expiresOn.Kind == DateTimeKind.Utc ?
+                expiresOn : TimeZoneInfo.ConvertTimeToUtc(expiresOn);
+            TimeSpan lease = expires - now;
+            return lease;
         }
     }
 }

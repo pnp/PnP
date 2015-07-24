@@ -1,15 +1,25 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 {
-    public class ObjectPages : ObjectHandlerBase
+    internal class ObjectPages : ObjectHandlerBase
     {
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override string Name
         {
+            get { return "Pages"; }
+        }
+
+
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
+        {
+            Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Pages);
+
             var context = web.Context as ClientContext;
 
             if (!web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -60,20 +70,38 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.AddLayoutToWikiPage(page.Layout, url);
                 }
 
-                foreach (var webpart in page.WebParts)
+                if (page.WelcomePage)
                 {
-                    WebPartEntity wpEntity = new WebPartEntity();
-                    wpEntity.WebPartTitle = webpart.Title;
-                    wpEntity.WebPartXml = webpart.Contents.ToParsedString();
-                    web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
+                    if (!web.IsPropertyAvailable("RootFolder"))
+                    {
+                        web.Context.Load(web.RootFolder);
+                        web.Context.ExecuteQueryRetry();
+                    }
+
+                    var rootFolderRelativeUrl = url.Substring(web.RootFolder.ServerRelativeUrl.Length);
+                    web.SetHomePage(rootFolderRelativeUrl);
                 }
 
-            }
+                if (page.WebParts != null & page.WebParts.Any())
+                {
+                    var existingWebParts = web.GetWebParts(url);
 
+                    foreach (var webpart in page.WebParts)
+                    {
+                        if (existingWebParts.FirstOrDefault(w => w.WebPart.Title == webpart.Title) == null)
+                        {
+                            WebPartEntity wpEntity = new WebPartEntity();
+                            wpEntity.WebPartTitle = webpart.Title;
+                            wpEntity.WebPartXml = webpart.Contents.ToParsedString().Trim(new[] {'\n', ' '});
+                            web.AddWebPartToWikiPage(url, wpEntity, (int)webpart.Row, (int)webpart.Column, false);
+                        }
+                    }
+                }
+            }
         }
 
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // Impossible to return all files in the site currently
 
@@ -90,6 +118,25 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
 
             return template;
+        }
+
+
+        public override bool WillProvision(Web web, ProvisioningTemplate template)
+        {
+            if (!_willProvision.HasValue)
+            {
+                _willProvision = template.Pages.Any();
+            }
+            return _willProvision.Value;
+        }
+
+        public override bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            if (!_willExtract.HasValue)
+            {
+                _willExtract = false;
+            }
+            return _willExtract.Value;
         }
     }
 }

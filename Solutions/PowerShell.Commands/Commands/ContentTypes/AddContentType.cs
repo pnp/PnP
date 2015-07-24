@@ -30,6 +30,8 @@ namespace OfficeDevPnP.PowerShell.Commands
         protected override void ExecuteCmdlet()
         {
             var ct = SelectedWeb.CreateContentType(Name, Description, ContentTypeId, Group, ParentContentType);
+            ClientContext.Load(ct);
+            ClientContext.ExecuteQueryRetry();
             WriteObject(ct);
         }
 

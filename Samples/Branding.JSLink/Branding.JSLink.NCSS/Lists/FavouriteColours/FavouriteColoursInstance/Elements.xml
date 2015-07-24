@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="A few of my favourite colours" OnQuickLaunch="TRUE" TemplateType="10084" Url="Lists/colours" Description="A very basic demo using JSLink to show the colours and drop-downs for selecting the value you want."></ListInstance>
+</Elements>

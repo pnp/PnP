@@ -36,13 +36,13 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             var template = new ProvisioningTemplate();
             template.Features.WebFeatures.Add(
                 new OfficeDevPnP.Core.Framework.Provisioning.Model.Feature() 
-                { ID = featureId, Deactivate = true});
+                { Id = featureId, Deactivate = true});
 
 
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectFeatures().ProvisionObjects(ctx.Web, template);
+                new ObjectFeatures().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var f = ctx.Web.IsFeatureActive(featureId);
 
@@ -58,10 +58,10 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 // Load the base template which will be used for the comparison work
-                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
+                var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = null };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectFeatures().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectFeatures().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.Features.SiteFeatures.Any());
                 Assert.IsTrue(template.Features.WebFeatures.Any());

@@ -27,7 +27,6 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         {
             resourceFolder = string.Format(@"{0}\..\..\Resources\Templates",
                 AppDomain.CurrentDomain.BaseDirectory);
-
             
             folder = string.Format("test{0}", DateTime.Now.Ticks);
         }
@@ -69,12 +68,12 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             template.Connector = connector;
 
-            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Src = fileName, Folder = folder });
-
+            template.Files.Add(new Core.Framework.Provisioning.Model.File() { Overwrite = true, Src = fileName, Folder = folder });
+            
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectFiles().ProvisionObjects(ctx.Web, template);
+                new ObjectFiles().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
 
                 if (!ctx.Web.IsPropertyAvailable("ServerRelativeUrl"))
@@ -101,7 +100,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectFiles().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectFiles().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsInstanceOfType(template.Files, typeof(List<Core.Framework.Provisioning.Model.File>));
             }

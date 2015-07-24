@@ -1,7 +1,7 @@
-# Declaratively embedding a Web Part on a page in the app web #
+# Declaratively embedding a Web Part on a page in the add-in web #
 
 # Summary #
-The purpose of this sample is to show the best way to declaratively include a Web Part on a page in the app web, because the best way is not the most obvious or natural way. Developers should *not* simply include WebPart markup in the ASPX page itself. Doing so can cause errors when the app is updated. 
+The purpose of this sample is to show the best way to declaratively include a Web Part on a page in the add-in web, because the best way is not the most obvious or natural way. Developers should *not* simply include WebPart markup in the ASPX page itself. Doing so can cause errors when the add-in is updated. 
 
 Instead, the WebPart markup should be in the element manifest file (usually called elements.xml) for the page. 
 
@@ -27,11 +27,11 @@ Version  | Date | Comments
 # To use this sample #
 
 1. Open the .sln file for the sample in **Visual Studio**.
-2. In **Solution Explorer**, highlight the SharePoint app project and replace the **Site URL** property with the URL of your SharePoint developer site.
+2. In **Solution Explorer**, highlight the SharePoint add-in project and replace the **Site URL** property with the URL of your SharePoint developer site.
 
-You can now run the sample with <kbd>F5</kbd>. You will not be prompted to trust the app because this is a SharePoint-hosted app and it automatically has full rights to the app web. The app will launch immediately and you will see the start page with a list view WebPart on it. There are no items in the list.
+You can now run the sample with <kbd>F5</kbd>. You will not be prompted to trust the add-in because this is a SharePoint-hosted add-in and it automatically has full rights to the add-in web. The add-in will launch immediately and you will see the start page with a list view WebPart on it. There are no items in the list.
 
-![The start page of the app.](Images\Fig1AppPageWithWebPart.png)
+![The start page of the add-in.](Images\Fig1AppPageWithWebPart.png)
 
 # Questions and comments
 
@@ -41,11 +41,6 @@ We'd love to get your feedback on this sample. You can send your questions and s
 * On [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). 
   Make sure that your questions or comments are tagged with either [Office365] or [SharePoint], and with [API].
   
-<a name="resources"/>
-# Additional resources
-
-* [Include a Web Part in a webpage on the app web](http://msdn.microsoft.com/)
-
 ### Copyright ###
 
 Copyright (c) Microsoft. All rights reserved.

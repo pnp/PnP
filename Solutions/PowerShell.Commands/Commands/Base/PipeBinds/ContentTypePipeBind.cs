@@ -60,5 +60,25 @@ namespace OfficeDevPnP.PowerShell.Commands.Base.PipeBinds
         {
             get { return _contentType; }
         }
+
+        public ContentType GetContentType(Web web)
+        {
+            if (ContentType != null)
+            {
+                return ContentType;
+            }
+            ContentType ct;
+            if (!string.IsNullOrEmpty(Id))
+            {
+                ct = web.GetContentTypeById(Id,true);
+
+            }
+            else
+            {
+                ct = web.GetContentTypeByName(Name,true);
+            }
+
+            return ct;
+        }
     }
 }

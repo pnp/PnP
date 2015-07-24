@@ -1,0 +1,35 @@
+﻿/* Place custom styles below */
+table {
+    border-width: 1px;
+    border-color: #000000;
+    border-collapse: collapse;
+}
+
+    table th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #000000;
+        background-color: #dedede;
+    }
+
+    table td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #000000;
+    }
+
+
+#ProvisionTable div {
+    float: left;
+    border-style: solid;
+    border-color: #000000;
+    border-width: 1px;
+    padding: 10px;
+    text-align: center;
+}
+
+.TBTitle .TBObject {
+    width: 120px;
+}
