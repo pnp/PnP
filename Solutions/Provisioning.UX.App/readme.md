@@ -160,11 +160,13 @@ This solution uses app only permissions so you will have to navigate to http://[
 
 The Provisioning.UX.AppWeb and Provisioning.Job each has its own configuration settings and you have to ensure that the settings are applied in both projects.
 
+
 Configuration File | Description
 -------------------|----------
 appSettings.config | An alternate file to store application settings
 provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
 Templates.config   | Used to display the available site templates to the Provisioning.UX.AppWeb and provides a mapping to PnP Provisioning Template in the Provisioning.Job
+
 
 ##### appSettings.config #####
 
@@ -205,6 +207,7 @@ container | The container where the artifacts are stored
 
 
 Module Name | Description
+-------------------|----------
 RepositoryManager | Used to change the implementation class of the site request repository
 MasterTemplateProvider | Used to display the available site templates and provides a mapping to PnP Provisioning Template. PnP provisioning XML uses community standardize schema available from own [repository](https://github.com/OfficeDev/PnP-Provisioning-Schema) under Office Dev in GitHub
 ProvisioningProviders | PnP Core Provisioning Providers that contain the implementation on how to work with various source files.
