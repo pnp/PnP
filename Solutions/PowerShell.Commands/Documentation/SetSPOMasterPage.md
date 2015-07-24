@@ -1,5 +1,5 @@
 #Set-SPOMasterPage
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Sets the default master page of the current web.
 ##Syntax

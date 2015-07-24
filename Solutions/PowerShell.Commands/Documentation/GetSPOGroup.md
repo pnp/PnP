@@ -1,5 +1,5 @@
 #Get-SPOGroup
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-07-22*
 
 Returns a specific group or all groups.
 ##Syntax
@@ -35,9 +35,13 @@ Parameter|Type|Required|Description
 
 ###Example 1
     PS:> Get-SPOGroup
-
+Returns all groups
 
 ###Example 2
-    PS:> Get-SPOGroup -Name 'Site Members'
+    PS:> Get-SPOGroup -Identity 'My Site Users'
+This will return the group called 'My Site Users' if available
 
-<!-- Ref: 7179E81387D3F86F63F5755CB9931E01 -->
+###Example 3
+    PS:> Get-SPOGroup -AssociatedMemberGroup
+This will return the current members group for the site
+<!-- Ref: 5EE2FF4ABBAF12778A5BC246DCE4F975 -->

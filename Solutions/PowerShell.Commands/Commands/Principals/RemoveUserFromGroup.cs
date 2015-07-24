@@ -1,6 +1,7 @@
 ﻿using System.Management.Automation;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
+using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 
 namespace OfficeDevPnP.PowerShell.Commands.Principals
 {
@@ -16,26 +17,24 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         [Alias("LogonName")]
         public string LoginName = string.Empty;
 
-        [Parameter(Mandatory = true, HelpMessage = "A valid group name")]
-        public string GroupName = string.Empty;
+        [Parameter(Mandatory = true, HelpMessage = "A group object, an ID or a name of a group")]
+        [Alias("GroupName")]
+        public GroupPipeBind Identity;
 
         protected override void ExecuteCmdlet()
         {
+            var group = Identity.GetGroup(SelectedWeb);
             try
             {
-                Group group = SelectedWeb.SiteGroups.GetByName(GroupName);
                 User user = SelectedWeb.SiteUsers.GetByEmail(LoginName);
                 ClientContext.Load(user);
-                ClientContext.Load(group);
                 ClientContext.ExecuteQueryRetry();
                 SelectedWeb.RemoveUserFromGroup(group, user);
             }
             catch
             {
-                Group group = SelectedWeb.SiteGroups.GetByName(GroupName);
                 User user = SelectedWeb.SiteUsers.GetByLoginName(LoginName);
                 ClientContext.Load(user);
-                ClientContext.Load(group);
                 ClientContext.ExecuteQueryRetry();
                 SelectedWeb.RemoveUserFromGroup(group, user);
             }

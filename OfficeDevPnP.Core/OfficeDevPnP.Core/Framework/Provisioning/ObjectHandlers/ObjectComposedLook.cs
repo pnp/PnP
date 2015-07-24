@@ -214,6 +214,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 template.ComposedLook = null;
             }
 
+            if (creationInfo.BaseTemplate != null)
+            {
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
+            }
+
             return template;
         }
 
@@ -293,6 +298,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            if (template.ComposedLook != null && baseTemplate.ComposedLook != null)
+            {
+                if (template.ComposedLook.Equals(baseTemplate.ComposedLook))
+                {
+                    template.ComposedLook = null;
+                }
+              
+            }
             return template;
         }
 

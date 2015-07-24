@@ -1,5 +1,5 @@
 #Set-SPOIndexedProperties
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Marks values of the propertybag to be indexed by search. Notice that this will overwrite the existing flags, e.g. only the properties you define with the cmdlet will be indexed.
 ##Syntax

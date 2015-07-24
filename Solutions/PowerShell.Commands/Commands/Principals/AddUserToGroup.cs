@@ -9,9 +9,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
     [CmdletHelp("Adds a user to a group", Category = "User and group management")]
     [CmdletExample(
         Code = @"PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 'Marketing Site Members'",
-        SortOrder =  1)]
+        SortOrder = 1)]
     [CmdletExample(
-        Code = @"PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5", 
+        Code = @"PS:> Add-SPOUserToGroup -LoginName user@company.com -Identity 5",
         Remarks = "Add the specified user to the group with Id 5",
         SortOrder = 2)]
     public class AddUserToGroup : SPOWebCmdlet
@@ -26,18 +26,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
 
         protected override void ExecuteCmdlet()
         {
-            if (Identity.Id != -1)
-            {
-                SelectedWeb.AddUserToGroup(Identity.Id, LoginName);
-            }
-            else if (!string.IsNullOrEmpty(Identity.Name))
-            {
-                SelectedWeb.AddUserToGroup(Identity.Name, LoginName);
-            }
-            else if (Identity.Group != null)
-            {
-                SelectedWeb.AddUserToGroup(Identity.Group, LoginName);
-            }
+            var group = Identity.GetGroup(SelectedWeb);
+
+            SelectedWeb.AddUserToGroup(group, LoginName);
         }
     }
 }

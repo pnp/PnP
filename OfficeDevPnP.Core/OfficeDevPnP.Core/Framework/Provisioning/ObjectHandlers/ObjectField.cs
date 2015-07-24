@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Web.Services.Discovery;
 using System.Xml.Linq;
-using System.Xml.Schema;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core.Enums;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 using SPField = Microsoft.SharePoint.Client.Field;
@@ -42,7 +38,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var field in fields)
             {
-                XElement templateFieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                XElement templateFieldElement = XElement.Parse(field.SchemaXml.ToParsedString("~sitecollection", "~site"));
                 var fieldId = templateFieldElement.Attribute("ID").Value;
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
@@ -140,9 +136,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var existingFields = web.Fields;
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
+            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml, f => f.TypeAsString));
             web.Context.ExecuteQueryRetry();
 
+            var taxTextFieldsToRemove = new List<Guid>();
 
             foreach (var field in existingFields)
             {
@@ -167,7 +164,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             fieldXml = element.ToString();
                         }
                     }
-
+                    // Check if the field is of type TaxonomyField
+                    if (field.TypeAsString.StartsWith("TaxonomyField"))
+                    {
+                        var taxField = (TaxonomyField)field;
+                        web.Context.Load(taxField, tf => tf.TextField, tf=>tf.Id);
+                        web.Context.ExecuteQueryRetry();
+                        taxTextFieldsToRemove.Add(taxField.TextField);
+                    }
                     // Check if we have version attribute. Remove if exists 
                     if (element.Attribute("Version") != null)
                     {
@@ -176,6 +180,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     template.SiteFields.Add(new Field() { SchemaXml = fieldXml });
                 }
+            }
+            // Remove hidden taxonomy text fields
+            foreach (var textFieldId in taxTextFieldsToRemove)
+            {
+                template.SiteFields.RemoveAll(f => Guid.Parse(f.SchemaXml.ElementAttributeValue("ID")).Equals(textFieldId));
             }
             // If a base template is specified then use that one to "cleanup" the generated template model
             if (creationInfo.BaseTemplate != null)
@@ -223,6 +232,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 _willExtract = true;
             }
             return _willExtract.Value;
+        }
+    }
+
+    internal static class XElementStringExtensions
+    {
+        public static string ElementAttributeValue(this string input, string attribute)
+        {
+            var element = XElement.Parse(input);
+            return element.Attribute(attribute) != null ? element.Attribute(attribute).Value : null;
         }
     }
 }

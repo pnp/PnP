@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -88,7 +87,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                                 }
                                 else
                                 {
-                                    UpdateFieldRef(field, fieldRef);
+                                    UpdateFieldRef(listInfo.SiteList, field.Id, fieldRef);
                                 }
                             }
 
@@ -108,10 +107,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         foreach (var field in listInfo.TemplateList.Fields)
                         {
-                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
+                            var fieldElement = XElement.Parse(field.SchemaXml.ToParsedString("~sitecollection", "~site"));
                             if (fieldElement.Attribute("ID") == null)
                             {
-                                throw new Exception(string.Format("Field schema has no ID attribute: {0}",field.SchemaXml));
+                                throw new Exception(string.Format("Field schema has no ID attribute: {0}", field.SchemaXml));
                             }
                             var id = fieldElement.Attribute("ID").Value;
 
@@ -161,74 +160,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     web.Context.ExecuteQueryRetry();
                     foreach (var view in list.Views)
                     {
-                        var viewElement = XElement.Parse(view.SchemaXml);
-                        var displayNameElement = viewElement.Attribute("DisplayName");
-                        if (displayNameElement == null)
-                        {
-                            throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
-                        }
-
-                        var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
-
-                        if (existingView != null)
-                        {
-                            existingView.DeleteObject();
-                            web.Context.ExecuteQueryRetry();
-                        }
-
-                        var viewTitle = displayNameElement.Value;
-
-                        // Type
-                        var viewTypeString = viewElement.Attribute("Type") != null ? viewElement.Attribute("Type").Value : "None";
-                        viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
-                        var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
-
-                        // Fields
-                        string[] viewFields = null;
-                        var viewFieldsElement = viewElement.Descendants("ViewFields").FirstOrDefault();
-                        if (viewFieldsElement != null)
-                        {
-                            viewFields = (from field in viewElement.Descendants("ViewFields").Descendants("FieldRef") select field.Attribute("Name").Value).ToArray();
-                        }
-
-                        // Default view
-                        var viewDefault = viewElement.Attribute("DefaultView") != null && Boolean.Parse(viewElement.Attribute("DefaultView").Value);
-
-                        // Row limit
-                        var viewPaged = true;
-                        uint viewRowLimit = 30;
-                        var rowLimitElement = viewElement.Descendants("RowLimit").FirstOrDefault();
-                        if (rowLimitElement != null)
-                        {
-                            if (rowLimitElement.Attribute("Paged") != null)
-                            {
-                                viewPaged = bool.Parse(rowLimitElement.Attribute("Paged").Value);
-                            }
-                            viewRowLimit = uint.Parse(rowLimitElement.Value);
-                        }
-
-                        // Query
-                        var viewQuery = new StringBuilder();
-                        foreach (var queryElement in viewElement.Descendants("Query").Elements())
-                        {
-                            viewQuery.Append(queryElement.ToString());
-                        }
-
-                        var viewCI = new ViewCreationInformation
-                        {
-                            ViewFields = viewFields,
-                            RowLimit = viewRowLimit,
-                            Paged = viewPaged,
-                            Title = viewTitle,
-                            Query = viewQuery.ToString(),
-                            ViewTypeKind = viewType,
-                            PersonalView = false,
-                            SetAsDefaultView = viewDefault
-                        };
-
-                        createdList.Views.Add(viewCI);
-                        createdList.Update();
-                        web.Context.ExecuteQueryRetry();
+                        CreateView(web, view, existingViews, createdList);
                     }
 
                     // Removing existing views set the OnQuickLaunch option to false and need to be re-set.
@@ -244,31 +176,141 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 #endregion
 
+                // If an existing view is updated, and the list is to be listed on the QuickLaunch, it is removed because the existing view will be deleted and recreated from scratch. 
+                foreach (var listInfo in processedLists)
+                {
+                    listInfo.SiteList.OnQuickLaunch = listInfo.TemplateList.OnQuickLaunch;
+                    listInfo.SiteList.Update();
+                }
+                web.Context.ExecuteQueryRetry();
+
             }
         }
 
-        private static void UpdateFieldRef(Field field, FieldRef fieldRef)
+        private void CreateView(Web web, View view, ViewCollection existingViews, List createdList)
         {
+            var viewElement = XElement.Parse(view.SchemaXml);
+            var displayNameElement = viewElement.Attribute("DisplayName");
+            if (displayNameElement == null)
+            {
+                throw new ApplicationException("Invalid View element, missing a valid value for the attribute DisplayName.");
+            }
+
+            var existingView = existingViews.FirstOrDefault(v => v.Title == displayNameElement.Value);
+
+            if (existingView != null)
+            {
+                existingView.DeleteObject();
+                web.Context.ExecuteQueryRetry();
+            }
+
+            var viewTitle = displayNameElement.Value;
+
+            // Type
+            var viewTypeString = viewElement.Attribute("Type") != null ? viewElement.Attribute("Type").Value : "None";
+            viewTypeString = viewTypeString[0].ToString().ToUpper() + viewTypeString.Substring(1).ToLower();
+            var viewType = (ViewType)Enum.Parse(typeof(ViewType), viewTypeString);
+
+            // Fields
+            string[] viewFields = null;
+            var viewFieldsElement = viewElement.Descendants("ViewFields").FirstOrDefault();
+            if (viewFieldsElement != null)
+            {
+                viewFields = (from field in viewElement.Descendants("ViewFields").Descendants("FieldRef") select field.Attribute("Name").Value).ToArray();
+            }
+
+            // Default view
+            var viewDefault = viewElement.Attribute("DefaultView") != null && Boolean.Parse(viewElement.Attribute("DefaultView").Value);
+
+            // Row limit
+            var viewPaged = true;
+            uint viewRowLimit = 30;
+            var rowLimitElement = viewElement.Descendants("RowLimit").FirstOrDefault();
+            if (rowLimitElement != null)
+            {
+                if (rowLimitElement.Attribute("Paged") != null)
+                {
+                    viewPaged = bool.Parse(rowLimitElement.Attribute("Paged").Value);
+                }
+                viewRowLimit = uint.Parse(rowLimitElement.Value);
+            }
+
+            // Query
+            var viewQuery = new StringBuilder();
+            foreach (var queryElement in viewElement.Descendants("Query").Elements())
+            {
+                viewQuery.Append(queryElement.ToString());
+            }
+
+            var viewCI = new ViewCreationInformation
+            {
+                ViewFields = viewFields,
+                RowLimit = viewRowLimit,
+                Paged = viewPaged,
+                Title = viewTitle,
+                Query = viewQuery.ToString(),
+                ViewTypeKind = viewType,
+                PersonalView = false,
+                SetAsDefaultView = viewDefault,
+            };
+
+            var createdView = createdList.Views.Add(viewCI);
+            web.Context.Load(createdView, v => v.Scope, v => v.JSLink);
+            web.Context.ExecuteQueryRetry();
+
+            // Scope
+            var scope = viewElement.Attribute("Scope") != null ? viewElement.Attribute("Scope").Value : null;
+            ViewScope parsedScope = ViewScope.DefaultValue;
+            if (!string.IsNullOrEmpty(scope) && Enum.TryParse<ViewScope>(scope, out parsedScope))
+            {
+                createdView.Scope = parsedScope;
+                createdView.Update();
+            }
+
+            // JSLink
+            var jslinkElement = viewElement.Descendants("JSLink").FirstOrDefault();
+            if (jslinkElement != null)
+            {
+                var jslink = jslinkElement.Value;
+                if (createdView.JSLink != jslink)
+                {
+                    createdView.JSLink = jslink;
+                    createdView.Update();
+                }
+            }
+
+            createdList.Update();
+            web.Context.ExecuteQueryRetry();
+        }
+
+        private static void UpdateFieldRef(List siteList, Guid fieldId, FieldRef fieldRef)
+        {
+            // find the field in the list
+            var listField = siteList.Fields.GetById(fieldId);
+
+            siteList.Context.Load(listField, f => f.Title, f => f.Hidden, f => f.Required);
+            siteList.Context.ExecuteQueryRetry();
+
             var isDirty = false;
-            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != field.Title)
+            if (!string.IsNullOrEmpty(fieldRef.DisplayName) && fieldRef.DisplayName != listField.Title)
             {
-                field.Title = fieldRef.DisplayName;
+                listField.Title = fieldRef.DisplayName;
                 isDirty = true;
             }
-            if (fieldRef.Hidden != field.Hidden)
+            if (fieldRef.Hidden != listField.Hidden)
             {
-                field.Hidden = fieldRef.Hidden;
+                listField.Hidden = fieldRef.Hidden;
                 isDirty = true;
             }
-            if (fieldRef.Required != field.Required)
+            if (fieldRef.Required != listField.Required)
             {
-                field.Required = fieldRef.Required;
+                listField.Required = fieldRef.Required;
                 isDirty = true;
             }
             if (isDirty)
             {
-                field.UpdateAndPushChanges(true);
-                field.Context.ExecuteQueryRetry();
+                listField.UpdateAndPushChanges(true);
+                siteList.Context.ExecuteQueryRetry();
             }
         }
 
@@ -381,9 +423,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 l => l.EnableMinorVersions,
                 l => l.DraftVersionVisibility
 #if !CLIENTSDKV15
-                ,l => l.MajorWithMinorVersionsLimit
+, l => l.MajorWithMinorVersionsLimit
 #endif
-                );
+);
             web.Context.ExecuteQueryRetry();
 
             if (existingList.BaseTemplate == templateList.TemplateType)
@@ -427,7 +469,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.EnableAttachments = templateList.EnableAttachments;
                     isDirty = true;
                 }
-                if (existingList.BaseTemplate != (int) ListTemplateType.DiscussionBoard)
+                if (existingList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
                 {
                     if (templateList.EnableFolderCreation != existingList.EnableFolderCreation)
                     {
@@ -447,7 +489,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         existingList.MajorVersionLimit = templateList.MaxVersionLimit;
                         isDirty = true;
                     }
-                    if (existingList.BaseTemplate == (int) ListTemplateType.DocumentLibrary)
+                    if (existingList.BaseTemplate == (int)ListTemplateType.DocumentLibrary)
                     {
                         // Only supported on Document Libraries
                         if (templateList.EnableMinorVersions != existingList.EnableMinorVersions)
@@ -455,9 +497,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             existingList.EnableMinorVersions = templateList.EnableMinorVersions;
                             isDirty = true;
                         }
-                        if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                        if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                         {
-                            existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                            existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                             isDirty = true;
                         }
 
@@ -469,22 +511,22 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             }
 
                             if (DraftVisibilityType.Approver ==
-                                (DraftVisibilityType) templateList.DraftVersionVisibility)
+                                (DraftVisibilityType)templateList.DraftVersionVisibility)
                             {
                                 if (templateList.EnableModeration)
                                 {
-                                    if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                    if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                     {
-                                        existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                                        existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                                         isDirty = true;
                                     }
                                 }
                             }
                             else
                             {
-                                if ((DraftVisibilityType) templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
+                                if ((DraftVisibilityType)templateList.DraftVersionVisibility != existingList.DraftVersionVisibility)
                                 {
-                                    existingList.DraftVersionVisibility = (DraftVisibilityType) templateList.DraftVersionVisibility;
+                                    existingList.DraftVersionVisibility = (DraftVisibilityType)templateList.DraftVersionVisibility;
                                     isDirty = true;
                                 }
                             }
@@ -501,7 +543,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 if (existingList.ContentTypesEnabled)
                 {
                     // Check if we need to add a content type
-                    
+
                     var existingContentTypes = existingList.ContentTypes;
                     web.Context.Load(existingContentTypes, cts => cts.Include(ct => ct.StringId));
                     web.Context.ExecuteQueryRetry();
@@ -512,7 +554,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     {
                         existingList.AddContentTypeToListById(ctb.ContentTypeId, searchContentTypeInSiteHierarchy: true);
                     }
-                
+
                     // default ContentTypeBinding should be set last because 
                     // list extension .SetDefaultContentTypeToList() re-sets 
                     // the list.RootFolder UniqueContentTypeOrder property
@@ -769,7 +811,24 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var view in item.Views.Where(view => !view.Hidden))
                 {
-                    list.Views.Add(new View { SchemaXml = view.ListViewXml });
+                    var schemaElement = XElement.Parse(view.ListViewXml);
+
+                    // Toolbar is not supported
+
+                    var toolbarElement = schemaElement.Descendants("Toolbar").FirstOrDefault();
+                    if (toolbarElement != null)
+                    {
+                        toolbarElement.Remove();
+                    }
+
+                    // XslLink is not supported
+                    var xslLinkElement = schemaElement.Descendants("XslLink").FirstOrDefault();
+                    if (xslLinkElement != null)
+                    {
+                        xslLinkElement.Remove();
+                    }
+
+                    list.Views.Add(new View { SchemaXml = schemaElement.ToString() });
                 }
 
                 var siteColumns = web.Fields;

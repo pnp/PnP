@@ -2,7 +2,13 @@
 using OfficeDevPnP.PowerShell.CmdletHelpAttributes;
 using OfficeDevPnP.PowerShell.Commands.Base.PipeBinds;
 using System;
+using System.IO;
 using System.Management.Automation;
+using System.Net;
+using System.Security;
+#if !CLIENTSDKV15
+using Microsoft.SharePoint.Client.CompliancePolicy;
+#endif
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
@@ -21,6 +27,10 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
        Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials 'O365Creds'",
        Remarks = @"This will use credentials from the Windows Credential Manager, as defined by the label 'O365Creds'.
     ", SortOrder = 3)]
+    [CmdletExample(
+     Code = @"PS:> Connect-SPOnline -Url http://yourlocalserver -Credentials (Get-Credential) -UseAdfs",
+     Remarks = @"This will prompt for username and password and creates a context using ADFS to authenticate.
+    ", SortOrder = 4)]
     public class ConnectSPOnline : PSCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ParameterSetName = ParameterAttribute.AllParameterSets, ValueFromPipeline = true, HelpMessage = "The Url of the site collection to connect to.")]
@@ -32,6 +42,9 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect with the current user credentials")]
         public SwitchParameter CurrentCredentials;
 
+        [Parameter(Mandatory = false, ParameterSetName = "Main", HelpMessage = "If you want to connect to your on-premises SharePoint farm using ADFS")]
+        public SwitchParameter UseAdfs;
+        
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "Specifies a minimal server healthscore before any requests are executed.")]
         public int MinimalHealthScore = -1;
 
@@ -44,16 +57,35 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets, HelpMessage = "The request timeout. Default is 180000")]
         public int RequestTimeout = 1800000;
 
-        [Parameter(Mandatory = false, ParameterSetName = "Token")]
+        [Parameter(Mandatory = false, ParameterSetName = "Token", HelpMessage = "Authentication realm. If not specified will be resolved from the url specified.")]
         public string Realm;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client ID to use.")]
         public string AppId;
 
-        [Parameter(Mandatory = true, ParameterSetName = "Token")]
+        [Parameter(Mandatory = true, ParameterSetName = "Token", HelpMessage = "The Application Client Secret to use.")]
         public string AppSecret;
 
+#if !CLIENTSDKV15
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Client ID of the Azure AD Application")]
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Client ID of the Azure AD Application")]
+        public string ClientId;
 
+        [Parameter(Mandatory = true, ParameterSetName = "NativeAAD", HelpMessage = "The Redirect URI of the Azure AD Application")]
+        public string RedirectUri;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "The Azure AD Tenant name,e.g. mycompany.onmicrosoft.com")]
+        public string Tenant;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Path to the certificate (*.pfx)")]
+        public string CertificatePath;
+
+        [Parameter(Mandatory = true, ParameterSetName = "AppOnlyAAD", HelpMessage = "Password to the certificate (*.pfx)")]
+        public SecureString CertificatePassword;
+
+        [Parameter(Mandatory = false, ParameterSetName = "NativeAAD", HelpMessage = "Clears the token cache.")]
+        public SwitchParameter ClearTokenCache;
+#endif
         [Parameter(Mandatory = false, ParameterSetName = ParameterAttribute.AllParameterSets)]
         public SwitchParameter SkipTenantAdminCheck;
 
@@ -64,19 +96,97 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 creds = Credentials.Credential;
             }
-          
+
             if (ParameterSetName == "Token")
             {
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), Realm, AppId, AppSecret, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+            else if (UseAdfs)
+            {
+                creds = GetCredentials();
+                if (creds == null)
+                {
+                    creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateAdfsConnection(new Uri(Url), creds, Host, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+#if !CLIENTSDKV15
+            else if (ParameterSetName == "NativeAAD")
+            {
+                if (ClearTokenCache)
+                {
+                    string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    string configFile = Path.Combine(appDataFolder, "OfficeDevPnP.PowerShell\\tokencache.dat");
+                    if (File.Exists(configFile))
+                    {
+                        File.Delete(configFile);
+                    }
+                }
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADNativeApplicationConnection(new Uri(Url), ClientId, new Uri(RedirectUri), MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+            else if (ParameterSetName == "AppOnlyAAD")
+            {
+                SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InitiateAzureADAppOnlyConnection(new Uri(Url), ClientId, Tenant, CertificatePath, CertificatePassword, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
+            }
+#endif
             else
             {
                 if (!CurrentCredentials && creds == null)
                 {
-                    creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                    creds = GetCredentials();
+                    if (creds == null)
+                    {
+                        creds = Host.UI.PromptForCredential(Properties.Resources.EnterYourCredentials, "", "", "");
+                    }
                 }
                 SPOnlineConnection.CurrentConnection = SPOnlineConnectionHelper.InstantiateSPOnlineConnection(new Uri(Url), creds, Host, CurrentCredentials, MinimalHealthScore, RetryCount, RetryWait, RequestTimeout, SkipTenantAdminCheck);
             }
+
+        }
+
+        private PSCredential GetCredentials()
+        {
+            PSCredential creds = null;
+
+            var connectionURI = new Uri(Url);
+
+            // Try to get the credentials by full url
+
+            creds = Utilities.CredentialManager.GetCredential(Url);
+            if (creds == null)
+            {
+                // Try to get the credentials by splitting up the path
+                var pathString = string.Format("{0}://{1}", connectionURI.Scheme, connectionURI.IsDefaultPort ? connectionURI.Host : string.Format("{0}:{1}", connectionURI.Host, connectionURI.Port));
+                var path = connectionURI.AbsolutePath;
+                while (path.IndexOf('/') != -1)
+                {
+                    path = path.Substring(0, path.LastIndexOf('/'));
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        var pathUrl = string.Format("{0}{1}", pathString, path);
+                        creds = Utilities.CredentialManager.GetCredential(pathUrl);
+                        if (creds != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (creds == null)
+                {
+                    // Try to find the credentials by schema and hostname
+                    creds = Utilities.CredentialManager.GetCredential(connectionURI.Scheme + "://" + connectionURI.Host);
+
+                    if (creds == null)
+                    {
+                        // try to find the credentials by hostname
+                        creds = Utilities.CredentialManager.GetCredential(connectionURI.Host);
+                    }
+                }
+
+            }
+
+            return creds;
         }
     }
 }

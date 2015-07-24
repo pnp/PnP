@@ -19,7 +19,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity != null)
             {
-                var list = SelectedWeb.GetList(Identity);
+                var list = Identity.GetList(SelectedWeb);
                 if (list != null)
                 {
                     if (Force || ShouldContinue(Properties.Resources.RemoveList, Properties.Resources.Confirm))
