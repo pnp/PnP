@@ -16,10 +16,17 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = true, HelpMessage = "The Url of the web")]
         public string Url;
 
+        [Parameter(Mandatory = false)]
+        public SwitchParameter Force;
+
         protected override void ExecuteCmdlet()
         {
-            var web = SelectedWeb.DeleteWeb(Url);
-            ClientContext.ExecuteQueryRetry();
+            var web = SelectedWeb.GetWeb(Url);
+            if (Force || ShouldContinue(string.Format(Properties.Resources.RemoveWeb0, web.Title), Properties.Resources.Confirm))
+            {
+                SelectedWeb.DeleteWeb(Url);
+                ClientContext.ExecuteQueryRetry();
+            }
         }
     }
 }

@@ -305,6 +305,7 @@
     <Compile Include="Web\RemoveFile.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Web\AddIndexedProperty.cs" />
+    <Compile Include="Web\RemoveWeb.cs" />
     <Compile Include="Workflows\AddWorkflowDefinition.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
