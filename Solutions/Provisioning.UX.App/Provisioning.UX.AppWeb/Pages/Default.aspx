@@ -17,12 +17,6 @@
     <link rel="stylesheet" href="../styles/toastr.css" />
     <link rel="stylesheet" href="../styles/app.css" /> 
     <link rel="stylesheet" href="../styles/peoplepickercontrol.css" />    
-    
-           
-
-    
-
-    
 </head>
 <body>    
     <div id="divSPChrome"></div>            

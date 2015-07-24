@@ -5,15 +5,13 @@
 <head runat="server">
     <title></title>
      <link href="../../Styles/site.css" rel="stylesheet" type="text/css" />
-     <script src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js" type="text/javascript"></script>
      <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript" ></script>      
      <script src="../../Scripts/chromeloader.js?rev=1" type="text/javascript"></script>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div id="divSPChrome"></div>    
+        <div id="divSPChrome"></div>   
         <div class="page">
-            <section id ="main">
             <script type="text/javascript">
                 $(function () {
                     $('#cancel_button').click(function () {
@@ -21,50 +19,96 @@
                     });
                 });
             </script>
-        <div>
-        <fieldset>
-        <table id="newWebTable">
-            <tbody>
-                <tr>
-                    <td valign="top">
-                    <div class='O15_editor_label_head'>
-                        <p>Title and Description</p>
+        <asp:ScriptManager ID="scriptManager" runat="server" EnableCdn="True" />
+        <asp:UpdateProgress ID="progress" runat="server" AssociatedUpdatePanelID="mainPanel" DynamicLayout="true">
+            <ProgressTemplate>
+                <div id="divWaitingPanel" style="position: absolute; z-index: 3; background: rgb(255, 255, 255); width: 100%; bottom: 0px; top: 0px;">
+                    <div style="top: 40%; position: absolute; left: 50%; margin-left: -150px;">
+                        <img alt="Working on it" src="data:image/gif;base64,R0lGODlhEAAQAIAAAFLOQv///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgABACwJAAIAAgACAAACAoRRACH5BAUKAAEALAwABQACAAIAAAIChFEAIfkEBQoAAQAsDAAJAAIAAgAAAgKEUQAh+QQFCgABACwJAAwAAgACAAACAoRRACH5BAUKAAEALAUADAACAAIAAAIChFEAIfkEBQoAAQAsAgAJAAIAAgAAAgKEUQAh+QQFCgABACwCAAUAAgACAAACAoRRACH5BAkKAAEALAIAAgAMAAwAAAINjAFne8kPo5y02ouzLQAh+QQJCgABACwCAAIADAAMAAACF4wBphvID1uCyNEZM7Ov4v1p0hGOZlAAACH5BAkKAAEALAIAAgAMAAwAAAIUjAGmG8gPW4qS2rscRPp1rH3H1BUAIfkECQoAAQAsAgACAAkADAAAAhGMAaaX64peiLJa6rCVFHdQAAAh+QQJCgABACwCAAIABQAMAAACDYwBFqiX3mJjUM63QAEAIfkECQoAAQAsAgACAAUACQAAAgqMARaol95iY9AUACH5BAkKAAEALAIAAgAFAAUAAAIHjAEWqJeuCgAh+QQJCgABACwFAAIAAgACAAACAoRRADs=" style="width: 32px; height: 32px;" />
+                        <span class="ms-accentText" style="font-size: 36px;">&nbsp;Working on it...</span>
                     </div>
-                    </td>
-                    <td valign="top">
-                        <p>Title:</p>
-                        <asp:TextBox ID="txtTitle" runat="server" Visible="true"></asp:TextBox>
-                        <p>
-                            <span>Description:</span>
-                        </p>
-                        <asp:TextBox ID="txtDescription" runat="server" Visible="true" TextMode="MultiLine" Rows="3" Columns="40"></asp:TextBox>  
-                    </td>
-                </tr>
-                <tr>
-                    <td valign="top">
-                        <div class='O15_editor_label_head'>   
-                            <p>Web Site Address</p>
-                        </div>
-                    </td>
-                    <td valign="top" class="ms-authoringcontrols ms-inputformcontrols">
-                        <p>URL name:</p>
-                        <asp:Label ID="lblHostSite" runat="server" Visible="true"></asp:Label>
-                        <asp:TextBox ID="txtCreateSubWebName" runat="server" Visible="true" MaxLength="260"></asp:TextBox>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <input id="Url" name="Url" type="hidden" value="" runat="server"/>
-        <p style="float: right">
-            <asp:Button runat="server" ID="submit_button" Text="Create" OnClick="Submit_Click" />
-            <input type="button" id="cancel_button" value="Cancel" />
-        </p>
-        <div class="clear"></div>
-        </fieldset>
-    </div>
-         
-</section>
-</div>  
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress> 
+        <asp:UpdatePanel ID="mainPanel" runat="server">
+            <ContentTemplate>
+                    <fieldset>
+                    <legend>New Site</legend>
+                    <table id="SiteInfoTable" width="100%">
+                        <tbody>
+                            <tr>
+                                <!-- Title and Description -->
+                                <td valign="top">
+                                <div class="editor-label">
+                                    <div class='O15_editor_label_head'>
+                                        <p>Title and Description</p>
+                                    </div>
+                                </div>
+                                </td>
+                                <td valign="top" class="right-column">
+                                <div class="editor-field O15_editor_field_head">
+                                    <p>Title:</p>
+                                    <input id="siteTitle" type="text" name="txtTitle" runat="server" required/>
+                                    <br />
+                                    <p>Description:</p>
+                                    <textarea id="siteDescription" rows="5" cols="35" title="Description" name="Description" runat="server"></textarea>
+                                </div>
+                                </td>
+                                </tr>
+                            <tr>
+                                <!-- Web Site Address -->
+                                <td valign="top">
+                                    <div class="editor-label">
+                                        <div class="O15_editor_label_head">
+                                            <p>
+                                                Web Site Address</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="right-column" valign="top">
+                                    <div class="editor-field O15_editor_field_head">
+                                        <p>URL name:</p>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td><label id="labelHostURL" runat="server"></label></td>
+                                                    <td><input id="txtSiteUrl" type="text" name="txtTitle" runat="server" required/></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </td>
+                            <tr>
+                                <!-- Template -->
+                                <td valign="top">
+                                    <div class="editor-label">
+                                        <div class="O15_editor_label_head">
+                                            <p>Template Selection</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                   <td class="right-column" valign="top">
+                                    <div class="editor-field O15_editor_field_head">
+                                        <p>Site Template:</p>
+                                        <select id="selectSiteTeamplate" runat="server" name="SiteTemplateType" title="Site Template">
+                                        </select>
+                                    </div>
+                                </td>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input id="Url" name="Url" type="hidden" value="" runat="server"/>
+                    <p style="float: right">
+                        <asp:Button runat="server" ID="create_button" OnClick="Submit_Click" Text="Create" />
+                        <input type="button" id="cancel_button" value="Cancel" />
+                    </p>
+                    <div class="clear"></div>
+                    </fieldset>
+                </ContentTemplate>
+        </asp:UpdatePanel>
+        </div>
     </form>
    <div id="MicrosoftOnlineRequired">
         <div style="float:left">

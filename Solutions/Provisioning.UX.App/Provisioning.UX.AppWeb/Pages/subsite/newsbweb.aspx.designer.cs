@@ -22,40 +22,76 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// txtTitle control.
+        /// scriptManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        protected global::System.Web.UI.ScriptManager scriptManager;
         
         /// <summary>
-        /// txtDescription control.
+        /// progress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescription;
+        protected global::System.Web.UI.UpdateProgress progress;
         
         /// <summary>
-        /// lblHostSite control.
+        /// mainPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHostSite;
+        protected global::System.Web.UI.UpdatePanel mainPanel;
         
         /// <summary>
-        /// txtCreateSubWebName control.
+        /// siteTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCreateSubWebName;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText siteTitle;
+        
+        /// <summary>
+        /// siteDescription control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea siteDescription;
+        
+        /// <summary>
+        /// labelHostURL control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelHostURL;
+        
+        /// <summary>
+        /// txtSiteUrl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtSiteUrl;
+        
+        /// <summary>
+        /// selectSiteTeamplate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect selectSiteTeamplate;
         
         /// <summary>
         /// Url control.
@@ -67,12 +103,12 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden Url;
         
         /// <summary>
-        /// submit_button control.
+        /// create_button control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submit_button;
+        protected global::System.Web.UI.WebControls.Button create_button;
     }
 }

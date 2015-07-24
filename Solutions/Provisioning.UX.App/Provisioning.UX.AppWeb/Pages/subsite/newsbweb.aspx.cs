@@ -50,7 +50,8 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite
             var _web = _ctx.Web;
             _ctx.Load(_web);
             _ctx.ExecuteQuery();
-            this.lblHostSite.Text = _web.Url;
+            this.labelHostURL.InnerHtml = _web.Url;
+          //  this.lblHostSite.Text = _web.Url;
         }
 
         protected bool DoesUserHavePermission()
