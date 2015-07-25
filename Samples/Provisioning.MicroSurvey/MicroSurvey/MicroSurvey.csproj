@@ -64,7 +64,7 @@
     <Content Include="SurveyAppCentralDeploy\ListDisplayForm.aspx" />
     <Content Include="SurveyAppCentralDeploy\ListEditForm.aspx" />
     <Content Include="SurveyAppCentralDeploy\ListNewForm.aspx" />
-    <Content Include="SurveyAppCentralDeploy\Test.txt" />
+    <None Include="SurveyAppCentralDeploy\Test.txt.template" />
     <Content Include="SurveyAppCentralDeploy\WebPart.html" />
     <Content Include="SurveyApp\listForm.html" />
     <Content Include="SurveyApp\listFormController.js" />

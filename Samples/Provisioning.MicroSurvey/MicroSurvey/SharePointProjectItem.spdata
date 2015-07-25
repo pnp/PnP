@@ -8,6 +8,6 @@
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListDisplayForm.aspx" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListEditForm.aspx" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListNewForm.aspx" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
-    <ProjectItemFile Source="SurveyAppCentralDeploy\Test.txt" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\Test.txt.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
   </Files>
 </ProjectItem>

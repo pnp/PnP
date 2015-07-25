@@ -7,6 +7,6 @@
     <File Path="SurveyAppCentralDeploy\ListDisplayForm.aspx" Url="SurveyAppCentralDeploy/ListDisplayForm.aspx" ReplaceContent="TRUE" />
     <File Path="SurveyAppCentralDeploy\ListEditForm.aspx" Url="SurveyAppCentralDeploy/ListEditForm.aspx" ReplaceContent="TRUE" />
     <File Path="SurveyAppCentralDeploy\ListNewForm.aspx" Url="SurveyAppCentralDeploy/ListNewForm.aspx" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\Test.txt" Url="SurveyAppCentralDeploy/Test.txt" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\Test.txt.template" Url="SurveyAppCentralDeploy/Test.txt.template" ReplaceContent="TRUE" />
   </Module>
 </Elements>
