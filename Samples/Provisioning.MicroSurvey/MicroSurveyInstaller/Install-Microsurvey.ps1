@@ -79,16 +79,16 @@ Write-Host "Added web part to home page"
 # (NOTE: The app will attempt to create/repair its own storage, so this is really optional.)
 #
 
-## Set up questions list:
-#New-SPOList -Title "Questions" -Template GenericList -Url "lists/questions" -QuickLaunchOptions off
-#$list = Get-SPOList -Identity "Questions"
-#Write-Host Created $list.Title "list"
-#Add-SPOField -List $list -InternalName "Answers" -DisplayName "Answers" -Type Text -AddToDefaultView
-#Write-Host Added $field.Title "to" $list.Title "list"
+# Set up questions list
+New-SPOList -Title "Questions" -Template GenericList -Url "lists/questions" -QuickLaunchOptions off
+$list = Get-SPOList -Identity "Questions"
+Write-Host Created $list.Title "list"
+Add-SPOField -List $list -InternalName "Answers" -DisplayName "Answers" -Type Text -AddToDefaultView
+Write-Host Added $field.Title "to" $list.Title "list"
 
-## Set up answers list:
-#New-SPOList -Title "Answers" -Template GenericList -Url "lists/answers" -QuickLaunchOptions off
-#$list = Get-SPOList -Identity "Answers"
-#Write-Host Created $list.Title "List"
-#Add-SPOField -List $list -InternalName "Data" -DisplayName "Data" -Type Text -AddToDefaultView
-#Write-Host Added $field.Title "to" $list.Title "list"
+# Set up answers list
+New-SPOList -Title "Answers" -Template GenericList -Url "lists/answers" -QuickLaunchOptions off
+$list = Get-SPOList -Identity "Answers"
+Write-Host Created $list.Title "List"
+Add-SPOField -List $list -InternalName "Data" -DisplayName "Data" -Type Text -AddToDefaultView
+Write-Host Added $field.Title "to" $list.Title "list"
