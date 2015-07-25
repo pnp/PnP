@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <Module Name="RootModule">
-    <File Path="SurveyAppCentralDeploy\Default.aspx" Url="SurveyAppCentralDeploy/Default.aspx" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\Web.config" Url="SurveyAppCentralDeploy/Web.config" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\MicroSurvey.dwp" Url="SurveyAppCentralDeploy/MicroSurvey.dwp" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\ListDisplayForm.aspx" Url="SurveyAppCentralDeploy/ListDisplayForm.aspx" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\ListEditForm.aspx" Url="SurveyAppCentralDeploy/ListEditForm.aspx" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\ListNewForm.aspx" Url="SurveyAppCentralDeploy/ListNewForm.aspx" ReplaceContent="TRUE" />
-    <File Path="SurveyAppCentralDeploy\Test.txt.template" Url="SurveyAppCentralDeploy/Test.txt.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\Default.aspx.template" Url="SurveyAppCentralDeploy/Default.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\MicroSurvey.dwp.template" Url="SurveyAppCentralDeploy/MicroSurvey.dwp.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" Url="SurveyAppCentralDeploy/ListDisplayForm.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListEditForm.aspx.template" Url="SurveyAppCentralDeploy/ListEditForm.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListNewForm.aspx.template" Url="SurveyAppCentralDeploy/ListNewForm.aspx.template" ReplaceContent="TRUE" />
   </Module>
 </Elements>

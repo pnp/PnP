@@ -26,6 +26,7 @@ Add-SPOFolder -Name $settings.ScriptLibrary -Folder "SiteAssets"
 # that we don't need
 $localAppPath = (Get-Item -Path ..\MicroSurvey\SurveyAppCentralDeploy).FullName
 $spAppPath = "/SiteAssets/" + $settings.ScriptLibrary
+$spScriptPath = $settings.ScriptSiteUrl + $settings.ScriptLibrary
 
 # Copy the app files to the folder
 $items = Get-ChildItem $localAppPath
@@ -33,10 +34,21 @@ foreach ($item in $items)
 {
     if ($item.Name.EndsWith(".template"))
     {
-        $fullName = $item.FullName
-        $fileName = $item.Name
-        Add-SPOFile -Path $fullName -Folder "$spAppPath"
-        Write-Host  "Deployed file: $spAppPath/$fileName"
+        # Remove .template from file name
+        $itemFinalFullName = $item.FullName.Replace(".template", "")
+        $itemFinalName = $item.Name.Replace(".template", "")
+
+        # Replace tokens in template to build file
+        (Get-Content $item.FullName) | 
+         Foreach-Object {$_ -replace "%AppPath%", $spScriptPath} | 
+         Set-Content $itemFinalName
+
+        # Upload the file
+        Add-SPOFile -Path $itemFinalName -Folder $spAppPath
+        Write-Host  "Deployed file: $itemFinalName"
+
+        # Clean up the file with the tokens replaced
+        Remove-Item $itemFinalName
     }
 }
 

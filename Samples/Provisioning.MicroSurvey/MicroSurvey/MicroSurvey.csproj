@@ -60,12 +60,11 @@
       <OpcRelationship>feature-elementmanifest</OpcRelationship>
     </Content>
     <Content Include="Pages\MicroSurveyWP.aspx" />
-    <Content Include="SurveyAppCentralDeploy\Default.aspx" />
-    <Content Include="SurveyAppCentralDeploy\ListDisplayForm.aspx" />
-    <Content Include="SurveyAppCentralDeploy\ListEditForm.aspx" />
-    <Content Include="SurveyAppCentralDeploy\ListNewForm.aspx" />
-    <None Include="SurveyAppCentralDeploy\Test.txt.template" />
-    <Content Include="SurveyAppCentralDeploy\WebPart.html" />
+    <None Include="SurveyAppCentralDeploy\Default.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListEditForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListNewForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\WebPart.html.template" />
     <Content Include="SurveyApp\listForm.html" />
     <Content Include="SurveyApp\listFormController.js" />
     <Content Include="SurveyApp\ListNewForm.aspx" />
@@ -102,8 +101,7 @@
     <None Include="SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ebc5c692-c5ad-4e4e-aa09-914e03257815}</SharePointProjectItemId>
     </None>
-    <None Include="SurveyAppCentralDeploy\MicroSurvey.dwp" />
-    <None Include="SurveyAppCentralDeploy\Web.config" />
+    <None Include="SurveyAppCentralDeploy\MicroSurvey.dwp.template" />
     <None Include="SurveyApp\MicroSurvey.dwp" />
     <None Include="SurveyApp\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b52069dd-3c60-4af2-be6e-6c7a766ad822}</SharePointProjectItemId>

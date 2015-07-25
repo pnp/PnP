@@ -9,11 +9,12 @@
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>
-    </asp:Content>
+    <meta name="WebPartPageExpansion" content="full" />
+</asp:Content>
 
 <%-- The markup in the following Content element will be placed in the TitleArea of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server">
-    MicroSurvey Settings
+    New MicroSurvey Question
 </asp:Content>
 
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
@@ -22,23 +23,20 @@
     <%-- Web part root element and loader --%>
     <div>
 
-        <link rel="Stylesheet" type="text/css" href="http://install.dev13.local/surveyapp/survey.css" />
+        <link rel="Stylesheet" type="text/css" href="%AppPath%/survey.css" />
 
-        <%-- Host views --%>
-        <table><tr>
+        <table ng-controller="listNewForm as vm" ><tr>
             <td>
-                <div style="width: 400px;" ng-controller="settings as vm"
-                    ng-include="'http://install.dev13.local/surveyapp/settings.html'"></div>
+                <div style="width: 400px;" ng-include="'%AppPath%/listForm.html'"></div>
             </td>
             <td class="webPart">
-                <div style="width: 400px; height: 250px;" ng-controller="main as vm"
-                     ng-include="'http://install.dev13.local/surveyapp/main.html'"></div>
+                <div style="width: 400px; height: 250px;" ng-include="'%AppPath%/main.html'"></div>
             </td>
         </tr></table>
 
         <%-- Initialize the page for Angular --%>
         <%-- NOTE: Angular will bind to the first div within the parent of this script block --%>
-        <script src="http://install.dev13.local/surveyapp/initUI.js"></script>
+        <script src="%AppPath%/initUI.js"></script>
 
     </div>
 </asp:Content>

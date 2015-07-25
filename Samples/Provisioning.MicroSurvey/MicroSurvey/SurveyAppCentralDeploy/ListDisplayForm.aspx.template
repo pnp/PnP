@@ -23,20 +23,20 @@
     <%-- Web part root element and loader --%>
     <div>
 
-        <link rel="Stylesheet" type="text/css" href="http://install.dev13.local/surveyapp/survey.css" />
+        <link rel="Stylesheet" type="text/css" href="%AppPath%/survey.css" />
 
         <table ng-controller="listDisplayForm as vm" ><tr>
             <td>
-                <div style="width: 400px;" ng-include="'http://install.dev13.local/surveyapp/listForm.html'"></div>
+                <div style="width: 400px;" ng-include="'%AppPath%/listForm.html'"></div>
             </td>
             <td class="webPart">
-                <div style="width: 400px; height: 250px;" ng-include="'http://install.dev13.local/surveyapp/main.html'"></div>
+                <div style="width: 400px; height: 250px;" ng-include="'%AppPath%/main.html'"></div>
             </td>
         </tr></table>
 
         <%-- Initialize the page for Angular --%>
         <%-- NOTE: Angular will bind to the first div within the parent of this script block --%>
-        <script src="http://install.dev13.local/surveyapp/initUI.js"></script>
+        <script src="%AppPath%/initUI.js"></script>
 
     </div>
 </asp:Content>
