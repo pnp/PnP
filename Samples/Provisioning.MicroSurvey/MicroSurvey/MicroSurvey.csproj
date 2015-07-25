@@ -101,7 +101,7 @@
     <None Include="SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ebc5c692-c5ad-4e4e-aa09-914e03257815}</SharePointProjectItemId>
     </None>
-    <None Include="SurveyAppCentralDeploy\MicroSurvey.dwp.template" />
+    <None Include="SurveyAppCentralDeploy\MicroSurvey.dwp" />
     <None Include="SurveyApp\MicroSurvey.dwp" />
     <None Include="SurveyApp\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b52069dd-3c60-4af2-be6e-6c7a766ad822}</SharePointProjectItemId>

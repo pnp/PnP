@@ -25,7 +25,7 @@ Add-SPOFolder -Name $settings.ScriptLibrary -Folder "SiteAssets"
 # Define source and destinations for the copy, as well as SharePoint app packaging files
 # that we don't need
 $localAppPath = (Get-Item -Path ..\MicroSurvey\SurveyAppCentralDeploy).FullName
-$spAppPath = "/SiteAssets/" + $settings.ScriptLibrary
+$spAppPath = "SiteAssets/" + $settings.ScriptLibrary
 $spScriptPath = $settings.ScriptSiteUrl + $settings.ScriptLibrary
 
 # Copy the app files to the folder
@@ -52,20 +52,32 @@ foreach ($item in $items)
     }
 }
 
-## Disable Minimal Download Strategy to ensure the web part will work
-#Disable-SPOFeature -Identity 87294C72-F260-42f3-A41B-981A2FFCE37A
+# Disable Minimal Download Strategy to ensure the web part will work
+Disable-SPOFeature -Identity 87294C72-F260-42f3-A41B-981A2FFCE37A
 
-## Add the site settings link
-#Add-SPOCustomAction -Location "Microsoft.SharePoint.SiteSettings" -Title "Manage Microsurvey" `
-# -Url "../SiteAssets/SurveyApp/Default.aspx" -Description "Manage Microsurvey" -Group "Customization" -Sequence 1000
+# Remove any old site settings links
+$settingsPageUrl = $spAppPath + "/Default.aspx"
+$actions = Get-SPOCustomAction | Where-Object {$_.Title -eq "Manage Microsurvey"}
+foreach ($action in $actions)
+{
+    Write-Host "Removing "$action.Id
+    Remove-SPOCustomAction -Identity $action.Id -Force
+}
 
-## Add the web part to the page
-#Add-SPOWebPartToWikiPage -PageUrl "/sitepages/home.aspx" -Path $localAppPath"\MicroSurvey.dwp" -Row 1 -Column 1
+# Add the site settings link
+Add-SPOCustomAction -Location "Microsoft.SharePoint.SiteSettings" -Title "Manage Microsurvey" `
+ -Url $settingsPageUrl -Description "Manage Microsurvey" -Group "Customization" -Sequence 1000
+ Write-Host "Added site settings link"
 
-##
-## Provision the SharePoint storage that the app needs
-## (NOTE: The app will attempt to create/repair its own storage, so this is really optional.)
-##
+# Add the web part to the page
+$homePageUrl = (Get-SPOWeb).ServerRelativeUrl + "/sitepages/home.aspx"
+Add-SPOWebPartToWikiPage -PageUrl $homePageUrl -Path $localAppPath"\MicroSurvey.dwp" -Row 1 -Column 1
+Write-Host "Added web part to home page"
+
+#
+# Provision the SharePoint storage that the app needs
+# (NOTE: The app will attempt to create/repair its own storage, so this is really optional.)
+#
 
 ## Set up questions list:
 #New-SPOList -Title "Questions" -Template GenericList -Url "lists/questions" -QuickLaunchOptions off

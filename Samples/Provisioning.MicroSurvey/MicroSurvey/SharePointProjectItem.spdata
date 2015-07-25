@@ -3,7 +3,7 @@
   <Files>
     <ProjectItemFile Source="Elements.xml" Type="ElementManifest" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\Default.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
-    <ProjectItemFile Source="SurveyAppCentralDeploy\MicroSurvey.dwp.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\MicroSurvey.dwp" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListEditForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
     <ProjectItemFile Source="SurveyAppCentralDeploy\ListNewForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
