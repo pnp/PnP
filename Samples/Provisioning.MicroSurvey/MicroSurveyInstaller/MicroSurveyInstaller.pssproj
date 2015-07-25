@@ -31,7 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Install-Microsurvey.ps1" />
+    <Content Include="Get-Settings.ps1" />
+    <Content Include="Add-Microsurvey.ps1" />
+    <Content Include="Install-MicrosurveyScripts.ps1" />
     <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
