@@ -102,6 +102,7 @@ Cmdlet|Description
 Cmdlet|Description
 :-----|:----------
 **[Add&#8209;SPOHtmlPublishingPageLayout](AddSPOHtmlPublishingPageLayout.md)** |Adds a HTML based publishing page layout
+**[Add&#8209;SPOMasterPage](AddSPOMasterPage.md)** |Adds a Masterpage
 **[Add&#8209;SPOPublishingPage](AddSPOPublishingPage.md)** |Adds a publishing page
 **[Add&#8209;SPOPublishingPageLayout](AddSPOPublishingPageLayout.md)** |Adds a publishing page layout
 **[Remove&#8209;SPOWikiPage](RemoveSPOWikiPage.md)** |Removes a wiki page
@@ -191,6 +192,7 @@ Cmdlet|Description
 **[Set&#8209;SPOPropertyBagValue](SetSPOPropertyBagValue.md)** |Sets a property bag value
 **[Request&#8209;SPOReIndexWeb](RequestSPOReIndexWeb.md)** |Marks the web for full indexing during the next incremental crawl
 **[Get&#8209;SPOSubWebs](GetSPOSubWebs.md)** |Returns the subwebs
+**[Remove&#8209;SPOWeb](RemoveSPOWeb.md)** |Removes a subweb in the current web
 **[Get&#8209;SPOWeb](GetSPOWeb.md)** |Returns the current web object
 **[New&#8209;SPOWeb](NewSPOWeb.md)** |Creates a new subweb to the current web
 **[Set&#8209;SPOWeb](SetSPOWeb.md)** |Sets properties on a web
