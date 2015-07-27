@@ -34,6 +34,20 @@ namespace Contoso.Core.EventReceiversWeb
 
             List jobsList = clientContext.Web.Lists.FirstOrDefault();
 
+#if (DEBUG)
+            // in debug mode we will delete a existing list, so we prevent our system from orphaned event receicers
+            // RemoveEventReceiversFromHostWeb is somteimes in debug mode not called, and / or the app id is changed 
+            // in the dev process
+            // on registering SharePoint adds the app id to the event registration information, and you are only able 
+            // to remove the event with the same app where it was registered
+            if (null != jobsList)
+            {
+                jobsList.DeleteObject();
+                clientContext.ExecuteQuery();
+                jobsList = null;
+            }
+#endif
+
             bool rerExists = false;
             if (null == jobsList)
             {
