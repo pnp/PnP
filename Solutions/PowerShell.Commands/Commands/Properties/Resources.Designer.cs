@@ -323,6 +323,15 @@ namespace OfficeDevPnP.PowerShell.Commands.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove Web &apos;{0}&apos; ? .
+        /// </summary>
+        internal static string RemoveWeb0 {
+            get {
+                return ResourceManager.GetString("RemoveWeb0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retry {0}: Server not healthy, waiting {1} seconds (Server Health Score: {2}).
         /// </summary>
         internal static string Retry0ServerNotHealthyWaiting1seconds {
