@@ -46,11 +46,11 @@ namespace ProvisioningTests._3_Data
 
         [TestMethod]
         [TestCategory("MetadataFactoryTests")]
-        public void CanGetAllSiteClassifications()
+        public void CanGetEnabledSiteClassifications()
         {
             IMetadataFactory _factory = MetadataFactory.GetInstance();
             IMetadataManager _manager = _factory.GetManager();
-            var _actual = _manager.GetSiteClassifications();
+            var _actual = _manager.GetAvailableSiteClassifications();
         }
 
         private SiteClassification GetMock()
@@ -58,8 +58,8 @@ namespace ProvisioningTests._3_Data
             var _siteClassificationMock = new SiteClassification();
             _siteClassificationMock.AddAllAuthenticatedUsers = true;
             _siteClassificationMock.DisplayOrder = 1;
-            _siteClassificationMock.Value = "Low Business Impact (LBI)";
-            _siteClassificationMock.Key = "MBI";
+            _siteClassificationMock.Value = "TEST";
+            _siteClassificationMock.Key = "TEST";
             _siteClassificationMock.Enabled = true;
 
             return _siteClassificationMock;

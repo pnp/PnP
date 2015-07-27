@@ -12,14 +12,14 @@ namespace Provisioning.Common.Utilities
     /// <summary>
     /// Helper class to Serialize and Deserialize objects to and from XML
     /// </summary>
-    public static class XmlSerializerHelper
+    public static class XmlSerializerManager
     {
         #region Private Instance Members
         private static readonly Dictionary<Type, XmlSerializer> _XmlFormatter;
         #endregion
 
         #region Constructors
-        static XmlSerializerHelper()
+        static XmlSerializerManager()
         {
             _XmlFormatter = new Dictionary<Type, XmlSerializer>();
         }

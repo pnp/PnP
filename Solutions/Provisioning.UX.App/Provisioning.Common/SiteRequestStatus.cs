@@ -16,6 +16,7 @@ namespace Provisioning.Common
         New,
         Processing,
         Pending,
-        Approved
+        Approved,
+        Partially
     }
 }

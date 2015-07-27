@@ -10,8 +10,6 @@
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript" ></script>     
     <script src="../../Scripts/commonapp.js?rev=1" type="text/javascript"></script> 
     <script src="../../Scripts/vendor/jquery/jquery.tipsy.js" type="text/javascript"></script>
-   <!-- Chrome Loader -->
-
     <script src="../../Scripts/chromeloader.js?rev=1" type="text/javascript"></script>
 </head>
 <body>

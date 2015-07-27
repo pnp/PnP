@@ -34,7 +34,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             {
                 IMetadataFactory _factory = MetadataFactory.GetInstance();
                 IMetadataManager _manager = _factory.GetManager();
-                var _siteClassifications = _manager.GetSiteClassifications();
+                var _siteClassifications = _manager.GetAvailableSiteClassifications();
                 return Request.CreateResponse(HttpStatusCode.OK, _siteClassifications);
             }
             catch (Exception _ex)
