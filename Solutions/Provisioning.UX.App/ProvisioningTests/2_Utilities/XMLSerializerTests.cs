@@ -16,7 +16,7 @@ namespace ProvisioningTests._2_Utilities
         public void XMLSerializerCanSerializeObjectToXML()
         {
             var _listMockOjbect = this.CreateMockObject();
-            var _xmlStringActual = XmlSerializerHelper.Serialize<MockList>(_listMockOjbect);
+            var _xmlStringActual = XmlSerializerManager.Serialize<MockList>(_listMockOjbect);
            
             Assert.AreNotEqual(string.Empty, _xmlStringActual);
             Assert.AreEqual(XMLSTRING_MOCK, _xmlStringActual);
@@ -27,7 +27,7 @@ namespace ProvisioningTests._2_Utilities
         public void XMLSerializerCanDeserializationObject()
         {
             var _expectedObject = this.CreateMockObject();
-            var _mockObjectActual = XmlSerializerHelper.Deserialize<MockList>(XMLSTRING_MOCK);
+            var _mockObjectActual = XmlSerializerManager.Deserialize<MockList>(XMLSTRING_MOCK);
 
             Assert.AreEqual(_expectedObject.Title, _mockObjectActual.Title);
             Assert.AreEqual(_expectedObject.Description, _mockObjectActual.Description);

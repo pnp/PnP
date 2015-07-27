@@ -36,7 +36,7 @@ namespace Provisioning.Common
      
         public override void CreateSiteCollection(SiteInformation siteRequest, Template template)
         {
-           Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             UsingContext(ctx =>
             {
                 try
