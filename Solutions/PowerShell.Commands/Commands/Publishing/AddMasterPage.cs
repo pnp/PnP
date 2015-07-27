@@ -27,7 +27,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         [Parameter(Mandatory = false, HelpMessage = "UiVersion Masterpage. Default = 15")]
         public string UiVersion;
 
-        [Parameter(Mandatory = false, HelpMessage = "Defautl CSS file for MasterPage, SiteRelative")]
+        [Parameter(Mandatory = false, HelpMessage = "Default CSS file for MasterPage, this Url is SiteRelative")]
         public string DefaultCssFile;
 
         protected override void ExecuteCmdlet()
