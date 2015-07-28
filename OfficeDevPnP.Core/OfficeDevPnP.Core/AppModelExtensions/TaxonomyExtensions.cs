@@ -358,7 +358,6 @@ namespace Microsoft.SharePoint.Client
             return termStore;
         }
 
-
         /// <summary>
         /// Finds a termset by name
         /// </summary>
@@ -378,7 +377,6 @@ namespace Microsoft.SharePoint.Client
             site.Context.ExecuteQueryRetry();
             return termsets;
         }
-
 
         /// <summary>
         /// Finds a termgroup by name
@@ -1512,6 +1510,46 @@ namespace Microsoft.SharePoint.Client
 					name
 				}), parameterName);
             }
+        }
+
+        /// <summary>
+        /// Cleans up the entire term store entries by term group name.
+        /// </summary>
+        /// <param name="adminClientContext">Context of SharePoint central admin site</param>
+        /// <param name="groupName">Name of term group</param>
+        public static void CleanupTermStore(this ClientContext adminClientContext, string groupName)
+        {
+            // Get the term store reference
+            var taxSession = TaxonomySession.GetTaxonomySession(adminClientContext);
+            var termStore = taxSession.GetDefaultSiteCollectionTermStore();
+
+            // Load the term groups
+            adminClientContext.Load(termStore.Groups);
+            adminClientContext.ExecuteQueryRetry();
+
+            // Get the term group by Name
+            var termGroup = termStore.Groups.FirstOrDefault(x => x.Name == groupName);
+            if (termGroup == null)
+            {
+                throw new Exception("No term group found - " + groupName);
+            }
+
+            // Load the term group and termsets inside it
+            adminClientContext.Load(termGroup, x => x.TermSets);
+            adminClientContext.ExecuteQueryRetry();
+
+            foreach (TermSet termSet in termGroup.TermSets)
+            {
+                // Delete the term set
+                termSet.DeleteObject();
+                adminClientContext.ExecuteQueryRetry();
+            }
+
+            // Delete the Term Group
+            termGroup.DeleteObject();
+
+            // Execute the query to the server
+            adminClientContext.ExecuteQueryRetry();
         }
 
         #endregion
