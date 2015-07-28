@@ -21,6 +21,6 @@ Parameter|Type|Required|Description
 ##Examples
 
 ###Example 1
-    PS:> Add-SPOPMasterPage -SourceFilePath "page.master" -Title "MasterPage" -Description "MasterPage for Web" -DestinationFolderHierarchy "SubFolder"
+    PS:> Add-SPOMasterPage -SourceFilePath "page.master" -Title "MasterPage" -Description "MasterPage for Web" -DestinationFolderHierarchy "SubFolder"
 Adds a MasterPage to the web
-<!-- Ref: 7B5E4D1D88D6F0C83F98646EE433752D -->
+<!-- Ref: 72CB7D6F751E26E90B1A180874BE70B8 -->
