@@ -205,6 +205,7 @@ type | The class and assembly of the implementation
 connectionString | The connection information that is used to connect to the source. 
 container | The container where the artifacts are stored
 
+##### Module Configuration Section #####
 
 Module Name | Description
 -------------------|----------

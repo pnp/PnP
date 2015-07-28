@@ -29,6 +29,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{82F04E51-FD3A-4ACA-A177-5E3FCD2789AB}"
 	ProjectSection(SolutionItems) = preProject
 		Setup\PnPSiteProvisioning.xml = Setup\PnPSiteProvisioning.xml
+		Setup\SetupSPRepository.ps1 = Setup\SetupSPRepository.ps1
 	EndProjectSection
 EndProject
 Global
