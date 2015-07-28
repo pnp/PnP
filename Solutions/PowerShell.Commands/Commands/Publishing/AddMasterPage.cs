@@ -7,7 +7,7 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Add, "SPOMasterPage")]
     [CmdletHelp("Adds a Masterpage", Category = "Publishing")]
     [CmdletExample(
-        Code = @"PS:> Add-SPOPMasterPage -SourceFilePath ""page.master"" -Title ""MasterPage"" -Description ""MasterPage for Web"" -DestinationFolderHierarchy ""SubFolder""",
+        Code = @"PS:> Add-SPOMasterPage -SourceFilePath ""page.master"" -Title ""MasterPage"" -Description ""MasterPage for Web"" -DestinationFolderHierarchy ""SubFolder""",
         Remarks = "Adds a MasterPage to the web",
         SortOrder = 1)]
     public class AddMasterPage : SPOWebCmdlet
