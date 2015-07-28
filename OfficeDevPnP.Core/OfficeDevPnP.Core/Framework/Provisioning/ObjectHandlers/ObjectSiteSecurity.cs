@@ -57,6 +57,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 user.Update();
                 web.Context.ExecuteQueryRetry();
             }
+            
+            foreach (var additionalGroup  in siteSecurity.AdditionalGroups)
+            {
+                var group = web.AddGroup(additionalGroup.Name, additionalGroup.Description, false,true);
+
+                //var user = web.EnsureUser(admin.Name);
+                //user.IsSiteAdmin = true;
+                //user.Update();
+                //web.Context.ExecuteQueryRetry();
+            }
         }
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)

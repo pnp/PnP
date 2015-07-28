@@ -12,6 +12,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         private List<User> _additionalOwners = new List<User>();
         private List<User> _additionalMembers = new List<User>();
         private List<User> _additionalVisitors = new List<User>();
+        private List<AdditionalGroup> _additionalGroups = new List<AdditionalGroup>();
         #endregion
 
         #region Properties
@@ -49,6 +50,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         {
             get { return _additionalVisitors; }
             private set { _additionalVisitors = value; }
+        }
+
+        /// <summary>
+        /// A Collection of users taht are associated to the sites visitors group
+        /// </summary>
+        public List<AdditionalGroup> AdditionalGroups
+        {
+            get { return _additionalGroups; }
+            private set { _additionalGroups = value; }
         }
 
         #endregion
