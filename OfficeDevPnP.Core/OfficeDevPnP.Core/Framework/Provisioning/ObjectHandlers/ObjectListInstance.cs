@@ -464,10 +464,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.ContentTypesEnabled = templateList.ContentTypesEnabled;
                     isDirty = true;
                 }
-                if (templateList.EnableAttachments != existingList.EnableAttachments)
+                if (existingList.BaseTemplate != (int)ListTemplateType.Survey && existingList.BaseTemplate != (int)ListTemplateType.DocumentLibrary)
                 {
-                    existingList.EnableAttachments = templateList.EnableAttachments;
-                    isDirty = true;
+                    // https://msdn.microsoft.com/EN-US/library/microsoft.sharepoint.splist.enableattachments.aspx
+                    // The EnableAttachments property does not apply to any list that has a base type of Survey or DocumentLibrary.
+                    // If you set this property to true for either type of list, it throws an SPException.
+                    if (templateList.EnableAttachments != existingList.EnableAttachments)
+                    {
+                        existingList.EnableAttachments = templateList.EnableAttachments;
+                        isDirty = true;
+                    }
                 }
                 if (existingList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
                 {

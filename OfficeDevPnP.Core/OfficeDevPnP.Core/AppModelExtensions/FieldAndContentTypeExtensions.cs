@@ -414,8 +414,9 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="list">List to process</param>
         /// <param name="fieldAsXml">The XML declaration of SiteColumn definition</param>
+        /// <param name="executeQuery">Optionally skip the executeQuery action</param>
         /// <returns>The newly created field or existing field.</returns>
-        public static Field CreateField(this List list, string fieldAsXml)
+        public static Field CreateField(this List list, string fieldAsXml, bool executeQuery = true)
         {
             var fields = list.Fields;
             list.Context.Load(fields);
@@ -447,7 +448,10 @@ namespace Microsoft.SharePoint.Client
             var field = fields.AddFieldAsXml(fieldAsXml, false, AddFieldOptions.AddFieldInternalNameHint);
             list.Update();
 
-            list.Context.ExecuteQueryRetry();
+            if (executeQuery)
+            {
+                list.Context.ExecuteQueryRetry();
+            }
 
             return field;
         }

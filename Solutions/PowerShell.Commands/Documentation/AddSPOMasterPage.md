@@ -1,5 +1,5 @@
 #Add-SPOMasterPage
-*Topic automatically generated on: 2015-07-24*
+*Topic automatically generated on: 2015-07-28*
 
 Adds a Masterpage
 ##Syntax
@@ -11,7 +11,7 @@ Add-SPOMasterPage -SourceFilePath <String> -Title <String> -Description <String>
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-|DefaultCssFile|String|False|Defautl CSS file for MasterPage|
+|DefaultCssFile|String|False|Default CSS file for MasterPage, this Url is SiteRelative|
 |Description|String|True|Description for the page layout|
 |DestinationFolderHierarchy|String|False|Folder hierarchy where the MasterPage layouts will be deployed|
 |SourceFilePath|String|True|Path to the file which will be uploaded|
@@ -21,6 +21,6 @@ Parameter|Type|Required|Description
 ##Examples
 
 ###Example 1
-    PS:> Add-SPOPublishingMasterpage -SourceFilePath "page.master" -Title "MasterPage" -Description "MasterPage for Web" -DestinationFolderHierarchy "SubFolder" -Template "STS#0"
-Add's a MasterPage to the web
-<!-- Ref: 36B932CCBEBE010B3DDF272404ACD70F -->
+    PS:> Add-SPOMasterPage -SourceFilePath "page.master" -Title "MasterPage" -Description "MasterPage for Web" -DestinationFolderHierarchy "SubFolder"
+Adds a MasterPage to the web
+<!-- Ref: 72CB7D6F751E26E90B1A180874BE70B8 -->
