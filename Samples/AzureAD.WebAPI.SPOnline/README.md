@@ -1,6 +1,33 @@
+# # AzureAD-WebAPI-SPOnline #
+
+### Summary ###
+In this sample, a Windows console Application calls a Web API secured by Azure AD and the API calls SharePoint Online on behalf the logged in user. This scenario is useful for situations where you need a protected API Proxy to interact with SharePoint Online using User's credentials.
+
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+
+### Prerequisites ###
+None
+
+### Solution ###
+Solution | Author(s)
+---------|----------
+AzureAD.WebApi.SPOnline | Rodrigo Romano
+
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | July 9th 2015 | Initial release
+
+### Disclaimer ###
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+
+----------
 # AzureAD-WebAPI-SPOnline
 
 In this sample, a Windows console Application calls a Web API secured by Azure AD and the API calls SharePoint Online on behalf the logged in user. This scenario is useful for situations where you need a protected API Proxy to interact with SharePoint Online using User's credentials.
+
 The application uses the Active Directory Authentication Library (ADAL) to get a token from Azure AD using the OAuth 2.0 client credential flow, where the client credential is a password.
 
 For more information about how the protocols work in this scenario and other scenarios, see [Authentication Scenarios for Azure AD.](http://go.microsoft.com/fwlink/?LinkId=394414)
@@ -14,7 +41,7 @@ To create a solution from scratch, Open Visual Studio and create a new Windows C
 
 Then click on **Tools** menu, **NuGet Package Manager** and in **Package Manager Console** item.
 
-Install bellow packages:
+Install below packages:
 
 - Install-Package Microsoft.Net.Http
 - Install-Package Microsoft.IdentityModel.Clients.ActiveDirectory -Version 2.15.204151539
@@ -36,7 +63,7 @@ To create a solution from scratch, Open Visual Studio and create a new Windows C
 
 Then click on **Tools** menu, **NuGet Package Manager** and in **Package Manager Console** item.
 
-Install bellow packages:
+Install below packages:
 
 - Install-Package Microsoft.AspNet.WebApi
 - Install-Package Microsoft.AspNet.WebApi.Owin
@@ -228,10 +255,7 @@ To run this sample you will need:
 Every Azure subscription has an associated Azure Active Directory tenant.  If you don't already have an Azure subscription, you can get a free subscription by signing up at [http://wwww.windowsazure.com](http://www.windowsazure.com).  All of the Azure AD features used by this sample are available free of charge.
 
 ### Step 1:  Clone or download this repository
-
-From your shell or command line:
-
-`git clone https://github.com/RARomano/AzureAD-WebAPI-SPOnline.git`
+Open the solution from your local PnP folder using Visual Studio.
 
 ### Step 2:  Register the Web API in Azure Active Directory
 
