@@ -150,7 +150,7 @@ namespace OfficeDevPnP.Core.AppModelExtensions
             List<VariationLabelEntity> targetVariations = variationLabels.Where(x => x.IsSource == false).ToList();
 
             // Create target variation labels
-            if ((targetVariations != null) && (targetVariations.Count > 0))
+            if (targetVariations.Any())
             {
                 CreateVariationLabels(context, targetVariations);
             }
@@ -207,21 +207,18 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 context.Load(collListItems);
                 context.ExecuteQueryRetry();
 
-                if (variationLabelsList != null)
+                foreach (var listItem in collListItems)
                 {
-                    foreach (var listItem in collListItems)
-                    {
-                        var label = new VariationLabelEntity();
-                        label.Title = (string)listItem["Title"];
-                        label.Description = (string)listItem["Description"];
-                        label.FlagControlDisplayName = (string)listItem["Flag_x0020_Control_x0020_Display"];
-                        label.Language = (string)listItem["Language"];
-                        label.Locale = (uint)listItem["Locale"];
-                        label.HierarchyCreationMode = (string)listItem["Hierarchy_x0020_Creation_x0020_M"];
-                        label.IsSource = (bool)listItem["Is_x0020_Source"];
-                        label.IsCreated = (bool)listItem["Hierarchy_x0020_Is_x0020_Created"];
-                        variationLabels.Add(label);
-                    }
+                    var label = new VariationLabelEntity();
+                    label.Title = (string)listItem["Title"];
+                    label.Description = (string)listItem["Description"];
+                    label.FlagControlDisplayName = (string)listItem["Flag_x0020_Control_x0020_Display"];
+                    label.Language = (string)listItem["Language"];
+                    label.Locale = Convert.ToUInt32(listItem["Locale"]);
+                    label.HierarchyCreationMode = (string)listItem["Hierarchy_x0020_Creation_x0020_M"];
+                    label.IsSource = (bool)listItem["Is_x0020_Source"];
+                    label.IsCreated = (bool)listItem["Hierarchy_x0020_Is_x0020_Created"];
+                    variationLabels.Add(label);
                 }
             }
             return variationLabels;
@@ -260,31 +257,28 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 context.Load(collListItems);
                 context.ExecuteQueryRetry();
 
-                if (variationLabelsList != null)
+                foreach (VariationLabelEntity label in variationLabels)
                 {
-                    foreach (VariationLabelEntity label in variationLabels)
+                    // Check if variation label already exists
+                    var varLabel = collListItems.FirstOrDefault(x => x["Language"].ToString() == label.Language);
+
+                    if (varLabel == null)
                     {
-                        // Check if variation label already exists
-                        var varLabel = collListItems.FirstOrDefault(x => x["Language"].ToString() == label.Language);
+                        // Create the new item
+                        ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                        ListItem olistItem = variationLabelsList.AddItem(itemCreateInfo);
 
-                        if (varLabel == null)
-                        {
-                            // Create the new item
-                            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-                            ListItem olistItem = variationLabelsList.AddItem(itemCreateInfo);
+                        olistItem["Title"] = label.Title;
+                        olistItem["Description"] = label.Description;
+                        olistItem["Flag_x0020_Control_x0020_Display"] = label.FlagControlDisplayName;
+                        olistItem["Language"] = label.Language;
+                        olistItem["Locale"] = label.Locale;
+                        olistItem["Hierarchy_x0020_Creation_x0020_M"] = label.HierarchyCreationMode;
+                        olistItem["Is_x0020_Source"] = label.IsSource;
+                        olistItem["Hierarchy_x0020_Is_x0020_Created"] = false;
 
-                            olistItem["Title"] = label.Title;
-                            olistItem["Description"] = label.Description;
-                            olistItem["Flag_x0020_Control_x0020_Display"] = label.FlagControlDisplayName;
-                            olistItem["Language"] = label.Language;
-                            olistItem["Locale"] = label.Locale;
-                            olistItem["Hierarchy_x0020_Creation_x0020_M"] = label.HierarchyCreationMode;
-                            olistItem["Is_x0020_Source"] = label.IsSource;
-                            olistItem["Hierarchy_x0020_Is_x0020_Created"] = false;
-
-                            olistItem.Update();
-                            context.ExecuteQueryRetry();
-                        }
+                        olistItem.Update();
+                        context.ExecuteQueryRetry();
                     }
                 }
             }
@@ -325,12 +319,9 @@ namespace OfficeDevPnP.Core.AppModelExtensions
                 context.Load(collListItems);
                 context.ExecuteQueryRetry();
 
-                if (variationLabelsList != null)
-                {
-                    // Check hierarchy is created
-                    ListItem varLabel = collListItems.FirstOrDefault(x => x["Language"].ToString() == variationLabel.Language);
-                    variationLabel.IsCreated = hierarchyIsCreated = (bool)varLabel["Hierarchy_x0020_Is_x0020_Created"];
-                }
+                // Check hierarchy is created
+                ListItem varLabel = collListItems.First(x => x["Language"].ToString() == variationLabel.Language);
+                variationLabel.IsCreated = hierarchyIsCreated = (bool)varLabel["Hierarchy_x0020_Is_x0020_Created"];
             }
 
             return hierarchyIsCreated;
