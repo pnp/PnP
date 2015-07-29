@@ -10,11 +10,11 @@
     <RootNamespace>Core.CrossDomainLib</RootNamespace>
     <AssemblyName>Core.CrossDomainLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <TargetOfficeVersion>16.1</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
     <AppFeaturePartId>{7ba6c774-4ddf-4b64-ae33-676360ad343f}</AppFeaturePartId>
@@ -22,6 +22,11 @@
     <WorkflowPartId>{1407bc3a-9fbe-4880-b079-80c252234a7b}</WorkflowPartId>
     <CspkgPartId>{e3431b53-7f84-4cbb-bcee-a7ae67be4c65}</CspkgPartId>
     <SqlPackagePartId>{b680569a-65d8-46e4-a181-1c18cc547514}</SqlPackagePartId>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
