@@ -213,4 +213,7 @@
   <data name="RemoveGroup0" xml:space="preserve">
     <value>Remove Group '{0}'</value>
   </data>
+  <data name="RemoveWeb0" xml:space="preserve">
+    <value>Remove Web '{0}' ? </value>
+  </data>
 </root>

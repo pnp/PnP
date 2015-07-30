@@ -1,7 +1,7 @@
 # Getting started with the PnP Provisioning engine #
 
 ### Summary ###
-This scenario shows a basic usage of the PnP provisioning engine.
+This scenario shows a basic usage of the PnP provisioning engine. 
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -20,6 +20,7 @@ Provisioning.Framework.Console | Vesa Juvonen, Bert Jansen (**Microsoft**)
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | March 30th 2015 | Initial release
+1.1  | July 29th 2015 | Rewrite for better structure
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

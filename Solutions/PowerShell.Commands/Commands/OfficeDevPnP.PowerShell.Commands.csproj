@@ -289,6 +289,7 @@
     <Compile Include="Lists\SetListPermission.cs" />
     <Compile Include="Principals\RemoveGroup.cs" />
     <Compile Include="Principals\SetGroup.cs" />
+    <Compile Include="Publishing\AddMasterPage.cs" />
     <Compile Include="Search\SetSearchConfiguration.cs" />
     <Compile Include="Search\GetSearchConfiguration.cs" />
     <Compile Include="Taxonomy\ImportTermGroupFromXml.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="Web\RemoveFile.cs" />
     <Compile Include="Web\GetIndexedPropertyKeys.cs" />
     <Compile Include="Web\AddIndexedProperty.cs" />
+    <Compile Include="Web\RemoveWeb.cs" />
     <Compile Include="Workflows\AddWorkflowDefinition.cs" />
     <Compile Include="Workflows\ResumeWorkflowInstance.cs" />
     <Compile Include="Workflows\StopWorkflowInstance.cs" />
