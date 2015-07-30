@@ -5,13 +5,13 @@
     <site url="/sites/pub2" />
   </sites>
   <files>
-    <file name="logo.png" path="Style Library" folder="gapps" />
-    <file name="default.css" path="Style Library" folder="gapps" />
-    <file name="js\app.js" path="Style Library" folder="gapps" />
-    <file name="plugins\jquery\jquery-1.11.3.min.js" path="Style Library" folder="gapps" />
+    <file name="logo.png" path="Style Library" folder="pnp" />
+    <file name="default.css" path="Style Library" folder="pnp" />
+    <file name="js\app.js" path="Style Library" folder="pnp" />
+    <file name="plugins\jquery\jquery-1.11.3.min.js" path="Style Library" folder="pnp" />
   </files>
   <masterpages>
-    <masterpage name="default.master" folder="gapps" />
+    <masterpage name="default.master" folder="pnp" />
   </masterpages>
   <pagelayouts>
     <pagelayout name="ArticleLeft.aspx" folder="pnp" title="Office Dev PnP Image on left" publishingAssociatedContentType=";#Article Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900242457EFB8B24247815D688C526CD44D;#" />
