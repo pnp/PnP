@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<branding url="https://johandemo.sharepoint.com">
+<branding url="https://wfdev1.sharepoint.com">
   <sites>
     <site url="/sites/pub1" />
     <site url="/sites/pub2" />
@@ -7,6 +7,8 @@
   <files>
     <file name="logo.png" path="Style Library" folder="gapps" />
     <file name="default.css" path="Style Library" folder="gapps" />
+    <file name="js\app.js" path="Style Library" folder="gapps" />
+    <file name="plugins\jquery\jquery-1.11.3.min.js" path="Style Library" folder="gapps" />
   </files>
   <masterpages>
     <masterpage name="default.master" folder="gapps" />
