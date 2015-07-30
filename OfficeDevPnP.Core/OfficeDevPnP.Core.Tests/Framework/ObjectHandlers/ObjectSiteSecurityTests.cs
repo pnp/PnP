@@ -28,7 +28,22 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             using (var ctx = TestCommon.CreateClientContext())
             {
                 admins = ctx.Web.GetAdministrators();
+                if (ctx.Web.GroupExists("Test Additional Group1"))
+                {
+                    var group1 = ctx.Web.SiteGroups.GetByName("Test Additional Group1");
+                    ctx.Web.SiteGroups.Remove(group1);
+                    ctx.ExecuteQueryRetry();
+                }
+                if (ctx.Web.GroupExists("Test Additional Group2"))
+                {
+                    var group2 = ctx.Web.SiteGroups.GetByName("Test Additional Group2");
+                    ctx.Web.SiteGroups.Remove(group2);
+                    ctx.ExecuteQueryRetry();
+                }
+
             }
+
+            
         }
 
         [TestCleanup]
@@ -64,6 +79,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 additionalGroup1.Members.Add(new User() { Name = user.LoginName });
             }
             template.Security.AdditionalGroups.Add(additionalGroup1);
+            
 
             var additionalGroup2 = new AdditionalGroup() { Name = "Test Additional Group2", Description = "Test AdditionalGroup2Description" };
             foreach (var user in admins)
