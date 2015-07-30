@@ -300,6 +300,7 @@
     <Content Include="Resources\GuidTermSet.csv" />
     <Content Include="Resources\ImportTermSet.csv" />
     <None Include="Resources\HelloWorldApp15.app" />
+    <None Include="Resources\Templates\ProvisioningSchema-2015-05-ReferenceSample-01.json" />
     <None Include="Resources\TestSolution.wsp" />
     <Content Include="Resources\Templates\ProvisioningSchema-2015-05-FullSample-01.xml" />
     <Content Include="Resources\Templates\ProvisioningSchema-2015-05-ReferenceSample-01.xml" />

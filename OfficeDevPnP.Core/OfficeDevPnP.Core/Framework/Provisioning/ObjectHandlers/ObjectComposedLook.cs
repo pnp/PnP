@@ -214,7 +214,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 template.ComposedLook = null;
             }
 
-            if (creationInfo.BaseTemplate != null)
+            if (creationInfo != null && creationInfo.BaseTemplate != null)
             {
                 template = CleanupEntities(template, creationInfo.BaseTemplate);
             }
