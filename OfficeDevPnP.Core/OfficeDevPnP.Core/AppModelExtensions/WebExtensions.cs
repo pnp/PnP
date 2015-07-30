@@ -1041,7 +1041,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
         public static ProvisioningTemplate GetProvisioningTemplate(this Web web)
         {
-            var creationInfo = new ProvisioningTemplateCreationInformation(web);
+            ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(web);
             // Load the base template which will be used for the comparison work
             creationInfo.BaseTemplate = web.GetBaseTemplate();
 
