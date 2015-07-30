@@ -6,6 +6,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
 using System.Net;
 using System.Security;
+using System.Threading;
 
 namespace Provisioning.Framework
 {
@@ -42,6 +43,7 @@ namespace Provisioning.Framework
             {
                 // ctx.Credentials = new NetworkCredentials(userName, pwd);
                 ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+                ctx.RequestTimeout = Timeout.Infinite;
 
                 // Just to output the site details
                 Web web = ctx.Web;
@@ -82,6 +84,7 @@ namespace Provisioning.Framework
             {
                 // ctx.Credentials = new NetworkCredentials(userName, pwd);
                 ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+                ctx.RequestTimeout = Timeout.Infinite;
 
                 // Just to output the site details
                 Web web = ctx.Web;
