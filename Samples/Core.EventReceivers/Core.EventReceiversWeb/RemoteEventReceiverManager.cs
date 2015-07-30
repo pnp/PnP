@@ -35,11 +35,15 @@ namespace Contoso.Core.EventReceiversWeb
             List jobsList = clientContext.Web.Lists.FirstOrDefault();
 
 #if (DEBUG)
-            // in debug mode we will delete a existing list, so we prevent our system from orphaned event receicers
-            // RemoveEventReceiversFromHostWeb is somteimes in debug mode not called, and / or the app id is changed 
-            // in the dev process
-            // on registering SharePoint adds the app id to the event registration information, and you are only able 
-            // to remove the event with the same app where it was registered
+            // In debug mode we will delete the existing list, so we prevent our system from orphaned event receicers.
+            // RemoveEventReceiversFromHostWeb is sometimes not called in debug mode and/or the app id has changed. 
+            // On RER registration SharePoint adds the app id to the event registration information, and you are only able 
+            // to remove the event with the same app where it was registered. Also note that you would need to completely 
+            // uninstall an app before SharePoint will trigger the appuninstalled event. From the documentation: 
+            // The **AppUninstalling** event only fires when a user completely removes the add-in: the add-in needs to be deleted 
+            // from the site recycle bins in an end-user scenario. In a development scenario the add-in needs to be removed from 
+            // the “Apps in testing” library.
+
             if (null != jobsList)
             {
                 jobsList.DeleteObject();
