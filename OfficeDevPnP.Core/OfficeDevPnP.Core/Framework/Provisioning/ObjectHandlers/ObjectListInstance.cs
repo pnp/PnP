@@ -747,7 +747,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         f => f.Required)));
 
             web.Context.ExecuteQueryRetry();
-            foreach (var item in lists.Where(l => l.Hidden == false))
+            foreach (var item in lists.AsEnumerable().Where(l => l.Hidden == false))
             {
                 ListInstance baseTemplateList = null;
                 if (creationInfo.BaseTemplate != null)
@@ -815,7 +815,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     count++;
                 }
 
-                foreach (var view in item.Views.Where(view => !view.Hidden))
+                foreach (var view in item.Views.AsEnumerable().Where(view => !view.Hidden))
                 {
                     var schemaElement = XElement.Parse(view.ListViewXml);
 
@@ -841,7 +841,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
                 web.Context.ExecuteQueryRetry();
 
-                foreach (var field in item.Fields.Where(field => !field.Hidden))
+                foreach (var field in item.Fields.AsEnumerable().Where(field => !field.Hidden))
                 {
                     if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
                     {
