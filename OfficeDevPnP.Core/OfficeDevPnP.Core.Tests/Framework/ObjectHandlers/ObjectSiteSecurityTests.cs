@@ -54,6 +54,58 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
         }
 
         [TestMethod]
+        public void CanProvisionAdditionalGroups()
+        {
+            var template = new ProvisioningTemplate();
+
+            var additionalGroup1 = new AdditionalGroup(){ Name="Test Additional Group1", Description="Test AdditionalGroup1Description" };
+            foreach (var user in admins)
+            {
+                additionalGroup1.Members.Add(new User() { Name = user.LoginName });
+            }
+            template.Security.AdditionalGroups.Add(additionalGroup1);
+
+            var additionalGroup2 = new AdditionalGroup() { Name = "Test Additional Group2", Description = "Test AdditionalGroup2Description" };
+            foreach (var user in admins)
+            {
+                additionalGroup2.Members.Add(new User() { Name = user.LoginName });
+            }
+            template.Security.AdditionalGroups.Add(additionalGroup2);
+            
+
+            using (var ctx = TestCommon.CreateClientContext())
+            {
+                TokenParser.Initialize(ctx.Web, template);
+                new ObjectSiteSecurity().ProvisionObjects(ctx.Web, template);
+
+                Assert.IsTrue(ctx.Web.GroupExists("Test Additional Group1"));
+                Assert.IsTrue(ctx.Web.GroupExists("Test Additional Group2"));
+
+                var group1 = ctx.Web.SiteGroups.GetByName("Test Additional Group1");
+                ctx.Load(group1, g => g.Users);
+                ctx.ExecuteQueryRetry();
+                foreach (var user in admins)
+                {
+                    var existingUser = group1.Users.GetByLoginName(user.LoginName);
+                    ctx.Load(existingUser);
+                    ctx.ExecuteQueryRetry();
+                    Assert.IsNotNull(existingUser);
+                }
+
+                var group2 = ctx.Web.SiteGroups.GetByName("Test Additional Group2"); 
+                ctx.Load(group2, g => g.Users);
+                ctx.ExecuteQueryRetry();
+                foreach (var user in admins)
+                {
+                    var existingUser = group2.Users.GetByLoginName(user.LoginName);
+                    ctx.Load(existingUser);
+                    ctx.ExecuteQueryRetry();
+                    Assert.IsNotNull(existingUser);
+                }
+
+            }
+        }
+        [TestMethod]
         public void CanProvisionObjects()
         {
             var template = new ProvisioningTemplate();
