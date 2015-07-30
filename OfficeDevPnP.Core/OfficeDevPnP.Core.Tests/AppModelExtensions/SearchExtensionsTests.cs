@@ -12,6 +12,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     public class SearchExtensionsTests
     {
 
+        #region Test initialize and cleanup
+        [TestInitialize]
+        public void Initialize()
+        {
+            if (TestCommon.AppOnlyTesting())
+            {
+                Assert.Inconclusive("Search tests are not supported when testing using app-only");
+            }
+        }
+        #endregion
+
         [TestMethod]
         public void SetSiteCollectionSearchCenterUrlTest()
         {
