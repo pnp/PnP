@@ -65,8 +65,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 foreach (var additionalGroupMember in additionalGroup.Members)
                 {
                     var user = web.EnsureUser(additionalGroupMember.Name);
-                    web.Context.ExecuteQueryRetry();
+                    group.Users.AddUser(user);
                 }
+                web.Context.ExecuteQueryRetry();
             }
         }
 
