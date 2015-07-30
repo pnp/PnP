@@ -668,10 +668,12 @@ namespace Microsoft.SharePoint.Client
                 list.Context.Load(list, l => l.ContentTypesEnabled);
                 list.Context.ExecuteQueryRetry();
             }
-
-            list.ContentTypesEnabled = true;
-            list.Update();
-            list.Context.ExecuteQueryRetry();
+            if (list.ContentTypesEnabled == false)
+            {
+                list.ContentTypesEnabled = true;
+                list.Update();
+                list.Context.ExecuteQueryRetry();
+            }
 
             list.ContentTypes.AddExistingContentType(contentType);
             list.Context.ExecuteQueryRetry();
@@ -1394,7 +1396,7 @@ namespace Microsoft.SharePoint.Client
                                  .OrderBy(x => !x.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
                                  .ToArray();
             list.RootFolder.UniqueContentTypeOrder = newOrder;
-
+           
             list.RootFolder.Update();
             list.Update();
             list.Context.ExecuteQueryRetry();

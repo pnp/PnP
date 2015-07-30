@@ -60,7 +60,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             {
                 TokenParser.Initialize(ctx.Web, template);
 
+                // Create the List
                 new ObjectListInstance().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
+
+                // Load DataRows
+                new ObjectListInstanceDataRows().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);
