@@ -4,6 +4,7 @@ Below table is showing the last 100 test run results.
 
 Configuration | Date | Time | Branch | Build | Passed | Failed | Skipped
 :-----|:-----|:----|:----:|:----:|:----:|:----:|:----:|
+ [OnlineCred](PnPUnitTestResults-20150731-OnlineCred-635739266056042578.md) | Friday, July 31, 2015 | 6:03 AM | dev | debug | 246 | 0 | 3
  [OnlineAppOnly](PnPUnitTestResults-20150731-OnlineAppOnly-635738979894259616.md) | Friday, July 31, 2015 | 10:06 PM | dev | debug | 215 | 0 | 34
  [OnlineCred](PnPUnitTestResults-20150730-OnlineCred-635738960988297024.md) | Thursday, July 30, 2015 | 9:34 PM | dev | debug | 217 | 29 | 3
  [OnPremAppOnly](PnPUnitTestResults-20150730-OnPremAppOnly-635738950807399025.md) | Thursday, July 30, 2015 | 9:18 PM | dev | debug15 | 195 | 0 | 46
