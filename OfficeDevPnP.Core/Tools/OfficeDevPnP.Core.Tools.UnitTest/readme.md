@@ -38,9 +38,10 @@ Following files are needed:
 - Copy the output from the release build to a location (e.g. folder c:\pnpunittestrunner) on the server that's running the build automation. This should give you OfficeDevPnP.Core.Tools.UnitTest.PnPBuildExtensions.dll and Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
 - Copy the mastertestconfiguration sample.xml file and rename it to mastertestconfiguration.xml. Update this file to match your environment
 - Copy the PnPCore.targets file 
+- Copy the supporting nuget.exe which is needed to pull down the needed nuget packages before we do the build
 
 ## Create a .bat file that runs msbuild ##
-A possible bat file can be the following:
+A possible bat file can be the following (is also copied as part of the build output)
 
 ```batch
 c:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe PnPCore.targets /property:PnPConfigurationToTest=OnPremCred /target:BuildAndUnitTestPnP
@@ -80,7 +81,6 @@ These are the important parameters to change:
 
 ## Setup git ##
 The build script requires git to be present, hence git needs to be installed. The tested version is git for windows which can be fetched from here: http://msysgit.github.io/. If you want to push back changes to the PnP repo than ensure git is properly configured.
-
 
 ## Create a scheduled task ##
 Final step is creating a scheduled task that executes the created bat file on a regular basis.
