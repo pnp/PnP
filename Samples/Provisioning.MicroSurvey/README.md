@@ -1,71 +1,74 @@
-# MicroSurvey Web Part #
+# MicroSurvey Web Part and List Forms #
 
 This is a "microsurvey" web part, which will display a single question and
-gather up the answers. It's an example of how to write a SharePoint app using AngularJS that
-runs completely in the browser and can be deployed with or without the App model.
+gather up the answers. The app provisions SharePoint lists to hold the questions
+and answers, including custom New, Display, and Edit forms for one of the lists.
 
-There are three ways to deploy this app!
+In addition to providing a useful "microsurvey", this Visual Studio solution demonstrates how to build
+widgets and forms that provision their own content and are flexible to be deployed in more than one way.
+There are four ways to deploy this app - with more to come!
 
- 1. __As a SharePoint Hosted App:__ If you simply install the .app file, or let Visual Studio deploy the app to a Dev#0 site.
-    Manage the app in the full page view; use the included App Part to place it on the page.
+ 1. __As a SharePoint Hosted App:__ If you simply install the .app file, or let Visual Studio deploy the MicroSurvey project
+    to a Developer (Dev#0) site, the MicroSurvey will run as a SharePoint Hosted App. Manage the app in the full page view; use the
+    included App Part to place it on the page.
 
- 2. __As a Drag and Drop App:__ Simply copy the contents of the SurveyApp folder to SiteAssets/SurveyApp/ within any SharePoint web.
+ 2. __As a Drag and Drop App:__ This is a style of application used by end users who want to add something to a SharePoint site.
+    Simply copy the contents of the SurveyApp folder to SiteAssets/SurveyApp/ within any SharePoint web.
     Manage the app by visiting the SiteAssets/SurveyApp/ folder in a web browser (click the Default.aspx file if needed.)
-    Place a Content Editor Web Part on any page pointing to SiteAssets/SurveyApp/webPart.html to use the app.
+    To use the web part, place a Content Editor Web Part on any page pointing to SiteAssets/SurveyApp/webPart.html.
+    You must turn off the "Minimal Download Strategy" feature on the site in order for the web part to work.
 
- 3. __As a centrally deployed app:__ Create a simple IIS site with no ASP.NET and use the web.config sample found in the SurveyAppCentralDeploy
-    folder. Copy the SurveyApp folder to this site's folder under c:\wwwroot. Now copy the Default.aspx and WebPart.html files found in
-    SurveyAppCentralDeploy to the web where you wish to use them.
+ 3. __As a centrally deployed app:__ If you have many sites that share a common host name (such as site collections that run under
+    managed paths), you can install the code on one site and reference it from all the sites that share the host name. This allows you
+    to update the application centrally, by changing the scripts and files in the central site; the other sites only have a few files
+    needed to host the app. The MicroSurveyInstaller project contains PowerShell scripts to deploy the centrally managed scripts and
+    to add the app to sites where it will be used.
 
-Additional Features: 
+     - Edit Get-Settings.ps1 with the URL of the site that will house the scripts,
+       the name of the script library, and the title to be placed on the web part when
+       the web part is added to a site
 
-* You can have more than one copy of the web part on a page. The trick to this is bootstrapping angular to
-  from within a div that encloses the web part so no div ID or other unique attribute is required.
-  See http://stackoverflow.com/questions/6932679/get-dom-element-where-script-tag-is
+     - Run the Install-MicrosurveyScripts script to deploy the centrally hosted scripts.
+       NOTE: This requires the PnP PowerShell.Commands project to be deployed
 
-* The solution coexists with other Angular stuff on the page by saving away the angular object, loading
-  a new one, binding the app, and then restoring the original angular object (if any)
-  See http://stackoverflow.com/questions/19537960/multiple-versions-of-angularjs-in-one-page
+     - Run the  Install-Microsurvey script to add the Microsurvey to a site using the centrally
+       hosted scripts. Remember - the scripting site must be in the same DNS host name.
 
-* PowerShell deployment
+   The management page can be accessed under Site Settings, and the web part will be placed on the site home page.
+   (This assumes a wiki page site such as Team site; the Install-Microsurvey script will need to be modified to handle
+   a publishing page.)
 
-* Clever URL Parsing from: https://saikiran78.wordpress.com/2014/01/17/getting-list-data-in-sharepoint-2013-using-rest-api-and-angular-js/
+ 4. __Variation on a centrally deployed app:__ If you have many sites that don't share a common host name, you can deploy the centrally
+    hosted scripts and other files as part of an IIS site or provider hosted app. This requires adding CORS headers needed to load an
+    AngularJS html template across domain boundaries. A sample web.config file is included in the Solution Items to show how
+    to set this up.
 
-Notes on form URL's
+The code shows several useful patterns including:
 
-DISPLAY
-?List=69d0b4bc%2D5d7f%2D45b7%2D8116%2Defaa1e07eb32
-&ID=1
-&Source=(url)
-&ContentTypeId=0x0100A8B936F1B9339C42B498D9EA7DA912A7
-&RootFolder=%2FMicroSurveySPApp%2FLists%2FQuestions
+* How to write an AngularJS "widget" (web part) that allows more than one copy on a page, and shares
+  the page with other AngularJS code. In a single-page application, it's fine to assume you're the only
+  developer using AngularJS on a page, but that's not so with a web part or widget.
 
-EDIT
-?List=69d0b4bc%2D5d7f%2D45b7%2D8116%2Defaa1e07eb32
-&ID=1
-&Source=(url)
-&ContentTypeId=0x0100A8B936F1B9339C42B498D9EA7DA912A7
+* The JavaScript code provisions its own SharePoint content using a "desired state" pattern - that is, it can be run
+  again and again without error to ensure that the needed content is present. This makes upgrading very
+  easy, since the code just adds any new lists, columns, etc. when they're needed.
 
-NEW
-?List=69d0b4bc%2D5d7f%2D45b7%2D8116%2Defaa1e07eb32
-&Source=(url)
-&RootFolder=
-&Web=7daf31b0%2Df3c1%2D434c%2D8b12%2D37d007da0955
+* How to use the PnP PowerShell commands to deploy a widget and custom site settings page
 
-Ask a Question Link (New)
-?List=8fe9f4a1%2D5c25%2D4440%2Dbd34%2Dcbd3b8547943
-&Source=(url)
-&SPLanguage=en%2DUS
-&SPClientTag=0
-&SPProductNumber=15%2E0%2E4420%2E1017
-&SPAppWebUrl=(url)
-&Web=a77b5fb9%2Dd9e2%2D4bff%2Dba48%2D827c6438a9fc
+* How to associate custom client-side forms with a list using remote provisioning
 
+## Table of query string parameters passed to List Forms ##
 
+<table>
+<tr><td>Query String Parameter</td><td>New Form</td><td>Display Form</td><td>Edit Form</td></tr>
+<tr><td>======================</td><td>========</td><td>============</td><td>=========</td></tr>
+<tr><td>List={guid}</td><td>Y</td><td>Y<td>Y</td></tr>
+<tr><td>ID={int}</td><td>N</td><td>Y<td>Y</td></tr>
+<tr><td>Source={Url}</td><td>Y</td><td>Y<td>Y</td></tr>
+<tr><td>ContentTypeId={guid}</td><td>N</td><td>Y<td>Y</td></tr>
+<tr><td>RootFolder={path}</td><td>Y</td><td>Y<td>N</td></tr>
+<tr><td>Web={guid}</td><td>Y</td><td>N<td>N</td></tr>
+</tr></table>
 
-            <td>
-                <div style="width: 400px;" ng-controller="listNewForm" ng-include="'listForm.html'"></div>
-            </td>
-
-
-
+______________________
+Clever URL Parsing is brought to you by: https://saikiran78.wordpress.com/2014/01/17/getting-list-data-in-sharepoint-2013-using-rest-api-and-angular-js/

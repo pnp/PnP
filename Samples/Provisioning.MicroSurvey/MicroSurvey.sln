@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2560900C-5AD7-4477-906A-75AD7D7AD734}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		..\..\..\..\..\Documents\Visual Studio 2013\Projects\MicroSurveySPApp\MicroSurveySPApp\SurveyAppCentralDeploy\Web.config = ..\..\..\..\..\Documents\Visual Studio 2013\Projects\MicroSurveySPApp\MicroSurveySPApp\SurveyAppCentralDeploy\Web.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroSurvey", "MicroSurvey\MicroSurvey.csproj", "{756129D2-5A57-4803-AB32-88D5FEA763A0}"
