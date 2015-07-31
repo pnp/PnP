@@ -1,10 +1,10 @@
 #New-SPOTenantSite
-*Topic automatically generated on: 2015-06-11*
+*Topic automatically generated on: 2015-07-31*
 
 Creates a new site collection for the current tenant
 ##Syntax
 ```powershell
-New-SPOTenantSite -Title <String> -Url <String> [-Description <String>] [-Owner <String>] [-Lcid <UInt32>] [-Template <String>] -TimeZone <Int32> [-ResourceQuota <Double>] [-ResourceQuotaWarningLevel <Double>] [-StorageQuota <Int64>] [-StorageQuotaWarningLevel <Int64>] [-RemoveDeletedSite [<SwitchParameter>]] [-Wait [<SwitchParameter>]]
+New-SPOTenantSite -Title <String> -Url <String> [-Description <String>] [-Owner <String>] [-Lcid <UInt32>] [-Template <String>] -TimeZone <Int32> [-ResourceQuota <Double>] [-ResourceQuotaWarningLevel <Double>] [-StorageQuota <Int64>] [-StorageQuotaWarningLevel <Int64>] [-Wait [<SwitchParameter>]]
 ```
 
 
@@ -21,7 +21,6 @@ Parameter|Type|Required|Description
 (http://go.microsoft.com/fwlink/p/?LinkId=242911) (http://go.microsoft.com/fwlink/p/?LinkId=242911).|
 |Owner|String|False|Specifies the user name of the site collection's primary owner. The owner must be a user instead of a security
 group or an email-enabled security group.|
-|RemoveDeletedSite|SwitchParameter|False||
 |ResourceQuota|Double|False|Specifies the quota for this site collection in Sandboxed Solutions units. This value must not exceed the
 company's aggregate available Sandboxed Solutions quota. The default value is 0. For more information, see
 Resource Usage Limits on Sandboxed Solutions in SharePoint
@@ -41,4 +40,4 @@ valid combination as returned from the Get-SPOnlineWebTemplate cmdlet.|
 For example, for company contoso, valid managed paths are https://contoso.sharepoint.com/sites and
 https://contoso.sharepoint.com/teams.|
 |Wait|SwitchParameter|False||
-<!-- Ref: B18D2824862D9605694CE62DAC997D53 -->
+<!-- Ref: 580138AC72E639097FD94B700CEDB54A -->
