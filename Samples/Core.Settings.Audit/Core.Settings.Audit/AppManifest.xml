@@ -4,7 +4,7 @@
      Name="CoreSettingsAudit"
      ProductID="{7fd07ecb-4341-463e-b658-0fe72b851e7d}"
      Version="1.0.0.0"
-     SharePointMinVersion="15.0.0.0"
+     SharePointMinVersion="16.0.0.0"
 >
   <Properties>
     <Title>Core.Settings.Audit</Title>

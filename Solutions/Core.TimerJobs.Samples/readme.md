@@ -143,16 +143,16 @@ The net result of this is that the timer framework will enumerate the existing s
 
 # Sample 3: ExpandJobAppOnly #
 ## Goal ##
-Similar to sample 2, but now using app-only authentication
+Similar to sample 2, but now using add-in only authentication
 
 ## Timer job implementation ##
 Identical to sample 2.
 
 ## Timer job host implementation ##
-This job uses app-only authentication and as such the `UseAppOnlyAuthentication` call is used to provide the job with a clientId and clientSecret. Once you use app-only authentication and you specify one or more wild card url's (like below) you'll also need to set enumeration credentials: these credentials will be used by the search API to acquire a list of sites which will then be matched with the wild card urls
+This job uses add-in only authentication and as such the `UseAppOnlyAuthentication` call is used to provide the job with a clientId and clientSecret. Once you use add-in only authentication and you specify one or more wild card url's (like below) you'll also need to set enumeration credentials: these credentials will be used by the search API to acquire a list of sites which will then be matched with the wild card urls
 
 ```C#
-// specify the needed information to work app only
+// specify the needed information to work add-in only
 expandJobAppOnly.UseAppOnlyAuthentication(ClientId, ClientSecret);
 
 // set enumeration credentials to allow using search API to find the OD4B sites
@@ -267,7 +267,7 @@ void SiteGovernanceJob_TimerJobRun(object o, TimerJobRunEventArgs e)
 ```
 
 ## Timer job host implementation ##
-Nothing specific here, it's using app-only like the previous sample.
+Nothing specific here, it's using add-in only like the previous sample.
 
 # Sample 6: ContentTypeRetentionEnforcementJob #
 ## Goal ##

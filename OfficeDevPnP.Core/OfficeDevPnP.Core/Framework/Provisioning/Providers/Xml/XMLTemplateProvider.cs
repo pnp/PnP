@@ -16,6 +16,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
 
         #region Constructor
+        protected XMLTemplateProvider() : base()
+        {
+
+        }
         protected XMLTemplateProvider(FileConnectorBase connector)
             : base(connector)
         {
@@ -23,7 +27,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
         #endregion
 
         #region Base class overrides
+
         public override List<ProvisioningTemplate> GetTemplates()
+        {
+            var formatter = new XMLPnPSchemaFormatter();
+            formatter.Initialize(this);
+            return (this.GetTemplates(formatter));
+        }
+
+        public override List<ProvisioningTemplate> GetTemplates(ITemplateFormatter formatter)
         {
             List<ProvisioningTemplate> result = new List<ProvisioningTemplate>();
 
@@ -36,87 +48,133 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                 if (file.EndsWith(".xml", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Load it from a File Stream
-                    XDocument doc = XDocument.Load(new XmlTextReader(this.Connector.GetFileStream(file)));
+                    Stream stream = this.Connector.GetFileStream(file);
 
-                    // And convert it into a ProvisioningTemplate
-                    ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+                    ProvisioningTemplate provisioningTemplate;
+                    try
+                    {
+                        // And convert it into a ProvisioningTemplate
+                        provisioningTemplate = formatter.ToProvisioningTemplate(stream);
+                    }
+                    catch(ApplicationException)
+                    {
+                        Log.Warning(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_Providers_XML_InvalidFileFormat, file);
+                        continue;
+                    }
 
-                    // Add the template to the result
-                    result.Add(provisioningTemplate);
+                    if (provisioningTemplate != null)
+                    {
+                        // Add the template to the result
+                        result.Add(provisioningTemplate);
+                    }
                 }
             }
 
             return (result);
         }
 
-        public override ProvisioningTemplate GetTemplate(string identifier)
+        public override ProvisioningTemplate GetTemplate(string uri)
         {
-            if (String.IsNullOrEmpty(identifier))
+            var formatter = new XMLPnPSchemaFormatter();
+            formatter.Initialize(this);
+            return (this.GetTemplate(uri, null, formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string uri, string identifier)
+        {
+            var formatter = new XMLPnPSchemaFormatter();
+            formatter.Initialize(this);
+            return (this.GetTemplate(uri, identifier, formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string uri, ITemplateFormatter formatter)
+        {
+            return (this.GetTemplate(uri, null, formatter));
+        }
+
+        public override ProvisioningTemplate GetTemplate(string uri, string identifier, ITemplateFormatter formatter)
+        {
+            if (String.IsNullOrEmpty(uri))
             {
-                throw new ArgumentException("identifier");
+                throw new ArgumentException("uri");
             }
 
             // Get the XML document from a File Stream
-            XDocument doc = XDocument.Load(this.Connector.GetFileStream(identifier));
+            Stream stream = this.Connector.GetFileStream(uri);
 
             // And convert it into a ProvisioningTemplate
-            ProvisioningTemplate provisioningTemplate = XMLSerializer.Deserialize<SharePointProvisioningTemplate>(doc).ToProvisioningTemplate();
+            ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream, identifier);
 
             // Store the identifier of this template, is needed for latter save operation
-            this.Identifier = identifier;
+            this.Uri = uri;
 
             return (provisioningTemplate);
         }
 
         public override void Save(ProvisioningTemplate template)
         {
-            if (template == null)
-            {
-                throw new ArgumentNullException("template");
-            }
-
-            SaveToConnector(template, this.Identifier);
+            var formatter = new XMLPnPSchemaFormatter();
+            this.Save(template, formatter);
         }
 
-        public override void SaveAs(ProvisioningTemplate template, string identifier)
+        public override void Save(ProvisioningTemplate template, ITemplateFormatter formatter)
         {
             if (template == null)
             {
                 throw new ArgumentNullException("template");
             }
 
-            if (String.IsNullOrEmpty(identifier))
-            {
-                throw new ArgumentException("identifier");
-            }
-
-            SaveToConnector(template, identifier);
+            SaveToConnector(template, this.Uri, formatter);
         }
 
-        public override void Delete(string identifier)
+        public override void SaveAs(ProvisioningTemplate template, string uri)
         {
-            if (String.IsNullOrEmpty(identifier))
+            var formatter = new XMLPnPSchemaFormatter();
+            this.SaveAs(template, uri, formatter);
+        }
+
+        public override void SaveAs(ProvisioningTemplate template, string uri, ITemplateFormatter formatter)
+        {
+            if (template == null)
+            {
+                throw new ArgumentNullException("template");
+            }
+
+            if (String.IsNullOrEmpty(uri))
+            {
+                throw new ArgumentException("uri");
+            }
+
+            SaveToConnector(template, uri, formatter);
+        }
+
+        public override void Delete(string uri)
+        {
+            if (String.IsNullOrEmpty(uri))
             {
                 throw new ArgumentException("identifier");
             }
 
-            this.Connector.DeleteFile(identifier);
+            this.Connector.DeleteFile(uri);
         }
+       
         #endregion
 
         #region Helper methods
-        private void SaveToConnector(ProvisioningTemplate template, string identifier)
+        
+        private void SaveToConnector(ProvisioningTemplate template, string uri, ITemplateFormatter formatter)
         {
-            if (String.IsNullOrEmpty(template.ID))
+            if (String.IsNullOrEmpty(template.Id))
             {
-                template.ID = Path.GetFileNameWithoutExtension(identifier);
+                template.Id = Path.GetFileNameWithoutExtension(uri);
             }
 
-            using (var stream = template.ToXmlStream())
+            using (var stream = formatter.ToFormattedTemplate(template))
             {
-                this.Connector.SaveFileStream(identifier, stream);
+                this.Connector.SaveFileStream(uri, stream);
             }
         }
+
         #endregion
     }
 }

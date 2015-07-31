@@ -13,13 +13,11 @@ namespace OfficeDevPnP.PowerShell.Commands
 
     [Cmdlet(VerbsCommon.Get, "SPOTenantSite", SupportsShouldProcess = true)]
     [CmdletHelp(@"Office365 only: Uses the tenant API to retrieve site information.
-
-You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command. 
-", Details = "Requires a connection to a SharePoint Tenant Admin site.", Category = "Tenant Administration")]
+", Category = "Tenant Administration")]
     [CmdletExample(Code = @"
-PS:> Get-SPOTenantSite", Remarks = "Returns all site collections")]
+PS:> Get-SPOTenantSite", Remarks = "Returns all site collections", SortOrder = 1)]
     [CmdletExample(Code = @"
-PS:> Get-SPOTenantSite -Url http://tenant.sharepoint.com/sites/projects", Remarks = "Returns information about the project site.")]
+PS:> Get-SPOTenantSite -Url http://tenant.sharepoint.com/sites/projects", Remarks = "Returns information about the project site.",SortOrder = 2)]
     public class GetTenantSite : SPOAdminCmdlet
     {
         [Parameter(Mandatory = false, HelpMessage = "The URL of the site", Position = 0, ValueFromPipeline = true)]

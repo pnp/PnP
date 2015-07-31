@@ -1,11 +1,11 @@
 # OneDrive for Business customization (async) #
 
 ### Summary ###
-This is an enhanced app part based customization for applying and managing needed customizations to the OD4B sites. 
+This is an enhanced add-in part based customization for applying and managing needed customizations to the OD4B sites. 
 
-Actual logical design follows the hidden app part approach, which was demonstrated in the older PnP samle called [Provisioning.OneDrive](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.OneDrive). This means that the assumption is that you have centralized Intranet in the office 365 environment where you can put the needed app part and that the end users will be landing to this welcome page when they open up their browser. It is common that each company browser will have same home page set using group policies, so that end users will always start from one centralized location when they open up their browser. This is the location where you’d put app part, which can be set to be sized as 0 pixel width and height. Key point here is that you use the end user context to execute the app part, which contains page from the provider hosted app.
+Actual logical design follows the hidden add-in part approach, which was demonstrated in the older PnP samle called [Provisioning.OneDrive](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.OneDrive). This means that the assumption is that you have centralized Intranet in the office 365 environment where you can put the needed add-in part and that the end users will be landing to this welcome page when they open up their browser. It is common that each company browser will have same home page set using group policies, so that end users will always start from one centralized location when they open up their browser. This is the location where you’d put add-in part, which can be set to be sized as 0 pixel width and height. Key point here is that you use the end user context to execute the add-in part, which contains page from the provider hosted add-in.
 
-Solution and approach is explained in detail from following blog post: [Customizing OneDrive for Business sites with app model](http://blogs.msdn.com/b/vesku/archive/2015/01/01/customizing-onedrive-for-business-sites-with-app-model.aspx).
+Solution and approach is explained in detail from following blog post: [Customizing OneDrive for Business sites with add-in model](http://blogs.msdn.com/b/vesku/archive/2015/01/01/customizing-onedrive-for-business-sites-with-app-model.aspx).
 
 Here's also a video recording demonstrating the solution in detail from [Office 365 Developer Patterns and Practices Channel 9 section](http://aka.ms/officedevpnpvideos).
 
@@ -13,7 +13,7 @@ Here's also a video recording demonstrating the solution in detail from [Office 
 -  Office 365 Multi Tenant (MT)
 
 ### Prerequisites ###
-Solution uses Azure storage queues and web jobs, so you will need to have storage name space in place for setting things up and update that to web.config and app.config files in the project. When you also initially deploy the app to the your environment and grant permissions for the app, you should copy the app id and app secret from the web site to other projects to ensure that they can use the granted app only token access for site modifications.
+Solution uses Azure storage queues and web jobs, so you will need to have storage name space in place for setting things up and update that to web.config and app.config files in the project. When you also initially deploy the add-in to the your environment and grant permissions for the add-in, you should copy the add-in id and add-in secret from the web site to other projects to ensure that they can use the granted add-in only token access for site modifications.
 
 ### Solution ###
 Solution | Author(s)
@@ -45,15 +45,15 @@ This Visual Studio solution consists from quite a few solutions, but each of the
 
 ## OD4B.Configuration.Async ##
 
-This is the actual SharePoint app project, which will introduce the provider hosted app to SharePoitn and will ask the needed permissions. Notice that even though we do not actually perform tenant level operations from the app part it self, we are asking pretty high permissions for the app app. This is because we will use the same  client ID and secret from this app file in our WebJob execution. Using this approach, you do not have to manually register app id and secret to the SharePoint, we rather just use the same identifier and secret cross solution. 
+This is the actual SharePoint add-in project, which will introduce the provider hosted add-in to SharePoitn and will ask the needed permissions. Notice that even though we do not actually perform tenant level operations from the add-in part it self, we are asking pretty high permissions for the add-in. This is because we will use the same  client ID and secret from this add-in file in our WebJob execution. Using this approach, you do not have to manually register add-in id and secret to the SharePoint, we rather just use the same identifier and secret cross solution. 
 
 ![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/3302.image_5F00_thumb_5F00_2726198A.png)
 
-This project also contains the app part definition which will be then deployed to the host web. 
+This project also contains the add-in part definition which will be then deployed to the host web. 
 
 ## OD4B.Configuration.Async.Common ##
 
-This project contains all the actual business logic and shared code cross projects, like the definition for the data object which is placed to the storage queue and the actual business logic to customize OD4B sites. Reason to place code in here is simply for giving us easier way to develop and test the operations when the project is created. Like with general development, you should not really place your business logic code directly to the WebJob or to app part, rather to locate that in business logic layer for easier testing and code reuse. 
+This project contains all the actual business logic and shared code cross projects, like the definition for the data object which is placed to the storage queue and the actual business logic to customize OD4B sites. Reason to place code in here is simply for giving us easier way to develop and test the operations when the project is created. Like with general development, you should not really place your business logic code directly to the WebJob or to add-in part, rather to locate that in business logic layer for easier testing and code reuse. 
 
 All the actual operations towards the OD4B sites are located in *OD4B.Configuration.Async.Common.SiteModificationManager* class.
 
@@ -86,11 +86,11 @@ static void Main(string[] args)
 }
 ```
 
-Notice that you will need to ensure that app id and secret for this project in the app.config are matching the ones you gave needed permissions to your tenant. You can easily execute the project by right clicking the project and choosing Debug – Start New Instance, so that you can walk the actual code which is executed line by line.
+Notice that you will need to ensure that add-in id and secret for this project in the app.config are matching the ones you gave needed permissions to your tenant. You can easily execute the project by right clicking the project and choosing Debug – Start New Instance, so that you can walk the actual code which is executed line by line.
 
 ## OD4B.Configuration.Async.Console.SendMessage ##
 
-This project was added to the solution to test the storage queue mechanism before it was hooked to the app part. Project can be used to by pass the app part process for adding new messages to the storage queue. Notice that you will need to update the storage queue connection string accordingly in the app.config to make the project work properly. 
+This project was added to the solution to test the storage queue mechanism before it was hooked to the add-in part. Project can be used to by pass the add-in part process for adding new messages to the storage queue. Notice that you will need to update the storage queue connection string accordingly in the app.config to make the project work properly. 
 
 You can easily execute the project by right clicking the project and choosing Debug – Start New Instance, so that you can walk the actual code which is executed line by line.
 
@@ -118,7 +118,7 @@ class Program
 }
 ```
 
-Actual queue processing is really easy with WebJobs. Only thing we need to do is to set the right attributes for the method and to ensure that the Azure storage connection strings in the app config are updated accordingly and matching the storage queue’s you have created to Microsoft Azure. Following is the ProcessQueueMesasge method from the functions.cs class. Notice how we use the App Only token model to access the SharePoint from the WebJob. To make this work, you will need to ensure that you have copied the right app id and secret to the app.config of the project. Actual business logic is located in the SiteModificationManager class, so we just call that with the right client context and parameters. 
+Actual queue processing is really easy with WebJobs. Only thing we need to do is to set the right attributes for the method and to ensure that the Azure storage connection strings in the add-in config are updated accordingly and matching the storage queue’s you have created to Microsoft Azure. Following is the ProcessQueueMesasge method from the functions.cs class. Notice how we use the add-in Only token model to access the SharePoint from the WebJob. To make this work, you will need to ensure that you have copied the right add-in id and secret to the app.config of the project. Actual business logic is located in the SiteModificationManager class, so we just call that with the right client context and parameters. 
 
 ```C#
 // This function will get triggered/executed when a new message is written 
@@ -129,7 +129,7 @@ public static void ProcessQueueMessage(
 {
     Uri url = new Uri(request.SiteUrl);
 
-    //Connect to the OD4B site using App Only token
+    //Connect to the OD4B site using add-in Only token
     string realm = TokenHelper.GetRealmFromTargetUrl(url);
     var token = TokenHelper.GetAppOnlyAccessToken(
         TokenHelper.SharePointPrincipal, url.Authority, realm).AccessToken;
@@ -162,8 +162,8 @@ Other thing worth noticing is that you will need to ensure that you have set the
 
 ## OD4B.Configuration.AsyncWeb ##
 
-This is the actual provider hosted app which is hosted in Microsoft Azure. It contains the page laded to the app part, which is placed on the front page of the intranet. Default.aspx page of this app does not actually contain any operations, it shows provides details on how to use the app.
+This is the actual provider hosted add-in which is hosted in Microsoft Azure. It contains the page laded to the add-in part, which is placed on the front page of the intranet. Default.aspx page of this add-in does not actually contain any operations, it shows provides details on how to use the add-in.
 
-Notice. If you will face permission denied issues with the WebJob or app only access in general, make sure that you have updated app client id and secret in the app.config to match the values in the web.config from this project. Visual Studio can change these values in certain scenarios. 
+Notice. If you will face permission denied issues with the WebJob or add-in only access in general, make sure that you have updated add-in client id and secret in the app.config to match the values in the web.config from this project. Visual Studio can change these values in certain scenarios. 
 
  

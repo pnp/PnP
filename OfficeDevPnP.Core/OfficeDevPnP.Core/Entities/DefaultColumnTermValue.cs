@@ -3,9 +3,19 @@ using Microsoft.SharePoint.Client.Taxonomy;
 
 namespace OfficeDevPnP.Core.Entities
 {
+    /// <summary>
+    /// IDefaultColumnValue
+    /// </summary>
     public interface IDefaultColumnValue
     {
+        /// <summary>
+        /// Folder relative path
+        /// </summary>
         string FolderRelativePath { get; set; }
+
+        /// <summary>
+        /// Field internal name
+        /// </summary>
         string FieldInternalName { get; set; }
     }
     
@@ -26,11 +36,17 @@ namespace OfficeDevPnP.Core.Entities
         }
     }
 
+    /// <summary>
+    /// DefaultColumnTextValue
+    /// </summary>
     public class DefaultColumnTextValue : DefaultColumnValue
     {
         public string Text { get; set; }
     }
 
+    /// <summary>
+    /// DefaultColumnValue
+    /// </summary>
     public class DefaultColumnValue : IDefaultColumnValue
     {
         /// <summary>

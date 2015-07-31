@@ -98,7 +98,7 @@ The Web Extensibility Framework (WEF) that enables Apps for Office only provides
 1. Access the data using anything available to .NET
 2. Serialize the data as a JSON string
 3. Inject the JSON as script on the page
-4. Add client-side script to check for JSON as the app loads
+4. Add client-side script to check for JSON as the add-in loads
 5. Process the JSON using the same client-side methods above
 
 The code below shows a server-side button click event that retrieves data, serializes the data as a JSON string, and injects the JSON into the page using the Page's  ClientScriptManager.

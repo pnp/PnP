@@ -27,7 +27,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             }
             if (list != null)
             {
-                web.Context.Load(list, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden);
+                web.Context.Load(list, l => l.Id, l => l.BaseTemplate, l => l.OnQuickLaunch, l => l.DefaultViewUrl, l => l.Title, l => l.Hidden, l => l.ContentTypesEnabled);
                 web.Context.ExecuteQueryRetry();
             }
             return list;
