@@ -690,4 +690,10 @@
   <data name="TimerJob_Authentication_TenantAdmin" xml:space="preserve">
     <value>Tenant admin site set to {0}.</value>
   </data>
+  <data name="FieldAndContentTypeExtensions_BindWorkflowAssociationToContentType" xml:space="preserve">
+    <value>Binding workflow association {0} to content type {1}.</value>
+  </data>
+  <data name="FieldAndContentTypeExtensions_WorkflowAssociationHasNoElements" xml:space="preserve">
+    <value>Workflow association contains no elements for content type {0}. Possibly 'Workflows' site collection feature is not active.</value>
+  </data>
 </root>

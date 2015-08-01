@@ -292,6 +292,7 @@
     <Compile Include="Entities\VariationLabelEntity.cs" />
     <Compile Include="Entities\WebPartEntity.cs" />
     <Compile Include="Entities\WebTemplateEntity.cs" />
+    <Compile Include="Entities\WorkflowBindingInformation.cs" />
     <Compile Include="Entities\YammerGroup.cs" />
     <Compile Include="Entities\YammerUser.cs" />
     <Compile Include="Enums\BuiltInFieldId.cs" />

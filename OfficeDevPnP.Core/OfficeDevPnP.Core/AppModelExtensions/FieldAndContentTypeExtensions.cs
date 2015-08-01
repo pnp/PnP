@@ -1,4 +1,5 @@
-﻿using OfficeDevPnP.Core;
+﻿using Microsoft.SharePoint.Client.Workflow;
+using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
 using System;
@@ -1445,6 +1446,70 @@ namespace Microsoft.SharePoint.Client
             list.Update();
             list.Context.ExecuteQueryRetry();
         }
+
+        /// <summary>
+        /// Binds the workflow association to the content type.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="contentTypeId">Id of the content type</param>
+        /// <param name="workflowBindingInformation">workflow binding information</param>
+        public static void BindWorkflowAssociationToContentType(this Web web, string contentTypeId, WorkflowBindingInformation workflowBindingInformation)
+        {
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_BindWorkflowAssociationToContentType, workflowBindingInformation.Name, contentTypeId);
+
+            // Get the content type
+            ContentType contentTypeDocument = web.GetContentTypeById(contentTypeId, false);
+
+            if (contentTypeDocument != null)
+            {
+                Guid workflowTemplateId = workflowBindingInformation.BaseTemplateId;
+                var queryWorkflowTemplates = web.Context.LoadQuery(web.WorkflowTemplates.Where(x => x.Id == workflowTemplateId));
+                web.Context.ExecuteQueryRetry();
+
+                if (queryWorkflowTemplates.Count() == 0)
+                {
+                    // Workflows site collection feature is not active.
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_WorkflowAssociationHasNoElements, contentTypeId);
+                    return;
+                }
+
+                web.Context.Load(contentTypeDocument.WorkflowAssociations);
+                web.Context.ExecuteQueryRetry();
+                string workflowBindingName = workflowBindingInformation.Name;
+                var queryWorkflowAssociation = web.Context.LoadQuery(contentTypeDocument.WorkflowAssociations.Where(x => x.Name == workflowBindingName));
+                web.Context.ExecuteQueryRetry();
+
+                // If workflow association does not exists already, create it.
+                if (queryWorkflowAssociation.Count() == 0)
+                {
+                    WorkflowTemplate workflowTemplate = queryWorkflowTemplates.Single();
+
+                    var wfc = new WorkflowAssociationCreationInformation();
+                    wfc.Name = workflowBindingInformation.Name;
+                    wfc.HistoryList = web.EnsureList(new ListCreationInformation() { TemplateType = (int)ListTemplateType.WorkflowHistory, Url = workflowBindingInformation.HistoryListUrl, Title = "Workflow History" });
+
+                    // Hide the workflow history list.
+                    wfc.HistoryList.Hidden = true;
+                    wfc.HistoryList.Update();
+                    wfc.HistoryList.Context.ExecuteQueryRetry();
+
+                    wfc.TaskList = web.EnsureList(new ListCreationInformation() { TemplateType = (int)ListTemplateType.WorkflowHistory, Url = workflowBindingInformation.TaskListUrl, Title = "Workflow Tasks" });
+                    wfc.Template = workflowTemplate;
+
+                    // Configure workflow association startup options
+                    WorkflowAssociation wf = contentTypeDocument.WorkflowAssociations.Add(wfc);
+                    wf.AllowManual = workflowBindingInformation.AllowManual;
+                    wf.AutoStartChange = workflowBindingInformation.AutoStartChange;
+                    wf.AutoStartCreate = workflowBindingInformation.AutoStartCreate;
+                    wf.Enabled = true;
+
+                    wf.Update();
+                    web.Context.Load(wf);
+                    web.Context.ExecuteQueryRetry();
+                }
+            }
+        }
+
 
         #endregion
 
