@@ -1510,6 +1510,31 @@ namespace Microsoft.SharePoint.Client
             }
         }
 
+        /// <summary>
+        /// Binds document template to content type.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="contentTypeId">Id of the content type</param>
+        /// <param name="documentTemplateUrl">Url of the document template. Document template should pre-exists.</param>
+        public static void BindDocumentTemplateToContentType(this Web web, string contentTypeId, string documentTemplateUrl)
+        {
+            if (!web.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(web, w => w.Url);
+                web.Context.ExecuteQueryRetry();
+            }
+
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_BindDocumentTemplateToContentType, documentTemplateUrl, contentTypeId, web.Url);
+
+            // Get the content type
+            ContentType contentTypeDocument = web.GetContentTypeById(contentTypeId);
+            if (contentTypeDocument != null)
+            {
+                contentTypeDocument.DocumentTemplate = documentTemplateUrl;
+                contentTypeDocument.Update(true);
+                web.Context.ExecuteQueryRetry();
+            }
+        }
 
         #endregion
 

@@ -696,4 +696,7 @@
   <data name="FieldAndContentTypeExtensions_WorkflowAssociationHasNoElements" xml:space="preserve">
     <value>Workflow association contains no elements for content type {0}. Possibly 'Workflows' site collection feature is not active.</value>
   </data>
+  <data name="FieldAndContentTypeExtensions_BindDocumentTemplateToContentType" xml:space="preserve">
+    <value>Binding document template {0} to content type {1} at {2}.</value>
+  </data>
 </root>

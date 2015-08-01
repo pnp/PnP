@@ -269,6 +269,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Binding document template {0} to content type {1} at {2}..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_BindDocumentTemplateToContentType {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_BindDocumentTemplateToContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Binding workflow association {0} to content type {1}..
         /// </summary>
         internal static string FieldAndContentTypeExtensions_BindWorkflowAssociationToContentType {
