@@ -450,6 +450,62 @@ namespace Microsoft.SharePoint.Client.Tests
 			}
 		}
 
+		[TestMethod]
+		public void CreateContentTypeWithIdTest()
+		{
+			using (var clientContext = TestCommon.CreateClientContext())
+			{
+				var web = clientContext.Web;
+
+				var testList = web.CreateList(ListTemplateType.DocumentLibrary, "Test_CreateContentTypeWithIdTestList", true, true, string.Empty, true);
+
+				string contentTypeId = "0x010100E185AC5761654A859F76A348A3365D5C";
+				var ct = web.CreateContentType("Test_CreateContentTypeWithIdCt", "CT Description", contentTypeId, "Test_Group");
+				clientContext.Load(ct);
+				clientContext.ExecuteQueryRetry();
+
+				testList.AddContentTypeToList(ct);
+
+				var listCt = testList.ContentTypes.Last();
+				clientContext.Load(listCt);
+				clientContext.ExecuteQueryRetry();
+
+				Assert.AreEqual(3, testList.ContentTypes.Count);
+				Assert.IsTrue(listCt.Id.StringValue.StartsWith(ct.Id.StringValue, StringComparison.OrdinalIgnoreCase));
+
+				testList.DeleteObject();
+				ct.DeleteObject();
+				clientContext.ExecuteQueryRetry();
+			}
+		}
+
+		[TestMethod]
+		public void CreateContentTypeWithNoIdDefinedTest()
+		{
+			using (var clientContext = TestCommon.CreateClientContext())
+			{
+				var web = clientContext.Web;
+
+				var testList = web.CreateList(ListTemplateType.DocumentLibrary, "Test_CreateContentTypeWithIdTestList", true, true, string.Empty, true);
+
+				try
+				{
+					var ct = web.CreateContentType("Test_CreateContentTypeWithIdCt", "CT Description", string.Empty, "Test_Group");
+				}
+				catch (ArgumentNullException ex)
+				{
+					Assert.AreEqual(ex.ParamName, "id");
+				}
+
+				clientContext.Load(testList, a => a.ContentTypes);
+				clientContext.ExecuteQueryRetry();
+
+				Assert.AreEqual(2, testList.ContentTypes.Count);
+
+				testList.DeleteObject();
+			}
+		}
+
 		[TestMethod()]
 		public void ReorderContentTypesTest()
 		{

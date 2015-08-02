@@ -1128,17 +1128,21 @@ namespace Microsoft.SharePoint.Client
         {
             Log.Info(Constants.LOGGING_SOURCE, CoreResources.FieldAndContentTypeExtensions_CreateContentType01, name, id);
 
+			if (string.IsNullOrEmpty(id) && parentContentType == null)
+				throw new ArgumentNullException("id");
+
             var contentTypes = web.ContentTypes;
 
             var newCt = new ContentTypeCreationInformation();
 
-
             // Set the properties for the content type
             newCt.Name = name;
-            newCt.Id = id;
             newCt.Description = description;
             newCt.Group = group;
-            newCt.ParentContentType = parentContentType;
+			if( !string.IsNullOrEmpty(id))
+				newCt.Id = id;
+			else
+				newCt.ParentContentType = parentContentType;
             var myContentType = contentTypes.Add(newCt);
             web.Context.ExecuteQueryRetry();
 
