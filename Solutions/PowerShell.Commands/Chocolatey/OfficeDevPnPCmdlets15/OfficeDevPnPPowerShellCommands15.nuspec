@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>OfficeDevPnPPowershellCommands15</id>
+        <version>1.3.0.0</version>
+        <title>OfficeDev PnP PowerShell Cmdlets for SharePoint On-Premises</title>
+        <authors>Erwin van Hunen</authors>
+		<licenseUrl>https://github.com/OfficeDev/PnP/blob/master/README.md</licenseUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Office Dev PnP PowerShell Cmdlets for SharePoint On-Premises. Includes the latest client side assemblies.</description>
+    </metadata>
+</package>
