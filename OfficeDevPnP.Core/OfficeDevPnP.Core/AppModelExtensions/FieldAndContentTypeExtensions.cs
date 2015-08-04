@@ -797,14 +797,11 @@ namespace Microsoft.SharePoint.Client
                 flink = contentType.FieldLinks.GetById(field.Id);
             }
 
-            if (required || hidden)
-            {
-                // Update FieldLink
-                flink.Required = required;
-                flink.Hidden = hidden;
-                contentType.Update(true);
-                web.Context.ExecuteQueryRetry();
-            }
+            // Update FieldLink
+            flink.Required = required;
+            flink.Hidden = hidden;
+            contentType.Update(true);
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -1397,7 +1394,7 @@ namespace Microsoft.SharePoint.Client
                                  .OrderBy(x => !x.StringValue.StartsWith(contentTypeId, StringComparison.OrdinalIgnoreCase))
                                  .ToArray();
             list.RootFolder.UniqueContentTypeOrder = newOrder;
-           
+
             list.RootFolder.Update();
             list.Update();
             list.Context.ExecuteQueryRetry();
