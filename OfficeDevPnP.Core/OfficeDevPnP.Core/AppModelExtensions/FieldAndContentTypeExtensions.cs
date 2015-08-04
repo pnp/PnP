@@ -796,7 +796,7 @@ namespace Microsoft.SharePoint.Client
 
                 flink = contentType.FieldLinks.GetById(field.Id);
             }
-
+            
             // Update FieldLink
             flink.Required = required;
             flink.Hidden = hidden;
