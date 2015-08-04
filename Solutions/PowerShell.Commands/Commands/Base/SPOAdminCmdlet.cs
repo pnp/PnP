@@ -45,14 +45,14 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             {
                 var adminUrl = string.Format("https://{0}-admin.{1}.{2}", urlParts[0], urlParts[1], urlParts[2]);
 
-                SPOnlineConnection.CurrentConnection.Context = this.ClientContext.Clone(adminUrl);
+                SPOnlineConnection.CurrentConnection.Context = SPOnlineConnection.CurrentConnection.CloneContext(adminUrl);
             }
             
         }
 
         protected override void EndProcessing()
         {
-            SPOnlineConnection.CurrentConnection.RestoreCachedContext();
+            SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
         }
     }
 }
