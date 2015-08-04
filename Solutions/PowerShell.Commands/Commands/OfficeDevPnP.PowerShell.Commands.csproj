@@ -306,13 +306,11 @@
     <Compile Include="Publishing\AddMasterPage.cs" />
     <Compile Include="Search\SetSearchConfiguration.cs" />
     <Compile Include="Search\GetSearchConfiguration.cs" />
-    <Compile Include="SharePointContext.cs" />
     <Compile Include="Taxonomy\ImportTermGroupFromXml.cs" />
     <Compile Include="Taxonomy\ExportTermGroupToXml.cs" />
     <Compile Include="Taxonomy\NewTermGroup.cs" />
     <Compile Include="Taxonomy\GetTermGroup.cs" />
     <Compile Include="Taxonomy\ImportTermSet.cs" />
-    <Compile Include="TokenHelper.cs" />
     <Compile Include="WebParts\GetWebPartProperty.cs" />
     <Compile Include="Branding\RemoveJavaScriptLink.cs" />
     <Compile Include="Branding\AddJavaScriptLink.cs" />
