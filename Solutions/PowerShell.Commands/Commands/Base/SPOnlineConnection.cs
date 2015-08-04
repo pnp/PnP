@@ -1,14 +1,15 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.PowerShell.Commands.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
 
 namespace OfficeDevPnP.PowerShell.Commands.Base
 {
     public class SPOnlineConnection
     {
-        private ClientContext _initialContext;
-
+        internal static List<ClientContext> ContextCache { get; set; }
         internal static SPOnlineConnection CurrentConnection { get; set; }
         public ConnectionType ConnectionType { get; protected set; }
         public int MinimalHealthScore { get; protected set; }
@@ -25,23 +26,51 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
             if (context == null)
                 throw new ArgumentNullException("context");
             Context = context;
-            _initialContext = context;
             ConnectionType = connectionType;
             MinimalHealthScore = minimalHealthScore;
             RetryCount = retryCount;
             RetryWait = retryWait;
             PSCredential = credential;
+            ContextCache = new List<ClientContext>();
+            ContextCache.Add(context);
             Url = url;
         }
 
-        public void RestoreCachedContext()
+        public void RestoreCachedContext(string url)
         {
-            Context = _initialContext;
+            Context = ContextCache.FirstOrDefault(c => c.Url == url);
         }
 
         internal void CacheContext()
         {
-            _initialContext = Context;
+            var c = ContextCache.FirstOrDefault(cc => cc.Url == Context.Url);
+            if (c == null)
+            {
+                ContextCache.Add(Context);
+            }
         }
+
+        public ClientContext CloneContext(string url)
+        {
+            var context = ContextCache.FirstOrDefault(c => c.Url == url);
+            if (context == null)
+            {
+                context = Context.Clone(url);
+                ContextCache.Add(context);
+            }
+            Context = context;
+            return context;
+        }
+
+        internal static ClientContext GetCachedContext(string url)
+        {
+            return ContextCache.FirstOrDefault(c => c.Url == url);
+        }
+
+        internal static void ClearContextCache()
+        {
+            ContextCache.Clear();
+        }
+
     }
 }

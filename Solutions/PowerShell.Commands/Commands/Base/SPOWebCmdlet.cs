@@ -33,13 +33,14 @@ namespace OfficeDevPnP.PowerShell.Commands
             if (Web.Id != Guid.Empty)
             {
                 web = web.GetWebById(Web.Id);
-                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
+                
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else if (!string.IsNullOrEmpty(Web.Url))
             {
                 web = web.GetWebByUrl(Web.Url);
-                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else if (Web.Web != null)
@@ -50,14 +51,14 @@ namespace OfficeDevPnP.PowerShell.Commands
                     ClientContext.Load(web, w => w.Url);
                     ClientContext.ExecuteQueryRetry();
                 }
-                SPOnlineConnection.CurrentConnection.Context = ClientContext.Clone(web.Url);
+                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
                 web = SPOnlineConnection.CurrentConnection.Context.Web;
             }
             else
             {
                 if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
                 {
-                    SPOnlineConnection.CurrentConnection.RestoreCachedContext();
+                    SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
                 }
                 web = ClientContext.Web;
             }
@@ -71,7 +72,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             base.EndProcessing();
             if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
             {
-                SPOnlineConnection.CurrentConnection.RestoreCachedContext();
+                SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
             }
         }
 

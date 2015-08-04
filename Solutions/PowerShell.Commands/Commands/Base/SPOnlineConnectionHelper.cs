@@ -28,8 +28,8 @@ namespace OfficeDevPnP.PowerShell.Commands.Base
         {
         }
 
-        internal static Uri RedirectUri;
-        internal static string ClientId;
+        //internal static Uri RedirectUri;
+        //internal static string ClientId;
 
         internal static SPOnlineConnection InstantiateSPOnlineConnection(Uri url, string realm, string clientId, string clientSecret, PSHost host, int minimalHealthScore, int retryCount, int retryWait, int requestTimeout, bool skipAdminCheck = false)
         {
