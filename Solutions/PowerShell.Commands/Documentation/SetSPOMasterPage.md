@@ -1,19 +1,19 @@
 #Set-SPOMasterPage
-*Topic automatically generated on: 2015-06-11*
+*Topic automatically generated on: 2015-08-04*
 
 Sets the default master page of the current web.
 ##Syntax
 ```powershell
-Set-SPOMasterPage [-MasterPageUrl <String>] [-CustomMasterPageUrl <String>] [-Web <WebPipeBind>]
+Set-SPOMasterPage [-MasterPageUrl [<String>]] [-CustomMasterPageUrl [<String>]] [-Web [<WebPipeBind>]]
 ```
-
+&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-|CustomMasterPageUrl|String|False||
-|MasterPageUrl|String|False||
-|Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
+CustomMasterPageUrl|String|False|
+MasterPageUrl|String|False|
+Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.
 ##Examples
 
 ###Example 1
@@ -21,4 +21,3 @@ Parameter|Type|Required|Description
     PS:> Set-SPOMasterPage -MasterPageUrl /sites/projects/_catalogs/masterpage/oslo.master
 
 
-<!-- Ref: EF6353A4531291AC88F4ACB0AC487B00 -->
